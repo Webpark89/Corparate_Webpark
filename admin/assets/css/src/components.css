@@ -1,0 +1,36 @@
+@layer components {
+  /* Cards & sections */
+  .card,
+  .page-card { @apply bg-white border border-slate-200 rounded-lg p-4 shadow-md; }
+  .card .card-title { @apply m-0 mb-2 font-bold text-slate-900; }
+  .page-section { @apply w-full mb-6 px-8; }
+  .page-section .card { @apply border-none rounded-xl shadow-lg overflow-hidden; }
+
+  .section-header { @apply mb-6 pl-4 border-l-4 border-cyan-400; }
+  .section-title { @apply text-xl font-bold mb-1 text-primary-blue; }
+  .section-note { @apply text-slate-500 text-sm; }
+
+  /* Stats */
+  .stat-card, .status-card { @apply bg-white rounded-xl p-4 flex items-center gap-4 shadow-md transition-transform; }
+  .stat-card:hover, .status-card:hover { @apply -translate-y-1; }
+  .stat-card .num { @apply text-2xl font-bold leading-none tabular-nums; }
+  .stat-card .lbl { @apply text-sm uppercase tracking-wider text-slate-500 mt-1; }
+
+  /* Buttons - base + variants */
+  .btn { @apply inline-flex items-center justify-center rounded-md font-semibold transition; }
+  .btn-inline { @apply inline-flex items-center gap-2 }
+  .btn-primary, .tw-btn-primary { @apply btn px-4 py-2 bg-primary text-white hover:bg-primary-600; }
+  .btn-muted, .btn-outline, .btn-outline-secondary, .tw-btn-muted { @apply btn px-3 py-2 border border-slate-300 bg-white text-slate-700 hover:bg-slate-50; }
+  .btn-danger, .tw-btn-danger { @apply btn px-3 py-2 bg-danger text-white hover:bg-danger-600; }
+  .btn-edit { @apply inline-flex items-center justify-center w-9 h-9 text-sm rounded-md font-semibold; }
+  .btn-delete { @apply inline-flex items-center justify-center w-9 h-9 text-sm rounded-md font-semibold; }
+
+  /* Form controls */
+  .form-control, .form-select { @apply w-full min-h-[42px] px-3 py-2 border border-slate-200 rounded-md bg-white text-base; }
+  .form-control:focus, .form-select:focus { @apply ring-2 ring-primary/10 border-primary outline-none; }
+
+  /* Tables */
+  .table { @apply w-full border-collapse bg-white; }
+  .table th, .table td { @apply p-3 border-b border-slate-100 text-left align-middle; }
+  .table th { @apply text-xs text-slate-500 uppercase font-semibold bg-slate-50; }
+}

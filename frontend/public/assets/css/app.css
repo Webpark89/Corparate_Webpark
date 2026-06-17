@@ -1,0 +1,329 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-slate-50 text-slate-900 antialiased;
+    font-family: 'Kanit', ui-sans-serif, system-ui, sans-serif;
+    text-rendering: optimizeLegibility;
+  }
+
+  img {
+    @apply block max-w-full;
+  }
+
+  a {
+    @apply text-inherit no-underline;
+  }
+
+  button,
+  input,
+  textarea,
+  select {
+    font: inherit;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p {
+    @apply m-0;
+  }
+}
+
+@layer components {
+  /* Animated border button - blue glow effect */
+  .btn-animated-border {
+    position: relative;
+    background: transparent;
+    z-index: 1;
+  }
+
+  .btn-animated-border::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 2px;
+    background: linear-gradient(90deg, #3B82F6, #60A5FA, #3B82F6);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    animation: border-glow 2s linear infinite;
+  }
+
+  @keyframes border-glow {
+    0% {
+      background-position: 0% 50%;
+    }
+    100% {
+      background-position: 200% 50%;
+    }
+  }
+
+  .btn-animated-border:hover::before {
+    background: linear-gradient(90deg, #3B82F6, #93C5FD, #3B82F6);
+  }
+
+  .btn-animated-border:disabled::before {
+    display: none;
+  }
+
+  .btn-animated-border:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+
+  /* Infinite scroll animation for partner logos */
+  @keyframes scroll-left {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  .animate-scroll {
+    animation: scroll-left 30s linear infinite;
+  }
+
+  .animate-scroll:hover {
+    animation-play-state: paused;
+  }
+}
+@layer components {
+  .service-detail-page__block {
+    @apply grid gap-3;
+  }
+
+  .service-detail-page__sections {
+    @apply grid gap-4;
+  }
+
+  .service-detail-page__section-card {
+    @apply rounded-2xl border border-slate-200 bg-slate-50 p-5;
+  }
+
+  .service-detail-page__section-card span {
+    @apply block text-[0.72rem] font-extrabold uppercase tracking-[0.18em] text-brand-teal;
+  }
+
+  .service-detail-page__section-card h5 {
+    @apply mt-2 text-base font-extrabold text-slate-900;
+  }
+
+  .service-detail-page__section-card p {
+    @apply mt-2 text-sm leading-7 text-slate-600;
+  }
+
+  .service-detail-page__metrics {
+    @apply grid gap-3;
+  }
+
+  .service-detail-page__metric {
+    @apply rounded-2xl border border-slate-200 bg-white p-4;
+  }
+
+  .service-detail-page__metric span {
+    @apply block text-[0.75rem] font-extrabold uppercase tracking-[0.18em] text-slate-500;
+  }
+
+  .service-detail-page__metric strong {
+    @apply mt-2 block text-base font-extrabold text-brand-navy;
+  }
+
+  .service-detail {
+    @apply mt-8 rounded-[1.75rem] border border-slate-200 bg-gradient-to-b from-white to-slate-50 p-6 shadow-card;
+  }
+
+  .service-detail__header {
+    @apply flex flex-col gap-4;
+  }
+
+  .service-detail__title {
+    @apply text-[clamp(1.5rem,3vw,2.5rem)] font-extrabold leading-tight text-brand-navy;
+  }
+
+  .service-detail__subtitle {
+    @apply max-w-4xl text-base leading-8 text-slate-600;
+  }
+
+  .service-detail__grid {
+    @apply mt-6 grid gap-4;
+  }
+
+  .service-detail__panel {
+    @apply rounded-2xl border border-slate-200 bg-white p-5;
+  }
+
+  .service-detail__panel--primary {
+    @apply grid gap-5;
+  }
+
+  .service-detail__summary {
+    @apply text-base leading-8 text-slate-700;
+  }
+
+  .service-detail__block h4 {
+    @apply text-[0.75rem] font-extrabold uppercase tracking-[0.18em] text-brand-teal;
+  }
+
+  .service-detail__list {
+    @apply mt-3 list-disc space-y-2 pl-5 text-slate-700;
+  }
+
+  .service-detail__chips {
+    @apply mt-3 grid gap-3;
+  }
+
+  .service-detail__chips li {
+    @apply rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 font-semibold text-brand-navy;
+  }
+
+  .service-detail__section-card {
+    @apply rounded-2xl border border-slate-200 bg-slate-50 p-4;
+  }
+
+  .service-detail__metric {
+    @apply rounded-2xl border border-slate-200 bg-slate-50 p-4;
+  }
+
+  .service-detail-page__block .hero-image {
+    @apply rounded-2xl;
+  }
+
+  .article-detail {
+    @apply mx-auto max-w-4xl;
+  }
+
+  .article-detail__hero {
+    @apply relative mb-6 overflow-hidden rounded-2xl;
+  }
+
+  .article-detail__hero-image {
+    @apply block h-64 w-full object-cover;
+  }
+
+  .article-detail__hero-overlay {
+    @apply absolute inset-0 bg-gradient-to-t from-black/60 to-transparent;
+  }
+
+  .article-detail__header {
+    @apply mb-6;
+  }
+
+  .article-detail__title {
+    @apply text-[clamp(1.75rem,3vw,3rem)] font-extrabold leading-tight tracking-tight text-slate-900;
+  }
+
+  .article-detail__meta {
+    @apply mt-4 flex flex-wrap gap-3 text-sm text-slate-500;
+  }
+
+  .article-detail__content {
+    @apply grid gap-6 text-slate-700 leading-8;
+  }
+
+  .article-detail__lead {
+    @apply text-base leading-8 text-slate-600;
+  }
+
+  .article-detail__richtext {
+    @apply grid gap-4;
+  }
+
+  .article-detail__detail-row {
+    @apply flex flex-wrap gap-3 rounded-2xl bg-slate-50 p-4 ring-1 ring-slate-200;
+  }
+
+  .article-detail__detail-key {
+    @apply text-[0.75rem] font-extrabold uppercase tracking-[0.18em] text-slate-500;
+  }
+
+  .article-detail__detail-value {
+    @apply font-bold text-slate-900;
+  }
+
+  .article-detail__actions {
+    @apply flex flex-wrap gap-3;
+  }
+
+  .article-detail__related {
+    @apply mt-12;
+  }
+
+  .article-detail__related-head {
+    @apply mb-6 flex items-center justify-between gap-4;
+  }
+
+  .article-detail__related-grid {
+    @apply grid gap-4 md:grid-cols-2 xl:grid-cols-4;
+  }
+
+  .article-detail__related-card {
+    @apply overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-soft;
+  }
+
+  .article-detail__related-card img {
+    @apply h-36 w-full object-cover;
+  }
+
+  .article-detail__related-card-content {
+    @apply p-4;
+  }
+
+  .article-detail__related-card-title {
+    @apply text-sm font-bold text-slate-900;
+  }
+
+  .article-detail__related-card-desc {
+    @apply mt-2 text-sm leading-6 text-slate-600;
+  }
+
+  .article-detail__related-card-link {
+    @apply mt-4 inline-flex items-center font-bold text-brand-blue;
+  }
+
+  .erp-hero {
+    @apply bg-white;
+  }
+
+  .erp-hero__content {
+    @apply mx-auto max-w-5xl text-center;
+  }
+
+  .erp-hero__tagline {
+    @apply mx-auto mt-4 max-w-3xl text-base leading-8 text-slate-600;
+  }
+
+  .erp-about__grid {
+    @apply grid gap-6 lg:grid-cols-2;
+  }
+
+  .erp-benefit-card {
+    @apply rounded-[1.25rem] border border-slate-200 bg-white p-6 shadow-soft transition hover:-translate-y-0.5 hover:shadow-card;
+  }
+
+  .erp-benefit-card__number {
+    @apply text-4xl font-extrabold text-brand-teal;
+  }
+
+  .erp-benefit-card__title {
+    @apply mt-3 text-lg font-extrabold text-slate-900;
+  }
+
+  .erp-benefit-card__desc {
+    @apply mt-2 text-sm leading-7 text-slate-600;
+  }
+}
+/* Home page is utility-only. */

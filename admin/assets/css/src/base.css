@@ -1,0 +1,11 @@
+/* Ensure broad text-size-adjust support across browsers */
+html, :host {
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+/* Use Kanit font for admin */
+body {
+  font-family: 'Kanit', sans-serif;
+}

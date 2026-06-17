@@ -1,0 +1,30 @@
+# Pretty URLs (optional). Default: serve files as-is.
+# Only enable rewrite rules if mod_rewrite is available (prevents 500 errors)
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteRule ^(config|database)/ - [F,L,NC]
+  RewriteRule ^uploads/.*\.(php|phtml|phar|pl|py|cgi|sh)$ - [F,L,NC]
+  RewriteRule ^$ index.php [L,QSA]
+  RewriteRule ^sitemap\.xml$ sitemap.php [L,QSA]
+</IfModule>
+
+# Prefer index.php in routed folders
+DirectoryIndex index.php
+
+Options -Indexes
+<IfModule mod_headers.c>
+  Header set X-Content-Type-Options "nosniff"
+  Header set X-Frame-Options "SAMEORIGIN"
+  Header set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css application/javascript application/json image/svg+xml
+</IfModule>
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType image/jpeg "access plus 30 days"
+  ExpiresByType image/png  "access plus 30 days"
+  ExpiresByType image/webp "access plus 30 days"
+  ExpiresByType text/css   "access plus 7 days"
+  ExpiresByType application/javascript "access plus 7 days"
+</IfModule>
