@@ -285,7 +285,7 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
                     </a>
                     <button type="submit"
                         class="px-8 h-11 rounded-xl bg-slate-900 text-white font-semibold hover:bg-slate-800 transition">
-                        บันทึกการเปลี่ยนแปลงผลงาน
+                        บันทึก
                     </button>
                 </div>
             </section>

@@ -189,7 +189,7 @@ function handle_upload(string $field, array $allowedExt = ['jpg', 'jpeg', 'png',
 
 function upload_url(?string $name): string
 {
-    return $name ? UPLOAD_URL . '/' . rawurlencode($name) : '';
+    return $name ? UPLOAD_URL . '/' . ltrim($name, '/') : '';
 }
 
 // ----- Pagination helper -----

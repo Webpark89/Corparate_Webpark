@@ -23,10 +23,6 @@ $navItems = [
                 class="h-9 w-9 object-contain"
                 src="<?= e(asset_url('images/logo.png')) ?>"
                 alt="WEBPARK logo">
-
-            <span class="text-[15px] font-bold tracking-tight text-dark">
-                WEBPARK
-            </span>
         </a>
 
         <nav class="hidden items-center gap-5 lg:flex" aria-label="Primary Navigation">

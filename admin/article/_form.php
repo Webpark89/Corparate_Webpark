@@ -2,6 +2,7 @@
 $data = $article ?? [];
 $action = $action ?? 'create';
 $formAction = $formAction ?? 'create.php';
+$status = isset($_POST['status']) && $_POST['status'] === 'published' ? 'published' : 'draft';
 
 $categories = db()->query('SELECT id, name FROM categories ORDER BY name')->fetchAll();
 $authors = db()->query('SELECT id, display_name FROM authors ORDER BY display_name')->fetchAll();
@@ -169,39 +170,7 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
                 <div class="p-6 space-y-6">
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-end">
-
-                        <div class="w-full">
-                            <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 block">
-                                สถานะการเผยแพร่
-                            </label>
-
-                            <div class="grid grid-cols-2 gap-3 h-[46px]">
-                                <label class="block cursor-pointer h-full">
-                                    <input
-                                        type="radio"
-                                        name="status"
-                                        value="draft"
-                                        class="peer sr-only"
-                                        <?= (($data['status'] ?? 'draft') === 'draft') ? 'checked' : '' ?>>
-                                    <div class="h-full w-full flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 text-center text-sm font-semibold text-slate-600 transition-all duration-200 hover:bg-slate-50 peer-checked:border-amber-400 peer-checked:bg-amber-50/60 peer-checked:text-amber-800">
-                                        แบบร่าง (Draft)
-                                    </div>
-                                </label>
-
-                                <label class="block cursor-pointer h-full">
-                                    <input
-                                        type="radio"
-                                        name="status"
-                                        value="published"
-                                        class="peer sr-only"
-                                        <?= (($data['status'] ?? 'draft') === 'published') ? 'checked' : '' ?>>
-                                    <div class="h-full w-full flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 text-center text-sm font-semibold text-slate-600 transition-all duration-200 hover:bg-slate-50 peer-checked:border-emerald-500 peer-checked:bg-emerald-50/60 peer-checked:text-emerald-800">
-                                        เผยแพร่ (Published)
-                                    </div>
-                                </label>
-                            </div>
-                        </div>
-
+                        
                         <div class="w-full">
                             <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 block">
                                 หมวดหมู่บทความ <span class="text-red-500 ml-0.5">*</span>
@@ -254,17 +223,27 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
 
         <div class="lg:col-span-12 pt-4">
             <section class="sticky bottom-0 bg-white/90 backdrop-blur-sm p-4 -m-4 rounded-2xl border border-slate-200 shadow-sm">
-                <div class="flex items-center justify-between">
-                    <a href="index.php"
-                        class="px-6 h-11 flex items-center justify-center rounded-xl border text-slate-700 hover:bg-slate-50 transition">
-                        ยกเลิก
-                    </a>
-                    <button type="submit"
-                        class="px-8 h-11 rounded-xl bg-slate-900 text-white font-semibold hover:bg-slate-800 transition">
-                        บันทึกการเปลี่ยนแปลง
-                    </button>
-                </div>
-            </section>
+             <div class="flex items-center justify-between">
+            
+            <a href="index.php" class="px-6 h-11 flex items-center justify-center rounded-xl border border-slate-200 text-slate-700 hover:bg-slate-50 transition">
+                ยกเลิก
+            </a>
+
+            <div class="flex items-center gap-3">
+                
+                <button type="submit" name="status" value="draft" 
+                    className="flex h-11 items-center justify-center rounded-xl border border-amber-300 bg-white px-6 font-semibold text-amber-700 transition-all duration-200 hover:border-amber-400 hover:bg-amber-50 hover:text-amber-800 focus:outline-none focus:ring-2 focus:ring-amber-200">
+                    บันทึกเป็นฉบับร่าง
+                </button>
+
+                <button type="submit" name="status" value="published" 
+                    className="flex h-11 items-center justify-center rounded-xl bg-emerald-600 px-8 font-semibold text-white shadow-sm shadow-emerald-200/50 transition-all duration-200 hover:-translate-y-0.5 hover:bg-emerald-700 hover:shadow-md hover:shadow-emerald-300/50 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2">
+                    บันทึกและเผยแพร่
+                </button>
+
+                 </div>
+                    </div>
+                </section>
         </div>
 
     </form>
@@ -285,6 +264,26 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
         descCounterSelector: '#descCount',
         placeholder: 'เริ่มต้นเขียนเนื้อหาที่น่าสนใจของคุณตรงนี้ได้เลย...'
     });
+</script>
+
+<script>
+function updateToggleStatus() {
+    const radioPublish = document.getElementById('radio-publish');
+    const btnPublish = document.getElementById('btn-publish');
+    const btnDraft = document.getElementById('btn-draft');
+
+    const baseClasses = "flex flex-col items-center justify-center py-2 px-6 rounded-full transition-all duration-300 text-sm font-semibold";
+
+    if (radioPublish.checked) {
+        // สถานะเผยแพร่: เขียวเข้มตัวขาว
+        btnPublish.className = `${baseClasses} bg-emerald-600 text-black shadow-md`;
+        btnDraft.className = `${baseClasses} text-red-700 hover:bg-red-50 hover:text-red-800`;
+    } else {
+        // สถานะไม่เผยแพร่: แดงเข้มตัวขาว
+        btnPublish.className = `${baseClasses} text-emerald-700 hover:bg-emerald-50 hover:text-emerald-800`;
+        btnDraft.className = `${baseClasses} bg-red-600 text-black shadow-md`;
+    }
+}
 </script>
 
 <script>

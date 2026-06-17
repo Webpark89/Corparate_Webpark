@@ -38,7 +38,7 @@ $settings = db()->query("SELECT * FROM settings WHERE `group` = 'contact' ORDER 
 
             <div class="px-6 py-4 bg-slate-50 border-t border-slate-200 flex justify-end">
                 <button type="submit" class="px-8 py-2.5 bg-slate-900 text-white text-sm font-semibold rounded-xl hover:bg-black transition shadow-lg">
-                    บันทึกการเปลี่ยนแปลงทั้งหมด
+                    บันทึก
                 </button>
             </div>
         </form>

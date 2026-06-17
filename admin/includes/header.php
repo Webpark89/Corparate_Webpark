@@ -37,7 +37,6 @@ $navItems = [
     <aside id="adminSidebar" class="fixed left-0 top-0 h-screen w-[260px] bg-white border-r border-gray-200 flex flex-col z-50 transition-transform duration-300 -translate-x-full md:translate-x-0">
       <div class="flex items-center h-16 px-6 font-bold text-lg border-b border-gray-200 flex-shrink-0 text-[#48cae4]">
         <img src="<?= ADMIN_URL ?>/assets/images/logo.png" alt="Logo" class="h-8 mr-3">
-        <span class="text-sm uppercase tracking-wide"><?= e(SITE_NAME) ?></span>
       </div>
 
       <nav class="flex-1 py-6 overflow-y-auto">
