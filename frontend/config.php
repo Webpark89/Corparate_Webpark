@@ -5,8 +5,8 @@ declare(strict_types=1);
 return [
     'app' => [
         'name' => 'webpark',
-        'base_url' => '/webpark',
-        'asset_base_url' => '/webpark/frontend/public',
+        'base_url' => '/corperate_webpark',
+        'asset_base_url' => '/corperate_webpark/frontend/public',
         'description' => 'Lightweight MVC refactor for the WEBPARK site.',
     ],
     'company' => [
