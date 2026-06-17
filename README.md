@@ -25,3 +25,4 @@ npm install
 
 ### เข้าไปในโฟลเดอร์ admin และ ทำการรัน npm install
 ### เข้าไปในโฟลเดอร์ frontend และทำการรัน npm install
+##
