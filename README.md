@@ -28,7 +28,7 @@ Frontend ใช้ Helpers ในการสร้าง URL/asset และ re
 ### Admin (Back Office)
 โฟลเดอร์หลัก: `admin/`
 
-- หน้าล็อกอิน: `admin/login.php`
+- หน้าล็อกอิน: `admin/login.php` user:admin pass:admin123
 - Portal entry: `admin/index.php` (เรียกไปยัง dashboard เมื่อใช้ route `dashboard`)
 - Helper/ความปลอดภัย: `admin/includes/functions.php` (CSRF/session/rate limit/upload ฯลฯ)
 
