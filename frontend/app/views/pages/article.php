@@ -101,6 +101,22 @@ $articleTabs['All'] = array_map(static function ($item) use ($getArticleImage, $
 $articleTabsJson = json_encode($articleTabs, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) ?: '{}';
 $initialArticles = $articleTabs[$activeCategory] ?? $articleTabs['All'] ?? [];
 ?>
+<style>
+    /* คงไว้แค่แอนิเมชันตอนโหลดหน้าสไลด์ขึ้น */
+    @keyframes fadeSlideUp {
+        0% { opacity: 0; transform: translateY(30px); }
+        100% { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-up {
+        opacity: 0;
+        animation: fadeSlideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    .delay-100 { animation-delay: 100ms; }
+    .delay-200 { animation-delay: 200ms; }
+    .delay-300 { animation-delay: 300ms; }
+    .delay-400 { animation-delay: 400ms; }
+</style>
 
 <section class="relative overflow-hidden font-sans">
     <div class="absolute inset-0 z-0">
@@ -112,21 +128,21 @@ $initialArticles = $articleTabs[$activeCategory] ?? $articleTabs['All'] ?? [];
         <div class="grid grid-cols-1 lg:grid-cols-1 gap-12 lg:gap-20 items-center">
             
             <div class="max-w-3xl">
-                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary  mb-6 shadow-sm">
+                <div class="animate-fade-up delay-100 inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary mb-6 shadow-sm">
                     <span class="text-blue-500 font-bold">+</span>
                     <span class="text-xs md:text-sm font-semibold text-primary uppercase tracking-wide">ARTICLE</span>
                 </div>
 
-                <h1 class="text-5xl md:text-6xl lg:text-8xl font-lg leading-[1.1] mb-2 tracking-tighter">
-    <span class="bg-gradient-to-r from-[#898F98] to-[#000208] bg-clip-text text-transparent">บทความและความรู้</span><br>
-    <span class="bg-gradient-to-r from-[#003380] to-[#0055ff] bg-clip-text text-transparent">จาก WEBPARK</span>
+                <h1 class="animate-fade-up delay-200 text-5xl md:text-6xl lg:text-8xl font-lg leading-[1.1] mb-2 tracking-tighter">
+    <span class="bg-gradient-to-r from-[#898F98] to-[#000208] bg-clip-text text-transparent inline-block py-2">บทความและความรู้</span><br>
+    <span class="bg-gradient-to-r from-[#003380] to-[#0055ff] bg-clip-text text-transparent inline-block py-2">จาก WEBPARK</span>
 </h1>
-                
 
-                <p class="mt-6 text-[#022862] text-base md:text-lg leading-relaxed max-w-lg mb-10 font-medium">
-                รวมบทความความรู้ เทคโนโลยี นวัตกรรม และแนวทางการทำธุรกิจ ครอบคลุม ERP ระบบธุรกิจดิจิทัล การตลาดออนไลน์ AI และโซลูชันที่ช่วยพัฒนาองค์กรให้เติบโตอย่างยั่งยืน                </p>
+                <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-base md:text-lg leading-relaxed max-w-lg mb-10 font-medium">
+                    รวมบทความและความรู้ เทคโนโลยี นวัตกรรม และแนวทางการทำธุรกิจ ครอบคลุม ERP ระบบธุรกิจดิจิทัล การตลาดออนไลน์ AI และโซลูชัน <br>ที่ช่วยพัฒนาองค์กรให้เติบโตอย่างยั่งยืน
+                </p>
 
-                <div class="flex flex-wrap items-center gap-4">
+                <div class="animate-fade-up delay-400 flex flex-wrap items-center gap-4">
                     <a href="#" class="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-primary text-white text-sm font-semibold rounded-full hover:bg-blue-700 transition-all shadow-md hover:-translate-y-0.5">
                         ปรึกษาผู้เชี่ยวชาญ
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
@@ -134,16 +150,16 @@ $initialArticles = $articleTabs[$activeCategory] ?? $articleTabs['All'] ?? [];
                         </svg>
                     </a>
                     
-                    <a href="#about" class="inline-flex items-center gap-4 transition-all hover:-translate-y-0.5">
-    <div class="h-14 w-14 bg-white flex items-center justify-center rounded-full shadow-lg border border-slate-200 transition-all hover:bg-slate-50">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600 fill-current" viewBox="0 0 24 24">
-            <path d="M8 5v14l11-7z" />
-        </svg>
-    </div>
-    <span class="text-slate-800 text-lg font-semibold hover:text-slate-900 transition-colors">
-        ดูวิดีโอแนะนำ
-    </span>
-</a>
+                    <a href="#about" class="group inline-flex items-center gap-4 transition-all hover:-translate-y-0.5">
+                        <div class="h-14 w-14 bg-white flex items-center justify-center rounded-full shadow-lg border border-slate-200 transition-all duration-300 group-hover:bg-slate-50 group-hover:scale-105 group-hover:shadow-xl">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600 fill-current transition-transform duration-300 group-hover:scale-110" viewBox="0 0 24 24">
+                                <path d="M8 5v14l11-7z" />
+                            </svg>
+                        </div>
+                        <span class="text-slate-800 text-lg font-semibold transition-colors duration-300 group-hover:text-primary">
+                            ดูวิดีโอแนะนำ
+                        </span>
+                    </a>
                 </div>
             </div>
             
@@ -156,26 +172,27 @@ $initialArticles = $articleTabs[$activeCategory] ?? $articleTabs['All'] ?? [];
         
         <div class="mb-6 flex flex-wrap justify-center items-center gap-2.5 max-w-5xl mx-auto" id="articleSwitcher">
             <a href="?category=All"
-                class="rounded-xl px-5 py-2 text-xs md:text-sm font-bold tracking-wide border transition-all duration-200 <?= $activeCategory === 'All' ? 'bg-primary text-white border-primary shadow-sm' : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50' ?>"
-                data-tab="All"
+                class="rounded-3xl px-5 py-2 text-xs md:text-sm font-bold tracking-wide border transition-all duration-200 <?= $activeCategory === 'All' ? 'bg-primary text-white border-primary shadow-sm' : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50' ?>"                data-tab="All"
                 data-active="<?= $activeCategory === 'All' ? 'true' : 'false' ?>">
                 ทั้งหมด
             </a>
 
+
             <?php foreach ($categories as $category): ?>
                 <a href="?category=<?= urlencode($category) ?>"
-                    class="rounded-xl px-5 py-2 text-xs md:text-sm font-bold tracking-wide border transition-all duration-200 <?= $activeCategory === $category ? 'bg-primary text-white border-primary shadow-sm' : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50' ?>"
-                    data-tab="<?= e($category) ?>"
+                    class="rounded-3xl px-5 py-2 text-xs md:text-sm font-bold tracking-wide border transition-all duration-200 <?= $activeCategory === $category ? 'bg-primary text-white border-primary shadow-sm' : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50' ?>"                    data-tab="<?= e($category) ?>"
                     data-active="<?= $activeCategory === $category ? 'true' : 'false' ?>">
                     <?= e($category) ?>
                 </a>
             <?php endforeach; ?>
+
         </div>
+
 
         <div id="articleGrid" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 mt-14">
             <?php if (!empty($initialArticles)): ?>
                 <?php foreach ($initialArticles as $post): ?>
-                    <article class="group bg-white rounded-[1.8rem] border border-slate-100 shadow-[0_4px_25px_rgba(0,0,0,0.02)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.05)] hover:-translate-y-1 transition-all duration-300 overflow-hidden flex flex-col h-[490px] cursor-pointer"
+                    <article class="group bg-white rounded-3xl border border-slate-100 shadow-[0_4px_25px_rgba(0,0,0,0.02)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.05)] hover:-translate-y-1 transition-all duration-300 overflow-hidden flex flex-col h-[490px] cursor-pointer"
                         <?php if ($post['url'] !== ''): ?>data-href="<?= e($post['url']) ?>"<?php endif; ?>>
 
                         <div class="w-full aspect-[16/10] bg-slate-50 overflow-hidden shrink-0 relative">
@@ -184,7 +201,7 @@ $initialArticles = $articleTabs[$activeCategory] ?? $articleTabs['All'] ?? [];
 
                         <div class="flex flex-col flex-grow p-6 justify-between">
                             <div>
-                                <span class="inline-flex items-center px-2.5 py-1 rounded-md bg-blue-50 text-primary text-[10px] font-bold uppercase tracking-wider mb-3">
+                                <span class="inline-flex items-center px-2.5 py-1 rounded-3xl bg-blue-50 text-primary text-[10px] font-bold uppercase tracking-wider mb-3">
                                     <?= e($post['category'] !== '' ? $post['category'] : 'General') ?>
                                 </span>
 
@@ -215,6 +232,7 @@ $initialArticles = $articleTabs[$activeCategory] ?? $articleTabs['All'] ?? [];
             <?php endif; ?>
         </div>
 </section>
+<script id="articleTabsData" type="application/json"><?= htmlspecialchars($articleTabsJson, ENT_QUOTES, 'UTF-8') ?></script>
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
@@ -231,8 +249,9 @@ $initialArticles = $articleTabs[$activeCategory] ?? $articleTabs['All'] ?? [];
         const createLoadMoreButton = () => {
             const btn = document.createElement('button');
             btn.id = 'loadMoreBtn';
-            btn.className = 'col-span-3 mt-10 mx-auto px-8 py-3 bg-dark text-white text-sm font-bold rounded-full hover:bg-[#0f1a32] transition-all shadow-md hover:-translate-y-0.5';
+            btn.className = 'col-span-3 mt-10 mx-auto px-8 py-3 bg-primary text-white text-sm font-bold rounded-full hover:bg-blue-700 transition-all shadow-md hover:-translate-y-0.5';
             btn.textContent = 'โหลดเพิ่มเติม';
+
             btn.addEventListener('click', () => {
                 currentPage++;
                 loadMoreItems(currentCategory, currentPage);
@@ -341,11 +360,11 @@ $initialArticles = $articleTabs[$activeCategory] ?? $articleTabs['All'] ?? [];
 
         const syncActiveState = (activeLink) => {
             links.forEach((link) => {
-                link.className = "rounded-xl px-5 py-2 text-xs md:text-sm font-bold tracking-wide border bg-white text-slate-600 border-slate-200 hover:bg-slate-50 transition-all duration-200";
+                link.className = "rounded-3xl px-5 py-2 text-xs md:text-sm font-bold tracking-wide border transition-all duration-200 bg-white text-slate-600 border-slate-200 hover:bg-slate-50 hover:-translate-y-0.5";
             });
 
             if (!activeLink) return;
-            activeLink.className = "rounded-xl px-5 py-2 text-xs md:text-sm font-bold tracking-wide border bg-primary text-white border-primary shadow-sm transition-all duration-200";
+            activeLink.className = "rounded-3xl px-5 py-2 text-xs md:text-sm font-bold tracking-wide border transition-all duration-200 bg-primary text-white border-primary shadow-sm hover:-translate-y-0.5";
         };
 
         links.forEach((link) => {
@@ -361,11 +380,9 @@ $initialArticles = $articleTabs[$activeCategory] ?? $articleTabs['All'] ?? [];
                     const params = new URLSearchParams(window.location.search);
                     params.set('category', category);
                     window.history.pushState({}, '', `${window.location.pathname}?${params.toString()}`);
-
-                    const targetSection = document.getElementById('articleGrid');
-                    if (targetSection) {
-                        targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    }
+                    
+                    // ลบโค้ดส่วน targetSection.scrollIntoView ออกแล้ว
+                    
                 } catch (error) {}
             });
         });

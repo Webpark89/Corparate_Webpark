@@ -103,7 +103,31 @@ try {
         // ... (เพิ่มบริการอื่นๆ เผื่อไว้ได้ตามต้องการ)
     ];
 }
-?>
+?><style>
+    @keyframes fadeSlideUp {
+        0% { opacity: 0; transform: translateY(30px); }
+        100% { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-up {
+        opacity: 0;
+        animation: fadeSlideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes text-gradient-pan {
+        0% { background-position: 0% center; }
+        50% { background-position: 100% center; }
+        100% { background-position: 0% center; }
+    }
+    .animate-text-gradient {
+        background-size: 200% auto;
+        animation: text-gradient-pan 6s linear infinite;
+    }
+
+    .delay-100 { animation-delay: 100ms; }
+    .delay-200 { animation-delay: 200ms; }
+    .delay-300 { animation-delay: 300ms; }
+    .delay-400 { animation-delay: 400ms; }
+</style>
 
 <section class="relative overflow-hidden font-sans">
     <div class="absolute inset-0 z-0">
@@ -116,21 +140,21 @@ try {
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
             
             <div class="max-w-2xl">
-                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary  mb-6 shadow-sm">
+                <div class="animate-fade-up delay-100 inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary mb-6 shadow-sm">
                     <span class="text-blue-500 font-bold">+</span>
                     <span class="text-xs md:text-sm font-semibold text-primary uppercase tracking-wide">OUR SERVICE</span>
                 </div>
 
-                <h1 class="text-5xl md:text-6xl lg:text-8xl font-lg leading-[1.1] mb-2 tracking-tighter">
-    <span class="bg-gradient-to-r from-[#898F98] to-[#000208] bg-clip-text text-transparent">ความเชี่ยวชาญ</span><br>
-    <span class="bg-gradient-to-r from-[#003380] to-[#0055ff] bg-clip-text text-transparent">และจุดเด่น</span>
-</h1>
+                <h1 class="animate-fade-up delay-200 text-5xl md:text-6xl lg:text-8xl font-lg leading-[1.1] mb-2 tracking-tighter">
+                    <span class="bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block pt-3">ความเชี่ยวชาญ</span><br>
+                    <span class="bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block py-2" style="animation-delay: -3s;">และจุดเด่น</span>
+                </h1>
 
-                <p class="mt-6 text-[#022862] text-base md:text-lg leading-relaxed max-w-lg mb-10 font-medium">
-                    มากกว่า 20 ปี ที่เราสร้างสรรค์โซลูชันดิจิทัลครบวงจร ผสานเทคโนโลยี ความเชี่ยวชาญ และความเข้าใจธุรกิจ เพื่อเพิ่มประสิทธิภาพ สร้างการเติบโต และยกระดับองค์กรสู่อนาคตอย่างยั่งยืน
+                <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-base md:text-lg leading-relaxed max-w-lg mb-10 font-medium">
+                    มากกว่า 20 ปี ที่เราสร้างสรรค์โซลูชันดิจิทัลครบวงจร ผสานเทคโนโลยี ความเชี่ยวชาญ และความเข้าใจธุรกิจ เพื่อเพิ่มประสิทธิภาพ <br>สร้างการเติบโต และยกระดับองค์กรสู่อนาคตอย่างยั่งยืน
                 </p>
 
-                <div class="flex flex-wrap items-center gap-4">
+                <div class="animate-fade-up delay-400 flex flex-wrap items-center gap-4">
                     <a href="#" class="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-primary text-white text-sm font-semibold rounded-full hover:bg-blue-700 transition-all shadow-md hover:-translate-y-0.5">
                         ปรึกษาผู้เชี่ยวชาญ
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
@@ -138,16 +162,16 @@ try {
                         </svg>
                     </a>
                     
-                    <a href="#about" class="inline-flex items-center gap-4 transition-all hover:-translate-y-0.5">
-    <div class="h-14 w-14 bg-white flex items-center justify-center rounded-full shadow-lg border border-slate-200 transition-all hover:bg-slate-50">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600 fill-current" viewBox="0 0 24 24">
-            <path d="M8 5v14l11-7z" />
-        </svg>
-    </div>
-    <span class="text-slate-800 text-lg font-semibold hover:text-slate-900 transition-colors">
-        ดูวิดีโอแนะนำ
-    </span>
-</a>
+                    <a href="#about" class="group inline-flex items-center gap-4 transition-all hover:-translate-y-0.5">
+                        <div class="h-14 w-14 bg-white flex items-center justify-center rounded-full shadow-lg border border-slate-200 transition-all duration-300 group-hover:bg-slate-50 group-hover:scale-105 group-hover:shadow-xl">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600 fill-current transition-transform duration-300 group-hover:scale-110" viewBox="0 0 24 24">
+                                <path d="M8 5v14l11-7z" />
+                            </svg>
+                        </div>
+                        <span class="text-slate-800 text-lg font-semibold transition-colors duration-300 group-hover:text-primary">
+                            ดูวิดีโอแนะนำ
+                        </span>
+                    </a>
                 </div>
             </div>
 
@@ -159,7 +183,7 @@ try {
     <div class="mx-auto w-full max-w-7xl px-4 sm:px-4 lg:px-6"> 
         
         <div class="mb-16 max-w-4xl">
-            <div class="text-primary font-bold text-xs md:text-sm tracking-widest uppercase mb-4 block">OUR SERVICES</div>
+            <div class="text-primary font-bold text-xs md:text-sm tracking-widest uppercase mb-4 block">บริการของเรา</div>
             <h2 class="text-3xl md:text-4xl lg:text-[2.75rem] font-bold text-dark leading-tight mb-4">
                 บริการของเรา ครอบคลุมทุกมิติธุรกิจดิจิทัล
             </h2>

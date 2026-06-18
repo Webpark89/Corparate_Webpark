@@ -7,7 +7,7 @@ $submitted = $submitted ?? false;
 $form = $form ?? [];
 
 $contactTitle = $ctitle ?? 'พร้อมเริ่มต้นโครงการของคุณแล้วหรือยัง?';
-$contactSubtitle = $csubtitle ?? 'พูดคุยกับทีมเรา วันนี้<br>รับคำปรึกษาฟรี ไม่มีค่าใช้จ่าย';
+$contactSubtitle = $csubtitle ?? 'พูดคุยกับทีมเราวันนี้<br>รับคำปรึกษาฟรี ไม่มีค่าใช้จ่าย';
 $contactButtonText = $cbuttonText ?? 'ติดต่อเรา';
 $contactButtonUrl = $cbuttonUrl ?? '/contact';
 
@@ -16,19 +16,24 @@ $contactButtonUrl = $cbuttonUrl ?? '/contact';
 <section class="bg-white py-10 lg:py-10 font-sans">
     <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
 
-        <div class="relative w-full rounded-[2rem] p-8 md:p-12 lg:p-14 grid grid-cols-1 lg:grid-cols-12 gap-10 items-center overflow-hidden shadow-xl">
+        <div class="relative w-full rounded-[2rem] p-8 md:p-12 lg:p-14 grid grid-cols-1 lg:grid-cols-12 gap-10 items-start overflow-hidden shadow-xl">
             <div class="absolute inset-0 z-0 rounded-[2rem] overflow-hidden">
-    <img src="<?= e(asset_url('images/bg-cta.jpg')) ?>" alt="City Network Overlay" class="w-full h-full opacity-80 object-cover">
-    
-<div class="absolute inset-0 bg-gradient-to-r from-[#043B94]/90 via-[#054FC5]/70 to-white/95"></div>
-</div>
+                <img src="<?= e(asset_url('images/bg-cta.jpg')) ?>" alt="City Network Overlay" class="w-full h-full opacity-80 object-cover">
+                <div class="absolute inset-0 bg-gradient-to-r from-[#043B94]/90 via-[#054FC5]/70 to-white/95"></div>
+            </div>
 
-            <div class="relative z-10 lg:col-span-5 flex flex-col items-start text-left">
+            <div class="relative z-10 lg:col-span-5 flex flex-col items-start text-left lg:pt-2">
+                <div class="mb-4 relative">
+                    <span class="text-white font-bold text-xs md:text-sm tracking-widest uppercase block">
+                        ติดต่อเรา
+                    </span>
+                    <div class="w-4 h-[2px] bg-white mt-1"></div>
+                </div>
                 <h2 class="text-3xl md:text-4xl lg:text-[2.5rem] font-black leading-tight text-white tracking-tight">
                     <?= e($contactTitle) ?>
                 </h2>
 
-                <p class="mt-4 text-blue-100/90 text-sm md:text-base leading-relaxed font-medium">
+                <p class="mt-4 text-white text-sm md:text-base leading-relaxed font-medium">
                     <?= $contactSubtitle ?>
                 </p>
             </div>
@@ -47,28 +52,28 @@ $contactButtonUrl = $cbuttonUrl ?? '/contact';
                     <?php else: ?>
                         <form method="post" class="space-y-4">
                             
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                <input type="text" name="name" placeholder="ชื่อ - นามสกุล" value="<?= e($form['name'] ?? '') ?>" required
-                                    class="w-full rounded-xl border border-slate-200 bg-slate-50/50 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-primary focus:bg-white focus:ring-1 focus:ring-primary">
-
-                                <input type="text" name="phone" placeholder="เบอร์โทรศัพท์" value="<?= e($form['phone'] ?? '') ?>" required
-                                    class="w-full rounded-xl border border-slate-200 bg-slate-50/50 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-primary focus:bg-white focus:ring-1 focus:ring-primary">
+                            <div>
+                                <input type="text" name="name" placeholder="ชื่อ - สกุล" value="<?= e($form['name'] ?? '') ?>" required
+                                    class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-primary focus:ring-1 focus:ring-primary">
                             </div>
 
-                            <div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <input type="text" name="phone" placeholder="เบอร์โทร" value="<?= e($form['phone'] ?? '') ?>" required
+                                    class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-primary focus:ring-1 focus:ring-primary">
+
                                 <input type="email" name="email" placeholder="อีเมล" value="<?= e($form['email'] ?? '') ?>" required
-                                    class="w-full rounded-xl border border-slate-200 bg-slate-50/50 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-primary focus:bg-white focus:ring-1 focus:ring-primary">
+                                    class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-primary focus:ring-1 focus:ring-primary">
                             </div>
 
                             <div>
                                 <textarea name="message" rows="4" placeholder="รายละเอียด" required
-                                    class="w-full rounded-xl border border-slate-200 bg-slate-50/50 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-primary focus:bg-white focus:ring-1 focus:ring-primary resize-none"><?= e($form['message'] ?? '') ?></textarea>
+                                    class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-primary focus:ring-1 focus:ring-primary resize-none"><?= e($form['message'] ?? '') ?></textarea>
                             </div>
 
                             <div class="flex items-start gap-2.5 pt-1">
                                 <input type="checkbox" id="form-privacy" name="privacy_agreed" required class="mt-0.5 w-4 h-4 rounded border-slate-300 text-primary focus:ring-primary cursor-pointer">
                                 <label for="form-privacy" class="text-xs text-slate-500 leading-relaxed cursor-pointer select-none">
-                                    ยินยอมรับ <a href="#" class="text-primary hover:underline">นโยบายความเป็นส่วนตัว</a> เพื่อการติดต่อกลับและนำเสนอข้อมูลที่เกี่ยวข้อง
+                                    ฉันยินยอมตาม <a href="#" class="text-primary hover:underline">นโยบายความเป็นส่วนตัวและข้อกำหนดและเงื่อนไขของเว็บไซต์</a>
                                 </label>
                             </div>
 
@@ -77,7 +82,7 @@ $contactButtonUrl = $cbuttonUrl ?? '/contact';
                             <?php endif; ?>
 
                             <div class="pt-2">
-                                <button type="submit" class="w-full py-3.5 bg-primary hover:bg-blue-300 text-white font-bold text-sm rounded-full flex items-center justify-center gap-2 shadow-lg shadow-blue-500/10 transition-all cursor-pointer">
+                                <button type="submit" class="px-8 py-3.5 bg-primary hover:bg-blue-600 text-white font-bold text-sm rounded-full flex items-center justify-center gap-2 shadow-lg shadow-blue-500/10 transition-all cursor-pointer">
                                     ส่งข้อมูล
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />

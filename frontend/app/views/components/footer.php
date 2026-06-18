@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/../../Models/Service.php';
 
-$company = $company ?? config('company', []);
+$company = config('company', []) ?: ($company ?? []);
 $companyName = $company['name'] ?? '';
 
 $email = $company['contact']['email'] ?? '';
@@ -12,11 +12,8 @@ $phone = $company['contact']['phone'] ?? '';
 $address = $company['contact']['address'] ?? '';
 $officeLabel = 'สำนักงานใหญ่ :';
 $officeValue = $company['contact']['address'] ?? '';
-
 $phoneHref = preg_replace('/[^0-9+]/', '', $phone) ?? '';
-
 $serviceModel = new Service();
-
 $dbServices = $serviceModel->getAllActive();
 
 // Build sitemap columns from database
@@ -138,7 +135,7 @@ $socialLinks = [
                 </div>
         </details>
 
-        <hr class="mt-10 w-full border-0 border-t border-slate-400 my-4 js-scroll-animate opacity-0 translate-y-5 transition-all duration-700 ease-out" style="transition-delay: 150ms;">
+        <hr class="mt-10 w-full border-0 border-t border-slate-300 my-4 js-scroll-animate opacity-0 translate-y-5 transition-all duration-700 ease-out" style="transition-delay: 150ms;">
 
         <div class="pb-5 pt-5">            
             <div class="grid gap-10 text-left md:grid-cols-[1fr_2fr_1.5fr]">
@@ -165,8 +162,7 @@ $socialLinks = [
                 </div>
             </div>
 
-            <div class="mt-2 flex flex-col justify-between gap-4 border-t border-slate-200 pt-2 md:flex-row md:items-center js-scroll-animate opacity-0 translate-y-5 transition-all duration-700 ease-out" style="transition-delay: 500ms;">
-                <a class="inline-block text-slate-600 transition-all duration-300 hover:text-primary hover:-translate-y-1 font-medium" href="#privacy-policy">Privacy Policy</a>
+<div class="mt-2 flex flex-col justify-between gap-4 md:flex-row md:items-center js-scroll-animate transition-all duration-700 ease-out opacity-100 translate-y-0" style="transition-delay: 500ms;">                <a class="inline-block text-slate-600 transition-all duration-300 hover:text-primary hover:-translate-y-1 font-medium" href="#privacy-policy">Privacy Policy</a>
                 <nav class="flex flex-wrap gap-3 md:gap-0" aria-label="Social media links">
                     <?php foreach ($socialLinks as $socialLink): ?>
                         <a class="ml-0 inline-block text-slate-600 font-medium transition-all duration-300 hover:text-primary hover:-translate-y-1 md:ml-5" href="<?= e($socialLink['href']) ?>" target="_blank" rel="noopener noreferrer"><?= e($socialLink['label']) ?></a>
