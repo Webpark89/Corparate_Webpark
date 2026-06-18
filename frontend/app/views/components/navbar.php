@@ -46,10 +46,10 @@ $navItems = [
 
         <div class="flex items-center gap-2">
             <a
-                class="inline-flex items-center justify-center rounded-full bg-primary px-5 py-3 text-[13px] font-bold text-white transition hover:-translate-y-0.5 hover:opacity-90 shadow-md"
-                href="<?= e(route_url('/contact')) ?>">
-                ขอคำปรึกษา
-            </a>
+    class="inline-flex items-center justify-center px-7 py-2.5 bg-primary text-white text-sm font-semibold rounded-full hover:bg-blue-700 transition-all shadow-md hover:-translate-y-0.5"
+    href="<?= e(route_url('/contact')) ?>">
+    ขอคำปรึกษา
+</a>
 
             <button
                 class="inline-flex h-11 w-11 items-center justify-center rounded-xl border border-slate-200 bg-transparent text-lg font-bold lg:hidden"
@@ -74,10 +74,10 @@ $navItems = [
             <?php endforeach; ?>
 
             <a
-                class="mt-2 inline-flex items-center justify-center rounded-xl bg-primary px-4 py-3 font-bold text-white shadow-md"
-                href="<?= e(route_url('/contact')) ?>">
-                ขอคำปรึกษา
-            </a>
+    class="inline-flex items-center justify-center px-7 py-2.5 bg-primary text-white text-sm font-semibold rounded-full hover:bg-blue-700 transition-all shadow-md hover:-translate-y-0.5"
+    href="<?= e(route_url('/contact')) ?>">
+    ขอคำปรึกษา
+</a>
         </div>
     </div>
     

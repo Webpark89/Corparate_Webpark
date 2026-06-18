@@ -10,7 +10,7 @@ $companyName = $company['name'] ?? '';
 $email = $company['contact']['email'] ?? '';
 $phone = $company['contact']['phone'] ?? '';
 $address = $company['contact']['address'] ?? '';
-$officeLabel = 'สำนักงานใหญ่ :';
+$officeLabel = 'ที่ตั้ง :';
 $officeValue = $company['contact']['address'] ?? '';
 $phoneHref = preg_replace('/[^0-9+]/', '', $phone) ?? '';
 $serviceModel = new Service();
@@ -131,44 +131,47 @@ $socialLinks = [
                         </section>
                     <?php endforeach; ?>
                 </div>
-                
-                </div>
+            </div>
         </details>
 
         <hr class="mt-10 w-full border-0 border-t border-slate-300 my-4 js-scroll-animate opacity-0 translate-y-5 transition-all duration-700 ease-out" style="transition-delay: 150ms;">
 
-        <div class="pb-5 pt-5">            
-            <div class="grid gap-10 text-left md:grid-cols-[1fr_2fr_1.5fr]">
-                <div class="flex items-center justify-start js-scroll-animate opacity-0 translate-y-5 transition-all duration-700 ease-out" style="transition-delay: 200ms;">
-                    <div class="flex h-[150px] w-[150px] items-center justify-center overflow-hidden">
-                        <img src="<?= e(asset_url('images/logo.png')) ?>" alt="WEBPARK Logo" class="h-full w-full object-contain p-2 transition-transform duration-500 hover:scale-110">
-                    </div>
-                </div>
+        <div class="pb-5 pt-5 mb-4">     
 
-                <div class="pt-10 js-scroll-animate opacity-0 translate-y-5 transition-all duration-700 ease-out" style="transition-delay: 300ms;">
-                    <p class="mb-2 font-bold text-primary"><?= e($officeLabel) ?></p>
-                    <p class="leading-6 text-slate-700"><?= e($officeValue) ?></p>
-                </div>
-
-                <div class="pt-10 js-scroll-animate opacity-0 translate-y-5 transition-all duration-700 ease-out" style="transition-delay: 400ms;">
-                    <p class="mb-3 flex items-center gap-2">
-                        <span class="font-bold text-primary">อีเมล :</span>
-                            <a class="leading-6 text-slate-700 transition hover:text-primary" href="mailto:<?= e($email) ?>"><?= e($email) ?></a>
-                    </p>
-                    <p class="flex items-center gap-2">
-                        <span class="font-bold text-primary">เบอร์โทร :</span>
-                        <a class="leading-6 text-slate-700 transition hover:text-primary" href="tel:<?= e($phoneHref) ?>"><?= e($phone) ?></a>
-                    </p>
-                </div>
+        <div class="grid gap-10 text-left md:grid-cols-[1fr_2fr_1.5fr] items-center">
+        
+        <div class="flex items-center justify-start js-scroll-animate opacity-0 translate-y-5 transition-all duration-700 ease-out" style="transition-delay: 200ms;">
+            <div class="flex h-[150px] w-[150px] items-center justify-center overflow-hidden">
+                <img src="<?= e(asset_url('images/logo.png')) ?>" alt="WEBPARK Logo" class="h-full w-full object-contain p-2 transition-transform duration-500 hover:scale-110">
             </div>
+        </div>
 
-<div class="mt-2 flex flex-col justify-between gap-4 md:flex-row md:items-center js-scroll-animate transition-all duration-700 ease-out opacity-100 translate-y-0" style="transition-delay: 500ms;">                <a class="inline-block text-slate-600 transition-all duration-300 hover:text-primary hover:-translate-y-1 font-medium" href="#privacy-policy">Privacy Policy</a>
-                <nav class="flex flex-wrap gap-3 md:gap-0" aria-label="Social media links">
-                    <?php foreach ($socialLinks as $socialLink): ?>
-                        <a class="ml-0 inline-block text-slate-600 font-medium transition-all duration-300 hover:text-primary hover:-translate-y-1 md:ml-5" href="<?= e($socialLink['href']) ?>" target="_blank" rel="noopener noreferrer"><?= e($socialLink['label']) ?></a>
-                    <?php endforeach; ?>
-                </nav>
+        <div class="flex flex-col gap-y-1 js-scroll-animate opacity-0 translate-y-5 transition-all duration-700 ease-out" style="transition-delay: 300ms;">
+            <span class="font-bold text-primary leading-tight"><?= e($officeLabel) ?></span>
+            <span class="text-sm leading-tight text-slate-700"><?= e($officeValue) ?></span>
+        </div>
+
+        <div class="flex justify-end js-scroll-animate opacity-0 translate-y-5 transition-all duration-700 ease-out" style="transition-delay: 400ms;">
+            <div class="grid grid-cols-[max-content_max-content] gap-x-3 gap-y-1 text-left items-center">
+                <span class="font-bold text-primary leading-tight">อีเมล :</span>
+            <a class="text-sm leading-tight text-slate-700 transition hover:text-primary" href="mailto:<?= e($email) ?>"><?= e($email) ?></a>
+
+                <span class="font-bold text-primary leading-tight">เบอร์โทร :</span>
+                <a class="text-sm leading-tight text-slate-700 transition hover:text-primary" href="tel:<?= e($phoneHref) ?>"><?= e($phone) ?></a>
             </div>
+                </div>
+
+            </div>
+        </div>
+
+
+        <div class="mt-2 mb-2  flex flex-col justify-between gap-4 md:flex-row md:items-center js-scroll-animate transition-all duration-700 ease-out opacity-100 translate-y-0" style="transition-delay: 500ms;">                
+            <a class="text-sm inline-block text-slate-400 transition-all duration-300 hover:text-primary hover:-translate-y-1 font-medium" href="#privacy-policy">Privacy Policy</a>
+            <nav class="flex flex-wrap gap-8 md:gap-12" aria-label="Social media links">
+    <?php foreach ($socialLinks as $socialLink): ?>
+        <a class="text-sm inline-block text-slate-400 font-medium transition-all duration-300 hover:text-primary hover:-translate-y-1" href="<?= e($socialLink['href']) ?>" target="_blank" rel="noopener noreferrer"><?= e($socialLink['label']) ?></a>
+    <?php endforeach; ?>
+</nav>
         </div>
 
     </div>

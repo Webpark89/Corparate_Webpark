@@ -386,7 +386,7 @@ class HomeController
             return $activeCategory === 'All' || $article['category'] === $activeCategory;
         }));
 
-        $this->view('pages/article.php', array_merge($this->sharedData('article', 'Article'), [
+$this->view('pages/article.php', array_merge($this->sharedData('articles', 'Article'), [
             'categories' => $categories,
             'activeCategory' => $activeCategory,
             'articles' => $filteredArticles,

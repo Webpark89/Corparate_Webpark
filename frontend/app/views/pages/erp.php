@@ -56,6 +56,8 @@ try {
     <div class="absolute inset-0 z-0">
         <img src="<?= e(asset_url('images/bg-7.png')) ?>" alt="WEBPARK Solutions Background" class="w-full h-full object-cover object-center opacity-70 mix-blend-screen">
         <div class="absolute inset-0 bg-gradient-to-r from-white to-white/5"></div>
+                <div class="absolute inset-x-0 bottom-0 h-[30%] bg-gradient-to-t from-white to-transparent z-10"></div>
+
     </div>
 
     <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 pt-12 pb-24 lg:pt-28 lg:pb-32 relative z-10">
@@ -338,49 +340,50 @@ try {
             </h2>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 md:gap-5">
-                
-                <div class="bg-white/90 backdrop-blur-sm rounded-2xl p-6 border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)] text-center flex flex-col items-center justify-center group relative overflow-hidden shimmer-card transition-all duration-500 ease-out hover:scale-[1.04] hover:shadow-[0_10px_40px_rgba(59,130,246,0.15)] hover:border-blue-300 active:scale-[0.96] cursor-pointer">
-                    <div class="relative z-10 w-12 h-12 text-primary flex items-center justify-center bg-blue-50/60 rounded-full mb-4 transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:-translate-y-3 group-hover:bg-blue-600 group-hover:text-white group-hover:shadow-[0_8px_20px_rgba(37,99,235,0.4)] group-hover:scale-110">
-                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg>
-                    </div>
-                    <h3 class="relative z-10 font-bold text-dark text-[14px] md:text-base mb-2 transition-all duration-300 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-blue-600 group-hover:to-cyan-500 group-hover:animate-text-flow">ข้อมูลครบถ้วน</h3>
-                    <p class="relative z-10 text-slate-400 text-xs md:text-[13px] leading-relaxed transition-colors duration-300 group-hover:text-slate-600">เชื่อมต่อทุกแผนก<br>ในระบบเดียว</p>
-                </div>
+    
+    <div class="bg-white/90 backdrop-blur-sm rounded-2xl p-6 border border-slate-100 shadow-[0_2px_10px_rgba(0,0,0,0.01)] text-center flex flex-col items-center justify-center group relative overflow-hidden shimmer-card transition-all duration-500 ease-out hover:scale-[1.04] hover:shadow-[0_5px_20px_rgba(59,130,246,0.08)] hover:border-blue-300 active:scale-[0.96] cursor-pointer">
+        <div class="relative z-10 w-12 h-12 text-primary flex items-center justify-center bg-blue-50/60 rounded-full mb-4 transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:-translate-y-0 group-hover:bg-blue-600 group-hover:text-white group-hover:shadow-[0_4px_10px_rgba(37,99,235,0.2)] group-hover:scale-110">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg>
+        </div>
+        <h3 class="relative z-10 font-bold text-dark text-[14px] md:text-base mb-2 transition-all duration-300 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-blue-600 group-hover:to-cyan-500 group-hover:animate-text-flow">ข้อมูลครบถ้วน</h3>
+        <p class="relative z-10 text-slate-400 text-xs md:text-[13px] leading-relaxed transition-colors duration-300 group-hover:text-slate-600">เชื่อมต่อทุกแผนก<br>ในระบบเดียว</p>
+    </div>
 
-                <div class="bg-white/90 backdrop-blur-sm rounded-2xl p-6 border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)] text-center flex flex-col items-center justify-center group relative overflow-hidden shimmer-card transition-all duration-500 ease-out hover:scale-[1.04] hover:shadow-[0_10px_40px_rgba(59,130,246,0.15)] hover:border-blue-300 active:scale-[0.96] cursor-pointer">
-                    <div class="relative z-10 w-12 h-12 text-primary flex items-center justify-center bg-blue-50/60 rounded-full mb-4 transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:-translate-y-3 group-hover:bg-blue-600 group-hover:text-white group-hover:shadow-[0_8px_20px_rgba(37,99,235,0.4)] group-hover:scale-110">
-<svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" class="w-6 h-6">
-  <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.456-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.456-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" />
-</svg>                    </div>
-                    <h3 class="relative z-10 font-bold text-dark text-[14px] md:text-base mb-2 transition-all duration-300 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-blue-600 group-hover:to-cyan-500 group-hover:animate-text-flow">ลดงานซ้ำซ้อน</h3>
-                    <p class="relative z-10 text-slate-400 text-xs md:text-[13px] leading-relaxed transition-colors duration-300 group-hover:text-slate-600">เพิ่มประสิทธิภาพ<br>การทำงาน</p>
-                </div>
+    <div class="bg-white/90 backdrop-blur-sm rounded-2xl p-6 border border-slate-100 shadow-[0_2px_10px_rgba(0,0,0,0.01)] text-center flex flex-col items-center justify-center group relative overflow-hidden shimmer-card transition-all duration-500 ease-out hover:scale-[1.04] hover:shadow-[0_5px_20px_rgba(59,130,246,0.08)] hover:border-blue-300 active:scale-[0.96] cursor-pointer">
+        <div class="relative z-10 w-12 h-12 text-primary flex items-center justify-center bg-blue-50/60 rounded-full mb-4 transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:-translate-y-0 group-hover:bg-blue-600 group-hover:text-white group-hover:shadow-[0_4px_10px_rgba(37,99,235,0.2)] group-hover:scale-110">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.456-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.456-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" />
+            </svg>
+        </div>
+        <h3 class="relative z-10 font-bold text-dark text-[14px] md:text-base mb-2 transition-all duration-300 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-blue-600 group-hover:to-cyan-500 group-hover:animate-text-flow">ลดงานซ้ำซ้อน</h3>
+        <p class="relative z-10 text-slate-400 text-xs md:text-[13px] leading-relaxed transition-colors duration-300 group-hover:text-slate-600">เพิ่มประสิทธิภาพ<br>การทำงาน</p>
+    </div>
 
-                <div class="bg-white/90 backdrop-blur-sm rounded-2xl p-6 border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)] text-center flex flex-col items-center justify-center group relative overflow-hidden shimmer-card transition-all duration-500 ease-out hover:scale-[1.04] hover:shadow-[0_10px_40px_rgba(59,130,246,0.15)] hover:border-blue-300 active:scale-[0.96] cursor-pointer">
-                    <div class="relative z-10 w-12 h-12 text-primary flex items-center justify-center bg-blue-50/60 rounded-full mb-4 transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:-translate-y-3 group-hover:bg-blue-600 group-hover:text-white group-hover:shadow-[0_8px_20px_rgba(37,99,235,0.4)] group-hover:scale-110">
-                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                    </div>
-                    <h3 class="relative z-10 font-bold text-dark text-[14px] md:text-base mb-2 transition-all duration-300 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-blue-600 group-hover:to-cyan-500 group-hover:animate-text-flow">ข้อมูลเรียลไทม์</h3>
-                    <p class="relative z-10 text-slate-400 text-xs md:text-[13px] leading-relaxed transition-colors duration-300 group-hover:text-slate-600">ตัดสินใจได้แม่นยำ<br>และรวดเร็ว</p>
-                </div>
+    <div class="bg-white/90 backdrop-blur-sm rounded-2xl p-6 border border-slate-100 shadow-[0_2px_10px_rgba(0,0,0,0.01)] text-center flex flex-col items-center justify-center group relative overflow-hidden shimmer-card transition-all duration-500 ease-out hover:scale-[1.04] hover:shadow-[0_5px_20px_rgba(59,130,246,0.08)] hover:border-blue-300 active:scale-[0.96] cursor-pointer">
+        <div class="relative z-10 w-12 h-12 text-primary flex items-center justify-center bg-blue-50/60 rounded-full mb-4 transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:-translate-y-0 group-hover:bg-blue-600 group-hover:text-white group-hover:shadow-[0_4px_10px_rgba(37,99,235,0.2)] group-hover:scale-110">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+        </div>
+        <h3 class="relative z-10 font-bold text-dark text-[14px] md:text-base mb-2 transition-all duration-300 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-blue-600 group-hover:to-cyan-500 group-hover:animate-text-flow">ข้อมูลเรียลไทม์</h3>
+        <p class="relative z-10 text-slate-400 text-xs md:text-[13px] leading-relaxed transition-colors duration-300 group-hover:text-slate-600">ตัดสินใจได้แม่นยำ<br>และรวดเร็ว</p>
+    </div>
 
-                <div class="bg-white/90 backdrop-blur-sm rounded-2xl p-6 border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)] text-center flex flex-col items-center justify-center group relative overflow-hidden shimmer-card transition-all duration-500 ease-out hover:scale-[1.04] hover:shadow-[0_10px_40px_rgba(59,130,246,0.15)] hover:border-blue-300 active:scale-[0.96] cursor-pointer">
-                    <div class="relative z-10 w-12 h-12 text-primary flex items-center justify-center bg-blue-50/60 rounded-full mb-4 transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:-translate-y-3 group-hover:bg-blue-600 group-hover:text-white group-hover:shadow-[0_8px_20px_rgba(37,99,235,0.4)] group-hover:scale-110">
-                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
-                    </div>
-                    <h3 class="relative z-10 font-bold text-dark text-[14px] md:text-base mb-2 transition-all duration-300 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-blue-600 group-hover:to-cyan-500 group-hover:animate-text-flow">ควบคุมความเสี่ยง</h3>
-                    <p class="relative z-10 text-slate-400 text-xs md:text-[13px] leading-relaxed transition-colors duration-300 group-hover:text-slate-600">ตรวจสอบและติดตาม<br>ได้ทุกขั้นตอน</p>
-                </div>
+    <div class="bg-white/90 backdrop-blur-sm rounded-2xl p-6 border border-slate-100 shadow-[0_2px_10px_rgba(0,0,0,0.01)] text-center flex flex-col items-center justify-center group relative overflow-hidden shimmer-card transition-all duration-500 ease-out hover:scale-[1.04] hover:shadow-[0_5px_20px_rgba(59,130,246,0.08)] hover:border-blue-300 active:scale-[0.96] cursor-pointer">
+        <div class="relative z-10 w-12 h-12 text-primary flex items-center justify-center bg-blue-50/60 rounded-full mb-4 transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:-translate-y-0 group-hover:bg-blue-600 group-hover:text-white group-hover:shadow-[0_4px_10px_rgba(37,99,235,0.2)] group-hover:scale-110">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
+        </div>
+        <h3 class="relative z-10 font-bold text-dark text-[14px] md:text-base mb-2 transition-all duration-300 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-blue-600 group-hover:to-cyan-500 group-hover:animate-text-flow">ควบคุมความเสี่ยง</h3>
+        <p class="relative z-10 text-slate-400 text-xs md:text-[13px] leading-relaxed transition-colors duration-300 group-hover:text-slate-600">ตรวจสอบและติดตาม<br>ได้ทุกขั้นตอน</p>
+    </div>
 
-                <div class="bg-white/90 backdrop-blur-sm rounded-2xl p-6 border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)] text-center flex flex-col items-center justify-center group relative overflow-hidden shimmer-card transition-all duration-500 ease-out hover:scale-[1.04] hover:shadow-[0_10px_40px_rgba(59,130,246,0.15)] hover:border-blue-300 active:scale-[0.96] cursor-pointer">
-                    <div class="relative z-10 w-12 h-12 text-primary flex items-center justify-center bg-blue-50/60 rounded-full mb-4 transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:-translate-y-3 group-hover:bg-blue-600 group-hover:text-white group-hover:shadow-[0_8px_20px_rgba(37,99,235,0.4)] group-hover:scale-110">
-                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg>
-                    </div>
-                    <h3 class="relative z-10 font-bold text-dark text-[14px] md:text-base mb-2 transition-all duration-300 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-blue-600 group-hover:to-cyan-500 group-hover:animate-text-flow">ขยายได้ตามธุรกิจ</h3>
-                    <p class="relative z-10 text-slate-400 text-xs md:text-[13px] leading-relaxed transition-colors duration-300 group-hover:text-slate-600">รองรับการเติบโต<br>ในอนาคต</p>
-                </div>
+    <div class="bg-white/90 backdrop-blur-sm rounded-2xl p-6 border border-slate-100 shadow-[0_2px_10px_rgba(0,0,0,0.01)] text-center flex flex-col items-center justify-center group relative overflow-hidden shimmer-card transition-all duration-500 ease-out hover:scale-[1.04] hover:shadow-[0_5px_20px_rgba(59,130,246,0.08)] hover:border-blue-300 active:scale-[0.96] cursor-pointer">
+        <div class="relative z-10 w-12 h-12 text-primary flex items-center justify-center bg-blue-50/60 rounded-full mb-4 transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:-translate-y-0 group-hover:bg-blue-600 group-hover:text-white group-hover:shadow-[0_4px_10px_rgba(37,99,235,0.2)] group-hover:scale-110">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg>
+        </div>
+        <h3 class="relative z-10 font-bold text-dark text-[14px] md:text-base mb-2 transition-all duration-300 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-blue-600 group-hover:to-cyan-500 group-hover:animate-text-flow">ขยายได้ตามธุรกิจ</h3>
+        <p class="relative z-10 text-slate-400 text-xs md:text-[13px] leading-relaxed transition-colors duration-300 group-hover:text-slate-600">รองรับการเติบโต<br>ในอนาคต</p>
+    </div>
 
-            </div>
+</div>
         </div>
 
     </div>

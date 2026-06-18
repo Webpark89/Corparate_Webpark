@@ -122,6 +122,8 @@ $initialArticles = $articleTabs[$activeCategory] ?? $articleTabs['All'] ?? [];
     <div class="absolute inset-0 z-0">
         <img src="<?= e(asset_url('images/bg-6.png')) ?>" alt="WEBPARK Solutions Background" class="w-full h-full object-cover object-center opacity-70 mix-blend-screen">
         <div class="absolute inset-0 bg-gradient-to-r from-white to-white/5"></div>
+                <div class="absolute inset-x-0 bottom-0 h-[30%] bg-gradient-to-t from-white to-transparent z-10"></div>
+
     </div>
 
     <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 pt-12 pb-24 lg:pt-28 lg:pb-32 relative z-10">

@@ -529,29 +529,28 @@ $totalReviews = count($reviews);
                             $reviewerImage = asset_url('images/women-office.jpg');
                             ?>
                             <?php $isVisible = $index < 4 ? '' : 'hidden'; ?>
+<article class="review-card group shrink-0 bg-white rounded-[1.5rem] p-5 lg:p-6 shadow-[0_4px_25px_rgba(0,0,0,0.02)] border border-[#f3f4f6] flex flex-col justify-between hover:bg-primary hover:shadow-[0_4px_30px_rgba(0,0,0,0.06)] hover:-translate-y-1 transition-all duration-300 h-[280px] <?= $isVisible ?>" data-index="<?= $index ?>">
 
-                            <article class="review-card group shrink-0 bg-white rounded-[1.5rem] p-6 lg:p-8 shadow-[0_4px_25px_rgba(0,0,0,0.02)] border border-[#f3f4f6] flex flex-col justify-between hover:bg-primary hover:shadow-[0_4px_30px_rgba(0,0,0,0.06)] hover:-translate-y-1 transition-all duration-300 <?= $isVisible ?>" data-index="<?= $index ?>">
-
-    <div class="flex items-center justify-center w-full mb-6 mt-2">
-    <div class="flex items-center gap-1.5">
-        <?php 
-            // ดึงค่า rating ถ้าไม่มีให้กำหนดค่าเริ่มต้นเป็น 5
-            $rating = isset($review['rating']) ? (int)$review['rating'] : 5; 
-            for ($i = 1; $i <= 5; $i++): 
-        ?>
-            <svg class="w-4 h-4 sm:w-5 sm:h-5 transition-colors <?= $i <= $rating ? 'text-yellow-400 group-hover:text-yellow-300' : 'text-slate-200 group-hover:text-white/30' ?>" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd" />
-            </svg>
-        <?php endfor; ?>
+    <div class="flex items-center justify-center w-full mb-3 mt-1 shrink-0">
+        <div class="flex items-center gap-1.5">
+            <?php 
+                // ดึงค่า rating ถ้าไม่มีให้กำหนดค่าเริ่มต้นเป็น 5
+                $rating = isset($review['rating']) ? (int)$review['rating'] : 5; 
+                for ($i = 1; $i <= 5; $i++): 
+            ?>
+                <svg class="w-4 h-4 sm:w-5 sm:h-5 transition-colors <?= $i <= $rating ? 'text-yellow-400 group-hover:text-yellow-300' : 'text-slate-200 group-hover:text-white/30' ?>" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd" />
+                </svg>
+            <?php endfor; ?>
+        </div>
     </div>
-</div>
 
-    <p class="text-sm md:text-sm lg:text-sm leading-relaxed text-slate-600 group-hover:text-white transition-colors mb-8 flex-grow">
+    <p class="text-sm md:text-sm lg:text-sm leading-relaxed text-slate-600 group-hover:text-white transition-colors mb-1 line-clamp-4 overflow-hidden">
         <?= e($review['content'] ?? '') ?>
     </p>
 
-    <div class="flex items-center gap-3 mt-auto">
-        <img class="h-10 w-10 lg:h-12 lg:w-12 rounded-full object-cover bg-slate-100 shrink-0"
+    <div class="flex items-center gap-3 mt-3 shrink-0">
+        <img class="h-10 w-10 lg:h-11 lg:w-11 rounded-full object-cover bg-slate-100 shrink-0"
              src="<?= e($reviewerImage) ?>"
              alt="<?= e($reviewerName !== '' ? $reviewerName : 'Customer') ?>" />
         <div class="overflow-hidden">
