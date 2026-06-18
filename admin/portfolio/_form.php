@@ -278,17 +278,27 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
 
         <div class="lg:col-span-12 pt-4">
             <section class="sticky bottom-0 bg-white/90 backdrop-blur-sm p-4 -m-4 rounded-2xl border border-slate-200 shadow-sm">
-                <div class="flex items-center justify-between">
-                    <a href="index.php"
-                        class="px-6 h-11 flex items-center justify-center rounded-xl border text-slate-700 hover:bg-slate-50 transition">
-                        ยกเลิก
-                    </a>
-                    <button type="submit"
-                        class="px-8 h-11 rounded-xl bg-slate-900 text-white font-semibold hover:bg-slate-800 transition">
-                        บันทึก
-                    </button>
-                </div>
-            </section>
+             <div class="flex items-center justify-between">
+            
+            <a href="index.php" class="px-6 h-11 flex items-center justify-center rounded-xl border border-slate-200 text-slate-700 hover:bg-slate-50 transition">
+                ยกเลิก
+            </a>
+
+            <div class="flex items-center gap-3">
+                
+                <button type="submit" name="status" value="draft" 
+                    class="px-6 h-11 rounded-xl border bg-amber-50 border-amber-300 text-amber-700 font-semibold hover:bg-amber-50 transition">
+                    บันทึกเป็นฉบับร่าง
+                </button>
+
+                <button type="submit" name="status" value="published" 
+                    class="px-6 h-11 rounded-xl border bg-emerald-50 border-emerald-300 text-emerald-700 font-semibold hover:bg-emerald-50 transition">
+                    บันทึกและเผยแพร่
+                </button>
+
+                 </div>
+                    </div>
+                </section>
         </div>
 
     </form>

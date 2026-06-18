@@ -97,21 +97,21 @@ $socialLinks = [
 ];
 ?>
 
-<footer class="bg-slate-200 text-dark overflow-hidden">
+<footer class="bg-white text-dark overflow-hidden">
     <div class="mx-auto w-full max-w-7xl px-4 sm:px-4 lg:px-6"> 
         
         <details class="group js-scroll-animate opacity-0 translate-y-5 transition-all duration-700 ease-out" id="mainSitemapAccordion" style="transition-delay: 100ms;">
             <summary class="flex w-full cursor-pointer list-none flex-col items-center justify-center bg-transparent py-3 text-center transition-all duration-300 hover:opacity-80">
-                <span class="mb-2 text-[32px] font-bold tracking-[2px]">SITEMAP</span>
-                <span class="inline-block h-3 w-3 rotate-45 border-r-4 border-b-4 border-dark transition-transform duration-300 group-open:rotate-[225deg]" aria-hidden="true"></span>
-                <span class="inline-block h-3 w-3 rotate-45 border-r-4 border-b-4 border-dark transition-transform duration-300 group-open:rotate-[225deg]" aria-hidden="true"></span>
+                <span class="mb-2 text-[24px] font-xl tracking-[2px]">SITEMAP</span>
+                <span class="inline-block h-2 w-2 rotate-45 border-r-2 border-b-2 border-dark transition-transform duration-300 group-open:rotate-[225deg]" aria-hidden="true"></span>
+                <span class="inline-block h-2 w-2 rotate-45 border-r-2 border-b-2 border-dark transition-transform duration-300 group-open:rotate-[225deg]" aria-hidden="true"></span>
             </summary>
 
             <div class="pt-5 transition-all duration-500" data-footer-content>
                 <div class="grid gap-5 sm:grid-cols-2 xl:grid-cols-5">
                     <?php foreach ($sitemapColumns as $column): ?>
                         <section>
-                            <h3 class="text-lg font-bold text-dark"><?= e($column['title']) ?></h3>
+                            <h3 class="text-sm font-semibold text-dark"><?= e($column['title']) ?></h3>
                             <div class="flex flex-col">
                                 <?php foreach ($column['groups'] as $group): ?>
                                     <details class="group">
@@ -135,12 +135,12 @@ $socialLinks = [
                     <?php endforeach; ?>
                 </div>
                 
-                <hr class="my-5 border-0 border-t border-slate-200">
-            </div>
+                </div>
         </details>
 
-        <div class="pb-5 pt-5">
-            
+        <hr class="mt-10 w-full border-0 border-t border-slate-400 my-4 js-scroll-animate opacity-0 translate-y-5 transition-all duration-700 ease-out" style="transition-delay: 150ms;">
+
+        <div class="pb-5 pt-5">            
             <div class="grid gap-10 text-left md:grid-cols-[1fr_2fr_1.5fr]">
                 <div class="flex items-center justify-start js-scroll-animate opacity-0 translate-y-5 transition-all duration-700 ease-out" style="transition-delay: 200ms;">
                     <div class="flex h-[150px] w-[150px] items-center justify-center overflow-hidden">

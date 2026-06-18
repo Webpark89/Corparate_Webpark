@@ -93,25 +93,26 @@ $resolveReviewImage = static function (string $imagePath) use ($resolveServiceIm
 ?>
 <section class="relative font-sans bg-[#f7faff]">
     <div class="absolute inset-0 z-0">
-        <img src="<?= e(asset_url('images/bg-5.png')) ?>" alt="WEBPARK Solutions Background" class="w-full h-full object-cover object-center opacity-30 mix-blend-screen">
-        <div class="absolute inset-0 bg-gradient-to-r from-white to-white/5"></div>
+        <img src="<?= e(asset_url('images/bg-5.png')) ?>" alt="WEBPARK Solutions Background" class="w-full h-full object-cover object-center opacity-70 mix-blend-screen">
+        <div class="absolute inset-0 bg-gradient-to-r from-white via-white/80 to-white/5"></div>
+        <div class="absolute inset-x-0 bottom-0 h-[30%] bg-gradient-to-t from-white to-transparent z-10"></div>
     </div>
 
-    <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 pt-20 pb-24 lg:pt-28 lg:pb-32 relative z-10">
+    <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 pt-12 pb-24 lg:pt-28 lg:pb-32 relative z-10">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
             
             <div class="max-w-3xl">
-                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-blue-200 bg-white mb-6 shadow-sm">
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary  mb-6 shadow-sm">
                     <span class="text-blue-500 font-bold">+</span>
                     <span class="text-xs md:text-sm font-semibold text-primary uppercase tracking-wide">Digital Solutions for Modern Business</span>
                 </div>
 
-                <h1 class="text-5xl md:text-6xl lg:text-8xl font-semibold text-dark leading-[1.1] mb-2 tracking-tighter">
-                    WEBPARK<br>
-                    <span class="text-primary">COMPANY</span>
+                <h1 class="text-5xl md:text-6xl lg:text-8xl font-lg leading-[1.1] mb-2 tracking-tighter">
+                    <span class="bg-gradient-to-r from-[#898F98] to-[#000208] bg-clip-text text-transparent">WEBPARK</span><br>
+                    <span class="bg-gradient-to-r from-[#003380] to-[#0055ff] bg-clip-text text-transparent">COMPANY</span>
                 </h1>
 
-                <p class="mt-6 text-slate-500 text-base md:text-lg leading-relaxed max-w-lg mb-10 font-medium">
+                <p class="mt-6 text-[#022862] text-base md:text-lg leading-relaxed max-w-lg mb-10 font-medium">
                     ผู้ให้บริการพัฒนา Digital Platform<br class="hidden sm:block">
                     และระบบ AI ที่ช่วยให้ธุรกิจไทยก้าวไปข้างหน้า<br class="hidden sm:block">
                     ด้วยเทคโนโลยีที่ใช้งานได้จริง
@@ -124,132 +125,139 @@ $resolveReviewImage = static function (string $imagePath) use ($resolveServiceIm
                             <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                         </svg>
                     </a>
+                    <a href="#about" class="inline-flex items-center gap-4 transition-all hover:-translate-y-0.5">
+                        <div class="h-14 w-14 bg-white flex items-center justify-center rounded-full shadow-lg border border-slate-200 transition-all hover:bg-slate-50">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600 fill-current" viewBox="0 0 24 24">
+                                <path d="M8 5v14l11-7z" />
+                            </svg>
+                        </div>
+                        <span class="text-slate-800 text-lg font-semibold hover:text-slate-900 transition-colors">
+                            ดูวิดีโอแนะนำ
+                        </span>
+                    </a>
                 </div>
+                
             </div>
 
             <div class="hidden lg:block lg:col-start-2"></div>
             
         </div>
-        <div class="absolute bottom-0 right-0 md:right-4 lg:right-8 z-10 pointer-events-none max-w-full">
+        <div class="absolute bottom-0 right-0 md:right-4 lg:right-8 z-10 pointer-events-none max-w-full transform -translate-y-2">
             <img src="<?= e(asset_url('images/women.png')) ?>" alt="WEBPARK Presenter" class="w-auto object-contain h-[400px] md:h-[400px] lg:h-[600px] max-w-full">
         </div>
     </div>
-</section>
+    
+    <div class="mx-auto w-full max-w-7xl px-4 sm:px-4 lg:px-6 relative z-20 -mt-10 lg:-mt-18 pb-6 lg:pb-16">
+    <div class="w-full rounded-[1rem] bg-white flex flex-col lg:flex-row items-stretch shadow-[0_4px_25px_rgba(0,0,0,0.06)] border border-gray-100 overflow-hidden">
+        
+        <div class="flex-1 lg:max-w-[180px] flex items-center justify-center p-6 lg:p-8 border-b lg:border-b-0 lg:border-r border-gray-100 shrink-0">
+            <img src="/WEBPARK/frontend/public/assets/images/logo.png" alt="WEBPARK logo" class="w-32 lg:w-full h-auto object-contain">
+        </div>
 
-<section class="bg-[#ffffff] py-1">
-    <div class="mx-auto w-full max-w-7xl px-4 sm:px-4 lg:px-6"> 
-        <div class="w-full rounded-[1rem] bg-white p-6 lg:p-8 flex flex-col lg:flex-row items-stretch gap-6 lg:gap-0 shadow-[0_4px_25px_rgba(0,0,0,0.03)] border border-gray-100">
-            
-            <div class="flex-1 lg:max-w-[180px] flex flex-col justify-center lg:pr-6 lg:border-r border-gray-100 shrink-0">
-                <div class="w-32 lg:w-full">
-                    <img src="/WEBPARK/frontend/public/assets/images/logo.png" alt="WEBPARK logo" class="w-full h-auto object-contain">
-                </div>
-            </div>
-
-            <div class="flex-1 lg:max-w-[320px] flex flex-col justify-between lg:pl-6 lg:pr-8 lg:border-r border-gray-100 shrink-0">
-                 <div>
-                    <span class="text-primary font-bold text-sm tracking-wide block mb-2">เกี่ยวกับเรา</span>
-                    <h2 class="text-dark text-2xl font-bold leading-tighter mb-4">
+        <div class="flex-1 lg:max-w-[300px] xl:max-w-[320px] flex flex-col justify-between p-6 lg:p-8 border-b lg:border-b-0 lg:border-r border-gray-100 shrink-0">
+            <div>
+                <span class="text-primary font-bold text-sm tracking-wide block mb-3">เกี่ยวกับเรา</span>
+                <h2 class="text-[#043B94] text-xl xl:text-2xl font-bold leading-tight mb-4">
                     เราคือ พาร์ทเนอร์<br>ด้านเทคโนโลยี
-                    </h2>
-                    <p class="text-gray-500 text-sm leading-relaxed mb-6">
+                </h2>
+                <p class="text-gray-500 text-sm leading-relaxed mb-6">
                     มุ่งมั่นพัฒนาโซลูชันดิจิทัลที่ตอบโจทย์ธุรกิจยุคใหม่ ด้วยทีมงานมืออาชีพพร้อมแนวคิดและเทคโนโลยีในการยกระดับการทำงานของคุณ
-                    </p>
-                </div>
-                <a href="/WEBPARK/?url=about" class="inline-flex items-center gap-1.5 text-primary text-3xs font-semibold hover:gap-2.5 transition-all w-max mb-4 lg:mb-0">
-                 อ่านเพิ่มเติม
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                </p>
+            </div>
+            <a href="/WEBPARK/?url=about" class="inline-flex items-center gap-1.5 text-primary text-sm font-semibold hover:gap-2.5 transition-all w-max mt-auto">
+                อ่านเพิ่มเติม
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
                 </svg>
+            </a>
+        </div>
+
+        <div class="flex-[4] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 w-full">
+            
+            <div class="flex flex-col justify-between p-6 lg:p-8 border-b sm:border-b-0 sm:border-r border-gray-100">
+                <div>
+                    <div class="h-14 w-14 mx-auto mb-5 flex items-center justify-center">
+                        <img src="/WEBPARK/frontend/public/assets/images/icon-3.png" alt="ERP / ERM" class="h-full w-full object-contain">
+                    </div>
+                    <h2 class="text-[#043B94] font-bold text-[15px] xl:text-[16px] text-center mb-3 whitespace-nowrap tracking-tight">
+                        ERP / ERM
+                    </h2>
+                    <p class="text-gray-500 text-xs xl:text-sm leading-relaxed mb-6 text-left">
+                        ระบบบริหารจัดการองค์กรและควบคุมระบบ เพื่อเพิ่มทุกกระบวนการทำงานอย่างมีประสิทธิภาพ
+                    </p>
+                </div>
+                <a href="#" class="inline-flex items-center gap-1.5 text-primary text-sm font-medium hover:gap-2.5 transition-all w-max mt-auto">
+                    อ่านเพิ่มเติม
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                    </svg>
                 </a>
             </div>
 
-            <div class="flex-[4] grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 w-full">
-                
-                <div class="flex flex-col justify-between p-4 lg:px-6 lg:py-2 bg-white border-b sm:border-b-0 sm:border-r border-gray-100">
-                    <div>
-                        <div class="h-16 w-16 mx-auto mb-5 flex items-center justify-center">
-                            <img src="/WEBPARK/frontend/public/assets/images/icon-3.png" alt="ERP / ERM" class="h-full w-full object-contain">
-                        </div>
-                        <h2 class="text-dark font-bold text-5.5 text-center mb-3">
-                            ERP / ERM
-                        </h2>
-                        <p class="text-gray-500 text-sm leading-relaxed mb-5 text-left min-h-card-sm">
-                            ระบบบริหารจัดการองค์กรแบบครบวงจร เชื่อมโยงทุกกระบวนการทำงานอย่างมีประสิทธิภาพ
-                        </p>
+            <div class="flex flex-col justify-between p-6 lg:p-8 border-b sm:border-b-0 sm:border-r border-gray-100">
+                <div>
+                    <div class="h-14 w-14 mx-auto mb-5 flex items-center justify-center">
+                        <img src="/WEBPARK/frontend/public/assets/images/icon-2.png" alt="Digital Platform" class="h-full w-full object-contain">
                     </div>
-                    <a href="#" class="inline-flex items-center gap-1.5 text-primary text-3xs font-medium hover:gap-2.5 transition-all w-max mt-auto">
-                        อ่านเพิ่มเติม
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
-                        </svg>
-                    </a>
+                    <h2 class="text-[#043B94] font-bold text-[15px] xl:text-[16px] text-center mb-3 whitespace-nowrap tracking-tight">
+                        Digital Platform
+                    </h2>
+                    <p class="text-gray-500 text-xs xl:text-sm leading-relaxed mb-6 text-left">
+                        พัฒนาแพลตฟอร์มดิจิทัลทั้งออนไลน์และออฟไลน์ รองรับการเติบโตและการขยายตัว
+                    </p>
                 </div>
+                <a href="#" class="inline-flex items-center gap-1.5 text-primary text-sm font-medium hover:gap-2.5 transition-all w-max mt-auto">
+                    อ่านเพิ่มเติม
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                    </svg>
+                </a>
+            </div>
 
-                <div class="flex flex-col justify-between p-4 lg:px-6 lg:py-2 bg-white border-b sm:border-b-0 sm:border-r border-gray-100">
-                    <div>
-                        <div class="h-16 w-16 mx-auto mb-5 flex items-center justify-center">
-                            <img src="/WEBPARK/frontend/public/assets/images/icon-2.png" alt="Digital Platform" class="h-full w-full object-contain">
-                        </div>
-                        <h2 class="text-dark font-bold text-5.5 text-center mb-3">
-                            Digital Platform
-                        </h2>
-                        <p class="text-gray-500 text-sm leading-relaxed mb-5 text-left min-h-card-sm">
-                            พัฒนาแพลตฟอร์มดิจิทัลที่ตอบโจทย์ธุรกิจยุคใหม่ รองรับการเติบโต
-                        </p>
+            <div class="flex flex-col justify-between p-6 lg:p-8 border-b sm:border-b-0 sm:border-r border-gray-100">
+                <div>
+                    <div class="h-14 w-14 mx-auto mb-5 flex items-center justify-center">
+                        <img src="/WEBPARK/frontend/public/assets/images/icon-4.png" alt="Online Marketing" class="h-full w-full object-contain">
                     </div>
-                    <a href="#" class="inline-flex items-center gap-1.5 text-primary text-3xs font-medium hover:gap-2.5 transition-all w-max mt-auto">
-                        อ่านเพิ่มเติม
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
-                        </svg>
-                    </a>
+                    <h2 class="text-[#043B94] font-bold text-[15px] xl:text-[16px] text-center mb-3 whitespace-nowrap tracking-tight">
+                        Online Marketing
+                    </h2>
+                    <p class="text-gray-500 text-xs xl:text-sm leading-relaxed mb-6 text-left">
+                        วางกลยุทธ์และทำการตลาดออนไลน์ เพื่อการเข้าถึงกลุ่มเป้าหมาย และผลลัพธ์ที่วัดผลได้
+                    </p>
                 </div>
+                <a href="#" class="inline-flex items-center gap-1.5 text-primary text-sm font-medium hover:gap-2.5 transition-all w-max mt-auto">
+                    อ่านเพิ่มเติม
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                    </svg>
+                </a>
+            </div>
 
-                <div class="flex flex-col justify-between p-4 lg:px-6 lg:py-2 bg-white border-b sm:border-b-0 sm:border-r border-gray-100">
-                    <div>
-                        <div class="h-16 w-16 mx-auto mb-5 flex items-center justify-center">
-                            <img src="/WEBPARK/frontend/public/assets/images/icon-4.png" alt="Online Marketing" class="h-full w-full object-contain">
-                        </div>
-                        <h2 class="text-dark font-bold text-5.5 text-center mb-3">
-                            Online Marketing
-                        </h2>
-                        <p class="text-gray-500 text-sm leading-relaxed mb-5 text-left min-h-card-sm">
-                            วางกลยุทธ์และทำการตลาดออนไลน์ เพิ่มการเข้าถึงและยอดขาย
-                        </p>
+            <div class="flex flex-col justify-between p-6 lg:p-8">
+                <div>
+                    <div class="h-14 w-14 mx-auto mb-5 flex items-center justify-center">
+                        <img src="/WEBPARK/frontend/public/assets/images/icon-1.png" alt="Creative / Design" class="h-full w-full object-contain">
                     </div>
-                    <a href="#" class="inline-flex items-center gap-1.5 text-primary  text-3xs font-medium hover:gap-2.5 transition-all w-max mt-auto">
-                        อ่านเพิ่มเติม
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
-                        </svg>
-                    </a>
+                    <h2 class="text-[#043B94] font-bold text-[15px] xl:text-[16px] text-center mb-3 whitespace-nowrap tracking-tight">
+                        Creative / Design
+                    </h2>
+                    <p class="text-gray-500 text-xs xl:text-sm leading-relaxed mb-6 text-left">
+                        ออกแบบและสร้างสรรค์ภาพลักษณ์ของแบรนด์ให้โดดเด่น สร้างการจดจำและตอบโจทย์แคมเปญ
+                    </p>
                 </div>
+                <a href="#" class="inline-flex items-center gap-1.5 text-primary text-sm font-medium hover:gap-2.5 transition-all w-max mt-auto">
+                    อ่านเพิ่มเติม
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                    </svg>
+                </a>
+            </div>
 
-                <div class="flex flex-col justify-between p-4 lg:px-6 lg:py-2 bg-white">
-                    <div>
-                        <div class="h-16 w-16 mx-auto mb-5 flex items-center justify-center">
-                            <img src="/WEBPARK/frontend/public/assets/images/icon-1.png" alt="Creative / Design" class="h-full w-full object-contain">
-                        </div>
-                        <h2 class="text-dark font-bold text-5.5 text-center mb-3">
-                            Creative / Design
-                        </h2>
-                        <p class="text-gray-500 text-sm leading-relaxed mb-5 text-left min-h-card-sm">
-                            ออกแบบแบรนด์ให้โดดเด่นและน่าเชื่อถือ
-                        </p>
-                    </div>
-                    <a href="#" class="inline-flex items-center gap-1.5 text-primary  text-3xs font-medium hover:gap-2.5 transition-all w-max mt-auto">
-                        อ่านเพิ่มเติม
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
-                        </svg>
-                    </a>
-                </div>
-            </div> 
-        </div>
+        </div> 
     </div>
+</div>
 </section>
-
 
 <section class="bg-white py-20 lg:py-20">
     <div class="mx-auto w-full max-w-7xl px-5 sm:px-6 lg:px-8">
@@ -479,33 +487,41 @@ $totalReviews = count($reviews);
 
                             <article class="review-card group shrink-0 bg-white rounded-[1.5rem] p-6 lg:p-8 shadow-[0_4px_25px_rgba(0,0,0,0.02)] border border-[#f3f4f6] flex flex-col justify-between hover:bg-primary hover:shadow-[0_4px_30px_rgba(0,0,0,0.06)] hover:-translate-y-1 transition-all duration-300 <?= $isVisible ?>" data-index="<?= $index ?>">
 
-                                <div class="mb-4 text-slate-200 group-hover:text-white/50 transition-colors">
-                                    <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M10.8 19.2H4.8V13.2L8.4 6H12L8.4 13.2H10.8V19.2ZM20.4 19.2H14.4V13.2L18 6H21.6L18 13.2H20.4V19.2Z"/>
-                                    </svg>
-                                </div>
+    <div class="flex items-center justify-center w-full mb-6 mt-2">
+    <div class="flex items-center gap-1.5">
+        <?php 
+            // ดึงค่า rating ถ้าไม่มีให้กำหนดค่าเริ่มต้นเป็น 5
+            $rating = isset($review['rating']) ? (int)$review['rating'] : 5; 
+            for ($i = 1; $i <= 5; $i++): 
+        ?>
+            <svg class="w-4 h-4 sm:w-5 sm:h-5 transition-colors <?= $i <= $rating ? 'text-yellow-400 group-hover:text-yellow-300' : 'text-slate-200 group-hover:text-white/30' ?>" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd" />
+            </svg>
+        <?php endfor; ?>
+    </div>
+</div>
 
-                                <p class="text-sm md:text-sm lg:text-sm leading-relaxed text-slate-600 group-hover:text-white transition-colors mb-8 flex-grow">
-                                    <?= e($review['content'] ?? '') ?>
-                                </p>
+    <p class="text-sm md:text-sm lg:text-sm leading-relaxed text-slate-600 group-hover:text-white transition-colors mb-8 flex-grow">
+        <?= e($review['content'] ?? '') ?>
+    </p>
 
-                                <div class="flex items-center gap-3 mt-auto">
-                                    <img class="h-10 w-10 lg:h-12 lg:w-12 rounded-full object-cover bg-slate-100 shrink-0"
-                                         src="<?= e($reviewerImage) ?>"
-                                         alt="<?= e($reviewerName !== '' ? $reviewerName : 'Customer') ?>" />
-                                    <div class="overflow-hidden">
-                                        <h4 class="text-sm lg:text-sm font-bold text-dark group-hover:text-white transition-colors truncate">
-                                            <?= e($reviewerName) ?>
-                                        </h4>
-                                        <?php if ($reviewerMeta !== ''): ?>
-                                            <p class="text-2xs text-slate-500 group-hover:text-white/80 transition-colors truncate mt-0.5">
-                                                <?= e($reviewerMeta) ?>
-                                            </p>
-                                        <?php endif; ?>
-                                    </div>
-                                </div>
+    <div class="flex items-center gap-3 mt-auto">
+        <img class="h-10 w-10 lg:h-12 lg:w-12 rounded-full object-cover bg-slate-100 shrink-0"
+             src="<?= e($reviewerImage) ?>"
+             alt="<?= e($reviewerName !== '' ? $reviewerName : 'Customer') ?>" />
+        <div class="overflow-hidden">
+            <h4 class="text-sm lg:text-sm font-bold text-dark group-hover:text-white transition-colors truncate">
+                <?= e($reviewerName) ?>
+            </h4>
+            <?php if ($reviewerMeta !== ''): ?>
+                <p class="text-2xs text-slate-500 group-hover:text-white/80 transition-colors truncate mt-0.5">
+                    <?= e($reviewerMeta) ?>
+                </p>
+            <?php endif; ?>
+        </div>
+    </div>
 
-                            </article>
+</article>
                         <?php endforeach; ?>
                     </div>
                 </div> 

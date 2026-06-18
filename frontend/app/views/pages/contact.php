@@ -8,25 +8,26 @@ $form = $form ?? [];
 
 <section class="relative overflow-hidden font-sans bg-[#f7faff]">
     <div class="absolute inset-0 z-0">
-        <img src="<?= e(asset_url('images/bg-5.png')) ?>" alt="WEBPARK Solutions Background" class="w-full h-full object-cover object-center opacity-30 mix-blend-screen">
-        <div class="absolute inset-0 bg-gradient-to-r from-white to-white/5"></div>
+        <img src="<?= e(asset_url('images/bg-5.png')) ?>" alt="WEBPARK Solutions Background" class="w-full h-full object-cover object-center opacity-70 mix-blend-screen">
+        <div class="absolute inset-0 bg-gradient-to-r from-white via-white/70 to-white/5"></div>
+        <div class="absolute inset-x-0 bottom-0 h-[30%] bg-gradient-to-t from-white to-transparent z-10"></div>
     </div>
 
-    <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 pt-20 pb-24 lg:pt-32 lg:pb-32 relative z-10">
+    <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 pt-12 pb-24 lg:pt-28 lg:pb-32 relative z-10">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
             
             <div class="max-w-2xl">
-                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-blue-200 bg-white mb-6 shadow-sm">
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary  mb-6 shadow-sm">
                     <span class="text-blue-500 font-bold">+</span>
                     <span class="text-xs md:text-sm font-semibold text-primary uppercase tracking-wide">OUR CONTACT</span>
                 </div>
 
-                <h1 class="text-5xl md:text-6xl lg:text-[4.5rem] font-bold text-dark leading-[1.1] mb-2 tracking-tight">
-                    ติดต่อกับ<br>
-                    <span class="text-primary">WEBPARK</span>
-                </h1>
+                <h1 class="text-5xl md:text-6xl lg:text-8xl font-lg leading-[1.1] mb-2 tracking-tighter">
+    <span class="bg-gradient-to-r from-[#898F98] to-[#000208] bg-clip-text text-transparent">ติดต่อกลับ</span><br>
+    <span class="bg-gradient-to-r from-[#003380] to-[#0055ff] bg-clip-text text-transparent">WEBPARK</span>
+</h1>
 
-                <p class="mt-6 text-slate-500 text-base md:text-lg leading-relaxed max-w-lg mb-10 font-medium">
+                <p class="mt-6 text-[#022862] text-base md:text-lg leading-relaxed max-w-lg mb-10 font-medium">
                     พูดคุยและปรึกษาเกี่ยวกับโปรเจกต์ ระบบ เว็บไซต์ ERP / ERM และโซลูชันดิจิทัล เพื่อธุรกิจของคุณ
                 </p>
 
@@ -45,10 +46,6 @@ $form = $form ?? [];
                         </svg>
                     </a>
                 </div>
-            </div>
-
-            <div class="relative w-full h-full hidden lg:flex justify-end">
-                <img src="<?= e(asset_url('images/bg-3.png')) ?>" alt="WEBPARK Solutions Centerpiece" class="w-full max-w-[400px] object-contain drop-shadow-2xl">
             </div>
             
         </div>

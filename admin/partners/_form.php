@@ -119,37 +119,6 @@ $inputClass = 'w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text
             <div class="p-6 space-y-5">
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-
-                    <div>
-                        <label class="text-xs font-semibold text-slate-600 uppercase tracking-wider mb-2 block">
-                            สถานะการแสดงผลบนหน้าเว็บ
-                        </label>
-                        <div class="grid grid-cols-2 gap-3 h-[46px] w-full">
-                            <label class="block cursor-pointer h-full">
-                                <input type="radio"
-                                    name="is_active"
-                                    value="1"
-                                    class="peer sr-only"
-                                    <?= ((int)($data['is_active'] ?? 1) === 1) ? 'checked' : '' ?>>
-                                <div class="h-full w-full flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 text-center text-xs font-bold text-slate-600 transition-all duration-200 hover:bg-slate-50 peer-checked:border-emerald-500 peer-checked:bg-emerald-50 peer-checked:text-emerald-800">
-                                    เผยแพร่ (Published)
-                                </div>
-                            </label>
-
-                            <label class="block cursor-pointer h-full">
-                                <input type="radio"
-                                    name="is_active"
-                                    value="0"
-                                    class="peer sr-only"
-                                    <?= ((int)($data['is_active'] ?? 1) === 0) ? 'checked' : '' ?>>
-                                <div class="h-full w-full flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 text-center text-xs font-bold text-slate-600 transition-all duration-200 hover:bg-slate-50 peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-800">
-                                    ซ่อน (Hidden)
-                                </div>
-                            </label>
-                        </div>
-                        <p class="text-xs text-slate-400 mt-1">เลือกสถานะว่าจะให้โลโก้นี้ปรากฏบนเว็บไซต์หรือไม่</p>
-                    </div>
-
                     <div>
                         <label class="text-xs font-semibold text-slate-600 uppercase tracking-wider mb-2 block">
                             ลำดับการแสดงผล (Sort Order)
@@ -168,18 +137,33 @@ $inputClass = 'w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text
             </div>
         </section>
 
-        <section class="sticky bottom-0 bg-white/90 backdrop-blur-sm p-4 rounded-2xl border border-slate-200 shadow-sm z-10">
-            <div class="flex items-center justify-between">
-                <a href="index.php"
-                    class="px-6 h-11 flex items-center justify-center rounded-xl border border-slate-200 text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors">
-                    ย้อนกลับ
-                </a>
-                <button type="submit"
-                    class="px-8 h-11 rounded-xl bg-slate-900 text-sm font-semibold text-white hover:bg-slate-800 transition-all shadow-sm">
-                    บันทึกข้อมูลพันธมิตร
+        <div class="lg:col-span-12 pt-4">
+            <section class="sticky bottom-0 bg-white/90 backdrop-blur-sm p-4 -m-4 rounded-2xl border border-slate-200 shadow-sm">
+             <div class="flex items-center justify-between">
+            
+            <a href="index.php" class="px-6 h-11 flex items-center justify-center rounded-xl border border-slate-200 text-slate-700 hover:bg-slate-50 transition">
+                ยกเลิก
+            </a>
+
+            <div class="flex items-center gap-3">
+                
+                <button name="is_active"
+                        value="0"
+                    class="px-6 h-11 rounded-xl border bg-amber-50 border-amber-300 text-amber-700 font-semibold hover:bg-amber-50 transition">
+                    บันทึกเป็นฉบับร่าง
                 </button>
-            </div>
-        </section>
+
+                <button name="is_active"
+                        value="1"
+                    class="px-6 h-11 rounded-xl border bg-emerald-50 border-emerald-300 text-emerald-700 font-semibold hover:bg-emerald-50 transition">
+                    บันทึกและเผยแพร่
+                </button>
+
+                 </div>
+                    </div>
+                </section>
+        </div>
+
 
     </form>
 </div>

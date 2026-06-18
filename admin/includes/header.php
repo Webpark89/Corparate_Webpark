@@ -12,7 +12,7 @@ $navItems = [
   ['name' => 'การจัดการบทความ', 'url' => '/article/index.php', 'page' => 'article'],
   ['name' => 'การจัดการผลงาน', 'url' => '/portfolio/index.php', 'page' => 'portfolio'],
   ['name' => 'การจัดการรีวิว', 'url' => '/review/index.php', 'page' => 'review'],
-  ['name' => 'การจัดการพันธมิตร', 'url' => '/partners/index.php', 'page' => 'partners'],
+  ['name' => 'การจัดการลูกค้า', 'url' => '/partners/index.php', 'page' => 'partners'],
   ['name' => 'การจัดการบริการ', 'url' => '/service/index.php', 'page' => 'service'],
   ['name' => 'การตั้งค่าการติดต่อ', 'url' => '/contact/index.php', 'page' => 'contact'],
 ];
@@ -27,7 +27,7 @@ $navItems = [
   <link href="<?= ADMIN_URL ?>/assets/css/dist/tailwind.css" rel="stylesheet">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@100..900&display=swap" rel="stylesheet">
   </head>
 
 <body class="admin-body bg-slate-50 font-sans antialiased text-slate-800">

@@ -110,7 +110,7 @@ $renderContent = static function (string $text): string {
 
 <section class="bg-slate-950 text-white">
     <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 pt-20 pb-24 lg:pt-32 lg:pb-32 relative z-10">
-        <a class="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-sm font-semibold text-white/90 transition hover:bg-white/10" href="<?= e(route_url('/portfolio')) ?>">
+        <a class="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-sm font-semibold text-white/90 transition hover:bg-white/10" href="<?= e(route_url('/')) ?>">
             <span aria-hidden="true">‹</span>
             ย้อนกลับ
         </a>

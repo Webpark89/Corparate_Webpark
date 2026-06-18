@@ -107,25 +107,26 @@ try {
 
 <section class="relative overflow-hidden font-sans">
     <div class="absolute inset-0 z-0">
-        <img src="<?= e(asset_url('images/bg-5.png')) ?>" alt="WEBPARK Solutions Background" class="w-full h-full object-cover object-center opacity-30 mix-blend-screen">
-        <div class="absolute inset-0 bg-gradient-to-r from-white to-white/5"></div>
+        <img src="<?= e(asset_url('images/bg-5.png')) ?>" alt="WEBPARK Solutions Background" class="w-full h-full object-cover object-center opacity-70 mix-blend-screen">
+        <div class="absolute inset-0 bg-gradient-to-r from-white via-white/80 to-white/5"></div>
+        <div class="absolute inset-x-0 bottom-0 h-[30%] bg-gradient-to-t from-white to-transparent z-10"></div>
     </div>
 
-    <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 pt-20 pb-24 lg:pt-32 lg:pb-32 relative z-10">
+    <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 pt-12 pb-24 lg:pt-28 lg:pb-32 relative z-10">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
             
             <div class="max-w-2xl">
-                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-blue-200 bg-white mb-6 shadow-sm">
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary  mb-6 shadow-sm">
                     <span class="text-blue-500 font-bold">+</span>
                     <span class="text-xs md:text-sm font-semibold text-primary uppercase tracking-wide">OUR SERVICE</span>
                 </div>
 
-                <h1 class="text-5xl md:text-6xl lg:text-[4.5rem] font-bold text-dark leading-[1.1] mb-2 tracking-tight">
-                    ความเชี่ยวชาญ<br>
-                    <span class="text-primary">และจุดเด่น</span>
-                </h1>
+                <h1 class="text-5xl md:text-6xl lg:text-8xl font-lg leading-[1.1] mb-2 tracking-tighter">
+    <span class="bg-gradient-to-r from-[#898F98] to-[#000208] bg-clip-text text-transparent">ความเชี่ยวชาญ</span><br>
+    <span class="bg-gradient-to-r from-[#003380] to-[#0055ff] bg-clip-text text-transparent">และจุดเด่น</span>
+</h1>
 
-                <p class="mt-6 text-slate-700 text-base md:text-lg leading-relaxed max-w-lg mb-10 font-medium">
+                <p class="mt-6 text-[#022862] text-base md:text-lg leading-relaxed max-w-lg mb-10 font-medium">
                     มากกว่า 20 ปี ที่เราสร้างสรรค์โซลูชันดิจิทัลครบวงจร ผสานเทคโนโลยี ความเชี่ยวชาญ และความเข้าใจธุรกิจ เพื่อเพิ่มประสิทธิภาพ สร้างการเติบโต และยกระดับองค์กรสู่อนาคตอย่างยั่งยืน
                 </p>
 
@@ -137,19 +138,19 @@ try {
                         </svg>
                     </a>
                     
-                    <a href="#services" class="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-white text-slate-700 text-sm font-semibold rounded-full hover:bg-slate-50 transition-all shadow-sm border border-slate-200 hover:-translate-y-0.5">
-                        บริการของเรา
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-                        </svg>
-                    </a>
+                    <a href="#about" class="inline-flex items-center gap-4 transition-all hover:-translate-y-0.5">
+    <div class="h-14 w-14 bg-white flex items-center justify-center rounded-full shadow-lg border border-slate-200 transition-all hover:bg-slate-50">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600 fill-current" viewBox="0 0 24 24">
+            <path d="M8 5v14l11-7z" />
+        </svg>
+    </div>
+    <span class="text-slate-800 text-lg font-semibold hover:text-slate-900 transition-colors">
+        ดูวิดีโอแนะนำ
+    </span>
+</a>
                 </div>
             </div>
 
-            <div class="relative w-full h-full flex justify-center lg:justify-end">
-                <img src="<?= e(asset_url('images/bg-3.png')) ?>" alt="WEBPARK Solutions Centerpiece" class="w-full max-w-[400px] object-contain drop-shadow-2xl">
-            </div>
-            
         </div>
     </div>
 </section>

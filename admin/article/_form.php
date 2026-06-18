@@ -232,12 +232,12 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
             <div class="flex items-center gap-3">
                 
                 <button type="submit" name="status" value="draft" 
-                    className="flex h-11 items-center justify-center rounded-xl border border-amber-300 bg-white px-6 font-semibold text-amber-700 transition-all duration-200 hover:border-amber-400 hover:bg-amber-50 hover:text-amber-800 focus:outline-none focus:ring-2 focus:ring-amber-200">
+                    class="px-6 h-11 rounded-xl border bg-amber-50 border-amber-300 text-amber-700 font-semibold hover:bg-amber-50 transition">
                     บันทึกเป็นฉบับร่าง
                 </button>
 
                 <button type="submit" name="status" value="published" 
-                    className="flex h-11 items-center justify-center rounded-xl bg-emerald-600 px-8 font-semibold text-white shadow-sm shadow-emerald-200/50 transition-all duration-200 hover:-translate-y-0.5 hover:bg-emerald-700 hover:shadow-md hover:shadow-emerald-300/50 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2">
+                    class="px-6 h-11 rounded-xl border bg-emerald-50 border-emerald-300 text-emerald-700 font-semibold hover:bg-emerald-50 transition">
                     บันทึกและเผยแพร่
                 </button>
 

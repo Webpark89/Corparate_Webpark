@@ -278,7 +278,7 @@ $initialProjects = $portfolioTabs[$activeFilter] ?? $portfolioTabs['All'] ?? [];
                                     <?= e($project['title']) ?>
                                 </h3>
 
-                                <p class="text-sm leading-7 text-slate-600 line-clamp-3">
+                <p class="mt-6 text-[#022862] text-base md:text-lg leading-relaxed max-w-lg mb-10 font-medium">
                                     <?= e($project['description']) ?>
                                 </p>
                             </div>

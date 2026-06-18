@@ -5,7 +5,7 @@ declare(strict_types=1);
 $article = is_array($article) ? $article : [];
 $siteName = config('app.name', 'WEBPARK');
 $temporaryImage = asset_url('images/story.png');
-$fallbackImage = asset_url('images/bg-3.png');
+$fallbackImage = asset_url('images/story.png');
 
 // Check if the image path from database actually exists on server
 $dbImagePath = $article['image_path'] ?? '';
@@ -49,7 +49,7 @@ $formattedDate = $ts ? sprintf('%d %s %d', date('j', $ts), $months[(int) date('n
         <header class="mb-10">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
                 <div class="lg:col-span-7">
-                    <nav class="flex items-center gap-2 text-xs font-bold text-primary uppercase tracking-wider mb-4">                                  
+                    <nav class="flex items-center gap-2 text-xs font-lg text-primary uppercase tracking-wider mb-4">                                  
                         <span class="text-slate-400">Knowledge Article</span>
                         <span class="text-slate-300">/</span>
                         <span><?= e($category) ?></span>
@@ -57,10 +57,16 @@ $formattedDate = $ts ? sprintf('%d %s %d', date('j', $ts), $months[(int) date('n
                     <h1 class="text-3xl sm:text-4xl lg:text-[2.5rem] font-bold text-dark leading-tight tracking-tight mb-6">
                         <?= e($title) ?>
                     </h1>
+                    <?php if ($summary !== ''): ?>
+                    <p class="text-slate-600 font-medium text-base md:text-lg leading-relaxed mb-8">
+                        <?= e($summary) ?>
+                    </p>
+                <?php endif; ?>
                 </div>
                 <div class="lg:col-span-5 relative overflow-hidden rounded-3xl bg-slate-50 aspect-[16/10] shadow-sm">
                     <img src="<?= e($coverImage) ?>" alt="<?= e($title) ?>" class="h-full w-full object-cover">
                 </div>
+                
             </div>
 
             <div class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3 py-4 border-y border-slate-100 text-slate-500 text-[13px] font-medium">
@@ -84,11 +90,7 @@ $formattedDate = $ts ? sprintf('%d %s %d', date('j', $ts), $months[(int) date('n
             
             <main class="lg:col-span-8">
                 
-                <?php if ($summary !== ''): ?>
-                    <p class="text-slate-600 font-medium text-base md:text-lg leading-relaxed mb-8">
-                        <?= e($summary) ?>
-                    </p>
-                <?php endif; ?>
+                
 
                 <article class="prose prose-slate max-w-none text-slate-600 leading-relaxed prose-headings:text-dark prose-headings:font-bold prose-strong:text-slate-900 prose-a:text-primary prose-a:no-underline hover:prose-a:underline">
                     <?= $content ?>

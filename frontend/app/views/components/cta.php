@@ -13,14 +13,14 @@ $contactButtonUrl = $cbuttonUrl ?? '/contact';
 
 ?>
 
-<section class="bg-white py-12 lg:py-12 font-sans">
+<section class="bg-white py-10 lg:py-10 font-sans">
     <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
 
         <div class="relative w-full rounded-[2rem] p-8 md:p-12 lg:p-14 grid grid-cols-1 lg:grid-cols-12 gap-10 items-center overflow-hidden shadow-xl">
             <div class="absolute inset-0 z-0 rounded-[2rem] overflow-hidden">
     <img src="<?= e(asset_url('images/bg-cta.jpg')) ?>" alt="City Network Overlay" class="w-full h-full opacity-80 object-cover">
     
-<div class="absolute inset-0 bg-gradient-to-r from-[#043B94]/90 via-[#054FC5]/80 to-white/95"></div>
+<div class="absolute inset-0 bg-gradient-to-r from-[#043B94]/90 via-[#054FC5]/70 to-white/95"></div>
 </div>
 
             <div class="relative z-10 lg:col-span-5 flex flex-col items-start text-left">

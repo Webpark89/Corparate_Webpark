@@ -8,7 +8,7 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Kanit', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        sans: ['Noto Sans Thai', 'ui-sans-serif', 'system-ui', 'sans-serif'],
       },
       boxShadow: {
         soft: '0 8px 30px rgba(1, 29, 81, 0.06)',

@@ -152,11 +152,11 @@ $partners = $stmt->fetchAll();
                             <td class="px-3 py-3">
                                 <?php if ((int)$row['is_active'] === 1): ?>
                                     <span class="inline-flex rounded-lg border border-emerald-200 bg-emerald-50 px-2.5 py-0.5 text-[11px] font-semibold text-emerald-700">
-                                        แสดงผล
+                                        เผยแพร่
                                     </span>
                                 <?php else: ?>
                                     <span class="inline-flex rounded-lg border border-slate-200 bg-slate-50 px-2.5 py-0.5 text-[11px] font-semibold text-slate-500">
-                                        ซ่อน
+                                        ไม่เผยแพร่
                                     </span>
                                 <?php endif; ?>
                             </td>

@@ -5,7 +5,6 @@ html, :host {
   text-size-adjust: 100%;
 }
 
-/* Use Kanit font for admin */
 body {
-  font-family: 'Kanit', sans-serif;
+  font-family: 'Noto Sans Thai', sans-serif;
 }

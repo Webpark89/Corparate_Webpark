@@ -29,7 +29,7 @@ $navItems = [
             <?php foreach ($navItems as $item): ?>
                 <div class="flex items-center gap-5">
                     <a
-                        class="group relative py-2 text-[15px] transition-colors hover:text-primary <?= $currentPage === $item['page'] ? 'text-primary font-semibold' : 'text-slate-700 font-medium' ?>"
+                        class="group relative py-2 text-[15px] transition-colors hover:text-primary <?= $currentPage === $item['page'] ? 'text-primary font-semibold' : 'text-[#022862] font-medium' ?>"
                         href="<?= e(route_url($item['path'])) ?>"
                         <?= $currentPage === $item['page'] ? 'aria-current="page"' : '' ?>>
                         <?= e($item['label']) ?>
@@ -38,7 +38,7 @@ $navItems = [
                     </a>
 
                     <?php if ($item !== end($navItems)): ?>
-                        <span class="text-[6px] text-slate-300">●</span>                    
+                        <span class="text-[6px] text-[#022862]">●</span>                    
                     <?php endif; ?>
                 </div>
             <?php endforeach; ?>

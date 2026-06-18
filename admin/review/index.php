@@ -78,8 +78,8 @@ $reviews = $stmt->fetchAll();
                     <select name="status" onchange="this.form.submit()"
                         class="w-full rounded-xl border border-slate-200 bg-slate-50/50 px-3 py-2 text-sm text-slate-700 focus:bg-white focus:border-blue-500 focus:outline-none transition-all">
                         <option value="">ทุกสถานะ</option>
-                        <option value="1" <?= $statusFilter === '1' ? 'selected' : '' ?>>แสดงผล (Published)</option>
-                        <option value="0" <?= $statusFilter === '0' ? 'selected' : '' ?>>ซ่อน (Hidden)</option>
+                        <option value="1" <?= $statusFilter === '1' ? 'selected' : '' ?>>เผยแพร่ (Published)</option>
+                        <option value="0" <?= $statusFilter === '0' ? 'selected' : '' ?>>ไม่เผยแพร่ (Hidden)</option>
                     </select>
                 </div>
 
@@ -140,12 +140,12 @@ $reviews = $stmt->fetchAll();
                                 <?php if ((int)$row['is_active'] === 1): ?>
                                     <span class="inline-flex items-center rounded-lg border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-700">
                                         <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1.5"></span>
-                                        แสดงผล
+                                        เผยแพร่
                                     </span>
                                 <?php else: ?>
                                     <span class="inline-flex items-center rounded-lg border border-slate-200 bg-slate-50 px-2.5 py-1 text-xs font-semibold text-slate-500">
                                         <span class="w-1.5 h-1.5 rounded-full bg-slate-400 mr-1.5"></span>
-                                        ซ่อน
+                                        ไม่เผยแพร่
                                     </span>
                                 <?php endif; ?>
                             </td>

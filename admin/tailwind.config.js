@@ -7,7 +7,7 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["Kanit", "Inter", "Noto Sans Thai", "system-ui", "-apple-system", "Segoe UI", "Roboto", "Helvetica Neue", "Arial", "sans-serif"]
+        sans: ["Noto Sans Thai", "Inter", "Noto Sans Thai", "system-ui", "-apple-system", "Segoe UI", "Roboto", "Helvetica Neue", "Arial", "sans-serif"]
       },
       colors: {
         primary: '#2563eb',
