@@ -99,52 +99,38 @@ $socialLinks = [
         
         <details class="group js-scroll-animate opacity-0 translate-y-5 transition-all duration-700 ease-out" id="mainSitemapAccordion" style="transition-delay: 100ms;">
             <summary class="flex w-full cursor-pointer list-none flex-col items-center justify-center bg-transparent py-3 text-center transition-all duration-300 hover:opacity-80">
-                <span class="pt-2 pb-1 text-[24px] font-xl tracking-[2px] text-[#002b7f] group-open:text-white transition-colors duration-300">SITEMAP</span>
-
-                <!-- arrow (CSS border square) -->
-                <span class="inline-block h-2 w-2 rotate-45 border-r-2 border-b-2 border-[#002b7f] transition-transform duration-300 group-open:border-white group-open:rotate-[-135deg]" aria-hidden="true"></span>
-
-                <!-- divider line (hidden when open) -->
-                <span class="mt-4 w-full max-w-[980px] border-t border-slate-300 group-open:hidden"></span>
+                <span class="mb-2 text-[24px] font-xl tracking-[2px]">SITEMAP</span>
+                <span class="inline-block h-2 w-2 rotate-45 border-r-2 border-b-2 border-dark transition-transform duration-300 group-open:rotate-[225deg]" aria-hidden="true"></span>
+                <span class="inline-block h-2 w-2 rotate-45 border-r-2 border-b-2 border-dark transition-transform duration-300 group-open:rotate-[225deg]" aria-hidden="true"></span>
             </summary>
 
-            <!-- open/closed background + content -->
-            <div class="pt-0 pb-5 mt-0 bg-white group-open:bg-[#001d4f] transition-colors duration-300" data-footer-content>
-                <div class="pt-6 group-open:pt-7 transition-all duration-300">
-                    <div class="grid gap-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
-                        <?php foreach ($sitemapColumns as $column): ?>
-                            <section>
-                                <h3 class="text-[16px] font-extrabold uppercase tracking-wide text-white/95 group-open:text-white text-center sm:text-left"><?= e($column['title']) ?></h3>
-
-                                <div class="mt-4 flex flex-col gap-5">
-                                    <?php foreach ($column['groups'] as $group): ?>
-                                        <div class="flex items-start gap-3">
-                                            <!-- vertical left border -->
-                                            <div class="mt-2 h-full w-1 bg-white/60"></div>
-
-                                            <div class="flex-1">
-                                                <h4 class="text-[14px] font-bold text-white"><?= e($group['title']) ?></h4>
-
-                                                <ul class="mt-3 pl-4 list-disc text-white">
-
-                                                    <?php foreach ($group['items'] as $item): ?>
-                                                        <li class="text-[13px] leading-7">
-                                                            <a class="inline-flex text-white hover:text-sky-200 transition-colors" href="<?= e($item['href']) ?>">
-                                                                <?= e($item['label']) ?>
-                                                            </a>
-                                                        </li>
-                                                    <?php endforeach; ?>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    <?php endforeach; ?>
-                                </div>
-                            </section>
-                        <?php endforeach; ?>
-                    </div>
+            <div class="pt-5 transition-all duration-500" data-footer-content>
+                <div class="grid gap-5 sm:grid-cols-2 xl:grid-cols-5">
+                    <?php foreach ($sitemapColumns as $column): ?>
+                        <section>
+                            <h3 class="text-sm font-semibold text-dark"><?= e($column['title']) ?></h3>
+                            <div class="flex flex-col">
+                                <?php foreach ($column['groups'] as $group): ?>
+                                    <details class="group">
+                                        <summary class="flex cursor-pointer list-none items-center justify-between gap-3 bg-transparent py-2 text-sm text-dark font-medium transition-colors hover:text-primary">
+                                            <span><?= e($group['title']) ?></span>
+                                            <span class="inline-block h-3 w-3 shrink-0 transition-transform duration-300 group-open:rotate-90" aria-hidden="true">›</span>
+                                        </summary>
+                                        <ul class="my-1.5 ml-0 list-none p-0">
+                                            <?php foreach ($group['items'] as $item): ?>
+                                                <li>
+                                                    <a class="inline-block py-1.5 text-[13px] text-slate-600 transition-all duration-300 hover:text-primary hover:translate-x-1.5" href="<?= e($item['href']) ?>">
+                                                        <?= e($item['label']) ?>
+                                                    </a>
+                                                </li>
+                                            <?php endforeach; ?>
+                                        </ul>
+                                    </details>
+                                <?php endforeach; ?>
+                            </div>
+                        </section>
+                    <?php endforeach; ?>
                 </div>
-
-                <div class="mt-10 w-full border-t border-white/20"></div>
             </div>
         </details>
 
