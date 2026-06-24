@@ -16,13 +16,16 @@ class Database
 
     private static function connect(): PDO
     {
-        $host = 'localhost';
-        $db = 'WEBPARK';
-        $user = 'root';     // MAMP default username
-        $password = 'root'; // MAMP default password
-        $charset = 'utf8mb4';
+        // Prefer config constants (admin/config.php style) so all pages share the same DB credentials.
+        $host = (string) (defined('DB_HOST') ? DB_HOST : '127.0.0.1');
+        $db = (string) (defined('DB_NAME') ? DB_NAME : 'WEBPARK');
+        $user = (string) (defined('DB_USER') ? DB_USER : 'root');
+        $password = (string) (defined('DB_PASS') ? DB_PASS : 'root');
+        $port = (string) (defined('DB_PORT') ? DB_PORT : '');
+        $charset = (string) (defined('DB_CHARSET') ? DB_CHARSET : 'utf8mb4');
 
-        $dsn = "mysql:host={$host};dbname={$db};charset={$charset}";
+        $portPart = $port !== '' ? ";port={$port}" : '';
+        $dsn = "mysql:host={$host}{$portPart};dbname={$db};charset={$charset}";
 
         try {
             $pdo = new PDO(
@@ -37,6 +40,7 @@ class Database
             );
             return $pdo;
         } catch (PDOException $e) {
+            // Fail fast with readable message so you can see the exact DB issue.
             die('Database connection failed: ' . $e->getMessage());
         }
     }
