@@ -2,6 +2,11 @@
 
 declare(strict_types=1);
 
+/**
+ * Main HTML layout — SEO meta, Open Graph, JSON-LD, and page shell.
+ *
+ * Expects $content from Controller::view(); optional SEO variables from controller.
+ */
 $siteName = $siteName ?? config('app.name', 'WEBPARK');
 $title = seo_fallback([$metaTitle ?? '', $title ?? '', $siteName], $siteName);
 $metaDescription = seo_fallback([$metaDescription ?? '', config('app.description', ''), $siteName], $siteName);
@@ -15,6 +20,12 @@ $authorName = seo_fallback([$authorName ?? '', $siteName], $siteName);
 $robots = seo_fallback([$robots ?? 'index, follow'], 'index, follow');
 $jsonLd = isset($jsonLd) && is_array($jsonLd) ? $jsonLd : [];
 $jsonGraph = [];
+$tailwindCssFile = realpath(__DIR__ . '/../../../public/assets/css/tailwind.css');
+$tailwindCssVersion = $tailwindCssFile !== false ? filemtime($tailwindCssFile) : time();
+
+if (!headers_sent()) {
+    header('Content-Type: text/html; charset=UTF-8');
+}
 
 if ($jsonLd !== []) {
     if (isset($jsonLd['@graph']) && is_array($jsonLd['@graph'])) {
@@ -28,6 +39,7 @@ if ($jsonLd !== []) {
         ];
     }
 }
+
 $currentPage = $currentPage ?? '';
 $content = $content ?? '';
 ?>
@@ -65,7 +77,7 @@ $content = $content ?? '';
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@100..900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="<?= e(asset_url('assets/css/tailwind.css')) ?>">
+    <link rel="stylesheet" href="<?= e(asset_url('assets/css/tailwind.css')) ?>?v=<?= e($tailwindCssVersion) ?>">
     <?php if ($jsonGraph !== []): ?>
         <script type="application/ld+json">
             <?= json_encode($jsonGraph, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>
@@ -79,6 +91,7 @@ $content = $content ?? '';
     <main class="min-h-screen">
         <?= $content ?>
     </main>
+
     <?php require __DIR__ . '/../components/cta.php'; ?>
     <?php require __DIR__ . '/../components/footer.php'; ?>
 

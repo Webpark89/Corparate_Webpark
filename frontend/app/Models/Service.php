@@ -2,6 +2,9 @@
 
 declare(strict_types=1);
 
+/**
+ * Service catalog and feature data access.
+ */
 class Service
 {
     private PDO $pdo;
@@ -11,10 +14,15 @@ class Service
         $this->pdo = Database::getInstance();
     }
 
+    /**
+     * Active services for listing pages (excludes ERP — handled separately on homepage).
+     *
+     * @return array<int, array<string, mixed>>
+     */
     public function getAllActive(): array
     {
         $stmt = $this->pdo->query(
-            "SELECT
+            'SELECT
                 id,
                 slug,
                 title,
@@ -27,8 +35,8 @@ class Service
                 updated_at
             FROM service
             WHERE is_active = 1
-            AND slug != 'erp'
-            ORDER BY id ASC"
+            AND slug != \'erp\'
+            ORDER BY id ASC'
         );
 
         $services = [];
@@ -40,10 +48,13 @@ class Service
         return $services;
     }
 
+    /**
+     * @return array<string, mixed>|false
+     */
     public function getBySlug(string $slug): array|false
     {
         $stmt = $this->pdo->prepare(
-            "SELECT
+            'SELECT
                 id,
                 slug,
                 title,
@@ -57,7 +68,7 @@ class Service
             FROM service
             WHERE slug = ?
             AND is_active = 1
-            LIMIT 1"
+            LIMIT 1'
         );
 
         $stmt->execute([$slug]);
@@ -71,10 +82,13 @@ class Service
         return $this->hydrateServiceRow($row);
     }
 
+    /**
+     * @return array<string, mixed>|false
+     */
     public function getFeatureBySlugs(string $serviceSlug, string $featureSlug): array|false
     {
         $stmt = $this->pdo->prepare(
-            "SELECT
+            'SELECT
                 sf.*,
                 s.id AS service_id,
                 s.slug AS service_slug,
@@ -86,7 +100,7 @@ class Service
             WHERE s.slug = ?
             AND sf.slug = ?
             AND s.is_active = 1
-            LIMIT 1"
+            LIMIT 1'
         );
 
         $stmt->execute([$serviceSlug, $featureSlug]);
@@ -96,10 +110,13 @@ class Service
         return $row === false ? false : $row;
     }
 
+    /**
+     * @return array<int, array<string, mixed>>
+     */
     public function getFeaturesByServiceId(int $serviceId): array
     {
         $stmt = $this->pdo->prepare(
-            "SELECT
+            'SELECT
                 id,
                 title,
                 slug,
@@ -109,7 +126,7 @@ class Service
                 updated_at
             FROM service_features
             WHERE service_id = ?
-            ORDER BY id ASC"
+            ORDER BY id ASC'
         );
 
         $stmt->execute([$serviceId]);
@@ -117,20 +134,27 @@ class Service
         return $stmt->fetchAll();
     }
 
+    /**
+     * @return array<int, array<string, mixed>>
+     */
     public function getAllErpModules(): array
     {
         $stmt = $this->pdo->query(
-            "SELECT * FROM erp_modules WHERE is_active = 1 ORDER BY sort_order ASC"
+            'SELECT * FROM erp_modules WHERE is_active = 1 ORDER BY sort_order ASC'
         );
 
         return $stmt->fetchAll();
     }
 
+    /**
+     * Legacy fallback when erp_module_features table is absent.
+     *
+     * @return array<int, array<string, mixed>>
+     */
     public function getErpModuleFeatures(int $moduleId): array
     {
-        // ในกรณีที่ไม่มีตาราง erp_module_features แล้ว ให้คืนข้อมูลจาก erp_modules แทน
         $stmt = $this->pdo->prepare(
-            "SELECT * FROM erp_modules WHERE id = ? AND is_active = 1 LIMIT 1"
+            'SELECT * FROM erp_modules WHERE id = ? AND is_active = 1 LIMIT 1'
         );
 
         $stmt->execute([$moduleId]);
@@ -140,7 +164,12 @@ class Service
         return $row ? [$row] : [];
     }
 
-
+    /**
+     * Decode details_json and normalize nested items/features for views.
+     *
+     * @param array<string, mixed> $row
+     * @return array<string, mixed>
+     */
     private function hydrateServiceRow(array $row): array
     {
         $details = [];
@@ -153,63 +182,7 @@ class Service
             }
         }
 
-        $items = [];
-
-        if (!empty($details['items']) && is_array($details['items'])) {
-
-            foreach ($details['items'] as $item) {
-
-                if (is_array($item)) {
-
-                    $title = (string) ($item['title'] ?? $item['label'] ?? '');
-
-                    $slug = (string) (
-                        $item['slug']
-                        ?? strtolower(
-                            trim(
-                                preg_replace('/[^a-z0-9]+/i', '-', $title),
-                                '-'
-                            )
-                        )
-                    );
-
-                    $items[] = [
-                        'slug' => $slug,
-                        'title' => $title,
-                    ];
-                } else {
-
-                    $title = (string) $item;
-
-                    $items[] = [
-                        'slug' => strtolower(
-                            trim(
-                                preg_replace('/[^a-z0-9]+/i', '-', $title),
-                                '-'
-                            )
-                        ),
-                        'title' => $title,
-                    ];
-                }
-            }
-
-        } elseif (!empty($details['features']) && is_array($details['features'])) {
-
-            foreach ($details['features'] as $feature) {
-
-                $title = (string) $feature;
-
-                $items[] = [
-                    'slug' => strtolower(
-                        trim(
-                            preg_replace('/[^a-z0-9]+/i', '-', $title),
-                            '-'
-                        )
-                    ),
-                    'title' => $title,
-                ];
-            }
-        }
+        $items = $this->extractItemsFromDetails($details);
 
         return [
             'id' => (int) $row['id'],
@@ -227,5 +200,51 @@ class Service
             'created_at' => (string) ($row['created_at'] ?? ''),
             'updated_at' => (string) ($row['updated_at'] ?? ''),
         ];
+    }
+
+    /**
+     * @param array<string, mixed> $details
+     * @return array<int, array{slug: string, title: string}>
+     */
+    private function extractItemsFromDetails(array $details): array
+    {
+        $items = [];
+
+        if (!empty($details['items']) && is_array($details['items'])) {
+            foreach ($details['items'] as $item) {
+                if (is_array($item)) {
+                    $title = (string) ($item['title'] ?? $item['label'] ?? '');
+                    $slug = (string) ($item['slug'] ?? $this->slugFromTitle($title));
+
+                    $items[] = [
+                        'slug' => $slug,
+                        'title' => $title,
+                    ];
+                } else {
+                    $title = (string) $item;
+
+                    $items[] = [
+                        'slug' => $this->slugFromTitle($title),
+                        'title' => $title,
+                    ];
+                }
+            }
+        } elseif (!empty($details['features']) && is_array($details['features'])) {
+            foreach ($details['features'] as $feature) {
+                $title = (string) $feature;
+
+                $items[] = [
+                    'slug' => $this->slugFromTitle($title),
+                    'title' => $title,
+                ];
+            }
+        }
+
+        return $items;
+    }
+
+    private function slugFromTitle(string $title): string
+    {
+        return strtolower(trim(preg_replace('/[^a-z0-9]+/i', '-', $title) ?? '', '-'));
     }
 }

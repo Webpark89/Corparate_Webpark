@@ -2,6 +2,10 @@
 
 declare(strict_types=1);
 
+/**
+ * Service topic detail page view with sidebar navigation and HTML content body.
+ */
+
 $service = $service ?? [];
 $topic = $topic ?? [];
 $topicList = $topicList ?? [];

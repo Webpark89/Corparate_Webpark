@@ -1,7 +1,7 @@
 <?php
 
 /**
- * PDO Database connection (singleton).
+ * PDO database connection singleton and db() helper for the admin panel.
  */
 require_once __DIR__ . '/config.php';
 
@@ -25,9 +25,9 @@ class Database
                     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
                     PDO::ATTR_EMULATE_PREPARES   => false,
                 ]);
-            } catch (PDOException $e) {
+            } catch (PDOException $exception) {
                 http_response_code(500);
-                exit('Database connection failed: ' . htmlspecialchars($e->getMessage()));
+                exit('Database connection failed: ' . htmlspecialchars($exception->getMessage()));
             }
         }
         return self::$instance;

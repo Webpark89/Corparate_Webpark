@@ -2,6 +2,9 @@
 
 declare(strict_types=1);
 
+/**
+ * Key-value settings stored in the settings table.
+ */
 class Setting
 {
     private PDO $pdo;
@@ -11,6 +14,9 @@ class Setting
         $this->pdo = Database::getInstance();
     }
 
+    /**
+     * Fetch a single setting value by key.
+     */
     public function getByKey(string $key, mixed $default = null): mixed
     {
         $stmt = $this->pdo->prepare('SELECT config_value FROM settings WHERE config_key = ? LIMIT 1');
@@ -24,6 +30,12 @@ class Setting
         return $row['config_value'];
     }
 
+    /**
+     * Fetch multiple settings in one query.
+     *
+     * @param array<int, string> $keys
+     * @return array<string, mixed>
+     */
     public function getByKeys(array $keys): array
     {
         if ($keys === []) {
@@ -42,6 +54,11 @@ class Setting
         return $items;
     }
 
+    /**
+     * Fetch all settings belonging to a logical group.
+     *
+     * @return array<string, mixed>
+     */
     public function getByGroup(string $group): array
     {
         $stmt = $this->pdo->prepare('SELECT config_key, config_value FROM settings WHERE `group` = ? ORDER BY config_key');
@@ -55,6 +72,9 @@ class Setting
         return $items;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function all(): array
     {
         $stmt = $this->pdo->query('SELECT config_key, config_value FROM settings ORDER BY `group`, config_key');
@@ -67,14 +87,23 @@ class Setting
         return $items;
     }
 
-    public function save(string $key, string $value, string $group = 'general', ?string $description = null, bool $isProtected = false): bool
-    {
+    /**
+     * Insert or update a setting row.
+     */
+    public function save(
+        string $key,
+        string $value,
+        string $group = 'general',
+        ?string $description = null,
+        bool $isProtected = false
+    ): bool {
         $existing = $this->getByKey($key, null);
 
         if ($existing === null) {
             $stmt = $this->pdo->prepare(
                 'INSERT INTO settings (config_key, config_value, `group`, description, is_protected) VALUES (?, ?, ?, ?, ?)'
             );
+
             return $stmt->execute([$key, $value, $group, $description, $isProtected ? 1 : 0]);
         }
 
@@ -85,9 +114,13 @@ class Setting
         return $stmt->execute([$value, $group, $description, $isProtected ? 1 : 0, $key]);
     }
 
+    /**
+     * Delete a non-protected setting.
+     */
     public function delete(string $key): bool
     {
         $stmt = $this->pdo->prepare('DELETE FROM settings WHERE config_key = ? AND is_protected = 0');
+
         return $stmt->execute([$key]);
     }
 }

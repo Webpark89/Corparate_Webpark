@@ -1,44 +1,44 @@
 <?php
+
+/**
+ * Admin partners list — search, filter, and manage partner logos.
+ */
 $pageTitle = 'Partners Management';
 $page = 'partners';
 require_once __DIR__ . '/../includes/header.php';
 
-// ดึงรายการหมวดหมู่มาทำ Dropdown ตัวกรอง
-$categories = db()->query("SELECT * FROM partner_categories ORDER BY sort_order ASC")->fetchAll();
+$categories = db()->query('SELECT * FROM partner_categories ORDER BY sort_order ASC')->fetchAll();
 
-// รับค่าการค้นหาและตัวกรอง
 $search = trim($_GET['search'] ?? '');
 $categoryFilter = $_GET['category_id'] ?? '';
 $statusFilter = $_GET['status'] ?? '';
 
-// สร้าง Query พื้นฐาน (JOIN ตาราง partner_categories เพื่อเอาชื่อหมวดหมู่มาแสดง)
-$sql = "SELECT p.*, c.name AS category_name 
-        FROM partners p 
-        LEFT JOIN partner_categories c ON p.category_id = c.id 
-        WHERE 1=1";
+$sql = 'SELECT p.*, c.name AS category_name
+        FROM partners p
+        LEFT JOIN partner_categories c ON p.category_id = c.id
+        WHERE 1=1';
 $params = [];
 
 if ($search !== '') {
-    $sql .= " AND p.name LIKE ?";
+    $sql .= ' AND p.name LIKE ?';
     $params[] = "%$search%";
 }
 
 if ($categoryFilter !== '') {
-    $sql .= " AND p.category_id = ?";
-    $params[] = (int)$categoryFilter;
+    $sql .= ' AND p.category_id = ?';
+    $params[] = (int) $categoryFilter;
 }
 
 if ($statusFilter !== '') {
-    $sql .= " AND p.is_active = ?";
-    $params[] = (int)$statusFilter;
+    $sql .= ' AND p.is_active = ?';
+    $params[] = (int) $statusFilter;
 }
 
-// เรียงลำดับตาม sort_order ก่อน แล้วค่อยเรียงตามวันที่สร้าง
-$sql .= " ORDER BY p.sort_order ASC, p.created_at DESC";
-$stmt = db()->prepare($sql);
-$stmt->execute($params);
+$sql .= ' ORDER BY p.sort_order ASC, p.created_at DESC';
+$statement = db()->prepare($sql);
+$statement->execute($params);
 
-$partners = $stmt->fetchAll();
+$partners = $statement->fetchAll();
 ?>
 
 <div class="mx-auto w-full max-w-none px-2 pb-8 pt-1 text-sm md:px-4 lg:px-8">
@@ -70,9 +70,9 @@ $partners = $stmt->fetchAll();
                     <select name="category_id" onchange="this.form.submit()"
                         class="w-full rounded-xl border border-slate-200 bg-slate-50/50 px-3 py-2 text-xs text-slate-700 focus:bg-white focus:border-blue-500 focus:outline-none transition-all">
                         <option value="">ทุกหมวดหมู่</option>
-                        <?php foreach ($categories as $cat): ?>
-                            <option value="<?= $cat['id'] ?>" <?= $categoryFilter == $cat['id'] ? 'selected' : '' ?>>
-                                <?= e($cat['name']) ?>
+                        <?php foreach ($categories as $category): ?>
+                            <option value="<?= (int) $category['id'] ?>" <?= $categoryFilter == $category['id'] ? 'selected' : '' ?>>
+                                <?= e($category['name']) ?>
                             </option>
                         <?php endforeach; ?>
                     </select>
@@ -114,7 +114,7 @@ $partners = $stmt->fetchAll();
                 <tbody class="divide-y divide-slate-100 bg-white">
                     <?php foreach ($partners as $row): ?>
                         <tr class="hover:bg-slate-50/50 transition-colors cursor-pointer js-clickable-row"
-                            data-href="edit.php?id=<?= (int)$row['id'] ?>">
+                            data-href="edit.php?id=<?= (int) $row['id'] ?>">
 
                             <td class="px-4 py-3">
                                 <div class="h-10 w-20 rounded border border-slate-200 bg-slate-50 flex items-center justify-center p-1 overflow-hidden">
@@ -145,12 +145,12 @@ $partners = $stmt->fetchAll();
                                     <?= e($row['category_name'] ?: 'ไม่มีหมวดหมู่') ?>
                                 </div>
                                 <div class="mt-1 text-[11px] text-slate-400">
-                                    ลำดับแสดงผล: <?= (int)$row['sort_order'] ?>
+                                    ลำดับแสดงผล: <?= (int) $row['sort_order'] ?>
                                 </div>
                             </td>
 
                             <td class="px-3 py-3">
-                                <?php if ((int)$row['is_active'] === 1): ?>
+                                <?php if ((int) $row['is_active'] === 1): ?>
                                     <span class="inline-flex rounded-lg border border-emerald-200 bg-emerald-50 px-2.5 py-0.5 text-[11px] font-semibold text-emerald-700">
                                         เผยแพร่
                                     </span>
@@ -171,12 +171,12 @@ $partners = $stmt->fetchAll();
 
                             <td class="px-4 py-3 text-right" onclick="event.stopPropagation();">
                                 <div class="inline-flex overflow-hidden rounded-xl border border-slate-200 shadow-sm">
-                                    <a href="edit.php?id=<?= $row['id'] ?>"
+                                    <a href="edit.php?id=<?= (int) $row['id'] ?>"
                                         class="bg-white px-3 py-1.5 text-[11px] font-semibold text-slate-600 transition hover:bg-slate-50">
                                         แก้ไข
                                     </a>
                                     <button type="button"
-                                        onclick="if(confirm('ยืนยันการลบโลโก้พาร์ทเนอร์นี้?')) window.location.href='delete.php?id=<?= $row['id'] ?>'"
+                                        onclick="if(confirm('ยืนยันการลบโลโก้พาร์ทเนอร์นี้?')) window.location.href='delete.php?id=<?= (int) $row['id'] ?>'"
                                         class="border-l border-slate-200 bg-white px-3 py-1.5 text-[11px] font-semibold text-rose-600 transition hover:bg-rose-50 cursor-pointer">
                                         ลบ
                                     </button>
@@ -204,8 +204,8 @@ $partners = $stmt->fetchAll();
     document.addEventListener('DOMContentLoaded', function() {
         const rows = document.querySelectorAll('.js-clickable-row');
         rows.forEach(row => {
-            row.addEventListener('click', function(e) {
-                if (!e.target.closest('a') && !e.target.closest('button')) {
+            row.addEventListener('click', function(event) {
+                if (!event.target.closest('a') && !event.target.closest('button')) {
                     const url = this.getAttribute('data-href');
                     if (url) {
                         window.location.href = url;

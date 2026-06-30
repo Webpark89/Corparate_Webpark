@@ -1,6 +1,10 @@
 <?php
 
 declare(strict_types=1);
+
+/**
+ * 404 not found page view.
+ */
 ?>
 <section class="bg-white py-16 lg:py-24 text-center">
     <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 pt-20 pb-24 lg:pt-32 lg:pb-32 relative z-10">

@@ -1,4 +1,8 @@
 <?php
+
+/**
+ * Shared article create/edit form partial.
+ */
 $data = $article ?? [];
 $action = $action ?? 'create';
 $formAction = $formAction ?? 'create.php';
@@ -177,10 +181,10 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
                             </label>
                             <select name="category_id" class="<?= $inputClass ?> bg-white border-slate-200 h-[46px] py-0" required>
                                 <option value="">เลือกหมวดหมู่ที่ต้องการ...</option>
-                                <?php foreach ($categories as $cat): ?>
-                                    <option value="<?= (int)$cat['id'] ?>"
-                                        <?= (int)($data['category_id'] ?? 0) === (int)$cat['id'] ? 'selected' : '' ?>>
-                                        <?= e($cat['name']) ?>
+                                <?php foreach ($categories as $category): ?>
+                                    <option value="<?= (int) $category['id'] ?>"
+                                        <?= (int) ($data['category_id'] ?? 0) === (int) $category['id'] ? 'selected' : '' ?>>
+                                        <?= e($category['name']) ?>
                                     </option>
                                 <?php endforeach; ?>
                             </select>
@@ -267,26 +271,6 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
 </script>
 
 <script>
-function updateToggleStatus() {
-    const radioPublish = document.getElementById('radio-publish');
-    const btnPublish = document.getElementById('btn-publish');
-    const btnDraft = document.getElementById('btn-draft');
-
-    const baseClasses = "flex flex-col items-center justify-center py-2 px-6 rounded-full transition-all duration-300 text-sm font-semibold";
-
-    if (radioPublish.checked) {
-        // สถานะเผยแพร่: เขียวเข้มตัวขาว
-        btnPublish.className = `${baseClasses} bg-emerald-600 text-black shadow-md`;
-        btnDraft.className = `${baseClasses} text-red-700 hover:bg-red-50 hover:text-red-800`;
-    } else {
-        // สถานะไม่เผยแพร่: แดงเข้มตัวขาว
-        btnPublish.className = `${baseClasses} text-emerald-700 hover:bg-emerald-50 hover:text-emerald-800`;
-        btnDraft.className = `${baseClasses} bg-red-600 text-black shadow-md`;
-    }
-}
-</script>
-
-<script>
     document.addEventListener('DOMContentLoaded', function() {
         const fileInput = document.querySelector('input[name="image_file"]');
         const previewContainer = document.querySelector('.w-full.h-64.rounded-xl.border');
@@ -297,13 +281,13 @@ function updateToggleStatus() {
                 if (file && file.type.startsWith('image/')) {
                     const reader = new FileReader();
 
-                    reader.onload = function(e) {
+                    reader.onload = function(loadEvent) {
                         previewContainer.innerHTML = '';
                         const img = document.createElement('img');
-                        img.src = e.target.result;
+                        img.src = loadEvent.target.result;
                         img.className = 'w-full h-full object-contain rounded-lg';
                         previewContainer.appendChild(img);
-                    }
+                    };
 
                     reader.readAsDataURL(file);
                 }

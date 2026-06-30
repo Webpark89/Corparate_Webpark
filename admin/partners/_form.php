@@ -1,11 +1,14 @@
 <?php
-// ดึงข้อมูลจากตัวแปร $partner
+
+/**
+ * Shared partner create/edit form partial.
+ */
 $data = $partner ?? [];
 $action = $action ?? 'create';
 $formAction = $formAction ?? 'create.php';
 
 // ดึงรายการหมวดหมู่ทั้งหมดสำหรับใช้ใน Dropdown
-$categories = db()->query("SELECT * FROM partner_categories ORDER BY sort_order ASC")->fetchAll();
+$categories = db()->query('SELECT * FROM partner_categories ORDER BY sort_order ASC')->fetchAll();
 
 $inputClass = 'w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all';
 ?>
@@ -97,9 +100,9 @@ $inputClass = 'w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text
                         </label>
                         <select name="category_id" class="<?= $inputClass ?> bg-white h-[46px] py-0 w-full block" required>
                             <option value="">เลือกหมวดหมู่...</option>
-                            <?php foreach ($categories as $cat): ?>
-                                <option value="<?= (int)$cat['id'] ?>" <?= ((int)($data['category_id'] ?? 0) === (int)$cat['id']) ? 'selected' : '' ?>>
-                                    <?= e($cat['name']) ?>
+                            <?php foreach ($categories as $category): ?>
+                                <option value="<?= (int) $category['id'] ?>" <?= ((int) ($data['category_id'] ?? 0) === (int) $category['id']) ? 'selected' : '' ?>>
+                                    <?= e($category['name']) ?>
                                 </option>
                             <?php endforeach; ?>
                         </select>
@@ -179,10 +182,10 @@ $inputClass = 'w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text
                 if (file && file.type.startsWith('image/')) {
                     const reader = new FileReader();
 
-                    reader.onload = function(e) {
+                    reader.onload = function(loadEvent) {
                         previewContainer.innerHTML = '';
                         const img = document.createElement('img');
-                        img.src = e.target.result;
+                        img.src = loadEvent.target.result;
                         // ปรับให้พรีวิวรูปภาพแสดงเป็นแบบ object-contain เพื่อให้แสดงโลโก้ได้พอดีกล่อง
                         img.className = 'w-full h-full object-contain';
                         previewContainer.appendChild(img);

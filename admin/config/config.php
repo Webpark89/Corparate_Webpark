@@ -6,11 +6,11 @@
 
 // ---- Database ----
 define('DB_HOST', '127.0.0.1');
-define('DB_NAME', 'WEBPARK');
+define('DB_NAME', 'corparate_webpark');
 define('DB_USER', 'root');
 // define('DB_PASS', '');
 define('DB_PASS', '');
-define('DB_PORT', '8889');
+define('DB_PORT', '3306');
 define('DB_CHARSET', 'utf8mb4');
 
 // ---- Admin Login ----
@@ -19,7 +19,7 @@ define('ADMIN_PASSWORD_HASH', '$2y$12$hDzP3bxYxaNrutNUb7qEq.HhRaltcuXAO8KnaZkONM
 
 // ---- Site ----
 define('SITE_NAME', 'WEBPARK');
-define('SITE_URL', 'http://localhost:8888/corperate_webpark');           // no trailing slash
+define('SITE_URL', 'http://localhost/Corparate_Webpark');           // no trailing slash
 define('ADMIN_URL', SITE_URL . '/admin');
 define('UPLOAD_DIR', __DIR__ . '/../uploads');
 define('UPLOAD_URL', ADMIN_URL . '/uploads');

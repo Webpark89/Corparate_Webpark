@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-"build:css": "copy /b public\\assets\\css\\partials\\base.css+public\\assets\\css\\partials\\detail.css+public\\assets\\css\\partials\\home.css public\\assets\\css\\app.css > NUL && tailwindcss -i ./public/assets/css/app.css -o ./public/assets/css/tailwind.css --minify",
+    "build:css": "copy /b public\\assets\\css\\partials\\base.css+public\\assets\\css\\partials\\detail.css+public\\assets\\css\\partials\\home.css+public\\assets\\css\\partials\\article.css public\\assets\\css\\app.css > NUL && tailwindcss -i ./public/assets/css/app.css -o ./public/assets/css/tailwind.css --minify",
     "tailwind:build": "npm run build:css",
-    "watch:css": "cat ./public/assets/css/partials/base.css ./public/assets/css/partials/detail.css ./public/assets/css/partials/home.css > ./public/assets/css/app.css && tailwindcss -i ./public/assets/css/app.css -o ./public/assets/css/tailwind.css --watch",
+    "watch:css": "cat ./public/assets/css/partials/base.css ./public/assets/css/partials/detail.css ./public/assets/css/partials/home.css ./public/assets/css/partials/article.css > ./public/assets/css/app.css && tailwindcss -i ./public/assets/css/app.css -o ./public/assets/css/tailwind.css --watch",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

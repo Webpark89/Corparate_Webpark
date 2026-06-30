@@ -1,9 +1,12 @@
 <?php
+
+/**
+ * Admin contact settings list — bulk-edit contact group settings.
+ */
 $pageTitle = 'จัดการข้อมูลติดต่อ';
 $page = 'contact';
 require_once __DIR__ . '/../includes/header.php';
 
-// ดึงข้อมูลเฉพาะกลุ่ม contact
 $settings = db()->query("SELECT * FROM settings WHERE `group` = 'contact' ORDER BY config_key ASC")->fetchAll();
 ?>
 

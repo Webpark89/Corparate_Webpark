@@ -1,20 +1,23 @@
 <?php
+
+/**
+ * Admin dashboard — overview stats and recent articles/portfolio activity.
+ */
 $pageTitle = 'Dashboard';
 $page = 'dashboard';
 require_once __DIR__ . '/includes/header.php';
 
-// 1. ดึงจำนวนรายการทั้งหมด
 $counts = [
     'article' => [
         'total' => (int) db()->query('SELECT COUNT(*) FROM article')->fetchColumn(),
-        'published' => (int) db()->query("SELECT COUNT(*) FROM article WHERE status = 'published'")->fetchColumn(),
-        'draft' => (int) db()->query("SELECT COUNT(*) FROM article WHERE status = 'draft'")->fetchColumn(),
+        'published' => (int) db()->query('SELECT COUNT(*) FROM article WHERE status = \'published\'')->fetchColumn(),
+        'draft' => (int) db()->query('SELECT COUNT(*) FROM article WHERE status = \'draft\'')->fetchColumn(),
     ],
 
     'portfolio' => [
         'total' => (int) db()->query('SELECT COUNT(*) FROM portfolio')->fetchColumn(),
-        'published' => (int) db()->query("SELECT COUNT(*) FROM portfolio WHERE status = 'published'")->fetchColumn(),
-        'draft' => (int) db()->query("SELECT COUNT(*) FROM portfolio WHERE status = 'draft'")->fetchColumn(),
+        'published' => (int) db()->query('SELECT COUNT(*) FROM portfolio WHERE status = \'published\'')->fetchColumn(),
+        'draft' => (int) db()->query('SELECT COUNT(*) FROM portfolio WHERE status = \'draft\'')->fetchColumn(),
     ],
 
     'partners' => [
@@ -89,16 +92,18 @@ $dashboardCards = [
     ],
 ];
 
-// 2. ดึงข้อมูลผลงานล่าสุด (ใช้ meta_title แทน title)
-$recentPortfolio = db()->query('SELECT p.id, p.meta_title, p.client_name, p.created_at 
-                                FROM portfolio p 
-                                ORDER BY p.created_at DESC LIMIT 5')->fetchAll();
+$recentPortfolio = db()->query(
+    'SELECT p.id, p.meta_title, p.client_name, p.created_at
+     FROM portfolio p
+     ORDER BY p.created_at DESC LIMIT 5'
+)->fetchAll();
 
-// 3. ดึงข้อมูลบทความล่าสุด (ใช้ meta_title แทน title)
-$recentArticle = db()->query('SELECT a.id, a.meta_title, c.name AS category, a.created_at 
-                              FROM article a 
-                              LEFT JOIN categories c ON c.id = a.category_id 
-                              ORDER BY a.created_at DESC LIMIT 5')->fetchAll();
+$recentArticle = db()->query(
+    'SELECT a.id, a.meta_title, c.name AS category, a.created_at
+     FROM article a
+     LEFT JOIN categories c ON c.id = a.category_id
+     ORDER BY a.created_at DESC LIMIT 5'
+)->fetchAll();
 ?>
 
 <section class="space-y-4" aria-labelledby="dashboardOverviewTitle">
@@ -155,4 +160,4 @@ $recentArticle = db()->query('SELECT a.id, a.meta_title, c.name AS category, a.c
         <?php endforeach; ?>
     </div>
 </section>
-<?php require __DIR__ . '/includes/footer.php'; ?>
+<?php require_once __DIR__ . '/includes/footer.php'; ?>

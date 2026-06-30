@@ -2,19 +2,16 @@
 
 declare(strict_types=1);
 
-// Fetch portfolio items from database
-$portfolio = new Portfolio();
-$projects = $portfolio->getAll();
+/**
+ * Portfolio listing page view with category tabs and client-side grid switching.
+ */
 
-// Extract unique categories from portfolio
-$filters = array_values(array_unique(array_map(static function ($item) {
-    return (string) ($item['category'] ?? '');
-}, array_filter($projects, static function ($item) {
-    return !empty($item['category'] ?? '');
-})), SORT_STRING));
-sort($filters);
-
-$activeFilter = $_GET['category'] ?? 'All';
+/**
+ * Received from controller
+ */
+$filters = $filters ?? ['All'];
+$portfolioRows = $portfolioRows ?? [];
+$activeFilter = $activeFilter ?? 'All';
 $temporaryImage = asset_url('images/story.png');
 
 /**
@@ -34,7 +31,7 @@ $truncateText = static function (string $text, int $length = 140): string {
 // Prepare portfolio items grouped by filter for client-side switching
 $portfolioTabs = [];
 foreach ($filters as $filter) {
-    $list = array_values(array_filter($projects, static function ($p) use ($filter) {
+    $list = array_values(array_filter($portfolioRows, static function ($p) use ($filter) {
         return (string)($p['category'] ?? '') === (string)$filter;
     }));
 
@@ -68,7 +65,7 @@ $portfolioTabs['All'] = array_map(static function ($item) use ($temporaryImage, 
         'image' => $temporaryImage,
         'category' => (string)($item['category'] ?? ''),
     ];
-}, $projects ?: []);
+}, $portfolioRows ?: []);
 
 $portfolioTabsJson = json_encode($portfolioTabs, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) ?: '{}';
 $initialProjects = $portfolioTabs[$activeFilter] ?? $portfolioTabs['All'] ?? [];
@@ -278,7 +275,7 @@ $initialProjects = $portfolioTabs[$activeFilter] ?? $portfolioTabs['All'] ?? [];
                                     <?= e($project['title']) ?>
                                 </h3>
 
-                <p class="mt-6 text-[#022862] text-base md:text-lg leading-relaxed max-w-lg mb-10 font-medium">
+                                <p class="mt-6 text-[#022862] text-base md:text-lg leading-relaxed max-w-lg mb-10 font-medium">
                                     <?= e($project['description']) ?>
                                 </p>
                             </div>

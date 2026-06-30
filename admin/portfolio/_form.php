@@ -1,5 +1,8 @@
 <?php
-// เปลี่ยนมาดึงข้อมูลจากตัวแปร $portfolio
+
+/**
+ * Shared portfolio create/edit form partial.
+ */
 $data = $portfolio ?? [];
 $action = $action ?? 'create';
 $formAction = $formAction ?? 'create.php';
@@ -232,10 +235,9 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
                             </label>
                             <select name="category_id" class="<?= $inputClass ?> bg-white border-slate-200 h-[46px] py-0" required>
                                 <option value="">เลือกหมวดหมู่ผลงานโครงการ...</option>
-                                <?php foreach ($categories as $cat): ?>
-                                    <option value="<?= (int)$cat['id'] ?>"
-                                        <?= (int)($data['category_id'] ?? 0) === (int)$cat['id'] ? 'selected' : '' ?>>
-                                        <?= e($cat['name']) ?>
+                                <?php foreach ($categories as $category): ?>
+                                    <option value="<?= (int) $category['id'] ?>" <?= (int) ($data['category_id'] ?? 0) === (int) $category['id'] ? 'selected' : '' ?>>
+                                        <?= e($category['name']) ?>
                                     </option>
                                 <?php endforeach; ?>
                             </select>
@@ -332,10 +334,10 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
                 if (file && file.type.startsWith('image/')) {
                     const reader = new FileReader();
 
-                    reader.onload = function(e) {
+                    reader.onload = function(loadEvent) {
                         previewContainer.innerHTML = '';
                         const img = document.createElement('img');
-                        img.src = e.target.result;
+                        img.src = loadEvent.target.result;
                         img.className = 'w-full h-full object-contain rounded-lg';
                         previewContainer.appendChild(img);
                     }

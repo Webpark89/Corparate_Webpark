@@ -1,40 +1,41 @@
 <?php
+
+/**
+ * Admin review list — search, filter, and manage customer reviews.
+ */
 $pageTitle = 'Reviews Management';
 $page = 'review';
 require_once __DIR__ . '/../includes/header.php';
 
-// รับค่าการค้นหาและตัวกรอง
 $search = trim($_GET['search'] ?? '');
 $ratingFilter = $_GET['rating'] ?? '';
 $statusFilter = $_GET['status'] ?? '';
 
-// สร้าง Query พื้นฐานจากตาราง
-$sql = "SELECT * FROM review WHERE 1=1";
+$sql = 'SELECT * FROM review WHERE 1=1';
 $params = [];
 
 if ($search !== '') {
-    $sql .= " AND (reviewer_name LIKE ? OR reviewer_company LIKE ? OR content LIKE ?)";
+    $sql .= ' AND (reviewer_name LIKE ? OR reviewer_company LIKE ? OR content LIKE ?)';
     $params[] = "%$search%";
     $params[] = "%$search%";
     $params[] = "%$search%";
 }
 
 if ($ratingFilter !== '') {
-    $sql .= " AND rating = ?";
-    $params[] = (int)$ratingFilter;
+    $sql .= ' AND rating = ?';
+    $params[] = (int) $ratingFilter;
 }
 
 if ($statusFilter !== '') {
-    $sql .= " AND is_active = ?";
-    $params[] = (int)$statusFilter;
+    $sql .= ' AND is_active = ?';
+    $params[] = (int) $statusFilter;
 }
 
-// เรียงลำดับตาม sort_order ก่อน เพื่อให้เหมือนหน้าเว็บ แล้วค่อยเรียงตามวันที่สร้าง
-$sql .= " ORDER BY sort_order ASC, created_at DESC";
-$stmt = db()->prepare($sql);
-$stmt->execute($params);
+$sql .= ' ORDER BY sort_order ASC, created_at DESC';
+$statement = db()->prepare($sql);
+$statement->execute($params);
 
-$reviews = $stmt->fetchAll();
+$reviews = $statement->fetchAll();
 ?>
 
 <div class="mx-auto w-full max-w-none px-2 pb-8 pt-1 text-sm md:px-4 lg:px-8">
@@ -109,7 +110,7 @@ $reviews = $stmt->fetchAll();
                 <tbody class="divide-y divide-slate-100 bg-white">
                     <?php foreach ($reviews as $row): ?>
                         <tr class="hover:bg-slate-50/60 transition-colors cursor-pointer js-clickable-row group"
-                            data-href="edit.php?id=<?= (int)$row['id'] ?>">
+                            data-href="edit.php?id=<?= (int) $row['id'] ?>">
 
                             <td class="px-4 py-3 text-center">
                                 <?php $avatarUrl = !empty($row['reviewer_image_url']) ? $row['reviewer_image_url'] : 'https://ui-avatars.com/api/?name=' . urlencode($row['reviewer_name']) . '&background=random'; ?>
@@ -129,15 +130,15 @@ $reviews = $stmt->fetchAll();
 
                             <td class="px-4 py-3 whitespace-nowrap">
                                 <div class="flex items-center gap-0.5 text-amber-400 text-sm">
-                                    <?= str_repeat('★', (int)$row['rating']) ?><?= str_repeat('☆', 5 - (int)$row['rating']) ?>
+                                    <?= str_repeat('★', (int) $row['rating']) ?><?= str_repeat('☆', 5 - (int) $row['rating']) ?>
                                 </div>
                                 <div class="mt-1 text-xs text-slate-400">
-                                    ลำดับแสดงผล: <?= (int)$row['sort_order'] ?>
+                                    ลำดับแสดงผล: <?= (int) $row['sort_order'] ?>
                                 </div>
                             </td>
 
                             <td class="px-4 py-3 whitespace-nowrap">
-                                <?php if ((int)$row['is_active'] === 1): ?>
+                                <?php if ((int) $row['is_active'] === 1): ?>
                                     <span class="inline-flex items-center rounded-lg border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-700">
                                         <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1.5"></span>
                                         เผยแพร่
@@ -160,12 +161,12 @@ $reviews = $stmt->fetchAll();
 
                             <td class="px-4 py-3 text-right whitespace-nowrap" onclick="event.stopPropagation();">
                                 <div class="inline-flex overflow-hidden rounded-xl border border-slate-200 shadow-sm">
-                                    <a href="edit.php?id=<?= $row['id'] ?>"
+                                    <a href="edit.php?id=<?= (int) $row['id'] ?>"
                                         class="bg-white px-3 py-1.5 text-xs font-semibold text-slate-600 transition hover:bg-slate-50 hover:text-blue-600">
                                         แก้ไข
                                     </a>
                                     <button type="button"
-                                        onclick="if(confirm('ยืนยันการลบรีวิวนี้?')) window.location.href='delete.php?id=<?= $row['id'] ?>'"
+                                        onclick="if(confirm('ยืนยันการลบรีวิวนี้?')) window.location.href='delete.php?id=<?= (int) $row['id'] ?>'"
                                         class="border-l border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-rose-600 transition hover:bg-rose-50 cursor-pointer">
                                         ลบ
                                     </button>
@@ -196,8 +197,8 @@ $reviews = $stmt->fetchAll();
     document.addEventListener('DOMContentLoaded', function() {
         const rows = document.querySelectorAll('.js-clickable-row');
         rows.forEach(row => {
-            row.addEventListener('click', function(e) {
-                if (!e.target.closest('a') && !e.target.closest('button')) {
+            row.addEventListener('click', function(event) {
+                if (!event.target.closest('a') && !event.target.closest('button')) {
                     const url = this.getAttribute('data-href');
                     if (url) {
                         window.location.href = url;

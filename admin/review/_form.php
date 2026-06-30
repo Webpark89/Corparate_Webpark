@@ -1,5 +1,8 @@
 <?php
-// ดึงข้อมูลจากตัวแปร $review
+
+/**
+ * Shared review create/edit form partial.
+ */
 $data = $review ?? [];
 $action = $action ?? 'create';
 $formAction = $formAction ?? 'create.php';
@@ -152,20 +155,20 @@ $inputClass = 'w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text
                     <?php $currentRating = (int)($data['rating'] ?? 5); ?>
 
                     <div class="grid grid-cols-5 gap-2 sm:gap-3">
-                        <?php for ($i = 5; $i >= 1; $i--): ?>
+                        <?php for ($ratingValue = 5; $ratingValue >= 1; $ratingValue--): ?>
                             <label class="cursor-pointer">
                                 <input type="radio"
                                     name="rating"
-                                    value="<?= $i ?>"
+                                    value="<?= $ratingValue ?>"
                                     class="peer sr-only"
-                                    <?= $currentRating === $i ? 'checked' : '' ?>
+                                    <?= $currentRating === $ratingValue ? 'checked' : '' ?>
                                     required>
 
                                 <div class="flex flex-col items-center justify-center rounded-xl border border-slate-200 bg-white py-2.5 transition-all hover:bg-slate-50 peer-checked:border-amber-400 peer-checked:bg-amber-50 peer-checked:ring-1 peer-checked:ring-amber-400 group">
 
                                     <div class="flex items-center gap-1.5">
                                         <span class="text-lg font-black text-slate-400 transition-colors group-hover:text-slate-600 peer-checked:text-amber-600">
-                                            <?= $i ?>
+                                            <?= $ratingValue ?>
                                         </span>
                                         <svg class="w-4 h-4 text-slate-200 transition-colors group-hover:text-slate-300 peer-checked:text-amber-500" fill="currentColor" viewBox="0 0 20 20">
                                             <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
@@ -223,10 +226,10 @@ $inputClass = 'w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text
                 if (file && file.type.startsWith('image/')) {
                     const reader = new FileReader();
 
-                    reader.onload = function(e) {
+                    reader.onload = function(loadEvent) {
                         previewContainer.innerHTML = '';
                         const img = document.createElement('img');
-                        img.src = e.target.result;
+                        img.src = loadEvent.target.result;
                         img.className = 'w-full h-full object-cover rounded-full';
                         previewContainer.appendChild(img);
                     }

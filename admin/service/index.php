@@ -1,10 +1,13 @@
 <?php
+
+/**
+ * Admin service list — browse and manage website service entries.
+ */
 $pageTitle = 'การจัดการบริการ';
 $page = 'services';
 require_once __DIR__ . '/../includes/header.php';
 
-// ดึงข้อมูลเรียงตามวันที่ล่าสุด (ไม่ต้องใช้ sort_order หรือ category)
-$services = db()->query("SELECT * FROM service ORDER BY created_at DESC")->fetchAll();
+$services = db()->query('SELECT * FROM service ORDER BY created_at DESC')->fetchAll();
 ?>
 
 <div class="mx-auto w-full max-w-none px-2 pb-8 pt-1 text-sm md:px-4 lg:px-8">
@@ -45,7 +48,7 @@ $services = db()->query("SELECT * FROM service ORDER BY created_at DESC")->fetch
                             $features = $details['features'] ?? [];
                         ?>
                             <tr class="hover:bg-slate-50/50 transition-colors cursor-pointer js-clickable-row"
-                                data-href="edit.php?id=<?= (int)$row['id'] ?>">
+                                data-href="edit.php?id=<?= (int) $row['id'] ?>">
 
                                 <td class="px-4 py-3">
                                     <img src="<?= e($row['image']) ?>" class="h-10 w-[60px] rounded-lg border border-slate-200 object-cover shadow-sm" alt="<?= e($row['title']) ?>">
@@ -70,7 +73,7 @@ $services = db()->query("SELECT * FROM service ORDER BY created_at DESC")->fetch
 
                                 <td class="px-4 py-3 text-right" onclick="event.stopPropagation();">
                                     <div class="inline-flex overflow-hidden rounded-xl border border-slate-200 shadow-sm">
-                                        <a href="edit.php?id=<?= $row['id'] ?>"
+                                        <a href="edit.php?id=<?= (int) $row['id'] ?>"
                                             class="bg-white px-3 py-1.5 text-[11px] font-semibold text-slate-600 transition hover:bg-slate-50">แก้ไข</a>
                                     </div>
                                 </td>
@@ -87,8 +90,8 @@ $services = db()->query("SELECT * FROM service ORDER BY created_at DESC")->fetch
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         document.querySelectorAll('.js-clickable-row').forEach(row => {
-            row.addEventListener('click', function(e) {
-                if (!e.target.closest('a') && !e.target.closest('button')) {
+            row.addEventListener('click', function(event) {
+                if (!event.target.closest('a') && !event.target.closest('button')) {
                     const url = this.getAttribute('data-href');
                     if (url) {
                         window.location.href = url;

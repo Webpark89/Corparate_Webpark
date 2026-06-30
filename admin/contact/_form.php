@@ -1,5 +1,9 @@
 <?php
-$existingGroups = db()->query("SELECT DISTINCT `group` FROM settings ORDER BY `group` ASC")->fetchAll(PDO::FETCH_COLUMN);
+
+/**
+ * Shared contact setting create/edit form partial.
+ */
+$existingGroups = db()->query('SELECT DISTINCT `group` FROM settings ORDER BY `group` ASC')->fetchAll(PDO::FETCH_COLUMN);
 $data = $setting ?? [];
 $action = $action ?? 'create';
 $formAction = $formAction ?? 'create.php';
@@ -101,10 +105,10 @@ $inputClass = 'w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text
 
                     if (file.type.startsWith('image/') || file.name.endsWith('.ico')) {
                         const reader = new FileReader();
-                        reader.onload = function(e) {
+                        reader.onload = function(loadEvent) {
                             previewContainer.innerHTML = '';
                             const img = document.createElement('img');
-                            img.src = e.target.result;
+                            img.src = loadEvent.target.result;
                             img.className = 'w-full h-full object-contain p-2 z-10 bg-white/50 backdrop-blur-sm rounded-xl';
                             previewContainer.appendChild(img);
                         }

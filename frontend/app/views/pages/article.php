@@ -2,400 +2,312 @@
 
 declare(strict_types=1);
 
-// Fetch articles from database
-$article = new Article();
-$articles = $article->getPublished();
-
-// Extract unique categories from articles
-$categories = array_values(array_unique(array_map(static function ($item) {
-    return (string) ($item['category'] ?? '');
-}, array_filter($articles, static function ($item) {
-    return !empty($item['category'] ?? '');
-})), SORT_STRING));
-sort($categories);
-
-$activeCategory = $_GET['category'] ?? 'All';
-$temporaryImage = asset_url('images/story.png');
+$articles = is_array($articles ?? null) ? $articles : [];
+$categories = is_array($categories ?? null) ? $categories : [];
+$activeCategorySlug = (string) ($activeCategorySlug ?? 'all');
 $fallbackImage = asset_url('images/story.png');
-
-/**
- * Get article image with file existence check
- */
-$getArticleImage = static function (string $imagePath) use ($temporaryImage, $fallbackImage): string {
-    if (empty($imagePath)) {
-        return $temporaryImage;
-    }
-    $fullImageUrl = asset_url($imagePath);
-    $parsed = parse_url($fullImageUrl, PHP_URL_PATH);
-    $filePath = $_SERVER['DOCUMENT_ROOT'] . $parsed;
-    return file_exists($filePath) ? $fullImageUrl : $fallbackImage;
-};
-
-/**
- * Truncate text to fit ~3 lines
- */
-$truncateText = static function (string $text, int $length = 130): string {
-    $text = strip_tags($text);
-    $text = preg_replace('/\s+/', ' ', $text);
-    $text = trim($text);
-
-    if (mb_strlen($text, 'UTF-8') <= $length) {
-        return $text;
-    }
-    return mb_strimwidth($text, 0, $length, '...', 'UTF-8');
-};
-
-$formatThaiDate = static function ($createdAtDate): string {
-    $date = $createdAtDate ?? '';
-    $ts = $date === '' ? false : strtotime($date);
-    if ($ts === false || $ts <= 0) return '';
-
-    $months = [1 => 'ม.ค.', 2 => 'ก.พ.', 3 => 'มี.ค.', 4 => 'เม.ย.', 5 => 'พ.ค.', 6 => 'มิ.ย.', 7 => 'ก.ค.', 8 => 'ส.ค.', 9 => 'ก.ย.', 10 => 'ต.ค.', 11 => 'พ.ย.', 12 => 'ธ.ค.'];
-    $day = date('j', $ts);
-    $month = $months[(int) date('n', $ts)] ?? '';
-    $year = date('Y', $ts);
-    return "$day $month $year";
-};
-
-// จัดกลุ่มบทความแยกแท็บ
-$articleTabs = [];
-foreach ($categories as $category) {
-    $list = array_values(array_filter($articles, static function ($a) use ($category) {
-        return (string)($a['category'] ?? '') === (string)$category;
-    }));
-
-    $articleTabs[$category] = array_map(static function ($item) use ($getArticleImage, $truncateText, $formatThaiDate) {
-        $titleText = !empty($item['meta_title']) ? $item['meta_title'] : ($item['title'] ?? 'Untitled Article');
-        $descText = !empty($item['meta_description']) ? $item['meta_description'] : ($item['content'] ?? 'รายละเอียดบทความ...');
-
-        return [
-            'id' => (int)($item['id'] ?? 0),
-            'url' => ($item['id'] ?? 0) > 0 ? route_url('/article', ['id' => (int)$item['id']]) : '',
-            'title' => (string)$titleText,
-            'author' => (string)($item['author'] ?? ''),
-            'description' => $truncateText((string)$descText),
-            'image' => $getArticleImage($item['image_path'] ?? ''),
-            'category' => (string)($item['category'] ?? ''),
-            'date' => $formatThaiDate($item['created_at'] ?? ''),
-        ];
-    }, $list);
-}
-
-// ชุดข้อมูลแท็บรวม "ทั้งหมด (All)"
-$articleTabs['All'] = array_map(static function ($item) use ($getArticleImage, $truncateText, $formatThaiDate) {
-    $titleText = !empty($item['meta_title']) ? $item['meta_title'] : ($item['title'] ?? 'Untitled Article');
-    $descText = !empty($item['meta_description']) ? $item['meta_description'] : ($item['content'] ?? 'รายละเอียดบทความ...');
-
-    return [
-        'id' => (int)($item['id'] ?? 0),
-        'url' => ($item['id'] ?? 0) > 0 ? route_url('/article', ['id' => (int)$item['id']]) : '',
-        'title' => (string)$titleText,
-        'author' => (string)($item['author'] ?? ''),
-        'description' => $truncateText((string)$descText),
-        'image' => $getArticleImage($item['image_path'] ?? ''),
-        'category' => (string)($item['category'] ?? ''),
-        'date' => $formatThaiDate($item['created_at'] ?? ''),
-    ];
-}, $articles ?: []);
-
-$articleTabsJson = json_encode($articleTabs, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) ?: '{}';
-$initialArticles = $articleTabs[$activeCategory] ?? $articleTabs['All'] ?? [];
+$heroImage = asset_url('images/computer-laptop-password-data-cyber-security-login-account-personal-3drender-illustration.jpg');
+$ctaImage = asset_url('images/bg-cta.jpg');
 ?>
-<style>
-    /* คงไว้แค่แอนิเมชันตอนโหลดหน้าสไลด์ขึ้น */
-    @keyframes fadeSlideUp {
-        0% { opacity: 0; transform: translateY(30px); }
-        100% { opacity: 1; transform: translateY(0); }
-    }
-    .animate-fade-up {
-        opacity: 0;
-        animation: fadeSlideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    }
 
-    .delay-100 { animation-delay: 100ms; }
-    .delay-200 { animation-delay: 200ms; }
-    .delay-300 { animation-delay: 300ms; }
-    .delay-400 { animation-delay: 400ms; }
-</style>
-
-<section class="relative overflow-hidden font-sans">
-    <div class="absolute inset-0 z-0">
-        <img src="<?= e(asset_url('images/bg-6.png')) ?>" alt="WEBPARK Solutions Background" class="w-full h-full object-cover object-center opacity-70 mix-blend-screen">
-        <div class="absolute inset-0 bg-gradient-to-r from-white to-white/5"></div>
-                <div class="absolute inset-x-0 bottom-0 h-[30%] bg-gradient-to-t from-white to-transparent z-10"></div>
-
-    </div>
-
-    <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 pt-12 pb-24 lg:pt-28 lg:pb-32 relative z-10">
-        <div class="grid grid-cols-1 lg:grid-cols-1 gap-12 lg:gap-20 items-center">
-            
-            <div class="max-w-3xl">
-                <div class="animate-fade-up delay-100 inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary mb-6 shadow-sm">
-                    <span class="text-blue-500 font-bold">+</span>
-                    <span class="text-xs md:text-sm font-semibold text-primary uppercase tracking-wide">ARTICLE</span>
-                </div>
-
-                <h1 class="animate-fade-up delay-200 text-5xl md:text-6xl lg:text-8xl font-lg leading-[1.1] mb-2 tracking-tighter">
-    <span class="bg-gradient-to-r from-[#898F98] to-[#000208] bg-clip-text text-transparent inline-block py-2">บทความและความรู้</span><br>
-    <span class="bg-gradient-to-r from-[#003380] to-[#0055ff] bg-clip-text text-transparent inline-block py-2">จาก WEBPARK</span>
-</h1>
-
-                <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-base md:text-lg leading-relaxed max-w-lg mb-10 font-medium">
-                    รวมบทความและความรู้ เทคโนโลยี นวัตกรรม และแนวทางการทำธุรกิจ ครอบคลุม ERP ระบบธุรกิจดิจิทัล การตลาดออนไลน์ AI และโซลูชัน <br>ที่ช่วยพัฒนาองค์กรให้เติบโตอย่างยั่งยืน
+<section class="article-hero bg-gradient-to-b from-[#f5f6fb] to-white py-20">
+    <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <div class="grid gap-8 lg:grid-cols-2 lg:items-center">
+            <div class="space-y-5">
+                <p class="tracking-[0.5em] text-xs font-semibold text-[#1a2b6d] uppercase">บทความ</p>
+                <h1 class="text-4xl font-extrabold text-[#0b1b42] sm:text-5xl lg:text-6xl">บทความ</h1>
+                <h2 class="text-2xl font-bold leading-tight text-slate-700">
+                    <span class="text-slate-700">ความรู้และอัปเดตจาก </span>
+                    <span class="text-[#1a2b6d]">Webpark</span>
+                </h2>
+                <p class="text-base leading-relaxed text-slate-600 max-w-xl">
+                    รวมบทความเทคโนโลยีและแนวทางองค์กรดิจิทัลที่ทีม Webpark อัปเดตอยู่เสมอ ทั้ง ERP, AI,
+                    และโซลูชันภาคธุรกิจ ช่วยให้เปลี่ยนผ่านสู่ยุคดิจิทัลได้รวดเร็วและมั่นคง
                 </p>
+            </div>
 
-                <div class="animate-fade-up delay-400 flex flex-wrap items-center gap-4">
-                    <a href="#" class="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-primary text-white text-sm font-semibold rounded-full hover:bg-blue-700 transition-all shadow-md hover:-translate-y-0.5">
-                        ปรึกษาผู้เชี่ยวชาญ
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                        </svg>
-                    </a>
-                    
-                    <a href="#about" class="group inline-flex items-center gap-4 transition-all hover:-translate-y-0.5">
-                        <div class="h-14 w-14 bg-white flex items-center justify-center rounded-full shadow-lg border border-slate-200 transition-all duration-300 group-hover:bg-slate-50 group-hover:scale-105 group-hover:shadow-xl">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600 fill-current transition-transform duration-300 group-hover:scale-110" viewBox="0 0 24 24">
-                                <path d="M8 5v14l11-7z" />
-                            </svg>
-                        </div>
-                        <span class="text-slate-800 text-lg font-semibold transition-colors duration-300 group-hover:text-primary">
-                            ดูวิดีโอแนะนำ
-                        </span>
-                    </a>
+            <div class="flex items-center justify-center">
+                <div class="relative overflow-hidden rounded-[2rem] border border-slate-200 bg-white/80 p-6 shadow-[0_35px_75px_rgba(15,23,42,0.18)]">
+                    <img src="<?= e($heroImage) ?>"
+                         alt="Illustration แสดงบทความและแนวคิดดิจิทัล"
+                         class="h-72 w-72 object-contain">
                 </div>
             </div>
-            
         </div>
     </div>
 </section>
 
-<section class="bg-white py-12 sm:py-16 font-sans">
-    <div class="mx-auto w-full max-w-7xl px-4 sm:px-4 lg:px-6"> 
-        
-        <div class="mb-6 flex flex-wrap justify-center items-center gap-2.5 max-w-5xl mx-auto" id="articleSwitcher">
-            <a href="?category=All"
-                class="rounded-3xl px-5 py-2 text-xs md:text-sm font-bold tracking-wide border transition-all duration-200 <?= $activeCategory === 'All' ? 'bg-primary text-white border-primary shadow-sm' : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50' ?>"                data-tab="All"
-                data-active="<?= $activeCategory === 'All' ? 'true' : 'false' ?>">
-                ทั้งหมด
-            </a>
-
-
-            <?php foreach ($categories as $category): ?>
-                <a href="?category=<?= urlencode($category) ?>"
-                    class="rounded-3xl px-5 py-2 text-xs md:text-sm font-bold tracking-wide border transition-all duration-200 <?= $activeCategory === $category ? 'bg-primary text-white border-primary shadow-sm' : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50' ?>"                    data-tab="<?= e($category) ?>"
-                    data-active="<?= $activeCategory === $category ? 'true' : 'false' ?>">
-                    <?= e($category) ?>
-                </a>
-            <?php endforeach; ?>
-
-        </div>
-
-
-        <div id="articleGrid" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 mt-14">
-            <?php if (!empty($initialArticles)): ?>
-                <?php foreach ($initialArticles as $post): ?>
-                    <article class="group bg-white rounded-3xl border border-slate-100 shadow-[0_4px_25px_rgba(0,0,0,0.02)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.05)] hover:-translate-y-1 transition-all duration-300 overflow-hidden flex flex-col h-[490px] cursor-pointer"
-                        <?php if ($post['url'] !== ''): ?>data-href="<?= e($post['url']) ?>"<?php endif; ?>>
-
-                        <div class="w-full aspect-[16/10] bg-slate-50 overflow-hidden shrink-0 relative">
-                            <img src="<?= e($post['image']) ?>" alt="<?= e($post['title']) ?>" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105">
-                        </div>
-
-                        <div class="flex flex-col flex-grow p-6 justify-between">
-                            <div>
-                                <span class="inline-flex items-center px-2.5 py-1 rounded-3xl bg-blue-50 text-primary text-[10px] font-bold uppercase tracking-wider mb-3">
-                                    <?= e($post['category'] !== '' ? $post['category'] : 'General') ?>
-                                </span>
-
-                                <h3 class="text-base font-bold text-dark leading-snug line-clamp-2 mb-2 group-hover:text-primary transition-colors duration-200">
-                                    <?= e($post['title']) ?>
-                                </h3>
-
-                                <p class="text-slate-500 text-[13px] leading-relaxed line-clamp-3">
-                                    <?= e($post['description']) ?>
-                                </p>
-                            </div>
-
-                            <div class="flex items-center justify-end pt-2 mt-auto">
-                                <span class="inline-flex items-center gap-1.5 text-xs font-bold text-primary group-hover:underline">
-                                    อ่านเพิ่มเติม 
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                                    </svg>
-                                </span>
-                            </div>
-                        </div>
-                    </article>
-                <?php endforeach; ?>
-            <?php else: ?>
-                <div class="col-span-3 text-center py-12 text-slate-400 text-sm border-2 border-dashed border-slate-100 rounded-2xl">
-                    ไม่พบข้อมูลบทความในระบบ
+<section class="bg-white pb-10">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+            <div class="relative flex-1">
+                <div id="category-filters" class="article-filter-track flex gap-3 overflow-x-auto py-1 pr-4">
+                    <button type="button"
+                            data-filter="all"
+                            class="article-filter-btn whitespace-nowrap rounded-full border px-5 py-2 text-sm font-medium transition-colors <?= $activeCategorySlug === 'all' ? 'active border-transparent bg-[#1a2b6d] text-white' : 'border-slate-200 bg-white text-slate-700 hover:border-transparent hover:bg-[#1a2b6d] hover:text-white' ?>">
+                        ทั้งหมด
+                    </button>
+                    <?php foreach ($categories as $category):
+                        $slug = trim((string) ($category['slug'] ?? ''));
+                        $name = $category['name'] ?? '';
+                        if ($slug === '' || $name === '') {
+                            continue;
+                        }
+                        $isActive = $activeCategorySlug === $slug;
+                        ?>
+                        <button type="button"
+                                data-filter="<?= e($slug) ?>"
+                                class="article-filter-btn whitespace-nowrap rounded-full border px-5 py-2 text-sm font-medium transition-colors <?= $isActive ? 'active border-transparent bg-[#1a2b6d] text-white' : 'border-slate-200 bg-white text-slate-700 hover:border-transparent hover:bg-[#1a2b6d] hover:text-white' ?>">
+                            <?= e($name) ?>
+                        </button>
+                    <?php endforeach; ?>
                 </div>
-            <?php endif; ?>
+            </div>
+
+            <div class="hidden items-center gap-2 md:flex">
+                <button id="filter-scroll-left"
+                        type="button"
+                        class="article-filter-arrow flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 text-slate-500 transition-colors hover:bg-slate-50"
+                        aria-label="เลื่อนหมวดหมู่ไปทางซ้าย">
+                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M15 19l-7-7 7-7"/>
+                    </svg>
+                </button>
+                <button id="filter-scroll-right"
+                        type="button"
+                        class="article-filter-arrow flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 text-slate-500 transition-colors hover:bg-slate-50"
+                        aria-label="เลื่อนหมวดหมู่ไปทางขวา">
+                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9 5l7 7-7 7"/>
+                    </svg>
+                </button>
+            </div>
         </div>
+    </div>
 </section>
-<script id="articleTabsData" type="application/json"><?= htmlspecialchars($articleTabsJson, ENT_QUOTES, 'UTF-8') ?></script>
+
+<section class="bg-white pb-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div id="article-grid" class="article-grid grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <?php foreach ($articles as $article):
+                $detailUrl = route_url('/article', ['id' => (int) ($article['id'] ?? 0)]);
+                $categoryName = trim((string) ($article['category_name'] ?? ''));
+                $categorySlug = trim((string) ($article['category_slug'] ?? ''));
+                $summary = trim(strip_tags((string) ($article['summary'] ?? '')));
+                $imageSrc = resolve_article_image_url((string) ($article['image_path'] ?? ''), $fallbackImage);
+                ?>
+                <article class="article-card group flex h-full flex-col overflow-hidden rounded-[1.4rem] border border-slate-100 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+                         data-category="<?= e($categorySlug !== '' ? $categorySlug : 'all') ?>">
+                    <a href="<?= e($detailUrl) ?>" class="relative block aspect-[16/9] w-full overflow-hidden">
+                        <img src="<?= e($imageSrc) ?>" alt="<?= e($article['title'] ?? '') ?>" class="article-card__image h-full w-full object-cover transition-transform duration-500 group-hover:scale-105">
+                    </a>
+                    <div class="flex h-full flex-col gap-3 px-5 py-6">
+                        <span class="article-card__badge text-xs font-semibold text-[#1a2b6d]"><?= e($categoryName !== '' ? $categoryName : 'หมวดหมู่') ?></span>
+                        <a href="<?= e($detailUrl) ?>" class="block">
+                            <h3 class="article-card__title text-lg font-bold text-[#0b1b42] line-clamp-2">
+                                <?= e($article['title'] ?? 'บทความ') ?>
+                            </h3>
+                        </a>
+                        <?php if ($summary !== ''): ?>
+                            <p class="article-card__description text-sm text-slate-500 line-clamp-2"><?= e($summary) ?></p>
+                        <?php endif; ?>
+                        <div class="mt-auto">
+                            <a href="<?= e($detailUrl) ?>" class="article-card__cta inline-flex items-center gap-1 text-sm font-semibold text-[#1a2b6d] transition-all hover:gap-2">
+                                อ่านเพิ่มเติม
+                                <svg xmlns="http://www.w3.org/2000/svg" class="article-card__cta-icon h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M14 5l7 7-7 7M5 12h16"/>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </article>
+            <?php endforeach; ?>
+        </div>
+
+        <div id="no-results" class="article-no-results hidden py-14 text-center text-slate-600">
+            <div class="mx-auto mb-4 h-16 w-16 rounded-full border border-slate-200 bg-slate-50 flex items-center justify-center">
+                <svg class="h-8 w-8 text-slate-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9.5L18.5 6M15 10a4 4 0 11-8 0 4 4 0 018 0z"/>
+                </svg>
+            </div>
+            <h3 class="text-lg font-bold text-[#1a2b6d] mb-2">ไม่พบบทความในหมวดหมู่นี้</h3>
+            <p class="text-sm text-slate-500">ลองเลือกหมวดหมู่อื่นหรือลิงก์ "ทั้งหมด" เพื่อดูบทความทั้งหมด</p>
+        </div>
+
+        <nav id="pagination" class="article-pagination mt-8 flex items-center justify-center gap-2" aria-label="Article pagination"></nav>
+    </div>
+</section>
+
+<section class="article-cta-section px-4 py-16">
+    <div class="mx-auto max-w-6xl overflow-hidden rounded-[2rem] p-8 text-white shadow-[0_25px_70px_rgba(15,23,42,0.35)]"
+         style="background: linear-gradient(to right, #0b1b42, #12224a, #1a2b6d);">
+        <div class="grid gap-6 lg:grid-cols-2 lg:items-center">
+            <div class="space-y-4">
+                <p class="text-xs uppercase tracking-[0.4em] text-blue-200">พร้อมดูแลองค์กรของคุณ</p>
+                <h2 class="text-3xl font-extrabold leading-tight lg:text-4xl">
+                    พร้อมช่วยองค์กรของคุณ<br>
+                    ก้าวสู่ดิจิทัลอย่างเต็มรูปแบบ
+                </h2>
+                <p class="text-sm leading-7 text-white/80">ทีมวิศวกร Webpark พร้อมให้คำปรึกษา วิเคราะห์ และออกแบบโซลูชันที่เหมาะกับธุรกิจของคุณในทุกมิติ</p>
+                <a href="<?= e(route_url('/contact')) ?>" class="inline-flex w-fit items-center justify-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-bold text-[#0b1b42] transition hover:bg-slate-100">
+                    ติดต่อปรึกษาฟรี
+                    <span class="text-base leading-none">→</span>
+                </a>
+            </div>
+            <div class="relative">
+                <img src="<?= e($ctaImage) ?>" alt="ภาพประกอบเมืองดิจิทัล" class="article-cta__image h-72 w-full object-cover object-right">
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+.article-pagination__btn {
+    display: flex;
+    height: 2.25rem;
+    width: 2.25rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #64748b;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+}
+.article-pagination__btn:hover {
+    background-color: #f1f5f9;
+}
+.article-pagination__btn--active,
+.article-pagination__btn--active:hover {
+    background-color: #1a2b6d;
+    color: #ffffff;
+}
+.article-pagination__btn[disabled] {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+.article-filter-track::-webkit-scrollbar {
+    display: none;
+}
+.article-filter-track {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+</style>
 
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const wrapper = document.getElementById('articleSwitcher');
-        if (!wrapper) return;
+document.addEventListener('DOMContentLoaded', () => {
+    const filterBtns = Array.from(document.querySelectorAll('.article-filter-btn'));
+    const filterTrack = document.getElementById('category-filters');
+    const scrollLeftBtn = document.getElementById('filter-scroll-left');
+    const scrollRightBtn = document.getElementById('filter-scroll-right');
+    const articleGrid = document.getElementById('article-grid');
+    const articleCards = Array.from(document.querySelectorAll('.article-card'));
+    const paginationEl = document.getElementById('pagination');
+    const noResults = document.getElementById('no-results');
+    const PAGE_SIZE = 6;
+    const DEFAULT_FILTER = 'all';
 
-        const links = wrapper.querySelectorAll('[data-tab]');
-        const grid = document.getElementById('articleGrid');
-        const articleTabs = JSON.parse('<?= $articleTabsJson ?>');
-        let currentCategory = '<?= $activeCategory ?>';
-        let currentPage = 1;
-        const itemsPerPage = 9;
+    let currentFilter = '<?= e($activeCategorySlug) ?>';
+    let currentPage = 1;
 
-        const createLoadMoreButton = () => {
+    const ACTIVE_CLASSES = ['active', 'border-transparent', 'bg-[#1a2b6d]', 'text-white'];
+    const INACTIVE_CLASSES = ['border-slate-200', 'bg-white', 'text-slate-700'];
+
+    const setActiveButton = (slug) => {
+        filterBtns.forEach(btn => {
+            const value = btn.dataset.filter || DEFAULT_FILTER;
+            const isActive = value === slug;
+            btn.classList.remove(...ACTIVE_CLASSES, ...INACTIVE_CLASSES);
+            btn.classList.add(...(isActive ? ACTIVE_CLASSES : INACTIVE_CLASSES));
+        });
+    };
+
+    const slugMatchesFilter = (cardCategory, filter) => {
+        if (filter === DEFAULT_FILTER) {
+            return true;
+        }
+        return cardCategory === filter;
+    };
+
+    const getFilteredCards = () => articleCards.filter(card => {
+        const category = card.dataset.category || DEFAULT_FILTER;
+        return slugMatchesFilter(category, currentFilter);
+    });
+
+    const renderPagination = (totalPages) => {
+        paginationEl.innerHTML = '';
+        if (totalPages <= 1) {
+            return;
+        }
+
+        const createBtn = (label, target, active = false, disabled = false) => {
             const btn = document.createElement('button');
-            btn.id = 'loadMoreBtn';
-            btn.className = 'col-span-3 mt-10 mx-auto px-8 py-3 bg-primary text-white text-sm font-bold rounded-full hover:bg-blue-700 transition-all shadow-md hover:-translate-y-0.5';
-            btn.textContent = 'โหลดเพิ่มเติม';
-
+            btn.type = 'button';
+            btn.textContent = label;
+            btn.disabled = disabled;
+            btn.className = 'article-pagination__btn';
+            if (active) {
+                btn.classList.add('article-pagination__btn--active');
+            }
+            if (disabled) {
+                btn.setAttribute('aria-disabled', 'true');
+            }
             btn.addEventListener('click', () => {
-                currentPage++;
-                loadMoreItems(currentCategory, currentPage);
+                if (disabled) {
+                    return;
+                }
+                currentPage = target;
+                render();
+                articleGrid.scrollIntoView({ behavior: 'smooth', block: 'start' });
             });
             return btn;
         };
 
-        const createArticleCard = (item) => {
-            const article = document.createElement('article');
-            article.className = 'group bg-white rounded-[1.8rem] border border-slate-100 shadow-[0_4px_25px_rgba(0,0,0,0.02)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.05)] hover:-translate-y-1 transition-all duration-300 overflow-hidden flex flex-col h-[490px] cursor-pointer';
-            if (item.url) {
-                article.dataset.href = item.url;
-            }
-
-            const media = document.createElement('div');
-            media.className = 'w-full aspect-[16/10] bg-slate-50 overflow-hidden shrink-0 relative';
-
-            const img = document.createElement('img');
-            img.src = item.image;
-            img.alt = item.title || '';
-            img.className = 'h-full w-full object-cover transition-transform duration-500 group-hover:scale-105';
-            media.appendChild(img);
-
-            const body = document.createElement('div');
-            body.className = 'flex flex-col flex-grow p-6 justify-between';
-
-            const topArea = document.createElement('div');
-
-            const badge = document.createElement('span');
-            badge.className = 'inline-flex items-center px-2.5 py-1 rounded-md bg-blue-50 text-primary text-[10px] font-bold uppercase tracking-wider mb-3';
-            badge.textContent = item.category || 'General';
-
-            const title = document.createElement('h3');
-            title.className = 'text-base font-bold text-dark leading-snug line-clamp-2 mb-2 group-hover:text-primary transition-colors duration-200';
-            title.textContent = item.title || '';
-
-            const desc = document.createElement('p');
-            desc.className = 'text-slate-500 text-[13px] leading-relaxed line-clamp-3';
-            desc.textContent = item.description || '';
-
-            topArea.appendChild(badge);
-            topArea.appendChild(title);
-            topArea.appendChild(desc);
-
-            const footer = document.createElement('div');
-            footer.className = 'flex items-center justify-end pt-2 mt-auto';
-
-            const readMore = document.createElement('span');
-            readMore.className = 'inline-flex items-center gap-1.5 text-xs font-bold text-primary group-hover:underline';
-            readMore.innerHTML = 'อ่านเพิ่มเติม <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>';
-
-            footer.appendChild(readMore);
-            body.appendChild(topArea);
-            body.appendChild(footer);
-
-            article.appendChild(media);
-            article.appendChild(body);
-            return article;
-        };
-
-        const loadMoreItems = (category, page) => {
-            if (!grid) return;
-
-            const list = articleTabs[category] || [];
-            const startIndex = (page - 1) * itemsPerPage;
-            const endIndex = startIndex + itemsPerPage;
-            const paginatedList = list.slice(startIndex, endIndex);
-
-            const existingBtn = document.getElementById('loadMoreBtn');
-            if (existingBtn) {
-                existingBtn.remove();
-            }
-
-            if (paginatedList.length > 0) {
-                paginatedList.forEach((item) => {
-                    grid.appendChild(createArticleCard(item));
-                });
-            }
-
-            if (endIndex < list.length) {
-                grid.appendChild(createLoadMoreButton());
-            }
-        };
-
-        const renderCategory = (category) => {
-            if (!grid) return;
-
-            const list = articleTabs[category] || [];
-            currentPage = 1;
-            grid.innerHTML = '';
-
-            if (list.length === 0) {
-                grid.innerHTML = '<div class="col-span-3 text-center py-12 text-slate-400 text-sm border-2 border-dashed border-slate-100 rounded-2xl">ไม่พบข้อมูลบทความในระบบ</div>';
-                return;
-            }
-
-            const firstPageItems = list.slice(0, itemsPerPage);
-            firstPageItems.forEach((item) => {
-                grid.appendChild(createArticleCard(item));
-            });
-
-            if (list.length > itemsPerPage) {
-                grid.appendChild(createLoadMoreButton());
-            }
-        };
-
-        const syncActiveState = (activeLink) => {
-            links.forEach((link) => {
-                link.className = "rounded-3xl px-5 py-2 text-xs md:text-sm font-bold tracking-wide border transition-all duration-200 bg-white text-slate-600 border-slate-200 hover:bg-slate-50 hover:-translate-y-0.5";
-            });
-
-            if (!activeLink) return;
-            activeLink.className = "rounded-3xl px-5 py-2 text-xs md:text-sm font-bold tracking-wide border transition-all duration-200 bg-primary text-white border-primary shadow-sm hover:-translate-y-0.5";
-        };
-
-        links.forEach((link) => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                const category = link.getAttribute('data-tab') || 'All';
-                currentCategory = category;
-
-                syncActiveState(link);
-                renderCategory(category);
-
-                try {
-                    const params = new URLSearchParams(window.location.search);
-                    params.set('category', category);
-                    window.history.pushState({}, '', `${window.location.pathname}?${params.toString()}`);
-                    
-                    // ลบโค้ดส่วน targetSection.scrollIntoView ออกแล้ว
-                    
-                } catch (error) {}
-            });
-        });
-
-        if (grid) {
-            grid.addEventListener('click', (e) => {
-                const card = e.target.closest('[data-href]');
-                if (!card) return;
-                const href = card.dataset.href || '';
-                if (href) window.location.href = href;
-            });
+        paginationEl.appendChild(createBtn('‹', currentPage - 1, false, currentPage === 1));
+        for (let i = 1; i <= totalPages; i += 1) {
+            paginationEl.appendChild(createBtn(String(i), i, currentPage === i, false));
         }
+        paginationEl.appendChild(createBtn('›', currentPage + 1, false, currentPage === totalPages));
+    };
+
+    const render = () => {
+        const filtered = getFilteredCards();
+        const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+        if (currentPage > totalPages) {
+            currentPage = totalPages;
+        }
+
+        articleCards.forEach(card => card.classList.add('hidden'));
+
+        const start = (currentPage - 1) * PAGE_SIZE;
+        const visible = filtered.slice(start, start + PAGE_SIZE);
+        visible.forEach(card => card.classList.remove('hidden'));
+
+        noResults.classList.toggle('hidden', filtered.length !== 0);
+        renderPagination(totalPages);
+    };
+
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const filter = btn.dataset.filter || DEFAULT_FILTER;
+            currentFilter = filter;
+            currentPage = 1;
+            setActiveButton(filter);
+            render();
+            btn.scrollIntoView({ inline: 'center', behavior: 'smooth', block: 'nearest' });
+        });
     });
+
+    if (scrollLeftBtn && scrollRightBtn && filterTrack) {
+        scrollLeftBtn.addEventListener('click', () => filterTrack.scrollBy({ left: -200, behavior: 'smooth' }));
+        scrollRightBtn.addEventListener('click', () => filterTrack.scrollBy({ left: 200, behavior: 'smooth' }));
+    }
+
+    setActiveButton(currentFilter);
+    render();
+});
 </script>

@@ -2,10 +2,19 @@
 
 declare(strict_types=1);
 
+/**
+ * WEBPARK Frontend — Application configuration.
+ *
+ * Returned as an associative array and loaded into APP_CONFIG at bootstrap.
+ * Company contact details here serve as fallbacks when DB settings are empty.
+ *
+ * @return array<string, mixed>
+ */
 return [
     'app' => [
         'name' => 'webpark',
-'base_url' => '/Corparate_Webpark',
+        /** Base path for routing — must match Apache/nginx alias or subdirectory. */
+        'base_url' => '/Corparate_Webpark',
         'asset_base_url' => '/Corparate_Webpark/frontend/public',
         'description' => 'Lightweight MVC refactor for the WEBPARK site.',
     ],

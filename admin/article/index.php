@@ -1,42 +1,44 @@
 <?php
+
+/**
+ * Admin article list — search, filter, and manage articles.
+ */
 $pageTitle = 'Article Management';
 $page = 'article';
 require_once __DIR__ . '/../includes/header.php';
 
-// รับค่าการค้นหาและตัวกรอง
 $search = trim($_GET['search'] ?? '');
 $categoryFilter = $_GET['category_id'] ?? '';
 $statusFilter = $_GET['status'] ?? '';
 
-// สร้าง Query พื้นฐาน
-$sql = "SELECT a.*, c.name AS category_name, aut.display_name AS author_name 
-        FROM article a 
-        LEFT JOIN categories c ON a.category_id = c.id 
-        LEFT JOIN authors aut ON a.author_id = aut.id 
-        WHERE 1=1";
+$sql = 'SELECT a.*, c.name AS category_name, aut.display_name AS author_name
+        FROM article a
+        LEFT JOIN categories c ON a.category_id = c.id
+        LEFT JOIN authors aut ON a.author_id = aut.id
+        WHERE 1=1';
 $params = [];
 
 if ($search !== '') {
-    $sql .= " AND (a.meta_title LIKE ? OR a.meta_description LIKE ?)";
+    $sql .= ' AND (a.meta_title LIKE ? OR a.meta_description LIKE ?)';
     $params[] = "%$search%";
     $params[] = "%$search%";
 }
 
 if ($categoryFilter !== '') {
-    $sql .= " AND a.category_id = ?";
-    $params[] = (int)$categoryFilter;
+    $sql .= ' AND a.category_id = ?';
+    $params[] = (int) $categoryFilter;
 }
 
 if (in_array($statusFilter, ['draft', 'published'], true)) {
-    $sql .= " AND a.status = ?";
+    $sql .= ' AND a.status = ?';
     $params[] = $statusFilter;
 }
 
-$sql .= " ORDER BY a.created_at DESC";
-$stmt = db()->prepare($sql);
-$stmt->execute($params);
+$sql .= ' ORDER BY a.created_at DESC';
+$statement = db()->prepare($sql);
+$statement->execute($params);
 
-$articles = $stmt->fetchAll();
+$articles = $statement->fetchAll();
 
 $categories = db()->query('SELECT id, name FROM categories ORDER BY name')->fetchAll();
 ?>
@@ -70,8 +72,8 @@ $categories = db()->query('SELECT id, name FROM categories ORDER BY name')->fetc
                     <select name="category_id" onchange="this.form.submit()"
                         class="w-full rounded-xl border border-slate-200 bg-slate-50/50 px-3 py-2 text-xs text-slate-700 focus:bg-white focus:border-blue-500 focus:outline-none transition-all">
                         <option value="">ทุกหมวดหมู่</option>
-                        <?php foreach ($categories as $cat): ?>
-                            <option value="<?= $cat['id'] ?>" <?= $categoryFilter == $cat['id'] ? 'selected' : '' ?>><?= e($cat['name']) ?></option>
+                        <?php foreach ($categories as $category): ?>
+                            <option value="<?= (int) $category['id'] ?>" <?= $categoryFilter == $category['id'] ? 'selected' : '' ?>><?= e($category['name']) ?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>
@@ -111,7 +113,7 @@ $categories = db()->query('SELECT id, name FROM categories ORDER BY name')->fetc
                 <tbody class="divide-y divide-slate-100 bg-white">
                     <?php foreach ($articles as $row): ?>
                         <tr class="hover:bg-slate-50/50 transition-colors cursor-pointer js-clickable-row"
-                            data-href="edit.php?id=<?= (int)$row['id'] ?>">
+                            data-href="edit.php?id=<?= (int) $row['id'] ?>">
 
                             <td class="px-4 py-3">
                                 <img src="<?= e(upload_url($row['cover_image']) ?: 'https://picsum.photos/seed/' . $row['id'] . '/120/80') ?>"
@@ -160,12 +162,12 @@ $categories = db()->query('SELECT id, name FROM categories ORDER BY name')->fetc
 
                             <td class="px-4 py-3 text-right" onclick="event.stopPropagation();">
                                 <div class="inline-flex overflow-hidden rounded-xl border border-slate-200 shadow-sm">
-                                    <a href="edit.php?id=<?= $row['id'] ?>"
+                                    <a href="edit.php?id=<?= (int) $row['id'] ?>"
                                         class="bg-white px-3 py-1.5 text-[11px] font-semibold text-slate-600 transition hover:bg-slate-50">
                                         แก้ไข
                                     </a>
                                     <button type="button"
-                                        onclick="if(confirm('ยืนยันการลบบทความนี้?')) window.location.href='delete.php?id=<?= $row['id'] ?>'"
+                                        onclick="if(confirm('ยืนยันการลบบทความนี้?')) window.location.href='delete.php?id=<?= (int) $row['id'] ?>'"
                                         class="border-l border-slate-200 bg-white px-3 py-1.5 text-[11px] font-semibold text-rose-600 transition hover:bg-rose-50 cursor-pointer">
                                         ลบ
                                     </button>
@@ -193,9 +195,8 @@ $categories = db()->query('SELECT id, name FROM categories ORDER BY name')->fetc
     document.addEventListener('DOMContentLoaded', function() {
         const rows = document.querySelectorAll('.js-clickable-row');
         rows.forEach(row => {
-            row.addEventListener('click', function(e) {
-                // ป้องกันการทำงานหากผู้ใช้ตั้งใจคลิกโดนปุ่มแก้ไข/ลบโดยตรง
-                if (!e.target.closest('a') && !e.target.closest('button')) {
+            row.addEventListener('click', function(event) {
+                if (!event.target.closest('a') && !event.target.closest('button')) {
                     const url = this.getAttribute('data-href');
                     if (url) {
                         window.location.href = url;

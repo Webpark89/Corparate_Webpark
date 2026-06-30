@@ -1,4 +1,8 @@
 <?php
+
+/**
+ * Shared service create/edit form partial.
+ */
 $data = $setting ?? [];
 $inputClass = 'w-full rounded-xl border border-slate-200 px-4 py-3 text-sm focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all';
 

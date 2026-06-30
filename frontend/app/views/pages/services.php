@@ -1,177 +1,114 @@
 <?php
+
 declare(strict_types=1);
 
-$services = [];
+/**
+ * Services listing page — grid 2-column card layout.
+ *
+ * Layout  : Hero Section + heading + 2-column card grid + CTA
+ * ข้อมูล  : $mockServices (เปลี่ยนเป็น DB query ได้ภายหลัง)
+ * รูป     : ใช้ image_placeholder เดิมจาก mockServices
+ */
 
-// ดึงข้อมูลจากฐานข้อมูล (อ้างอิงตาราง service และ service_features)
-try {
-    $serviceModel = new Service();
-
-    // ดึงบริการหลัก (Service)
-    $stmt = db()->prepare("SELECT * FROM service WHERE is_active = 1 ORDER BY id ASC");
-    $stmt->execute();
-    $dbServices = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-    // จัดเตรียมชุดไอคอน (ถ้าใน DB ไม่มีคอลัมน์ icon ให้ใช้ไอคอนมาตรฐานแทน)
-    $defaultIcons = [
-        'online-marketing' => 'M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z',
-        'creative-design' => 'M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z',
-        'digital-platform' => 'M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z',
-        'erp' => 'M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4'
-    ];
-
-    foreach ($dbServices as $row) {
-        $slug = (string) ($row['slug'] ?? '');
-        $icon = $defaultIcons[$slug ?: 'erp'] ?? $defaultIcons['erp'];
-
-        if ((int) ($row['id'] ?? 0) === 4) {
-            $erpItems = [];
-
-            $erpModules = $serviceModel->getAllErpModules();
-            foreach ($erpModules as $mod) {
-                $moduleId = (int) ($mod['id'] ?? 0);
-
-                $moduleTitle = (string) ($mod['title'] ?? $mod['name'] ?? $mod['feature_name'] ?? '');
-                if ($moduleTitle === '') {
-                    $moduleTitle = (string) ($mod['label'] ?? 'ERP Module');
-                }
-
-                if ($moduleId <= 0) {
-                    continue;
-                }
-
-                $moduleFeatures = $serviceModel->getErpModuleFeatures($moduleId);
-
-                foreach ($moduleFeatures as $feat) {
-                    $featName = (string) ($feat['feature_name'] ?? $feat['title'] ?? '');
-                    if ($featName === '') {
-                        continue;
-                    }
-
-                    $erpItems[] = [
-                        'title' => $featName,
-                        // ให้ใช้ description ระดับ feature ตามที่ผู้ใช้ต้องการ (column description ของ erp_modules)
-                        'summary' => (string) ($mod['description'] ?? ''),
-                        'description' => (string) ($mod['description'] ?? ''),
-                    ];
-
-
-                }
-            }
-
-            $services[] = [
-                'id' => (int) ($row['id'] ?? 0),
-                'title' => (string) ($row['title'] ?? 'ERP / ERM'),
-                'description' => (string) ($row['summary'] ?? ''),
-                'image' => !empty($row['image']) ? asset_url($row['image']) : asset_url('images/service-placeholder.jpg'),
-                'icon' => $icon,
-                'items' => $erpItems,
-            ];
-
-            continue;
-        }
-
-        // ดึงฟีเจอร์ย่อย (Service Features) ที่ตรงกับ service_id (ไม่ใช่ ERP)
-        $featStmt = db()->prepare("SELECT * FROM service_features WHERE service_id = ? AND is_active = 1 ORDER BY sort_order ASC");
-        $featStmt->execute([$row['id']]);
-        $features = $featStmt->fetchAll(PDO::FETCH_ASSOC);
-
-
-        $services[] = [
-            'id' => $row['id'],
-            'title' => $row['title'],
-            'description' => $row['summary'],
-            'image' => !empty($row['image']) ? asset_url($row['image']) : asset_url('images/service-placeholder.jpg'),
-            'icon' => $icon,
-            'items' => $features,
-        ];
-    }
-} catch (Exception $e) {
-    // กรณีต่อ DB ไม่ได้ หรือไม่มีข้อมูล จะใช้ข้อมูลนี้โชว์แทน (Mockup)
-    $services = [
-        [
-            'title' => 'ERP / ERM',
-            'description' => 'พัฒนาระบบบริหารจัดการองค์กร เพื่อเพิ่มประสิทธิภาพการทำงาน เชื่อมโยงข้อมูล และรองรับการเติบโตของธุรกิจ',
-            'image' => asset_url('images/erp-hand.jpg'),
-            'icon' => 'M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4',
-            'items' => [
-                ['title' => 'ERP & Business Management', 'summary' => 'ระบบบริหารจัดการทรัพยากรองค์กรแบบครบวงจร'],
-                ['title' => 'ERM & CRM Systems', 'summary' => 'บริหารความสัมพันธ์ลูกค้าและควบคุมความเสี่ยง'],
-                ['title' => 'HR & Workflow Systems', 'summary' => 'ระบบจัดการบุคลากรและอนุมัติเอกสารออนไลน์']
-            ]
+$mockServices = [
+    [
+        'id'                => 1,
+        'icon_emoji'        => '🖥️',
+        'title'             => 'ERP / ERM',
+        'summary'           => 'พัฒนาระบบบริหารจัดการองค์กร เพื่อเพิ่มประสิทธิภาพการทำงาน เชื่อมโยงข้อมูล และรองรับการเติบโตของธุรกิจ',
+        'image_placeholder' => 'images/erp.png',
+        'subcategories'     => [
+            ['label' => 'ERP & Business Management', 'href' => '/Corparate_Webpark/erp#erp-system'],
+            ['label' => 'ERM & CRM Systems',         'href' => '/Corparate_Webpark/erp#crm'],
+            ['label' => 'HR & Workflow Systems',      'href' => '/Corparate_Webpark/erp#hrm'],
         ],
-        // ... (เพิ่มบริการอื่นๆ เผื่อไว้ได้ตามต้องการ)
-    ];
-}
-?><style>
-    @keyframes fadeSlideUp {
-        0% { opacity: 0; transform: translateY(30px); }
-        100% { opacity: 1; transform: translateY(0); }
-    }
-    .animate-fade-up {
-        opacity: 0;
-        animation: fadeSlideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    }
+    ],
+    [
+        'id'                => 2,
+        'icon_emoji'        => '🌐',
+        'title'             => 'Digital Platform',
+        'summary'           => 'ออกแบบและพัฒนาแพลตฟอร์มดิจิทัล เว็บไซต์ และระบบธุรกิจออนไลน์ที่ใช้งานง่าย ยืดหยุ่น และตอบโจทย์องค์กร',
+        'image_placeholder' => 'images/bg-cta.jpg',
+        'subcategories'     => [
+            ['label' => 'Digital Platforms & Business Systems', 'href' => '/Corparate_Webpark/services/digital-platform#website'],
+            ['label' => 'Communication & Engagement',           'href' => '/Corparate_Webpark/services/digital-platform#chatbot'],
+            ['label' => 'Data & Learning Systems',              'href' => '/Corparate_Webpark/services/digital-platform#bigdata'],
+        ],
+    ],
+    [
+        'id'                => 3,
+        'icon_emoji'        => '📣',
+        'title'             => 'Online Marketing',
+        'summary'           => 'วางกลยุทธ์การตลาดออนไลน์ เพื่อเพิ่มการมองเห็น สร้างโอกาสทางธุรกิจ และเพิ่มยอดขายได้อย่างวัดผลได้จริง',
+        'image_placeholder' => 'images/bg-hand.jpg',
+        'subcategories'     => [
+            ['label' => 'Strategy & Growth',       'href' => '/Corparate_Webpark/services/online-marketing#consultant'],
+            ['label' => 'Performance & Analytics', 'href' => '/Corparate_Webpark/services/online-marketing#monitoring'],
+            ['label' => 'Content & Advertising',   'href' => '/Corparate_Webpark/services/online-marketing#ads'],
+        ],
+    ],
+    [
+        'id'                => 4,
+        'icon_emoji'        => '🎨',
+        'title'             => 'Creative / Design',
+        'summary'           => 'สร้างสรรค์งานออกแบบดิจิทัลและคอนเทนต์ที่ช่วยสื่อสารแบรนด์ ทั้ง UI/UX, Graphic, Motion และสื่อสารแบรนด์',
+        'image_placeholder' => 'images/women-office.jpg',
+        'subcategories'     => [
+            ['label' => 'Design & Digital Experience', 'href' => '/Corparate_Webpark/services/creative-design#web-design'],
+            ['label' => 'Motion & Video Production',   'href' => '/Corparate_Webpark/services/creative-design#animation'],
+            ['label' => 'Media & Publishing',          'href' => '/Corparate_Webpark/services/creative-design#emagazine'],
+        ],
+    ],
+];
 
-    @keyframes text-gradient-pan {
-        0% { background-position: 0% center; }
-        50% { background-position: 100% center; }
-        100% { background-position: 0% center; }
-    }
-    .animate-text-gradient {
-        background-size: 200% auto;
-        animation: text-gradient-pan 6s linear infinite;
-    }
+$services = $mockServices;
+?>
 
-    .delay-100 { animation-delay: 100ms; }
-    .delay-200 { animation-delay: 200ms; }
-    .delay-300 { animation-delay: 300ms; }
-    .delay-400 { animation-delay: 400ms; }
-</style>
+<section class="relative bg-slate-50 pt-16 pb-12 lg:pt-24 lg:pb-20 font-sans overflow-hidden">
+    <div class="absolute top-0 right-0 -translate-y-1/4 translate-x-1/4 w-[500px] h-[500px] bg-blue-200/30 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute bottom-0 left-0 translate-y-1/4 -translate-x-1/4 w-[300px] h-[300px] bg-indigo-100/40 rounded-full blur-2xl pointer-events-none"></div>
 
-<section class="relative overflow-hidden font-sans">
-    <div class="absolute inset-0 z-0">
-        <img src="<?= e(asset_url('images/bg-5.png')) ?>" alt="WEBPARK Solutions Background" class="w-full h-full object-cover object-center opacity-70 mix-blend-screen">
-        <div class="absolute inset-0 bg-gradient-to-r from-white via-white/80 to-white/5"></div>
-        <div class="absolute inset-x-0 bottom-0 h-[30%] bg-gradient-to-t from-white to-transparent z-10"></div>
-    </div>
-
-    <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 pt-12 pb-24 lg:pt-28 lg:pb-32 relative z-10">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+    <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center">
             
-            <div class="max-w-2xl">
-                <div class="animate-fade-up delay-100 inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary mb-6 shadow-sm">
-                    <span class="text-blue-500 font-bold">+</span>
-                    <span class="text-xs md:text-sm font-semibold text-primary uppercase tracking-wide">OUR SERVICE</span>
-                </div>
-
-                <h1 class="animate-fade-up delay-200 text-5xl md:text-6xl lg:text-8xl font-lg leading-[1.1] mb-2 tracking-tighter">
-                    <span class="bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block pt-3">ความเชี่ยวชาญ</span><br>
-                    <span class="bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block py-2" style="animation-delay: -3s;">และจุดเด่น</span>
+            <div class="flex flex-col items-start text-left">
+                <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-4 border" 
+                      style="background-color: #eff6ff; color: #043B94; border-color: #bfdbfe;">
+                    + SOLUTIONS by Webpark
+                </span>
+                <h1 class="text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-tight leading-tight mb-4" style="color: #022862;">
+                    ความเชี่ยวชาญ และจุดเด่น
                 </h1>
-
-                <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-base md:text-lg leading-relaxed max-w-lg mb-10 font-medium">
-                    มากกว่า 20 ปี ที่เราสร้างสรรค์โซลูชันดิจิทัลครบวงจร ผสานเทคโนโลยี ความเชี่ยวชาญ และความเข้าใจธุรกิจ เพื่อเพิ่มประสิทธิภาพ <br>สร้างการเติบโต และยกระดับองค์กรสู่อนาคตอย่างยั่งยืน
+                <p class="text-slate-600 text-sm md:text-base leading-relaxed mb-8 max-w-xl">
+                    เราผสานเทคโนโลยีและนวัตกรรมดิจิทัลเพื่อขับเคลื่อนธุรกิจของคุณอย่างยั่งยืน ครอบคลุมการยกระดับการทำงานด้วยระบบ ERP/ERM, การสร้างสรรค์ Digital Platform, ขยายการเติบوةด้วย Online Marketing และสื่อสารภาพลักษณ์ที่โดดเด่นผ่านเทรนด์ Creative & Design ล่าสุด
                 </p>
+                <div class="flex flex-wrap gap-4">
+                    <a href="#our-services" 
+                       class="inline-flex items-center gap-2 font-bold text-sm px-6 py-3 rounded-full text-white transition-all duration-200"
+                       style="background-color: #043B94; box-shadow: 0 4px 14px rgba(4,59,148,0.25);"
+                       onmouseover="this.style.backgroundColor='#022862';"
+                       onmouseout="this.style.backgroundColor='#043B94';">
+                        ดูบริการของเรา
+                    </a>
+                    <a href="<?= e(route_url('/contact')) ?>" 
+                       class="inline-flex items-center gap-2 font-bold text-sm px-6 py-3 rounded-full border transition-all duration-200"
+                       style="background-color: #ffffff; color: #043B94; border-color: #cbd5e1;"
+                       onmouseover="this.style.backgroundColor='#f8fafc';"
+                       onmouseout="this.style.backgroundColor='#ffffff';">
+                        ติดต่อเรา
+                    </a>
+                </div>
+            </div>
 
-                <div class="animate-fade-up delay-400 flex flex-wrap items-center gap-4">
-                    <a href="#" class="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-primary text-white text-sm font-semibold rounded-full hover:bg-blue-700 transition-all shadow-md hover:-translate-y-0.5">
-                        ปรึกษาผู้เชี่ยวชาญ
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                        </svg>
-                    </a>
-                    
-                    <a href="#about" class="group inline-flex items-center gap-4 transition-all hover:-translate-y-0.5">
-                        <div class="h-14 w-14 bg-white flex items-center justify-center rounded-full shadow-lg border border-slate-200 transition-all duration-300 group-hover:bg-slate-50 group-hover:scale-105 group-hover:shadow-xl">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600 fill-current transition-transform duration-300 group-hover:scale-110" viewBox="0 0 24 24">
-                                <path d="M8 5v14l11-7z" />
-                            </svg>
-                        </div>
-                        <span class="text-slate-800 text-lg font-semibold transition-colors duration-300 group-hover:text-primary">
-                            ดูวิดีโอแนะนำ
-                        </span>
-                    </a>
+            <div class="relative flex justify-center lg:justify-end">
+                <div class="relative w-full max-w-md lg:max-w-lg aspect-square flex items-center justify-center">
+                    <img 
+                        src="<?= e(asset_url('images/hero-hologram.png')) ?>" 
+                        alt="Webpark 3D Hologram Solutions" 
+                        class="w-full h-auto object-contain drop-shadow-2xl transition-transform duration-500 hover:scale-102"
+                        loading="eager"
+                        onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80'; this.className='w-full h-full object-cover rounded-3xl shadow-xl';"
+                    >
                 </div>
             </div>
 
@@ -179,101 +116,187 @@ try {
     </div>
 </section>
 
-<section id="services" class="bg-white py-20 lg:py-28 font-sans">
-    <div class="mx-auto w-full max-w-7xl px-4 sm:px-4 lg:px-6"> 
-        
-        <div class="mb-16 max-w-4xl">
-            <div class="text-primary font-bold text-xs md:text-sm tracking-widest uppercase mb-4 block">บริการของเรา</div>
-            <h2 class="text-3xl md:text-4xl lg:text-[2.75rem] font-bold text-dark leading-tight mb-4">
-                บริการของเรา ครอบคลุมทุกมิติธุรกิจดิจิทัล
+<section id="our-services" class="bg-white pt-16 pb-6 font-sans scroll-mt-6">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <p class="text-xs font-bold uppercase tracking-widest mb-2" style="color: #043B94;">OUR SERVICES</p>
+        <h1 class="text-2xl md:text-3xl font-extrabold leading-tight mb-3" style="color: #022862;">
+            บริการของเรา ครอบคลุมทุกมิติธุรกิจดิจิทัล
+        </h1>
+        <p class="text-slate-500 text-sm md:text-base leading-relaxed max-w-2xl">
+            Webpark ให้บริการแบบครบวงจร ตั้งแต่การวางแผน ออกแบบ พัฒนา ไปจนถึงการดูแลหลังการใช้งาน
+            เพื่อช่วยให้องค์กรเพิ่มประสิทธิภาพ ลดต้นทุน และเติบโตได้อย่างยั่งยืนในยุคดิจิทัล
+        </p>
+    </div>
+</section>
+
+<section class="bg-white pb-16 font-sans">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+
+            <?php foreach ($services as $service):
+                $sTitle  = (string)($service['title'] ?? '');
+                $sSummary= (string)($service['summary'] ?? '');
+                $sEmoji  = (string)($service['icon_emoji'] ?? '');
+                $imgSrc  = asset_url($service['image_placeholder'] ?? '');
+                $subcats = (array)($service['subcategories'] ?? []);
+            ?>
+
+            <div class="group rounded-2xl border border-slate-100 bg-white overflow-hidden flex flex-col"
+                 style="box-shadow: 0 2px 12px 0 rgba(4,59,148,0.07);">
+
+                <div class="relative w-full overflow-hidden bg-slate-100" style="aspect-ratio: 16/9;">
+                    <img
+                        src="<?= e($imgSrc) ?>"
+                        alt="<?= e($sTitle) ?>"
+                        class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        loading="lazy"
+                    >
+                </div>
+
+                <div class="flex flex-col flex-1 p-5 lg:p-6">
+
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="text-2xl leading-none"><?= e($sEmoji) ?></span>
+                        <h2 class="text-lg lg:text-xl font-extrabold" style="color: #022862;"><?= e($sTitle) ?></h2>
+                    </div>
+
+                    <p class="text-slate-500 text-sm leading-relaxed mb-4">
+                        <?= e($sSummary) ?>
+                    </p>
+
+                    <?php if (!empty($subcats)): ?>
+                    <div class="mt-auto border-t border-slate-100 pt-2 space-y-0.5">
+                        <?php foreach ($subcats as $sub):
+                            $subLabel = (string)($sub['label'] ?? '');
+                            $subHref  = (string)($sub['href'] ?? '#');
+                        ?>
+                        <a
+                            href="<?= e($subHref) ?>"
+                            class="flex items-center justify-between px-3 py-2.5 rounded-lg text-sm text-slate-600 transition-colors duration-150 group/row"
+                            style="font-weight: 500;"
+                            onmouseover="this.style.backgroundColor='#f0f5ff'; this.style.color='#043B94';"
+                            onmouseout="this.style.backgroundColor=''; this.style.color='';"
+                        >
+                            <span><?= e($subLabel) ?></span>
+                            <svg class="w-4 h-4 shrink-0" style="color: #cbd5e1;"
+                                 fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+                            </svg>
+                        </a>
+                        <?php endforeach; ?>
+                    </div>
+                    <?php endif; ?>
+
+                </div>
+            </div>
+
+            <?php endforeach; ?>
+
+        </div>
+    </div>
+</section>
+
+<section class="font-sans pb-12">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="relative rounded-3xl overflow-hidden"
+             style="background: linear-gradient(120deg, #011431 0%, #043B94 55%, #1e40af 100%); min-height: 200px;">
+
+            <div class="absolute inset-0 pointer-events-none overflow-hidden">
+                <div class="absolute right-0 top-0 h-full w-1/2"
+                     style="background: url('<?= e(asset_url('images/bg-cta.jpg')) ?>') center/cover no-repeat; opacity: 0.18;"></div>
+                <div class="absolute inset-0"
+                     style="background: linear-gradient(to right, #011431 40%, transparent 100%);"></div>
+            </div>
+
+            <div class="relative px-8 py-14 md:py-16 text-center" style="z-index: 10;">
+                <h2 class="text-2xl md:text-3xl font-extrabold text-white mb-4 leading-tight">
+                    พร้อมขับเคลื่อนธุรกิจของคุณไปข้างหน้าหรือยัง?
+                </h2>
+                <p class="text-sm md:text-base max-w-xl mx-auto mb-8 leading-relaxed" style="color: #bfdbfe;">
+                    มาคุยกับทีม Webpark เพื่อค้นหาโซลูชันที่เหมาะกับธุรกิจของคุณ
+                    ทั้ง Digital Platform, ระบบ AI และ ERP / ERM ในมุมที่ใช้สำหรับองค์กร
+                </p>
+                <a
+                    href="<?= e(route_url('/contact')) ?>"
+                    class="inline-flex items-center gap-2 font-bold text-sm px-7 py-3 rounded-full transition-colors duration-200"
+                    style="background: #ffffff; color: #043B94; box-shadow: 0 4px 14px rgba(0,0,0,0.15);"
+                    onmouseover="this.style.background='#eff6ff';"
+                    onmouseout="this.style.background='#ffffff';"
+                >
+                    เริ่มต้นปรึกษากับเรา
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="bg-white py-16 font-sans">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+
+        <div class="text-center max-w-3xl mx-auto mb-12">
+            <p class="text-xs font-bold uppercase tracking-widest mb-3" style="color: #043B94;">OUR APPROACH</p>
+            <h2 class="text-2xl md:text-4xl font-extrabold mb-5 leading-tight" style="color: #022862;">
+                แนวคิดในการทำงานของเรา
             </h2>
-            <p class="text-slate-600 text-sm md:text-base leading-relaxed">
-                WEBPARK ให้บริการแบบครบวงจร ตั้งแต่การวางแผน ออกแบบ พัฒนา ไปจนถึงการดูแลหลังการใช้งาน<br>
-                เพื่อช่วยให้องค์กรเพิ่มประสิทธิภาพ ลดต้นทุน และเติบโตได้อย่างยั่งยืนในยุคดิจิทัล
+            <p class="text-slate-500 text-sm md:text-base leading-relaxed max-w-2xl mx-auto">
+                กระบวนการทำงานที่เป็นระบบ เพื่อส่งมอบโซลูชันดิจิทัลที่ตอบโจทย์ธุรกิจ และความยั่งยืนของข้อมูลธุรกิจที่องค์กรถือครอง
             </p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10">
-            <?php foreach ($services as $service): ?>
-                
-                <article class="bg-white rounded-3xl border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] overflow-hidden group hover:shadow-lg hover:border-blue-100 transition-all duration-300">
-                    
-                    <div class="w-full aspect-[21/9] bg-slate-100 overflow-hidden relative m-4 md:m-6 md:mb-0 rounded-2xl w-[calc(100%-2rem)] md:w-[calc(100%-3rem)]">
-                        <img src="<?= e(asset_url('images/service-home.png')) ?>" alt="<?= e($service['title']) ?>" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
-                    </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <?php
+            $approachSteps = [
+                [
+                    'number' => '01',
+                    'icon'   => asset_url('images/icon-1.png'),
+                    'title'  => 'เข้าใจธุรกิจของคุณ',
+                    'desc'   => 'ศึกษาความต้องการ วิเคราะห์ปัญหา และกำหนดแนวทางที่เหมาะสมกับธุรกิจของท่านอย่างแท้จริง',
+                ],
+                [
+                    'number' => '02',
+                    'icon'   => asset_url('images/icon-2.png'),
+                    'title'  => 'ออกแบบให้ใช้งานได้จริง',
+                    'desc'   => 'ออกแบบประสบการณ์ใช้งานที่เน้นความง่าย และประสิทธิภาพ ตอบโจทย์ผู้ใช้งานทุกระดับ',
+                ],
+                [
+                    'number' => '03',
+                    'icon'   => asset_url('images/icon-3.png'),
+                    'title'  => 'ดูแลอย่างต่อเนื่อง',
+                    'desc'   => 'ให้บริการหลังการขาย พร้อมทีมซัพพอร์ต และอัปเดตระบบอย่างสม่ำเสมอ',
+                ],
+                [
+                    'number' => '04',
+                    'icon'   => asset_url('images/icon-4.png'),
+                    'title'  => 'รองรับการเติบโต',
+                    'desc'   => 'พัฒนาระบบที่ยืดหยุ่น สามารถขยายตัว และปรับตามธุรกิจที่เติบโตในอนาคต',
+                ],
+            ];
 
-                    <div class="p-6 md:p-8">
-                        
-                        <div class="flex items-center gap-4 mb-4">
-                            <div class="w-10 h-10 md:w-12 md:h-12 rounded-xl border border-blue-100 flex items-center justify-center text-primary shrink-0 bg-blue-50/50">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" class="w-6 h-6">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="<?= e($service['icon']) ?>" />
-                                </svg>
-                            </div>
-                            <h3 class="text-xl md:text-2xl font-bold text-dark group-hover:text-primary transition-colors">
-                                <?= e($service['title']) ?>
-                            </h3>
-                        </div>
-                        
-                        <p class="text-slate-500 text-[13px] md:text-sm leading-relaxed mb-6 h-auto lg:h-16">
-                            <?= e($service['description']) ?>
-                        </p>
+            foreach ($approachSteps as $step):
+            ?>
+            <div class="flex flex-col items-start rounded-2xl border border-slate-100 bg-white p-6 transition-all duration-300"
+                 style="box-shadow: 0 4px 20px 0 rgba(4,59,148,0.05);">
 
-                        <?php if (!empty($service['items']) && is_array($service['items'])): ?>
-                            <div class="space-y-0 divide-y divide-slate-100 border-t border-slate-100">
-                                <?php foreach ($service['items'] as $item): ?>
-                                    <?php
-                                        // จัดการข้อมูล Feature
-                                        $itemTitle = is_array($item) ? ($item['title'] ?? '') : $item;
-                                        // ดึงข้อมูล summary เพื่อมาแสดงตอนกด Dropdown
-                                        $itemSummary = is_array($item) ? ($item['summary'] ?? 'บริการและให้คำปรึกษาสำหรับหมวดหมู่นี้แบบครบวงจร') : '';
-                                    ?>
-                                    
-                                    <div class="group/feature">
-                                        <button type="button" onclick="toggleServiceDropdown(this)" class="w-full flex items-center justify-between py-4 text-dark text-[13px] md:text-sm font-medium hover:text-primary transition-colors cursor-pointer focus:outline-none">
-                                            <span class="text-left"><?= e($itemTitle) ?></span>
-                                            
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-primary transition-transform duration-300 transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
-                                            </svg>
-                                        </button>
-                                        
-                                        <div class="hidden px-2 pb-4 text-slate-500 text-[13px] leading-relaxed transition-all">
-                                            <?php
-                                                $itemDescription = is_array($item) ? ($item['description'] ?? '') : '';
-                                            ?>
-                                            <?= e(($itemDescription !== '' ? $itemDescription : $itemSummary)) ?>
-                                        </div>
+                <div class="w-14 h-14 shrink-0 rounded-xl bg-blue-50/50 flex items-center justify-center mb-4">
+                    <img src="<?= e($step['icon']) ?>"
+                         alt="<?= e($step['title']) ?>"
+                         class="w-8 h-8 object-contain"
+                         onerror="this.onerror=null;this.style.display='none'">
+                </div>
 
-                                    </div>
+                <div class="flex flex-col gap-1.5">
+                    <span class="text-xl font-extrabold" style="color: #043B94;"><?= e($step['number']) ?></span>
+                    <h3 class="text-base font-extrabold" style="color: #022862;"><?= e($step['title']) ?></h3>
+                    <p class="text-slate-500 text-xs md:text-sm leading-relaxed"><?= e($step['desc']) ?></p>
+                </div>
 
-                                <?php endforeach; ?>
-                            </div>
-                        <?php endif; ?>
-                        
-                    </div>
-                </article>
-
+            </div>
             <?php endforeach; ?>
         </div>
 
     </div>
 </section>
-
-<script>
-    function toggleServiceDropdown(button) {
-        // หา Content ที่ถูกซ่อนไว้ใต้ปุ่ม
-        const content = button.nextElementSibling;
-        // หาไอคอนลูกศรในปุ่ม
-        const icon = button.querySelector('svg');
-        
-        // สลับสถานะเปิด-ปิด
-        if (content.classList.contains('hidden')) {
-            content.classList.remove('hidden');
-            icon.classList.add('rotate-90'); // หมุนลูกศรลง
-        } else {
-            content.classList.add('hidden');
-            icon.classList.remove('rotate-90'); // คืนค่าลูกศร
-        }
-    }
-</script>

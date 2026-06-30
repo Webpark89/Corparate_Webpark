@@ -1,5 +1,10 @@
 <?php
+
 declare(strict_types=1);
+
+/**
+ * Contact page view — hero, inquiry form, company info, and map embed.
+ */
 
 $errors = $errors ?? [];
 $submitted = $submitted ?? false;

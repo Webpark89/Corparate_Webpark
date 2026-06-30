@@ -4,11 +4,20 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/Database.php';
 
+/**
+ * Return the shared PDO database connection.
+ */
 function db(): PDO
 {
     return Database::getInstance();
 }
 
+/**
+ * Read application config by dot-notation key (e.g. "app.name").
+ *
+ * @param string|null $key     Dot-separated path; null returns entire config.
+ * @param mixed       $default Value when key is missing.
+ */
 function config(?string $key = null, mixed $default = null): mixed
 {
     $config = defined('APP_CONFIG') && is_array(APP_CONFIG) ? APP_CONFIG : [];
@@ -30,11 +39,17 @@ function config(?string $key = null, mixed $default = null): mixed
     return $value;
 }
 
+/**
+ * Escape output for safe HTML rendering (XSS prevention).
+ */
 function e(mixed $value): string
 {
     return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
 }
 
+/**
+ * Strip tags and collapse whitespace for SEO meta fallbacks.
+ */
 function normalize_text(mixed $value): string
 {
     $text = trim((string) $value);
@@ -49,6 +64,11 @@ function normalize_text(mixed $value): string
     return trim($text);
 }
 
+/**
+ * Return the first non-empty normalized candidate, or the default.
+ *
+ * @param array<int, mixed> $candidates
+ */
 function seo_fallback(array $candidates, string $default = ''): string
 {
     foreach ($candidates as $candidate) {
@@ -62,6 +82,9 @@ function seo_fallback(array $candidates, string $default = ''): string
     return normalize_text($default);
 }
 
+/**
+ * Build scheme + host from the current request (empty when CLI or missing host).
+ */
 function request_origin_url(): string
 {
     $host = (string) ($_SERVER['HTTP_HOST'] ?? '');
@@ -75,6 +98,9 @@ function request_origin_url(): string
     return $scheme . '://' . $host;
 }
 
+/**
+ * Full absolute URL for the current page request.
+ */
 function current_request_url(): string
 {
     $requestUri = (string) ($_SERVER['REQUEST_URI'] ?? '');
@@ -92,6 +118,9 @@ function current_request_url(): string
     return $origin . $requestUri;
 }
 
+/**
+ * Resolve a relative or absolute path to a full URL.
+ */
 function absolute_url(string $url): string
 {
     $url = trim($url);
@@ -113,6 +142,9 @@ function absolute_url(string $url): string
     return app_url(ltrim($url, '/'));
 }
 
+/**
+ * Resolve an image path for Open Graph / schema (supports uploads, assets, absolute URLs).
+ */
 function seo_image_url(?string $path, string $fallbackPath = 'images/logo.png'): string
 {
     $candidate = normalize_text($path ?? '');
@@ -140,16 +172,25 @@ function seo_image_url(?string $path, string $fallbackPath = 'images/logo.png'):
     return absolute_url(asset_url('images/' . ltrim($candidate, '/')));
 }
 
+/**
+ * Application base path from config (no trailing slash).
+ */
 function app_base_url(): string
 {
     return rtrim((string) config('app.base_url', ''), '/');
 }
 
+/**
+ * Public asset root path from config (no trailing slash).
+ */
 function asset_base_url(): string
 {
     return rtrim((string) config('app.asset_base_url', app_base_url()), '/');
 }
 
+/**
+ * Build an application URL relative to base_url.
+ */
 function app_url(string $path = ''): string
 {
     $baseUrl = app_base_url();
@@ -162,6 +203,11 @@ function app_url(string $path = ''): string
     return ($baseUrl !== '' ? $baseUrl : '') . '/' . $normalizedPath;
 }
 
+/**
+ * Build a front-controller URL using the ?url= query parameter (legacy routing style).
+ *
+ * @param array<string, scalar|null> $query
+ */
 function route_url(string $path, array $query = []): string
 {
     $normalizedPath = trim($path, '/');
@@ -180,16 +226,22 @@ function route_url(string $path, array $query = []): string
     return $url;
 }
 
+/**
+ * Resolve a path under frontend/public/assets.
+ *
+ * Accepts: images/logo.png, assets/css/tailwind.css, public/assets/...
+ */
 function asset_url(string $path): string
 {
     $normalizedPath = ltrim($path, '/');
 
-    if (str_starts_with($normalizedPath, 'assets/')) {
-        $normalizedPath = substr($normalizedPath, strlen('assets/'));
-    }
-
+    // baseUrl already points to .../frontend/public — strip redundant prefixes.
     if (str_starts_with($normalizedPath, 'public/assets/')) {
         $normalizedPath = substr($normalizedPath, strlen('public/assets/'));
+    }
+
+    if (str_starts_with($normalizedPath, 'assets/')) {
+        $normalizedPath = substr($normalizedPath, strlen('assets/'));
     }
 
     $baseUrl = asset_base_url();
@@ -199,4 +251,39 @@ function asset_url(string $path): string
     }
 
     return ($baseUrl !== '' ? $baseUrl : '') . '/assets/' . $normalizedPath;
+}
+
+/**
+ * Normalize an article image reference and return a trusted URL or fallback.
+ *
+ * @param string|null $imagePath  Value from the database or CMS (nullable).
+ * @param string      $fallback   Already-resolved fallback URL (typically from asset_url()).
+ * @return string
+ */
+function resolve_article_image_url(?string $imagePath, string $fallback): string
+{
+    $candidate = trim((string) $imagePath);
+
+    if ($candidate === '') {
+        return $fallback;
+    }
+
+    if (preg_match('#^https?://#i', $candidate) === 1) {
+        return $candidate;
+    }
+
+    $candidateUrl = asset_url(ltrim($candidate, '/'));
+    $parsedPath = parse_url($candidateUrl, PHP_URL_PATH);
+    $documentRoot = (string) ($_SERVER['DOCUMENT_ROOT'] ?? '');
+
+    if (
+        $documentRoot !== ''
+        && $parsedPath !== null
+        && $parsedPath !== ''
+        && is_file($documentRoot . $parsedPath)
+    ) {
+        return $candidateUrl;
+    }
+
+    return $fallback;
 }

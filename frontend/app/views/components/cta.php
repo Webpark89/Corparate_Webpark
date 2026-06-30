@@ -2,6 +2,10 @@
 
 declare(strict_types=1);
 
+/**
+ * Call-to-action section component with inline contact form.
+ */
+
 $errors = $errors ?? [];
 $submitted = $submitted ?? false;
 $form = $form ?? [];

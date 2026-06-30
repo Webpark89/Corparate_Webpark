@@ -1,9 +1,14 @@
+<?php
+
+/**
+ * Admin layout footer — closes main content, loads admin.js, and sidebar resize handler.
+ */
+?>
 </section>
 </main>
 </div>
 <script src="<?= ADMIN_URL ?>/assets/js/admin.js"></script>
 <script>
-// 💡 เพิ่มปีกกาเปิดตรงนี้
 {
     const sidebar = document.getElementById('adminSidebar');
     const overlay = document.getElementById('sidebarOverlay');

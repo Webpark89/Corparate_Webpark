@@ -2,6 +2,11 @@
 
 declare(strict_types=1);
 
+/**
+ * Frontend route map — path => [ControllerClass, actionMethod].
+ *
+ * Dynamic segments use {paramName} syntax (see Router::dispatchDynamicRoute).
+ */
 return [
     '/' => [HomeController::class, 'index'],
     '/article' => [HomeController::class, 'article'],

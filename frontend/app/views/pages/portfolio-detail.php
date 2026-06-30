@@ -2,6 +2,10 @@
 
 declare(strict_types=1);
 
+/**
+ * Single portfolio project detail page view.
+ */
+
 $project = $project ?? [];
 $relatedPortfolio = $relatedPortfolio ?? [];
 $siteName = config('app.name', 'WEBPARK');
@@ -54,7 +58,6 @@ $metaKeywords = seo_fallback([
 $authorName = seo_fallback([$clientName, $siteName], $siteName);
 $canonicalUrl = absolute_url(route_url('/portfolio', ['id' => (int) ($project['id'] ?? 0)]));
 $imageUrl = absolute_url($temporaryImage);
-$imageAlt = $imageAlt;
 $type = 'article';
 
 $months = [1 => 'ม.ค.', 2 => 'ก.พ.', 3 => 'มี.ค.', 4 => 'เม.ย.', 5 => 'พ.ค.', 6 => 'มิ.ย.', 7 => 'ก.ค.', 8 => 'ส.ค.', 9 => 'ก.ย.', 10 => 'ต.ค.', 11 => 'พ.ย.', 12 => 'ธ.ค.'];

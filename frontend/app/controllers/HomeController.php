@@ -2,6 +2,11 @@
 
 declare(strict_types=1);
 
+/**
+ * Primary frontend controller — handles all public page routes.
+ *
+ * Data loading stays here; persistence lives in Models; presentation in views.
+ */
 class HomeController
 {
     private Controller $renderer;
@@ -16,6 +21,7 @@ class HomeController
         return new Service();
     }
 
+    /** Homepage with services, insights, reviews, and portfolio highlights. */
     public function index(): void
     {
         $rawTab = $_GET['tab'] ?? 'technology';
@@ -77,7 +83,7 @@ class HomeController
         $displayPortfolios = [];
         try {
             $portfolioModel = new Portfolio();
-            $portfolioRows = $portfolioModel->getAll();
+            $portfolioRows = $portfolioModel->getPublished();
             $displayPortfolios = array_map(static function (array $row): array {
                 return [
                     'title' => (string) ($row['title'] ?? ''),
@@ -266,6 +272,10 @@ class HomeController
         ]));
     }
 
+    /**
+     * @deprecated Unused by current views — kept for backward compatibility.
+     * @return array<int, string>
+     */
     private function splitContentToParagraphs(string $content): array
     {
         $clean = trim($content);
@@ -275,28 +285,34 @@ class HomeController
         }
 
         $paragraphs = preg_split('/\r\n|\r|\n{2,}/', $clean);
-        return array_values(array_filter(array_map(static fn($item): string => trim($item), $paragraphs), static fn(string $text): bool => $text !== ''));
+
+        return array_values(array_filter(
+            array_map(static fn($item): string => trim($item), $paragraphs),
+            static fn(string $text): bool => $text !== ''
+        ));
     }
 
     public function article(): void
     {
-        // If `id` query param exists, show single article detail
         $id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
-
         $articleModel = new Article();
 
         if ($id > 0) {
             $row = $articleModel->getById($id);
-
             $status = strtolower(trim((string) ($row['status'] ?? '')));
 
             if ($row === false || $status === 'draft') {
-                // Not found -> 404
                 $this->notFound();
                 return;
             }
 
-            $descText = (string) ($row['meta_description'] ?? '');
+            $descText = trim((string) ($row['meta_description'] ?? ''));
+            if ($descText === '') {
+                $descText = trim(strip_tags((string) ($row['content'] ?? '')));
+                if ($descText !== '') {
+                    $descText = mb_strimwidth($descText, 0, 180, '...');
+                }
+            }
             $article = [
                 'id' => (int) ($row['id'] ?? 0),
                 'title' => (string) ($row['title'] ?? ''),
@@ -314,82 +330,134 @@ class HomeController
             ];
 
             $relatedArticles = [];
-
             try {
-                $allRows = $articleModel->getAll();
-                $relatedRows = array_values(array_filter($allRows, static function (array $item) use ($id): bool {
-                    $itemStatus = strtolower(trim((string) ($item['status'] ?? '')));
-                    return (int) ($item['id'] ?? 0) !== $id && $itemStatus !== 'draft';
-                }));
-
-                $relatedArticles = array_map(static function (array $item): array {
-                    return [
-                        'id' => (int) ($item['id'] ?? 0),
-                        'title' => (string) ($item['title'] ?? ''),
-                        'image_path' => (string) ($item['image_path'] ?? ''),
-                        'created_at' => (string) ($item['created_at'] ?? ''),
-                    ];
-                }, array_slice($relatedRows, 0, 4));
+                $relatedArticles = $articleModel->getRelatedByCategory(
+                    (int) ($row['category_id'] ?? 0),
+                    (int) ($row['id'] ?? 0),
+                    3
+                );
             } catch (Throwable $e) {
                 $relatedArticles = [];
+            }
+
+            $popularCategories = [];
+            try {
+                $popularCategories = $articleModel->getTopCategories(6);
+            } catch (Throwable $e) {
+                $popularCategories = [];
             }
 
             $this->view('pages/article-detail.php', array_merge($this->sharedData('article', $article['title'] ?: 'Article'), [
                 'article' => $article,
                 'relatedArticles' => $relatedArticles,
+                'popularCategories' => $popularCategories,
             ]));
 
             return;
         }
 
-        // Otherwise render list as before
         $articles = [];
-        $categories = ['All'];
+        $articleCategorySlugs = [];
 
         try {
-            $rows = array_values(array_filter($articleModel->getAll(), static function (array $row): bool {
-                $status = strtolower(trim((string) ($row['status'] ?? '')));
-                return $status !== 'draft';
-            }));
-
+            $rows = $articleModel->getPublished();
             $articles = array_map(static function (array $row): array {
+                $description = trim((string) ($row['description'] ?? $row['meta_description'] ?? ''));
+                $content = trim((string) ($row['content'] ?? ''));
+                $summarySource = $description !== '' ? $description : $content;
+                $summary = $summarySource === ''
+                    ? ''
+                    : mb_strimwidth(strip_tags($summarySource), 0, 140, '...');
+
                 return [
                     'id' => (int) ($row['id'] ?? 0),
                     'title' => (string) ($row['title'] ?? ''),
-                    'category' => (string) ($row['category'] ?? 'General'),
+                    'category_name' => (string) ($row['category'] ?? 'General'),
+                    'category_slug' => (string) ($row['category_slug'] ?? ''),
                     'image_path' => (string) ($row['image_path'] ?? ''),
-                    'content' => (string) ($row['content'] ?? ''),
+                    'summary' => $summary,
+                    'content' => $content,
                     'author' => (string) ($row['author'] ?? ''),
                     'created_at' => (string) ($row['created_at'] ?? ''),
                 ];
             }, $rows);
 
-            $categoryValues = array_values(array_unique(array_filter(
-                array_map(static fn(array $article): string => (string) $article['category'], $articles),
-                static fn(string $category): bool => $category !== ''
-            )));
-
-            sort($categoryValues);
-
-            if ($categoryValues !== []) {
-                $categories = array_merge(['All'], $categoryValues);
-            }
+            $articleCategorySlugs = array_values(array_filter(array_unique(array_map(
+                static fn(array $article): string => trim((string) ($article['category_slug'] ?? '')),
+                $articles
+            )), static fn(string $slug): bool => $slug !== ''));
         } catch (Throwable $e) {
             $articles = [];
+            $articleCategorySlugs = [];
         }
 
-        // Allow `tab` (from homepage) to also select the active category on the articles page.
-        $rawCategory = $_GET['category'] ?? ($_GET['tab'] ?? 'All');
-        $activeCategory = in_array($rawCategory, $categories, true) ? $rawCategory : 'All';
+        $categoryNameBySlug = [];
+        try {
+            $categoryRows = $articleModel->getCategoryList();
+            foreach ($categoryRows as $row) {
+                $slug = trim((string) ($row['slug'] ?? ''));
+                $name = trim((string) ($row['name'] ?? ''));
+                if ($slug === '' || $name === '') {
+                    continue;
+                }
+                $categoryNameBySlug[$slug] = $name;
+            }
+        } catch (Throwable $e) {
+            $categoryNameBySlug = [];
+        }
 
-        $filteredArticles = array_values(array_filter($articles, static function (array $article) use ($activeCategory): bool {
-            return $activeCategory === 'All' || $article['category'] === $activeCategory;
-        }));
+        if ($articleCategorySlugs !== []) {
+            $filterKeys = array_fill_keys($articleCategorySlugs, true);
+            $categoryNameBySlug = array_filter(
+                $categoryNameBySlug,
+                static fn($_, string $slug): bool => isset($filterKeys[$slug]),
+                ARRAY_FILTER_USE_BOTH
+            );
+        } else {
+            $categoryNameBySlug = [];
+        }
 
-$this->view('pages/article.php', array_merge($this->sharedData('articles', 'Article'), [
+        $missingSlugs = array_diff($articleCategorySlugs, array_keys($categoryNameBySlug));
+        foreach ($missingSlugs as $slug) {
+            $matches = array_values(array_filter(
+                $articles,
+                static fn(array $article) => ($article['category_slug'] ?? '') === $slug
+            ));
+            $name = trim((string) ($matches[0]['category_name'] ?? ''));
+            if ($name === '') {
+                continue;
+            }
+            $categoryNameBySlug[$slug] = $name;
+        }
+
+        uasort($categoryNameBySlug, static fn(string $a, string $b): int => strcasecmp($a, $b));
+
+        $categories = [];
+        foreach ($categoryNameBySlug as $slug => $name) {
+            $categories[] = [
+                'slug' => $slug,
+                'name' => $name,
+            ];
+        }
+
+        $validSlugs = array_values(array_unique(array_filter(array_merge(
+            $articleCategorySlugs,
+            array_map(static fn(array $cat): string => $cat['slug'], $categories)
+        ), static fn(string $slug): bool => $slug !== '')));
+
+        $rawCategory = trim((string) ($_GET['category'] ?? $_GET['tab'] ?? 'all'));
+        $activeCategorySlug = 'all';
+
+        if (strcasecmp($rawCategory, 'all') === 0) {
+            $activeCategorySlug = 'all';
+        } elseif (in_array($rawCategory, $validSlugs, true)) {
+            $activeCategorySlug = $rawCategory;
+        }
+
+        $this->view('pages/article.php', array_merge($this->sharedData('articles', 'Article'), [
             'categories' => $categories,
-            'activeCategory' => $activeCategory,
-            'articles' => $filteredArticles,
+            'activeCategorySlug' => $activeCategorySlug,
+            'articles' => $articles,
         ]));
     }
 
@@ -466,15 +534,12 @@ $this->view('pages/article.php', array_merge($this->sharedData('articles', 'Arti
         }
 
         $filters = ['All'];
-        $projects = [];
+        $portfolioRows = [];
 
         try {
-            $rows = array_values(array_filter($portfolioModel->getAll(), static function (array $row): bool {
-                $status = strtolower(trim((string) ($row['status'] ?? '')));
-                return $status !== 'draft';
-            }));
+            $rows = $portfolioModel->getPublished();
 
-            $projects = array_map(static function (array $row): array {
+            $portfolioRows = array_map(static function (array $row): array {
                 return [
                     'id' => (int) ($row['id'] ?? 0),
                     'title' => (string) ($row['title'] ?? ''),
@@ -488,7 +553,7 @@ $this->view('pages/article.php', array_merge($this->sharedData('articles', 'Arti
             }, $rows);
 
             $categoryValues = array_values(array_unique(array_filter(
-                array_map(static fn(array $project): string => (string) $project['category'], $projects),
+                array_map(static fn(array $project): string => (string) $project['category'], $portfolioRows),
                 static fn(string $category): bool => $category !== ''
             )));
 
@@ -498,22 +563,20 @@ $this->view('pages/article.php', array_merge($this->sharedData('articles', 'Arti
                 $filters = array_merge(['All'], $categoryValues);
             }
         } catch (Throwable $e) {
-            $projects = [];
+            $portfolioRows = [];
         }
 
         $rawFilter = $_GET['filter'] ?? 'All';
         $activeFilter = in_array($rawFilter, $filters, true) ? $rawFilter : 'All';
 
-
-
-        $filteredProjects = array_values(array_filter($projects, static function (array $project) use ($activeFilter): bool {
+        $filteredProjects = array_values(array_filter($portfolioRows, static function (array $project) use ($activeFilter): bool {
             return $activeFilter === 'All' || $project['category'] === $activeFilter;
         }));
 
         $this->view('pages/portfolio.php', array_merge($this->sharedData('portfolio', 'Portfolio'), [
             'filters' => $filters,
             'activeFilter' => $activeFilter,
-            'projects' => $filteredProjects,
+            'portfolioRows' => $portfolioRows,
         ]));
     }
 
@@ -656,25 +719,21 @@ $this->view('pages/article.php', array_merge($this->sharedData('articles', 'Arti
             $erpPortfolios = [];
         }
 
-        $this->view('pages/erp.php', array_merge($this->sharedData('erp', 'ERP System'),
-                [      
-            
-                    'benefits' => $benefits,
-                    'modules' => $modules,
-                    'activeModule' => $activeModule,
-                    'currentModule' => $currentModule,
-                    'integrations' => [
-                        'REST API',
-                        'GraphQL',
-                        'Webhooks',
-                        'Microsoft 365',
-                        'Line OA',
-                    ],
-                    'architecture' => $architecture,
-                    'erpPortfolios' => $erpPortfolios,
-                ]
-            )
-        );
+        $this->view('pages/erp.php', array_merge($this->sharedData('erp', 'ERP System'), [
+            'benefits' => $benefits,
+            'modules' => $modules,
+            'activeModule' => $activeModule,
+            'currentModule' => $currentModule,
+            'integrations' => [
+                'REST API',
+                'GraphQL',
+                'Webhooks',
+                'Microsoft 365',
+                'Line OA',
+            ],
+            'architecture' => $architecture,
+            'erpPortfolios' => $erpPortfolios,
+        ]));
     }
 
     public function about(): void
@@ -781,6 +840,11 @@ $this->view('pages/article.php', array_merge($this->sharedData('articles', 'Arti
         ]));
     }
 
+    /**
+     * Layout variables shared across every page.
+     *
+     * @return array<string, mixed>
+     */
     private function sharedData(string $currentPage, string $title): array
     {
         return [
@@ -791,6 +855,9 @@ $this->view('pages/article.php', array_merge($this->sharedData('articles', 'Arti
         ];
     }
 
+    /**
+     * @param array<string, mixed> $data
+     */
     private function view(string $path, array $data = []): void
     {
         $this->renderer->view($path, $data);
