@@ -6,7 +6,7 @@ $articles = is_array($articles ?? null) ? $articles : [];
 $categories = is_array($categories ?? null) ? $categories : [];
 $activeCategorySlug = (string) ($activeCategorySlug ?? 'all');
 $fallbackImage = asset_url('images/story.png');
-$heroImage = asset_url('images/computer-laptop-password-data-cyber-security-login-account-personal-3drender-illustration.jpg');
+$heroImage = asset_url('images/bg-6.png');
 $ctaImage = asset_url('images/bg-cta.jpg');
 ?>
 
@@ -42,10 +42,9 @@ $ctaImage = asset_url('images/bg-cta.jpg');
 <section class="relative overflow-hidden font-sans">
     <div class="absolute inset-0 z-0 overflow-hidden">
         <img src="<?= e($heroImage) ?>" alt="WEBPARK Solutions Background" 
-            class="w-full h-full opacity-100 mix-blend-screen"
-            style="object-fit: cover; transform: scale(1.1) translateX(8%);">
+            class="w-full h-full object-cover object-center opacity-100 mix-blend-screen">
             
-        <div class="absolute inset-0 bg-gradient-to-r from-white to-white/5"></div>
+        <div class="absolute inset-0 bg-gradient-to-r from-white via-white/70 to-white/5"></div>
         <div class="absolute inset-x-0 bottom-0 h-[30%] bg-gradient-to-t from-white to-transparent z-10"></div>
     </div>
 
@@ -200,15 +199,18 @@ $ctaImage = asset_url('images/bg-cta.jpg');
     </div>
 </section>
 
+<!-- อันเก่าโค้ดสำหรับดูเป็นแนวทาง -->
+
+<!-- 
 <section class="bg-white px-4 py-16">
-    <!-- เพิ่ม relative เพื่อให้ Overlay ทำงานได้ถูกต้อง -->
+    
     <div class="mx-auto max-w-7xl overflow-hidden rounded-[2rem] p-8 lg:p-12 text-white shadow-[0_25px_70px_rgba(15,23,42,0.35)] relative"
          style="background-image: url('<?= e($ctaImage) ?>'); background-size: cover; background-position: center;">
         
-        <!-- Overlay สีน้ำเงินเข้ม -->
+        
         <div class="absolute inset-0 bg-[#0b1b42]/80 z-0"></div>
 
-        <!-- เนื้อหา: เพิ่ม z-10 เพื่อให้เนื้อหาอยู่เหนือ Overlay -->
+        
         <div class="relative z-10 grid gap-6 lg:grid-cols-2 lg:items-center">
             <div class="space-y-4">
                 <p class="text-xs uppercase tracking-[0.4em] text-blue-200">พร้อมดูแลองค์กรของคุณ</p>
@@ -224,7 +226,42 @@ $ctaImage = asset_url('images/bg-cta.jpg');
             </div>
         </div>
     </div>
-</section>
+</section> 
+-->
+
+<!-- โค้ดใหม่สำหรับปรับปรุงแล้ว -->
+
+<!-- <section class="bg-white px-4 py-16">
+    <div class="mx-auto overflow-hidden rounded-[2rem] px-8 py-10 lg:px-12 lg:py-8 text-white shadow-[0_25px_70px_rgba(15,23,42,0.35)] relative flex items-center min-h-[400px]"
+         style="max-width: 1216px; width: 100%; background-image: url('<?= e($ctaImage) ?>'); background-size: cover; background-position: right center;">
+        
+        <div class="absolute inset-0 z-0" style="background: linear-gradient(to right, #002868 0%, rgba(0, 51, 128, 0.95) 45%, rgba(0, 51, 128, 0) 100%);"></div>
+
+        <div class="relative z-10 grid gap-6 lg:grid-cols-2 lg:items-center w-full">
+            <div class="space-y-5">
+                <p class="text-sm font-medium text-blue-200 lg:text-base">
+                    ปรึกษาผู้เชี่ยวชาญ Webpark
+                </p>
+                
+                <h2 class="text-3xl font-bold leading-[1.4] lg:text-5xl lg:leading-[1.3]">
+                    พร้อมช่วยองค์กรของคุณ<br>
+                    ก้าวสู่ดิจิทัลอย่างเต็มรูปแบบ
+                </h2>
+                
+                <p class="text-base leading-relaxed text-white/90 lg:text-lg">
+                    เราพร้อมให้คำปรึกษาและออกแบบโซลูชันที่เหมาะสมกับธุรกิจของคุณ
+                </p>
+                
+                <div class="pt-2">
+                    <a href="<?= e(route_url('/contact')) ?>" class="inline-flex w-fit items-center justify-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-bold text-[#0b1b42] transition hover:bg-slate-100">
+                        ติดต่อปรึกษาฟรี
+                        <span class="text-base leading-none">→</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section> -->
 
 <style>
 .article-pagination__btn {
@@ -275,7 +312,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const articleCards = Array.from(document.querySelectorAll('.article-card'));
     const paginationEl = document.getElementById('pagination');
     const noResults = document.getElementById('no-results');
-    const PAGE_SIZE = 6;
+    const PAGE_SIZE = 3;
     const DEFAULT_FILTER = 'all';
 
     let currentFilter = '<?= e($activeCategorySlug) ?>';
