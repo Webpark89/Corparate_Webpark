@@ -2,6 +2,12 @@
 
 declare(strict_types=1);
 
+$categories = is_array($categories ?? null) ? $categories : [];
+$activeCategorySlug = (string) ($activeCategorySlug ?? 'all');
+$fallbackImage = asset_url('images/story.png');
+$heroImage = asset_url('images/bg-6.png');
+$ctaImage = asset_url('images/bg-cta.jpg');
+
 /**
  * ERP product page view — modules, benefits, and portfolio showcase.
  */
@@ -82,9 +88,37 @@ $erpPortfolios = $mockErpPortfolios;
     .delay-100 { animation-delay: 100ms; }
     .delay-200 { animation-delay: 200ms; }
     .delay-300 { animation-delay: 300ms; }
+    /* 1. แอนิเมชันสำหรับสไลด์ขึ้นจากด้านล่าง (Entrance) */
+    @keyframes fadeSlideUp {
+        0% { opacity: 0; transform: translateY(30px); }
+        100% { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-up {
+        opacity: 0; /* ซ่อนไว้ก่อนเริ่ม */
+        animation: fadeSlideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    /* 2. แอนิเมชันสำหรับตัวอักษรสีเหลือบ (Gradient Flow) */
+    @keyframes text-gradient-pan {
+        0% { background-position: 0% center; }
+        50% { background-position: 100% center; }
+        100% { background-position: 0% center; }
+    }
+    .animate-text-gradient {
+        background-size: 200% auto;
+        animation: text-gradient-pan 6s linear infinite;
+    }
+
+    /* คลาสหน่วงเวลา เพื่อให้เนื้อหาไล่ลำดับกันขึ้นมา */
+    .delay-100 { animation-delay: 100ms; }
+    .delay-200 { animation-delay: 200ms; }
+    .delay-300 { animation-delay: 300ms; }
+    .delay-400 { animation-delay: 400ms; }
 </style>
 
-<section class="relative font-sans bg-gradient-to-b from-blue-50/80 to-white overflow-hidden pt-24 pb-20 lg:pt-32 lg:pb-28">
+
+
+<!-- <section class="relative font-sans bg-gradient-to-b from-blue-50/80 to-white overflow-hidden pt-24 pb-20 lg:pt-32 lg:pb-28">
     <div class="absolute inset-0 z-0 pointer-events-none">
         <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-primary/5 rounded-full blur-3xl"></div>
     </div>
@@ -112,6 +146,77 @@ $erpPortfolios = $mockErpPortfolios;
             <a href="<?= e(route_url('/contact')) ?>" class="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-white text-[#022862] border border-slate-200 text-sm font-semibold rounded-full hover:bg-slate-50 transition-all shadow-sm hover:-translate-y-0.5">
                 ปรึกษาผู้เชี่ยวชาญ
             </a>
+        </div>
+    </div>
+</section> -->
+
+<section class="relative overflow-hidden font-sans">
+    <div class="absolute inset-0 z-0 overflow-hidden">
+        <img src="<?= e($heroImage) ?>" alt="WEBPARK Solutions Background" 
+            class="w-full h-full object-cover object-center opacity-100 mix-blend-screen">
+            
+        <div class="absolute inset-0 bg-gradient-to-r from-white via-white/70 to-white/5"></div>
+        <div class="absolute inset-x-0 bottom-0 h-[30%] bg-gradient-to-t from-white to-transparent z-10"></div>
+    </div>
+    <style>
+        @keyframes fadeSlideUp {
+            0% { opacity: 0; transform: translateY(40px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeSlideLeft {
+            0% { opacity: 0; transform: translateX(50px); }
+            100% { opacity: 1; transform: translateX(0); }
+        }
+        .animate-entrance-up { opacity: 0; animation: fadeSlideUp 0.8s cubic-bezier(0.16,1,0.3,1) forwards; }
+        .animate-entrance-left { opacity: 0; animation: fadeSlideLeft 1s cubic-bezier(0.16,1,0.3,1) forwards; }
+        .delay-100 { animation-delay: 100ms; }
+        .delay-200 { animation-delay: 200ms; }
+        .delay-300 { animation-delay: 300ms; }
+        .delay-400 { animation-delay: 400ms; }
+        .delay-500 { animation-delay: 500ms; }
+        @keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+        .animate-scroll { animation: scroll 20s linear infinite; }
+        .animate-scroll:hover { animation-play-state: paused; }
+    </style>
+
+    <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 pt-12 pb-24 lg:pt-28 lg:pb-32 relative z-10">
+        <div class="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-12 lg:gap-20 items-center">
+            
+            <div class="max-w-2xl">
+                <p class="mb-6 tracking-[0.5em] text-xs font-semibold text-[#1a2b6d] uppercase md:text-lg">ระบบนำทางแบบเศษขนมปัง</p>
+                
+                <h1 class="animate-fade-up delay-200 leading-[1.1] mb-2 tracking-tighter">
+                    <span class="text-5xl md:text-6xl lg:text-8xl font-bold bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block py-3">
+                        ERP Systems
+                    </span><br>
+
+                    <span class="text-2xl md:text-3xl lg:text-5xl font-medium bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block mt-2 py-3" style="animation-delay: -3s;">
+                        เชื่อมต่อทุกกระบวนการธุรกิจแบบครบวงจรในแพลตฟอร์มเดียว
+                    </span>
+                </h1>
+
+                <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-base md:text-lg leading-relaxed max-w-lg mb-10 font-medium">
+                    รวบรวมบทความรู้ เทคโนโลยี นวัตกรรม และแนวทางการทำธุรกิจ <br>
+                    ครอบคลุม ERP ระบบธุรกิจดิจิทัล การตลาดออนไลน์ AI และโซลูชัน<br>
+                    ที่ช่วยพัฒนาองค์กรให้เติบโตได้อย่างยั่งยืน
+                </p>
+                <div class="animate-entrance-up delay-400 flex flex-wrap items-center gap-4">
+                    <a href="<?= e(route_url('/service')) ?>" class="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-primary text-white text-sm font-semibold rounded-full hover:bg-blue-700 transition-all shadow-md hover:-translate-y-0.5">
+                        ดูบริการของเรา
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                        </svg>
+                    </a>
+                    <a href="#about" class="inline-flex items-center gap-4 transition-all hover:-translate-y-0.5 group">
+                        <div class="h-14 w-14 bg-white flex items-center justify-center rounded-full shadow-lg border border-slate-200 transition-all group-hover:bg-slate-50 group-hover:shadow-xl group-hover:scale-105">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600 fill-current" viewBox="0 0 24 24">
+                                <path d="M8 5v14l11-7z"/>
+                            </svg>
+                        </div>
+                        <span class="text-slate-800 text-lg font-semibold group-hover:text-primary transition-colors">ดูวิดีโอแนะนำ</span>
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 </section>

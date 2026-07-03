@@ -52,7 +52,7 @@ $ctaImage = asset_url('images/bg-cta.jpg');
         <div class="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-12 lg:gap-20 items-center">
             
             <div class="max-w-2xl">
-                <p class="mb-6 tracking-[0.5em] text-xs font-semibold text-[#1a2b6d] uppercase md:text-lg">บทความ</p>
+                <p class="mb-6 tracking-[0.5em] text-xs font-semibold text-[#1a2b6d] uppercase md:text-lg">ระบบนำทางแบบเศษขนมปัง</p>
                 
                 <h1 class="animate-fade-up delay-200 leading-[1.1] mb-2 tracking-tighter">
                     <span class="text-5xl md:text-6xl lg:text-8xl font-bold bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block py-3">
