@@ -136,6 +136,12 @@ $mockErpPortfolios = [
         'title' => 'แพลตฟอร์มบริหารงานโลจิสติกส์',
         'description' => 'ระบบติดตามสถานะการขนส่ง เชื่อมต่อกับคลังสินค้า พร้อมแดชบอร์ดสรุปประสิทธิภาพการจัดส่ง',
         'image_path' => 'images/bg-hand.jpg'
+    ],
+    [
+        'id' => 4,
+        'title' => 'ระบบCRM/HR',
+        'description' => 'ระบบจัดการลีด และ ระบบจัดทรัพยากรมนุษย์',
+        'image_path' => 'images/bg-hand.jpg'
     ]
 ];
 
@@ -250,7 +256,23 @@ $erpPortfolios = $mockErpPortfolios;
         <div class="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-12 lg:gap-20 items-center">
             
             <div class="max-w-2xl">
-                <p class="mb-6 tracking-[0.5em] text-xs font-semibold text-[#1a2b6d] uppercase md:text-lg">ระบบนำทางแบบเศษขนมปัง</p>
+                <nav aria-label="Breadcrumb" class="animate-fade-up delay-100 mb-6">
+                        <ol class="inline-flex items-center space-x-2 text-sm md:text-base font-medium text-slate-500">
+                            <li>
+                                <a href="<?= e(route_url('/')) ?>" class="hover:text-primary transition-colors duration-200">
+                                    หน้าแรก
+                                </a>
+                            </li>
+                            
+                            <li>
+                                <span class="text-slate-400 mx-1">/</span>
+                            </li>
+                            
+                            <li aria-current="page">
+                                <span class="text-slate-400">ระบบ ERP</span>
+                            </li>
+                        </ol>
+                    </nav>
                 
                 <h1 class="animate-fade-up delay-200 leading-[1.1] mb-2 tracking-tighter">
                     <span class="text-5xl md:text-6xl lg:text-8xl font-bold bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block py-3">
@@ -396,57 +418,6 @@ $erpPortfolios = $mockErpPortfolios;
     </div>
 </section>
 
-<?php if (!empty($erpPortfolios)): ?>
-<!-- <section class="bg-white py-20 font-sans">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        
-        <div class="flex flex-col md:flex-row md:items-end justify-between border-b border-slate-200 pb-5 mb-10 gap-4">
-            <div>
-                <span class="text-primary font-bold text-xs md:text-sm tracking-widest uppercase mb-1 block">OUR SUCCESS</span>
-                <h2 class="text-2xl md:text-3xl font-extrabold leading-none tracking-tight text-[#022862] m-0">
-                    ผลงานพัฒนาระบบ ERP
-                </h2>
-            </div>
-            <a href="<?= e(route_url('/portfolio')) ?>" class="group flex items-center gap-1.5 text-sm font-bold text-primary hover:text-blue-700 transition-colors">
-                ดูผลงานทั้งหมด
-                <svg class="h-4 w-4 transform group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-            </a>
-        </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            <?php foreach ($erpPortfolios as $port): 
-                $imgSrc = asset_url($port['image_path']);
-                $detailUrl = isset($port['slug']) ? route_url('/portfolio/' . $port['slug']) : route_url('/portfolio');
-            ?>
-                <a href="<?= e($detailUrl) ?>" class="block">
-                <article class="group rounded-2xl overflow-hidden border border-slate-100 bg-white shadow-sm hover:shadow-xl transition-all duration-500 flex flex-col hover:-translate-y-1">
-                    <div class="h-[220px] w-full overflow-hidden bg-slate-100 relative">
-                        <img src="<?= e($imgSrc) ?>" alt="<?= e($port['title']) ?>" class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105">
-                        <span class="absolute bottom-3 left-3 bg-primary/95 backdrop-blur text-white text-[10px] font-bold px-2.5 py-1 rounded-md uppercase tracking-wider shadow-sm">ERP SYSTEM</span>
-                    </div>
-                    <div class="p-6 flex flex-col flex-1">
-                        <h3 class="text-base font-bold text-[#0b1b42] leading-snug line-clamp-2 group-hover:text-primary transition-colors mb-3">
-                            <?= e($port['title']) ?>
-                        </h3>
-                        <p class="text-[13px] text-slate-500 leading-relaxed line-clamp-3 mb-5 flex-1">
-                            <?= e($port['description']) ?>
-                        </p>
-                        <div class="mt-auto pt-4 border-t border-slate-50">
-                            <span class="inline-flex items-center text-xs font-bold text-primary group-hover:text-blue-700 transition-colors">
-                                อ่านเคสสตั๊ดดี้
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 ml-1 transform group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
-                            </span>
-                        </div>
-                    </div>
-                </article>
-                </a>
-            <?php endforeach; ?>
-        </div>
-
-    </div>
-</section> -->
-<?php endif; ?>
-
 <!-- <section class="bg-white py-20 font-sans border-t border-slate-100">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -503,11 +474,11 @@ $erpPortfolios = $mockErpPortfolios;
 
 <section class="bg-slate-50 py-20 font-sans border-t border-slate-100">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <h2 class="text-2xl md:text-3xl font-extrabold text-center text-[#022862] tracking-tight mb-20">
+        <h2 class="text-2xl md:text-3xl font-extrabold text-center text-[#022862] tracking-tight py-10">
             ERP ที่ช่วยยกระดับธุรกิจของคุณ
         </h2>
 
-        <div class="grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-6">
+        <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 1.5rem;">
             <?php
             $erpBenefits = [
                 [
@@ -550,7 +521,59 @@ $erpPortfolios = $mockErpPortfolios;
     </div>
 </section>
 
-<section class="relative font-sans py-20 overflow-hidden">
+<?php if (!empty($erpPortfolios)): ?>
+<section class="bg-white py-20 font-sans">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        
+        <div class="flex flex-col md:flex-row md:items-end justify-between border-b border-slate-200 pb-5 mb-10 gap-4">
+            <div>
+                <h2 class="text-2xl md:text-3xl font-extrabold leading-none tracking-tight text-[#022862] m-0">
+                    ผลงานพัฒนาระบบ ERP
+                </h2>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-4 gap-8">
+            <?php foreach ($erpPortfolios as $port): 
+                $imgSrc = asset_url($port['image_path']);
+                $detailUrl = isset($port['slug']) ? route_url('/portfolio/' . $port['slug']) : route_url('/portfolio');
+            ?>
+                <a href="<?= e($detailUrl) ?>" class="block w-full">
+                    <article class="group w-full h-full rounded-2xl overflow-hidden border border-slate-100 bg-white shadow-sm hover:shadow-xl transition-all duration-500 flex flex-col hover:-translate-y-1">
+                    <div class="h-[220px] w-full overflow-hidden bg-slate-100 relative">
+                        <img src="<?= e($imgSrc) ?>" alt="<?= e($port['title']) ?>" class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105">
+                        <span class="absolute bottom-3 left-3 bg-primary/95 backdrop-blur text-white text-[10px] font-bold px-2.5 py-1 rounded-md uppercase tracking-wider shadow-sm">ERP SYSTEM</span>
+                    </div>
+                    <div class="p-6 flex flex-col flex-1">
+                        <h3 class="text-base font-bold text-[#0b1b42] leading-snug line-clamp-2 group-hover:text-primary transition-colors mb-3">
+                            <?= e($port['title']) ?>
+                        </h3>
+                        <p class="text-[13px] text-slate-500 leading-relaxed line-clamp-3 mb-5 flex-1">
+                            <?= e($port['description']) ?>
+                        </p>
+                        <div class="mt-auto pt-4 border-t border-slate-50"> 
+                            <span
+                                class="inline-flex items-center justify-center
+                                    rounded-full border-2 border-primary
+                                    px-3 py-1
+                                    text-sm font-medium
+                                    text-primary
+                                    hover:bg-primary hover:text-white
+                                    transition-colors">
+                                ERP System
+                            </span>
+                        </div>
+                    </div>
+                </article>
+                </a>
+            <?php endforeach; ?>
+        </div>
+
+    </div>
+</section>
+<?php endif; ?>
+
+<!-- <section class="relative font-sans py-20 overflow-hidden">
     <div class="absolute inset-0 bg-gradient-to-r from-[#021a4a] via-[#03245c] to-[#0b3f9e]">
         <img src="<?= e(asset_url('images/bg-cta.jpg')) ?>" alt="" class="absolute inset-0 w-full h-full object-cover opacity-30 mix-blend-luminosity">
         <div class="absolute inset-0 bg-gradient-to-r from-[#021a4a]/90 via-[#021a4a]/70 to-[#0b3f9e]/60"></div>
@@ -579,9 +602,9 @@ $erpPortfolios = $mockErpPortfolios;
             </div>
         </div>
     </div>
-</section>
+</section> -->
 
-<section class="bg-white py-20 font-sans border-t border-slate-100">
+<!-- <section class="bg-white py-20 font-sans border-t border-slate-100">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
@@ -635,4 +658,4 @@ $erpPortfolios = $mockErpPortfolios;
             </div>
         </div>
     </div>
-</section>
+</section> -->

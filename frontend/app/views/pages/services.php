@@ -252,8 +252,24 @@ $services = $mockServices;
         <div class="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-12 lg:gap-20 items-center">
             
             <div class="max-w-2xl">
-                <p class="mb-6 tracking-[0.5em] text-xs font-semibold text-[#1a2b6d] uppercase md:text-lg">ระบบนำทางแบบเศษขนมปัง</p>
-                
+                <nav aria-label="Breadcrumb" class="animate-fade-up delay-100 mb-6">
+                        <ol class="inline-flex items-center space-x-2 text-sm md:text-base font-medium text-slate-500">
+                            <li>
+                                <a href="<?= e(route_url('/')) ?>" class="hover:text-primary transition-colors duration-200">
+                                    หน้าแรก
+                                </a>
+                            </li>
+                            
+                            <li>
+                                <span class="text-slate-400 mx-1">/</span>
+                            </li>
+                            
+                            <li aria-current="page">
+                                <span class="text-slate-400">บริการของเรา</span>
+                            </li>
+                        </ol>
+                    </nav>
+                    
                 <h1 class="animate-fade-up delay-200 leading-[1.1] mb-2 tracking-tighter">
                     <span class="text-2xl md:text-3xl lg:text-5xl font-medium bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block py-3">
                         ความเชี่ยวชาญ

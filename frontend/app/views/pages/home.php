@@ -104,7 +104,7 @@ $mockArticles = [
                 </p>
 
                 <div class="animate-entrance-up delay-400 flex flex-wrap items-center gap-4">
-                    <a href="<?= e(route_url('/service')) ?>" class="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-primary text-white text-sm font-semibold rounded-full hover:bg-blue-700 transition-all shadow-md hover:-translate-y-0.5">
+                    <a href="<?= e(route_url('/services')) ?>" class="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-primary text-white text-sm font-semibold rounded-full hover:bg-blue-700 transition-all shadow-md hover:-translate-y-0.5">
                         ดูบริการของเรา
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
@@ -194,13 +194,13 @@ $mockArticles = [
     <div class="mx-auto w-full max-w-7xl px-5 sm:px-6 lg:px-8">
 
         <div class="mb-10">
-            <span class="text-primary font-bold text-xs md:text-sm tracking-widest uppercase mb-3 block">OUR POTFOLIO</span>
+            <h2 class="text-3xl md:text-4xl font-extrabold leading-none tracking-tighter text-primary m-0">
+                บริการของเรา
+            </h2>
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
-                <h2 class="text-3xl md:text-4xl font-extrabold leading-none tracking-tighter text-[#022862] m-0">
-                    ตัวอย่างผลงานของเรา
-                </h2>
-                <a href="<?= e(route_url('/portfolio')) ?>" class="shrink-0 inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-primary text-white text-sm font-semibold rounded-full hover:bg-blue-700 transition-all shadow-md hover:-translate-y-0.5">
-                    ดูผลงานทั้งหมด
+                <span class="text-base md:text-lg lg:text-xl font-bold leading-tight text-dark">ตัวอย่างผลงานของเรา</span>
+                <a href="<?= e(route_url('/services')) ?>" class="shrink-0 inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-primary text-white text-sm font-semibold rounded-full hover:bg-blue-700 transition-all shadow-md hover:-translate-y-0.5">
+                    ดูบริการทั้งหมด
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
                     </svg>
@@ -326,10 +326,13 @@ if ($totalReviews > 0):
 
     <div class="relative mx-auto w-full max-w-7xl px-5 sm:px-6 lg:px-8">
         <div class="mb-12 text-center max-w-4xl mx-auto">
-            <span class="text-primary font-bold text-xs md:text-sm tracking-widest uppercase mb-3 block">REVIEW</span>
-            <h2 class="text-2xl md:text-3xl lg:text-[2.2rem] font-bold leading-tight text-dark">
-                กว่า <span class="text-primary">120</span> องค์กร ที่เลือก <span class="text-primary">WEBPARK</span> เป็นพาร์ทเนอร์ด้านดิจิทัล
+            <h2 class="text-primary font-bold text-4xl md:text-3xl tracking-normal uppercase mb-3 block">
+                REVIEW
             </h2>
+            <span class="text-base md:text-lg lg:text-xl font-bold leading-tight text-dark">
+                กว่า <span class="text-primary">120</span> องค์กร ที่เลือก <span class="text-primary">WEBPARK</span> เป็นพาร์ทเนอร์ด้านดิจิทัล
+            </span>
+
         </div>
 
         <div class="flex items-center justify-between gap-4">
@@ -395,10 +398,13 @@ if ($totalReviews > 0):
         <?php endif; ?>
 
         <div class="mx-auto w-full max-w-7xl py-8 mt-10">
-            <span class="text-center text-primary font-bold text-xs md:text-sm tracking-widest uppercase mb-3 block">พันธมิตร</span>
-            <h2 class="text-center text-2xl md:text-3xl lg:text-[2.2rem] font-bold leading-tight text-dark">
-                องค์กรชั้นนำที่ไว้วางใจ <span class="text-primary">WEBPARK</span>
+            <h2 class="text-center text-primary font-bold text-2xl md:text-3xl tracking-normal uppercase mb-3 block">
+                พันธมิตร
             </h2>
+            <span class="block mx-auto text-base md:text-lg lg:text-xl font-bold leading-tight text-dark text-center">
+                องค์กรชั้นนำที่ไว้วางใจ <span class="text-primary">WEBPARK</span>
+            </span>
+
             <div class="overflow-hidden relative mt-10">
                 <div class="flex justify-center flex-wrap gap-8 md:gap-16 opacity-80">
                     <?php foreach ($partnerLogos as $logo): ?>
@@ -444,10 +450,12 @@ document.addEventListener('DOMContentLoaded', function () {
     <div class="mx-auto w-full max-w-7xl px-5 sm:px-6 lg:px-8">
         <div class="flex items-end justify-between border-b border-slate-200 pb-5 mb-10">
             <div>
-                <span class="text-primary font-bold text-xs md:text-sm tracking-widest uppercase mb-1 block">KNOWLEDGE</span>
-                <h2 class="text-2xl md:text-3xl font-extrabold leading-none tracking-tight text-dark m-0">
-                    บทความและความรู้
+                <h2 class="text-primary font-bold text-2xl md:text-3xl tracking-normal uppercase mb-1 block">
+                KNOWLEDGE
                 </h2>
+                <span class="text-base md:text-lg lg:text-xl font-extrabold leading-none tracking-tight text-dark m-0">
+                บทความและความรู้
+                </span>
             </div>
             <a href="<?= e(route_url('/article')) ?>" class="group flex items-center gap-1.5 text-sm font-bold text-primary hover:text-blue-700 transition-colors">
                 ดูทั้งหมด
