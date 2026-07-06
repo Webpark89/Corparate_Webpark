@@ -219,11 +219,55 @@ $erpPortfolios = $mockErpPortfolios;
             </div>
         </div>
     </div>
+
+    <div class="mx-auto w-full max-w-7xl px-4 sm:px-4 lg:px-6 relative z-20 -mt-10 lg:-mt-18 pb-6 lg:pb-16">
+        <div class="w-full rounded-[1rem] bg-white flex flex-col lg:flex-row items-stretch shadow-[0_4px_25px_rgba(0,0,0,0.06)] border border-gray-100 overflow-hidden">
+
+            <div class="group flex-1 lg:max-w-[300px] xl:max-w-[320px] flex flex-col justify-between p-6 lg:p-8 border-b lg:border-b-0 lg:border-r border-gray-100 shrink-0 bg-white transition-all duration-300 hover:bg-slate-50/50 cursor-pointer">
+                <div>
+                    <span class="text-primary font-bold text-sm tracking-wide block mb-3">เกี่ยวกับเรา</span>
+                    <h2 class="text-[#043B94] text-xl xl:text-2xl font-bold leading-tight mb-4 transition-colors duration-300 group-hover:text-blue-700">
+                        เราคือ พาร์ทเนอร์<br>ด้านเทคโนโลยี
+                    </h2>
+                    <p class="text-gray-500 text-sm leading-relaxed mb-6">
+                        มุ่งมั่นพัฒนาโซลูชันดิจิทัลที่ตอบโจทย์ธุรกิจยุคใหม่ ด้วยทีมงานมืออาชีพพร้อมแนวคิดและเทคโนโลยีในการยกระดับการทำงานของคุณ
+                    </p>
+                </div>
+            </div>
+
+            <div class="flex-[4] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 w-full">
+                <?php
+                $serviceCards = [
+                    ['icon' => 'icon-3.png', 'title' => 'ERP / ERM',        'desc' => 'ระบบบริหารจัดการองค์กรและควบคุมระบบ เพื่อเพิ่มทุกกระบวนการทำงานอย่างมีประสิทธิภาพ', 'href' => route_url('/erp')],
+                    ['icon' => 'icon-2.png', 'title' => 'Digital Platform', 'desc' => 'พัฒนาแพลตฟอร์มดิจิทัลทั้งออนไลน์และออฟไลน์ รองรับการเติบโตและการขยายตัว',              'href' => '#'],
+                    ['icon' => 'icon-4.png', 'title' => 'Online Marketing', 'desc' => 'วางกลยุทธ์และทำการตลาดออนไลน์ เพื่อการเข้าถึงกลุ่มเป้าหมาย และผลลัพธ์ที่วัดผลได้',   'href' => '#'],
+                    ['icon' => 'icon-1.png', 'title' => 'Creative / Design','desc' => 'ออกแบบและสร้างสรรค์ภาพลักษณ์ของแบรนด์ให้โดดเด่น สร้างการจดจำและตอบโจทย์แคมเปญ',    'href' => '#'],
+                ];
+                $lastIdx = count($serviceCards) - 1;
+                foreach ($serviceCards as $i => $card):
+                    $borderClass = $i < $lastIdx ? 'border-b sm:border-b-0 sm:border-r' : '';
+                ?>
+                    <div class="relative group cursor-pointer flex flex-col justify-between p-6 lg:p-8 <?= $borderClass ?> border-gray-100 bg-white transition-all duration-300 ease-out hover:shadow-[0_0_30px_rgba(0,0,0,0.08)] hover:-translate-y-1 hover:z-10 hover:rounded-xl">
+                        <div>
+                            <div class="h-14 w-14 mx-auto mb-5 flex items-center justify-center transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:-translate-y-2 group-hover:scale-110">
+                                <img src="<?= e(asset_url('images/' . $card['icon'])) ?>" alt="<?= e($card['title']) ?>" class="h-full w-full object-contain">
+                            </div>
+                            <h2 class="text-[#043B94] font-bold text-[15px] xl:text-[16px] text-center mb-3 whitespace-nowrap tracking-tight transition-colors duration-300 group-hover:text-blue-600">
+                                <?= e($card['title']) ?>
+                            </h2>
+                            <p class="text-gray-500 text-xs xl:text-sm leading-relaxed mb-6 text-left transition-colors duration-300 group-hover:text-gray-600">
+                                <?= e($card['desc']) ?>
+                            </p>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        </div>
+    </div>
 </section>
 
-<section class="bg-white py-16 font-sans border-t border-slate-100">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        
+<!-- <section class="bg-white py-16 font-sans border-t border-slate-100">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">        
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div class="bg-slate-50 rounded-2xl p-8 border border-slate-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
                 <div class="w-14 h-14 bg-white rounded-xl shadow-sm flex items-center justify-center mb-6">
@@ -249,24 +293,20 @@ $erpPortfolios = $mockErpPortfolios;
                 <p class="text-sm text-slate-500 leading-relaxed">ทำงานผ่านแพลตฟอร์มเดียว บอกลาการใช้ Excel หลายไฟล์หรือระบบที่ไม่เชื่อมต่อกัน ลดข้อผิดพลาดจากการกรอกข้อมูลซ้ำ (Human Error)</p>
             </div>
         </div>
-
     </div>
-</section>
+</section> -->
 
 <section id="modules" class="bg-slate-50 py-20 font-sans border-t border-slate-100">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         
         <div class="text-center max-w-3xl mx-auto mb-16">
-            <span class="text-primary font-bold text-xs md:text-sm tracking-widest uppercase mb-3 block">CORE MODULES</span>
-            <h2 class="text-3xl md:text-4xl font-extrabold text-[#022862] tracking-tight mb-4">
-                ระบบครอบคลุมทุกกระบวนการทำงาน
+            <h2 class="text-3xl md:text-4xl font-extrabold text-blue-600 tracking-tight mb-4">
+                ERP modules
             </h2>
-            <p class="text-slate-500 text-sm md:text-base leading-relaxed">
-                เราสามารถปรับแต่ง (Customize) โมดูลต่างๆ ให้สอดคล้องกับรูปแบบและขนาดธุรกิจของคุณได้อย่างยืดหยุ่น
-            </p>
+            <span class="text-blue 400 font-bold text-xs md:text-sm tracking-widest uppercase mb-3 block">ระบบครอบคลุมทุกกระบวนการทำงาน</span>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
             <?php foreach ($modulesData as $module): ?>
                 <div class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm hover:shadow-xl transition-all duration-300 group hover:-translate-y-1 relative overflow-hidden">
                     <div class="absolute inset-0 bg-gradient-to-br from-blue-50/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
