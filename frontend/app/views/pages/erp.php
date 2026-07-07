@@ -265,7 +265,7 @@ $erpPortfolios = $mockErpPortfolios;
                             </li>
                             
                             <li>
-                                <span class="text-slate-400 mx-1">/</span>
+                                <span class="text-slate-400" style="margin: 0 4px;">/</span>
                             </li>
                             
                             <li aria-current="page">
@@ -314,10 +314,12 @@ $erpPortfolios = $mockErpPortfolios;
 
             <div class="group flex-1 lg:max-w-[300px] xl:max-w-[320px] flex flex-col justify-between p-6 lg:p-8 border-b lg:border-b-0 lg:border-r border-gray-100 shrink-0 bg-white transition-all duration-300 hover:bg-slate-50/50 cursor-pointer">
                 <div>
-                    <span class="text-primary font-bold text-sm tracking-wide block mb-3">เกี่ยวกับเรา</span>
                     <h2 class="text-[#043B94] text-xl xl:text-2xl font-bold leading-tight mb-4 transition-colors duration-300 group-hover:text-blue-700">
-                        เราคือ พาร์ทเนอร์<br>ด้านเทคโนโลยี
+                        เกี่ยวกับเรา
                     </h2>
+                    <span class="text-primary font-bold text-md block mb-3">
+                        เราคือ พาร์ทเนอร์<br>ด้านเทคโนโลยี
+                    </span>
                     <p class="text-gray-500 text-sm leading-relaxed mb-6">
                         มุ่งมั่นพัฒนาโซลูชันดิจิทัลที่ตอบโจทย์ธุรกิจยุคใหม่ ด้วยทีมงานมืออาชีพพร้อมแนวคิดและเทคโนโลยีในการยกระดับการทำงานของคุณ
                     </p>
@@ -327,10 +329,10 @@ $erpPortfolios = $mockErpPortfolios;
             <div class="flex-[4] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 w-full">
                 <?php
                 $serviceCards = [
-                    ['icon' => 'icon-3.png', 'title' => 'ERP / ERM',        'desc' => 'ระบบบริหารจัดการองค์กรและควบคุมระบบ เพื่อเพิ่มทุกกระบวนการทำงานอย่างมีประสิทธิภาพ', 'href' => route_url('/erp')],
-                    ['icon' => 'icon-2.png', 'title' => 'Digital Platform', 'desc' => 'พัฒนาแพลตฟอร์มดิจิทัลทั้งออนไลน์และออฟไลน์ รองรับการเติบโตและการขยายตัว',              'href' => '#'],
-                    ['icon' => 'icon-4.png', 'title' => 'Online Marketing', 'desc' => 'วางกลยุทธ์และทำการตลาดออนไลน์ เพื่อการเข้าถึงกลุ่มเป้าหมาย และผลลัพธ์ที่วัดผลได้',   'href' => '#'],
-                    ['icon' => 'icon-1.png', 'title' => 'Creative / Design','desc' => 'ออกแบบและสร้างสรรค์ภาพลักษณ์ของแบรนด์ให้โดดเด่น สร้างการจดจำและตอบโจทย์แคมเปญ',    'href' => '#'],
+                    ['icon' => asset_url('images/ERP_1.svg'), 'title' => 'ERP / ERM',        'desc' => 'ระบบบริหารจัดการองค์กรและควบคุมระบบ เพื่อเพิ่มทุกกระบวนการทำงานอย่างมีประสิทธิภาพ', 'href' => route_url('/erp')],
+                    ['icon' => asset_url('images/ERP_2.svg'), 'title' => 'Digital Platform', 'desc' => 'พัฒนาแพลตฟอร์มดิจิทัลทั้งออนไลน์และออฟไลน์ รองรับการเติบโตและการขยายตัว',              'href' => '#'],
+                    ['icon' => asset_url('images/ERP_3.svg'), 'title' => 'Online Marketing', 'desc' => 'วางกลยุทธ์และทำการตลาดออนไลน์ เพื่อการเข้าถึงกลุ่มเป้าหมาย และผลลัพธ์ที่วัดผลได้',   'href' => '#'],
+                    ['icon' => asset_url('images/ERP_4.svg'), 'title' => 'Creative / Design','desc' => 'ออกแบบและสร้างสรรค์ภาพลักษณ์ของแบรนด์ให้โดดเด่น สร้างการจดจำและตอบโจทย์แคมเปญ',    'href' => '#'],
                 ];
                 $lastIdx = count($serviceCards) - 1;
                 foreach ($serviceCards as $i => $card):
@@ -339,7 +341,7 @@ $erpPortfolios = $mockErpPortfolios;
                     <div class="relative group cursor-pointer flex flex-col justify-between p-6 lg:p-8 <?= $borderClass ?> border-gray-100 bg-white transition-all duration-300 ease-out hover:shadow-[0_0_30px_rgba(0,0,0,0.08)] hover:-translate-y-1 hover:z-10 hover:rounded-xl">
                         <div>
                             <div class="h-14 w-14 mx-auto mb-5 flex items-center justify-center transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:-translate-y-2 group-hover:scale-110">
-                                <img src="<?= e(asset_url('images/' . $card['icon'])) ?>" alt="<?= e($card['title']) ?>" class="h-full w-full object-contain">
+                                <img src="<?= e($card['icon']) ?>" alt="<?= e($card['title']) ?>" class="h-full w-full object-contain">
                             </div>
                             <h2 class="text-[#043B94] font-bold text-[15px] xl:text-[16px] text-center mb-3 whitespace-nowrap tracking-tight transition-colors duration-300 group-hover:text-blue-600">
                                 <?= e($card['title']) ?>
@@ -392,7 +394,7 @@ $erpPortfolios = $mockErpPortfolios;
             <h2 class="text-3xl md:text-4xl font-extrabold text-blue-600 tracking-tight mb-4">
                 ERP modules
             </h2>
-            <span class="text-blue 400 font-bold text-xs md:text-sm tracking-widest uppercase mb-3 block">ระบบครอบคลุมทุกกระบวนการทำงาน</span>
+            <span class="text-blue 400 font-bold text-md md:text-md uppercase mb-3 block">ระบบครอบคลุมทุกกระบวนการทำงาน</span>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
@@ -484,34 +486,34 @@ $erpPortfolios = $mockErpPortfolios;
                 [
                     'title' => 'ข้อมูลครบถ้วน',
                     'desc' => 'รวมทุกแผนกไว้ในระบบเดียว',
-                    'icon' => '<svg class="w-7 h-7 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20.25 6.375c0 2.071-3.694 3.75-8.25 3.75s-8.25-1.679-8.25-3.75M20.25 6.375c0-2.071-3.694-3.75-8.25-3.75s-8.25 1.679-8.25 3.75M20.25 6.375v11.25C20.25 19.71 16.556 21.375 12 21.375s-8.25-1.664-8.25-3.75V6.375"/></svg>',
+                    'icon' => asset_url('images/ERP_5.svg'),
                 ],
                 [
                     'title' => 'ลดงานซ้ำซ้อน',
                     'desc' => 'เพิ่มประสิทธิภาพการทำงาน',
-                    'icon' => '<svg class="w-7 h-7 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99"/></svg>',
+                    'icon' => asset_url('images/ERP_6.svg'),
                 ],
                 [
                     'title' => 'ข้อมูลเรียลไทม์',
                     'desc' => 'ตัดสินใจได้แม่นยำและรวดเร็ว',
-                    'icon' => '<svg class="w-7 h-7 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>',
+                    'icon' => asset_url('images/ERP_7.svg'),
                 ],
                 [
                     'title' => 'ควบคุมความเสี่ยง',
                     'desc' => 'ตรวจสอบและติดตามได้ทุกขั้นตอน',
-                    'icon' => '<svg class="w-7 h-7 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z"/></svg>',
+                    'icon' => asset_url('images/ERP_8.svg'),
                 ],
                 [
                     'title' => 'ขยายได้ตามธุรกิจ',
                     'desc' => 'รองรับการเติบโตในอนาคต',
-                    'icon' => '<svg class="w-7 h-7 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z"/></svg>',
+                    'icon' => asset_url('images/ERP_9.svg'),
                 ],
             ];
             ?>
             <?php foreach ($erpBenefits as $benefit): ?>
                 <div class="bg-white rounded-2xl p-6 text-center border border-slate-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
                     <div class="w-14 h-14 mx-auto bg-blue-50/70 rounded-full flex items-center justify-center mb-4">
-                        <?= $benefit['icon'] ?>
+                        <img src="<?= e($benefit['icon']) ?>" alt="<?= e($benefit['title']) ?>" class="h-full w-full object-contain">
                     </div>
                     <h4 class="text-sm font-bold text-[#043B94] mb-1"><?= e($benefit['title']) ?></h4>
                     <p class="text-xs text-slate-500 leading-relaxed"><?= e($benefit['desc']) ?></p>

@@ -61,7 +61,7 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                         </li>
                         
                         <li>
-                            <span class="text-slate-400 mx-1">/</span>
+                            <span class="text-slate-400" style="margin: 0 4px;">/</span>
                         </li>
                         
                         <li aria-current="page">

@@ -253,7 +253,7 @@ $services = $mockServices;
             
             <div class="max-w-2xl">
                 <nav aria-label="Breadcrumb" class="animate-fade-up delay-100 mb-6">
-                        <ol class="inline-flex items-center space-x-2 text-sm md:text-base font-medium text-slate-500">
+                        <ol class="inline-flex items-center text-sm md:text-base font-medium text-slate-500">
                             <li>
                                 <a href="<?= e(route_url('/')) ?>" class="hover:text-primary transition-colors duration-200">
                                     หน้าแรก
@@ -261,7 +261,7 @@ $services = $mockServices;
                             </li>
                             
                             <li>
-                                <span class="text-slate-400 mx-1">/</span>
+                                <span class="text-slate-400" style="margin: 0 4px;">/</span>
                             </li>
                             
                             <li aria-current="page">
@@ -308,10 +308,13 @@ $services = $mockServices;
 
 <section id="our-services" class="bg-white pt-16 pb-6 font-sans scroll-mt-6">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <p class="text-xs font-bold uppercase tracking-widest mb-2" style="color: #043B94;">OUR SERVICES</p>
-        <h1 class="gsap-fade-up text-2xl md:text-3xl font-extrabold leading-tight mb-3" style="color: #022862;">
-            บริการของเรา ครอบคลุมทุกมิติธุรกิจดิจิทัล
+        <h1 class="gsap-fade-up text-2xl md:text-3xl font-extrabold leading-tight mb-2" style="color: #022862;">
+            บริการของเรา
         </h1>
+
+        <span class="text-2xl font-bold gsap-fade-up max-w-2xl mb-1" style="color: #043B94;">
+            บริการของเรา ครอบคลุมทุกมิติธุรกิจดิจิทัล
+        </span>
         <p class="gsap-fade-up text-slate-500 text-sm md:text-base leading-relaxed max-w-2xl">
             Webpark ให้บริการแบบครบวงจร ตั้งแต่การวางแผน ออกแบบ พัฒนา ไปจนถึงการดูแลหลังการใช้งาน
             เพื่อช่วยให้องค์กรเพิ่มประสิทธิภาพ ลดต้นทุน และเติบโตได้อย่างยั่งยืนในยุคดิจิทัล
@@ -436,10 +439,13 @@ $services = $mockServices;
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 
         <div class="text-center max-w-3xl mx-auto mb-12">
-            <p class="text-xs font-bold uppercase tracking-widest mb-3" style="color: #043B94;">OUR APPROACH</p>
-            <h2 class="text-2xl md:text-4xl font-extrabold mb-5 leading-tight" style="color: #022862;">
-                แนวคิดในการทำงานของเรา
+            <h2 class="gsap-fade-up text-2xl md:text-4xl font-extrabold leading-tight mb-2" style="color: #022862;">
+                บริการของเรา
             </h2>
+
+            <span class="text-2xl font-bold text-center justify-center gsap-fade-up mb-5 block" style="color: #043B94;">
+                แนวคิดในการทำงานของเรา
+            </span>
             <p class="text-slate-500 text-sm md:text-base leading-relaxed max-w-2xl mx-auto">
                 กระบวนการทำงานที่เป็นระบบ เพื่อส่งมอบโซลูชันดิจิทัลที่ตอบโจทย์ธุรกิจ และความยั่งยืนของข้อมูลธุรกิจที่องค์กรถือครอง
             </p>
