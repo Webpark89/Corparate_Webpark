@@ -80,7 +80,7 @@ $ctaImage = asset_url('images/bg-cta.jpg');
         'name_en' => 'Workflow Approval',
         'description_th' => 'กำหนดขั้นตอนการอนุมัติเอกสารและงานต่างๆ เพิ่มความโปร่งใส',
         'description_en' => 'Approval processes and workflow control.',
-        'icon' => '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-workflow-icon lucide-workflow text-blue-600 group-hover:text-white"><rect width="8" height="8" x="3" y="3" rx="2"/>
+        'icon' => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-10 h-10 text-blue-600 group-hover:text-white"><rect width="8" height="8" x="3" y="3" rx="2"/>
             <path d="M7 11v4a2 2 0 0 0 2 2h4"/><rect width="8" height="8" x="13" y="13" rx="2"/>
         </svg>'
     ],
@@ -90,7 +90,7 @@ $ctaImage = asset_url('images/bg-cta.jpg');
         'name_en' => 'Customer Relationship Management',
         'description_th' => 'จัดการข้อมูลลูกค้าและติดตามความสัมพันธ์เพื่อเพิ่มโอกาสการขาย',
         'description_en' => 'Customer data and relationship tracking.',
-        'icon' => '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-heart-handshake-icon lucide-heart-handshake text-blue-600 group-hover:text-white">
+        'icon' => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-10 h-10 text-blue-600 group-hover:text-white">
             <path d="M19.414 14.414C21 12.828 22 11.5 22 9.5a5.5 5.5 0 0 0-9.591-3.676.6.6 0 0 1-.818.001A5.5 5.5 0 0 0 2 9.5c0 2.3 1.5 4 3 5.5l5.535 5.362a2 2 0 0 0 2.879.052 2.12 2.12 0 0 0-.004-3 2.124 2.124 0 1 0 3-3 2.124 2.124 0 0 0 3.004 0 2 2 0 0 0 0-2.828l-1.881-1.882a2.41 2.41 0 0 0-3.409 0l-1.71 1.71a2 2 0 0 1-2.828 0 2 2 0 0 1 0-2.828l2.823-2.762"/>
         </svg>'
     ],
@@ -100,7 +100,7 @@ $ctaImage = asset_url('images/bg-cta.jpg');
         'name_en' => 'Quality Control',
         'description_th' => 'ตรวจสอบคุณภาพการผลิต ลดของเสีย และรักษามาตรฐานสินค้า',
         'description_en' => 'Production quality assurance and inspection.',
-        'icon' => '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shield-check-icon lucide-shield-check text-blue-600 group-hover:text-white">
+        'icon' => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-10 h-10 text-blue-600 group-hover:text-white">
             <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/>
             <path d="m9 12 2 2 4-4"/>
         </svg>'
@@ -111,7 +111,7 @@ $ctaImage = asset_url('images/bg-cta.jpg');
         'name_en' => 'Maintenance',
         'description_th' => 'จัดการการซ่อมบำรุงเครื่องจักร ลด Downtime และยืดอายุการใช้งาน',
         'description_en' => 'Equipment maintenance and downtime reduction.',
-        'icon' => '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-wrench-icon lucide-wrench text-blue-600 group-hover:text-white">
+        'icon' => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-10 h-10 text-blue-600 group-hover:text-white">
             <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.106-3.105c.32-.322.863-.22.983.218a6 6 0 0 1-8.259 7.057l-7.91 7.91a1 1 0 0 1-2.999-3l7.91-7.91a6 6 0 0 1 7.057-8.259c.438.12.54.662.219.984z"/>
         </svg>'
     ],
@@ -187,6 +187,14 @@ $erpPortfolios = $mockErpPortfolios;
     .delay-200 { animation-delay: 200ms; }
     .delay-300 { animation-delay: 300ms; }
     .delay-400 { animation-delay: 400ms; }
+
+    .scrollbar-none::-webkit-scrollbar {
+        display: none; /* สำหรับ Chrome, Safari และ Opera */
+    }
+    .scrollbar-none {
+        -ms-overflow-style: none;  /* สำหรับ IE และ Edge */
+        scrollbar-width: none;  /* สำหรับ Firefox */
+    }
 </style>
 
 
@@ -224,7 +232,7 @@ $erpPortfolios = $mockErpPortfolios;
 </section> -->
 
 <section class="relative overflow-hidden font-sans">
-    <div class="absolute inset-0 z-0 overflow-hidden">
+    <div class="hidden lg:block absolute inset-0 z-0 overflow-hidden">
         <img src="<?= e($heroImage) ?>" alt="WEBPARK Solutions Background" 
             class="w-full h-full object-cover object-center opacity-100 mix-blend-screen">
             
@@ -253,10 +261,18 @@ $erpPortfolios = $mockErpPortfolios;
     </style>
 
     <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 pt-12 pb-24 lg:pt-28 lg:pb-32 relative z-10">
-        <div class="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-12 lg:gap-20 items-center">
+        <!-- Mobile Background Image (Only covers this Hero container) -->
+        <div class="absolute inset-0 z-0 overflow-hidden lg:hidden rounded-2xl">
+            <img src="<?= e($heroImage) ?>" alt="WEBPARK Solutions Background" 
+                class="w-full h-full object-cover object-right opacity-100 mix-blend-screen">
+            <div class="absolute inset-0 bg-gradient-to-b from-white/90 via-white/70 to-white/40"></div>
+            <div class="absolute inset-x-0 bottom-0 h-[30%] bg-gradient-to-t from-white to-transparent"></div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-12 lg:gap-20 items-center relative z-10">
             
             <div class="max-w-2xl">
-                <nav aria-label="Breadcrumb" class="animate-fade-up delay-100 mb-6">
+                <nav aria-label="Breadcrumb" class="animate-fade-up delay-100 mb-6 hidden sm:block">
                         <ol class="inline-flex items-center space-x-2 text-sm md:text-base font-medium text-slate-500">
                             <li>
                                 <a href="<?= e(route_url('/')) ?>" class="hover:text-primary transition-colors duration-200">
@@ -275,7 +291,7 @@ $erpPortfolios = $mockErpPortfolios;
                     </nav>
                 
                 <h1 class="animate-fade-up delay-200 leading-[1.1] mb-2 tracking-tighter">
-                    <span class="text-5xl md:text-6xl lg:text-8xl font-bold bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block py-3">
+                    <span class="text-4xl md:text-6xl lg:text-8xl font-bold bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block py-3">
                         ERP Systems
                     </span><br>
 
@@ -285,11 +301,11 @@ $erpPortfolios = $mockErpPortfolios;
                 </h1>
 
                 <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-base md:text-lg leading-relaxed max-w-lg mb-10 font-medium">
-                    รวบรวมบทความรู้ เทคโนโลยี นวัตกรรม และแนวทางการทำธุรกิจ <br>
-                    ครอบคลุม ERP ระบบธุรกิจดิจิทัล การตลาดออนไลน์ AI และโซลูชัน<br>
+                    รวบรวมบทความรู้ เทคโนโลยี นวัตกรรม และแนวทางการทำธุรกิจ <br class="hidden md:block">
+                    ครอบคลุม ERP ระบบธุรกิจดิจิทัล การตลาดออนไลน์ AI และโซลูชัน<br class="hidden md:block">
                     ที่ช่วยพัฒนาองค์กรให้เติบโตได้อย่างยั่งยืน
                 </p>
-                <div class="animate-entrance-up delay-400 flex flex-wrap items-center gap-4">
+                <div class="animate-entrance-up delay-400 flex flex-col sm:flex-row items-start gap-4">
                     <a href="<?= e(route_url('/service')) ?>" class="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-primary text-white text-sm font-semibold rounded-full hover:bg-blue-700 transition-all shadow-md hover:-translate-y-0.5">
                         ดูบริการของเรา
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
@@ -326,7 +342,7 @@ $erpPortfolios = $mockErpPortfolios;
                 </div>
             </div>
 
-            <div class="flex-[4] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 w-full">
+            <div class="flex-[4] grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 w-full">
                 <?php
                 $serviceCards = [
                     ['icon' => asset_url('images/ERP_1.svg'), 'title' => 'ERP / ERM',        'desc' => 'ระบบบริหารจัดการองค์กรและควบคุมระบบ เพื่อเพิ่มทุกกระบวนการทำงานอย่างมีประสิทธิภาพ', 'href' => route_url('/erp')],
@@ -336,14 +352,33 @@ $erpPortfolios = $mockErpPortfolios;
                 ];
                 $lastIdx = count($serviceCards) - 1;
                 foreach ($serviceCards as $i => $card):
-                    $borderClass = $i < $lastIdx ? 'border-b sm:border-b-0 sm:border-r' : '';
+                    $borderClass = '';
+                    if ($i < $lastIdx) {
+                        $borderClass .= ' border-b';
+                    }
+                    if ($i < 2) {
+                        $borderClass .= ' sm:border-b';
+                    } else {
+                        $borderClass .= ' sm:border-b-0';
+                    }
+                    if ($i % 2 === 0) {
+                        $borderClass .= ' sm:border-r';
+                    } else {
+                        $borderClass .= ' sm:border-r-0';
+                    }
+                    $borderClass .= ' lg:border-b-0';
+                    if ($i < 3) {
+                        $borderClass .= ' lg:border-r';
+                    } else {
+                        $borderClass .= ' lg:border-r-0';
+                    }
                 ?>
                     <div class="relative group cursor-pointer flex flex-col justify-between p-6 lg:p-8 <?= $borderClass ?> border-gray-100 bg-white transition-all duration-300 ease-out hover:shadow-[0_0_30px_rgba(0,0,0,0.08)] hover:-translate-y-1 hover:z-10 hover:rounded-xl">
                         <div>
                             <div class="h-14 w-14 mx-auto mb-5 flex items-center justify-center transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:-translate-y-2 group-hover:scale-110">
                                 <img src="<?= e($card['icon']) ?>" alt="<?= e($card['title']) ?>" class="h-full w-full object-contain">
                             </div>
-                            <h2 class="text-[#043B94] font-bold text-[15px] xl:text-[16px] text-center mb-3 whitespace-nowrap tracking-tight transition-colors duration-300 group-hover:text-blue-600">
+                            <h2 class="text-[#043B94] font-bold text-[15px] xl:text-[16px] text-center mb-3 whitespace-normal tracking-tight transition-colors duration-300 group-hover:text-blue-600">
                                 <?= e($card['title']) ?>
                             </h2>
                             <p class="text-gray-500 text-xs xl:text-sm leading-relaxed mb-6 text-left transition-colors duration-300 group-hover:text-gray-600">
@@ -394,10 +429,10 @@ $erpPortfolios = $mockErpPortfolios;
             <h2 class="text-3xl md:text-4xl font-extrabold text-blue-600 tracking-tight mb-4">
                 ERP modules
             </h2>
-            <span class="text-blue 400 font-bold text-md md:text-md uppercase mb-3 block">ระบบครอบคลุมทุกกระบวนการทำงาน</span>
+            <span class="text-blue-400 font-bold text-md md:text-md uppercase mb-3 block">ระบบครอบคลุมทุกกระบวนการทำงาน</span>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
             <?php foreach ($modulesData as $module): ?>
                 <div class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm hover:shadow-xl transition-all duration-300 group hover:-translate-y-1 relative overflow-hidden">
                     <div class="absolute inset-0 bg-gradient-to-br from-blue-50/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
@@ -480,7 +515,7 @@ $erpPortfolios = $mockErpPortfolios;
             ERP ที่ช่วยยกระดับธุรกิจของคุณ
         </h2>
 
-        <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 1.5rem;">
+        <div class="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-5 gap-6">
             <?php
             $erpBenefits = [
                 [
@@ -535,12 +570,12 @@ $erpPortfolios = $mockErpPortfolios;
             </div>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-4 gap-8">
+        <div id="erp-portfolio-scroll-container" class="flex overflow-x-auto snap-x snap-mandatory scrollbar-none gap-8 pb-6 -mx-4 px-4 md:mx-0 md:px-0 md:grid md:grid-cols-4 lg:grid-cols-4 md:overflow-visible md:snap-none">
             <?php foreach ($erpPortfolios as $port): 
                 $imgSrc = asset_url($port['image_path']);
                 $detailUrl = isset($port['slug']) ? route_url('/portfolio/' . $port['slug']) : route_url('/portfolio');
             ?>
-                <a href="<?= e($detailUrl) ?>" class="block w-full">
+                <a href="<?= e($detailUrl) ?>" class="block w-[85vw] md:w-auto shrink-0 snap-center">
                     <article class="group w-full h-full rounded-2xl overflow-hidden border border-slate-100 bg-white shadow-sm hover:shadow-xl transition-all duration-500 flex flex-col hover:-translate-y-1">
                     <div class="h-[220px] w-full overflow-hidden bg-slate-100 relative">
                         <img src="<?= e($imgSrc) ?>" alt="<?= e($port['title']) ?>" class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105">
@@ -570,6 +605,63 @@ $erpPortfolios = $mockErpPortfolios;
                 </a>
             <?php endforeach; ?>
         </div>
+
+        <div class="flex justify-center gap-2 mt-2 md:hidden" id="erp-portfolio-dots">
+            <?php for ($i = 0; $i < count($erpPortfolios); $i++): ?>
+                <button 
+                    class="w-2.5 h-2.5 rounded-full transition-all duration-300 <?= $i === 0 ? 'bg-primary w-5' : 'bg-slate-300' ?>" 
+                    aria-label="Go to slide <?= $i + 1 ?>"
+                    onclick="scrollToErpPortfolio(<?= $i ?>)"
+                ></button>
+            <?php endfor; ?>
+        </div>
+
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const container = document.getElementById('erp-portfolio-scroll-container');
+            const dots = document.querySelectorAll('#erp-portfolio-dots button');
+            
+            if (!container || dots.length === 0) return;
+            
+            container.addEventListener('scroll', function() {
+                const scrollLeft = container.scrollLeft;
+                const width = container.clientWidth;
+                
+                let closestIndex = 0;
+                let minDiff = Infinity;
+                
+                const children = container.children;
+                const cardElements = Array.from(children).filter(el => el.tagName === 'A');
+                
+                cardElements.forEach((el, index) => {
+                    const diff = Math.abs(el.offsetLeft - scrollLeft - (width - el.clientWidth) / 2);
+                    if (diff < minDiff) {
+                        minDiff = diff;
+                        closestIndex = index;
+                    }
+                });
+                
+                dots.forEach((dot, index) => {
+                    if (index === closestIndex) {
+                        dot.classList.add('bg-primary', 'w-5');
+                        dot.classList.remove('bg-slate-300');
+                    } else {
+                        dot.classList.add('bg-slate-300');
+                        dot.classList.remove('bg-primary', 'w-5');
+                    }
+                });
+            });
+        });
+
+        function scrollToErpPortfolio(index) {
+            const container = document.getElementById('erp-portfolio-scroll-container');
+            if (!container) return;
+            const cardElements = Array.from(container.children).filter(el => el.tagName === 'A');
+            if (cardElements[index]) {
+                cardElements[index].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+            }
+        }
+        </script>
 
     </div>
 </section>

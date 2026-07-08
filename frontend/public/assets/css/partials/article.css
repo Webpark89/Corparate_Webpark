@@ -21,7 +21,7 @@
   }
 
   .article-card {
-    @apply group flex h-full flex-col overflow-hidden rounded-[1.4rem] border border-slate-100 bg-white shadow-sm transition-all duration-300;
+    @apply flex h-full flex-col overflow-hidden rounded-[1.4rem] border border-slate-100 bg-white shadow-sm transition-all duration-300;
   }
 
   .article-card:hover {
