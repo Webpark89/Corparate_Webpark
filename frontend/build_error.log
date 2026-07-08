@@ -1,0 +1,842 @@
+
+> WEBPARK@1.0.0 build:css
+> copy /b public\assets\css\partials\base.css+public\assets\css\partials\detail.css+public\assets\css\partials\home.css+public\assets\css\partials\article.css public\assets\css\app.css > NUL && tailwindcss -i ./public/assets/css/app.css -o ./public/assets/css/tailwind.css --minify
+
+Browserslist: caniuse-lite is outdated. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+
+Rebuilding...
+CssSyntaxError: tailwindcss: C:\xampp\htdocs\Corparate_Webpark\frontend\public\assets\css\app.css:353:5: @apply should not be used with the 'group' utility
+    at Input.error (C:\xampp\htdocs\Corparate_Webpark\frontend\node_modules\postcss\lib\input.js:135:16)
+    at AtRule.error (C:\xampp\htdocs\Corparate_Webpark\frontend\node_modules\postcss\lib\node.js:146:32)
+    at processApply (C:\xampp\htdocs\Corparate_Webpark\frontend\node_modules\tailwindcss\lib\lib\expandApplyAtRules.js:377:29)
+    at C:\xampp\htdocs\Corparate_Webpark\frontend\node_modules\tailwindcss\lib\lib\expandApplyAtRules.js:551:9
+    at C:\xampp\htdocs\Corparate_Webpark\frontend\node_modules\tailwindcss\lib\processTailwindFeatures.js:55:50
+    at async Object.Once (C:\xampp\htdocs\Corparate_Webpark\frontend\node_modules\tailwindcss\lib\cli\build\plugin.js:245:17)
+    at async LazyResult.runAsync (C:\xampp\htdocs\Corparate_Webpark\frontend\node_modules\postcss\lib\lazy-result.js:293:11)
+    at async build (C:\xampp\htdocs\Corparate_Webpark\frontend\node_modules\tailwindcss\lib\cli\build\index.js:49:9) {
+  reason: "@apply should not be used with the 'group' utility",
+  file: 'C:\\xampp\\htdocs\\Corparate_Webpark\\frontend\\public\\assets\\css\\app.css',
+  source: '@tailwind base;\r\n' +
+    '@tailwind components;\r\n' +
+    '@tailwind utilities;\r\n' +
+    '\r\n' +
+    '@layer base {\r\n' +
+    '  html {\r\n' +
+    '    scroll-behavior: smooth;\r\n' +
+    '  }\r\n' +
+    '\r\n' +
+    '  body {\r\n' +
+    '    @apply bg-slate-50 text-slate-900 antialiased;\r\n' +
+    "    font-family: 'Noto Sans Thai', ui-sans-serif, system-ui, sans-serif;\r\n" +
+    '    text-rendering: optimizeLegibility;\r\n' +
+    '  }\r\n' +
+    '\r\n' +
+    '  img {\r\n' +
+    '    @apply block max-w-full;\r\n' +
+    '  }\r\n' +
+    '\r\n' +
+    '  a {\r\n' +
+    '    @apply text-inherit no-underline;\r\n' +
+    '  }\r\n' +
+    '\r\n' +
+    '  button,\r\n' +
+    '  input,\r\n' +
+    '  textarea,\r\n' +
+    '  select {\r\n' +
+    '    font: inherit;\r\n' +
+    '  }\r\n' +
+    '\r\n' +
+    '  h1,\r\n' +
+    '  h2,\r\n' +
+    '  h3,\r\n' +
+    '  h4,\r\n' +
+    '  h5,\r\n' +
+    '  h6,\r\n' +
+    '  p {\r\n' +
+    '    @apply m-0;\r\n' +
+    '  }\r\n' +
+    '}\r\n' +
+    '\r\n' +
+    '@layer components {\r\n' +
+    '  /* Animated border button - blue glow effect */\r\n' +
+    '  .btn-animated-border {\r\n' +
+    '    position: relative;\r\n' +
+    '    background: transparent;\r\n' +
+    '    z-index: 1;\r\n' +
+    '  }\r\n' +
+    '\r\n' +
+    '  .btn-animated-border::before {\r\n' +
+    "    content: '';\r\n" +
+    '    position: absolute;\r\n' +
+    '    inset: 0;\r\n' +
+    '    border-radius: inherit;\r\n' +
+    '    padding: 2px;\r\n' +
+    '    background: linear-gradient(90deg, #3B82F6, #60A5FA, #3B82F6);\r\n' +
+    '    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);\r\n' +
+    '    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);\r\n' +
+    '    -webkit-mask-composite: xor;\r\n' +
+    '    mask-composite: exclude;\r\n' +
+    '    animation: border-glow 2s linear infinite;\r\n' +
+    '  }\r\n' +
+    '\r\n' +
+    '  @keyframes border-glow {\r\n' +
+    '    0% {\r\n' +
+    '      background-position: 0% 50%;\r\n' +
+    '    }\r\n' +
+    '    100% {\r\n' +
+    '      background-position: 200% 50%;\r\n' +
+    '    }\r\n' +
+    '  }\r\n' +
+    '\r\n' +
+    '  .btn-animated-border:hover::before {\r\n' +
+    '    background: linear-gradient(90deg, #3B82F6, #93C5FD, #3B82F6);\r\n' +
+    '  }\r\n' +
+    '\r\n' +
+    '  .btn-animated-border:disabled::before {\r\n' +
+    '    display: none;\r\n' +
+    '  }\r\n' +
+    '\r\n' +
+    '  .btn-animated-border:disabled {\r\n' +
+    '    opacity: 0.3;\r\n' +
+    '    cursor: not-allowed;\r\n' +
+    '  }\r\n' +
+    '\r\n' +
+    '  /* Infinite scroll animation for partner logos */\r\n' +
+    '  @keyframes scroll-left {\r\n' +
+    '    0% {\r\n' +
+    '      transform: translateX(0);\r\n' +
+    '    }\r\n' +
+    '    100% {\r\n' +
+    '      transform: translateX(-50%);\r\n' +
+    '    }\r\n' +
+    '  }\r\n' +
+    '\r\n' +
+    '  .animate-scroll {\r\n' +
+    '    animation: scroll-left 30s linear infinite;\r\n' +
+    '  }\r\n' +
+    '\r\n' +
+    '  .animate-scroll:hover {\r\n' +
+    '    animation-play-state: paused;\r\n' +
+    '  }\r\n' +
+    '}\r\n' +
+    '@layer components {\r\n' +
+    '  .service-detail-page__block {\r\n' +
+    '    @apply grid gap-3;\r\n' +
+    '  }\r\n' +
+    '\r\n' +
+    '  .service-detail-page__sections {\r\n' +
+    '    @apply grid gap-4;\r\n' +
+    '  }\r\n' +
+    '\r\n' +
+    '  .service-detail-page__section-card {\r\n' +
+    '    @apply rounded-2xl border border-slate-200 bg-slate-50 p-5;\r\n' +
+    '  }\r\n' +
+    '\r\n' +
+    '  .service-detail-page__section-card span {\r\n' +
+    '    @apply block text-[0.72rem] font-extrabold uppercase tracking-[0.18em] text-brand-teal;\r\n' +
+    '  }\r\n' +
+    '\r\n' +
+    '  .service-detail-page__section-card h5 {\r\n' +
+    '    @apply mt-2 text-base font-extrabold text-slate-900;\r\n' +
+    '  }\r\n' +
+    '\r\n' +
+    '  .service-detail-page__section-card p {\r\n' +
+    '    @apply mt-2 text-sm leading-7 text-slate-600;\r\n' +
+    '  }\r\n' +
+    '\r\n' +
+    '  .service-detail-page__metrics {\r\n' +
+    '    @apply grid gap-3;\r\n' +
+    '  }\r\n' +
+    '\r\n' +
+    '  .service-detail-page__metric {\r\n' +
+    '    @apply rounded-2xl border border-slate-200 bg-white p-4;\r\n' +
+    '  }\r\n' +
+    '\r\n' +
+    '  .service-detail-page__metric span {\r\n' +
+    '    @apply block text-[0.75rem] font-extrabold uppercase tracking-[0.18em] text-slate-500;\r\n' +
+    '  }\r\n' +
+    '\r\n' +
+    '  .service-detail-page__metric strong {\r\n' +
+    '    @apply mt-2 block text-base font-extrabold text-brand-navy;\r\n' +
+    '  }\r\n' +
+    '\r\n' +
+    '  .service-detail {\r\n' +
+    '    @apply mt-8 rounded-[1.75rem] border border-slate-200 bg-gradient-to-b from-white to-slate-50 p-6 shadow-card;\r\n' +
+    '  }\r\n' +
+    '\r\n' +
+    '  .service-detail__header {\r\n' +
+    '    @apply flex flex-col gap-4;\r\n' +
+    '  }\r\n' +
+    '\r\n' +
+    '  .service-detail__title {\r\n' +
+    '    @apply text-[clamp(1.5rem,3vw,2.5rem)] font-extrabold leading-tight text-brand-navy;\r\n' +
+    '  }\r\n' +
+    '\r\n' +
+    '  .service-detail__subtitle {\r\n' +
+    '    @apply max-w-4xl text-base leading-8 text-slate-600;\r\n' +
+    '  }\r\n' +
+    '\r\n' +
+    '  .service-detail__grid {\r\n' +
+    '    @apply mt-6 grid gap-4;\r\n' +
+    '  }\r\n' +
+    '\r\n' +
+    '  .service-detail__panel {\r\n' +
+    '    @apply rounded-2xl border border-slate-200 bg-white p-5;\r\n' +
+    '  }\r\n' +
+    '\r\n' +
+    '  .service-detail__panel--primary {\r\n' +
+    '    @apply grid gap-5;\r\n' +
+    '  }\r\n' +
+    '\r\n' +
+    '  .service-detail__summary {\r\n' +
+    '    @apply text-base leading-8 text-slate-700;\r\n' +
+    '  }\r\n' +
+    '\r\n' +
+    '  .service-detail__block h4 {\r\n' +
+    '    @apply text-[0.75rem] font-extrabold uppercase tracking-[0.18em] text-brand-teal;\r\n' +
+    '  }\r\n' +
+    '\r\n' +
+    '  .service-detail__list {\r\n' +
+    '    @apply mt-3 list-disc space-y-2 pl-5 text-slate-700;\r\n' +
+    '  }\r\n' +
+    '\r\n' +
+    '  .service-detail__chips {\r\n' +
+    '    @apply mt-3 grid gap-3;\r\n' +
+    '  }\r\n' +
+    '\r\n' +
+    '  .service-detail__chips li {\r\n' +
+    '    @apply rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 font-semibold text-brand-navy;\r\n' +
+    '  }\r\n' +
+    '\r\n' +
+    '  .service-detail__section-card {\r\n' +
+    '    @apply rounded-2xl border border-slate-200 bg-slate-50 p-4;\r\n' +
+    '  }\r\n' +
+    '\r\n' +
+    '  .service-detail__metric {\r\n' +
+    '    @apply rounded-2xl border border-slate-200 bg-slate-50 p-4;\r\n' +
+    '  }\r\n' +
+    '\r\n' +
+    '  .service-detail-page__block .hero-image {\r\n' +
+    '    @apply rounded-2xl;\r\n' +
+    '  }\r\n' +
+    '\r\n' +
+    '  .article-detail {\r\n' +
+    '    @apply mx-auto max-w-4xl;\r\n' +
+    '  }\r\n' +
+    '\r\n' +
+    '  .article-detail__hero {\r\n' +
+    '    @apply relative mb-6 overflow-hidden rounded-2xl;\r\n' +
+    '  }\r\n' +
+    '\r\n' +
+    '  .article-detail__hero-image {\r\n' +
+    '    @apply block h-64 w-full object-cover;\r\n' +
+    '  }\r\n' +
+    '\r\n' +
+    '  .article-detail__hero-overlay {\r\n' +
+    '    @apply absolute inset-0 bg-gradient-to-t from-black/60 to-transparent;\r\n' +
+    '  }\r\n' +
+    '\r\n' +
+    '  .article-detail__header {\r\n' +
+    '    @apply mb-6;\r\n' +
+    '  }\r\n' +
+    '\r\n' +
+    '  .article-detail__title {\r\n' +
+    '    @apply text-[clamp(1.75rem,3vw,3rem)] font-extrabold leading-tight tracking-tight text-slate-900;\r\n' +
+    '  }\r\n' +
+    '\r\n' +
+    '  .article-detail__meta {\r\n' +
+    '    @apply mt-4 flex flex-wrap gap-3 text-sm text-slate-500;\r\n' +
+    '  }\r\n' +
+    '\r\n' +
+    '  .article-detail__content {\r\n' +
+    '    @apply grid gap-6 text-slate-700 leading-8;\r\n' +
+    '  }\r\n' +
+    '\r\n' +
+    '  .article-detail__lead {\r\n' +
+    '    @apply text-base leading-8 text-slate-600;\r\n' +
+    '  }\r\n' +
+    '\r\n' +
+    '  .article-detail__richtext {\r\n' +
+    '    @apply grid gap-4;\r\n' +
+    '  }\r\n' +
+    '\r\n' +
+    '  .article-detail__detail-row {\r\n' +
+    '    @apply flex flex-wrap gap-3 rounded-2xl bg-slate-50 p-4 ring-1 ring-slate-200;\r\n' +
+    '  }\r\n' +
+    '\r\n' +
+    '  .article-detail__detail-key {\r\n' +
+    '    @apply text-[0.75rem] font-extrabold uppercase tracking-[0.18em] text-slate-500;\r\n' +
+    '  }\r\n' +
+    '\r\n' +
+    '  .article-detail__detail-value {\r\n' +
+    '    @apply font-bold text-slate-900;\r\n' +
+    '  }\r\n' +
+    '\r\n' +
+    '  .article-detail__actions {\r\n' +
+    '    @apply flex flex-wrap gap-3;\r\n' +
+    '  }\r\n' +
+    '\r\n' +
+    '  .article-detail__related {\r\n' +
+    '    @apply mt-12;\r\n' +
+    '  }\r\n' +
+    '\r\n' +
+    '  .article-detail__related-head {\r\n' +
+    '    @apply mb-6 flex items-center justify-between gap-4;\r\n' +
+    '  }\r\n' +
+    '\r\n' +
+    '  .article-detail__related-grid {\r\n' +
+    '    @apply grid gap-4 md:grid-cols-2 xl:grid-cols-4;\r\n' +
+    '  }\r\n' +
+    '\r\n' +
+    '  .article-detail__related-card {\r\n' +
+    '    @apply overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-soft;\r\n' +
+    '  }\r\n' +
+    '\r\n' +
+    '  .article-detail__related-card img {\r\n' +
+    '    @apply h-36 w-full object-cover;\r\n' +
+    '  }\r\n' +
+    '\r\n' +
+    '  .article-detail__related-card-content {\r\n' +
+    '    @apply p-4;\r\n' +
+    '  }\r\n' +
+    '\r\n' +
+    '  .article-detail__related-card-title {\r\n' +
+    '    @apply text-sm font-bold text-slate-900;\r\n' +
+    '  }\r\n' +
+    '\r\n' +
+    '  .article-detail__related-card-desc {\r\n' +
+    '    @apply mt-2 text-sm leading-6 text-slate-600;\r\n' +
+    '  }\r\n' +
+    '\r\n' +
+    '  .article-detail__related-card-link {\r\n' +
+    '    @apply mt-4 inline-flex items-center font-bold text-brand-blue;\r\n' +
+    '  }\r\n' +
+    '\r\n' +
+    '  .erp-hero {\r\n' +
+    '    @apply bg-white;\r\n' +
+    '  }\r\n' +
+    '\r\n' +
+    '  .erp-hero__content {\r\n' +
+    '    @apply mx-auto max-w-5xl text-center;\r\n' +
+    '  }\r\n' +
+    '\r\n' +
+    '  .erp-hero__tagline {\r\n' +
+    '    @apply mx-auto mt-4 max-w-3xl text-base leading-8 text-slate-600;\r\n' +
+    '  }\r\n' +
+    '\r\n' +
+    '  .erp-about__grid {\r\n' +
+    '    @apply grid gap-6 lg:grid-cols-2;\r\n' +
+    '  }\r\n' +
+    '\r\n' +
+    '  .erp-benefit-card {\r\n' +
+    '    @apply rounded-[1.25rem] border border-slate-200 bg-white p-6 shadow-soft transition hover:-translate-y-0.5 hover:shadow-card;\r\n' +
+    '  }\r\n' +
+    '\r\n' +
+    '  .erp-benefit-card__number {\r\n' +
+    '    @apply text-4xl font-extrabold text-brand-teal;\r\n' +
+    '  }\r\n' +
+    '\r\n' +
+    '  .erp-benefit-card__title {\r\n' +
+    '    @apply mt-3 text-lg font-extrabold text-slate-900;\r\n' +
+    '  }\r\n' +
+    '\r\n' +
+    '  .erp-benefit-card__desc {\r\n' +
+    '    @apply mt-2 text-sm leading-7 text-slate-600;\r\n' +
+    '  }\r\n' +
+    '}\r\n' +
+    '/* Home page is utility-only. */\r\n' +
+    '@layer components {\r\n' +
+    '  .article-filter-track {\r\n' +
+    '    scrollbar-width: none;\r\n' +
+    '    -ms-overflow-style: none;\r\n' +
+    '  }\r\n' +
+    '\r\n' +
+    '  .article-filter-track::-webkit-scrollbar {\r\n' +
+    '    display: none;\r\n' +
+    '  }\r\n' +
+    '\r\n' +
+    '  .article-filter-btn {\r\n' +
+    '    @apply inline-flex items-center justify-center rounded-full border border-slate-200 bg-white px-5 py-2 text-sm font-medium text-slate-700 transition whitespace-nowrap;\r\n' +
+    '  }\r\n' +
+    '\r\n' +
+    '  .article-filter-btn.active {\r\n' +
+    '    @apply bg-[#1a2b6d] text-white border-none;\r\n' +
+    '  }\r\n' +
+    '\r\n' +
+    '  .article-filter-arrow {\r\n' +
+    '    @apply inline-flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 transition hover:bg-slate-50;\r\n' +
+    '  }\r\n' +
+    '\r\n' +
+    '  .article-card {\r\n' +
+    '    @apply group flex h-full flex-col overflow-hidden rounded-[1.4rem] border border-slate-100 bg-white shadow-sm transition-all duration-300;\r\n' +
+    '  }\r\n' +
+    '\r\n' +
+    '  .article-card:hover {\r\n' +
+    '    @apply shadow-lg -translate-y-1;\r\n' +
+    '  }\r\n' +
+    '\r\n' +
+    '  .article-card__badge {\r\n' +
+    '    @apply text-xs font-semibold text-[#1a2b6d];\r\n' +
+    '  }\r\n' +
+    '\r\n' +
+    '  .article-card__image {\r\n' +
+    '    @apply h-full w-full object-cover transition-transform duration-500 group-hover:scale-105;\r\n' +
+    '  }\r\n' +
+    '\r\n' +
+    '  .article-card__title {\r\n' +
+    '    @apply text-lg font-bold leading-tight text-[#0b1b42] line-clamp-2;\r\n' +
+    '  }\r\n' +
+    '\r\n' +
+    '  .article-card__description {\r\n' +
+    '    @apply text-sm text-slate-500 leading-relaxed line-clamp-2 min-h-[3rem];\r\n' +
+    '  }\r\n' +
+    '\r\n' +
+    '  .article-card__cta {\r\n' +
+    '    @apply inline-flex items-center gap-1 text-sm font-semibold text-[#1a2b6d] transition-all;\r\n' +
+    '  }\r\n' +
+    '\r\n' +
+    '  .article-card__cta:hover {\r\n' +
+    '    @apply gap-2;\r\n' +
+    '  }\r\n' +
+    '\r\n' +
+    '  .article-card__cta-icon {\r\n' +
+    '    @apply w-4 h-4;\r\n' +
+    '  }\r\n' +
+    '\r\n' +
+    '  .article-pagination {\r\n' +
+    '    @apply flex items-center justify-center gap-2 mt-4;\r\n' +
+    '  }\r\n' +
+    '\r\n' +
+    '  .article-pagination__btn {\r\n' +
+    '    @apply w-9 h-9 rounded-full text-sm font-medium text-slate-500 border border-slate-200 bg-white hover:bg-slate-50;\r\n' +
+    '  }\r\n' +
+    '\r\n' +
+    '  .article-pagination__btn--active {\r\n' +
+    '    @apply bg-[#1a2b6d] text-white;\r\n' +
+    '  }\r\n' +
+    '\r\n' +
+    '  .article-cta__image {\r\n' +
+    '    mask-image: linear-gradient(to right, transparent, black);\r\n' +
+    '  }\r\n' +
+    '}\r\n',
+  line: 353,
+  column: 5,
+  endLine: 353,
+  endColumn: 143,
+  input: {
+    column: 5,
+    endColumn: 143,
+    endLine: 353,
+    endOffset: 8159,
+    line: 353,
+    offset: 8021,
+    source: '@tailwind base;\r\n' +
+      '@tailwind components;\r\n' +
+      '@tailwind utilities;\r\n' +
+      '\r\n' +
+      '@layer base {\r\n' +
+      '  html {\r\n' +
+      '    scroll-behavior: smooth;\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  body {\r\n' +
+      '    @apply bg-slate-50 text-slate-900 antialiased;\r\n' +
+      "    font-family: 'Noto Sans Thai', ui-sans-serif, system-ui, sans-serif;\r\n" +
+      '    text-rendering: optimizeLegibility;\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  img {\r\n' +
+      '    @apply block max-w-full;\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  a {\r\n' +
+      '    @apply text-inherit no-underline;\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  button,\r\n' +
+      '  input,\r\n' +
+      '  textarea,\r\n' +
+      '  select {\r\n' +
+      '    font: inherit;\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  h1,\r\n' +
+      '  h2,\r\n' +
+      '  h3,\r\n' +
+      '  h4,\r\n' +
+      '  h5,\r\n' +
+      '  h6,\r\n' +
+      '  p {\r\n' +
+      '    @apply m-0;\r\n' +
+      '  }\r\n' +
+      '}\r\n' +
+      '\r\n' +
+      '@layer components {\r\n' +
+      '  /* Animated border button - blue glow effect */\r\n' +
+      '  .btn-animated-border {\r\n' +
+      '    position: relative;\r\n' +
+      '    background: transparent;\r\n' +
+      '    z-index: 1;\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  .btn-animated-border::before {\r\n' +
+      "    content: '';\r\n" +
+      '    position: absolute;\r\n' +
+      '    inset: 0;\r\n' +
+      '    border-radius: inherit;\r\n' +
+      '    padding: 2px;\r\n' +
+      '    background: linear-gradient(90deg, #3B82F6, #60A5FA, #3B82F6);\r\n' +
+      '    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);\r\n' +
+      '    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);\r\n' +
+      '    -webkit-mask-composite: xor;\r\n' +
+      '    mask-composite: exclude;\r\n' +
+      '    animation: border-glow 2s linear infinite;\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  @keyframes border-glow {\r\n' +
+      '    0% {\r\n' +
+      '      background-position: 0% 50%;\r\n' +
+      '    }\r\n' +
+      '    100% {\r\n' +
+      '      background-position: 200% 50%;\r\n' +
+      '    }\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  .btn-animated-border:hover::before {\r\n' +
+      '    background: linear-gradient(90deg, #3B82F6, #93C5FD, #3B82F6);\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  .btn-animated-border:disabled::before {\r\n' +
+      '    display: none;\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  .btn-animated-border:disabled {\r\n' +
+      '    opacity: 0.3;\r\n' +
+      '    cursor: not-allowed;\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  /* Infinite scroll animation for partner logos */\r\n' +
+      '  @keyframes scroll-left {\r\n' +
+      '    0% {\r\n' +
+      '      transform: translateX(0);\r\n' +
+      '    }\r\n' +
+      '    100% {\r\n' +
+      '      transform: translateX(-50%);\r\n' +
+      '    }\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  .animate-scroll {\r\n' +
+      '    animation: scroll-left 30s linear infinite;\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  .animate-scroll:hover {\r\n' +
+      '    animation-play-state: paused;\r\n' +
+      '  }\r\n' +
+      '}\r\n' +
+      '@layer components {\r\n' +
+      '  .service-detail-page__block {\r\n' +
+      '    @apply grid gap-3;\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  .service-detail-page__sections {\r\n' +
+      '    @apply grid gap-4;\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  .service-detail-page__section-card {\r\n' +
+      '    @apply rounded-2xl border border-slate-200 bg-slate-50 p-5;\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  .service-detail-page__section-card span {\r\n' +
+      '    @apply block text-[0.72rem] font-extrabold uppercase tracking-[0.18em] text-brand-teal;\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  .service-detail-page__section-card h5 {\r\n' +
+      '    @apply mt-2 text-base font-extrabold text-slate-900;\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  .service-detail-page__section-card p {\r\n' +
+      '    @apply mt-2 text-sm leading-7 text-slate-600;\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  .service-detail-page__metrics {\r\n' +
+      '    @apply grid gap-3;\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  .service-detail-page__metric {\r\n' +
+      '    @apply rounded-2xl border border-slate-200 bg-white p-4;\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  .service-detail-page__metric span {\r\n' +
+      '    @apply block text-[0.75rem] font-extrabold uppercase tracking-[0.18em] text-slate-500;\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  .service-detail-page__metric strong {\r\n' +
+      '    @apply mt-2 block text-base font-extrabold text-brand-navy;\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  .service-detail {\r\n' +
+      '    @apply mt-8 rounded-[1.75rem] border border-slate-200 bg-gradient-to-b from-white to-slate-50 p-6 shadow-card;\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  .service-detail__header {\r\n' +
+      '    @apply flex flex-col gap-4;\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  .service-detail__title {\r\n' +
+      '    @apply text-[clamp(1.5rem,3vw,2.5rem)] font-extrabold leading-tight text-brand-navy;\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  .service-detail__subtitle {\r\n' +
+      '    @apply max-w-4xl text-base leading-8 text-slate-600;\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  .service-detail__grid {\r\n' +
+      '    @apply mt-6 grid gap-4;\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  .service-detail__panel {\r\n' +
+      '    @apply rounded-2xl border border-slate-200 bg-white p-5;\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  .service-detail__panel--primary {\r\n' +
+      '    @apply grid gap-5;\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  .service-detail__summary {\r\n' +
+      '    @apply text-base leading-8 text-slate-700;\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  .service-detail__block h4 {\r\n' +
+      '    @apply text-[0.75rem] font-extrabold uppercase tracking-[0.18em] text-brand-teal;\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  .service-detail__list {\r\n' +
+      '    @apply mt-3 list-disc space-y-2 pl-5 text-slate-700;\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  .service-detail__chips {\r\n' +
+      '    @apply mt-3 grid gap-3;\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  .service-detail__chips li {\r\n' +
+      '    @apply rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 font-semibold text-brand-navy;\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  .service-detail__section-card {\r\n' +
+      '    @apply rounded-2xl border border-slate-200 bg-slate-50 p-4;\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  .service-detail__metric {\r\n' +
+      '    @apply rounded-2xl border border-slate-200 bg-slate-50 p-4;\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  .service-detail-page__block .hero-image {\r\n' +
+      '    @apply rounded-2xl;\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  .article-detail {\r\n' +
+      '    @apply mx-auto max-w-4xl;\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  .article-detail__hero {\r\n' +
+      '    @apply relative mb-6 overflow-hidden rounded-2xl;\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  .article-detail__hero-image {\r\n' +
+      '    @apply block h-64 w-full object-cover;\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  .article-detail__hero-overlay {\r\n' +
+      '    @apply absolute inset-0 bg-gradient-to-t from-black/60 to-transparent;\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  .article-detail__header {\r\n' +
+      '    @apply mb-6;\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  .article-detail__title {\r\n' +
+      '    @apply text-[clamp(1.75rem,3vw,3rem)] font-extrabold leading-tight tracking-tight text-slate-900;\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  .article-detail__meta {\r\n' +
+      '    @apply mt-4 flex flex-wrap gap-3 text-sm text-slate-500;\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  .article-detail__content {\r\n' +
+      '    @apply grid gap-6 text-slate-700 leading-8;\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  .article-detail__lead {\r\n' +
+      '    @apply text-base leading-8 text-slate-600;\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  .article-detail__richtext {\r\n' +
+      '    @apply grid gap-4;\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  .article-detail__detail-row {\r\n' +
+      '    @apply flex flex-wrap gap-3 rounded-2xl bg-slate-50 p-4 ring-1 ring-slate-200;\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  .article-detail__detail-key {\r\n' +
+      '    @apply text-[0.75rem] font-extrabold uppercase tracking-[0.18em] text-slate-500;\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  .article-detail__detail-value {\r\n' +
+      '    @apply font-bold text-slate-900;\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  .article-detail__actions {\r\n' +
+      '    @apply flex flex-wrap gap-3;\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  .article-detail__related {\r\n' +
+      '    @apply mt-12;\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  .article-detail__related-head {\r\n' +
+      '    @apply mb-6 flex items-center justify-between gap-4;\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  .article-detail__related-grid {\r\n' +
+      '    @apply grid gap-4 md:grid-cols-2 xl:grid-cols-4;\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  .article-detail__related-card {\r\n' +
+      '    @apply overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-soft;\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  .article-detail__related-card img {\r\n' +
+      '    @apply h-36 w-full object-cover;\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  .article-detail__related-card-content {\r\n' +
+      '    @apply p-4;\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  .article-detail__related-card-title {\r\n' +
+      '    @apply text-sm font-bold text-slate-900;\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  .article-detail__related-card-desc {\r\n' +
+      '    @apply mt-2 text-sm leading-6 text-slate-600;\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  .article-detail__related-card-link {\r\n' +
+      '    @apply mt-4 inline-flex items-center font-bold text-brand-blue;\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  .erp-hero {\r\n' +
+      '    @apply bg-white;\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  .erp-hero__content {\r\n' +
+      '    @apply mx-auto max-w-5xl text-center;\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  .erp-hero__tagline {\r\n' +
+      '    @apply mx-auto mt-4 max-w-3xl text-base leading-8 text-slate-600;\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  .erp-about__grid {\r\n' +
+      '    @apply grid gap-6 lg:grid-cols-2;\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  .erp-benefit-card {\r\n' +
+      '    @apply rounded-[1.25rem] border border-slate-200 bg-white p-6 shadow-soft transition hover:-translate-y-0.5 hover:shadow-card;\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  .erp-benefit-card__number {\r\n' +
+      '    @apply text-4xl font-extrabold text-brand-teal;\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  .erp-benefit-card__title {\r\n' +
+      '    @apply mt-3 text-lg font-extrabold text-slate-900;\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  .erp-benefit-card__desc {\r\n' +
+      '    @apply mt-2 text-sm leading-7 text-slate-600;\r\n' +
+      '  }\r\n' +
+      '}\r\n' +
+      '/* Home page is utility-only. */\r\n' +
+      '@layer components {\r\n' +
+      '  .article-filter-track {\r\n' +
+      '    scrollbar-width: none;\r\n' +
+      '    -ms-overflow-style: none;\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  .article-filter-track::-webkit-scrollbar {\r\n' +
+      '    display: none;\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  .article-filter-btn {\r\n' +
+      '    @apply inline-flex items-center justify-center rounded-full border border-slate-200 bg-white px-5 py-2 text-sm font-medium text-slate-700 transition whitespace-nowrap;\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  .article-filter-btn.active {\r\n' +
+      '    @apply bg-[#1a2b6d] text-white border-none;\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  .article-filter-arrow {\r\n' +
+      '    @apply inline-flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 transition hover:bg-slate-50;\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  .article-card {\r\n' +
+      '    @apply group flex h-full flex-col overflow-hidden rounded-[1.4rem] border border-slate-100 bg-white shadow-sm transition-all duration-300;\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  .article-card:hover {\r\n' +
+      '    @apply shadow-lg -translate-y-1;\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  .article-card__badge {\r\n' +
+      '    @apply text-xs font-semibold text-[#1a2b6d];\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  .article-card__image {\r\n' +
+      '    @apply h-full w-full object-cover transition-transform duration-500 group-hover:scale-105;\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  .article-card__title {\r\n' +
+      '    @apply text-lg font-bold leading-tight text-[#0b1b42] line-clamp-2;\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  .article-card__description {\r\n' +
+      '    @apply text-sm text-slate-500 leading-relaxed line-clamp-2 min-h-[3rem];\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  .article-card__cta {\r\n' +
+      '    @apply inline-flex items-center gap-1 text-sm font-semibold text-[#1a2b6d] transition-all;\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  .article-card__cta:hover {\r\n' +
+      '    @apply gap-2;\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  .article-card__cta-icon {\r\n' +
+      '    @apply w-4 h-4;\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  .article-pagination {\r\n' +
+      '    @apply flex items-center justify-center gap-2 mt-4;\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  .article-pagination__btn {\r\n' +
+      '    @apply w-9 h-9 rounded-full text-sm font-medium text-slate-500 border border-slate-200 bg-white hover:bg-slate-50;\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  .article-pagination__btn--active {\r\n' +
+      '    @apply bg-[#1a2b6d] text-white;\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  .article-cta__image {\r\n' +
+      '    mask-image: linear-gradient(to right, transparent, black);\r\n' +
+      '  }\r\n' +
+      '}\r\n',
+    url: 'file:///C:/xampp/htdocs/Corparate_Webpark/frontend/public/assets/css/app.css',
+    file: 'C:\\xampp\\htdocs\\Corparate_Webpark\\frontend\\public\\assets\\css\\app.css'
+  },
+  plugin: 'tailwindcss'
+}
