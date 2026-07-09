@@ -21,7 +21,7 @@ $ctaImage = asset_url('images/bg-cta.jpg');
         'id'                => 1,
         'icon_emoji'        => '🖥️',
         'title'             => 'ERP / ERM',
-        'summary'           => 'พัฒนาระบบบริหารจัดการองค์กร เพื่อเพิ่มประสิทธิภาพการทำงาน เชื่อมโยงข้อมูล และรองรับการเติบโตของธุรกิจ',
+        'summary'           => getCurrentLang() === 'th' ? 'พัฒนาระบบบริหารจัดการองค์กร เพื่อเพิ่มประสิทธิภาพการทำงาน เชื่อมโยงข้อมูล และรองรับการเติบโตของธุรกิจ' : 'Develop enterprise management systems to increase efficiency, connect data, and support business growth.',
         'image_placeholder' => 'images/erp.png',
         'dropdown_title'    => 'ERP / ERM / HR',
         'subcategories'     => [
@@ -43,7 +43,7 @@ $ctaImage = asset_url('images/bg-cta.jpg');
         'id'                => 2,
         'icon_emoji'        => '🌐',
         'title'             => 'Digital Platform',
-        'summary'           => 'ออกแบบและพัฒนาแพลตฟอร์มดิจิทัล เว็บไซต์ และระบบธุรกิจออนไลน์ที่ใช้งานง่าย ยืดหยุ่น และตอบโจทย์องค์กร',
+        'summary'           => getCurrentLang() === 'th' ? 'ออกแบบและพัฒนาแพลตฟอร์มดิจิทัล เว็บไซต์ และระบบธุรกิจออนไลน์ที่ใช้งานง่าย ยืดหยุ่น และตอบโจทย์องค์กร' : 'Design and develop digital platforms, websites, and online business systems that are user-friendly, flexible, and meet organizational needs.',
         'image_placeholder' => 'images/bg-cta.jpg',
         'dropdown_title'    => 'Platform / Communication / Data',
         'subcategories'     => [
@@ -66,7 +66,7 @@ $ctaImage = asset_url('images/bg-cta.jpg');
         'id'                => 3,
         'icon_emoji'        => '📣',
         'title'             => 'Online Marketing',
-        'summary'           => 'วางกลยุทธ์การตลาดออนไลน์ เพื่อเพิ่มการมองเห็น สร้างโอกาสทางธุรกิจ และเพิ่มยอดขายได้อย่างวัดผลได้จริง',
+        'summary'           => getCurrentLang() === 'th' ? 'วางกลยุทธ์การตลาดออนไลน์ เพื่อเพิ่มการมองเห็น สร้างโอกาสทางธุรกิจ และเพิ่มยอดขายได้อย่างวัดผลได้จริง' : 'Plan online marketing strategies to increase visibility, create business opportunities, and measurably increase sales.',
         'image_placeholder' => 'images/bg-hand.jpg',
         'dropdown_title'    => 'Strategy / Performance / Content',
         'subcategories'     => [
@@ -89,7 +89,7 @@ $ctaImage = asset_url('images/bg-cta.jpg');
         'id'                => 4,
         'icon_emoji'        => '🎨',
         'title'             => 'Creative / Design',
-        'summary'           => 'สร้างสรรค์งานออกแบบดิจิทัลและคอนเทนต์ที่ช่วยสื่อสารแบรนด์ ทั้ง UI/UX, Graphic, Motion และสื่อสารแบรนด์',
+        'summary'           => getCurrentLang() === 'th' ? 'สร้างสรรค์งานออกแบบดิจิทัลและคอนเทนต์ที่ช่วยสื่อสารแบรนด์ ทั้ง UI/UX, Graphic, Motion และสื่อสารแบรนด์' : 'Create digital designs and content that help communicate your brand, including UI/UX, Graphic, Motion, and brand communication.',
         'image_placeholder' => 'images/women-office.jpg',
         'dropdown_title'    => 'Design / Motion / Media',
         'subcategories'     => [
@@ -272,22 +272,22 @@ $services = $mockServices;
                     
                 <h1 class="animate-fade-up delay-200 leading-[1.1] mb-2 tracking-tighter">
                     <span class="text-2xl md:text-3xl lg:text-5xl font-medium bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block py-3">
-                        ความเชี่ยวชาญ
+                        <?= getCurrentLang() === 'th' ? 'ความเชี่ยวชาญ' : 'Expertise' ?>
                     </span><br>
 
                     <span class="text-5xl md:text-6xl lg:text-8xl font-bold bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block mt-2 py-3" style="animation-delay: -3s;">
-                        และจุดเด่น
+                        <?= getCurrentLang() === 'th' ? 'และจุดเด่น' : '& Strengths' ?>
                     </span>
                 </h1>
 
                 <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-base md:text-lg leading-relaxed max-w-lg mb-10 font-medium">
-                    มากกว่า 20 ปี ที่เราสร้างสรรค์โซลูชั่นดิจิทัลครบวงจร <br>
+                    <?= getCurrentLang() === 'th' ? 'มากกว่า 20 ปี ที่เราสร้างสรรค์โซลูชั่นดิจิทัลครบวงจร <br>
                     ผสนเทคโนโลยี่ ความเชี่ยวชาญ และความเข้าในธุรกิจ<br>
-                    เพื่อช่วยให้องค์กรเพิ่มประสิทธิภาพ ยกระดับองค์กรสู่อนาคต
+                    เพื่อช่วยให้องค์กรเพิ่มประสิทธิภาพ ยกระดับองค์กรสู่อนาคต' : 'Over 20 years of creating comprehensive digital solutions.<br>We combine technology, expertise, and business understanding<br>to help organizations increase efficiency and elevate into the future.' ?>
                 </p>
                 <div class="animate-entrance-up delay-400 flex flex-wrap items-center gap-4">
                     <a href="<?= e(route_url('/service')) ?>" class="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-primary text-white text-sm font-semibold rounded-full hover:bg-blue-700 transition-all shadow-md hover:-translate-y-0.5">
-                        ดูบริการของเรา
+                        <?= e(t('common.cta_view_services') !== 'common.cta_view_services' ? t('common.cta_view_services') : (getCurrentLang() === 'th' ? 'ดูบริการของเรา' : 'View Our Services')) ?>
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
                         </svg>
@@ -298,7 +298,7 @@ $services = $mockServices;
                                 <path d="M8 5v14l11-7z"/>
                             </svg>
                         </div>
-                        <span class="text-slate-800 text-lg font-semibold group-hover:text-primary transition-colors">ดูวิดีโอแนะนำ</span>
+                        <span class="text-slate-800 text-lg font-semibold group-hover:text-primary transition-colors"><?= e(t('common.cta_watch_intro_video') !== 'common.cta_watch_intro_video' ? t('common.cta_watch_intro_video') : (getCurrentLang() === 'th' ? 'ดูวิดีโอแนะนำ' : 'Watch Video')) ?></span>
                     </a>
                 </div>
             </div>
@@ -309,15 +309,14 @@ $services = $mockServices;
 <section id="our-services" class="bg-white pt-16 pb-6 font-sans scroll-mt-6">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <h1 class="gsap-fade-up text-2xl md:text-3xl font-extrabold leading-tight mb-2" style="color: #022862;">
-            บริการของเรา
+            <?= e(t('common.nav_services') !== 'common.nav_services' ? t('common.nav_services') : (getCurrentLang() === 'th' ? 'บริการของเรา' : 'Our Services')) ?>
         </h1>
 
         <span class="text-2xl font-bold gsap-fade-up max-w-2xl mb-1" style="color: #043B94;">
-            บริการของเรา ครอบคลุมทุกมิติธุรกิจดิจิทัล
+            <?= getCurrentLang() === 'th' ? 'บริการของเรา ครอบคลุมทุกมิติธุรกิจดิจิทัล' : 'Our services cover every dimension of digital business' ?>
         </span>
         <p class="gsap-fade-up text-slate-500 text-sm md:text-base leading-relaxed max-w-2xl">
-            Webpark ให้บริการแบบครบวงจร ตั้งแต่การวางแผน ออกแบบ พัฒนา ไปจนถึงการดูแลหลังการใช้งาน
-            เพื่อช่วยให้องค์กรเพิ่มประสิทธิภาพ ลดต้นทุน และเติบโตได้อย่างยั่งยืนในยุคดิจิทัล
+            <?= getCurrentLang() === 'th' ? 'Webpark ให้บริการแบบครบวงจร ตั้งแต่การวางแผน ออกแบบ พัฒนา ไปจนถึงการดูแลหลังการใช้งาน<br>เพื่อช่วยให้องค์กรเพิ่มประสิทธิภาพ ลดต้นทุน และเติบโตได้อย่างยั่งยืนในยุคดิจิทัล' : 'Webpark provides end-to-end services, from planning, design, and development to post-deployment support.<br>We help organizations increase efficiency, reduce costs, and grow sustainably in the digital era.' ?>
         </p>
     </div>
 </section>
@@ -334,7 +333,7 @@ $services = $mockServices;
                 $sEmoji  = (string)($service['icon_emoji'] ?? '');
                 $imgSrc  = asset_url($service['image_placeholder'] ?? '');
                 $subcats = (array)($service['subcategories'] ?? []);
-                $dropdownText = (string)($service['dropdown_title'] ?? 'ดูหัวข้อย่อย');
+                $dropdownText = getCurrentLang() === 'th' ? (string)($service['dropdown_title'] ?? 'ดูหัวข้อย่อย') : (string)($service['dropdown_title'] ?? 'View Subcategories');
             ?>
 
             <div class="gsap-service-card group rounded-2xl border border-slate-100 bg-white overflow-hidden flex flex-col opacity-0 translate-y-10"
@@ -440,14 +439,14 @@ $services = $mockServices;
 
         <div class="text-center max-w-3xl mx-auto mb-12">
             <h2 class="gsap-fade-up text-2xl md:text-4xl font-extrabold leading-tight mb-2" style="color: #022862;">
-                บริการของเรา
+                <?= e(t('common.nav_services') !== 'common.nav_services' ? t('common.nav_services') : (getCurrentLang() === 'th' ? 'บริการของเรา' : 'Our Services')) ?>
             </h2>
 
             <span class="text-2xl font-bold text-center justify-center gsap-fade-up mb-5 block" style="color: #043B94;">
-                แนวคิดในการทำงานของเรา
+                <?= getCurrentLang() === 'th' ? 'แนวคิดในการทำงานของเรา' : 'Our Approach' ?>
             </span>
             <p class="text-slate-500 text-sm md:text-base leading-relaxed max-w-2xl mx-auto">
-                กระบวนการทำงานที่เป็นระบบ เพื่อส่งมอบโซลูชันดิจิทัลที่ตอบโจทย์ธุรกิจ และความยั่งยืนของข้อมูลธุรกิจที่องค์กรถือครอง
+                <?= getCurrentLang() === 'th' ? 'กระบวนการทำงานที่เป็นระบบ เพื่อส่งมอบโซลูชันดิจิทัลที่ตอบโจทย์ธุรกิจ และความยั่งยืนของข้อมูลธุรกิจที่องค์กรถือครอง' : 'A systematic work process to deliver digital solutions that meet business needs and ensure the sustainability of business data held by the organization.' ?>
             </p>
         </div>
 
@@ -457,26 +456,26 @@ $services = $mockServices;
                 [
                     'number' => '01',
                     'icon'   => asset_url('images/icon-1.png'),
-                    'title'  => 'เข้าใจธุรกิจของคุณ',
-                    'desc'   => 'ศึกษาความต้องการ วิเคราะห์ปัญหา และกำหนดแนวทางที่เหมาะสมกับธุรกิจของท่านอย่างแท้จริง',
+                    'title'  => getCurrentLang() === 'th' ? 'เข้าใจธุรกิจของคุณ' : 'Understand Your Business',
+                    'desc'   => getCurrentLang() === 'th' ? 'ศึกษาความต้องการ วิเคราะห์ปัญหา และกำหนดแนวทางที่เหมาะสมกับธุรกิจของท่านอย่างแท้จริง' : 'Study requirements, analyze problems, and determine the approach that truly suits your business.',
                 ],
                 [
                     'number' => '02',
                     'icon'   => asset_url('images/icon-2.png'),
-                    'title'  => 'ออกแบบให้ใช้งานได้จริง',
-                    'desc'   => 'ออกแบบประสบการณ์ใช้งานที่เน้นความง่าย และประสิทธิภาพ ตอบโจทย์ผู้ใช้งานทุกระดับ',
+                    'title'  => getCurrentLang() === 'th' ? 'ออกแบบให้ใช้งานได้จริง' : 'Design for Practicality',
+                    'desc'   => getCurrentLang() === 'th' ? 'ออกแบบประสบการณ์ใช้งานที่เน้นความง่าย และประสิทธิภาพ ตอบโจทย์ผู้ใช้งานทุกระดับ' : 'Design user experiences focusing on simplicity and efficiency, meeting the needs of users at all levels.',
                 ],
                 [
                     'number' => '03',
                     'icon'   => asset_url('images/icon-3.png'),
-                    'title'  => 'ดูแลอย่างต่อเนื่อง',
-                    'desc'   => 'ให้บริการหลังการขาย พร้อมทีมซัพพอร์ต และอัปเดตระบบอย่างสม่ำเสมอ',
+                    'title'  => getCurrentLang() === 'th' ? 'ดูแลอย่างต่อเนื่อง' : 'Continuous Care',
+                    'desc'   => getCurrentLang() === 'th' ? 'ให้บริการหลังการขาย พร้อมทีมซัพพอร์ต และอัปเดตระบบอย่างสม่ำเสมอ' : 'Provide after-sales service with a support team and regular system updates.',
                 ],
                 [
                     'number' => '04',
                     'icon'   => asset_url('images/icon-4.png'),
-                    'title'  => 'รองรับการเติบโต',
-                    'desc'   => 'พัฒนาระบบที่ยืดหยุ่น สามารถขยายตัว และปรับตามธุรกิจที่เติบโตในอนาคต',
+                    'title'  => getCurrentLang() === 'th' ? 'รองรับการเติบโต' : 'Support Growth',
+                    'desc'   => getCurrentLang() === 'th' ? 'พัฒนาระบบที่ยืดหยุ่น สามารถขยายตัว และปรับตามธุรกิจที่เติบโตในอนาคต' : 'Develop flexible systems capable of scaling and adapting as the business grows in the future.',
                 ],
             ];
 

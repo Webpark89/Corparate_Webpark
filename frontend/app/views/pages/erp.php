@@ -100,26 +100,26 @@ $ctaImage = asset_url('images/bg-cta.jpg');
 $mockErpPortfolios = [
     [
         'id' => 1,
-        'title' => 'ระบบ ERP บริหารโรงงานผลิตชิ้นส่วน',
-        'description' => 'พัฒนาระบบ ERP ครบวงจร เชื่อมโยงฝ่ายจัดซื้อ ฝ่ายผลิต และบัญชี ลดข้อผิดพลาดและต้นทุนสูญเปล่ากว่า 30%',
+        'title' => t('erp.case_factory_title') !== 'erp.case_factory_title' ? t('erp.case_factory_title') : (getCurrentLang() === 'th' ? 'ระบบ ERP บริหารโรงงานผลิตชิ้นส่วน' : 'ERP System for Parts Manufacturing Plant'),
+        'description' => t('erp.case_factory_desc') !== 'erp.case_factory_desc' ? t('erp.case_factory_desc') : (getCurrentLang() === 'th' ? 'พัฒนาระบบ ERP ครบวงจร เชื่อมโยงฝ่ายจัดซื้อ ฝ่ายผลิต และบัญชี ลดข้อผิดพลาดและต้นทุนสูญเปล่ากว่า 30%' : 'Developed a complete ERP system connecting procurement, production, and accounting'),
         'image_path' => 'images/erp.png'
     ],
     [
         'id' => 2,
-        'title' => 'ระบบบริหารจัดการสต็อกธุรกิจค้าปลีก',
-        'description' => 'เชื่อมต่อข้อมูลหลายสาขาแบบ Real-time พร้อมระบบ POS และสรุปยอดขายรายวันอัตโนมัติ',
+        'title' => t('erp.case_retail_title') !== 'erp.case_retail_title' ? t('erp.case_retail_title') : (getCurrentLang() === 'th' ? 'ระบบบริหารจัดการสต็อกธุรกิจค้าปลีก' : 'Retail Business Stock Management System'),
+        'description' => t('erp.case_retail_desc') !== 'erp.case_retail_desc' ? t('erp.case_retail_desc') : (getCurrentLang() === 'th' ? 'เชื่อมต่อข้อมูลหลายสาขาแบบ Real-time พร้อมระบบ POS และสรุปยอดขายรายวันอัตโนมัติ' : 'Connected multi-branch data in real time with a POS system'),
         'image_path' => 'images/bg-cta.jpg'
     ],
     [
         'id' => 3,
-        'title' => 'แพลตฟอร์มบริหารงานโลจิสติกส์',
-        'description' => 'ระบบติดตามสถานะการขนส่ง เชื่อมต่อกับคลังสินค้า พร้อมแดชบอร์ดสรุปประสิทธิภาพการจัดส่ง',
+        'title' => t('erp.case_logistics_title') !== 'erp.case_logistics_title' ? t('erp.case_logistics_title') : (getCurrentLang() === 'th' ? 'แพลตฟอร์มบริหารงานโลจิสติกส์' : 'Logistics Management Platform'),
+        'description' => t('erp.case_logistics_desc') !== 'erp.case_logistics_desc' ? t('erp.case_logistics_desc') : (getCurrentLang() === 'th' ? 'ระบบติดตามสถานะการขนส่ง เชื่อมต่อกับคลังสินค้า พร้อมแดชบอร์ดสรุปประสิทธิภาพการจัดส่ง' : 'A shipment tracking system connected to warehouses'),
         'image_path' => 'images/bg-hand.jpg'
     ],
     [
         'id' => 4,
-        'title' => 'ระบบCRM/HR',
-        'description' => 'ระบบจัดการลีด และ ระบบจัดทรัพยากรมนุษย์',
+        'title' => getCurrentLang() === 'th' ? 'ระบบ CRM/HR' : 'CRM/HR System',
+        'description' => getCurrentLang() === 'th' ? 'ระบบจัดการลีด และ ระบบจัดทรัพยากรมนุษย์' : 'Lead management and human resource systems',
         'image_path' => 'images/bg-hand.jpg'
     ]
 ];
@@ -255,7 +255,7 @@ $erpPortfolios = $mockErpPortfolios;
                         <ol class="inline-flex items-center space-x-2 text-sm md:text-base font-medium text-slate-500">
                             <li>
                                 <a href="<?= e(route_url('/')) ?>" class="hover:text-primary transition-colors duration-200">
-                                    หน้าแรก
+                                    <?= e(t('common.nav_home')) ?>
                                 </a>
                             </li>
                             
@@ -264,7 +264,7 @@ $erpPortfolios = $mockErpPortfolios;
                             </li>
                             
                             <li aria-current="page">
-                                <span class="text-slate-400">ระบบ ERP</span>
+                                <span class="text-slate-400"><?= e(t('common.nav_erp')) ?></span>
                             </li>
                         </ol>
                     </nav>
@@ -275,18 +275,18 @@ $erpPortfolios = $mockErpPortfolios;
                     </span><br>
 
                     <span class="text-2xl md:text-3xl lg:text-5xl font-medium bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block mt-2 py-3" style="animation-delay: -3s;">
-                        เชื่อมต่อทุกกระบวนการธุรกิจแบบครบวงจรในแพลตฟอร์มเดียว
+                        <?= e(t('erp.modules_intro')) ?>
                     </span>
                 </h1>
 
                 <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-base md:text-lg leading-relaxed max-w-lg mb-10 font-medium">
-                    รวบรวมบทความรู้ เทคโนโลยี นวัตกรรม และแนวทางการทำธุรกิจ <br class="hidden md:block">
-                    ครอบคลุม ERP ระบบธุรกิจดิจิทัล การตลาดออนไลน์ AI และโซลูชัน<br class="hidden md:block">
-                    ที่ช่วยพัฒนาองค์กรให้เติบโตได้อย่างยั่งยืน
+                    <?= e(t('common.articles_knowledge_summary')) ?> <br class="hidden md:block">
+                    <?= e(t('common.articles_coverage_summary')) ?><br class="hidden md:block">
+                    <?= e(t('common.articles_growth_summary')) ?>
                 </p>
                 <div class="animate-entrance-up delay-400 flex flex-col sm:flex-row items-start gap-4">
                     <a href="<?= e(route_url('/service')) ?>" class="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-primary text-white text-sm font-semibold rounded-full hover:bg-blue-700 transition-all shadow-md hover:-translate-y-0.5">
-                        ดูบริการของเรา
+                        <?= e(t('common.cta_view_services')) ?>
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
                         </svg>
@@ -297,7 +297,7 @@ $erpPortfolios = $mockErpPortfolios;
                                 <path d="M8 5v14l11-7z"/>
                             </svg>
                         </div>
-                        <span class="text-slate-800 text-lg font-semibold group-hover:text-primary transition-colors">ดูวิดีโอแนะนำ</span>
+                        <span class="text-slate-800 text-lg font-semibold group-hover:text-primary transition-colors"><?= e(t('common.cta_watch_intro_video')) ?></span>
                     </a>
                 </div>
             </div>
@@ -310,13 +310,13 @@ $erpPortfolios = $mockErpPortfolios;
             <div class="group flex-1 lg:max-w-[300px] xl:max-w-[320px] flex flex-col justify-between p-6 lg:p-8 border-b lg:border-b-0 lg:border-r border-gray-100 shrink-0 bg-white transition-all duration-300 hover:bg-slate-50/50 cursor-pointer">
                 <div>
                     <h2 class="text-[#043B94] text-xl xl:text-2xl font-bold leading-tight mb-4 transition-colors duration-300 group-hover:text-blue-700">
-                        เกี่ยวกับเรา
+                        <?= e(t('common.about_us_heading')) ?>
                     </h2>
                     <span class="text-primary font-bold text-md block mb-3">
-                        เราคือ พาร์ทเนอร์<br>ด้านเทคโนโลยี
+                        <?= e(t('common.we_are_partner')) ?><br><?= e(t('common.in_technology')) ?>
                     </span>
                     <p class="text-gray-500 text-sm leading-relaxed mb-6">
-                        มุ่งมั่นพัฒนาโซลูชันดิจิทัลที่ตอบโจทย์ธุรกิจยุคใหม่ ด้วยทีมงานมืออาชีพพร้อมแนวคิดและเทคโนโลยีในการยกระดับการทำงานของคุณ
+                        <?= e(t('common.partner_description')) ?>
                     </p>
                 </div>
             </div>
@@ -324,10 +324,10 @@ $erpPortfolios = $mockErpPortfolios;
             <div class="flex-[4] grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 w-full">
                 <?php
                 $serviceCards = [
-                    ['icon' => asset_url('images/ERP_1.svg'), 'title' => 'ERP / ERM',        'desc' => 'ระบบบริหารจัดการองค์กรและควบคุมระบบ เพื่อเพิ่มทุกกระบวนการทำงานอย่างมีประสิทธิภาพ', 'href' => route_url('/erp')],
-                    ['icon' => asset_url('images/ERP_2.svg'), 'title' => 'Digital Platform', 'desc' => 'พัฒนาแพลตฟอร์มดิจิทัลทั้งออนไลน์และออฟไลน์ รองรับการเติบโตและการขยายตัว',              'href' => '#'],
-                    ['icon' => asset_url('images/ERP_3.svg'), 'title' => 'Online Marketing', 'desc' => 'วางกลยุทธ์และทำการตลาดออนไลน์ เพื่อการเข้าถึงกลุ่มเป้าหมาย และผลลัพธ์ที่วัดผลได้',   'href' => '#'],
-                    ['icon' => asset_url('images/ERP_4.svg'), 'title' => 'Creative / Design','desc' => 'ออกแบบและสร้างสรรค์ภาพลักษณ์ของแบรนด์ให้โดดเด่น สร้างการจดจำและตอบโจทย์แคมเปญ',    'href' => '#'],
+                    ['icon' => asset_url('images/ERP_1.svg'), 'title' => 'ERP / ERM',        'desc' => t('common.solution_org_control'), 'href' => route_url('/erp')],
+                    ['icon' => asset_url('images/ERP_2.svg'), 'title' => 'Digital Platform', 'desc' => t('common.solution_digital_platform'),              'href' => '#'],
+                    ['icon' => asset_url('images/ERP_3.svg'), 'title' => 'Online Marketing', 'desc' => t('common.solution_online_marketing'),   'href' => '#'],
+                    ['icon' => asset_url('images/ERP_4.svg'), 'title' => 'Creative / Design','desc' => t('common.solution_brand_design'),    'href' => '#'],
                 ];
                 $lastIdx = count($serviceCards) - 1;
                 foreach ($serviceCards as $i => $card):
@@ -408,7 +408,7 @@ $erpPortfolios = $mockErpPortfolios;
             <h2 class="text-3xl md:text-4xl font-extrabold text-blue-600 tracking-tight mb-4">
                 ERP modules
             </h2>
-            <span class="text-blue-400 font-bold text-md md:text-md uppercase mb-3 block">ระบบครอบคลุมทุกกระบวนการทำงาน</span>
+            <span class="text-blue-400 font-bold text-md md:text-md uppercase mb-3 block"><?= e(t('erp.process_coverage_title') !== 'erp.process_coverage_title' ? t('erp.process_coverage_title') : (getCurrentLang() === 'th' ? 'ระบบครอบคลุมทุกกระบวนการทำงาน' : 'A System That Covers Every Process')) ?></span>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
@@ -421,10 +421,10 @@ $erpPortfolios = $mockErpPortfolios;
                             <img src="<?= e(asset_url('images/' . $module['icon'])) ?>" alt="<?= e($module['name_en']) ?>" class="w-10 h-10 object-contain transition-all duration-300 group-hover:brightness-0 group-hover:invert" />
                         </div>
                         <h3 class="text-center md:text-left text-lg font-bold text-[#043B94] mb-3 group-hover:text-primary transition-colors">
-                            <?= e($module['name_th']) ?> 
+                            <?= e(getCurrentLang() === 'th' ? $module['name_th'] : $module['name_en']) ?> 
                         </h3>
                         <p class="text-sm text-slate-500 leading-relaxed">
-                            <?= e($module['description_th']) ?>
+                            <?= e(getCurrentLang() === 'th' ? $module['description_th'] : $module['description_en']) ?>
                         </p>
                     </div>
                 </div>
@@ -491,35 +491,35 @@ $erpPortfolios = $mockErpPortfolios;
 <section class="bg-slate-50 py-20 font-sans border-t border-slate-100">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <h2 class="text-2xl md:text-3xl font-extrabold text-center text-[#022862] tracking-tight py-10">
-            ERP ที่ช่วยยกระดับธุรกิจของคุณ
+            <?= e(t('erp.cta_banner_title') !== 'erp.cta_banner_title' ? t('erp.cta_banner_title') : (getCurrentLang() === 'th' ? 'ERP ที่ช่วยยกระดับธุรกิจของคุณ' : 'ERP That Elevates Your Business')) ?>
         </h2>
 
         <div class="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-5 gap-6">
             <?php
             $erpBenefits = [
                 [
-                    'title' => 'ข้อมูลครบถ้วน',
-                    'desc' => 'รวมทุกแผนกไว้ในระบบเดียว',
+                    'title' => t('erp.benefit_complete_data_title') !== 'erp.benefit_complete_data_title' ? t('erp.benefit_complete_data_title') : (getCurrentLang() === 'th' ? 'ข้อมูลครบถ้วน' : 'Complete Data'),
+                    'desc' => getCurrentLang() === 'th' ? 'รวมทุกแผนกไว้ในระบบเดียว' : 'All departments in one system',
                     'icon' => asset_url('images/ERP_5.svg'),
                 ],
                 [
-                    'title' => 'ลดงานซ้ำซ้อน',
-                    'desc' => 'เพิ่มประสิทธิภาพการทำงาน',
+                    'title' => t('erp.less_duplication_title') !== 'erp.less_duplication_title' ? t('erp.less_duplication_title') : (getCurrentLang() === 'th' ? 'ลดงานซ้ำซ้อน' : 'Less Duplication'),
+                    'desc' => getCurrentLang() === 'th' ? 'เพิ่มประสิทธิภาพการทำงาน' : 'Increase working efficiency',
                     'icon' => asset_url('images/ERP_6.svg'),
                 ],
                 [
-                    'title' => 'ข้อมูลเรียลไทม์',
-                    'desc' => 'ตัดสินใจได้แม่นยำและรวดเร็ว',
+                    'title' => t('erp.benefit_realtime_data_title') !== 'erp.benefit_realtime_data_title' ? t('erp.benefit_realtime_data_title') : (getCurrentLang() === 'th' ? 'ข้อมูลเรียลไทม์' : 'Real-Time Data'),
+                    'desc' => t('erp.benefit_realtime_data_desc') !== 'erp.benefit_realtime_data_desc' ? t('erp.benefit_realtime_data_desc') : (getCurrentLang() === 'th' ? 'ตัดสินใจได้แม่นยำและรวดเร็ว' : 'Make decisions accurately and quickly'),
                     'icon' => asset_url('images/ERP_7.svg'),
                 ],
                 [
-                    'title' => 'ควบคุมความเสี่ยง',
-                    'desc' => 'ตรวจสอบและติดตามได้ทุกขั้นตอน',
+                    'title' => t('erp.benefit_risk_control_title') !== 'erp.benefit_risk_control_title' ? t('erp.benefit_risk_control_title') : (getCurrentLang() === 'th' ? 'ควบคุมความเสี่ยง' : 'Risk Control'),
+                    'desc' => t('erp.benefit_risk_control_desc') !== 'erp.benefit_risk_control_desc' ? t('erp.benefit_risk_control_desc') : (getCurrentLang() === 'th' ? 'ตรวจสอบและติดตามได้ทุกขั้นตอน' : 'Audit and track every step'),
                     'icon' => asset_url('images/ERP_8.svg'),
                 ],
                 [
-                    'title' => 'ขยายได้ตามธุรกิจ',
-                    'desc' => 'รองรับการเติบโตในอนาคต',
+                    'title' => t('erp.benefit_scalable_title') !== 'erp.benefit_scalable_title' ? t('erp.benefit_scalable_title') : (getCurrentLang() === 'th' ? 'ขยายได้ตามธุรกิจ' : 'Scalable'),
+                    'desc' => t('erp.benefit_scalable_desc') !== 'erp.benefit_scalable_desc' ? t('erp.benefit_scalable_desc') : (getCurrentLang() === 'th' ? 'รองรับการเติบโตในอนาคต' : 'Support future growth'),
                     'icon' => asset_url('images/ERP_9.svg'),
                 ],
             ];
@@ -544,7 +544,7 @@ $erpPortfolios = $mockErpPortfolios;
         <div class="flex flex-col md:flex-row md:items-end justify-between border-b border-slate-200 pb-5 mb-10 gap-4">
             <div>
                 <h2 class="text-2xl md:text-3xl font-extrabold leading-none tracking-tight text-[#022862] m-0">
-                    ผลงานพัฒนาระบบ ERP
+                    <?= e(t('erp.portfolio_section_title') !== 'erp.portfolio_section_title' ? t('erp.portfolio_section_title') : (getCurrentLang() === 'th' ? 'ผลงานพัฒนาระบบ ERP' : 'ERP System Development Portfolio')) ?>
                 </h2>
             </div>
         </div>

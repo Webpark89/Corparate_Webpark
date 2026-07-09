@@ -92,7 +92,10 @@ $content = $content ?? '';
         <?= $content ?>
     </main>
 
-    <?php require __DIR__ . '/../components/cta.php'; ?>
+    <?php if ($currentPage !== 'contact'): ?>
+        <?php require __DIR__ . '/../components/cta.php'; ?>
+    <?php endif; ?>
+    
     <?php require __DIR__ . '/../components/footer.php'; ?>
 
     <script src="<?= e(asset_url('assets/js/main.js')) ?>"></script>
