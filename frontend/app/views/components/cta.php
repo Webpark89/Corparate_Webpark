@@ -28,17 +28,10 @@ $contactButtonUrl = $cbuttonUrl ?? '/contact';
 
             <div class="relative z-10 lg:col-span-5 flex flex-col items-start text-left lg:pt-2">
                 <div class="mb-4 relative">
-<<<<<<< Updated upstream
-                    <h2 class="text-3xl md:text-4xl lg:text-[2.5rem] font-black leading-tight text-white tracking-tight">
-                        ติดต่อเรา
-                    </h2>
-                    <div class="w-48 h-[2px] bg-white mt-1"></div>
-=======
                     <span class="text-white font-black text-4xl md:text-5xl lg:text-[3rem] tracking-tight block">
                         ติดต่อเรา
                     </span>
                     <div class="w-12 h-[3px] bg-white mt-3"></div>
->>>>>>> Stashed changes
                 </div>
                     <span class="mt-4 text-white text-sm md:text-base leading-relaxed font-medium">
                         <?= e($contactTitle) ?>
