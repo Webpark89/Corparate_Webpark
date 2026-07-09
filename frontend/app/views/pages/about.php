@@ -63,7 +63,7 @@ $contactAddress = $company['contact']['address'] ?? '525/89 ซอยลาด�
         <div class="absolute inset-x-0 bottom-0 h-[30%] bg-gradient-to-t from-white to-transparent z-10"></div>
     </div>
 
-    <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 pt-12 pb-24 lg:pt-28 lg:pb-32 relative z-10">
+    <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8 pt-12 pb-24 lg:pt-28 lg:pb-32 relative z-10">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
             
             <div class="max-w-2xl">
@@ -119,8 +119,8 @@ $contactAddress = $company['contact']['address'] ?? '525/89 ซอยลาด�
     </div>
 </section>
 
-<section class="bg-white py-16 lg:py-24">
-    <div class="mx-auto w-full max-w-7xl px-4 sm:px-4 lg:px-6">
+<section class="bg-white py-8 lg:py-24">
+    <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-6">
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             
@@ -198,8 +198,8 @@ $contactAddress = $company['contact']['address'] ?? '525/89 ซอยลาด�
     </div>
 </section>
 
-<section class="bg-white py-12 font-sans">
-    <div class="mx-auto w-full max-w-7xl px-4 sm:px-4 lg:px-6"> 
+<section class="bg-white py-8 font-sans">
+    <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-6"> 
         <div class="bg-dark rounded-[2rem] overflow-hidden relative shadow-2xl flex flex-col md:flex-row items-center min-h-[300px] lg:min-h-[400px]">
             
             <div class="absolute inset-0 bg-gradient-to-r from-[#0b162c] to-transparent z-10"></div>
@@ -226,12 +226,12 @@ $contactAddress = $company['contact']['address'] ?? '525/89 ซอยลาด�
     </div>
 </section>
 
-<section class="bg-white py-16 lg:py-24 font-sans">
-    <div class="mx-auto w-full max-w-7xl px-4 sm:px-4 lg:px-6"> 
+<section class="bg-white py-8 lg:py-24 font-sans">
+    <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-6"> 
         <div class="grid grid-cols-1 lg:grid-cols-[40%_55%] gap-12 lg:gap-16 justify-between items-start">
             
             <div class="lg:top-8 self-start">
-                <h2 class="text-3xl md:text-4xl font-bold text-dark leading-tight mb-6">
+                <h2 class="text-3xl md:text-4xl font-bold text-dark leading-tight mb-3">
                     <span class="text-primary">แนวคิด</span>ในการทำงานของเรา
                 </h2>
                 <p class="text-slate-600 text-sm md:text-base leading-relaxed max-w-md">
@@ -291,17 +291,14 @@ $contactAddress = $company['contact']['address'] ?? '525/89 ซอยลาด�
     </div>
 </section>
 
-<section class="bg-[#f8fafc] py-16 lg:py-24 font-sans">
-    <div class="mx-auto w-full max-w-7xl px-4 sm:px-4 lg:px-6"> 
+<section class="bg-[#f8fafc] py-8 lg:py-24 font-sans">
+    <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-6"> 
         
         <div class="mb-2">
-            <h2 class="text-3xl md:text-4xl font-bold text-primary mb-4">
+            <h2 class="text-2xl md:text-4xl font-bold text-primary mb-4">
                 บริการของเราครอบคลุมทุกด้าน
             </h2>
         </div>
-        <p class="mb-3 text-sm md:text-base leading-relaxed text-slate-600 max-w-3xl">
-            ระบบที่ช่วยพัฒนาโซลูชันดิจิทัลที่ช่วยให้ธุรกิจเติบโตอย่างยั่งยืน
-        </p>
 
         <div id="service-scroll-container" class="flex overflow-x-auto snap-x snap-mandatory scrollbar-none gap-6 pb-6 -mx-4 px-4 md:mx-0 md:px-0 md:grid md:grid-cols-2 lg:grid-cols-3 md:overflow-visible md:snap-none">
             <?php
@@ -395,8 +392,8 @@ $contactAddress = $company['contact']['address'] ?? '525/89 ซอยลาด�
     </div>
 </section>
 
-<section class="bg-slate-50 py-12 lg:py-20 font-sans mb-10">
-    <div class="mx-auto w-full max-w-7xl px-4 sm:px-4 lg:px-6"> 
+<section class="bg-slate-50 py-8 lg:py-20 font-sans mb-4">
+    <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-6"> 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-6">
 
             <div class="bg-white rounded-2xl shadow-sm hover:shadow-md transition-shadow p-6 md:p-8 flex flex-row items-center justify-start gap-6 border border-slate-100">

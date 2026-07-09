@@ -239,7 +239,7 @@ $erpPortfolios = $mockErpPortfolios;
         .animate-scroll:hover { animation-play-state: paused; }
     </style>
 
-    <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 pt-12 pb-24 lg:pt-28 lg:pb-32 relative z-10">
+    <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8 pt-12 pb-24 lg:pt-28 lg:pb-32 relative z-10">
         <!-- Mobile Background Image (Only covers this Hero container) -->
         <div class="absolute inset-0 z-0 overflow-hidden lg:hidden rounded-2xl">
             <img src="<?= e($heroImage) ?>" alt="WEBPARK Solutions Background" 
@@ -304,7 +304,7 @@ $erpPortfolios = $mockErpPortfolios;
         </div>
     </div>
 
-    <div class="mx-auto w-full max-w-7xl px-4 sm:px-4 lg:px-6 relative z-20 -mt-10 lg:-mt-18 pb-6 lg:pb-16">
+    <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-6 relative z-20 -mt-10 lg:-mt-18 pb-6 lg:pb-16">
         <div class="w-full rounded-[1rem] bg-white flex flex-col lg:flex-row items-stretch shadow-[0_4px_25px_rgba(0,0,0,0.06)] border border-gray-100 overflow-hidden">
 
             <div class="group flex-1 lg:max-w-[300px] xl:max-w-[320px] flex flex-col justify-between p-6 lg:p-8 border-b lg:border-b-0 lg:border-r border-gray-100 shrink-0 bg-white transition-all duration-300 hover:bg-slate-50/50 cursor-pointer">
@@ -401,29 +401,28 @@ $erpPortfolios = $mockErpPortfolios;
     </div>
 </section> -->
 
-<section id="modules" class="bg-slate-50 py-20 font-sans border-t border-slate-100">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+<section id="modules" class="bg-slate-50 py-10 lg:py-20 font-sans border-t border-slate-100">
+    <div class="mx-auto max-w-7xl px-6 sm:px-6 lg:px-8">
         
-        <div class="text-center max-w-3xl mx-auto mb-16">
+        <div class="text-center max-w-3xl mx-auto mb-10 lg:mb-16">
             <h2 class="text-3xl md:text-4xl font-extrabold text-blue-600 tracking-tight mb-4">
                 ERP modules
             </h2>
             <span class="text-blue-400 font-bold text-md md:text-md uppercase mb-3 block">ระบบครอบคลุมทุกกระบวนการทำงาน</span>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
             <?php foreach ($modulesData as $module): ?>
-                <div class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm hover:shadow-xl transition-all duration-300 group hover:-translate-y-1 relative overflow-hidden">
-                    <div class="absolute inset-0 bg-gradient-to-br from-blue-50/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+                <div class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm hover:shadow-xl hover:bg-primary hover:border-primary transition-all duration-300 group hover:-translate-y-1 relative overflow-hidden">
                     
                     <div class="relative z-10">
-                        <div class="w-16 h-16 bg-blue-50/60 rounded-full flex items-center justify-center mb-6 mx-auto md:mx-0 group-hover:bg-blue-600 transition-colors duration-300">
-                            <img src="<?= e(asset_url('images/' . $module['icon'])) ?>" alt="<?= e($module['name_en']) ?>" class="w-10 h-10 object-contain transition-all duration-300 group-hover:brightness-0 group-hover:invert" />
+                        <div class="w-16 h-16 bg-blue-50/60 rounded-full flex items-center justify-center mb-6 mx-auto md:mx-0 transition-colors duration-300">
+                            <img src="<?= e(asset_url('images/' . $module['icon'])) ?>" alt="<?= e($module['name_en']) ?>" class="w-10 h-10 object-contain transition-all duration-300" />
                         </div>
-                        <h3 class="text-center md:text-left text-lg font-bold text-[#043B94] mb-3 group-hover:text-primary transition-colors">
+                        <h3 class="text-center md:text-left text-lg font-bold text-[#043B94] mb-3 group-hover:text-white transition-colors">
                             <?= e($module['name_th']) ?> 
                         </h3>
-                        <p class="text-sm text-slate-500 leading-relaxed">
+                        <p class="text-sm text-slate-500 group-hover:text-blue-100 leading-relaxed transition-colors">
                             <?= e($module['description_th']) ?>
                         </p>
                     </div>
@@ -488,8 +487,8 @@ $erpPortfolios = $mockErpPortfolios;
     </div>
 </section> -->
 
-<section class="bg-slate-50 py-20 font-sans border-t border-slate-100">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+<section class="bg-slate-50 py-10 lg:py-10 font-sans border-t border-slate-100">
+    <div class="mx-auto max-w-7xl px-6 sm:px-6 lg:px-8">
         <h2 class="text-2xl md:text-3xl font-extrabold text-center text-[#022862] tracking-tight py-10">
             ERP ที่ช่วยยกระดับธุรกิจของคุณ
         </h2>
@@ -538,8 +537,8 @@ $erpPortfolios = $mockErpPortfolios;
 </section>
 
 <?php if (!empty($erpPortfolios)): ?>
-<section class="bg-white py-20 font-sans">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+<section class="bg-white py-10 lg:py-20 font-sans">
+    <div class="mx-auto max-w-7xl px-6 sm:px-6 lg:px-8">
         
         <div class="flex flex-col md:flex-row md:items-end justify-between border-b border-slate-200 pb-5 mb-10 gap-4">
             <div>
