@@ -13,6 +13,7 @@ $companyName = $company['name'] ?? '';
 
 $email = $company['contact']['email'] ?? '';
 $phone = $company['contact']['phone'] ?? '';
+$phone = str_replace(' ', '-', $phone);
 $address = $company['contact']['address'] ?? '';
 $officeLabel = 'สำนักงานใหญ่ :';
 $officeValue = $company['contact']['address'] ?? '525/89 ซอยลาดพร้าว126 แขวงพลับพลา เขตวังทองหลาง กรุงเทพมหานคร 10310';
@@ -184,14 +185,15 @@ $socialLinks = [
                     aria-expanded="false"
                     aria-controls="footerSitemapPanel"
                 >
-                    <span id="footerSitemapLabel" class="mb-2 text-[24px] font-bold tracking-[2px]" style="color: #022862;">SITEMAP</span>
+                    <span id="footerSitemapLabel" class="mb-2 tracking-[2px]" style="color: #043B94; font-size: 25px; font-weight: 700;">SITEMAP</span>
 
                     <span
                         id="footerSitemapArrow"
-                        class="inline-flex h-8 w-8 items-center justify-center transition-transform duration-300"
+                        class="inline-flex items-center justify-center transition-transform duration-300"
+                        style="width: 28px; height: 28px;"
                         aria-hidden="true"
                     >
-                        <svg id="footerSitemapArrowSvg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #022862;">
+                        <svg id="footerSitemapArrowSvg" width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #043B94;">
                             <polyline points="7 6 12 11 17 6"></polyline>
                             <polyline points="7 13 12 18 17 13"></polyline>
                         </svg>
@@ -200,7 +202,7 @@ $socialLinks = [
 
                 <div id="footerSitemapPanel" class="overflow-hidden" style="height: 0px;">
                     <div class="px-4 sm:px-4 lg:px-0 pt-5 pb-6" id="footerSitemapPanelInner">
-                        <div class="grid gap-5 sm:grid-cols-2 xl:grid-cols-5" data-footer-content>
+                        <div class="grid gap-5 sm:grid-cols-2 xl:grid-cols-5 dt-sitemap-grid" data-footer-content>
                             <?php
                             $targetTitles = [
                                 'SITEMAP',
@@ -213,28 +215,21 @@ $socialLinks = [
                             $renderColumn = function($title, $column) {
                                 $groups = $column['groups'] ?? [];
                                 ?>
-                                <section class="space-y-5">
-                                    <h3 class="text-sm font-bold tracking-wider text-white border-b border-slate-600 pb-2"><?= e($title) ?></h3>
-                                    <div class="flex flex-col gap-6">
+                                <section class="space-y-4 lg:space-y-0 mt-4 lg:mt-0">
+                                    <h3 class="text-2xl font-bold tracking-wider text-[#043B94] border-b-0 pb-2 dt-sitemap-title"><?= e($title) ?></h3>
+                                    <div class="flex flex-col gap-0 dt-sitemap-groups">
                                         <?php foreach ($groups as $group): ?>
-                                            <div class="space-y-2">
-                                                <div class="flex items-center gap-1.5 text-[13px] font-bold text-white py-0.5">
-                                                    <span><?= e($group['title'] ?? $title) ?></span>
-                                                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white opacity-80">
-                                                        <polyline points="7 15 12 20 17 15"></polyline>
-                                                        <polyline points="7 9 12 4 17 9"></polyline>
-                                                    </svg>
-                                                </div>
-                                                <ul class="list-none border-l border-slate-600 pl-4 m-0 space-y-1.5">
-    <?php foreach (($group['items'] ?? []) as $item): ?>
-        <li class="flex items-center gap-2">
-            <span class="text-slate-300 shrink-0" style="font-size: 10px;">&bull;</span>
-            <a class="inline-block py-0.5 text-slate-300 transition-all duration-300 hover:text-white hover:translate-x-1" style="font-size: 12.5px;" href="<?= e($item['href'] ?? '#') ?>">
-                <?= e($item['label'] ?? '') ?>
-            </a>
-        </li>
-    <?php endforeach; ?>
-</ul>
+                                            <div class="space-y-0">
+                                                <ul class="list-none border-l-2 border-[#94a3b8] pl-4 m-0 space-y-3 py-0 dt-sitemap-list">
+                                                    <?php foreach (($group['items'] ?? []) as $item): ?>
+                                                        <li class="flex items-center gap-2">
+                                                            <span class="text-[#043B94] shrink-0 text-sm dt-sitemap-bullet">&bull;</span>
+                                                            <a class="inline-block py-0.5 text-[#043B94] transition-all duration-300 hover:text-[#0663F6] hover:translate-x-1 text-[17px] dt-sitemap-link" href="<?= e($item['href'] ?? '#') ?>">
+                                                                <?= e($item['label'] ?? '') ?>
+                                                            </a>
+                                                        </li>
+                                                    <?php endforeach; ?>
+                                                </ul>
                                             </div>
                                         <?php endforeach; ?>
                                     </div>
@@ -255,56 +250,78 @@ $socialLinks = [
                     </div>
                 </div>
 
-            </div></div></div><style>
+            </div></div></div>    <style>
         #footerInfoSection { background-color: #022862 !important; }
+        #footerSitemapToggle:hover #footerSitemapLabel,
+        #footerSitemapToggle:hover #footerSitemapArrowSvg { color: #0663F6 !important; transition: color 0.3s ease; }
         #footerInfoGrid { display: grid; gap: 2rem; align-items: center; grid-template-columns: 1fr; }
-        @media (min-width: 768px) { #footerInfoGrid { grid-template-columns: 1fr 2fr 1.5fr; } }
+        .footer-bottom-bar { margin-top: 3rem; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; }
+        .dt-sitemap-list { border-left: 2px solid #94a3b8; }
+        @media (min-width: 768px) { 
+            #footerInfoGrid { grid-template-columns: 1fr 2fr 1.5fr; } 
+            .footer-bottom-bar { padding: 0; }
+            .address-text { white-space: nowrap !important; }
+        }
+        @media (min-width: 1024px) {
+            .dt-sitemap-grid { grid-template-columns: repeat(5, minmax(0, 1fr)) !important; gap: 1rem !important; }
+            .dt-sitemap-title { font-size: 14.5px !important; font-weight: 700 !important; white-space: nowrap !important; border-bottom: none !important; margin-bottom: 0.5rem !important; padding-bottom: 0 !important; color: #043B94 !important; }
+            .dt-sitemap-groups { gap: 0 !important; }
+            .dt-sitemap-list { border-left: 1px solid #94a3b8 !important; padding-left: 8px !important; margin-top: 0 !important; margin-bottom: 0 !important; padding-top: 4px !important; padding-bottom: 4px !important; gap: 8px !important; display: flex !important; flex-direction: column !important; }
+            .dt-sitemap-list > li { margin: 0 !important; }
+            .dt-sitemap-link { font-size: 12.5px !important; font-weight: 500 !important; color: #043B94 !important; line-height: 1.3 !important; }
+            .dt-sitemap-link:hover { color: #0663F6 !important; }
+            .dt-sitemap-bullet { font-size: 16px !important; color: #043B94 !important; }
+            .footer-contact-block { margin-left: auto !important; }
+        }
     </style>
     <div id="footerInfoSection" style="background-color: #FFFFFFE5 !important; color: #e2e8f0;">
         <div style="max-width: 80rem; margin: 0 auto; padding: 2.5rem 1.5rem;">
-
-            <hr style="border: 0; border-top: 1px solid #FFFFFFE5; margin-bottom: 2rem;">
-
+            <hr style="border: 0; border-top: 1px solid #cbd5e1; margin-bottom: 2rem;">
             <div style="display: grid; gap: 2rem; grid-template-columns: 1fr; align-items: center;">
             <div id="footerInfoGrid">
 
-                    <div style="display: flex; align-items: center;">
-                        <div style="height: 130px; width: 130px; overflow: hidden;">
+                    <div style="display: flex; justify-content: center; margin-bottom: 1rem;">
+                        <div style="height: 120px; width: 160px; overflow: hidden; display: flex; justify-content: center;">
                             <img src="<?= e(asset_url('images/logo.png')) ?>" alt="WEBPARK Logo" style="height: 100%; width: 100%; object-fit: contain;">
                         </div>
                     </div>
 
                     <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-                        <span style="font-weight: 700; color: #3b82f6; font-size: 1rem;"><?= e($officeLabel) ?></span>
-                        <span style="font-size: 0.875rem; color: #022862;"><?= e($officeValue) ?></span>
+                        <span style="font-weight: 700; color: #0663F6; font-size: 1.125rem;"><?= e($officeLabel) ?></span>
+                        <span class="address-text" style="font-size: 0.9rem; color: #054FC5; line-height: 1.5;"><?= e($officeValue) ?></span>
                     </div>
 
-                    <div style="display: flex; justify-content: flex-start;">
-                        <div style="display: grid; grid-template-columns: max-content max-content; gap: 0.5rem 0.75rem; align-items: center;">
-                            <span style="font-weight: 700; color: #3b82f6; font-size: 1rem;">อีเมล :</span>
-                            <a style="font-size: 0.875rem; color: #022862; text-decoration: none;" href="mailto:<?= e($email) ?>"><?= e($email) ?></a>
-
-                            <span style="font-weight: 700; color: #3b82f6; font-size: 1rem;">เบอร์โทร :</span>
-                            <a style="font-size: 0.875rem; color: #022862; text-decoration: none;" href="tel:<?= e($phoneHref) ?>"><?= e($phone) ?></a>
+                    <div class="footer-contact-block" style="display: flex; flex-direction: column; gap: 0.75rem;">
+                        <div style="display: flex; flex-wrap: wrap; gap: 0.25rem; align-items: baseline;">
+                            <span style="font-weight: 700; color: #0663F6; font-size: 1.125rem;">อีเมล :</span>
+                            <a style="font-size: 0.9rem; color: #054FC5; text-decoration: none;" href="mailto:<?= e($email) ?>"><?= e($email) ?></a>
+                        </div>
+                        <div style="display: flex; flex-wrap: wrap; gap: 0.25rem; align-items: baseline;">
+                            <span style="font-weight: 700; color: #0663F6; font-size: 1.125rem;">เบอร์โทร :</span>
+                            <a style="font-size: 0.9rem; color: #054FC5; text-decoration: none;" href="tel:<?= e($phoneHref) ?>"><?= e($phone) ?></a>
                         </div>
                     </div>
 
                 </div>
             </div>
 
-            <div style="margin-top: 2rem; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem;">
-                <a style="font-size: 0.875rem; color: #022862; text-decoration: none;" href="#privacy-policy">Privacy Policy</a>
-                <nav style="display: flex; flex-wrap: wrap; gap: 2rem;" aria-label="Social media links">
+            <div class="footer-bottom-bar">
+                <style>
+                    .footer-bottom-link { font-size: 0.75rem; color: #043B94 !important; text-decoration: none; transition: color 0.3s ease; }
+                    .footer-bottom-link:hover { color: #0663F6 !important; }
+                </style>
+                <a class="footer-bottom-link" href="#privacy-policy">Privacy Policy</a>
+                <nav style="display: flex; flex-wrap: wrap; gap: 1rem;" aria-label="Social media links">
                     <?php foreach ($socialLinks as $socialLink): ?>
-                        <a style="font-size: 0.875rem; color: #022862; text-decoration: none;" href="<?= e($socialLink['href']) ?>" target="_blank" rel="noopener noreferrer"><?= e($socialLink['label']) ?></a>
+                        <a class="footer-bottom-link" href="<?= e($socialLink['href']) ?>" target="_blank" rel="noopener noreferrer"><?= e($socialLink['label']) ?></a>
                     <?php endforeach; ?>
                 </nav>
             </div>
 
-            <div style="border-top: 1px solid #1e293b; padding: 1rem 0; margin-top: 1.5rem; text-align: center;">
-                <p style="margin: 0; font-size: 0.75rem; color: #64748b;">Copyright © <?= date('Y') ?> WEBPARK All rights reserved.</p>
-            </div>
-
+        </div>
+        
+        <div style="background-color: #022862; padding: 1rem 0; text-align: center; width: 100%;">
+            <p style="margin: 0; font-size: 0.75rem; color: #ffffff;">Copyright © <?= date('Y') ?> WEBPARK All rights reserved.</p>
         </div>
     </div></footer>
 
@@ -329,9 +346,10 @@ $socialLinks = [
         const setSitemapState = (isExpanded) => {
             if (footerSitemapToggle) footerSitemapToggle.setAttribute('aria-expanded', isExpanded ? 'true' : 'false');
             if (footerSitemapArrow) footerSitemapArrow.style.transform = isExpanded ? 'rotate(180deg)' : 'rotate(0deg)';
-            if (footerSitemapSection) footerSitemapSection.style.backgroundColor = isExpanded ? '#011431' : '#ffffff';
-            if (footerSitemapLabel) footerSitemapLabel.style.color = isExpanded ? '#ffffff' : '#022862';
-            if (footerSitemapArrowSvg) footerSitemapArrowSvg.style.color = isExpanded ? '#ffffff' : '#022862';
+            
+            if (footerSitemapSection) footerSitemapSection.style.backgroundColor = '#ffffff';
+            if (footerSitemapLabel) footerSitemapLabel.style.color = '#043B94';
+            if (footerSitemapArrowSvg) footerSitemapArrowSvg.style.color = '#043B94';
         };
 
         const collapsePanel = () => {
@@ -358,7 +376,13 @@ $socialLinks = [
             });
 
             window.addEventListener('resize', () => {
-                if (footerSitemapToggle.getAttribute('aria-expanded') === 'true') setPanelHeight();
+                const isExpanded = footerSitemapToggle.getAttribute('aria-expanded') === 'true';
+                if (isExpanded) {
+                    setPanelHeight();
+                    setSitemapState(true);
+                } else {
+                    setSitemapState(false);
+                }
             });
         };
 

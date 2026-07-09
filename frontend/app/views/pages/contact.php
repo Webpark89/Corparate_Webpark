@@ -49,20 +49,45 @@ $form = $form ?? [];
                 </h1>
 
                 <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-base md:text-lg leading-relaxed max-w-lg mb-10 font-medium">
-                    พูดคุยและปรึกษาเกี่ยวกับโปรเจกต์ ระบบ เว็บไซต์ ERP / ERM <br>และโซลูชันดิจิทัลเพื่อธุรกิจของคุณ
+                    <!-- Mobile Text -->
+                    <span class="block md:hidden">
+                        พูดคุยและปรึกษาเกี่ยวกับโปรเจกต์ ระบบ เว็บไซต์<br>
+                        ERP / ERM และโซลูชันดิจิทัลเพื่อธุรกิจของคุณ
+                    </span>
+                    <!-- Desktop Text -->
+                    <span class="hidden md:block">
+                        พูดคุยและปรึกษาเกี่ยวกับโปรเจกต์ ระบบ เว็บไซต์ ERP / ERM <br>และโซลูชันดิจิทัลเพื่อธุรกิจของคุณ
+                    </span>
                 </p>
 
-                <div class="animate-fade-up delay-400 flex flex-wrap items-center gap-4">
-                    <a href="#contact-section" class="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-primary text-white text-sm font-semibold rounded-full hover:bg-blue-700 transition-all shadow-md hover:-translate-y-0.5">
+                <div class="animate-fade-up delay-400 flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                    <!-- Mobile Buttons -->
+                    <a href="<?= e(route_url('/services')) ?>" class="md:hidden inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-primary text-white text-sm font-semibold rounded-full hover:bg-blue-700 transition-all shadow-md hover:-translate-y-0.5">
+                        ดูบริการของเรา
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                        </svg>
+                    </a>
+                    
+                    <a href="#" class="md:hidden inline-flex items-center gap-4 transition-all hover:-translate-y-0.5 group">
+                        <div class="h-14 w-14 bg-white flex items-center justify-center rounded-full shadow-lg border border-slate-200 transition-all group-hover:bg-slate-50 group-hover:shadow-xl group-hover:scale-105">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600 fill-current" viewBox="0 0 24 24">
+                                <path d="M8 5v14l11-7z"/>
+                            </svg>
+                        </div>
+                        <span class="text-slate-800 text-lg font-semibold group-hover:text-primary transition-colors">ดูวิดีโอแนะนำ</span>
+                    </a>
+
+                    <!-- Desktop Buttons -->
+                    <a href="#contact-section" class="hidden md:inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-primary text-white text-sm font-semibold rounded-full hover:bg-blue-700 transition-all shadow-md hover:-translate-y-0.5">
                         ปรึกษาโปรเจกต์
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                         </svg>
                     </a>
                     
-                    <a href="#company-info" class="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-white text-slate-700 text-sm font-semibold rounded-full hover:bg-slate-50 transition-all shadow-sm border border-slate-200 hover:-translate-y-0.5">
+                    <a href="#company-info" class="hidden md:inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-white text-slate-700 text-sm font-semibold rounded-full hover:bg-slate-50 transition-all shadow-sm border border-slate-200 hover:-translate-y-0.5">
                         ดูข้อมูลติดต่อ
-                        
                     </a>
                 </div>
             </div>
@@ -93,8 +118,21 @@ $form = $form ?? [];
 
 <section id="contact-section" class="bg-white py-16 lg:py-24 font-sans">
     <div class="mx-auto w-full max-w-7xl px-4 sm:px-4 lg:px-6"> 
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 xl:gap-14 items-stretch">
-            <div class="lg:col-span-6 bg-white border border-slate-100 shadow-[0_4px_30px_rgba(0,0,0,0.02)] rounded-[2.5rem] p-6 md:p-10 animate-fade-in-up flex flex-col">
+        <style>
+            @media (min-width: 1024px) {
+                .align-with-right-cards { margin-top: 56px !important; }
+            }
+        </style>
+        <style>
+            @media (max-width: 1023px) {
+                .mobile-swap-container {
+                    display: flex !important;
+                    flex-direction: column-reverse !important;
+                }
+            }
+        </style>
+        <div class="mobile-swap-container grid grid-cols-1 lg:grid-cols-12 gap-10 xl:gap-14 items-start">
+            <div class="lg:col-span-6 bg-white border border-slate-100 shadow-[0_4px_30px_rgba(0,0,0,0.02)] rounded-[2.5rem] p-6 md:p-10 animate-fade-in-up flex flex-col align-with-right-cards">
                 <h2 class="text-xl md:text-2xl font-bold text-dark mb-6">
                     ส่งข้อความถึงเรา
                 </h2>
@@ -108,30 +146,59 @@ $form = $form ?? [];
                         <p class="text-slate-500 text-sm font-medium">ทีมของเราได้รับข้อมูลเรียบร้อยแล้ว และจะติดต่อกลับภายใน 24 ชั่วโมง</p>
                     </div>
                 <?php else: ?>
+                    <style>
+                        .custom-placeholder::placeholder {
+                            color: #022862 !important;
+                            opacity: 0.9;
+                        }
+                    </style>
                     <form method="post" class="flex flex-col flex-grow space-y-4">
-                        <div>
-                            <input type="text" name="name" placeholder="ชื่อ - นามสกุล" value="<?= e($form['name'] ?? '') ?>" required maxlength="100"
-                                class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-sm text-slate-900 outline-none transition-all duration-300 placeholder:text-slate-400 focus:border-primary focus:ring-1 focus:ring-primary focus:shadow-inner">
+                        <!-- Desktop Name Field -->
+                        <div id="contact_desktop-name-wrapper" class="hidden lg:block">
+                            <input type="text" id="contact_name_desktop" name="name" placeholder="ชื่อ - นามสกุล" value="<?= e($form['name'] ?? '') ?>" required maxlength="100"
+                                class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-sm text-slate-900 outline-none transition-all duration-300 custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary focus:shadow-inner">
                         </div>
-                        
-                        <div>
+
+                        <!-- Mobile Name Fields -->
+                        <div id="contact_mobile-name-wrapper" class="grid grid-cols-1 gap-4 lg:hidden">
+                            <input type="text" id="contact_name_mobile_first" name="firstname" placeholder="ชื่อ" value="<?= e($form['firstname'] ?? '') ?>" required maxlength="50"
+                                class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-sm text-slate-900 outline-none transition-all duration-300 custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary focus:shadow-inner">
+                            <input type="text" id="contact_name_mobile_last" name="lastname" placeholder="นามสกุล" value="<?= e($form['lastname'] ?? '') ?>" required maxlength="50"
+                                class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-sm text-slate-900 outline-none transition-all duration-300 custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary focus:shadow-inner">
+                        </div>
+
+                        <script>
+                            function updateContactFormLayout() {
+                                const isDesktop = window.innerWidth >= 1024; // lg breakpoint
+                                const nameDesktop = document.getElementById('contact_name_desktop');
+                                const nameMobileFirst = document.getElementById('contact_name_mobile_first');
+                                const nameMobileLast = document.getElementById('contact_name_mobile_last');
+                                
+                                if (isDesktop) {
+                                    if(nameDesktop) nameDesktop.disabled = false;
+                                    if(nameMobileFirst) nameMobileFirst.disabled = true;
+                                    if(nameMobileLast) nameMobileLast.disabled = true;
+                                } else {
+                                    if(nameDesktop) nameDesktop.disabled = true;
+                                    if(nameMobileFirst) nameMobileFirst.disabled = false;
+                                    if(nameMobileLast) nameMobileLast.disabled = false;
+                                }
+                            }
+                            window.addEventListener('resize', updateContactFormLayout);
+                            window.addEventListener('DOMContentLoaded', updateContactFormLayout);
+                            updateContactFormLayout();
+                        </script>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <input type="text" name="phone" placeholder="เบอร์โทรศัพท์" value="<?= e($form['phone'] ?? '') ?>" required maxlength="40"
-                                class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-sm text-slate-900 outline-none transition-all duration-300 placeholder:text-slate-400 focus:border-primary focus:ring-1 focus:ring-primary focus:shadow-inner">
-                        </div>
+                                class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-sm text-slate-900 outline-none transition-all duration-300 custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary focus:shadow-inner">
 
-                        <div>
                             <input type="email" name="email" placeholder="อีเมล" value="<?= e($form['email'] ?? '') ?>" required maxlength="255"
-                                class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-sm text-slate-900 outline-none transition-all duration-300 placeholder:text-slate-400 focus:border-primary focus:ring-1 focus:ring-primary focus:shadow-inner">
+                                class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-sm text-slate-900 outline-none transition-all duration-300 custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary focus:shadow-inner">
                         </div>
 
                         <div>
-                            <input type="text" name="subject" placeholder="หัวข้อ" value="<?= e($form['subject'] ?? '') ?>" maxlength="200"
-                                class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-sm text-slate-900 outline-none transition-all duration-300 placeholder:text-slate-400 focus:border-primary focus:ring-1 focus:ring-primary focus:shadow-inner">
-                        </div>
-
-                        <div class="flex-grow flex flex-col min-h-[120px]">
-                            <textarea name="message" placeholder="รายละเอียด" required maxlength="1000"
-                                class="flex-grow w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-sm text-slate-900 outline-none transition-all duration-300 placeholder:text-slate-400 focus:border-primary focus:ring-1 focus:ring-primary resize-none focus:shadow-inner"><?= e($form['message'] ?? '') ?></textarea>
+                            <textarea name="message" placeholder="รายละเอียด" required maxlength="1000" rows="5"
+                                class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-sm text-slate-900 outline-none transition-all duration-300 custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary resize-none focus:shadow-inner"><?= e($form['message'] ?? '') ?></textarea>
                         </div>
 
                         <div class="flex items-start gap-3 pt-2">
@@ -145,9 +212,12 @@ $form = $form ?? [];
                             <p class="text-xs font-bold text-red-500 pt-1"><?= e($errors[0]) ?></p>
                         <?php endif; ?>
 
-                        <div class="pt-2 mt-auto">
-                            <button type="submit" class="w-full py-3.5 bg-primary hover:bg-blue-700 text-white font-bold text-sm rounded-xl shadow-md shadow-blue-500/10 transition-all duration-300 cursor-pointer hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 active:shadow-md">
+                        <div class="pt-2 mt-auto flex justify-start">
+                            <button type="submit" class="px-8 py-3.5 bg-primary hover:bg-blue-700 text-white font-bold text-sm rounded-full shadow-md shadow-blue-500/10 transition-all duration-300 cursor-pointer hover:shadow-lg hover:-translate-y-0.5 flex items-center justify-center gap-2">
                                 ส่งข้อความ
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                                </svg>
                             </button>
                         </div>
                     </form>
@@ -203,19 +273,18 @@ $form = $form ?? [];
                         <p class="text-dark text-[13px] md:text-sm font-medium">วันจันทร์ - วันศุกร์ เวลา 09.00 น. - 18.00 น.</p>
                     </div>
                 </div>
+            </div>
+        </div>
 
-                <div class="bg-blue-50/60 border border-blue-100/40 rounded-2xl p-5 flex items-start gap-4 transition-all duration-300 hover:shadow-md hover:-translate-y-1 hover:border-blue-100 hover:bg-blue-50">
-                    <div class="w-11 h-11 bg-primary text-white rounded-xl flex items-center justify-center shrink-0 mt-0.5 shadow-sm">
-                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" class="w-5 h-5">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-                        </svg>
-                    </div>
-                    <div>
-                        <h4 class="font-bold text-primary text-[14px] mb-0.5">ตอบกลับภายใน 24 ชั่วโมง</h4>
-                        <p class="text-slate-500 text-[14px] md:text-md leading-relaxed">ทีมงานของเราพร้อมให้คำปรึกษาและดูแลธุรกิจของคุณอย่างเต็มที่</p>
-                    </div>
-                </div>
-
+        <div class="mt-10 bg-[#f0f4fa] border border-blue-100 rounded-2xl py-6 px-4 md:px-8 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 text-center sm:text-left transition-all duration-300">
+            <div class="text-primary shrink-0">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" class="w-10 h-10">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M18.364 5.636a9 9 0 010 12.728m0 0l-2.829-2.829m2.829 2.829L21 21M5.636 5.636a9 9 0 000 12.728m0 0l2.829-2.829m-2.829 2.829L3 21M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+            </div>
+            <div>
+                <h4 class="font-bold text-primary text-[16px] mb-1">ตอบกลับภายใน 24 ชม. (ในเวลาทำการ)</h4>
+                <p class="text-slate-500 text-[13px] md:text-[14px]">ทีมงานของเราพร้อมให้คำปรึกษาและดูแลธุรกิจของคุณอย่างเต็มที่</p>
             </div>
         </div>
     </div>

@@ -13,24 +13,38 @@ $navItems = [
 ?>
 
 <header class="sticky top-0 z-[1000] border-b border-slate-200 bg-white backdrop-blur">
-    <div class="mx-auto flex h-16 w-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+    <div class="mx-auto flex h-16 w-full items-center justify-between px-4 md:px-8 lg:px-12">
 
         <!-- Logo -->
         <a class="flex items-center gap-3" href="<?= e(route_url('/')) ?>">
-            <img class="h-9 w-9 object-contain" src="<?= e(asset_url('images/logo.png')) ?>" alt="WEBPARK logo">
+            <img class="h-10 w-auto object-contain" src="<?= e(asset_url('images/logo.png')) ?>" alt="WEBPARK logo" style="border: none; outline: none;">
         </a>
 
         <!-- Desktop Navigation -->
-        <nav class="hidden lg:flex items-center gap-6" aria-label="Primary Navigation">
-            <?php foreach ($navItems as $item): ?>
+        <style>
+            .desktop-nav-link {
+                color: #022862;
+            }
+            .desktop-nav-link:hover {
+                color: #0663F6;
+            }
+            .desktop-nav-link.active {
+                color: #0663F6;
+                font-weight: 600;
+            }
+        </style>
+        <nav class="hidden lg:flex items-center gap-2" aria-label="Primary Navigation">
+            <?php foreach ($navItems as $index => $item): ?>
                 <a href="<?= e(route_url($item['path'])) ?>"
-                   class="relative py-2 text-sm transition-colors hover:text-primary <?= $currentPage === $item['page'] ? 'text-primary font-semibold' : 'text-slate-700 font-medium' ?>"
+                   class="desktop-nav-link relative py-2 text-sm transition-colors <?= $currentPage === $item['page'] ? 'active' : 'font-medium' ?>"
                    data-th="<?= e($item['label_th']) ?>"
                    data-en="<?= e($item['label_en']) ?>"
                    <?= $currentPage === $item['page'] ? 'aria-current="page"' : '' ?>>
                    <?= e($item['label_th']) ?>
-                   <span class="absolute bottom-0 left-0 h-[2px] w-full origin-left bg-primary transition-transform duration-300 ease-out <?= $currentPage === $item['page'] ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100' ?>"></span>
                 </a>
+                <?php if ($index < count($navItems) - 1): ?>
+                    <span class="mx-2 text-xs opacity-60" style="color: #011431;">•</span>
+                <?php endif; ?>
             <?php endforeach; ?>
         </nav>
 
@@ -38,16 +52,15 @@ $navItems = [
         <div class="flex items-center gap-4">
             <!-- Language Switcher -->
             <button id="langSwitcher"
-                    class="hidden lg:flex items-center gap-1 text-sm font-semibold text-slate-700 hover:text-primary transition-colors"
+                    class="hidden lg:flex items-center text-[15px] font-bold transition-colors"
                     aria-label="Switch language">
-                <span id="langTH">TH</span>
-                <span class="opacity-40">|</span>
-                <span id="langEN" class="opacity-40">EN</span>
+                <span id="langTH" style="color: #0663F6;">TH</span>
+                <span id="langEN" style="color: #011431;" class="ml-1">| EN</span>
             </button>
 
-            <!-- CTA Button -->
+            <!-- CTA Button (Hidden on Desktop as per design) -->
             <a href="<?= e(route_url('/contact')) ?>"
-               class="inline-flex items-center justify-center px-6 py-2.5 bg-primary text-white text-sm font-semibold rounded-full shadow-md transition hover:bg-blue-700 hover:-translate-y-0.5"
+               class="hidden items-center justify-center px-6 py-2.5 bg-primary text-white text-sm font-semibold rounded-full shadow-md transition hover:bg-blue-700 hover:-translate-y-0.5"
                data-th="ขอคำปรึกษา"
                data-en="Get Advice">
                ขอคำปรึกษา
@@ -114,10 +127,20 @@ $navItems = [
             document.querySelectorAll('[data-th],[data-en]').forEach(el => {
                 el.textContent = lang === 'en' ? el.dataset.en : el.dataset.th;
             });
-            document.getElementById('langTH')?.classList.toggle('opacity-40', lang === 'en');
-            document.getElementById('langEN')?.classList.toggle('opacity-40', lang !== 'en');
+            
+            // Desktop Language Switcher (Color Swap instead of opacity)
+            const deskTH = document.getElementById('langTH');
+            const deskEN = document.getElementById('langEN');
+            if (deskTH && deskEN) {
+                deskTH.style.color = lang === 'en' ? '#011431' : '#0663F6';
+                deskEN.style.color = lang === 'en' ? '#0663F6' : '#011431';
+                deskEN.innerHTML = lang === 'en' ? '<span style="color: #011431;">|</span> EN' : '| EN';
+            }
+
+            // Mobile Language Switcher (Keep opacity toggle as requested)
             document.getElementById('langTH_m')?.classList.toggle('opacity-40', lang === 'en');
             document.getElementById('langEN_m')?.classList.toggle('opacity-40', lang !== 'en');
+            
             localStorage.setItem(LANG_KEY, lang);
         }
         function toggleLang() {

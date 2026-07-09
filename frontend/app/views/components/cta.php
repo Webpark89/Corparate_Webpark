@@ -23,15 +23,22 @@ $contactButtonUrl = $cbuttonUrl ?? '/contact';
         <div class="relative w-full rounded-[2rem] p-8 md:p-12 lg:p-14 grid grid-cols-1 lg:grid-cols-12 gap-10 items-start overflow-hidden shadow-xl">
             <div class="absolute inset-0 z-0 rounded-[2rem] overflow-hidden">
                 <img src="<?= e(asset_url('images/bg-cta.jpg')) ?>" alt="City Network Overlay" class="w-full h-full opacity-80 object-cover">
-                <div class="absolute inset-0 bg-gradient-to-r from-[#043B94]/90 via-[#054FC5]/70 to-white/95"></div>
+                <div class="absolute inset-0 z-0" style="background: linear-gradient(135deg, rgba(1, 47, 122, 0.95) 0%, rgba(0, 79, 207, 0.6) 100%);"></div>
             </div>
 
             <div class="relative z-10 lg:col-span-5 flex flex-col items-start text-left lg:pt-2">
                 <div class="mb-4 relative">
+<<<<<<< Updated upstream
                     <h2 class="text-3xl md:text-4xl lg:text-[2.5rem] font-black leading-tight text-white tracking-tight">
                         ติดต่อเรา
                     </h2>
                     <div class="w-48 h-[2px] bg-white mt-1"></div>
+=======
+                    <span class="text-white font-black text-4xl md:text-5xl lg:text-[3rem] tracking-tight block">
+                        ติดต่อเรา
+                    </span>
+                    <div class="w-12 h-[3px] bg-white mt-3"></div>
+>>>>>>> Stashed changes
                 </div>
                     <span class="mt-4 text-white text-sm md:text-base leading-relaxed font-medium">
                         <?= e($contactTitle) ?>
@@ -54,30 +61,78 @@ $contactButtonUrl = $cbuttonUrl ?? '/contact';
                             <p class="text-slate-500 text-xs md:text-sm">ทีมงานผู้เชี่ยวชาญจะติดต่อกลับหาคุณโดยเร็วที่สุด</p>
                         </div>
                     <?php else: ?>
+                        <style>
+                            .custom-placeholder::placeholder {
+                                color: #043B94 !important;
+                                opacity: 0.9;
+                            }
+                        </style>
                         <form method="post" class="space-y-4">
                             
-                            <div>
-                                <input type="text" name="name" placeholder="ชื่อ - สกุล" value="<?= e($form['name'] ?? '') ?>" required
-                                    class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-primary focus:ring-1 focus:ring-primary">
+                            <div id="desktop-name-wrapper">
+                                <input type="text" id="name_desktop" name="name" placeholder="ชื่อ - สกุล" value="<?= e($form['name'] ?? '') ?>" required
+                                    class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary">
                             </div>
 
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div id="mobile-name-wrapper" class="space-y-4 hidden">
+                                <input type="text" id="name_mobile_first" name="firstname" placeholder="ชื่อ" value="<?= e($form['firstname'] ?? '') ?>" required
+                                    class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary">
+
+                                <input type="text" id="name_mobile_last" name="lastname" placeholder="สกุล" value="<?= e($form['lastname'] ?? '') ?>" required
+                                    class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary">
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                                 <input type="text" name="phone" placeholder="เบอร์โทร" value="<?= e($form['phone'] ?? '') ?>" required
-                                    class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-primary focus:ring-1 focus:ring-primary">
+                                    class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary">
 
                                 <input type="email" name="email" placeholder="อีเมล" value="<?= e($form['email'] ?? '') ?>" required
-                                    class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-primary focus:ring-1 focus:ring-primary">
+                                    class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary">
                             </div>
+
+                            <script>
+                                function updateCtaFormLayout() {
+                                    const isDesktop = window.innerWidth >= 768;
+                                    const nameDesktop = document.getElementById('name_desktop');
+                                    const nameDesktopWrap = document.getElementById('desktop-name-wrapper');
+                                    const nameMobileFirst = document.getElementById('name_mobile_first');
+                                    const nameMobileLast = document.getElementById('name_mobile_last');
+                                    const nameMobileWrap = document.getElementById('mobile-name-wrapper');
+                                    
+                                    if (isDesktop) {
+                                        nameDesktop.disabled = false;
+                                        nameDesktopWrap.style.display = 'block';
+                                        
+                                        nameMobileFirst.disabled = true;
+                                        nameMobileLast.disabled = true;
+                                        nameMobileWrap.style.display = 'none';
+                                    } else {
+                                        nameDesktop.disabled = true;
+                                        nameDesktopWrap.style.display = 'none';
+                                        
+                                        nameMobileFirst.disabled = false;
+                                        nameMobileLast.disabled = false;
+                                        nameMobileWrap.style.display = 'block';
+                                    }
+                                }
+                                window.addEventListener('resize', updateCtaFormLayout);
+                                window.addEventListener('DOMContentLoaded', updateCtaFormLayout);
+                                // Run immediately in case DOM is already loaded
+                                updateCtaFormLayout();
+                            </script>
 
                             <div>
                                 <textarea name="message" rows="4" placeholder="รายละเอียด" required
-                                    class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-primary focus:ring-1 focus:ring-primary resize-none"><?= e($form['message'] ?? '') ?></textarea>
+                                    class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary resize-none"><?= e($form['message'] ?? '') ?></textarea>
                             </div>
 
+                            <style>
+                                .privacy-text { color: #022862 !important; }
+                            </style>
                             <div class="flex items-start gap-2.5 pt-1">
                                 <input type="checkbox" id="form-privacy" name="privacy_agreed" required class="mt-0.5 w-4 h-4 rounded border-slate-300 text-primary focus:ring-primary cursor-pointer">
-                                <label for="form-privacy" class="text-xs text-slate-500 leading-relaxed cursor-pointer select-none">
-                                    ฉันยินยอมตาม <a href="#" class="text-primary hover:underline">นโยบายความเป็นส่วนตัวและข้อกำหนดและเงื่อนไขของเว็บไซต์</a>
+                                <label for="form-privacy" class="text-xs leading-relaxed cursor-pointer select-none">
+                                    <span class="privacy-text">ฉันยินยอมตาม</span> <a href="#" class="text-primary hover:underline">นโยบายความเป็นส่วนตัวและข้อกำหนดและเงื่อนไขของเว็บไซต์</a>
                                 </label>
                             </div>
 
@@ -85,7 +140,10 @@ $contactButtonUrl = $cbuttonUrl ?? '/contact';
                                 <p class="text-xs font-bold text-red-500 pt-1"><?= e($errors[0]) ?></p>
                             <?php endif; ?>
 
-                            <div class="pt-2">
+                            <style>
+                                @media (min-width: 768px) { .desktop-btn-left { justify-content: flex-start !important; } }
+                            </style>
+                            <div class="pt-2 flex justify-center desktop-btn-left">
                                 <button type="submit" class="px-8 py-3.5 bg-primary hover:bg-blue-600 text-white font-bold text-sm rounded-full flex items-center justify-center gap-2 shadow-lg shadow-blue-500/10 transition-all cursor-pointer">
                                     ส่งข้อมูล
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
