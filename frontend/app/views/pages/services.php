@@ -256,7 +256,7 @@ $services = $mockServices;
                         <ol class="inline-flex items-center text-sm md:text-base font-medium text-slate-500">
                             <li>
                                 <a href="<?= e(route_url('/')) ?>" class="hover:text-primary transition-colors duration-200">
-                                    หน้าแรก
+                                    <?= e(t('common.nav_home')) ?>
                                 </a>
                             </li>
                             
@@ -265,13 +265,13 @@ $services = $mockServices;
                             </li>
                             
                             <li aria-current="page">
-                                <span class="text-slate-400">บริการของเรา</span>
+                                <span class="text-slate-400"><?= e(t('common.nav_services')) ?></span>
                             </li>
                         </ol>
                     </nav>
                     
                 <h1 class="animate-fade-up delay-200 leading-[1.1] mb-2 tracking-tighter">
-                    <span class="text-2xl md:text-3xl lg:text-5xl font-medium bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block py-3">
+                    <span class="text-5xl md:text-6xl lg:text-8xl font-bold bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block py-3">
                         <?= getCurrentLang() === 'th' ? 'ความเชี่ยวชาญ' : 'Expertise' ?>
                     </span><br>
 
@@ -280,14 +280,12 @@ $services = $mockServices;
                     </span>
                 </h1>
 
-                <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-base md:text-lg leading-relaxed max-w-lg mb-10 font-medium">
-                    <?= getCurrentLang() === 'th' ? 'มากกว่า 20 ปี ที่เราสร้างสรรค์โซลูชั่นดิจิทัลครบวงจร <br>
-                    ผสนเทคโนโลยี่ ความเชี่ยวชาญ และความเข้าในธุรกิจ<br>
-                    เพื่อช่วยให้องค์กรเพิ่มประสิทธิภาพ ยกระดับองค์กรสู่อนาคต' : 'Over 20 years of creating comprehensive digital solutions.<br>We combine technology, expertise, and business understanding<br>to help organizations increase efficiency and elevate into the future.' ?>
+                <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-[15px] sm:text-base md:text-lg leading-[1.65] max-w-lg mb-10 font-medium tracking-normal">
+                    <?= getCurrentLang() === 'th' ? 'มากกว่า 20 ปี ที่เราสร้างสรรค์โซลูชันดิจิทัลครบวงจร ผสานเทคโนโลยี ความเชี่ยวชาญ และความเข้าใจธุรกิจ เพื่อเพิ่มประสิทธิภาพ สร้างการเติบโต และยกระดับองค์กรสู่อนาคตอย่างยั่งยืน' : 'Over 20 years of creating comprehensive digital solutions. We combine technology, expertise, and business understanding to help organizations increase efficiency and elevate into the future.' ?>
                 </p>
-                <div class="animate-entrance-up delay-400 flex flex-wrap items-center gap-4">
-                    <a href="<?= e(route_url('/service')) ?>" class="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-primary text-white text-sm font-semibold rounded-full hover:bg-blue-700 transition-all shadow-md hover:-translate-y-0.5">
-                        <?= e(t('common.cta_view_services') !== 'common.cta_view_services' ? t('common.cta_view_services') : (getCurrentLang() === 'th' ? 'ดูบริการของเรา' : 'View Our Services')) ?>
+                <div class="animate-entrance-up delay-400 flex flex-col sm:flex-row items-start gap-4">
+                    <a href="<?= e(route_url('/contact')) ?>" class="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-primary text-white text-sm font-semibold rounded-full hover:bg-blue-700 transition-all shadow-md hover:-translate-y-0.5">
+                        <?= e(getCurrentLang() === 'th' ? 'ปรึกษาผู้เชี่ยวชาญ' : 'Consult an Expert') ?>
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
                         </svg>

@@ -54,14 +54,14 @@ $ctaImage = asset_url('images/bg-cta.jpg');
             
             <div class="max-w-3xl lg:max-w-none">
                 <nav aria-label="Breadcrumb" class="hidden md:block animate-fade-up delay-100 mb-6">
-                    <ol class="inline-flex items-center space-x-2 text-sm md:text-base font-medium text-slate-500">
+                    <ol class="inline-flex items-center text-sm md:text-base font-medium text-slate-500">
                         <li>
                             <a href="<?= e(route_url('/')) ?>" class="hover:text-primary transition-colors duration-200">
                                 <?= e(t('common.nav_home')) ?>
                             </a>
                         </li>
                         <li>
-                            <span class="text-slate-400 mx-2 md:mx-4">/</span>
+                            <span class="text-slate-400" style="margin: 0 4px;">/</span>
                         </li>
                         
                         <li aria-current="page">
@@ -111,10 +111,16 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                         <?= $mobile_desc ?>
                     </span>
                     <span class="hidden md:block leading-relaxed">
-                        <?= e(t('common.articles_knowledge_summary')) ?> <br>
-                        <?= e(getCurrentLang() === 'th' ? 'และแนวทางการทำธุรกิจ ครอบคลุม ERP' : 'covering ERP systems') ?> 
-                        <?= e(getCurrentLang() === 'th' ? 'ระบบธุรกิจดิจิทัล การตลาดออนไลน์ AI และโซลูชัน' : 'digital business, online marketing, AI, and solutions') ?><br>
-                        <?= e(t('common.articles_growth_summary')) ?>
+                        <?php if (getCurrentLang() === 'th'): ?>
+                            <?= e(t('common.articles_knowledge_summary')) ?> <br>
+                            ครอบคลุม ERP ระบบธุรกิจดิจิทัล การตลาดออนไลน์ AI และโซลูชัน<br>
+                            <?= e(t('common.articles_growth_summary')) ?>
+                        <?php else: ?>
+                            A collection of articles on technology, innovation,<br>
+                            and business strategy covering ERP systems,<br>
+                            digital business, online marketing, AI, and solutions<br>
+                            that help organizations grow sustainably.
+                        <?php endif; ?>
                     </span>
                 </p>
             </div>

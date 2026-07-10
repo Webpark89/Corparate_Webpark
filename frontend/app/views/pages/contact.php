@@ -39,14 +39,14 @@ $form = $form ?? [];
             
             <div class="max-w-2xl px-4 md:px-0">
                 <nav aria-label="Breadcrumb" class="hidden md:block animate-fade-up delay-100 mb-6">
-                    <ol class="inline-flex items-center space-x-2 text-sm md:text-base font-medium text-slate-500">
+                    <ol class="inline-flex items-center text-sm md:text-base font-medium text-slate-500">
                         <li>
                             <a href="<?= e(route_url('/')) ?>" class="hover:text-primary transition-colors duration-200">
                                 <?= e(t('common.nav_home')) ?>
                             </a>
                         </li>
                         <li>
-                            <span class="text-slate-400 mx-2 md:mx-4">/</span>
+                            <span class="text-slate-400" style="margin: 0 4px;">/</span>
                         </li>
                         <li aria-current="page">
                             <span class="text-slate-400"><?= e(t('contact.hero_title')) ?></span>
@@ -54,28 +54,53 @@ $form = $form ?? [];
                     </ol>
                 </nav>
 
-                <h1 class="animate-fade-up delay-200 text-4xl md:text-6xl lg:text-8xl font-bold leading-[1.15] md:leading-[1.1] mb-2 tracking-tight md:tracking-tighter">
-                    <span class="bg-gradient-to-r from-[#898F98] to-[#000208] bg-clip-text text-transparent inline-block py-1"><?= e(t('contact.hero_title')) ?></span><br>
-                    <span class="bg-gradient-to-r from-[#003380] to-[#0055ff] bg-clip-text text-transparent inline-block py-1">WEBPARK</span>
+                <style>
+                    .hero-title-text {
+                        font-size: 2.25rem;
+                        line-height: 1.25;
+                    }
+                    .hero-desc-text {
+                        font-size: 15px;
+                        line-height: 1.65;
+                    }
+                    @media (min-width: 768px) {
+                        .hero-title-text { font-size: 3.5rem; line-height: 1.2; }
+                        .hero-desc-text { font-size: 18px; line-height: 1.7; }
+                    }
+                    @media (min-width: 1024px) {
+                        .hero-title-text { font-size: 4.5rem; line-height: 1.2; }
+                    }
+                    @media (min-width: 1280px) {
+                        .hero-title-text { font-size: 5rem; line-height: 1.2; }
+                    }
+                    @keyframes text-gradient-pan {
+                        0% { background-position: 0% center; }
+                        50% { background-position: 100% center; }
+                        100% { background-position: 0% center; }
+                    }
+                    .animate-text-gradient {
+                        background-size: 200% auto;
+                        animation: text-gradient-pan 6s linear infinite;
+                    }
+                </style>
+                <h1 class="animate-fade-up delay-200 tracking-tight mb-2">
+                    <span class="hero-title-text font-bold bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block pb-1 md:pb-2 whitespace-nowrap"><?= e(t('contact.hero_title')) ?></span><br>
+                    <span class="hero-title-text font-bold bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block -mt-2 md:-mt-8 whitespace-nowrap" style="animation-delay: -3s;">WEBPARK</span>
+                </h1>
                 <?php
-                // Get translations
-                $desc_line1 = t('contact.hero_desc_line1');
-                $desc_line2 = t('contact.hero_desc_line2');
-                
-                // Create a beautifully formatted 3-line version for mobile
                 if (getCurrentLang() === 'th') {
                     $mobile_desc = "มาพูดคุยเกี่ยวกับโปรเจกต์ ระบบ เว็บไซต์<br>หรือ ERP/ERM และดิจิทัลโซลูชัน<br>สำหรับธุรกิจคุณ";
                 } else {
                     $mobile_desc = "Let's talk about your project, system,<br>website, or ERP/ERM and digital<br>solutions for your business";
                 }
                 ?>
-                <p class="animate-fade-up delay-300 mt-4 md:mt-6 text-[#022862] text-[15px] md:text-lg leading-[1.65] max-w-sm md:max-w-lg mb-3 md:mb-10 font-medium">
-                    <span class="block md:hidden">
+                <p class="hero-desc-text animate-fade-up delay-300 mt-4 md:mt-6 max-w-[280px] sm:max-w-[360px] md:max-w-2xl mb-10 font-medium text-[#022862] drop-shadow-sm">
+                    <span class="block md:hidden leading-[1.75]">
                         <?= $mobile_desc ?>
                     </span>
-                    <span class="hidden md:block">
-                        <?= e($desc_line1) ?><br>
-                        <?= e($desc_line2) ?>
+                    <span class="hidden md:block leading-relaxed">
+                        <?= e(getCurrentLang() === 'th' ? 'พูดคุยและปรึกษาเกี่ยวกับโปรเจกต์ ระบบ เว็บไซต์' : 'Let\'s talk about your project, system, website,') ?><br>
+                        <?= e(getCurrentLang() === 'th' ? 'ERP / ERM และโซลูชันดิจิทัลเพื่อธุรกิจของคุณ' : 'or ERP/ERM and digital solutions for your business.') ?>
                     </span>
                 </p>
 
