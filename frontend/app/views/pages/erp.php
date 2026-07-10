@@ -485,13 +485,13 @@ $erpPortfolios = $mockErpPortfolios;
                 <div class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm hover:shadow-xl hover:bg-primary hover:border-primary transition-all duration-300 group hover:-translate-y-1 relative overflow-hidden">
                     
                     <div class="relative z-10">
-                        <div class="w-16 h-16 bg-blue-50/60 rounded-full flex items-center justify-center mb-6 mx-auto md:mx-0 transition-colors duration-300">
-                            <img src="<?= e(asset_url('images/' . $module['icon'])) ?>" alt="<?= e($module['name_en']) ?>" class="w-10 h-10 object-contain transition-all duration-300" />
+                        <div class="w-16 h-16 bg-blue-50/60 group-hover:bg-white/20 rounded-full flex items-center justify-center mb-6 mx-auto md:mx-0 transition-colors duration-300">
+                            <img src="<?= e(asset_url('images/' . $module['icon'])) ?>" alt="<?= e($module['name_en']) ?>" class="w-10 h-10 object-contain group-hover:scale-110 transition-all duration-300" />
                         </div>
-                        <h3 class="text-center md:text-left text-lg font-bold text-[#043B94] mb-3 group-hover:text-primary transition-colors">
+                        <h3 class="text-center md:text-left text-lg font-bold text-[#043B94] mb-3 group-hover:text-white transition-colors">
                             <?= e(getCurrentLang() === 'th' ? $module['name_th'] : $module['name_en']) ?> 
                         </h3>
-                        <p class="text-sm text-slate-500 leading-relaxed">
+                        <p class="text-sm text-slate-500 group-hover:text-white/90 leading-relaxed transition-colors">
                             <?= e(getCurrentLang() === 'th' ? $module['description_th'] : $module['description_en']) ?>
                         </p>
                     </div>
