@@ -68,7 +68,7 @@ $contactAddress = $company['contact']['address'] ?? '525/89 ซอยลาด�
             
             <div class="max-w-2xl">
                 <nav aria-label="Breadcrumb" class="animate-fade-up delay-100 mb-6 hidden sm:block">
-                    <ol class="inline-flex items-center space-x-2 text-sm md:text-base font-medium text-slate-500">
+                    <ol class="inline-flex items-center text-sm md:text-base font-medium text-slate-500">
                         <li>
                             <a href="<?= e(route_url('/')) ?>" class="hover:text-primary transition-colors duration-200">
                                 <?= e(t('common.nav_home') !== 'common.nav_home' ? t('common.nav_home') : (getCurrentLang() === 'th' ? 'หน้าแรก' : 'Home')) ?>

@@ -252,7 +252,7 @@ $erpPortfolios = $mockErpPortfolios;
             
             <div class="max-w-2xl">
                 <nav aria-label="Breadcrumb" class="animate-fade-up delay-100 mb-6 hidden sm:block">
-                        <ol class="inline-flex items-center space-x-2 text-sm md:text-base font-medium text-slate-500">
+                        <ol class="inline-flex items-center text-sm md:text-base font-medium text-slate-500">
                             <li>
                                 <a href="<?= e(route_url('/')) ?>" class="hover:text-primary transition-colors duration-200">
                                     <?= e(t('common.nav_home')) ?>
@@ -401,28 +401,44 @@ $erpPortfolios = $mockErpPortfolios;
     </div>
 </section> -->
 
-<section id="modules" class="bg-slate-50 py-20 font-sans border-t border-slate-100">
+<section id="modules" class="bg-slate-50 py-10 font-sans border-t border-slate-100">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         
         <div class="text-center max-w-3xl mx-auto mb-16">
             <h2 class="text-3xl md:text-4xl font-extrabold text-blue-600 tracking-tight mb-4">
-                ERP modules
+                <span class="lg:hidden">ERP modules</span>
+                <span class="hidden lg:inline uppercase">ERP MODULE</span>
             </h2>
-            <span class="text-blue-400 font-bold text-md md:text-md uppercase mb-3 block"><?= e(t('erp.process_coverage_title') !== 'erp.process_coverage_title' ? t('erp.process_coverage_title') : (getCurrentLang() === 'th' ? 'ระบบครอบคลุมทุกกระบวนการทำงาน' : 'A System That Covers Every Process')) ?></span>
+            <span class="text-blue-400 lg:text-[#043B94] font-bold text-md md:text-md uppercase lg:normal-case mb-3 block">
+                <span class="lg:hidden"><?= e(t('erp.process_coverage_title') !== 'erp.process_coverage_title' ? t('erp.process_coverage_title') : (getCurrentLang() === 'th' ? 'ระบบครอบคลุมทุกกระบวนการทำงาน' : 'A System That Covers Every Process')) ?></span>
+                <span class="hidden lg:inline"><?= e(getCurrentLang() === 'th' ? 'ครบทุกโมดูล ตอบโจทย์ทุกการทำงานขององค์กร' : 'Complete modules for all enterprise operations') ?></span>
+            </span>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 lg:gap-8">
             <?php foreach ($modulesData as $module): ?>
-                <div class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm hover:shadow-xl transition-all duration-300 group hover:-translate-y-1 relative overflow-hidden">
-                    <div class="absolute inset-0 bg-gradient-to-br from-blue-50/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+                <div class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm hover:shadow-xl transition-all duration-300 group hover:-translate-y-1 relative overflow-hidden flex flex-col lg:flex-row items-center lg:items-start gap-4 lg:gap-8 text-center lg:text-left">
+                    <div class="absolute inset-0 bg-gradient-to-br from-blue-50/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none lg:hidden"></div>
                     
-                    <div class="relative z-10">
-                        <div class="w-16 h-16 bg-blue-50/60 rounded-full flex items-center justify-center mb-6 mx-auto md:mx-0 group-hover:bg-blue-600 transition-colors duration-300">
-                            <img src="<?= e(asset_url('images/' . $module['icon'])) ?>" alt="<?= e($module['name_en']) ?>" class="w-10 h-10 object-contain transition-all duration-300 group-hover:brightness-0 group-hover:invert" />
-                        </div>
-                        <h3 class="text-center md:text-left text-lg font-bold text-[#043B94] mb-3 group-hover:text-primary transition-colors">
+                    <div class="w-16 h-16 lg:w-24 lg:h-24 shrink-0 bg-blue-50/60 lg:bg-transparent rounded-full flex items-center justify-center mb-2 mx-auto lg:mx-0 group-hover:bg-blue-600 lg:group-hover:bg-transparent transition-colors duration-300 relative z-10">
+                        <img src="<?= e(asset_url('images/' . $module['icon'])) ?>" alt="<?= e($module['name_en']) ?>" class="w-10 h-10 lg:w-16 lg:h-16 object-contain transition-all duration-300 group-hover:brightness-0 group-hover:invert lg:group-hover:filter-none" />
+                    </div>
+                    
+                    <div class="relative z-10 flex-1 w-full lg:pt-1">
+                        <!-- Mobile Title -->
+                        <h3 class="lg:hidden text-lg font-bold text-[#043B94] mb-3 group-hover:text-primary transition-colors">
                             <?= e(getCurrentLang() === 'th' ? $module['name_th'] : $module['name_en']) ?> 
                         </h3>
+                        
+                        <!-- Desktop Title & Subtitle -->
+                        <h3 class="hidden lg:block text-lg font-bold text-blue-600 uppercase mb-1">
+                            <?= e($module['name_en']) ?>
+                        </h3>
+                        <div class="hidden lg:block text-sm font-bold text-[#043B94] mb-3">
+                            <?= e(getCurrentLang() === 'th' ? $module['name_th'] : $module['name_en']) ?>
+                        </div>
+
+                        <!-- Description (Mobile & Desktop) -->
                         <p class="text-sm text-slate-500 leading-relaxed">
                             <?= e(getCurrentLang() === 'th' ? $module['description_th'] : $module['description_en']) ?>
                         </p>
@@ -488,12 +504,19 @@ $erpPortfolios = $mockErpPortfolios;
     </div>
 </section> -->
 
-<section class="bg-slate-50 py-20 font-sans border-t border-slate-100">
+<section class="bg-slate-50 py-10 font-sans border-t border-slate-100">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <h2 class="text-2xl md:text-3xl font-extrabold text-center text-[#022862] tracking-tight py-10">
             <?= e(t('erp.cta_banner_title') !== 'erp.cta_banner_title' ? t('erp.cta_banner_title') : (getCurrentLang() === 'th' ? 'ERP ที่ช่วยยกระดับธุรกิจของคุณ' : 'ERP That Elevates Your Business')) ?>
         </h2>
 
+        <style>
+            @media (max-width: 639px) {
+                .mobile-span-2 {
+                    grid-column: span 2 / span 2 !important;
+                }
+            }
+        </style>
         <div class="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-5 gap-6">
             <?php
             $erpBenefits = [
@@ -524,14 +547,30 @@ $erpPortfolios = $mockErpPortfolios;
                 ],
             ];
             ?>
-            <?php foreach ($erpBenefits as $benefit): ?>
-                <div class="bg-white rounded-2xl p-6 text-center border border-slate-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
-                    <div class="w-14 h-14 mx-auto bg-blue-50/70 rounded-full flex items-center justify-center mb-4">
-                        <img src="<?= e($benefit['icon']) ?>" alt="<?= e($benefit['title']) ?>" class="h-full w-full object-contain">
+            <?php foreach ($erpBenefits as $index => $benefit): ?>
+                <?php if($index === 4): ?>
+                    <!-- 5th Block: Horizontal rectangle on mobile, Square on desktop -->
+                    <div class="bg-white rounded-2xl py-10 px-6 sm:p-6 border border-slate-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 mobile-span-2 sm:col-span-1 flex flex-row sm:block items-center text-left sm:text-center gap-6 sm:gap-0">
+                        <div class="w-16 h-16 sm:w-14 sm:h-14 sm:mx-auto shrink-0 bg-blue-50/70 rounded-full flex items-center justify-center sm:mb-4">
+                            <img src="<?= e($benefit['icon']) ?>" alt="<?= e($benefit['title']) ?>" class="h-full w-full object-contain">
+                        </div>
+                        <div>
+                            <h4 class="text-base sm:text-sm font-bold text-[#043B94] mb-1 sm:mb-1"><?= e($benefit['title']) ?></h4>
+                            <p class="text-sm sm:text-xs text-slate-500 leading-relaxed"><?= e($benefit['desc']) ?></p>
+                        </div>
                     </div>
-                    <h4 class="text-sm font-bold text-[#043B94] mb-1"><?= e($benefit['title']) ?></h4>
-                    <p class="text-xs text-slate-500 leading-relaxed"><?= e($benefit['desc']) ?></p>
-                </div>
+                <?php else: ?>
+                    <!-- Blocks 1-4: Square -->
+                    <div class="bg-white rounded-2xl p-6 text-center border border-slate-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+                        <div class="w-14 h-14 mx-auto bg-blue-50/70 rounded-full flex items-center justify-center mb-4 shrink-0">
+                            <img src="<?= e($benefit['icon']) ?>" alt="<?= e($benefit['title']) ?>" class="h-full w-full object-contain">
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-bold text-[#043B94] mb-1"><?= e($benefit['title']) ?></h4>
+                            <p class="text-xs text-slate-500 leading-relaxed"><?= e($benefit['desc']) ?></p>
+                        </div>
+                    </div>
+                <?php endif; ?>
             <?php endforeach; ?>
         </div>
     </div>

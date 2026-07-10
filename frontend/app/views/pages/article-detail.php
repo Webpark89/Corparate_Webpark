@@ -129,10 +129,10 @@ $shareUrl = urlencode(request_origin_url() . ($_SERVER['REQUEST_URI'] ?? ''));
             
             <div class="max-w-2xl">
                 <nav aria-label="Breadcrumb" class="animate-fade-up delay-100 mb-6">
-                    <ol class="inline-flex flex-wrap items-center space-x-2 text-sm md:text-base font-medium text-slate-500">
+                    <ol class="inline-flex flex-wrap items-center text-sm md:text-base font-medium text-slate-500">
                         <li>
                             <a href="<?= e(route_url('/')) ?>" class="hover:text-primary transition-colors duration-200">
-                                หน้าแรก
+                                <?= e(t('article_detail.breadcrumb_home')) ?>
                             </a>
                         </li>
 
@@ -142,7 +142,7 @@ $shareUrl = urlencode(request_origin_url() . ($_SERVER['REQUEST_URI'] ?? ''));
 
                         <li>
                             <a href="<?= e(route_url('/article')) ?>" class="hover:text-primary transition-colors duration-200">
-                                บทความ
+                                <?= e(t('article_detail.breadcrumb_articles')) ?>
                             </a>
                         </li>
 
