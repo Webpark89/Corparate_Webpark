@@ -210,7 +210,7 @@ $erpPortfolios = $mockErpPortfolios;
     </div>
 </section> -->
 
-<section class="relative overflow-hidden font-sans">
+<section class="relative font-sans bg-[#f7faff] overflow-hidden mt-0 mx-4 mb-4 sm:mt-0 sm:mx-6 sm:mb-6 rounded-t-none rounded-b-[2rem] lg:m-0 lg:rounded-none">
     <div class="hidden lg:block absolute inset-0 z-0 overflow-hidden">
         <img src="<?= e($heroImage) ?>" alt="WEBPARK Solutions Background" 
             class="w-full h-full object-cover object-center opacity-100 mix-blend-screen">
@@ -304,6 +304,75 @@ $erpPortfolios = $mockErpPortfolios;
         </div>
     </div>
 
+    <!-- <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-6 relative z-20 -mt-10 lg:-mt-18 pb-6 lg:pb-16">
+        <div class="w-full rounded-[1rem] bg-white flex flex-col lg:flex-row items-stretch shadow-[0_4px_25px_rgba(0,0,0,0.06)] border border-gray-100 overflow-hidden">
+
+            <div class="group flex-1 lg:max-w-[300px] xl:max-w-[320px] flex flex-col justify-between p-6 lg:p-8 border-b lg:border-b-0 lg:border-r border-gray-100 shrink-0 bg-white transition-all duration-300 hover:bg-slate-50/50 cursor-pointer">
+                <div>
+                    <h2 class="text-[#043B94] text-xl xl:text-2xl font-bold leading-tight mb-4 transition-colors duration-300 group-hover:text-blue-700">
+                        <?= e(t('common.about_us_heading')) ?>
+                    </h2>
+                    <span class="text-primary font-bold text-md block mb-3">
+                        <?= e(t('common.we_are_partner')) ?><br><?= e(t('common.in_technology')) ?>
+                    </span>
+                    <p class="text-gray-500 text-sm leading-relaxed mb-6">
+                        <?= e(t('common.partner_description')) ?>
+                    </p>
+                </div>
+            </div>
+
+            <div class="flex-[4] grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 w-full">
+                <?php
+                $serviceCards = [
+                    ['icon' => asset_url('images/ERP_1.svg'), 'title' => 'ERP / ERM',        'desc' => t('common.solution_org_control'), 'href' => route_url('/erp')],
+                    ['icon' => asset_url('images/ERP_2.svg'), 'title' => 'Digital Platform', 'desc' => t('common.solution_digital_platform'),              'href' => '#'],
+                    ['icon' => asset_url('images/ERP_3.svg'), 'title' => 'Online Marketing', 'desc' => t('common.solution_online_marketing'),   'href' => '#'],
+                    ['icon' => asset_url('images/ERP_4.svg'), 'title' => 'Creative / Design','desc' => t('common.solution_brand_design'),    'href' => '#'],
+                ];
+                $lastIdx = count($serviceCards) - 1;
+                foreach ($serviceCards as $i => $card):
+                    $borderClass = '';
+                    if ($i < $lastIdx) {
+                        $borderClass .= ' border-b';
+                    }
+                    if ($i < 2) {
+                        $borderClass .= ' sm:border-b';
+                    } else {
+                        $borderClass .= ' sm:border-b-0';
+                    }
+                    if ($i % 2 === 0) {
+                        $borderClass .= ' sm:border-r';
+                    } else {
+                        $borderClass .= ' sm:border-r-0';
+                    }
+                    $borderClass .= ' lg:border-b-0';
+                    if ($i < 3) {
+                        $borderClass .= ' lg:border-r';
+                    } else {
+                        $borderClass .= ' lg:border-r-0';
+                    }
+                ?>
+                    <div class="relative group cursor-pointer flex flex-col justify-between p-6 lg:p-8 <?= $borderClass ?> border-gray-100 bg-white transition-all duration-300 ease-out hover:shadow-[0_0_30px_rgba(0,0,0,0.08)] hover:-translate-y-1 hover:z-10 hover:rounded-xl">
+                        <div>
+                            <div class="h-14 w-14 mx-auto mb-5 flex items-center justify-center transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:-translate-y-2 group-hover:scale-110">
+                                <img src="<?= e($card['icon']) ?>" alt="<?= e($card['title']) ?>" class="h-full w-full object-contain">
+                            </div>
+                            <h2 class="text-[#043B94] font-bold text-[15px] xl:text-[16px] text-center mb-3 whitespace-normal tracking-tight transition-colors duration-300 group-hover:text-blue-600">
+                                <?= e($card['title']) ?>
+                            </h2>
+                            <p class="text-gray-500 text-xs xl:text-sm leading-relaxed mb-6 text-left transition-colors duration-300 group-hover:text-gray-600">
+                                <?= e($card['desc']) ?>
+                            </p>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        </div>
+    </div> -->
+
+</section>
+
+<section class="bg-white py-8 lg:py-24">
     <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-6 relative z-20 -mt-10 lg:-mt-18 pb-6 lg:pb-16">
         <div class="w-full rounded-[1rem] bg-white flex flex-col lg:flex-row items-stretch shadow-[0_4px_25px_rgba(0,0,0,0.06)] border border-gray-100 overflow-hidden">
 
@@ -415,28 +484,18 @@ $erpPortfolios = $mockErpPortfolios;
             </span>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-2 lg:gap-6">
             <?php foreach ($modulesData as $module): ?>
                 <div class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm hover:shadow-xl hover:bg-primary hover:border-primary transition-all duration-300 group hover:-translate-y-1 relative overflow-hidden">
                     
                     <div class="relative z-10">
-                        <div class="w-16 h-16 bg-blue-50/60 rounded-full flex items-center justify-center mb-6 mx-auto md:mx-0 transition-colors duration-300">
-                            <img src="<?= e(asset_url('images/' . $module['icon'])) ?>" alt="<?= e($module['name_en']) ?>" class="w-10 h-10 object-contain transition-all duration-300" />
+                        <div class="w-16 h-16 bg-blue-50/60 group-hover:bg-white/20 rounded-full flex items-center justify-center mb-6 mx-auto md:mx-0 transition-colors duration-300">
+                            <img src="<?= e(asset_url('images/' . $module['icon'])) ?>" alt="<?= e($module['name_en']) ?>" class="w-10 h-10 object-contain group-hover:scale-110 transition-all duration-300" />
                         </div>
-                        <h3 class="text-center md:text-left text-lg font-bold text-[#043B94] mb-3 group-hover:text-primary transition-colors">
+                        <h3 class="text-center md:text-left text-lg font-bold text-[#043B94] mb-3 group-hover:text-white transition-colors">
                             <?= e(getCurrentLang() === 'th' ? $module['name_th'] : $module['name_en']) ?> 
                         </h3>
-                        
-                        <!-- Desktop Title & Subtitle -->
-                        <h3 class="hidden lg:block text-lg font-bold text-blue-600 uppercase mb-1">
-                            <?= e($module['name_en']) ?>
-                        </h3>
-                        <div class="hidden lg:block text-sm font-bold text-[#043B94] mb-3">
-                            <?= e(getCurrentLang() === 'th' ? $module['name_th'] : $module['name_en']) ?>
-                        </div>
-
-                        <!-- Description (Mobile & Desktop) -->
-                        <p class="text-sm text-slate-500 leading-relaxed">
+                        <p class="text-sm text-slate-500 group-hover:text-white/90 leading-relaxed transition-colors">
                             <?= e(getCurrentLang() === 'th' ? $module['description_th'] : $module['description_en']) ?>
                         </p>
                     </div>
