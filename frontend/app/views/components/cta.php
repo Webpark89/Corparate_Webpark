@@ -10,9 +10,9 @@ $errors = $errors ?? [];
 $submitted = $submitted ?? false;
 $form = $form ?? [];
 
-$contactTitle = $ctitle ?? 'พร้อมเริ่มต้นโครงการของคุณแล้วหรือยัง?';
-$contactSubtitle = $csubtitle ?? 'พูดคุยกับทีมเราวันนี้<br>รับคำปรึกษาฟรี ไม่มีค่าใช้จ่าย';
-$contactButtonText = $cbuttonText ?? 'ติดต่อเรา';
+$contactTitle = $ctitle ?? (getCurrentLang() === 'th' ? 'พร้อมเริ่มต้นโครงการของคุณแล้วหรือยัง?' : 'Ready to start your project?');
+$contactSubtitle = $csubtitle ?? (getCurrentLang() === 'th' ? 'พูดคุยกับทีมเราวันนี้<br>รับคำปรึกษาฟรี ไม่มีค่าใช้จ่าย' : 'Talk to our team today<br>Get a free consultation, no hidden fees');
+$contactButtonText = $cbuttonText ?? t('common.nav_contact');
 $contactButtonUrl = $cbuttonUrl ?? '/contact';
 
 ?>
@@ -29,7 +29,7 @@ $contactButtonUrl = $cbuttonUrl ?? '/contact';
             <div class="relative z-10 lg:col-span-5 flex flex-col items-start text-left lg:pt-2">
                 <div class="mb-4 relative">
                     <span class="text-white font-black text-4xl md:text-5xl lg:text-[3rem] tracking-tight block">
-                        ติดต่อเรา
+                        <?= e(t('common.nav_contact')) ?>
                     </span>
                     <div class="w-12 h-[3px] bg-white mt-3"></div>
                 </div>
@@ -50,8 +50,8 @@ $contactButtonUrl = $cbuttonUrl ?? '/contact';
                             <div class="w-14 h-14 bg-blue-50 text-primary rounded-full flex items-center justify-center mx-auto mb-4">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
                             </div>
-                            <h3 class="text-lg font-bold text-dark mb-1">ส่งข้อมูลสำเร็จ</h3>
-                            <p class="text-slate-500 text-xs md:text-sm">ทีมงานผู้เชี่ยวชาญจะติดต่อกลับหาคุณโดยเร็วที่สุด</p>
+                            <h3 class="text-lg font-bold text-dark mb-1"><?= e(getCurrentLang() === 'th' ? 'ส่งข้อมูลสำเร็จ' : 'Submission Successful') ?></h3>
+                            <p class="text-slate-500 text-xs md:text-sm"><?= e(getCurrentLang() === 'th' ? 'ทีมงานผู้เชี่ยวชาญจะติดต่อกลับหาคุณโดยเร็วที่สุด' : 'Our experts will get back to you as soon as possible.') ?></p>
                         </div>
                     <?php else: ?>
                         <style>
@@ -63,23 +63,23 @@ $contactButtonUrl = $cbuttonUrl ?? '/contact';
                         <form method="post" class="space-y-4">
                             
                             <div id="desktop-name-wrapper">
-                                <input type="text" id="name_desktop" name="name" placeholder="ชื่อ - สกุล" value="<?= e($form['name'] ?? '') ?>" required
+                                <input type="text" id="name_desktop" name="name" placeholder="<?= e(t('common.form_label_fullname')) ?>" value="<?= e($form['name'] ?? '') ?>" required
                                     class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary">
                             </div>
 
                             <div id="mobile-name-wrapper" class="space-y-4 hidden">
-                                <input type="text" id="name_mobile_first" name="firstname" placeholder="ชื่อ" value="<?= e($form['firstname'] ?? '') ?>" required
+                                <input type="text" id="name_mobile_first" name="firstname" placeholder="<?= e(getCurrentLang() === 'th' ? 'ชื่อ' : 'First Name') ?>" value="<?= e($form['firstname'] ?? '') ?>" required
                                     class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary">
 
-                                <input type="text" id="name_mobile_last" name="lastname" placeholder="สกุล" value="<?= e($form['lastname'] ?? '') ?>" required
+                                <input type="text" id="name_mobile_last" name="lastname" placeholder="<?= e(getCurrentLang() === 'th' ? 'สกุล' : 'Last Name') ?>" value="<?= e($form['lastname'] ?? '') ?>" required
                                     class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary">
                             </div>
 
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-                                <input type="text" name="phone" placeholder="เบอร์โทร" value="<?= e($form['phone'] ?? '') ?>" required
+                                <input type="text" name="phone" placeholder="<?= e(t('common.form_label_phone')) ?>" value="<?= e($form['phone'] ?? '') ?>" required
                                     class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary">
 
-                                <input type="email" name="email" placeholder="อีเมล" value="<?= e($form['email'] ?? '') ?>" required
+                                <input type="email" name="email" placeholder="<?= e(t('common.form_label_email')) ?>" value="<?= e($form['email'] ?? '') ?>" required
                                     class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary">
                             </div>
 
@@ -115,7 +115,7 @@ $contactButtonUrl = $cbuttonUrl ?? '/contact';
                             </script>
 
                             <div>
-                                <textarea name="message" rows="4" placeholder="รายละเอียด" required
+                                <textarea name="message" rows="4" placeholder="<?= e(t('common.form_label_details')) ?>" required
                                     class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary resize-none"><?= e($form['message'] ?? '') ?></textarea>
                             </div>
 
@@ -125,7 +125,7 @@ $contactButtonUrl = $cbuttonUrl ?? '/contact';
                             <div class="flex items-start gap-2.5 pt-1">
                                 <input type="checkbox" id="form-privacy" name="privacy_agreed" required class="mt-0.5 w-4 h-4 rounded border-slate-300 text-primary focus:ring-primary cursor-pointer">
                                 <label for="form-privacy" class="text-xs leading-relaxed cursor-pointer select-none">
-                                    <span class="privacy-text">ฉันยินยอมตาม</span> <a href="#" class="text-primary hover:underline">นโยบายความเป็นส่วนตัวและข้อกำหนดและเงื่อนไขของเว็บไซต์</a>
+                                    <span class="privacy-text"><?= e(t('common.form_consent_prefix')) ?></span> <a href="#" class="text-primary hover:underline"><?= e(t('common.form_consent_privacy_policy')) ?> <?= e(t('common.form_consent_terms_suffix')) ?></a>
                                 </label>
                             </div>
 
@@ -138,7 +138,7 @@ $contactButtonUrl = $cbuttonUrl ?? '/contact';
                             </style>
                             <div class="pt-2 flex justify-center desktop-btn-left">
                                 <button type="submit" class="px-8 py-3.5 bg-primary hover:bg-blue-600 text-white font-bold text-sm rounded-full flex items-center justify-center gap-2 shadow-lg shadow-blue-500/10 transition-all cursor-pointer">
-                                    ส่งข้อมูล
+                                    <?= e(t('erp.cta_submit') !== 'erp.cta_submit' ? t('erp.cta_submit') : (getCurrentLang() === 'th' ? 'ส่งข้อมูล' : 'Submit')) ?>
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                                     </svg>

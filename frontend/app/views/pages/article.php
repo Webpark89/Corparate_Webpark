@@ -57,65 +57,64 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                     <ol class="inline-flex items-center space-x-2 text-sm md:text-base font-medium text-slate-500">
                         <li>
                             <a href="<?= e(route_url('/')) ?>" class="hover:text-primary transition-colors duration-200">
-                                หน้าแรก
+                                <?= e(t('common.nav_home')) ?>
                             </a>
                         </li>
-                        
                         <li>
-<<<<<<< Updated upstream
-                            <span class="text-slate-400" style="margin: 0 4px;">/</span>
-=======
                             <span class="text-slate-400 mx-2 md:mx-4">/</span>
->>>>>>> Stashed changes
                         </li>
                         
                         <li aria-current="page">
-                            <span class="text-slate-400">บทความ</span>
+                            <span class="text-slate-400"><?= e(t('article_list.page_title')) ?></span>
                         </li>
                     </ol>
                 </nav>
                 
                 <style>
                     .hero-title-text {
-                        font-size: 2.75rem;
+                        font-size: 2.25rem;
                         line-height: 1.25;
                     }
                     .hero-desc-text {
-                        font-size: 17px;
+                        font-size: 15px;
+                        line-height: 1.65;
                     }
                     @media (min-width: 768px) {
-                        .hero-title-text { font-size: 4.5rem; line-height: 1.2; }
-                        .hero-desc-text { font-size: 26px; }
+                        .hero-title-text { font-size: 3.5rem; line-height: 1.2; }
+                        .hero-desc-text { font-size: 18px; line-height: 1.7; }
                     }
                     @media (min-width: 1024px) {
-                        .hero-title-text { font-size: 5.5rem; line-height: 1.2; }
+                        .hero-title-text { font-size: 4.5rem; line-height: 1.2; }
                     }
                     @media (min-width: 1280px) {
-                        .hero-title-text { font-size: 6.5rem; line-height: 1.2; }
+                        .hero-title-text { font-size: 5rem; line-height: 1.2; }
                     }
                 </style>
                 <h1 class="animate-fade-up delay-200 tracking-tight mb-2">
-                    <span class="hero-title-text font-black bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block pb-2 whitespace-nowrap">
-                        บทความความรู้
+                    <span class="hero-title-text font-bold bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block pb-1 md:pb-2 whitespace-nowrap">
+                        <?= e(getCurrentLang() === 'th' ? 'บทความความรู้' : 'Knowledge Articles') ?>
                     </span><br>
-                    <span class="hero-title-text font-black bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block -mt-4 md:-mt-8 whitespace-nowrap" style="animation-delay: -3s;">
-                        และอัพเดต
+                    <span class="hero-title-text font-bold bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block -mt-2 md:-mt-8 whitespace-nowrap" style="animation-delay: -3s;">
+                        <?= e(getCurrentLang() === 'th' ? 'และอัพเดต' : '& Updates') ?>
                     </span>
                 </h1>
 
-                <p class="hero-desc-text animate-fade-up delay-300 mt-4 md:mt-8 leading-relaxed w-full mb-10 font-medium" style="color: #054FC5;">
-                    <!-- Mobile View (Exactly matching the reference image) -->
-                    <span class="block md:hidden">
-                        รวบรวมบทความความรู้ เทคโนโลยี นวัตกรรม<br>
-                        และแนวทางการทำธุรกิจ ครอบคลุม ERP<br>
-                        ระบบธุรกิจดิจิทัล การตลาดออนไลน์ AI และโซลูชัน<br>
-                        ที่ช่วยพัฒนาองค์กรให้เติบโตอย่างยั่งยืน
+                <?php
+                if (getCurrentLang() === 'th') {
+                    $mobile_desc = "รวบรวมบทความรู้ เทคโนโลยี นวัตกรรม<br>และแนวทางการทำธุรกิจ ครอบคลุม ERP<br>ระบบธุรกิจดิจิทัล การตลาดออนไลน์ AI<br>และโซลูชัน ที่ช่วยพัฒนาองค์กรให้เติบโต<br>ได้อย่างยั่งยืน";
+                } else {
+                    $mobile_desc = "Knowledge articles, tech, and innovation,<br>covering ERP systems, digital business,<br>online marketing, AI, and solutions<br>to sustainably grow your organization.";
+                }
+                ?>
+                <p class="hero-desc-text animate-fade-up delay-300 mt-4 md:mt-6 max-w-[280px] sm:max-w-[360px] md:max-w-2xl mb-10 font-medium text-[#022862] drop-shadow-sm">
+                    <span class="block md:hidden leading-[1.75]">
+                        <?= $mobile_desc ?>
                     </span>
-                    <!-- Desktop View (Exactly 3 lines) -->
-                    <span class="hidden md:block whitespace-nowrap">
-                        รวบรวมบทความความรู้ เทคโนโลยี นวัตกรรม และแนวทางการทำธุรกิจ <br>
-                        ครอบคลุม ERP ระบบธุรกิจดิจิทัล การตลาดออนไลน์ AI และโซลูชัน<br>
-                        ที่ช่วยพัฒนาองค์กรให้เติบโตอย่างยั่งยืน
+                    <span class="hidden md:block leading-relaxed">
+                        <?= e(t('common.articles_knowledge_summary')) ?> <br>
+                        <?= e(getCurrentLang() === 'th' ? 'และแนวทางการทำธุรกิจ ครอบคลุม ERP' : 'covering ERP systems') ?> 
+                        <?= e(getCurrentLang() === 'th' ? 'ระบบธุรกิจดิจิทัล การตลาดออนไลน์ AI และโซลูชัน' : 'digital business, online marketing, AI, and solutions') ?><br>
+                        <?= e(t('common.articles_growth_summary')) ?>
                     </span>
                 </p>
             </div>
@@ -133,12 +132,13 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                     <button type="button"
                             data-filter="all"
                             class="article-filter-btn whitespace-nowrap rounded-md border px-5 py-2 text-sm font-medium transition-colors <?= $activeCategorySlug === 'all' ? 'border-transparent bg-blue-600 text-white' : 'border-blue-200 bg-white text-[#1a2b6d] hover:bg-blue-600 hover:text-white hover:border-transparent' ?>">
-                        ทั้งหมด
+                        <?= e(t('common.cta_view_all')) ?>
                     </button>
 
                     <!-- ปุ่ม: หมวดหมู่ตาม Loop -->
                     <?php foreach ($categories as $category):
                         $slug = trim((string) ($category['slug'] ?? ''));
+                        // You could use translated category names if they are dynamically loaded with current language
                         $name = $category['name'] ?? '';
                         if ($slug === '' || $name === '') {
                             continue;
@@ -159,7 +159,7 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                 <button id="filter-scroll-left"
                         type="button"
                         class="article-filter-arrow flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 text-slate-500 transition-colors hover:bg-slate-50"
-                        aria-label="เลื่อนหมวดหมู่ไปทางซ้าย">
+                        aria-label="<?= e(t('article_list.category_scroll_left')) ?>">
                     <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M15 19l-7-7 7-7"/>
                     </svg>
@@ -167,7 +167,7 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                 <button id="filter-scroll-right"
                         type="button"
                         class="article-filter-arrow flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 text-slate-500 transition-colors hover:bg-slate-50"
-                        aria-label="เลื่อนหมวดหมู่ไปทางขวา">
+                        aria-label="<?= e(t('article_list.category_scroll_right')) ?>">
                     <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M9 5l7 7-7 7"/>
                     </svg>
@@ -216,14 +216,14 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                         <!-- Badge หมวดหมู่ (พื้นหลังฟ้า ขอบมนแคปซูล) -->
                         <div class="mb-4">
                             <span class="inline-block rounded-full bg-blue-50 px-4 py-2 lg:px-3 lg:py-1.5 text-sm lg:text-xs font-semibold tracking-wide text-blue-700">
-                                <?= e($categoryName !== '' ? $categoryName : 'หมวดหมู่') ?>
+                                <?= e($categoryName !== '' ? $categoryName : (getCurrentLang() === 'th' ? 'หมวดหมู่' : 'Category')) ?>
                             </span>
                         </div>
                         
                         <!-- หัวข้อบทความ -->
                         <a href="<?= e($detailUrl) ?>" class="block mb-3">
                             <h3 class="article-card__title text-2xl lg:text-lg font-bold text-[#1a2b6d] leading-snug line-clamp-2">
-                                <?= e($article['title'] ?? 'บทความ') ?>
+                                <?= e($article['title'] ?? t('article_list.page_title')) ?>
                             </h3>
                         </a>
                         
@@ -237,7 +237,7 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                         <!-- ปุ่มอ่านเพิ่มเติม (ดันลงล่างสุด และชิดขวา) -->
                         <div class="mt-auto pt-6 flex" style="justify-content: flex-end;">
                             <a href="<?= e($detailUrl) ?>" class="article-card__cta inline-flex items-center gap-1.5 text-lg lg:text-sm font-semibold text-blue-500 transition-all hover:gap-2 hover:text-blue-700">
-                                อ่านเพิ่มเติม
+                                <?= e(t('common.cta_read_more')) ?>
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                                     <path d="M5 12h14M12 5l7 7-7 7"/>
                                 </svg>
@@ -255,8 +255,8 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                     <path d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9.5L18.5 6M15 10a4 4 0 11-8 0 4 4 0 018 0z"/>
                 </svg>
             </div>
-            <h3 class="text-lg font-bold text-[#1a2b6d] mb-2">ไม่พบบทความในหมวดหมู่นี้</h3>
-            <p class="text-sm text-slate-500">ลองเลือกหมวดหมู่อื่นหรือลิงก์ "ทั้งหมด" เพื่อดูบทความทั้งหมด</p>
+            <h3 class="text-lg font-bold text-[#1a2b6d] mb-2"><?= e(t('article_list.empty_state_title')) ?></h3>
+            <p class="text-sm text-slate-500"><?= e(t('article_list.empty_state_desc')) ?></p>
         </div>
 
         <nav id="pagination" class="article-pagination mt-8 flex items-center justify-center gap-2" aria-label="Article pagination"></nav>
@@ -277,14 +277,14 @@ $ctaImage = asset_url('images/bg-cta.jpg');
         
         <div class="relative z-10 grid gap-6 lg:grid-cols-2 lg:items-center">
             <div class="space-y-4">
-                <p class="text-xs uppercase tracking-[0.4em] text-blue-200">พร้อมดูแลองค์กรของคุณ</p>
+                <p class="text-xs uppercase tracking-[0.4em] text-blue-200"><?= e(t('article_list.cta_banner_ready_title')) ?></p>
                 <h2 class="text-3xl font-extrabold leading-tight lg:text-4xl">
-                    พร้อมช่วยองค์กรของคุณ<br>
-                    ก้าวสู่ดิจิทัลอย่างเต็มรูปแบบ
+                    <?= e(t('article_list.cta_banner_ready_title2')) ?><br>
+                    <?= e(t('article_list.cta_banner_digital_shift')) ?>
                 </h2>
-                <p class="text-sm leading-7 text-white/80">ทีมวิศวกร Webpark พร้อมให้คำปรึกษา วิเคราะห์ และออกแบบโซลูชันที่เหมาะกับธุรกิจของคุณในทุกมิติ</p>
+                <p class="text-sm leading-7 text-white/80"><?= e(t('article_list.cta_banner_desc')) ?></p>
                 <a href="<?= e(route_url('/contact')) ?>" class="inline-flex w-fit items-center justify-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-bold text-[#0b1b42] transition hover:bg-slate-100">
-                    ติดต่อปรึกษาฟรี
+                    <?= e(t('article_list.cta_free_contact')) ?>
                     <span class="text-base leading-none">→</span>
                 </a>
             </div>
@@ -304,21 +304,21 @@ $ctaImage = asset_url('images/bg-cta.jpg');
         <div class="relative z-10 grid gap-6 lg:grid-cols-2 lg:items-center w-full">
             <div class="space-y-5">
                 <p class="text-sm font-medium text-blue-200 lg:text-base">
-                    ปรึกษาผู้เชี่ยวชาญ Webpark
+                    <?= e(t('article_list.cta_consult_webpark_expert')) ?>
                 </p>
                 
                 <h2 class="text-3xl font-bold leading-[1.4] lg:text-5xl lg:leading-[1.3]">
-                    พร้อมช่วยองค์กรของคุณ<br>
-                    ก้าวสู่ดิจิทัลอย่างเต็มรูปแบบ
+                    <?= e(t('article_list.cta_banner_ready_title2')) ?><br>
+                    <?= e(t('article_list.cta_banner_digital_shift')) ?>
                 </h2>
                 
                 <p class="text-base leading-relaxed text-white/90 lg:text-lg">
-                    เราพร้อมให้คำปรึกษาและออกแบบโซลูชันที่เหมาะสมกับธุรกิจของคุณ
+                    <?= e(t('article_list.cta_banner_desc2')) ?>
                 </p>
                 
                 <div class="pt-2">
                     <a href="<?= e(route_url('/contact')) ?>" class="inline-flex w-fit items-center justify-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-bold text-[#0b1b42] transition hover:bg-slate-100">
-                        ติดต่อปรึกษาฟรี
+                        <?= e(t('article_list.cta_free_contact')) ?>
                         <span class="text-base leading-none">→</span>
                     </a>
                 </div>
@@ -486,14 +486,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const paginationContainer = document.createElement('div');
         paginationContainer.className = 'flex items-center overflow-hidden bg-white shadow-sm mx-auto';
-        paginationContainer.style.borderRadius = '14px';
+        paginationContainer.style.borderRadius = '8px';
         paginationContainer.style.border = '1px solid #cbd5e1';
         
         const prevBtn = createBtn('', currentPage - 1, false, currentPage === 1);
-        prevBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" style="height: 24px; width: 24px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>`;
+        prevBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" style="height: 18px; width: 18px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>`;
         prevBtn.className = 'flex items-center justify-center transition-colors hover:bg-slate-50';
-        prevBtn.style.height = '68px';
-        prevBtn.style.width = '72px';
+        prevBtn.style.height = '44px';
+        prevBtn.style.width = '48px';
         prevBtn.style.color = '#1e40af';
         prevBtn.style.borderRight = '1px solid #cbd5e1';
         if (currentPage === 1) prevBtn.style.opacity = '0.3';
@@ -501,19 +501,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const infoText = document.createElement('span');
         infoText.className = 'flex items-center justify-center font-medium tracking-wide';
-        infoText.style.height = '68px';
-        infoText.style.padding = '0 40px';
-        infoText.style.minWidth = '160px';
+        infoText.style.height = '44px';
+        infoText.style.padding = '0 20px';
+        infoText.style.minWidth = '100px';
         infoText.style.color = '#1e40af';
-        infoText.style.fontSize = '26px';
+        infoText.style.fontSize = '16px';
         infoText.textContent = `${currentPage} of ${totalPages}`;
         paginationContainer.appendChild(infoText);
 
         const nextBtn = createBtn('', currentPage + 1, false, currentPage === totalPages);
-        nextBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" style="height: 24px; width: 24px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>`;
+        nextBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" style="height: 18px; width: 18px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>`;
         nextBtn.className = 'flex items-center justify-center transition-colors hover:bg-slate-50';
-        nextBtn.style.height = '68px';
-        nextBtn.style.width = '72px';
+        nextBtn.style.height = '44px';
+        nextBtn.style.width = '48px';
         nextBtn.style.color = '#1e40af';
         nextBtn.style.borderLeft = '1px solid #cbd5e1';
         if (currentPage === totalPages) nextBtn.style.opacity = '0.3';

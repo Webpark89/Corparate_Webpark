@@ -25,12 +25,12 @@ $structuredSitemap = [
             [
                 'title' => 'Page',
                 'items' => [
-                    ['label' => 'Home', 'href' => '/Corparate_Webpark'],
-                    ['label' => 'About Us', 'href' => '/Corparate_Webpark/about'],
-                    ['label' => 'Our Services', 'href' => '/Corparate_Webpark/services'],
-                    ['label' => 'ERP', 'href' => '/Corparate_Webpark/erp'],
-                    ['label' => 'Portfolio', 'href' => '/Corparate_Webpark/portfolio'],
-                    ['label' => 'Contact Us', 'href' => '/Corparate_Webpark/contact'],
+                    ['label' => t('common.nav_home'), 'href' => '/Corparate_Webpark'],
+                    ['label' => t('common.nav_about'), 'href' => '/Corparate_Webpark/about'],
+                    ['label' => t('common.nav_services'), 'href' => '/Corparate_Webpark/services'],
+                    ['label' => t('common.nav_erp'), 'href' => '/Corparate_Webpark/erp'],
+                    ['label' => getCurrentLang() === 'th' ? 'ผลงาน' : 'Portfolio', 'href' => '/Corparate_Webpark/portfolio'],
+                    ['label' => t('common.nav_contact'), 'href' => '/Corparate_Webpark/contact'],
                 ],
             ],
         ],

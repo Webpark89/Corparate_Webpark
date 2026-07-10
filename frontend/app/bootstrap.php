@@ -22,6 +22,7 @@ define('DB_PORT', '3306');
 define('DB_CHARSET', 'utf8mb4');
 
 require_once __DIR__ . '/core/helpers.php';
+require_once __DIR__ . '/views/components/functions.php';
 
 $router = new Router(require __DIR__ . '/../routes.php');
 $router->dispatch();
