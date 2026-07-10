@@ -9,6 +9,7 @@ declare(strict_types=1);
 $values = $values ?? [];
 $timeline = $timeline ?? [];
 $team = $team ?? [];
+$heroImage = asset_url('images/bg-6.png');
 $partners = $partners ?? [];
 $trustLogos = $trustLogos ?? [];
 $company = $company ?? [];
@@ -56,15 +57,22 @@ $contactAddress = $company['contact']['address'] ?? '525/89 ซอยลาด�
 
 </style>
 
-<section class="relative overflow-hidden font-sans">
+<section class="relative font-sans bg-[#f7faff] overflow-hidden mt-0 mx-4 mb-4 sm:mt-0 sm:mx-6 sm:mb-6 rounded-t-none rounded-b-[2rem] lg:m-0 lg:rounded-none">
     <div class="absolute inset-0 z-0">
-        <img src="<?= e(asset_url('images/bg-6.png')) ?>" alt="WEBPARK Solutions Background" class="w-full h-full object-cover object-center opacity-70 mix-blend-screen">
+        <img src="<?= e($heroImage) ?>" alt="WEBPARK Solutions Background" class="w-full h-full object-cover object-center opacity-70 mix-blend-screen">
         <div class="absolute inset-0 bg-gradient-to-r from-white to-white/5"></div>
         <div class="absolute inset-x-0 bottom-0 h-[30%] bg-gradient-to-t from-white to-transparent z-10"></div>
     </div>
 
     <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8 pt-12 pb-24 lg:pt-28 lg:pb-32 relative z-10">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+        <div class="absolute inset-0 z-0 overflow-hidden lg:hidden rounded-2xl">
+            <img src="<?= e($heroImage) ?>" alt="WEBPARK Solutions Background" 
+                class="w-full h-full object-cover object-[75%_center] opacity-100 mix-blend-screen">
+            <div class="absolute inset-0 bg-gradient-to-b from-white/90 via-white/70 to-white/40"></div>
+            <div class="absolute inset-x-0 bottom-0 h-[30%] bg-gradient-to-t from-white to-transparent"></div>
+        </div>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-12 lg:gap-20 items-center relative z-10">
             
             <div class="max-w-2xl">
                 <nav aria-label="Breadcrumb" class="animate-fade-up delay-100 mb-6 hidden sm:block">
@@ -141,7 +149,7 @@ $contactAddress = $company['contact']['address'] ?? '525/89 ซอยลาด�
                 </p>
                 
                 <a href="<?= e(route_url('/about')) ?>" class="inline-flex items-center gap-2 text-primary font-semibold hover:gap-3 transition-all duration-300">
-                    <?= e(t('common.read_more') !== 'common.read_more' ? t('common.read_more') : (getCurrentLang() === 'th' ? 'อ่านเพิ่มเติม' : 'Read More')) ?>
+                    <?= e(t('common.cta_read_more') !== 'common.cta_read_more' ? t('common.cta_read_more') : (getCurrentLang() === 'th' ? 'อ่านเพิ่มเติม' : 'Read More')) ?>
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                     </svg>

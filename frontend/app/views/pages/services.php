@@ -219,8 +219,8 @@ $services = $mockServices;
     }
 </style>
 
-<section class="relative overflow-hidden font-sans">
-    <div class="absolute inset-0 z-0 overflow-hidden">
+<section class="relative font-sans bg-[#f7faff] overflow-hidden mt-0 mx-4 mb-4 sm:mt-0 sm:mx-6 sm:mb-6 rounded-t-none rounded-b-[2rem] lg:m-0 lg:rounded-none">
+    <div class="hidden lg:block absolute inset-0 z-0 overflow-hidden">
         <img src="<?= e($heroImage) ?>" alt="WEBPARK Solutions Background" 
             class="w-full h-full object-cover object-center opacity-100 mix-blend-screen">
             
@@ -248,15 +248,23 @@ $services = $mockServices;
         .animate-scroll:hover { animation-play-state: paused; }
     </style>
 
-    <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 pt-12 pb-24 lg:pt-28 lg:pb-32 relative z-10">
-        <div class="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-12 lg:gap-20 items-center">
+    <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8 pt-12 pb-24 lg:pt-28 lg:pb-32 relative z-10">
+        <!-- Mobile Background Image (Only covers this Hero container) -->
+        <div class="absolute inset-0 z-0 overflow-hidden lg:hidden rounded-2xl">
+            <img src="<?= e($heroImage) ?>" alt="WEBPARK Solutions Background" 
+                class="w-full h-full object-cover object-[75%_center] opacity-100 mix-blend-screen">
+            <div class="absolute inset-0 bg-gradient-to-b from-white/90 via-white/70 to-white/40"></div>
+            <div class="absolute inset-x-0 bottom-0 h-[30%] bg-gradient-to-t from-white to-transparent"></div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-12 lg:gap-20 items-center relative z-10">
             
             <div class="max-w-2xl">
-                <nav aria-label="Breadcrumb" class="animate-fade-up delay-100 mb-6">
-                        <ol class="inline-flex items-center text-sm md:text-base font-medium text-slate-500">
+                <nav aria-label="Breadcrumb" class="animate-fade-up delay-100 mb-6 hidden sm:block">
+                        <ol class="inline-flex items-center space-x-2 text-sm md:text-base font-medium text-slate-500">
                             <li>
                                 <a href="<?= e(route_url('/')) ?>" class="hover:text-primary transition-colors duration-200">
-                                    หน้าแรก
+                                    <?= e(t('common.nav_home')) ?>
                                 </a>
                             </li>
                             
@@ -306,8 +314,8 @@ $services = $mockServices;
     </div>
 </section>
 
-<section id="our-services" class="bg-white pt-16 pb-6 font-sans scroll-mt-6">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+<section id="our-services" class="bg-white py-8 lg:py-16 font-sans scroll-mt-6">
+    <div class="mx-auto max-w-7xl px-6 sm:px-6 lg:px-8">
         <h1 class="gsap-fade-up text-2xl md:text-3xl font-extrabold leading-tight mb-2" style="color: #022862;">
             <?= e(t('common.nav_services') !== 'common.nav_services' ? t('common.nav_services') : (getCurrentLang() === 'th' ? 'บริการของเรา' : 'Our Services')) ?>
         </h1>
@@ -322,8 +330,8 @@ $services = $mockServices;
 </section>
 
 
-<section class="bg-white pb-16 font-sans">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+<section class="bg-white py-8 lg:py-16 font-sans">
+    <div class="mx-auto max-w-7xl px-6 sm:px-6 lg:px-8">
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 items-start">
 
@@ -397,16 +405,16 @@ $services = $mockServices;
     </div>
 </section>
 
-<!-- <section class="font-sans pb-12">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+<section class="font-sans pb-12">
+    <div class="mx-auto max-w-7xl px-6 sm:px-6 lg:px-8">
         <div class="relative rounded-3xl overflow-hidden"
-             style="background: linear-gradient(120deg, #011431 0%, #043B94 55%, #1e40af 100%); min-height: 200px;">
+            style="background: linear-gradient(120deg, #011431 0%, #043B94 55%, #1e40af 100%); min-height: 200px;">
 
             <div class="absolute inset-0 pointer-events-none overflow-hidden">
                 <div class="absolute right-0 top-0 h-full w-1/2"
-                     style="background: url('<?= e(asset_url('images/bg-cta.jpg')) ?>') center/cover no-repeat; opacity: 0.18;"></div>
+                    style="background: url('<?= e(asset_url('images/bg-cta.jpg')) ?>') center/cover no-repeat; opacity: 0.18;"></div>
                 <div class="absolute inset-0"
-                     style="background: linear-gradient(to right, #011431 40%, transparent 100%);"></div>
+                    style="background: linear-gradient(to right, #011431 40%, transparent 100%);"></div>
             </div>
 
             <div class="relative px-8 py-14 md:py-16 text-center" style="z-index: 10;">
@@ -432,10 +440,10 @@ $services = $mockServices;
             </div>
         </div>
     </div>
-</section> -->
+</section>
 
-<section class="bg-white py-16 font-sans">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+<section class="bg-white py-8 font-sans">
+    <div class="mx-auto max-w-7xl px-6 sm:px-6 lg:px-8">
 
         <div class="text-center max-w-3xl mx-auto mb-12">
             <h2 class="gsap-fade-up text-2xl md:text-4xl font-extrabold leading-tight mb-2" style="color: #022862;">

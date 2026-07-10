@@ -39,10 +39,10 @@ $ctaImage = asset_url('images/bg-cta.jpg');
     .delay-400 { animation-delay: 400ms; }
 </style>
 
-<section class="relative overflow-hidden font-sans">
-    <div class="absolute inset-0 z-0 overflow-hidden">
+<section class="relative overflow-hidden font-sans bg-white border-none mx-4 mt-4 rounded-[2rem] md:mx-0 md:mt-0 md:rounded-none">
+    <div class="absolute inset-0 z-0">
         <img src="<?= e($heroImage) ?>" alt="WEBPARK Solutions Background" 
-            class="w-full h-full object-cover object-[100%_center] md:object-center opacity-100 mix-blend-screen">
+            class="w-full h-full object-cover object-[75%_center] md:object-center opacity-100 mix-blend-screen">
             
         <!-- ปรับ Gradient สีขาวให้จางลง เพื่อให้เห็นพื้นหลังจอโน้ตบุ๊กบนมือถือชัดเจนตามความต้องการ -->
         <div class="absolute inset-0 bg-gradient-to-r from-white/90 via-white/50 to-transparent md:from-white md:via-white/70 md:to-white/5"></div>
