@@ -104,6 +104,64 @@ $content = $content ?? '';
     
     <?php require __DIR__ . '/../components/footer.php'; ?>
 
+    <!-- Scroll to Top Button (Pure CSS to avoid Tailwind JIT issues) -->
+    <style>
+        #scrollToTopBtn {
+            position: fixed;
+            bottom: 40px; /* Positioned at bottom right, outside the hero image */
+            right: 40px; /* Fully to the right */
+            z-index: 99999;
+            width: 50px;
+            height: 50px;
+            background-color: #ffffff;
+            border: 1px solid #f1f5f9;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #2563eb;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+            /* Always visible */
+            opacity: 1;
+            visibility: visible;
+        }
+        #scrollToTopBtn:hover {
+            color: #1d4ed8;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            transform: translateY(-3px);
+        }
+        #scrollToTopBtn svg {
+            width: 22px;
+            height: 22px;
+            transition: transform 0.3s ease;
+        }
+        #scrollToTopBtn:hover svg {
+            transform: translateY(-3px);
+        }
+    </style>
+
+    <button id="scrollToTopBtn" aria-label="Scroll to top">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+        </svg>
+    </button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const scrollBtn = document.getElementById('scrollToTopBtn');
+            if (scrollBtn) {
+                scrollBtn.addEventListener('click', function() {
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                });
+            }
+        });
+    </script>
+
     <script src="<?= e(asset_url('assets/js/main.js')) ?>"></script>
 </body>
 

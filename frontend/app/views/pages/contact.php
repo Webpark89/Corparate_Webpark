@@ -184,17 +184,17 @@ $form = $form ?? [];
                         }
                     </style>
                     <form method="post" class="flex flex-col flex-grow space-y-4">
-                        <!-- Desktop Name Field -->
+                        <!-- Desktop Name Field (1 field) -->
                         <div id="contact_desktop-name-wrapper" class="hidden lg:block">
                             <input type="text" id="contact_name_desktop" name="name" placeholder="<?= e(t('common.form_label_fullname')) ?>" value="<?= e($form['name'] ?? '') ?>" required maxlength="100"
                                 class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-sm text-slate-900 outline-none transition-all duration-300 custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary focus:shadow-inner">
                         </div>
 
-                        <!-- Mobile Name Fields -->
+                        <!-- Mobile Name Fields (2 fields) -->
                         <div id="contact_mobile-name-wrapper" class="grid grid-cols-1 gap-4 lg:hidden">
-                            <input type="text" id="contact_name_mobile_first" name="firstname" placeholder="<?= e(t('common.form_label_fullname')) ?>" value="<?= e($form['firstname'] ?? '') ?>" required maxlength="50"
+                            <input type="text" id="contact_name_mobile_first" name="firstname" placeholder="<?= e(getCurrentLang() === 'th' ? 'ชื่อ' : 'First Name') ?>" value="<?= e($form['firstname'] ?? '') ?>" required maxlength="50"
                                 class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-sm text-slate-900 outline-none transition-all duration-300 custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary focus:shadow-inner">
-                            <input type="text" id="contact_name_mobile_last" name="lastname" placeholder="<?= e(t('common.form_label_fullname')) ?>" value="<?= e($form['lastname'] ?? '') ?>" required maxlength="50"
+                            <input type="text" id="contact_name_mobile_last" name="lastname" placeholder="<?= e(getCurrentLang() === 'th' ? 'นามสกุล' : 'Last Name') ?>" value="<?= e($form['lastname'] ?? '') ?>" required maxlength="50"
                                 class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-sm text-slate-900 outline-none transition-all duration-300 custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary focus:shadow-inner">
                         </div>
 
@@ -243,7 +243,7 @@ $form = $form ?? [];
                             <p class="text-xs font-bold text-red-500 pt-1"><?= e($errors[0]) ?></p>
                         <?php endif; ?>
 
-                        <div class="pt-2 mt-auto flex justify-start">
+                        <div class="pt-2 mt-auto flex justify-center">
                             <button type="submit" class="px-8 py-3.5 bg-primary hover:bg-blue-700 text-white font-bold text-sm rounded-full shadow-md shadow-blue-500/10 transition-all duration-300 cursor-pointer hover:shadow-lg hover:-translate-y-0.5 flex items-center justify-center gap-2">
                                 <?= e(t('contact.cta_send_message')) ?>
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
@@ -259,49 +259,49 @@ $form = $form ?? [];
                 <h2 class="text-xl md:text-2xl font-bold text-dark mb-6"><?= e(t('contact.company_info_title')) ?></h2>
                 
                 <div class="bg-white border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.01)] rounded-2xl p-5 flex items-center gap-4 transition-all duration-300 hover:shadow-md hover:-translate-y-1 hover:border-blue-50">
-                    <div class="w-11 h-11 bg-blue-50 text-primary rounded-xl flex items-center justify-center shrink-0">
-                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+                    <div class="w-12 h-12 bg-blue-50 text-primary rounded-xl flex items-center justify-center shrink-0">
+                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
                     </div>
-                    <div><h4 style="color: #054FC5;" class="font-bold text-[15px]"><?= e(t('contact.company_name')) ?></h4></div>
+                    <div><h4 style="color: #054FC5;" class="font-bold text-[17px] md:text-lg"><?= e(t('contact.company_name')) ?></h4></div>
                 </div>
 
                 <div class="bg-white border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.01)] rounded-2xl p-5 flex items-start gap-4 transition-all duration-300 hover:shadow-md hover:-translate-y-1 hover:border-blue-50">
-                    <div class="w-11 h-11 bg-blue-50 text-primary rounded-xl flex items-center justify-center shrink-0 mt-0.5">
-                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                    <div class="w-12 h-12 bg-blue-50 text-primary rounded-xl flex items-center justify-center shrink-0 mt-0.5">
+                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                     </div>
                     <div>
-                        <h4 style="color: #021E4A;" class="font-bold text-xs uppercase mb-0.5"><?= e(t('contact.address_label')) ?></h4>
-                        <p style="color: #054FC5;" class="text-[13px] md:text-sm font-medium leading-relaxed"><?= e(t('contact.company_address')) ?></p>
-                    </div>
-                </div>
-
-                <div class="bg-white border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.01)] rounded-2xl p-5 flex items-start gap-4 transition-all duration-300 hover:shadow-md hover:-translate-y-1 hover:border-blue-50">
-                    <div class="w-11 h-11 bg-blue-50 text-primary rounded-xl flex items-center justify-center shrink-0 mt-0.5">
-                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.94.725l.548 2.2a1 1 0 01-.321.988l-1.305.98a10.582 10.582 0 004.872 4.872l.98-1.305a1 1 0 01.988-.321l2.2.548a1 1 0 01.725.94V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
-                    </div>
-                    <div>
-                        <h4 style="color: #021E4A;" class="font-bold text-xs uppercase mb-0.5"><?= e(t('common.form_label_phone')) ?></h4>
-                        <p style="color: #054FC5;" class="text-[13px] md:text-sm font-semibold tracking-wide">095-539-2666</p>
+                        <h4 style="color: #021E4A;" class="font-bold text-sm uppercase mb-0.5"><?= e(t('contact.address_label')) ?></h4>
+                        <p style="color: #054FC5;" class="text-base font-medium leading-relaxed"><?= e(t('contact.company_address')) ?></p>
                     </div>
                 </div>
 
                 <div class="bg-white border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.01)] rounded-2xl p-5 flex items-start gap-4 transition-all duration-300 hover:shadow-md hover:-translate-y-1 hover:border-blue-50">
-                    <div class="w-11 h-11 bg-blue-50 text-primary rounded-xl flex items-center justify-center shrink-0 mt-0.5">
-                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                    <div class="w-12 h-12 bg-blue-50 text-primary rounded-xl flex items-center justify-center shrink-0 mt-0.5">
+                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.94.725l.548 2.2a1 1 0 01-.321.988l-1.305.98a10.582 10.582 0 004.872 4.872l.98-1.305a1 1 0 01.988-.321l2.2.548a1 1 0 01.725.94V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
                     </div>
                     <div>
-                        <h4 style="color: #021E4A;" class="font-bold text-xs uppercase mb-0.5"><?= e(t('common.form_label_email')) ?></h4>
-                        <p style="color: #054FC5;" class="text-[13px] md:text-sm font-semibold">oraphan@webpark.co.th</p>
+                        <h4 style="color: #021E4A;" class="font-bold text-sm uppercase mb-0.5"><?= e(t('common.form_label_phone')) ?></h4>
+                        <p style="color: #054FC5;" class="text-base font-semibold tracking-wide">095-539-2666</p>
                     </div>
                 </div>
 
                 <div class="bg-white border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.01)] rounded-2xl p-5 flex items-start gap-4 transition-all duration-300 hover:shadow-md hover:-translate-y-1 hover:border-blue-50">
-                    <div class="w-11 h-11 bg-blue-50 text-primary rounded-xl flex items-center justify-center shrink-0 mt-0.5">
-                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    <div class="w-12 h-12 bg-blue-50 text-primary rounded-xl flex items-center justify-center shrink-0 mt-0.5">
+                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
                     </div>
                     <div>
-                        <h4 style="color: #021E4A;" class="font-bold text-xs uppercase mb-0.5"><?= e(t('contact.office_hours_label')) ?></h4>
-                        <p style="color: #054FC5;" class="text-[13px] md:text-sm font-medium"><?= e(t('contact.office_hours_value')) ?></p>
+                        <h4 style="color: #021E4A;" class="font-bold text-sm uppercase mb-0.5"><?= e(t('common.form_label_email')) ?></h4>
+                        <p style="color: #054FC5;" class="text-base font-semibold">oraphan@webpark.co.th</p>
+                    </div>
+                </div>
+
+                <div class="bg-white border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.01)] rounded-2xl p-5 flex items-start gap-4 transition-all duration-300 hover:shadow-md hover:-translate-y-1 hover:border-blue-50">
+                    <div class="w-12 h-12 bg-blue-50 text-primary rounded-xl flex items-center justify-center shrink-0 mt-0.5">
+                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    </div>
+                    <div>
+                        <h4 style="color: #021E4A;" class="font-bold text-sm uppercase mb-0.5"><?= e(t('contact.office_hours_label')) ?></h4>
+                        <p style="color: #054FC5;" class="text-base font-medium"><?= e(t('contact.office_hours_value')) ?></p>
                     </div>
                 </div>
             </div>
@@ -309,7 +309,7 @@ $form = $form ?? [];
 
         <div class="mt-10 bg-[#eef4fc] border border-blue-200 rounded-xl py-6 px-6 flex flex-row items-center justify-center sm:justify-start gap-6 transition-all duration-300">
             <div class="text-[#043B94] shrink-0">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-12 h-12">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-14 h-14">
                     <path d="M3 16v-5a9 9 0 0 1 18 0v5"></path>
                     <rect x="3" y="14" width="4" height="6" rx="1"></rect>
                     <rect x="17" y="14" width="4" height="6" rx="1"></rect>
@@ -318,10 +318,10 @@ $form = $form ?? [];
                 </svg>
             </div>
             <div class="text-left">
-                <h4 class="font-bold text-[#043B94] text-[16px] leading-relaxed mb-2">
+                <h4 class="font-bold text-[#043B94] text-lg md:text-xl leading-relaxed mb-2">
                     <?= e(t('contact.response_time_badge')) ?>
                 </h4>
-                <p class="text-slate-600 text-[14px] leading-relaxed">
+                <p class="text-slate-600 text-base leading-relaxed">
                     <?= e(t('contact.team_support_desc')) ?>
                 </p>
             </div>
@@ -334,26 +334,26 @@ $form = $form ?? [];
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 bg-[#f4f9ff] border border-blue-50/50 rounded-[2rem] p-6 md:p-8">
             
             <div class="flex items-start gap-4 p-4">
-                <div class="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center shrink-0 shadow-sm"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg></div>
+                <div class="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center shrink-0 shadow-sm"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg></div>
                 <div>
-                    <h4 style="color: #0663F6;" class="font-bold text-[15px] mb-1"><?= e(t('contact.fast_response_title')) ?></h4>
-                    <p style="color: #022862;" class="text-sm leading-relaxed"><?= e(t('contact.fast_response_desc')) ?></p>
+                    <h4 style="color: #0663F6;" class="font-bold text-[17px] md:text-lg mb-1"><?= e(t('contact.fast_response_title')) ?></h4>
+                    <p style="color: #022862;" class="text-base leading-relaxed"><?= e(t('contact.fast_response_desc')) ?></p>
                 </div>
             </div>
 
             <div class="flex items-start gap-4 p-4 border-y md:border-y-0 md:border-x border-blue-100/50">
-                <div class="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center shrink-0 shadow-sm"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg></div>
+                <div class="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center shrink-0 shadow-sm"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg></div>
                 <div>
-                    <h4 style="color: #0663F6;" class="font-bold text-[15px] mb-1"><?= e(t('contact.expert_advice_title')) ?></h4>
-                    <p style="color: #022862;" class="text-sm leading-relaxed"><?= e(t('contact.expert_advice_desc')) ?></p>
+                    <h4 style="color: #0663F6;" class="font-bold text-[17px] md:text-lg mb-1"><?= e(t('contact.expert_advice_title')) ?></h4>
+                    <p style="color: #022862;" class="text-base leading-relaxed"><?= e(t('contact.expert_advice_desc')) ?></p>
                 </div>
             </div>
 
             <div class="flex items-start gap-4 p-4">
-                <div class="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center shrink-0 shadow-sm"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg></div>
+                <div class="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center shrink-0 shadow-sm"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg></div>
                 <div>
-                    <h4 style="color: #0663F6;" class="font-bold text-[15px] mb-1"><?= e(t('contact.full_system_support_title')) ?></h4>
-                    <p style="color: #022862;" class="text-sm leading-relaxed"><?= e(t('contact.full_system_support_desc')) ?></p>
+                    <h4 style="color: #0663F6;" class="font-bold text-[17px] md:text-lg mb-1"><?= e(t('contact.full_system_support_title')) ?></h4>
+                    <p style="color: #022862;" class="text-base leading-relaxed"><?= e(t('contact.full_system_support_desc')) ?></p>
                 </div>
             </div>
 
