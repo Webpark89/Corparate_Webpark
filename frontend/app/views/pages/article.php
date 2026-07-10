@@ -6,7 +6,7 @@ $articles = is_array($articles ?? null) ? $articles : [];
 $categories = is_array($categories ?? null) ? $categories : [];
 $activeCategorySlug = (string) ($activeCategorySlug ?? 'all');
 $fallbackImage = asset_url('images/story.png');
-$heroImage = asset_url('images/bg-6.png');
+$heroImage = asset_url('images/bg-7.png');
 $ctaImage = asset_url('images/bg-cta.jpg');
 ?>
 
@@ -42,10 +42,10 @@ $ctaImage = asset_url('images/bg-cta.jpg');
 <section class="relative overflow-hidden font-sans bg-white border-none mx-4 mt-4 rounded-[2rem] md:mx-0 md:mt-0 md:rounded-none">
     <div class="absolute inset-0 z-0">
         <img src="<?= e($heroImage) ?>" alt="WEBPARK Solutions Background" 
-            class="w-full h-full object-cover object-[75%_center] md:object-center opacity-100 mix-blend-screen">
+            class="w-full h-full object-cover object-[80%_center] md:object-[60%_center] opacity-100">
             
         <!-- ปรับ Gradient สีขาวให้จางลง เพื่อให้เห็นพื้นหลังจอโน้ตบุ๊กบนมือถือชัดเจนตามความต้องการ -->
-        <div class="absolute inset-0 bg-gradient-to-r from-white/90 via-white/50 to-transparent md:from-white md:via-white/70 md:to-white/5"></div>
+        <div class="absolute inset-0 bg-gradient-to-r from-white/95 via-white/80 to-transparent md:from-white md:via-white/70 md:to-white/5"></div>
         <div class="absolute inset-x-0 bottom-0 h-[30%] bg-gradient-to-t from-white/50 to-transparent z-10"></div>
     </div>
 
@@ -242,7 +242,7 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                         
                         <!-- ปุ่มอ่านเพิ่มเติม (ดันลงล่างสุด และชิดขวา) -->
                         <div class="mt-auto pt-6 flex" style="justify-content: flex-end;">
-                            <a href="<?= e($detailUrl) ?>" class="article-card__cta inline-flex items-center gap-1.5 text-lg lg:text-sm font-semibold text-blue-500 transition-all hover:gap-2 hover:text-blue-700">
+                            <a href="/Corparate_Webpark/article-detail-mockup#" class="article-card__cta inline-flex items-center gap-1.5 text-lg lg:text-sm font-semibold text-blue-500 transition-all hover:gap-2 hover:text-blue-700">
                                 <?= e(t('common.cta_read_more')) ?>
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                                     <path d="M5 12h14M12 5l7 7-7 7"/>

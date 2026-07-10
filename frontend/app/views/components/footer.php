@@ -20,7 +20,7 @@ $officeValue = $company['contact']['address'] ?? '525/89 ซอยลาดพ�
 $phoneHref = preg_replace('/[^0-9+]/', '', $phone) ?? '';
 
 $structuredSitemap = [
-    'SITEMAP' => [
+    'PAGE' => [
         'groups' => [
             [
                 'title' => 'Page',
@@ -205,7 +205,7 @@ $socialLinks = [
                         <div class="grid gap-5 sm:grid-cols-2 xl:grid-cols-5 dt-sitemap-grid" data-footer-content>
                             <?php
                             $targetTitles = [
-                                'SITEMAP',
+                                'PAGE',
                                 'ERP / ERM',
                                 'DIGITAL PLATFORM',
                                 'ONLINE MARKETING',

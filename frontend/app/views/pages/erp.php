@@ -324,10 +324,10 @@ $erpPortfolios = $mockErpPortfolios;
             <div class="flex-[4] grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 w-full">
                 <?php
                 $serviceCards = [
-                    ['icon' => asset_url('images/ERP_1.svg'), 'title' => 'ERP / ERM',        'desc' => t('common.solution_org_control'), 'href' => route_url('/erp')],
-                    ['icon' => asset_url('images/ERP_2.svg'), 'title' => 'Digital Platform', 'desc' => t('common.solution_digital_platform'),              'href' => '#'],
-                    ['icon' => asset_url('images/ERP_3.svg'), 'title' => 'Online Marketing', 'desc' => t('common.solution_online_marketing'),   'href' => '#'],
-                    ['icon' => asset_url('images/ERP_4.svg'), 'title' => 'Creative / Design','desc' => t('common.solution_brand_design'),    'href' => '#'],
+                    ['icon' => asset_url('images/ERP_1.svg'), 'title' => getCurrentLang() === 'th' ? 'ข้อมูลเชื่อมต่อครบทุกแผนก' : 'Connected Data Across Departments', 'desc' => getCurrentLang() === 'th' ? 'ข้อมูลเป็นหนึ่งเดียว ไม่ต้องทำงานซ้ำ' : 'Single source of truth, eliminating duplicate work.', 'href' => '#'],
+                    ['icon' => asset_url('images/ERP_2.svg'), 'title' => getCurrentLang() === 'th' ? 'ทำงานอัตโนมัติ ลดความผิดพลาด' : 'Automated Processes & Reduced Errors', 'desc' => getCurrentLang() === 'th' ? 'ลดขั้นตอนงานเอกสาร เพิ่มความแม่นยำ' : 'Minimize paperwork and increase accuracy.', 'href' => '#'],
+                    ['icon' => asset_url('images/ERP_3.svg'), 'title' => getCurrentLang() === 'th' ? 'มองเห็นแบบเรียลไทม์ ตัดสินใจได้ไว' : 'Real-time Visibility & Quick Decisions', 'desc' => getCurrentLang() === 'th' ? 'รายงานและ Dashboard อัปเดตตลอดเวลา' : 'Always-updated reports and dashboards.', 'href' => '#'],
+                    ['icon' => asset_url('images/ERP_4.svg'), 'title' => getCurrentLang() === 'th' ? 'รองรับการเติบโต ของธุรกิจ' : 'Supports Business Growth', 'desc' => getCurrentLang() === 'th' ? 'ขยายระบบได้ตามความต้องการ พร้อมเติบโตในอนาคต' : 'Scalable system ready to grow with your business in the future.', 'href' => '#'],
                 ];
                 $lastIdx = count($serviceCards) - 1;
                 foreach ($serviceCards as $i => $card):
@@ -357,10 +357,10 @@ $erpPortfolios = $mockErpPortfolios;
                             <div class="h-14 w-14 mx-auto mb-5 flex items-center justify-center transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:-translate-y-2 group-hover:scale-110">
                                 <img src="<?= e($card['icon']) ?>" alt="<?= e($card['title']) ?>" class="h-full w-full object-contain">
                             </div>
-                            <h2 class="text-[#043B94] font-bold text-[15px] xl:text-[16px] text-center mb-3 whitespace-normal tracking-tight transition-colors duration-300 group-hover:text-blue-600">
+                            <h2 class="text-[#043B94] font-bold text-base md:text-lg xl:text-xl text-center mb-3 whitespace-normal tracking-tight transition-colors duration-300 group-hover:text-blue-600">
                                 <?= e($card['title']) ?>
                             </h2>
-                            <p class="text-gray-500 text-xs xl:text-sm leading-relaxed mb-6 text-left transition-colors duration-300 group-hover:text-gray-600">
+                            <p class="text-gray-500 text-sm md:text-base leading-relaxed mb-6 text-left transition-colors duration-300 group-hover:text-gray-600">
                                 <?= e($card['desc']) ?>
                             </p>
                         </div>
@@ -378,14 +378,17 @@ $erpPortfolios = $mockErpPortfolios;
 
             <div class="group flex-1 lg:max-w-[300px] xl:max-w-[320px] flex flex-col justify-between p-6 lg:p-8 border-b lg:border-b-0 lg:border-r border-gray-100 shrink-0 bg-white transition-all duration-300 hover:bg-slate-50/50 cursor-pointer">
                 <div>
-                    <h2 class="text-[#043B94] text-xl xl:text-2xl font-bold leading-tight mb-4 transition-colors duration-300 group-hover:text-blue-700">
-                        <?= e(t('common.about_us_heading')) ?>
-                    </h2>
-                    <span class="text-primary font-bold text-md block mb-3">
-                        <?= e(t('common.we_are_partner')) ?><br><?= e(t('common.in_technology')) ?>
+                    <span class="text-primary font-bold text-lg md:text-sm tracking-wide inline-block border-b-[3px] border-primary pb-0.5 mb-3 mx-0 uppercase">
+                        ERP SYSTEM
                     </span>
+                    <h2 class="text-[#043B94] text-xl xl:text-2xl font-bold leading-tight mb-4 transition-colors duration-300 group-hover:text-blue-700">
+                        <?= getCurrentLang() === 'th' ? 'ระบบ ERP คืออะไร' : 'What is an ERP System?' ?>
+                    </h2>
                     <p class="text-gray-500 text-sm leading-relaxed mb-6">
-                        <?= e(t('common.partner_description')) ?>
+                        <?= getCurrentLang() === 'th' 
+                            ? 'ERP คือ ระบบที่รวบรวมและเชื่อมโยงกระบวนการทำงานหลักขององค์กร ไม่ว่าจะเป็นการขาย การจัดซื้อ คลังสินค้า การเงิน การผลิต ทรัพยากรบุคคลและงานอื่นๆ ให้ทำงานร่วมกันบนฐานข้อมูลเดียวแบบเรียลไทม์ ช่วยให้ผู้บริหารมองเห็นภาพรวม ตัดสินใจได้แม่นยำและตอบสนองต่อการเปลี่ยนแปลงได้รวดเร็ว' 
+                            : 'ERP is a system that integrates core business processes—such as sales, procurement, inventory, finance, manufacturing, and HR—to work together on a single real-time database. It helps executives see the big picture, make accurate decisions, and respond swiftly to changes.' 
+                        ?>
                     </p>
                 </div>
             </div>
@@ -393,10 +396,10 @@ $erpPortfolios = $mockErpPortfolios;
             <div class="flex-[4] grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 w-full">
                 <?php
                 $serviceCards = [
-                    ['icon' => asset_url('images/ERP_1.svg'), 'title' => 'ERP / ERM',        'desc' => t('common.solution_org_control'), 'href' => route_url('/erp')],
-                    ['icon' => asset_url('images/ERP_2.svg'), 'title' => 'Digital Platform', 'desc' => t('common.solution_digital_platform'),              'href' => '#'],
-                    ['icon' => asset_url('images/ERP_3.svg'), 'title' => 'Online Marketing', 'desc' => t('common.solution_online_marketing'),   'href' => '#'],
-                    ['icon' => asset_url('images/ERP_4.svg'), 'title' => 'Creative / Design','desc' => t('common.solution_brand_design'),    'href' => '#'],
+                    ['icon' => asset_url('images/ERP_1.svg'), 'title' => getCurrentLang() === 'th' ? 'ข้อมูลเชื่อมต่อครบทุกแผนก' : 'Connected Data Across Departments', 'desc' => getCurrentLang() === 'th' ? 'ข้อมูลเป็นหนึ่งเดียว ไม่ต้องทำงานซ้ำ' : 'Single source of truth, eliminating duplicate work.', 'href' => '#'],
+                    ['icon' => asset_url('images/ERP_2.svg'), 'title' => getCurrentLang() === 'th' ? 'ทำงานอัตโนมัติ ลดความผิดพลาด' : 'Automated Processes & Reduced Errors', 'desc' => getCurrentLang() === 'th' ? 'ลดขั้นตอนงานเอกสาร เพิ่มความแม่นยำ' : 'Minimize paperwork and increase accuracy.', 'href' => '#'],
+                    ['icon' => asset_url('images/ERP_3.svg'), 'title' => getCurrentLang() === 'th' ? 'มองเห็นแบบเรียลไทม์ ตัดสินใจได้ไว' : 'Real-time Visibility & Quick Decisions', 'desc' => getCurrentLang() === 'th' ? 'รายงานและ Dashboard อัปเดตตลอดเวลา' : 'Always-updated reports and dashboards.', 'href' => '#'],
+                    ['icon' => asset_url('images/ERP_4.svg'), 'title' => getCurrentLang() === 'th' ? 'รองรับการเติบโต ของธุรกิจ' : 'Supports Business Growth', 'desc' => getCurrentLang() === 'th' ? 'ขยายระบบได้ตามความต้องการ พร้อมเติบโตในอนาคต' : 'Scalable system ready to grow with your business in the future.', 'href' => '#'],
                 ];
                 $lastIdx = count($serviceCards) - 1;
                 foreach ($serviceCards as $i => $card):
@@ -426,10 +429,10 @@ $erpPortfolios = $mockErpPortfolios;
                             <div class="h-14 w-14 mx-auto mb-5 flex items-center justify-center transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:-translate-y-2 group-hover:scale-110">
                                 <img src="<?= e($card['icon']) ?>" alt="<?= e($card['title']) ?>" class="h-full w-full object-contain">
                             </div>
-                            <h2 class="text-[#043B94] font-bold text-[15px] xl:text-[16px] text-center mb-3 whitespace-normal tracking-tight transition-colors duration-300 group-hover:text-blue-600">
+                            <h2 class="text-[#043B94] font-bold text-base md:text-lg xl:text-xl text-center mb-3 whitespace-normal tracking-tight transition-colors duration-300 group-hover:text-blue-600">
                                 <?= e($card['title']) ?>
                             </h2>
-                            <p class="text-gray-500 text-xs xl:text-sm leading-relaxed mb-6 text-left transition-colors duration-300 group-hover:text-gray-600">
+                            <p class="text-gray-500 text-sm md:text-base leading-relaxed mb-6 text-left transition-colors duration-300 group-hover:text-gray-600">
                                 <?= e($card['desc']) ?>
                             </p>
                         </div>

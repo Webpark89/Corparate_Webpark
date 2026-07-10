@@ -461,6 +461,13 @@ class HomeController
         ]));
     }
 
+    public function articleDetailMockup(): void
+    {
+        $this->view('pages/article-detail-mockup.php', array_merge($this->sharedData('article', 'Article Detail Mockup'), [
+            'currentPage' => 'article'
+        ]));
+    }
+
     public function portfolio(): void
     {
         // If `id` query param exists, show single portfolio detail

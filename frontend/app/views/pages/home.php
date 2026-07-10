@@ -186,10 +186,10 @@ $mockArticles = [
             <div class="flex-[4] grid grid-cols-2 lg:grid-cols-4 w-full bg-white rounded-[2rem] lg:rounded-none shadow-sm lg:shadow-none border border-gray-100 lg:border-none overflow-hidden">
                 <?php
                 $serviceCards = [
-                    ['icon' => 'icon-3.png', 'title' => 'ERP / ERM',        'desc' => t('common.solution_org_control'), 'href' => route_url('/erp')],
-                    ['icon' => 'icon-2.png', 'title' => 'Digital Platform', 'desc' => t('common.solution_digital_platform'),              'href' => '#'],
-                    ['icon' => 'icon-4.png', 'title' => 'Online Marketing', 'desc' => t('common.solution_online_marketing'),   'href' => '#'],
-                    ['icon' => 'icon-1.png', 'title' => 'Creative / Design','desc' => t('common.solution_brand_design'),    'href' => '#'],
+                    ['icon' => 'icon-3.png', 'title' => getCurrentLang() === 'th' ? 'ระบบ ERP / ERM' : 'ERP / ERM',        'desc' => t('common.solution_org_control'), 'href' => route_url('/erp')],
+                    ['icon' => 'icon-2.png', 'title' => getCurrentLang() === 'th' ? 'แพลตฟอร์มดิจิทัล' : 'Digital Platform', 'desc' => t('common.solution_digital_platform'),              'href' => '#'],
+                    ['icon' => 'icon-4.png', 'title' => getCurrentLang() === 'th' ? 'การตลาดออนไลน์' : 'Online Marketing', 'desc' => t('common.solution_online_marketing'),   'href' => '#'],
+                    ['icon' => 'icon-1.png', 'title' => getCurrentLang() === 'th' ? 'ออกแบบสร้างสรรค์' : 'Creative / Design','desc' => t('common.solution_brand_design'),    'href' => '#'],
                 ];
                 foreach ($serviceCards as $i => $card):
                     $borderClass = '';
@@ -206,10 +206,10 @@ $mockArticles = [
                         <div class="h-14 w-14 mx-auto mb-5 flex items-center justify-center transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:-translate-y-2 group-hover:scale-110">
                             <img src="<?= e(asset_url('images/' . $card['icon'])) ?>" alt="<?= e($card['title']) ?>" class="h-full w-full object-contain">
                         </div>
-                        <h2 class="text-[#043B94] font-bold text-[15px] xl:text-[16px] text-center mb-3 whitespace-normal lg:whitespace-nowrap tracking-tight transition-colors duration-300 group-hover:text-blue-600">
+                        <h2 class="text-[#043B94] font-bold text-base md:text-lg xl:text-xl text-center mb-3 whitespace-normal lg:whitespace-nowrap tracking-tight transition-colors duration-300 group-hover:text-blue-600">
                             <?= e($card['title']) ?>
                         </h2>
-                        <p class="text-gray-500 text-xs xl:text-sm leading-relaxed mb-6 text-left transition-colors duration-300 group-hover:text-gray-600">
+                        <p class="text-gray-500 text-sm md:text-base leading-relaxed mb-6 text-left transition-colors duration-300 group-hover:text-gray-600">
                             <?= e($card['desc']) ?>
                         </p>
                     </div>

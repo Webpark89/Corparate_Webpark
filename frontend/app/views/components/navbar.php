@@ -76,7 +76,16 @@ $currentLang = getCurrentLang();
 
     <!-- Mobile Menu -->
     <div id="mobileMenu" class="hidden border-t border-slate-200 bg-white px-4 py-4 lg:hidden">
-        <div class="flex flex-col gap-2">
+        <div class="flex flex-col w-full gap-2">
+            <!-- Mobile Language Switcher -->
+            <div class="w-full flex justify-end">
+                <div class="flex items-center gap-2 mb-2 pr-1 text-base font-bold text-slate-800 transition-colors">
+                    <a href="<?= e(current_url_with_lang('th')) ?>" class="<?= $currentLang === 'en' ? 'opacity-40 hover:text-primary' : 'text-primary' ?>">TH</a>
+                    <span class="opacity-40">|</span>
+                    <a href="<?= e(current_url_with_lang('en')) ?>" class="<?= $currentLang === 'th' ? 'opacity-40 hover:text-primary' : 'text-primary' ?>">EN</a>
+                </div>
+            </div>
+
             <?php foreach ($navItems as $item): ?>
                 <a href="<?= e(route_url($item['path'])) ?>"
                    class="rounded-xl px-4 py-3 transition hover:bg-slate-50 <?= $currentPage === $item['page'] ? 'bg-blue-50 text-primary font-semibold' : 'text-slate-700' ?>">
@@ -84,16 +93,10 @@ $currentLang = getCurrentLang();
                 </a>
             <?php endforeach; ?>
 
-            <!-- Mobile Language Switcher -->
-            <div class="flex items-center gap-1 mt-2 text-sm font-semibold text-slate-700 transition-colors">
-                <a href="<?= e(current_url_with_lang('th')) ?>" class="<?= $currentLang === 'en' ? 'opacity-40 hover:text-primary' : 'text-primary' ?>">TH</a>
-                <span class="opacity-40">|</span>
-                <a href="<?= e(current_url_with_lang('en')) ?>" class="<?= $currentLang === 'th' ? 'opacity-40 hover:text-primary' : 'text-primary' ?>">EN</a>
-            </div>
 
             <!-- CTA Button -->
             <a href="<?= e(route_url('/contact')) ?>"
-               class="inline-flex mt-2 items-center justify-center px-6 py-2.5 bg-primary text-white text-sm font-semibold rounded-full shadow-md transition hover:bg-blue-700 hover:-translate-y-0.5">
+               class="inline-flex self-start mt-2 items-center justify-center px-6 py-2.5 bg-primary text-white text-sm font-semibold rounded-full shadow-md transition hover:bg-blue-700 hover:-translate-y-0.5">
                <?= e(t('common.nav_cta_advice')) ?>
             </a>
         </div>

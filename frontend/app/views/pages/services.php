@@ -252,9 +252,9 @@ $services = $mockServices;
         <!-- Mobile Background Image (Only covers this Hero container) -->
         <div class="absolute inset-0 z-0 overflow-hidden lg:hidden rounded-2xl">
             <img src="<?= e($heroImage) ?>" alt="WEBPARK Solutions Background" 
-                class="w-full h-full object-cover object-[75%_center] opacity-100 mix-blend-screen">
-            <div class="absolute inset-0 bg-gradient-to-b from-white/90 via-white/70 to-white/40"></div>
-            <div class="absolute inset-x-0 bottom-0 h-[30%] bg-gradient-to-t from-white to-transparent"></div>
+                class="w-full h-full object-cover object-[85%_center] opacity-100 mix-blend-screen">
+            <div class="absolute inset-0 bg-gradient-to-r from-white/95 via-white/85 to-white/40"></div>
+            <div class="absolute inset-x-0 bottom-0 h-[40%] bg-gradient-to-t from-white via-white/60 to-transparent"></div>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-12 lg:gap-20 items-center relative z-10">
@@ -288,8 +288,12 @@ $services = $mockServices;
                     </span>
                 </h1>
 
-                <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-[15px] sm:text-base md:text-lg leading-[1.65] max-w-lg mb-10 font-medium tracking-normal">
-                    <?= getCurrentLang() === 'th' ? 'มากกว่า 20 ปี ที่เราสร้างสรรค์โซลูชันดิจิทัลครบวงจร ผสานเทคโนโลยี ความเชี่ยวชาญ และความเข้าใจธุรกิจ เพื่อเพิ่มประสิทธิภาพ สร้างการเติบโต และยกระดับองค์กรสู่อนาคตอย่างยั่งยืน' : 'Over 20 years of creating comprehensive digital solutions. We combine technology, expertise, and business understanding to help organizations increase efficiency and elevate into the future.' ?>
+                <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-base sm:text-[17px] md:text-lg leading-[1.7] max-w-lg mb-10 font-medium tracking-normal">
+                    <?php if (getCurrentLang() === 'th'): ?>
+                        มากกว่า 20 ปี ที่เราสร้างสรรค์โซลูชันดิจิทัลครบวงจร<br class="block sm:hidden"> ผสานเทคโนโลยี ความเชี่ยวชาญ และความเข้าใจธุรกิจ<br class="block sm:hidden"> เพื่อเพิ่มประสิทธิภาพ สร้างการเติบโต<br class="block sm:hidden"> และยกระดับองค์กรสู่อนาคตอย่างยั่งยืน
+                    <?php else: ?>
+                        Over 20 years of creating comprehensive digital solutions. We combine technology, expertise, and business understanding to help organizations increase efficiency and elevate into the future.
+                    <?php endif; ?>
                 </p>
                 <div class="animate-entrance-up delay-400 flex flex-col sm:flex-row items-start gap-4">
                     <a href="<?= e(route_url('/contact')) ?>" class="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-primary text-white text-sm font-semibold rounded-full hover:bg-blue-700 transition-all shadow-md hover:-translate-y-0.5">
@@ -456,30 +460,30 @@ $services = $mockServices;
             </p>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 max-w-5xl mx-auto">
             <?php
             $approachSteps = [
                 [
                     'number' => '01',
-                    'icon'   => asset_url('images/icon-1.png'),
+                    'icon'   => asset_url('images/think_1.svg'),
                     'title'  => getCurrentLang() === 'th' ? 'เข้าใจธุรกิจของคุณ' : 'Understand Your Business',
                     'desc'   => getCurrentLang() === 'th' ? 'ศึกษาความต้องการ วิเคราะห์ปัญหา และกำหนดแนวทางที่เหมาะสมกับธุรกิจของท่านอย่างแท้จริง' : 'Study requirements, analyze problems, and determine the approach that truly suits your business.',
                 ],
                 [
                     'number' => '02',
-                    'icon'   => asset_url('images/icon-2.png'),
+                    'icon'   => asset_url('images/think_2.svg'),
                     'title'  => getCurrentLang() === 'th' ? 'ออกแบบให้ใช้งานได้จริง' : 'Design for Practicality',
                     'desc'   => getCurrentLang() === 'th' ? 'ออกแบบประสบการณ์ใช้งานที่เน้นความง่าย และประสิทธิภาพ ตอบโจทย์ผู้ใช้งานทุกระดับ' : 'Design user experiences focusing on simplicity and efficiency, meeting the needs of users at all levels.',
                 ],
                 [
                     'number' => '03',
-                    'icon'   => asset_url('images/icon-3.png'),
+                    'icon'   => asset_url('images/think_3.svg'),
                     'title'  => getCurrentLang() === 'th' ? 'ดูแลอย่างต่อเนื่อง' : 'Continuous Care',
                     'desc'   => getCurrentLang() === 'th' ? 'ให้บริการหลังการขาย พร้อมทีมซัพพอร์ต และอัปเดตระบบอย่างสม่ำเสมอ' : 'Provide after-sales service with a support team and regular system updates.',
                 ],
                 [
                     'number' => '04',
-                    'icon'   => asset_url('images/icon-4.png'),
+                    'icon'   => asset_url('images/think_4.svg'),
                     'title'  => getCurrentLang() === 'th' ? 'รองรับการเติบโต' : 'Support Growth',
                     'desc'   => getCurrentLang() === 'th' ? 'พัฒนาระบบที่ยืดหยุ่น สามารถขยายตัว และปรับตามธุรกิจที่เติบโตในอนาคต' : 'Develop flexible systems capable of scaling and adapting as the business grows in the future.',
                 ],
@@ -487,20 +491,20 @@ $services = $mockServices;
 
             foreach ($approachSteps as $step):
             ?>
-            <div class="gsap-approach-step flex flex-col items-start rounded-2xl border border-slate-100 bg-white p-6 transition-all duration-300 opacity-0 translate-y-10"
-                style="box-shadow: 0 4px 20px 0 rgba(4,59,148,0.05);">
+            <div class="gsap-approach-step flex flex-row items-center md:items-start gap-5 md:gap-6 rounded-3xl border border-blue-50/50 bg-white p-6 md:p-8 transition-all duration-300 opacity-0 translate-y-10"
+                style="box-shadow: 0 8px 30px -10px rgba(4,59,148,0.08);">
 
-                <div class="w-14 h-14 shrink-0 rounded-xl bg-blue-50/50 flex items-center justify-center mb-4">
+                <div class="w-16 h-16 md:w-20 md:h-20 shrink-0 flex items-center justify-center md:pt-1">
                     <img src="<?= e($step['icon']) ?>"
                          alt="<?= e($step['title']) ?>"
-                         class="w-8 h-8 object-contain"
+                         class="w-14 h-14 md:w-16 md:h-16 object-contain drop-shadow-sm"
                          onerror="this.onerror=null;this.style.display='none'">
                 </div>
 
-                <div class="flex flex-col gap-1.5">
-                    <span class="text-xl font-extrabold" style="color: #043B94;"><?= e($step['number']) ?></span>
-                    <h3 class="text-base font-extrabold" style="color: #022862;"><?= e($step['title']) ?></h3>
-                    <p class="text-slate-500 text-xs md:text-sm leading-relaxed"><?= e($step['desc']) ?></p>
+                <div class="flex flex-col gap-1 md:gap-1.5 md:pt-1">
+                    <span class="text-2xl md:text-3xl font-extrabold" style="color: #043B94;"><?= e($step['number']) ?></span>
+                    <h3 class="text-xl md:text-2xl font-extrabold mb-1" style="color: #022862;"><?= e($step['title']) ?></h3>
+                    <p class="text-slate-600 text-base md:text-lg leading-[1.7]"><?= e($step['desc']) ?></p>
                 </div>
 
             </div>
