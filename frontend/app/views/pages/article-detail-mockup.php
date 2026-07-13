@@ -56,21 +56,31 @@ declare(strict_types=1);
 
 <section class="relative overflow-hidden font-sans bg-[#F4F7FB] pt-12 pb-6 lg:pt-20 lg:pb-8">
     <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
-        <div class="flex flex-col gap-8 items-start max-w-4xl mx-auto">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             
-            <!-- Top Column: Image -->
-            <div class="animate-fade-up delay-100 relative w-full rounded-[2rem] overflow-hidden shadow-2xl">
-                <img src="<?= e(asset_url('images/erp-system.png')) ?>" alt="ERP System Illustration" 
-                    class="w-full h-[300px] sm:h-[400px] lg:h-[500px] object-cover hover:scale-105 transition-transform duration-700" onerror="this.src='<?= e(asset_url('images/story.png')) ?>'">
-            </div>
-
-            <!-- Bottom Column: Text & Meta -->
-            <div class="w-full mt-4">
+            <!-- Left Column: Text & Meta -->
+            <div class="max-w-xl">
+                <nav aria-label="Breadcrumb" class="animate-fade-up delay-100 mb-8">
+                    <ol class="inline-flex flex-wrap items-center text-sm md:text-base font-medium text-slate-400">
+                        <li>
+                            <a href="<?= e(route_url('/')) ?>" class="hover:text-primary transition-colors duration-200">หน้าแรก</a>
+                        </li>
+                        <li><span class="mx-4">/</span></li>
+                        <li>
+                            <a href="<?= e(route_url('/article')) ?>" class="hover:text-primary transition-colors duration-200">บทความ</a>
+                        </li>
+                        <li><span class="mx-4">/</span></li>
+                        <li aria-current="page">
+                            <span class="text-slate-400">ERP System</span>
+                        </li>
+                    </ol>
+                </nav>
+                
                 <h1 class="animate-fade-up delay-200 leading-snug mb-6 tracking-tight">
-                    <span class="block text-3xl md:text-4xl lg:text-[44px] font-bold text-slate-600 mb-2">
+                    <span class="block text-3xl md:text-4xl lg:text-[44px] font-bold text-slate-500 mb-2">
                         ระบบ ERP คืออะไร?
                     </span>
-                    <span class="block text-3xl md:text-4xl lg:text-[44px] font-bold text-[#0663F6]">
+                    <span class="block text-3xl md:text-4xl lg:text-[44px] font-bold text-[#022862]">
                         สรุปครบ จบในที่เดียว!
                     </span>
                 </h1>
@@ -86,9 +96,15 @@ declare(strict_types=1);
                     </span>
                 </div>
                 
-                <p class="animate-fade-up delay-400 mt-6 text-[#022862] text-lg md:text-xl leading-relaxed max-w-4xl mb-6 font-medium">
+                <p class="animate-fade-up delay-400 mt-6 text-[#022862] text-lg md:text-xl leading-relaxed max-w-lg mb-10 font-medium">
                     ทำความเข้าใจระบบ ERP แบบครบทุกมิติ ตั้งแต่ความหมาย ประโยชน์ ฟังก์ชันหลัก ประเภทของ ERP ความแตกต่างระหว่าง ERP กับ CRM และแนวทางการเลือกใช้ให้เหมาะกับธุรกิจของคุณ
                 </p>
+            </div>
+            
+            <!-- Right Column: Image -->
+            <div class="animate-fade-up delay-300 relative w-full rounded-[2rem] overflow-hidden shadow-2xl">
+                <img src="<?= e(asset_url('images/erp-system.png')) ?>" alt="ERP System Illustration" 
+                    class="w-full h-auto object-cover aspect-[4/3] hover:scale-105 transition-transform duration-700" onerror="this.src='<?= e(asset_url('images/story.png')) ?>'">
             </div>
             
         </div>
@@ -255,11 +271,11 @@ declare(strict_types=1);
                     
                     <h2 id="toc-5" class="!text-[#0663F6] !mt-16">ทำความรู้จักกับระบบ ERP ทั้ง 2 ประเภท</h2>
                     
-                    <h3 class="!text-[#002B7F] !mt-8 !text-[17px] !font-bold">1. ERP แบบ On-Premise</h3>
-                    <p class="!mt-2 !text-slate-600">ติดตั้งบนเซิร์ฟเวอร์ภายในองค์กร มีความยืดหยุ่นสูง เหมาะกับองค์กรที่ต้องการควบคุมระบบและข้อมูลด้วยตนเอง</p>
+                    <h3 class="!text-[#022862] !mt-4 !text-[16px] !font-bold !mb-0">1. ERP แบบ On-Premise</h3>
+                    <p class="!mt-0 !text-[15px] !text-slate-600">ติดตั้งบนเซิร์ฟเวอร์ภายในองค์กร มีความยืดหยุ่นสูง เหมาะกับองค์กรที่ต้องการควบคุมระบบและข้อมูลด้วยตนเอง</p>
                     
-                    <h3 class="!text-[#002B7F] !mt-6 !text-[17px] !font-bold">2. ERP แบบ Cloud</h3>
-                    <p class="!mt-2 !text-slate-600">ให้บริการบนคลาวด์ เข้าถึงได้ทุกที่ทุกเวลา ลดค่าบำรุงรักษา เหมาะกับธุรกิจที่ต้องการความคล่องตัวและรวดเร็ว</p>
+                    <h3 class="!text-[#022862] !mt-4 !text-[16px] !font-bold !mb-0">2. ERP แบบ Cloud</h3>
+                    <p class="!mt-0 !text-[15px] !text-slate-600">ให้บริการบนคลาวด์ เข้าถึงได้ทุกที่ทุกเวลา ลดค่าบำรุงรักษา เหมาะกับธุรกิจที่ต้องการความคล่องตัวและรวดเร็ว</p>
 
                     <h2 id="toc-6" class="!text-[#0663F6] !mt-16">ใช้ ERP หรือ CRM ดีกว่ากัน?</h2>
                     <p class="!mt-4 !text-slate-600">ERP มุ่งเน้นการบริหารจัดการภายในองค์กรแบบครบวงจร ขณะที่ CRM เน้นการบริหารลูกค้าสัมพันธ์และการขาย ธุรกิจส่วนใหญ่มักเลือกใช้ร่วมกัน เพื่อให้ได้ทั้งประสิทธิภาพภายในและประสบการณ์ที่ดีกับลูกค้า</p>
