@@ -80,6 +80,9 @@ $mockArticles = [
         .delay-300 { animation-delay: 300ms; }
         .delay-400 { animation-delay: 400ms; }
         .delay-500 { animation-delay: 500ms; }
+        /* Custom responsive styles to bypass missing Tailwind build step */
+        .mobile-hero-woman { width: 65%; bottom: -0px; right: 0%; }
+        @media (min-width: 768px) { .mobile-hero-woman { width: auto; bottom: 0; right: 0; } }
     </style>
 
     <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 pt-10 pb-16 md:pt-12 md:pb-24 lg:pt-28 lg:pb-32 relative z-10">
@@ -128,7 +131,7 @@ $mockArticles = [
             <div class="hidden lg:block lg:col-start-2"></div>
         </div>
 
-        <div class="animate-entrance-left delay-500 absolute right-0 md:right-4 lg:right-8 z-0 pointer-events-none max-w-full transform md:-translate-y-2 flex justify-end mobile-hero-woman">
+        <div class="animate-entrance-left delay-500 absolute top-20 lg:top-28 right-0 md:right-4 lg:right-8 z-0 pointer-events-none max-w-full transform md:-translate-y-2 flex justify-end mobile-hero-woman">
             <picture class="w-full md:w-auto flex justify-end">
                 <source media="(min-width: 768px)" srcset="<?= e(asset_url('images/HeroHome.svg')) ?>">
                 <img src="<?= e($heroImage) ?>" alt="WEBPARK Presenter" class="w-full md:w-auto object-contain object-right-bottom h-auto md:h-[400px] lg:h-[600px] opacity-95 md:opacity-100">
