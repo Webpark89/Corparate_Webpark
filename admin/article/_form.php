@@ -11,8 +11,39 @@ $status = isset($_POST['status']) && $_POST['status'] === 'published' ? 'publish
 $categories = db()->query('SELECT id, name FROM categories ORDER BY name')->fetchAll();
 $authors = db()->query('SELECT id, display_name FROM authors ORDER BY display_name')->fetchAll();
 
+$sections = [];
+if (!empty($data['content'])) {
+    $decoded = json_decode($data['content'], true);
+    if (is_array($decoded)) {
+        $sections = $decoded;
+    } else {
+        $sections = [
+            ['lang' => 'th', 'topic' => 'เนื้อหาเดิม', 'body' => $data['content']]
+        ];
+    }
+}
+
 $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition';
 ?>
+
+<style>
+    /* Make CKEditor sit flush inside our own rounded/bordered frame */
+    .editor-frame .ck.ck-toolbar {
+        border: none !important;
+        border-bottom: 1px solid #e2e8f0 !important;
+        border-radius: 0 !important;
+        background: #f8fafc !important;
+    }
+    .editor-frame .ck.ck-content {
+        border: none !important;
+        border-radius: 0 !important;
+        min-height: 150px;
+    }
+    .editor-frame .ck.ck-content:focus,
+    .editor-frame .ck.ck-focused {
+        box-shadow: none !important;
+    }
+</style>
 
 <div class="mx-auto max-w-7xl px-4 py-6 lg:px-8">
 
@@ -84,7 +115,6 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
                             <div class="relative group border border-slate-200 rounded-xl bg-slate-50/50 p-3 hover:bg-slate-50 transition-colors">
                                 <input type="file"
                                     name="image_file"
-                                    <?php if ($action === 'create'): ?>required<?php endif; ?>
                                     class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 transition-all cursor-pointer">
                             </div>
                             <p class="text-[11px] text-slate-400 px-1">
@@ -209,16 +239,60 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
                         </div>
                     </div>
 
-                    <div class="space-y-2">
+                    <div class="space-y-4">
+                        <!-- Dummy fields to keep WEBPARKSeoEditor happy without modifying shared assets -->
+                        <div id="mainEditor" class="hidden"></div>
+                        <textarea id="mainEditorData" name="dummy_content" class="hidden"></textarea>
+
                         <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider block">
-                            เนื้อหาหลักของบทความ <span class="text-red-500 ml-0.5">*</span>
+                            เนื้อหาหลักของบทความ (แบ่งแท็บตามภาษา)
                         </label>
-                        <div class="rounded-2xl border border-slate-200 overflow-hidden bg-slate-50/30 focus-within:border-blue-500 transition-all">
-                            <div id="mainEditor" class="min-h-[420px] p-4 bg-white text-slate-800">
-                                <?= $data['content'] ?? '' ?>
+
+                        <!-- Tab Headers -->
+                        <div class="inline-flex items-center gap-2">
+                            <button type="button" id="tab-btn-th" onclick="switchLanguageTab('th')"
+                                style="padding-left:1.25rem;padding-right:1.25rem;"
+                                class="py-2 text-sm font-semibold rounded-lg bg-blue-50 text-blue-600 border border-blue-200 hover:bg-blue-100 focus:outline-none transition-all">
+                                ภาษาไทย (0/5)
+                            </button>
+                            <button type="button" id="tab-btn-en" onclick="switchLanguageTab('en')"
+                                style="padding-left:1.25rem;padding-right:1.25rem;"
+                                class="py-2 text-sm font-semibold rounded-lg bg-transparent text-slate-500 border border-transparent hover:bg-slate-100 hover:text-slate-800 focus:outline-none transition-all">
+                                English (0/5)
+                            </button>
+                        </div>
+
+                        <!-- Tab Content: Thai (TH) -->
+                        <div id="tab-content-th" class="pt-5">
+                            <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 md:p-5 space-y-5">
+                                <div id="th-sections-container" class="space-y-5">
+                                    <!-- Dynamic Thai sections will go here -->
+                                </div>
+                                <button type="button" id="add-btn-th" onclick="addSection('th')"
+                                    class="w-full inline-flex items-center justify-center gap-2 px-4 py-3 bg-white border border-dashed border-blue-300 text-blue-700 hover:bg-blue-50 hover:border-blue-400 rounded-xl text-sm font-semibold transition">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                                    </svg>
+                                    เพิ่มช่องเนื้อหาภาษาไทย
+                                </button>
                             </div>
                         </div>
-                        <textarea id="mainEditorData" name="content" hidden><?= e($data['content'] ?? '') ?></textarea>
+
+                        <!-- Tab Content: English (EN) -->
+                        <div id="tab-content-en" class="pt-5 hidden">
+                            <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 md:p-5 space-y-5">
+                                <div id="en-sections-container" class="space-y-5">
+                                    <!-- Dynamic English sections will go here -->
+                                </div>
+                                <button type="button" id="add-btn-en" onclick="addSection('en')"
+                                    class="w-full inline-flex items-center justify-center gap-2 px-4 py-3 bg-white border border-dashed border-blue-300 text-blue-700 hover:bg-blue-50 hover:border-blue-400 rounded-xl text-sm font-semibold transition">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                                    </svg>
+                                    เพิ่มช่องเนื้อหาภาษาอังกฤษ
+                                </button>
+                            </div>
+                        </div>
                     </div>
 
                 </div>
@@ -267,6 +341,184 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
         titleCounterSelector: '#titleCount',
         descCounterSelector: '#descCount',
         placeholder: 'เริ่มต้นเขียนเนื้อหาที่น่าสนใจของคุณตรงนี้ได้เลย...'
+    });
+</script>
+
+<script>
+    const preloadedSections = <?= json_encode($sections, JSON_UNESCAPED_UNICODE) ?>;
+    const editors = {};
+    let thCount = 0;
+    let enCount = 0;
+
+    function escapeHtml(string) {
+        return String(string)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
+    }
+
+    function createSectionElement(lang, index, topicVal = '', bodyVal = '') {
+        const container = document.getElementById(lang + '-sections-container');
+        const id = `editor-${lang}-${index}`;
+        
+        const div = document.createElement('div');
+        div.className = 'section-item bg-white border border-slate-300 rounded-2xl shadow-sm overflow-hidden';
+        div.dataset.lang = lang;
+        div.dataset.index = index;
+        
+        div.innerHTML = `
+            <div class="flex items-center justify-between gap-3 px-6 py-4 bg-slate-50 border-b border-slate-200">
+                <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider">หัวข้อย่อยบทความ (${lang.toUpperCase()}) <span class="text-red-500">*</span></label>
+                <button type="button" class="shrink-0 text-xs font-semibold text-rose-600 bg-rose-50 border border-rose-200 px-3 py-1.5 rounded-lg transition" style="transition:background-color .15s;" onmouseover="this.style.backgroundColor='#fecdd3'" onmouseout="this.style.backgroundColor='#fff1f2'" onclick="removeSection(this, '${lang}')">ลบช่องนี้</button>
+            </div>
+            <div class="p-6 space-y-4">
+                <div>
+                    <input type="text" name="sections[${lang}][${index}][topic]" value="${escapeHtml(topicVal)}" class="w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm text-slate-900 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition" required>
+                </div>
+                <div>
+                    <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider block mb-1.5">เนื้อหาหลักของบทความ (${lang.toUpperCase()}) <span class="text-red-500">*</span></label>
+                    <div class="editor-frame rounded-xl border border-slate-300 overflow-hidden">
+                        <textarea id="${id}" name="sections[${lang}][${index}][body]" class="w-full min-h-[150px]">${escapeHtml(bodyVal)}</textarea>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        container.appendChild(div);
+        
+        ClassicEditor.create(document.querySelector(`#${id}`), {
+            licenseKey: 'GPL',
+            toolbar: {
+                items: [ 'heading', '|', 'bold', 'italic', 'link', '|', 'bulletedList', 'numberedList', 'blockQuote', '|', 'undo', 'redo' ],
+                shouldNotGroupWhenFull: true
+            }
+        }).then(editor => {
+            editors[id] = editor;
+        }).catch(error => {
+            console.error('Error initializing editor:', error);
+        });
+
+        if (lang === 'th') {
+            thCount++;
+        } else {
+            enCount++;
+        }
+        updateCounterDisplay(lang);
+    }
+
+    function addSection(lang) {
+        const count = lang === 'th' ? thCount : enCount;
+        if (lang === 'th' && count >= 5) {
+            alert('เพิ่มหัวข้อภาษาไทยได้สูงสุด 5 ช่อง');
+            return;
+        }
+        if (lang === 'en' && count >= 5) {
+            alert('เพิ่มหัวข้อภาษาอังกฤษได้สูงสุด 5 ช่อง');
+            return;
+        }
+        createSectionElement(lang, count, '', '');
+    }
+
+    function removeSection(button, lang) {
+        const item = button.closest('.section-item');
+        const textarea = item.querySelector('textarea');
+        if (textarea && editors[textarea.id]) {
+            editors[textarea.id].destroy().then(() => {
+                delete editors[textarea.id];
+            });
+        }
+        item.remove();
+        reindexSections(lang);
+    }
+
+    function reindexSections(lang) {
+        const container = document.getElementById(lang + '-sections-container');
+        const items = container.querySelectorAll('.section-item');
+        let count = 0;
+        
+        items.forEach((item, index) => {
+            item.dataset.index = index;
+            const input = item.querySelector('input[type="text"]');
+            if (input) {
+                input.name = `sections[${lang}][${index}][topic]`;
+            }
+            const textarea = item.querySelector('textarea');
+            if (textarea) {
+                textarea.name = `sections[${lang}][${index}][body]`;
+            }
+            count++;
+        });
+        
+        if (lang === 'th') {
+            thCount = count;
+        } else {
+            enCount = count;
+        }
+        updateCounterDisplay(lang);
+    }
+
+    function updateCounterDisplay(lang) {
+        const count = lang === 'th' ? thCount : enCount;
+        const btn = document.getElementById(`tab-btn-${lang}`);
+        if (btn) {
+            const label = lang === 'th' ? 'ภาษาไทย' : 'English';
+            btn.textContent = `${label} (${count}/5)`;
+        }
+        
+        const addBtn = document.getElementById(`add-btn-${lang}`);
+        if (addBtn) {
+            if (count >= 5) {
+                addBtn.disabled = true;
+                addBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                addBtn.classList.remove('hover:bg-blue-100');
+            } else {
+                addBtn.disabled = false;
+                addBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                addBtn.classList.add('hover:bg-blue-100');
+            }
+        }
+    }
+
+    function switchLanguageTab(lang) {
+        const tabs = ['th', 'en'];
+        tabs.forEach(t => {
+            const btn = document.getElementById(`tab-btn-${t}`);
+            const content = document.getElementById(`tab-content-${t}`);
+            
+            if (t === lang) {
+                btn.classList.add('bg-blue-50', 'text-blue-600', 'border-blue-200', 'hover:bg-blue-100');
+                btn.classList.remove('bg-transparent', 'text-slate-500', 'border-transparent', 'hover:bg-slate-100', 'hover:text-slate-800');
+                content.classList.remove('hidden');
+            } else {
+                btn.classList.remove('bg-blue-50', 'text-blue-600', 'border-blue-200', 'hover:bg-blue-100');
+                btn.classList.add('bg-transparent', 'text-slate-500', 'border-transparent', 'hover:bg-slate-100', 'hover:text-slate-800');
+                content.classList.add('hidden');
+            }
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const thSections = preloadedSections.filter(s => (s.lang || 'th') === 'th');
+        const enSections = preloadedSections.filter(s => s.lang === 'en');
+        
+        thSections.forEach((s, idx) => createSectionElement('th', idx, s.topic || '', s.body || ''));
+        enSections.forEach((s, idx) => createSectionElement('en', idx, s.topic || '', s.body || ''));
+        
+        const form = document.querySelector('#unifiedForm');
+        if (form) {
+            form.addEventListener('submit', () => {
+                for (const id in editors) {
+                    if (editors.hasOwnProperty(id)) {
+                        const textarea = document.getElementById(id);
+                        if (textarea) {
+                            textarea.value = editors[id].getData();
+                        }
+                    }
+                }
+            });
+        }
     });
 </script>
 

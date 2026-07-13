@@ -35,12 +35,13 @@ class HomeController
 
         try {
             $rows = $articleModel->getPublished();
+            $lang = getCurrentLang();
 
             // Extract 3 latest articles
             $latestRows = array_slice($rows, 0, 3);
             foreach ($latestRows as $row) {
                 $content = trim((string) ($row['content'] ?? ''));
-                $summary = $content === '' ? '' : (mb_strimwidth(strip_tags($content), 0, 140, '...'));
+                $summary = $content === '' ? '' : (mb_strimwidth(get_article_summary_text($content, $lang), 0, 140, '...'));
 
                 $latestArticles[] = [
                     'id' => (int) ($row['id'] ?? 0),
@@ -58,7 +59,7 @@ class HomeController
                 }
 
                 $content = trim((string) ($row['content'] ?? ''));
-                $summary = $content === '' ? '' : (mb_strimwidth(strip_tags($content), 0, 140, '...'));
+                $summary = $content === '' ? '' : (mb_strimwidth(get_article_summary_text($content, $lang), 0, 140, '...'));
 
                 $insights[$cat][] = [
                     'id' => (int) ($row['id'] ?? 0),
@@ -308,7 +309,8 @@ class HomeController
 
             $descText = trim((string) ($row['meta_description'] ?? ''));
             if ($descText === '') {
-                $descText = trim(strip_tags((string) ($row['content'] ?? '')));
+                $lang = getCurrentLang();
+                $descText = get_article_summary_text((string) ($row['content'] ?? ''), $lang);
                 if ($descText !== '') {
                     $descText = mb_strimwidth($descText, 0, 180, '...');
                 }
@@ -361,13 +363,15 @@ class HomeController
 
         try {
             $rows = $articleModel->getPublished();
-            $articles = array_map(static function (array $row): array {
+            $lang = getCurrentLang();
+            $articles = array_map(static function (array $row) use ($lang): array {
                 $description = trim((string) ($row['description'] ?? $row['meta_description'] ?? ''));
                 $content = trim((string) ($row['content'] ?? ''));
-                $summarySource = $description !== '' ? $description : $content;
-                $summary = $summarySource === ''
-                    ? ''
-                    : mb_strimwidth(strip_tags($summarySource), 0, 140, '...');
+                if ($description !== '') {
+                    $summary = mb_strimwidth(strip_tags($description), 0, 140, '...');
+                } else {
+                    $summary = mb_strimwidth(get_article_summary_text($content, $lang), 0, 140, '...');
+                }
 
                 return [
                     'id' => (int) ($row['id'] ?? 0),

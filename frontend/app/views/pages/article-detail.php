@@ -22,6 +22,30 @@ $months = [
 $title = normalize_text($article['title'] ?? 'ระบบ ERP คืออะไร? สรุปครบ จบที่เดียว!');
 $author = normalize_text($article['author'] ?? 'Webpark Team');
 $content = (string) ($article['content'] ?? $article['summary'] ?? '');
+
+$decodedSections = json_decode($content, true);
+if (is_array($decodedSections)) {
+    $currentLang = getCurrentLang();
+    $filteredSections = array_filter($decodedSections, function($sec) use ($currentLang) {
+        return ($sec['lang'] ?? 'th') === $currentLang;
+    });
+    if (empty($filteredSections)) {
+        $filteredSections = array_filter($decodedSections, function($sec) {
+            return ($sec['lang'] ?? 'th') === 'th';
+        });
+    }
+    $htmlParts = [];
+    foreach ($filteredSections as $sec) {
+        if (!empty($sec['topic'])) {
+            $htmlParts[] = '<h2>' . e($sec['topic']) . '</h2>';
+        }
+        if (!empty($sec['body'])) {
+            $htmlParts[] = '<div>' . $sec['body'] . '</div>';
+        }
+    }
+    $content = implode("\n", $htmlParts);
+}
+
 $summary = normalize_text($article['summary'] ?? '');
 $category = normalize_text($article['category'] ?? 'ERP System');
 $relatedArticles = $relatedArticles ?? [];

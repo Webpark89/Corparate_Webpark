@@ -15,6 +15,26 @@ if ($metaTitle === '') {
     exit;
 }
 
+$sectionsInput = $_POST['sections'] ?? [];
+$finalSections = [];
+
+foreach (['th', 'en'] as $lang) {
+    if (isset($sectionsInput[$lang]) && is_array($sectionsInput[$lang])) {
+        foreach ($sectionsInput[$lang] as $item) {
+            $topic = trim($item['topic'] ?? '');
+            $body = isset($item['body']) ? sanitize_html($item['body']) : '';
+            if ($topic !== '' || $body !== '') {
+                $finalSections[] = [
+                    'lang' => $lang,
+                    'topic' => $topic,
+                    'body' => $body
+                ];
+            }
+        }
+    }
+}
+$serializedContent = json_encode($finalSections, JSON_UNESCAPED_UNICODE);
+
 $data = [
     'slug' => trim($_POST['slug'] ?? '') ?: slugify($metaTitle),
     'meta_title' => $metaTitle,
@@ -22,7 +42,7 @@ $data = [
     'meta_description' => trim($_POST['meta_description'] ?? ''),
     'category_id' => (int) ($_POST['category_id'] ?? 0),
     'cover_image_alt' => trim($_POST['cover_image_alt'] ?? $metaTitle),
-    'content' => sanitize_html($_POST['content'] ?? ''),
+    'content' => $serializedContent,
     'author_id' => (int) ($_POST['author_id'] ?? 0) ?: null,
     'status' => ($_POST['status'] ?? 'draft') === 'published' ? 'published' : 'draft',
 ];

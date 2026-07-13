@@ -65,6 +65,37 @@ function normalize_text(mixed $value): string
 }
 
 /**
+ * Extract clean plain text summary from article content (which can be HTML or JSON).
+ */
+function get_article_summary_text(string $content, string $lang = 'th'): string
+{
+    $clean = trim($content);
+    if ($clean === '') {
+        return '';
+    }
+
+    $decoded = json_decode($clean, true);
+    if (is_array($decoded)) {
+        $texts = [];
+        foreach ($decoded as $section) {
+            $secLang = $section['lang'] ?? 'th';
+            if ($secLang === $lang) {
+                if (!empty($section['topic'])) {
+                    $texts[] = $section['topic'];
+                }
+                if (!empty($section['body'])) {
+                    $texts[] = $section['body'];
+                }
+            }
+        }
+        $combined = implode(' ', $texts);
+        return normalize_text($combined);
+    }
+
+    return normalize_text($clean);
+}
+
+/**
  * Return the first non-empty normalized candidate, or the default.
  *
  * @param array<int, mixed> $candidates

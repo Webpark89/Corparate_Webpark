@@ -166,11 +166,14 @@ $categories = db()->query('SELECT id, name FROM categories ORDER BY name')->fetc
                                         class="bg-white px-3 py-1.5 text-[11px] font-semibold text-slate-600 transition hover:bg-slate-50">
                                         แก้ไข
                                     </a>
-                                    <button type="button"
-                                        onclick="if(confirm('ยืนยันการลบบทความนี้?')) window.location.href='delete.php?id=<?= (int) $row['id'] ?>'"
-                                        class="border-l border-slate-200 bg-white px-3 py-1.5 text-[11px] font-semibold text-rose-600 transition hover:bg-rose-50 cursor-pointer">
-                                        ลบ
-                                    </button>
+                                    <form action="delete.php" method="post" class="js-delete-form">
+                                        <input type="hidden" name="id" value="<?= (int) $row['id'] ?>">
+                                        <?= csrf_field() ?>
+                                        <button type="submit"
+                                            class="border-l border-slate-200 bg-white px-3 py-1.5 text-[11px] font-semibold text-rose-600 transition hover:bg-rose-50 cursor-pointer">
+                                            ลบ
+                                        </button>
+                                    </form>
                                 </div>
                             </td>
 
@@ -201,6 +204,15 @@ $categories = db()->query('SELECT id, name FROM categories ORDER BY name')->fetc
                     if (url) {
                         window.location.href = url;
                     }
+                }
+            });
+        });
+
+        const deleteForms = document.querySelectorAll('.js-delete-form');
+        deleteForms.forEach(form => {
+            form.addEventListener('submit', function(event) {
+                if (!confirm('ยืนยันการลบบทความนี้?')) {
+                    event.preventDefault();
                 }
             });
         });
