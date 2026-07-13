@@ -27,7 +27,8 @@ $form = $form ?? [];
     .delay-400 { animation-delay: 400ms; }
 </style>
 
-<section class="relative overflow-hidden font-sans bg-white border-none mx-4 mt-4 rounded-[2rem] md:mx-0 md:mt-0 md:rounded-none">
+<!-- นำขอบโค้งและ margin ออก เพื่อให้ชิดขอบจอด้านบนและด้านข้างแบบ Edge-to-Edge -->
+<section class="relative overflow-hidden font-sans bg-white border-none">
     <div class="absolute inset-0 z-0">
         <img src="<?= e(asset_url('images/bg-5.png')) ?>" alt="WEBPARK Solutions Background" class="w-full h-full object-cover object-center opacity-70 mix-blend-screen">
         <div class="absolute inset-0 bg-gradient-to-r from-white via-white/70 to-white/5"></div>
@@ -60,12 +61,12 @@ $form = $form ?? [];
                         line-height: 1.25;
                     }
                     .hero-desc-text {
-                        font-size: 15px;
+                        font-size: 17px;
                         line-height: 1.65;
                     }
                     @media (min-width: 768px) {
                         .hero-title-text { font-size: 3.5rem; line-height: 1.2; }
-                        .hero-desc-text { font-size: 18px; line-height: 1.7; }
+                        .hero-desc-text { font-size: 21px; line-height: 1.7; }
                     }
                     @media (min-width: 1024px) {
                         .hero-title-text { font-size: 4.5rem; line-height: 1.2; }
@@ -94,7 +95,7 @@ $form = $form ?? [];
                     $mobile_desc = "Let's talk about your project, system,<br>website, or ERP/ERM and digital<br>solutions for your business";
                 }
                 ?>
-                <p class="hero-desc-text animate-fade-up delay-300 mt-4 md:mt-6 max-w-[280px] sm:max-w-[360px] md:max-w-2xl mb-10 font-medium text-[#022862] drop-shadow-sm">
+                <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-lg md:text-xl leading-relaxed max-w-lg mb-10 font-medium">
                     <span class="block md:hidden leading-[1.75]">
                         <?= $mobile_desc ?>
                     </span>
@@ -164,7 +165,7 @@ $form = $form ?? [];
         </style>
         <div class="mobile-swap-container grid grid-cols-1 lg:grid-cols-12 gap-10 xl:gap-14 items-start">
             <div class="lg:col-span-6 bg-white border border-slate-100 shadow-[0_4px_30px_rgba(0,0,0,0.02)] rounded-[2.5rem] p-6 md:p-10 animate-fade-in-up flex flex-col align-with-right-cards">
-                <h2 class="text-xl md:text-2xl font-bold text-dark mb-6">
+                <h2 class="text-2xl md:text-3xl font-bold text-dark mb-6">
                     <?= e(t('contact.form_title')) ?>
                 </h2>
 
@@ -187,15 +188,15 @@ $form = $form ?? [];
                         <!-- Desktop Name Field (1 field) -->
                         <div id="contact_desktop-name-wrapper" class="hidden lg:block">
                             <input type="text" id="contact_name_desktop" name="name" placeholder="<?= e(t('common.form_label_fullname')) ?>" value="<?= e($form['name'] ?? '') ?>" required maxlength="100"
-                                class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-sm text-slate-900 outline-none transition-all duration-300 custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary focus:shadow-inner">
+                                class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-base text-slate-900 outline-none transition-all duration-300 custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary focus:shadow-inner">
                         </div>
 
                         <!-- Mobile Name Fields (2 fields) -->
                         <div id="contact_mobile-name-wrapper" class="grid grid-cols-1 gap-4 lg:hidden">
                             <input type="text" id="contact_name_mobile_first" name="firstname" placeholder="<?= e(getCurrentLang() === 'th' ? 'ชื่อ' : 'First Name') ?>" value="<?= e($form['firstname'] ?? '') ?>" required maxlength="50"
-                                class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-sm text-slate-900 outline-none transition-all duration-300 custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary focus:shadow-inner">
+                                class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-base text-slate-900 outline-none transition-all duration-300 custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary focus:shadow-inner">
                             <input type="text" id="contact_name_mobile_last" name="lastname" placeholder="<?= e(getCurrentLang() === 'th' ? 'นามสกุล' : 'Last Name') ?>" value="<?= e($form['lastname'] ?? '') ?>" required maxlength="50"
-                                class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-sm text-slate-900 outline-none transition-all duration-300 custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary focus:shadow-inner">
+                                class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-base text-slate-900 outline-none transition-all duration-300 custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary focus:shadow-inner">
                         </div>
 
                         <script>
@@ -221,20 +222,20 @@ $form = $form ?? [];
                         </script>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <input type="text" name="phone" placeholder="<?= e(t('common.form_label_phone')) ?>" value="<?= e($form['phone'] ?? '') ?>" required maxlength="40"
-                                class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-sm text-slate-900 outline-none transition-all duration-300 custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary focus:shadow-inner">
+                                class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-base text-slate-900 outline-none transition-all duration-300 custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary focus:shadow-inner">
 
                             <input type="email" name="email" placeholder="<?= e(t('common.form_label_email')) ?>" value="<?= e($form['email'] ?? '') ?>" required maxlength="255"
-                                class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-sm text-slate-900 outline-none transition-all duration-300 custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary focus:shadow-inner">
+                                class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-base text-slate-900 outline-none transition-all duration-300 custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary focus:shadow-inner">
                         </div>
 
                         <div>
                             <textarea name="message" placeholder="<?= e(t('common.form_label_details')) ?>" required maxlength="1000" rows="5"
-                                class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-sm text-slate-900 outline-none transition-all duration-300 custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary resize-none focus:shadow-inner"><?= e($form['message'] ?? '') ?></textarea>
+                                class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-base text-slate-900 outline-none transition-all duration-300 custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary resize-none focus:shadow-inner"><?= e($form['message'] ?? '') ?></textarea>
                         </div>
 
                         <div class="flex items-start gap-3 pt-2">
                             <input type="checkbox" id="privacy" name="privacy_agreed" required class="mt-1 w-4 h-4 rounded border-slate-300 text-primary focus:ring-primary cursor-pointer transition-all duration-200">
-                            <label for="privacy" class="text-xs md:text-[13px] leading-relaxed cursor-pointer select-none">
+                            <label for="privacy" class="text-sm md:text-base leading-relaxed cursor-pointer select-none">
                                 <span style="color: #022862;"><?= e(t('common.form_consent_prefix')) ?></span> <a href="#" style="color: #0663F6;" class="hover:underline transition-colors duration-200"><?= e(t('common.form_consent_privacy_policy')) ?></a> <span style="color: #0663F6;"><?= e(t('common.form_consent_terms_suffix')) ?></span>
                             </label>
                         </div>
@@ -244,7 +245,7 @@ $form = $form ?? [];
                         <?php endif; ?>
 
                         <div class="pt-2 mt-auto flex justify-center">
-                            <button type="submit" class="px-8 py-3.5 bg-primary hover:bg-blue-700 text-white font-bold text-sm rounded-full shadow-md shadow-blue-500/10 transition-all duration-300 cursor-pointer hover:shadow-lg hover:-translate-y-0.5 flex items-center justify-center gap-2">
+                            <button type="submit" class="px-8 py-3.5 bg-primary hover:bg-blue-700 text-white font-bold text-base rounded-full shadow-md shadow-blue-500/10 transition-all duration-300 cursor-pointer hover:shadow-lg hover:-translate-y-0.5 flex items-center justify-center gap-2">
                                 <?= e(t('contact.cta_send_message')) ?>
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />

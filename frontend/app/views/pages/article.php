@@ -37,15 +37,39 @@ $ctaImage = asset_url('images/bg-cta.jpg');
     .delay-200 { animation-delay: 200ms; }
     .delay-300 { animation-delay: 300ms; }
     .delay-400 { animation-delay: 400ms; }
+    /* บังคับตำแหน่งรูปภาพและ Overlay ด้วย CSS โดยตรง เพื่อเลี่ยงปัญหา Tailwind ไม่คอมไพล์ */
+    .hero-bg-img {
+        /* ปรับ object-position เป็น 85% เพื่อดึงโน้ตบุ๊กกลับเข้ามาในจอ และ 0% คือชิดขอบบน */
+        object-position: 85% 0% !important;
+    }
+    .hero-overlay-mobile {
+        /* เฉดสีขาวเฉพาะฝั่งซ้ายและด้านบนที่ตัวหนังสืออยู่ ปล่อยฝั่งขวาให้โปร่งใสเพื่อให้เห็นรูปภาพ */
+        background: linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.9) 45%, rgba(255, 255, 255, 0) 80%) !important;
+    }
+    .hero-overlay-gradient {
+        background: transparent !important; /* ยกเลิก gradient ซ้ำซ้อนบนมือถือ */
+    }
+    @media (min-width: 768px) {
+        .hero-bg-img {
+            object-position: 60% top !important;
+        }
+        .hero-overlay-mobile {
+            background: transparent !important;
+        }
+        .hero-overlay-gradient {
+            background: linear-gradient(to right, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.9) 60%, rgba(255, 255, 255, 0.1) 100%) !important;
+        }
+    }
 </style>
 
-<section class="relative overflow-hidden font-sans bg-white border-none mx-4 mt-4 rounded-[2rem] md:mx-0 md:mt-0 md:rounded-none">
+<!-- นำขอบโค้งและ margin ออก เพื่อให้ชิดขอบจอด้านบนและด้านข้างแบบ Edge-to-Edge -->
+<section class="relative overflow-hidden font-sans bg-white border-none">
     <div class="absolute inset-0 z-0">
         <img src="<?= e($heroImage) ?>" alt="WEBPARK Solutions Background" 
-            class="w-full h-full object-cover object-[80%_center] md:object-[60%_center] opacity-100">
+            class="w-full h-full object-cover hero-bg-img opacity-100">
             
-        <!-- ปรับ Gradient สีขาวให้จางลง เพื่อให้เห็นพื้นหลังจอโน้ตบุ๊กบนมือถือชัดเจนตามความต้องการ -->
-        <div class="absolute inset-0 bg-gradient-to-r from-white/95 via-white/80 to-transparent md:from-white md:via-white/70 md:to-white/5"></div>
+        <div class="absolute inset-0 hero-overlay-mobile"></div>
+        <div class="absolute inset-0 hero-overlay-gradient"></div>
         <div class="absolute inset-x-0 bottom-0 h-[30%] bg-gradient-to-t from-white/50 to-transparent z-10"></div>
     </div>
 
@@ -76,12 +100,12 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                         line-height: 1.25;
                     }
                     .hero-desc-text {
-                        font-size: 15px;
+                        font-size: 22px !important;
                         line-height: 1.65;
                     }
                     @media (min-width: 768px) {
                         .hero-title-text { font-size: 3.5rem; line-height: 1.2; }
-                        .hero-desc-text { font-size: 18px; line-height: 1.7; }
+                        .hero-desc-text { font-size: 24px !important; line-height: 1.7; }
                     }
                     @media (min-width: 1024px) {
                         .hero-title-text { font-size: 4.5rem; line-height: 1.2; }
@@ -101,12 +125,12 @@ $ctaImage = asset_url('images/bg-cta.jpg');
 
                 <?php
                 if (getCurrentLang() === 'th') {
-                    $mobile_desc = "รวบรวมบทความรู้ เทคโนโลยี นวัตกรรม<br>และแนวทางการทำธุรกิจ ครอบคลุม ERP<br>ระบบธุรกิจดิจิทัล การตลาดออนไลน์ AI<br>และโซลูชัน ที่ช่วยพัฒนาองค์กรให้เติบโต<br>ได้อย่างยั่งยืน";
+                    $mobile_desc = "รวบรวมบทความรู้ เทคโนโลยี นวัตกรรม และแนวทาง<br>การทำธุรกิจ ครอบคลุม ERP ระบบธุรกิจดิจิทัล การ<br>ตลาดออนไลน์ AI และโซลูชัน ที่ช่วยพัฒนาองค์กรให้<br>เติบโตได้อย่างยั่งยืน";
                 } else {
-                    $mobile_desc = "Knowledge articles, tech, and innovation,<br>covering ERP systems, digital business,<br>online marketing, AI, and solutions<br>to sustainably grow your organization.";
+                    $mobile_desc = "Knowledge articles, tech, and innovation covering ERP systems, digital business, online marketing, AI, and solutions to sustainably grow your organization.";
                 }
                 ?>
-                <p class="hero-desc-text animate-fade-up delay-300 mt-4 md:mt-6 max-w-[280px] sm:max-w-[360px] md:max-w-2xl mb-10 font-medium text-[#022862] drop-shadow-sm">
+                <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-lg md:text-xl leading-relaxed max-w-lg mb-10 font-medium">
                     <span class="block md:hidden leading-[1.75]">
                         <?= $mobile_desc ?>
                     </span>
@@ -116,10 +140,9 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                             ครอบคลุม ERP ระบบธุรกิจดิจิทัล การตลาดออนไลน์ AI และโซลูชัน<br>
                             <?= e(t('common.articles_growth_summary')) ?>
                         <?php else: ?>
-                            A collection of articles on technology, innovation,<br>
-                            and business strategy covering ERP systems,<br>
-                            digital business, online marketing, AI, and solutions<br>
-                            that help organizations grow sustainably.
+                            A collection of articles on technology, innovation, and business<br>
+                            strategy covering ERP systems, digital business, online marketing,<br>
+                            AI, and solutions that help organizations grow sustainably.
                         <?php endif; ?>
                     </span>
                 </p>

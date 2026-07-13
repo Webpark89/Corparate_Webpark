@@ -6,7 +6,7 @@ declare(strict_types=1);
     /* Article Typography */
     .article-format {
         color: #475569; /* slate-600 */
-        font-size: 1rem;
+        font-size: 1.125rem;
         line-height: 1.8;
     }
     .article-format h2, 
@@ -33,10 +33,12 @@ declare(strict_types=1);
     }
     .article-format ul, .article-format ol {
         margin-bottom: 1.5rem;
-        padding-left: 1.5rem;
+        padding-left: 0;
+        list-style-position: inside;
     }
     .article-format li {
-        margin-bottom: 0.5rem;
+        margin-bottom: 0;
+        line-height: 1.8;
     }
     
     @keyframes fadeSlideUp {
@@ -52,28 +54,18 @@ declare(strict_types=1);
     .delay-300 { animation-delay: 300ms; }
 </style>
 
-<section class="relative overflow-hidden font-sans bg-[#F4F7FB] py-12 lg:py-20">
+<section class="relative overflow-hidden font-sans bg-[#F4F7FB] pt-12 pb-6 lg:pt-20 lg:pb-8">
     <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+        <div class="flex flex-col gap-8 items-start max-w-4xl mx-auto">
             
-            <!-- Left Column: Text & Meta -->
-            <div class="max-w-xl">
-                <nav aria-label="Breadcrumb" class="animate-fade-up delay-100 mb-8">
-                    <ol class="inline-flex flex-wrap items-center text-sm md:text-base font-medium text-slate-400">
-                        <li>
-                            <a href="<?= e(route_url('/')) ?>" class="hover:text-primary transition-colors duration-200">หน้าแรก</a>
-                        </li>
-                        <li><span class="mx-3">/</span></li>
-                        <li>
-                            <a href="<?= e(route_url('/article')) ?>" class="hover:text-primary transition-colors duration-200">บทความ</a>
-                        </li>
-                        <li><span class="mx-3">/</span></li>
-                        <li aria-current="page">
-                            <span class="text-slate-400">ERP System</span>
-                        </li>
-                    </ol>
-                </nav>
-                
+            <!-- Top Column: Image -->
+            <div class="animate-fade-up delay-100 relative w-full rounded-[2rem] overflow-hidden shadow-2xl">
+                <img src="<?= e(asset_url('images/erp-system.png')) ?>" alt="ERP System Illustration" 
+                    class="w-full h-[300px] sm:h-[400px] lg:h-[500px] object-cover hover:scale-105 transition-transform duration-700" onerror="this.src='<?= e(asset_url('images/story.png')) ?>'">
+            </div>
+
+            <!-- Bottom Column: Text & Meta -->
+            <div class="w-full mt-4">
                 <h1 class="animate-fade-up delay-200 leading-snug mb-6 tracking-tight">
                     <span class="block text-3xl md:text-4xl lg:text-[44px] font-bold text-slate-600 mb-2">
                         ระบบ ERP คืออะไร?
@@ -94,15 +86,9 @@ declare(strict_types=1);
                     </span>
                 </div>
                 
-                <p class="animate-fade-up delay-400 text-slate-600 text-base md:text-lg leading-relaxed">
+                <p class="animate-fade-up delay-400 mt-6 text-[#022862] text-lg md:text-xl leading-relaxed max-w-4xl mb-6 font-medium">
                     ทำความเข้าใจระบบ ERP แบบครบทุกมิติ ตั้งแต่ความหมาย ประโยชน์ ฟังก์ชันหลัก ประเภทของ ERP ความแตกต่างระหว่าง ERP กับ CRM และแนวทางการเลือกใช้ให้เหมาะกับธุรกิจของคุณ
                 </p>
-            </div>
-            
-            <!-- Right Column: Image -->
-            <div class="animate-fade-up delay-300 relative w-full rounded-[2rem] overflow-hidden shadow-2xl">
-                <img src="<?= e(asset_url('images/erp-system.png')) ?>" alt="ERP System Illustration" 
-                    class="w-full h-auto object-cover aspect-[4/3] hover:scale-105 transition-transform duration-700" onerror="this.src='<?= e(asset_url('images/story.png')) ?>'">
             </div>
             
         </div>
@@ -110,7 +96,7 @@ declare(strict_types=1);
 </section>
 
 <div class="bg-[#FAFAFC]">
-    <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-12 lg:py-20">
+    <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-12 lg:pt-8 lg:pb-20">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 xl:gap-16">
             
             <!-- Main Content -->
@@ -124,12 +110,12 @@ declare(strict_types=1);
                     <p>ERP ถูกออกแบบมาเพื่อแก้ไขปัญหาการทำงานแบบแยกส่วน กระบวนการซ้ำซ้อน ข้อมูลไม่ตรงกัน และการพลาดข้อมูลสำหรับการวิเคราะห์เชิงลึก โดยช่วยสร้างระบบกลางที่รวมทุกกระบวนการเข้าด้วยกันอย่างเป็นเอกภาพ</p>
                     
                     <h2 id="toc-3" class="!text-[#0663F6]">เม็ดเงินภาษีที่พบบ่อยคืออะไร?</h2>
-                    <ul class="list-disc text-[#0663F6] marker:text-[#0663F6]">
-                        <li><span class="text-slate-600">ต้นทุนแฝงจากความผิดพลาดของข้อมูลและการทำงานซ้ำ</span></li>
-                        <li><span class="text-slate-600">ค่าใช้จ่ายในการจัดการข้อมูลแบบแยกส่วน</span></li>
-                        <li><span class="text-slate-600">โอกาสทางธุรกิจที่เสียไปจากข้อมูลที่ไม่ถูกต้อง</span></li>
-                        <li><span class="text-slate-600">ค่าใช้จ่ายด้านแรงงานที่เพิ่มจากกระบวนการทำงานที่ไม่มีประสิทธิภาพ</span></li>
-                        <li><span class="text-slate-600">ต้นทุนด้านการจัดเก็บและบำรุงรักษาระบบหลายระบบ</span></li>
+                    <ul class="list-disc marker:text-[#0663F6] space-y-0">
+                        <li>ต้นทุนแฝงจากความผิดพลาดของข้อมูลและการทำงานซ้ำ</li>
+                        <li>ค่าใช้จ่ายในการจัดการข้อมูลแบบแยกส่วน</li>
+                        <li>โอกาสทางธุรกิจที่เสียไปจากข้อมูลที่ไม่ถูกต้อง</li>
+                        <li>ค่าใช้จ่ายด้านแรงงานที่เพิ่มจากกระบวนการทำงานที่ไม่มีประสิทธิภาพ</li>
+                        <li>ต้นทุนด้านการจัดเก็บและบำรุงรักษาระบบหลายระบบ</li>
                     </ul>
                     
                     <h2 id="toc-4" class="!text-[#0663F6]">มีฟังก์ชัน หรือโมดูลระบบ ENTERPRISE RESOURCE PLANNING</h2>
@@ -137,112 +123,132 @@ declare(strict_types=1);
                     
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8">
                         <!-- Card 1 -->
-                        <div class="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm hover:shadow-lg transition-all duration-300 flex items-start gap-4 hover:-translate-y-1">
+                        <div class="bg-white rounded-2xl px-5 pb-5 pt-0 border border-slate-100 shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col justify-start hover:-translate-y-1">
+                            <div class="flex flex-row items-center gap-4">
                             <div class="w-[50px] h-[50px] bg-slate-50 rounded-full flex items-center justify-center shrink-0">
                                 <img src="<?= e(asset_url('images/ERP_10.svg')) ?>" class="w-7 h-7 object-contain" alt="Icon">
                             </div>
                             <div>
-                                <h3 class="text-[16px] font-bold text-[#002B7F] mb-1">ระบบบริหารการขาย</h3>
-                                <p class="text-[13px] text-slate-500 leading-relaxed">จัดการงานขาย กำหนดราคา บริการลูกค้า และติดตามสถานะการขาย</p>
+                                <h3 class="text-lg font-bold text-[#002B7F] mb-1">ระบบบริหารการขาย</h3>
+                                <p class="text-base text-slate-500 leading-relaxed">จัดการงานขาย กำหนดราคา บริการลูกค้า และติดตามสถานะการขาย</p>
+                            </div>
                             </div>
                         </div>
                         
                         <!-- Card 2 -->
-                        <div class="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm hover:shadow-lg transition-all duration-300 flex items-start gap-4 hover:-translate-y-1">
+                        <div class="bg-white rounded-2xl px-5 pb-5 pt-0 border border-slate-100 shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col justify-start hover:-translate-y-1">
+                            <div class="flex flex-row items-center gap-4">
                             <div class="w-[50px] h-[50px] bg-slate-50 rounded-full flex items-center justify-center shrink-0">
                                 <img src="<?= e(asset_url('images/ERP_11.svg')) ?>" class="w-7 h-7 object-contain" alt="Icon">
                             </div>
                             <div>
-                                <h3 class="text-[16px] font-bold text-[#002B7F] mb-1">ระบบจัดซื้อ</h3>
-                                <p class="text-[13px] text-slate-500 leading-relaxed">เพิ่มประสิทธิภาพการจัดซื้อและการบริหารผู้ขาย</p>
+                                <h3 class="text-lg font-bold text-[#002B7F] mb-1">ระบบจัดซื้อ</h3>
+                                <p class="text-base text-slate-500 leading-relaxed">เพิ่มประสิทธิภาพการจัดซื้อและการบริหารผู้ขาย</p>
+                            </div>
                             </div>
                         </div>
                         
                         <!-- Card 3 -->
-                        <div class="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm hover:shadow-lg transition-all duration-300 flex items-start gap-4 hover:-translate-y-1">
+                        <div class="bg-white rounded-2xl px-5 pb-5 pt-0 border border-slate-100 shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col justify-start hover:-translate-y-1">
+                            <div class="flex flex-row items-center gap-4">
                             <div class="w-[50px] h-[50px] bg-slate-50 rounded-full flex items-center justify-center shrink-0">
                                 <img src="<?= e(asset_url('images/ERP_12.svg')) ?>" class="w-7 h-7 object-contain" alt="Icon">
                             </div>
                             <div>
-                                <h3 class="text-[16px] font-bold text-[#002B7F] mb-1">ระบบบริหารสินค้าคงคลัง</h3>
-                                <p class="text-[13px] text-slate-500 leading-relaxed">ควบคุมสต็อกสินค้า ตรวจสอบการเคลื่อนไหว และแจ้งเตือนเมื่อถึงจุดสั่งซื้อ</p>
+                                <h3 class="text-lg font-bold text-[#002B7F] mb-1">ระบบบริหารสินค้าคงคลัง</h3>
+                                <p class="text-base text-slate-500 leading-relaxed">ควบคุมสต็อกสินค้า ตรวจสอบการเคลื่อนไหว และแจ้งเตือนเมื่อถึงจุดสั่งซื้อ</p>
+                            </div>
                             </div>
                         </div>
                         
                         <!-- Card 4 -->
-                        <div class="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm hover:shadow-lg transition-all duration-300 flex items-start gap-4 hover:-translate-y-1">
+                        <div class="bg-white rounded-2xl px-5 pb-5 pt-0 border border-slate-100 shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col justify-start hover:-translate-y-1">
+                            <div class="flex flex-row items-center gap-4">
                             <div class="w-[50px] h-[50px] bg-slate-50 rounded-full flex items-center justify-center shrink-0">
                                 <img src="<?= e(asset_url('images/ERP_13.svg')) ?>" class="w-7 h-7 object-contain" alt="Icon">
                             </div>
                             <div>
-                                <h3 class="text-[16px] font-bold text-[#002B7F] mb-1">ระบบบัญชีและการเงิน</h3>
-                                <p class="text-[13px] text-slate-500 leading-relaxed">บันทึกรายรับรายจ่าย ออกเอกสารทางการเงิน และสรุปงบการเงิน</p>
+                                <h3 class="text-lg font-bold text-[#002B7F] mb-1">ระบบบัญชีและการเงิน</h3>
+                                <p class="text-base text-slate-500 leading-relaxed">บันทึกรายรับรายจ่าย ออกเอกสารทางการเงิน และสรุปงบการเงิน</p>
+                            </div>
                             </div>
                         </div>
                         
                         <!-- Card 5 -->
-                        <div class="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm hover:shadow-lg transition-all duration-300 flex items-start gap-4 hover:-translate-y-1">
+                        <div class="bg-white rounded-2xl px-5 pb-5 pt-0 border border-slate-100 shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col justify-start hover:-translate-y-1">
+                            <div class="flex flex-row items-center gap-4">
                             <div class="w-[50px] h-[50px] bg-slate-50 rounded-full flex items-center justify-center shrink-0">
                                 <img src="<?= e(asset_url('images/ERP_14.svg')) ?>" class="w-7 h-7 object-contain" alt="Icon">
                             </div>
                             <div>
-                                <h3 class="text-[16px] font-bold text-[#002B7F] mb-1">ระบบการผลิต</h3>
-                                <p class="text-[13px] text-slate-500 leading-relaxed">วางแผนการผลิต ควบคุมทรัพยากร ลดต้นทุน และเพิ่มประสิทธิภาพ</p>
+                                <h3 class="text-lg font-bold text-[#002B7F] mb-1">ระบบการผลิต</h3>
+                                <p class="text-base text-slate-500 leading-relaxed">วางแผนการผลิต ควบคุมทรัพยากร ลดต้นทุน และเพิ่มประสิทธิภาพ</p>
+                            </div>
                             </div>
                         </div>
                         
                         <!-- Card 6 -->
-                        <div class="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm hover:shadow-lg transition-all duration-300 flex items-start gap-4 hover:-translate-y-1">
+                        <div class="bg-white rounded-2xl px-5 pb-5 pt-0 border border-slate-100 shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col justify-start hover:-translate-y-1">
+                            <div class="flex flex-row items-center gap-4">
                             <div class="w-[50px] h-[50px] bg-slate-50 rounded-full flex items-center justify-center shrink-0">
                                 <img src="<?= e(asset_url('images/ERP_15.svg')) ?>" class="w-7 h-7 object-contain" alt="Icon">
                             </div>
                             <div>
-                                <h3 class="text-[16px] font-bold text-[#002B7F] mb-1">ระบบบริหารทรัพยากรบุคคล</h3>
-                                <p class="text-[13px] text-slate-500 leading-relaxed">จัดการข้อมูลพนักงาน ประเมินผล และติดตามการทำงาน</p>
+                                <h3 class="text-lg font-bold text-[#002B7F] mb-1">ระบบบริหารทรัพยากรบุคคล</h3>
+                                <p class="text-base text-slate-500 leading-relaxed">จัดการข้อมูลพนักงาน ประเมินผล และติดตามการทำงาน</p>
+                            </div>
                             </div>
                         </div>
                         
                         <!-- Card 7 -->
-                        <div class="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm hover:shadow-lg transition-all duration-300 flex items-start gap-4 hover:-translate-y-1">
+                        <div class="bg-white rounded-2xl px-5 pb-5 pt-0 border border-slate-100 shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col justify-start hover:-translate-y-1">
+                            <div class="flex flex-row items-center gap-4">
                             <div class="w-[50px] h-[50px] bg-slate-50 rounded-full flex items-center justify-center shrink-0">
                                 <img src="<?= e(asset_url('images/ERP_16.svg')) ?>" class="w-7 h-7 object-contain" alt="Icon">
                             </div>
                             <div>
-                                <h3 class="text-[16px] font-bold text-[#002B7F] mb-1">ระบบอนุมัติและเวิร์กโฟลว์</h3>
-                                <p class="text-[13px] text-slate-500 leading-relaxed">กำหนดขั้นตอนการอนุมัติเอกสารและงานต่างๆ เพิ่มความโปร่งใส</p>
+                                <h3 class="text-lg font-bold text-[#002B7F] mb-1">ระบบอนุมัติและเวิร์กโฟลว์</h3>
+                                <p class="text-base text-slate-500 leading-relaxed">กำหนดขั้นตอนการอนุมัติเอกสารและงานต่างๆ เพิ่มความโปร่งใส</p>
+                            </div>
                             </div>
                         </div>
                         
                         <!-- Card 8 -->
-                        <div class="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm hover:shadow-lg transition-all duration-300 flex items-start gap-4 hover:-translate-y-1">
+                        <div class="bg-white rounded-2xl px-5 pb-5 pt-0 border border-slate-100 shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col justify-start hover:-translate-y-1">
+                            <div class="flex flex-row items-center gap-4">
                             <div class="w-[50px] h-[50px] bg-slate-50 rounded-full flex items-center justify-center shrink-0">
                                 <img src="<?= e(asset_url('images/ERP_17.svg')) ?>" class="w-7 h-7 object-contain" alt="Icon">
                             </div>
                             <div>
-                                <h3 class="text-[16px] font-bold text-[#002B7F] mb-1">ระบบลูกค้าสัมพันธ์</h3>
-                                <p class="text-[13px] text-slate-500 leading-relaxed">จัดการข้อมูลลูกค้าและติดตามความสัมพันธ์เพื่อเพิ่มโอกาสการขาย</p>
+                                <h3 class="text-lg font-bold text-[#002B7F] mb-1">ระบบลูกค้าสัมพันธ์</h3>
+                                <p class="text-base text-slate-500 leading-relaxed">จัดการข้อมูลลูกค้าและติดตามความสัมพันธ์เพื่อเพิ่มโอกาสการขาย</p>
+                            </div>
                             </div>
                         </div>
                         
                         <!-- Card 9 -->
-                        <div class="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm hover:shadow-lg transition-all duration-300 flex items-start gap-4 hover:-translate-y-1">
+                        <div class="bg-white rounded-2xl px-5 pb-5 pt-0 border border-slate-100 shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col justify-start hover:-translate-y-1">
+                            <div class="flex flex-row items-center gap-4">
                             <div class="w-[50px] h-[50px] bg-slate-50 rounded-full flex items-center justify-center shrink-0">
                                 <img src="<?= e(asset_url('images/ERP_18.svg')) ?>" class="w-7 h-7 object-contain" alt="Icon">
                             </div>
                             <div>
-                                <h3 class="text-[16px] font-bold text-[#002B7F] mb-1">ระบบควบคุมคุณภาพ</h3>
-                                <p class="text-[13px] text-slate-500 leading-relaxed">ตรวจสอบคุณภาพการผลิต ลดของเสีย และรักษามาตรฐานสินค้า</p>
+                                <h3 class="text-lg font-bold text-[#002B7F] mb-1">ระบบควบคุมคุณภาพ</h3>
+                                <p class="text-base text-slate-500 leading-relaxed">ตรวจสอบคุณภาพการผลิต ลดของเสีย และรักษามาตรฐานสินค้า</p>
+                            </div>
                             </div>
                         </div>
                         
                         <!-- Card 10 -->
-                        <div class="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm hover:shadow-lg transition-all duration-300 flex items-start gap-4 hover:-translate-y-1">
+                        <div class="bg-white rounded-2xl px-5 pb-5 pt-0 border border-slate-100 shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col justify-start hover:-translate-y-1">
+                            <div class="flex flex-row items-center gap-4">
                             <div class="w-[50px] h-[50px] bg-slate-50 rounded-full flex items-center justify-center shrink-0">
                                 <img src="<?= e(asset_url('images/ERP_19.svg')) ?>" class="w-7 h-7 object-contain" alt="Icon">
                             </div>
                             <div>
-                                <h3 class="text-[16px] font-bold text-[#002B7F] mb-1">ระบบซ่อมบำรุง</h3>
-                                <p class="text-[13px] text-slate-500 leading-relaxed">จัดการการซ่อมบำรุงเครื่องจักร ลด Downtime และยืดอายุการใช้งาน</p>
+                                <h3 class="text-lg font-bold text-[#002B7F] mb-1">ระบบซ่อมบำรุง</h3>
+                                <p class="text-base text-slate-500 leading-relaxed">จัดการการซ่อมบำรุงเครื่องจักร ลด Downtime และยืดอายุการใช้งาน</p>
+                            </div>
                             </div>
                         </div>
                     </div>
@@ -266,11 +272,15 @@ declare(strict_types=1);
                         <li><span class="text-slate-600">ระบบวิเคราะห์ข้อมูล Business Intelligence & Analytics</span></li>
                     </ul>
 
-                    <div class="bg-[#EEF2FC] rounded-2xl p-8 md:p-12 text-center relative mt-16 mb-16 overflow-hidden">
+                    <div class="bg-[#EEF2FC] rounded-lg p-8 md:p-12 text-center relative mt-16 mb-16 overflow-hidden">
                         <div class="absolute top-4 left-6 text-7xl text-white font-serif leading-none opacity-80">“</div>
                         <div class="absolute bottom-[-20px] right-6 text-7xl text-white font-serif leading-none opacity-80">”</div>
-                        <p class="text-[#002B7F] font-bold text-lg md:text-xl leading-relaxed relative z-10 m-0">
-                            เทคโนโลยีที่ดีไม่เพียงช่วยให้องค์กรที่ใช้ ERP และ CRM สามารถทำงานร่วมกันได้อย่างมีประสิทธิภาพ<br class="hidden md:block">และช่วยให้องค์กรก้าวสู่การเป็น Data-Driven Organization อย่างแท้จริง
+                        <p class="text-[#0663F6] font-bold text-[16px] min-[375px]:text-[17px] sm:text-[20px] md:text-[24px] lg:text-[26px] leading-[1.9] md:leading-[2] relative z-10 m-0">
+                            เทคโนโลยีที่ดีไม่เพียงช่วยให้องค์กรที่ใช้<br>
+                            ERP และ CRM สามารถทำงานร่วมกันได้<br>
+                            อย่างมีประสิทธิภาพ<br>
+                            และช่วยให้องค์กรก้าวสู่การเป็น<br>
+                            Data-Driven Organization อย่างแท้จริง
                         </p>
                     </div>
 

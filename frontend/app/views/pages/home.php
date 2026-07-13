@@ -114,7 +114,7 @@ $mockArticles = [
                 </p>
 
                 <div class="animate-entrance-up delay-400 flex flex-col items-start md:flex-row md:items-center gap-4">
-                    <a href="<?= e(route_url('/services')) ?>" class="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-primary text-white text-sm font-semibold rounded-full hover:bg-blue-700 transition-all shadow-md hover:-translate-y-0.5">
+                    <a href="<?= e(route_url('/services')) ?>" class="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-primary text-white text-base font-semibold rounded-full hover:bg-blue-700 transition-all shadow-md hover:-translate-y-0.5">
                         <?= e(t('common.cta_view_services')) ?>
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
@@ -225,7 +225,7 @@ $mockArticles = [
     </div>
 </section>
 
-<section class="bg-white pt-16 pb-6 lg:py-20 overflow-hidden">
+<section class="bg-white pt-16 pb-6 lg:pt-20 lg:pb-8 overflow-hidden">
     <div class="mx-auto w-full max-w-7xl px-5 sm:px-6 lg:px-8">
 
         <div class="mb-10">
@@ -481,7 +481,7 @@ document.addEventListener('DOMContentLoaded', function () {
 $totalReviews = count($reviews);
 if ($totalReviews > 0):
 ?>
-<section class="relative pt-6 pb-10 lg:py-20 overflow-hidden">
+<section class="relative pt-6 pb-10 lg:pt-10 lg:pb-20 overflow-hidden">
     <div class="absolute inset-0 -z-10 pointer-events-none">
         <img src="<?= e(asset_url('images/bg-hand.jpg')) ?>" alt="bg" class="w-full h-full object-cover object-center opacity-20 mix-blend-screen">
         <div class="absolute inset-0 bg-white/50"></div>

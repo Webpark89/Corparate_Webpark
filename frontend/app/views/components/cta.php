@@ -33,11 +33,11 @@ $contactButtonUrl = $cbuttonUrl ?? '/contact';
                     </span>
                     <div class="w-12 h-[3px] bg-white mt-3"></div>
                 </div>
-                    <span class="mt-4 text-white text-sm md:text-base leading-relaxed font-medium">
+                    <span class="mt-4 text-white text-base md:text-lg leading-relaxed font-medium">
                         <?= e($contactTitle) ?>
                     </span>
                 
-                <p class="mt-4 text-white text-sm md:text-base leading-relaxed font-medium">
+                <p class="mt-4 text-white text-base md:text-lg leading-relaxed font-medium">
                     <?= $contactSubtitle ?>
                 </p>
             </div>
@@ -64,23 +64,23 @@ $contactButtonUrl = $cbuttonUrl ?? '/contact';
                             
                             <div id="desktop-name-wrapper">
                                 <input type="text" id="name_desktop" name="name" placeholder="<?= e(t('common.form_label_fullname')) ?>" value="<?= e($form['name'] ?? '') ?>" required
-                                    class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary">
+                                    class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base text-slate-900 outline-none transition custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary">
                             </div>
 
                             <div id="mobile-name-wrapper" class="space-y-4 hidden">
                                 <input type="text" id="name_mobile_first" name="firstname" placeholder="<?= e(getCurrentLang() === 'th' ? 'ชื่อ' : 'First Name') ?>" value="<?= e($form['firstname'] ?? '') ?>" required
-                                    class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary">
+                                    class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base text-slate-900 outline-none transition custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary">
 
                                 <input type="text" id="name_mobile_last" name="lastname" placeholder="<?= e(getCurrentLang() === 'th' ? 'สกุล' : 'Last Name') ?>" value="<?= e($form['lastname'] ?? '') ?>" required
-                                    class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary">
+                                    class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base text-slate-900 outline-none transition custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary">
                             </div>
 
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                                 <input type="text" name="phone" placeholder="<?= e(t('common.form_label_phone')) ?>" value="<?= e($form['phone'] ?? '') ?>" required
-                                    class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary">
+                                    class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base text-slate-900 outline-none transition custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary">
 
                                 <input type="email" name="email" placeholder="<?= e(t('common.form_label_email')) ?>" value="<?= e($form['email'] ?? '') ?>" required
-                                    class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary">
+                                    class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base text-slate-900 outline-none transition custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary">
                             </div>
 
                             <script>
@@ -116,7 +116,7 @@ $contactButtonUrl = $cbuttonUrl ?? '/contact';
 
                             <div>
                                 <textarea name="message" rows="4" placeholder="<?= e(t('common.form_label_details')) ?>" required
-                                    class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary resize-none"><?= e($form['message'] ?? '') ?></textarea>
+                                    class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base text-slate-900 outline-none transition custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary resize-none"><?= e($form['message'] ?? '') ?></textarea>
                             </div>
 
                             <style>
@@ -124,7 +124,7 @@ $contactButtonUrl = $cbuttonUrl ?? '/contact';
                             </style>
                             <div class="flex items-start gap-2.5 pt-1">
                                 <input type="checkbox" id="form-privacy" name="privacy_agreed" required class="mt-0.5 w-4 h-4 rounded border-slate-300 text-primary focus:ring-primary cursor-pointer">
-                                <label for="form-privacy" class="text-xs leading-relaxed cursor-pointer select-none">
+                                <label for="form-privacy" class="text-sm leading-relaxed cursor-pointer select-none">
                                     <span class="privacy-text"><?= e(t('common.form_consent_prefix')) ?></span> <a href="#" class="text-primary hover:underline"><?= e(t('common.form_consent_privacy_policy')) ?> <?= e(t('common.form_consent_terms_suffix')) ?></a>
                                 </label>
                             </div>
@@ -137,7 +137,7 @@ $contactButtonUrl = $cbuttonUrl ?? '/contact';
                                 @media (min-width: 768px) { .desktop-btn-left { justify-content: flex-start !important; } }
                             </style>
                             <div class="pt-2 flex justify-center desktop-btn-left">
-                                <button type="submit" class="px-8 py-3.5 bg-primary hover:bg-blue-600 text-white font-bold text-sm rounded-full flex items-center justify-center gap-2 shadow-lg shadow-blue-500/10 transition-all cursor-pointer">
+                                <button type="submit" class="px-8 py-3.5 bg-primary hover:bg-blue-600 text-white font-bold text-base rounded-full flex items-center justify-center gap-2 shadow-lg shadow-blue-500/10 transition-all cursor-pointer">
                                     <?= e(t('erp.cta_submit') !== 'erp.cta_submit' ? t('erp.cta_submit') : (getCurrentLang() === 'th' ? 'ส่งข้อมูล' : 'Submit')) ?>
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />

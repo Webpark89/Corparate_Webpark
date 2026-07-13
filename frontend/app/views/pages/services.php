@@ -219,7 +219,7 @@ $services = $mockServices;
     }
 </style>
 
-<section class="relative font-sans bg-[#f7faff] overflow-hidden mt-0 mx-4 mb-4 sm:mt-0 sm:mx-6 sm:mb-6 rounded-t-none rounded-b-[2rem] lg:m-0 lg:rounded-none">
+<section class="relative font-sans bg-[#f7faff] overflow-hidden m-0 border-none rounded-none">
     <div class="hidden lg:block absolute inset-0 z-0 overflow-hidden">
         <img src="<?= e($heroImage) ?>" alt="WEBPARK Solutions Background" 
             class="w-full h-full object-cover object-center opacity-100 mix-blend-screen">
@@ -246,15 +246,24 @@ $services = $mockServices;
         @keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
         .animate-scroll { animation: scroll 20s linear infinite; }
         .animate-scroll:hover { animation-play-state: paused; }
+        
+        /* บังคับตำแหน่งรูปภาพและ Overlay ด้วย CSS โดยตรง เพื่อเลี่ยงปัญหา Tailwind ไม่คอมไพล์ */
+        .hero-bg-img-services {
+            object-position: 85% 0% !important;
+        }
+        .hero-overlay-mobile-services {
+            /* เฉดสีขาวเฉพาะฝั่งซ้ายและด้านบนที่ตัวหนังสืออยู่ ปล่อยฝั่งขวาให้โปร่งใสเพื่อให้เห็นรูปภาพ */
+            background: linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.95) 50%, rgba(255, 255, 255, 0) 85%) !important;
+        }
     </style>
 
     <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8 pt-12 pb-24 lg:pt-28 lg:pb-32 relative z-10">
         <!-- Mobile Background Image (Only covers this Hero container) -->
-        <div class="absolute inset-0 z-0 overflow-hidden lg:hidden rounded-2xl">
+        <div class="absolute inset-0 z-0 overflow-hidden lg:hidden">
             <img src="<?= e($heroImage) ?>" alt="WEBPARK Solutions Background" 
-                class="w-full h-full object-cover object-[85%_center] opacity-100 mix-blend-screen">
-            <div class="absolute inset-0 bg-gradient-to-r from-white/95 via-white/85 to-white/40"></div>
-            <div class="absolute inset-x-0 bottom-0 h-[40%] bg-gradient-to-t from-white via-white/60 to-transparent"></div>
+                class="w-full h-full object-cover hero-bg-img-services opacity-100">
+            <div class="absolute inset-0 hero-overlay-mobile-services"></div>
+            <div class="absolute inset-x-0 bottom-0 h-[30%] bg-gradient-to-t from-white/50 to-transparent"></div>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-12 lg:gap-20 items-center relative z-10">
@@ -278,17 +287,17 @@ $services = $mockServices;
                         </ol>
                     </nav>
                     
-                <h1 class="animate-fade-up delay-200 leading-[1.1] mb-2 tracking-tighter">
-                    <span class="text-5xl md:text-6xl lg:text-8xl font-bold bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block py-3">
+                <h1 class="animate-fade-up delay-200 mb-2 tracking-tighter flex flex-col items-start">
+                    <span class="text-5xl md:text-6xl lg:text-8xl font-bold bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient py-2">
                         <?= getCurrentLang() === 'th' ? 'ความเชี่ยวชาญ' : 'Expertise' ?>
-                    </span><br>
+                    </span>
 
-                    <span class="text-5xl md:text-6xl lg:text-8xl font-bold bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block mt-2 py-3" style="animation-delay: -3s;">
+                    <span class="text-5xl md:text-6xl lg:text-8xl font-bold bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient py-4 -mt-4 md:-mt-6 lg:-mt-8" style="animation-delay: -3s;">
                         <?= getCurrentLang() === 'th' ? 'และจุดเด่น' : '& Strengths' ?>
                     </span>
                 </h1>
 
-                <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-base sm:text-[17px] md:text-lg leading-[1.7] max-w-lg mb-10 font-medium tracking-normal">
+                <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-lg md:text-xl leading-relaxed max-w-lg mb-10 font-medium">
                     <?php if (getCurrentLang() === 'th'): ?>
                         มากกว่า 20 ปี ที่เราสร้างสรรค์โซลูชันดิจิทัลครบวงจร<br class="block sm:hidden"> ผสานเทคโนโลยี ความเชี่ยวชาญ และความเข้าใจธุรกิจ<br class="block sm:hidden"> เพื่อเพิ่มประสิทธิภาพ สร้างการเติบโต<br class="block sm:hidden"> และยกระดับองค์กรสู่อนาคตอย่างยั่งยืน
                     <?php else: ?>
@@ -296,7 +305,7 @@ $services = $mockServices;
                     <?php endif; ?>
                 </p>
                 <div class="animate-entrance-up delay-400 flex flex-col sm:flex-row items-start gap-4">
-                    <a href="<?= e(route_url('/contact')) ?>" class="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-primary text-white text-sm font-semibold rounded-full hover:bg-blue-700 transition-all shadow-md hover:-translate-y-0.5">
+                    <a href="<?= e(route_url('/contact')) ?>" class="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-primary text-white text-base md:text-lg font-semibold rounded-full hover:bg-blue-700 transition-all shadow-md hover:-translate-y-0.5">
                         <?= e(getCurrentLang() === 'th' ? 'ปรึกษาผู้เชี่ยวชาญ' : 'Consult an Expert') ?>
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
@@ -317,15 +326,15 @@ $services = $mockServices;
 </section>
 
 <section id="our-services" class="bg-white py-8 lg:py-16 font-sans scroll-mt-6">
-    <div class="mx-auto max-w-7xl px-6 sm:px-6 lg:px-8">
-        <h1 class="gsap-fade-up text-2xl md:text-3xl font-extrabold leading-tight mb-2" style="color: #022862;">
+    <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8">
+        <h1 class="text-4xl md:text-6xl lg:text-7xl font-extrabold leading-tight tracking-tight mb-3 md:mb-4 gsap-fade-up" style="color: #0663F6 !important;">
             <?= e(t('common.nav_services') !== 'common.nav_services' ? t('common.nav_services') : (getCurrentLang() === 'th' ? 'บริการของเรา' : 'Our Services')) ?>
         </h1>
 
-        <span class="text-2xl font-bold gsap-fade-up max-w-2xl mb-1" style="color: #043B94;">
-            <?= getCurrentLang() === 'th' ? 'บริการของเรา ครอบคลุมทุกมิติธุรกิจดิจิทัล' : 'Our services cover every dimension of digital business' ?>
+        <span class="text-2xl font-bold gsap-fade-up max-w-2xl mb-4 block leading-tight" style="color: #043B94;">
+            <?= getCurrentLang() === 'th' ? 'บริการของเรา<br>ครอบคลุมทุกมิติธุรกิจดิจิทัล' : 'Our services<br>cover every dimension of digital business' ?>
         </span>
-        <p class="gsap-fade-up text-slate-500 text-sm md:text-base leading-relaxed max-w-2xl">
+        <p class="gsap-fade-up text-slate-500 text-lg md:text-xl leading-relaxed max-w-2xl">
             <?= getCurrentLang() === 'th' ? 'Webpark ให้บริการแบบครบวงจร ตั้งแต่การวางแผน ออกแบบ พัฒนา ไปจนถึงการดูแลหลังการใช้งาน<br>เพื่อช่วยให้องค์กรเพิ่มประสิทธิภาพ ลดต้นทุน และเติบโตได้อย่างยั่งยืนในยุคดิจิทัล' : 'Webpark provides end-to-end services, from planning, design, and development to post-deployment support.<br>We help organizations increase efficiency, reduce costs, and grow sustainably in the digital era.' ?>
         </p>
     </div>
@@ -333,7 +342,7 @@ $services = $mockServices;
 
 
 <section class="bg-white py-8 lg:py-16 font-sans">
-    <div class="mx-auto max-w-7xl px-6 sm:px-6 lg:px-8">
+    <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8">
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 items-start">
 
@@ -420,21 +429,20 @@ $services = $mockServices;
             </div>
 
             <div class="relative px-8 py-14 md:py-16 text-center" style="z-index: 10;">
-                <h2 class="text-2xl md:text-3xl font-extrabold text-white mb-4 leading-tight">
-                    พร้อมขับเคลื่อนธุรกิจของคุณไปข้างหน้าหรือยัง?
+                <h2 class="text-3xl md:text-4xl font-extrabold text-white mb-4 leading-tight">
+                    <?= getCurrentLang() === 'th' ? 'พร้อมขับเคลื่อนธุรกิจของคุณไปข้างหน้าหรือยัง?' : 'Ready to drive your business forward?' ?>
                 </h2>
-                <p class="text-sm md:text-base max-w-xl mx-auto mb-8 leading-relaxed" style="color: #bfdbfe;">
-                    มาคุยกับทีม Webpark เพื่อค้นหาโซลูชันที่เหมาะกับธุรกิจของคุณ
-                    ทั้ง Digital Platform, ระบบ AI และ ERP / ERM ในมุมที่ใช้สำหรับองค์กร
+                <p class="text-base md:text-lg max-w-xl mx-auto mb-8 leading-relaxed" style="color: #bfdbfe;">
+                    <?= getCurrentLang() === 'th' ? 'มาคุยกับทีม Webpark เพื่อค้นหาโซลูชันที่เหมาะกับธุรกิจของคุณ ทั้ง Digital Platform, ระบบ AI และ ERP / ERM ในมุมที่ใช้สำหรับองค์กร' : 'Talk to the Webpark team to find the right solution for your business, including Digital Platforms, AI systems, and ERP / ERM tailored for enterprise use.' ?>
                 </p>
                 <a
                     href="<?= e(route_url('/contact')) ?>"
-                    class="inline-flex items-center gap-2 font-bold text-sm px-7 py-3 rounded-full transition-colors duration-200"
+                    class="inline-flex items-center gap-2 font-bold text-base px-7 py-3 rounded-full transition-colors duration-200"
                     style="background: #ffffff; color: #043B94; box-shadow: 0 4px 14px rgba(0,0,0,0.15);"
                     onmouseover="this.style.background='#eff6ff';"
                     onmouseout="this.style.background='#ffffff';"
                 >
-                    เริ่มต้นปรึกษากับเรา
+                    <?= getCurrentLang() === 'th' ? 'เริ่มต้นปรึกษากับเรา' : 'Start Consulting with Us' ?>
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
                     </svg>
@@ -447,16 +455,12 @@ $services = $mockServices;
 <section class="bg-white py-8 font-sans">
     <div class="mx-auto max-w-7xl px-6 sm:px-6 lg:px-8">
 
-        <div class="text-center max-w-3xl mx-auto mb-12">
-            <h2 class="gsap-fade-up text-2xl md:text-4xl font-extrabold leading-tight mb-2" style="color: #022862;">
-                <?= e(t('common.nav_services') !== 'common.nav_services' ? t('common.nav_services') : (getCurrentLang() === 'th' ? 'บริการของเรา' : 'Our Services')) ?>
-            </h2>
-
-            <span class="text-2xl font-bold text-center justify-center gsap-fade-up mb-5 block" style="color: #043B94;">
+        <div class="text-left max-w-3xl mb-12">
+            <span class="text-3xl md:text-4xl font-bold text-left gsap-fade-up mb-5 block" style="color: #054FC5 !important; -webkit-text-fill-color: #054FC5 !important; background: none !important;">
                 <?= getCurrentLang() === 'th' ? 'แนวคิดในการทำงานของเรา' : 'Our Approach' ?>
             </span>
-            <p class="text-slate-500 text-sm md:text-base leading-relaxed max-w-2xl mx-auto">
-                <?= getCurrentLang() === 'th' ? 'กระบวนการทำงานที่เป็นระบบ เพื่อส่งมอบโซลูชันดิจิทัลที่ตอบโจทย์ธุรกิจ และความยั่งยืนของข้อมูลธุรกิจที่องค์กรถือครอง' : 'A systematic work process to deliver digital solutions that meet business needs and ensure the sustainability of business data held by the organization.' ?>
+            <p class="text-slate-500 text-lg md:text-xl leading-relaxed max-w-2xl">
+                <?= getCurrentLang() === 'th' ? 'กระบวนการทำงานที่เป็นระบบ<br>เพื่อส่งมอบโซลูชันดิจิทัลที่ตอบโจทย์ธุรกิจ<br>และความยั่งยืนของข้อมูลธุรกิจที่องค์กรถือครอง' : 'A systematic work process<br>to deliver digital solutions that meet business needs<br>and ensure the sustainability of business data held by the organization.' ?>
             </p>
         </div>
 
