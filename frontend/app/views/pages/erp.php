@@ -269,36 +269,91 @@ $erpPortfolios = $mockErpPortfolios;
                         </ol>
                     </nav>
                 
-                <h1 class="animate-fade-up delay-200 leading-[1.1] mb-2 tracking-tighter">
-                    <span class="text-4xl md:text-6xl lg:text-8xl font-bold bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block py-3">
-                        ERP Systems
-                    </span><br>
+                <!-- Mobile Only Hero Content -->
+                <div class="block md:hidden">
+                    <h1 class="animate-fade-up delay-200 leading-[1.1] mb-2 tracking-tighter">
+                        <span class="text-5xl font-extrabold bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block pb-0 pt-2">
+                            <?= getCurrentLang() === 'th' ? 'ระบบ' : 'ERP' ?>
+                        </span>
+                        <span class="text-5xl font-extrabold bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block pb-0 pt-2 ml-1">
+                            <?= getCurrentLang() === 'th' ? 'ERP' : 'Systems' ?>
+                        </span><br>
 
-                    <span class="text-2xl md:text-3xl lg:text-5xl font-medium bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block mt-2 py-3" style="animation-delay: -3s;">
-                        <?= e(t('erp.modules_intro')) ?>
-                    </span>
-                </h1>
+                        <span class="text-xl font-bold leading-[1.4] bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block mt-0 pb-3 pt-1" style="animation-delay: -3s;">
+                            <?= getCurrentLang() === 'th' ? 'เชื่อมต่อทุกกระบวนการธุรกิจ<br>แบบครบวงจรในแพลตฟอร์มเดียว' : 'Connecting every business process<br>end-to-end on a single platform' ?>
+                        </span>
+                    </h1>
 
-                <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-base md:text-lg leading-relaxed max-w-lg mb-10 font-medium">
-                    <?= e(t('common.articles_knowledge_summary')) ?> <br class="hidden md:block">
-                    <?= e(t('common.articles_coverage_summary')) ?><br class="hidden md:block">
-                    <?= e(t('common.articles_growth_summary')) ?>
-                </p>
-                <div class="animate-entrance-up delay-400 flex flex-col sm:flex-row items-start gap-4">
-                    <a href="<?= e(route_url('/service')) ?>" class="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-primary text-white text-sm font-semibold rounded-full hover:bg-blue-700 transition-all shadow-md hover:-translate-y-0.5">
-                        <?= e(t('common.cta_view_services')) ?>
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
-                        </svg>
-                    </a>
-                    <a href="#about" class="inline-flex items-center gap-4 transition-all hover:-translate-y-0.5 group">
-                        <div class="h-14 w-14 bg-white flex items-center justify-center rounded-full shadow-lg border border-slate-200 transition-all group-hover:bg-slate-50 group-hover:shadow-xl group-hover:scale-105">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600 fill-current" viewBox="0 0 24 24">
-                                <path d="M8 5v14l11-7z"/>
+                    <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-lg md:text-xl leading-relaxed max-w-lg mb-10 font-medium">
+                        <?php if (getCurrentLang() === 'th'): ?>
+                            ระบบบริหารจัดการทรัพยากรองค์กร<br>
+                            (Enterprise Resource Planning)<br>
+                            ที่ช่วยรวมข้อมูลและกระบวนการทำงาน<br>
+                            สำคัญขององค์กรไว้ในระบบเดียว<br>
+                            ลดงานซ้ำซ้อน เพิ่มประสิทธิภาพการทำงาน<br>
+                            และขับเคลื่อนองค์กรสู่อนาคตดิจิทัล
+                        <?php else: ?>
+                            <?= e(t('common.articles_knowledge_summary')) ?> <br>
+                            <?= e(t('common.articles_coverage_summary')) ?><br>
+                            <?= e(t('common.articles_growth_summary')) ?>
+                        <?php endif; ?>
+                    </p>
+                    
+                    <div class="animate-entrance-up delay-400 flex flex-col items-start gap-4">
+                        <a href="<?= e(route_url('/service')) ?>" class="inline-flex items-center justify-center gap-2 px-6 py-2.5 bg-primary text-white text-sm font-semibold rounded-full hover:bg-blue-700 transition-all shadow-md hover:-translate-y-0.5">
+                            <?= getCurrentLang() === 'th' ? 'ปรึกษาผู้เชี่ยวชาญ' : 'Consult an Expert' ?>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
                             </svg>
-                        </div>
-                        <span class="text-slate-800 text-lg font-semibold group-hover:text-primary transition-colors"><?= e(t('common.cta_watch_intro_video')) ?></span>
-                    </a>
+                        </a>
+                        <a href="#about" class="inline-flex items-center gap-3 transition-all hover:-translate-y-0.5 group">
+                            <div class="h-12 w-12 bg-white flex items-center justify-center rounded-full shadow-lg border border-slate-200 transition-all group-hover:bg-slate-50 group-hover:shadow-xl group-hover:scale-105">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-600 fill-current" viewBox="0 0 24 24">
+                                    <path d="M8 5v14l11-7z"/>
+                                </svg>
+                            </div>
+                            <span class="text-slate-800 text-sm font-semibold group-hover:text-primary transition-colors"><?= e(t('common.cta_watch_intro_video')) ?></span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Desktop Only Hero Content -->
+                <div class="hidden md:block">
+                    <h1 class="animate-fade-up delay-200 leading-[1.1] mb-2 tracking-tighter">
+                        <span class="text-4xl md:text-6xl lg:text-8xl font-bold bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block pb-0 pt-2">
+                            <?= getCurrentLang() === 'th' ? 'ระบบ ERP' : 'ERP Systems' ?>
+                        </span><br>
+
+                        <span class="text-xl md:text-2xl lg:text-4xl font-medium leading-snug bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block mt-0 pb-3 pt-1" style="animation-delay: -3s;">
+                            <?= getCurrentLang() === 'th' ? 'เชื่อมต่อทุกกระบวนการธุรกิจแบบครบ<br>วงจรในแพลตฟอร์มเดียว' : 'Connecting every business process<br>end-to-end on a single platform' ?>
+                        </span>
+                    </h1>
+
+                    <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-lg md:text-xl leading-relaxed max-w-lg mb-10 font-medium">
+                        <?php if (getCurrentLang() === 'th'): ?>
+                            รวบรวมบทความรู้ เทคโนโลยี นวัตกรรม และแนวทาง<br>การทำธุรกิจ ครอบคลุม ERP ระบบธุรกิจดิจิทัล การ<br>ตลาดออนไลน์ AI และโซลูชัน ที่ช่วยพัฒนาองค์กรให้<br>เติบโตได้อย่างยั่งยืน
+                        <?php else: ?>
+                            <?= e(t('common.articles_knowledge_summary')) ?> <br class="hidden md:block">
+                            <?= e(t('common.articles_coverage_summary')) ?><br class="hidden md:block">
+                            <?= e(t('common.articles_growth_summary')) ?>
+                        <?php endif; ?>
+                    </p>
+                    <div class="animate-entrance-up delay-400 flex flex-col sm:flex-row items-start gap-4">
+                        <a href="<?= e(route_url('/service')) ?>" class="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-primary text-white text-base md:text-lg font-semibold rounded-full hover:bg-blue-700 transition-all shadow-md hover:-translate-y-0.5">
+                            <?= e(t('common.cta_view_services')) ?>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                            </svg>
+                        </a>
+                        <a href="#about" class="inline-flex items-center gap-4 transition-all hover:-translate-y-0.5 group">
+                            <div class="h-14 w-14 bg-white flex items-center justify-center rounded-full shadow-lg border border-slate-200 transition-all group-hover:bg-slate-50 group-hover:shadow-xl group-hover:scale-105">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600 fill-current" viewBox="0 0 24 24">
+                                    <path d="M8 5v14l11-7z"/>
+                                </svg>
+                            </div>
+                            <span class="text-slate-800 text-lg font-semibold group-hover:text-primary transition-colors"><?= e(t('common.cta_watch_intro_video')) ?></span>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -372,19 +427,33 @@ $erpPortfolios = $mockErpPortfolios;
 
 </section>
 
-<section class="bg-white py-8 lg:py-24">
-    <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-6 relative z-20 -mt-10 lg:-mt-18 pb-6 lg:pb-16">
+<style>
+    @media (min-width: 1024px) {
+        .erp-left-col { flex: none !important; width: 480px !important; max-width: 480px !important; }
+        .erp-right-col { flex: 1 !important; width: auto !important; }
+    }
+    @media (min-width: 1280px) {
+        .erp-left-col { width: 540px !important; max-width: 540px !important; }
+        .erp-bleed-wrapper {
+            max-width: 100% !important;
+            padding-left: calc(50% - 640px + 2rem) !important;
+            padding-right: 2rem !important;
+        }
+    }
+</style>
+<section class="bg-white pt-8 pb-4 lg:pt-24 lg:pb-8">
+    <div class="erp-bleed-wrapper mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8 relative z-20 -mt-10 lg:-mt-18 pb-6 lg:pb-16 overflow-hidden">
         <div class="w-full rounded-[1rem] bg-white flex flex-col lg:flex-row items-stretch shadow-[0_4px_25px_rgba(0,0,0,0.06)] border border-gray-100 overflow-hidden">
 
-            <div class="group flex-1 lg:max-w-[300px] xl:max-w-[320px] flex flex-col justify-between p-6 lg:p-8 border-b lg:border-b-0 lg:border-r border-gray-100 shrink-0 bg-white transition-all duration-300 hover:bg-slate-50/50 cursor-pointer">
+            <div class="erp-left-col group flex-1 flex flex-col justify-center p-6 lg:p-8 border-b lg:border-b-0 lg:border-r border-gray-100 shrink-0 bg-white transition-all duration-300 hover:bg-slate-50/50 cursor-pointer">
                 <div>
-                    <span class="text-primary font-bold text-lg md:text-sm tracking-wide inline-block border-b-[3px] border-primary pb-0.5 mb-3 mx-0 uppercase">
-                        ERP SYSTEM
+                    <span class="text-primary font-bold text-lg md:text-base tracking-wide inline-block mb-3 mx-0 uppercase">
+                        <span class="border-b-[3px] border-primary pb-0.5">ERP</span> SYSTEM
                     </span>
-                    <h2 class="text-[#043B94] text-xl xl:text-2xl font-bold leading-tight mb-4 transition-colors duration-300 group-hover:text-blue-700">
+                    <h2 class="text-[#043B94] text-3xl xl:text-4xl font-bold leading-tight mb-4 transition-colors duration-300 group-hover:text-blue-700">
                         <?= getCurrentLang() === 'th' ? 'ระบบ ERP คืออะไร' : 'What is an ERP System?' ?>
                     </h2>
-                    <p class="text-gray-500 text-sm leading-relaxed mb-6">
+                    <p class="text-gray-500 text-lg leading-relaxed mb-6">
                         <?= getCurrentLang() === 'th' 
                             ? 'ERP คือ ระบบที่รวบรวมและเชื่อมโยงกระบวนการทำงานหลักขององค์กร ไม่ว่าจะเป็นการขาย การจัดซื้อ คลังสินค้า การเงิน การผลิต ทรัพยากรบุคคลและงานอื่นๆ ให้ทำงานร่วมกันบนฐานข้อมูลเดียวแบบเรียลไทม์ ช่วยให้ผู้บริหารมองเห็นภาพรวม ตัดสินใจได้แม่นยำและตอบสนองต่อการเปลี่ยนแปลงได้รวดเร็ว' 
                             : 'ERP is a system that integrates core business processes—such as sales, procurement, inventory, finance, manufacturing, and HR—to work together on a single real-time database. It helps executives see the big picture, make accurate decisions, and respond swiftly to changes.' 
@@ -393,7 +462,7 @@ $erpPortfolios = $mockErpPortfolios;
                 </div>
             </div>
 
-            <div class="flex-[4] grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 w-full">
+            <div class="erp-right-col flex-[4] grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 w-full">
                 <?php
                 $serviceCards = [
                     ['icon' => asset_url('images/ERP_1.svg'), 'title' => getCurrentLang() === 'th' ? 'ข้อมูลเชื่อมต่อครบทุกแผนก' : 'Connected Data Across Departments', 'desc' => getCurrentLang() === 'th' ? 'ข้อมูลเป็นหนึ่งเดียว ไม่ต้องทำงานซ้ำ' : 'Single source of truth, eliminating duplicate work.', 'href' => '#'],
@@ -424,15 +493,15 @@ $erpPortfolios = $mockErpPortfolios;
                         $borderClass .= ' lg:border-r-0';
                     }
                 ?>
-                    <div class="relative group cursor-pointer flex flex-col justify-between p-6 lg:p-8 <?= $borderClass ?> border-gray-100 bg-white transition-all duration-300 ease-out hover:shadow-[0_0_30px_rgba(0,0,0,0.08)] hover:-translate-y-1 hover:z-10 hover:rounded-xl">
+                    <div class="relative group cursor-pointer flex flex-col justify-center p-6 lg:p-8 <?= $borderClass ?> border-gray-100 bg-white transition-all duration-300 ease-out hover:shadow-[0_0_30px_rgba(0,0,0,0.08)] hover:-translate-y-1 hover:z-10 hover:rounded-xl">
                         <div>
                             <div class="h-14 w-14 mx-auto mb-5 flex items-center justify-center transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:-translate-y-2 group-hover:scale-110">
                                 <img src="<?= e($card['icon']) ?>" alt="<?= e($card['title']) ?>" class="h-full w-full object-contain">
                             </div>
-                            <h2 class="text-[#043B94] font-bold text-base md:text-lg xl:text-xl text-center mb-3 whitespace-normal tracking-tight transition-colors duration-300 group-hover:text-blue-600">
+                            <h2 class="text-[#043B94] font-bold text-lg md:text-xl xl:text-2xl text-center mb-3 whitespace-normal tracking-tight transition-colors duration-300 group-hover:text-blue-600">
                                 <?= e($card['title']) ?>
                             </h2>
-                            <p class="text-gray-500 text-sm md:text-base leading-relaxed mb-6 text-left transition-colors duration-300 group-hover:text-gray-600">
+                            <p class="text-gray-500 text-base md:text-lg leading-relaxed mb-6 text-center transition-colors duration-300 group-hover:text-gray-600">
                                 <?= e($card['desc']) ?>
                             </p>
                         </div>
@@ -473,7 +542,7 @@ $erpPortfolios = $mockErpPortfolios;
     </div>
 </section> -->
 
-<section id="modules" class="bg-slate-50 py-10 lg:py-20 font-sans border-t border-slate-100">
+<section id="modules" class="bg-slate-50 py-10 lg:py-12 font-sans border-t border-slate-100">
     <div class="mx-auto max-w-7xl px-6 sm:px-6 lg:px-8">
         
         <div class="text-center max-w-3xl mx-auto mb-10 lg:mb-16">
@@ -491,16 +560,18 @@ $erpPortfolios = $mockErpPortfolios;
             <?php foreach ($modulesData as $module): ?>
                 <div class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm hover:shadow-xl hover:bg-primary hover:border-primary transition-all duration-300 group hover:-translate-y-1 relative overflow-hidden">
                     
-                    <div class="relative z-10">
-                        <div class="w-16 h-16 bg-blue-50/60 group-hover:bg-white/20 rounded-full flex items-center justify-center mb-6 mx-auto md:mx-0 transition-colors duration-300">
+                    <div class="relative z-10 flex flex-row items-center gap-5">
+                        <div class="shrink-0 w-16 h-16 bg-blue-50/60 group-hover:bg-white/20 rounded-full flex items-center justify-center transition-colors duration-300">
                             <img src="<?= e(asset_url('images/' . $module['icon'])) ?>" alt="<?= e($module['name_en']) ?>" class="w-10 h-10 object-contain group-hover:scale-110 transition-all duration-300" />
                         </div>
-                        <h3 class="text-center md:text-left text-lg font-bold text-[#043B94] mb-3 group-hover:text-white transition-colors">
-                            <?= e(getCurrentLang() === 'th' ? $module['name_th'] : $module['name_en']) ?> 
-                        </h3>
-                        <p class="text-sm text-slate-500 group-hover:text-white/90 leading-relaxed transition-colors">
-                            <?= e(getCurrentLang() === 'th' ? $module['description_th'] : $module['description_en']) ?>
-                        </p>
+                        <div class="text-left flex-1">
+                            <h3 class="text-xl font-bold text-[#043B94] mb-2 group-hover:text-white transition-colors">
+                                <?= e(getCurrentLang() === 'th' ? $module['name_th'] : $module['name_en']) ?> 
+                            </h3>
+                            <p class="text-base text-slate-500 group-hover:text-white/90 leading-relaxed transition-colors line-clamp-2 md:line-clamp-none">
+                                <?= e(getCurrentLang() === 'th' ? $module['description_th'] : $module['description_en']) ?>
+                            </p>
+                        </div>
                     </div>
                 </div>
             <?php endforeach; ?>
@@ -614,8 +685,8 @@ $erpPortfolios = $mockErpPortfolios;
                             <img src="<?= e($benefit['icon']) ?>" alt="<?= e($benefit['title']) ?>" class="h-full w-full object-contain">
                         </div>
                         <div>
-                            <h4 class="text-base sm:text-sm font-bold text-[#043B94] mb-1 sm:mb-1"><?= e($benefit['title']) ?></h4>
-                            <p class="text-sm sm:text-xs text-slate-500 leading-relaxed"><?= e($benefit['desc']) ?></p>
+                            <h4 class="text-lg sm:text-base font-bold text-[#043B94] mb-1 sm:mb-1"><?= e($benefit['title']) ?></h4>
+                            <p class="text-base sm:text-sm text-slate-500 leading-relaxed"><?= e($benefit['desc']) ?></p>
                         </div>
                     </div>
                 <?php else: ?>
@@ -625,8 +696,8 @@ $erpPortfolios = $mockErpPortfolios;
                             <img src="<?= e($benefit['icon']) ?>" alt="<?= e($benefit['title']) ?>" class="h-full w-full object-contain">
                         </div>
                         <div>
-                            <h4 class="text-sm font-bold text-[#043B94] mb-1"><?= e($benefit['title']) ?></h4>
-                            <p class="text-xs text-slate-500 leading-relaxed"><?= e($benefit['desc']) ?></p>
+                            <h4 class="text-base font-bold text-[#043B94] mb-1"><?= e($benefit['title']) ?></h4>
+                            <p class="text-sm text-slate-500 leading-relaxed"><?= e($benefit['desc']) ?></p>
                         </div>
                     </div>
                 <?php endif; ?>
