@@ -192,19 +192,21 @@ $shareUrl = urlencode(request_origin_url() . ($_SERVER['REQUEST_URI'] ?? ''));
         font-size: 1rem;
         line-height: 1.8;
     }
-    .article-format h2, 
-    .article-format h3 {
-        color: #0d6efd; /* สีน้ำเงินตามภาพ (ปรับเป็นสี Primary ของคุณได้) */
+    .article-format h2 {
+        color: #0663F6; /* Primary Blue */
         font-weight: 700;
         margin-top: 2.5rem;
         margin-bottom: 1rem;
         line-height: 1.4;
-    }
-    .article-format h2 {
         font-size: 1.5rem;
     }
     .article-format h3 {
-        font-size: 1.25rem;
+        color: #022862; /* Dark Navy */
+        font-weight: 700;
+        margin-top: 1.5rem;
+        margin-bottom: 0;
+        line-height: 1.4;
+        font-size: 1.125rem;
     }
     .article-format p {
         margin-bottom: 1.25rem;
