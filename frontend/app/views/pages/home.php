@@ -80,12 +80,6 @@ $mockArticles = [
         .delay-300 { animation-delay: 300ms; }
         .delay-400 { animation-delay: 400ms; }
         .delay-500 { animation-delay: 500ms; }
-        @keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-        .animate-scroll { animation: scroll 20s linear infinite; }
-        .animate-scroll:hover { animation-play-state: paused; }
-        /* Custom responsive styles to bypass missing Tailwind build step */
-        .mobile-hero-woman { width: 65%; bottom: -0px; right: 0%; }
-        @media (min-width: 768px) { .mobile-hero-woman { width: auto; bottom: 0; right: 0; } }
     </style>
 
     <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 pt-10 pb-16 md:pt-12 md:pb-24 lg:pt-28 lg:pb-32 relative z-10">
