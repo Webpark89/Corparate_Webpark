@@ -144,9 +144,9 @@ $reviews = $statement->fetchAll();
                                         เผยแพร่
                                     </span>
                                 <?php else: ?>
-                                    <span class="inline-flex items-center rounded-lg border border-slate-200 bg-slate-50 px-2.5 py-1 text-xs font-semibold text-slate-500">
-                                        <span class="w-1.5 h-1.5 rounded-full bg-slate-400 mr-1.5"></span>
-                                        ไม่เผยแพร่
+                                    <span class="inline-flex items-center gap-1 rounded-lg border border-slate-300 bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-600">
+                                        <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                                        ซ่อนอยู่
                                     </span>
                                 <?php endif; ?>
                             </td>
@@ -165,6 +165,24 @@ $reviews = $statement->fetchAll();
                                         class="bg-white px-3 py-1.5 text-xs font-semibold text-slate-600 transition hover:bg-slate-50 hover:text-blue-600">
                                         แก้ไข
                                     </a>
+                                    <form action="toggle_status.php" method="post" class="js-toggle-form">
+                                        <input type="hidden" name="id" value="<?= (int) $row['id'] ?>">
+                                        <input type="hidden" name="status" value="<?= (int) $row['is_active'] ?>">
+                                        <?= csrf_field() ?>
+                                        <?php if ((int) $row['is_active'] === 0): ?>
+                                        <button type="submit"
+                                            class="border-l border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-emerald-600 transition hover:bg-emerald-50 cursor-pointer"
+                                            title="แสดงรีวิวนี้บนหน้าเว็บ">
+                                            แสดง
+                                        </button>
+                                        <?php else: ?>
+                                        <button type="submit"
+                                            class="border-l border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-500 transition hover:bg-slate-100 cursor-pointer"
+                                            title="ซ่อนรีวิวนี้จากหน้าเว็บ">
+                                            ซ่อน
+                                        </button>
+                                        <?php endif; ?>
+                                    </form>
                                     <button type="button"
                                         onclick="if(confirm('ยืนยันการลบรีวิวนี้?')) window.location.href='delete.php?id=<?= (int) $row['id'] ?>'"
                                         class="border-l border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-rose-600 transition hover:bg-rose-50 cursor-pointer">
@@ -198,11 +216,22 @@ $reviews = $statement->fetchAll();
         const rows = document.querySelectorAll('.js-clickable-row');
         rows.forEach(row => {
             row.addEventListener('click', function(event) {
-                if (!event.target.closest('a') && !event.target.closest('button')) {
+                if (!event.target.closest('a') && !event.target.closest('button') && !event.target.closest('form')) {
                     const url = this.getAttribute('data-href');
                     if (url) {
                         window.location.href = url;
                     }
+                }
+            });
+        });
+
+        const toggleForms = document.querySelectorAll('.js-toggle-form');
+        toggleForms.forEach(form => {
+            form.addEventListener('submit', function(event) {
+                const currentStatus = parseInt(form.querySelector('input[name="status"]').value);
+                const action = currentStatus === 0 ? 'แสดงรีวิวนี้บนหน้าเว็บ' : 'ซ่อนรีวิวนี้จากหน้าเว็บ';
+                if (!confirm(action + '?')) {
+                    event.preventDefault();
                 }
             });
         });

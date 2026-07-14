@@ -185,6 +185,24 @@ $partners = $statement->fetchAll();
                                         class="bg-white px-3 py-1.5 text-[11px] font-semibold text-slate-600 transition hover:bg-slate-50">
                                         แก้ไข
                                     </a>
+                                    <form action="toggle_status.php" method="post" class="js-toggle-form">
+                                        <input type="hidden" name="id" value="<?= (int) $row['id'] ?>">
+                                        <input type="hidden" name="status" value="<?= (int) $row['is_active'] ?>">
+                                        <?= csrf_field() ?>
+                                        <?php if ((int) $row['is_active'] === 0): ?>
+                                        <button type="submit"
+                                            class="border-l border-slate-200 bg-white px-3 py-1.5 text-[11px] font-semibold text-emerald-600 transition hover:bg-emerald-50 cursor-pointer"
+                                            title="แสดงโลโก้นี้บนหน้าเว็บ">
+                                            แสดง
+                                        </button>
+                                        <?php else: ?>
+                                        <button type="submit"
+                                            class="border-l border-slate-200 bg-white px-3 py-1.5 text-[11px] font-semibold text-slate-500 transition hover:bg-slate-100 cursor-pointer"
+                                            title="ซ่อนโลโก้นี้จากหน้าเว็บ">
+                                            ซ่อน
+                                        </button>
+                                        <?php endif; ?>
+                                    </form>
                                     <button type="button"
                                         onclick="if(confirm('ยืนยันการลบโลโก้พาร์ทเนอร์นี้?')) window.location.href='delete.php?id=<?= (int) $row['id'] ?>'"
                                         class="border-l border-slate-200 bg-white px-3 py-1.5 text-[11px] font-semibold text-rose-600 transition hover:bg-rose-50 cursor-pointer">
@@ -198,7 +216,7 @@ $partners = $statement->fetchAll();
 
                     <?php if (!$partners): ?>
                         <tr>
-                            <td colspan="6" class="px-4 py-12 text-center text-xs text-slate-400 border-dashed">
+                            <td colspan="8" class="px-4 py-12 text-center text-xs text-slate-400 border-dashed">
                                 ไม่พบข้อมูลพาร์ทเนอร์ในระบบ
                             </td>
                         </tr>
@@ -215,11 +233,22 @@ $partners = $statement->fetchAll();
         const rows = document.querySelectorAll('.js-clickable-row');
         rows.forEach(row => {
             row.addEventListener('click', function(event) {
-                if (!event.target.closest('a') && !event.target.closest('button')) {
+                if (!event.target.closest('a') && !event.target.closest('button') && !event.target.closest('form')) {
                     const url = this.getAttribute('data-href');
                     if (url) {
                         window.location.href = url;
                     }
+                }
+            });
+        });
+
+        const toggleForms = document.querySelectorAll('.js-toggle-form');
+        toggleForms.forEach(form => {
+            form.addEventListener('submit', function(event) {
+                const currentStatus = parseInt(form.querySelector('input[name="status"]').value);
+                const action = currentStatus === 0 ? 'แสดงโลโก้พันธมิตรนี้บนหน้าเว็บ' : 'ซ่อนโลโก้พันธมิตรนี้จากหน้าเว็บ';
+                if (!confirm(action + '?')) {
+                    event.preventDefault();
                 }
             });
         });
