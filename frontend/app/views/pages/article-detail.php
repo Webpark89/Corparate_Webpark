@@ -287,7 +287,7 @@ $shareUrl = urlencode(request_origin_url() . ($_SERVER['REQUEST_URI'] ?? ''));
                            class="group block overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-md">
 
                             <img
-                                src="<?= resolve_article_image_url($item['image_path']) ?>"
+                                src="<?= resolve_article_image_url($item['image_path'] ?? '') ?>"
                                 class="h-48 w-full object-cover transition duration-300 group-hover:scale-105"
                                 alt="<?= e($item['title']) ?>"
                             >

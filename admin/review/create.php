@@ -3,13 +3,16 @@
 /**
  * Create a new review — renders the form and delegates POST to _save.php.
  */
-$pageTitle = 'เพิ่มรีวิวใหม่';
-$page = 'review';
-require_once __DIR__ . '/../includes/header.php';
+require_once __DIR__ . '/../includes/functions.php';
+require_login();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     require __DIR__ . '/_save.php';
 }
+
+$pageTitle = 'เพิ่มรีวิวใหม่';
+$page = 'review';
+require_once __DIR__ . '/../includes/header.php';
 
 $review = [];
 $action = 'create';

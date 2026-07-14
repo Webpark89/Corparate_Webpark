@@ -46,9 +46,12 @@ class HomeController
                 $latestArticles[] = [
                     'id' => (int) ($row['id'] ?? 0),
                     'title' => (string) ($row['title'] ?? ''),
+                    'summary' => $summary,
                     'description' => $summary,
+                    'category' => (string) ($row['category'] ?? 'Knowledge'),
                     'date' => (string) ($row['created_at'] ?? ''),
-                    'image' => (string) ($row['image_path'] ?? ''),
+                    'image_path' => (string) ($row['image_path'] ?? $row['cover_image'] ?? ''),
+                    'image' => (string) ($row['image_path'] ?? $row['cover_image'] ?? ''),
                 ];
             }
 
@@ -87,9 +90,12 @@ class HomeController
             $portfolioRows = $portfolioModel->getPublished();
             $displayPortfolios = array_map(static function (array $row): array {
                 return [
+                    'id' => (int) ($row['id'] ?? 0),
                     'title' => (string) ($row['title'] ?? ''),
                     'description' => (string) ($row['description'] ?? ''),
-                    'cover_image' => (string) ($row['cover_image'] ?? ($row['image_path'] ?? '')),
+                    'category' => (string) ($row['category'] ?? 'Portfolio'),
+                    'image_path' => (string) ($row['image_path'] ?? $row['cover_image'] ?? ''),
+                    'cover_image' => (string) ($row['cover_image'] ?? $row['image_path'] ?? ''),
                     'items' => (string) ($row['items'] ?? ''),
                 ];
             }, array_slice($portfolioRows, 0, 4));
@@ -732,6 +738,7 @@ class HomeController
                     'title' => (string) ($row['title'] ?? ''),
                     'description' => (string) ($row['description'] ?? ''),
                     'slug' => (string) ($row['slug'] ?? ''),
+                    'image_path' => (string) ($row['image_path'] ?? $row['cover_image'] ?? ''),
                 ];
             }, $rows);
         } catch (Throwable $e) {

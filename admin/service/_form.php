@@ -74,7 +74,7 @@ if (!empty($data['details_json'])) {
                 <div>
                     <label class="text-sm font-bold text-slate-700 block mb-1">รูปภาพประกอบ</label>
                     <?php if (!empty($data['image'])): ?>
-                        <div class="mb-2"><img src="<?= e($data['image']) ?>" class="w-24 h-24 rounded-xl object-cover border"></div>
+                        <div class="mb-2"><img src="<?= e(upload_url($data['image'])) ?>" class="w-24 h-24 rounded-xl object-cover border"></div>
                         <input type="hidden" name="old_image" value="<?= e($data['image']) ?>">
                     <?php endif; ?>
                     <input type="file" name="image" class="w-full text-sm">
