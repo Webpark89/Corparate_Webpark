@@ -51,7 +51,7 @@ $ctaImage = asset_url('images/bg-cta.jpg');
     }
     @media (min-width: 768px) {
         .hero-bg-img {
-            object-position: 60% top !important;
+            object-position: right center !important;
         }
         .hero-overlay-mobile {
             background: transparent !important;
@@ -66,7 +66,7 @@ $ctaImage = asset_url('images/bg-cta.jpg');
 <section class="relative overflow-hidden font-sans bg-white border-none">
     <div class="absolute inset-0 z-0">
         <img src="<?= e($heroImage) ?>" alt="WEBPARK Solutions Background" 
-            class="w-full h-full object-cover hero-bg-img opacity-100">
+            class="w-full h-full object-cover md:object-contain hero-bg-img opacity-100">
             
         <div class="absolute inset-0 hero-overlay-mobile"></div>
         <div class="absolute inset-0 hero-overlay-gradient"></div>
@@ -153,9 +153,20 @@ $ctaImage = asset_url('images/bg-cta.jpg');
 
 <section class="bg-white" style="padding-top: 1.5rem; padding-bottom: 2.5rem;">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-            <div class="relative flex-1">
-                <div id="category-filters" class="article-filter-track flex gap-3 overflow-x-auto py-1 pr-4">
+        <div class="flex flex-col gap-4 md:flex-row md:items-center relative w-full">
+            <div class="hidden items-center md:flex shrink-0 pr-4">
+                <button id="filter-scroll-left"
+                        type="button"
+                        class="article-filter-arrow flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 text-slate-500 transition-all duration-300 hover:bg-slate-50 opacity-0 pointer-events-none"
+                        aria-label="<?= e(t('article_list.category_scroll_left')) ?>">
+                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M15 19l-7-7 7-7"/>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="relative flex-1 overflow-hidden">
+                <div id="category-filters" class="article-filter-track flex gap-3 overflow-x-auto py-1 hide-scroll scroll-smooth" style="-ms-overflow-style: none; scrollbar-width: none;">
                     
                     <!-- ปุ่ม: ทั้งหมด -->
                     <button type="button"
@@ -180,22 +191,23 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                             <?= e($name) ?>
                         </button>
                     <?php endforeach; ?>
+                    
+                    <!-- Mock categories for testing scroll -->
+                    <button type="button" data-filter="mock-1" class="article-filter-btn whitespace-nowrap rounded-md border px-5 py-2 text-sm font-medium transition-colors border-blue-200 bg-white text-[#1a2b6d] hover:border-transparent hover:bg-blue-600 hover:text-white">Cloud Solutions</button>
+                    <button type="button" data-filter="mock-2" class="article-filter-btn whitespace-nowrap rounded-md border px-5 py-2 text-sm font-medium transition-colors border-blue-200 bg-white text-[#1a2b6d] hover:border-transparent hover:bg-blue-600 hover:text-white">Cyber Security</button>
+                    <button type="button" data-filter="mock-3" class="article-filter-btn whitespace-nowrap rounded-md border px-5 py-2 text-sm font-medium transition-colors border-blue-200 bg-white text-[#1a2b6d] hover:border-transparent hover:bg-blue-600 hover:text-white">UX/UI Design</button>
+                    <button type="button" data-filter="mock-4" class="article-filter-btn whitespace-nowrap rounded-md border px-5 py-2 text-sm font-medium transition-colors border-blue-200 bg-white text-[#1a2b6d] hover:border-transparent hover:bg-blue-600 hover:text-white">Machine Learning</button>
+                    <button type="button" data-filter="mock-5" class="article-filter-btn whitespace-nowrap rounded-md border px-5 py-2 text-sm font-medium transition-colors border-blue-200 bg-white text-[#1a2b6d] hover:border-transparent hover:bg-blue-600 hover:text-white">Business Intelligence</button>
+                    <button type="button" data-filter="mock-6" class="article-filter-btn whitespace-nowrap rounded-md border px-5 py-2 text-sm font-medium transition-colors border-blue-200 bg-white text-[#1a2b6d] hover:border-transparent hover:bg-blue-600 hover:text-white">Mobile Application</button>
+                    <button type="button" data-filter="mock-7" class="article-filter-btn whitespace-nowrap rounded-md border px-5 py-2 text-sm font-medium transition-colors border-blue-200 bg-white text-[#1a2b6d] hover:border-transparent hover:bg-blue-600 hover:text-white">E-Commerce</button>
 
                 </div>
             </div>
 
-            <div class="hidden items-center gap-2 md:flex">
-                <button id="filter-scroll-left"
-                        type="button"
-                        class="article-filter-arrow flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 text-slate-500 transition-colors hover:bg-slate-50"
-                        aria-label="<?= e(t('article_list.category_scroll_left')) ?>">
-                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M15 19l-7-7 7-7"/>
-                    </svg>
-                </button>
+            <div class="hidden items-center md:flex shrink-0 pl-4">
                 <button id="filter-scroll-right"
                         type="button"
-                        class="article-filter-arrow flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 text-slate-500 transition-colors hover:bg-slate-50"
+                        class="article-filter-arrow flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 text-slate-500 transition-all duration-300 hover:bg-slate-50"
                         aria-label="<?= e(t('article_list.category_scroll_right')) ?>">
                     <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M9 5l7 7-7 7"/>
@@ -230,13 +242,18 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                 $categorySlug = trim((string) ($article['category_slug'] ?? ''));
                 $summary = trim(strip_tags((string) ($article['summary'] ?? '')));
                 $imageSrc = resolve_article_image_url((string) ($article['image_path'] ?? ''), $fallbackImage);
+                $articleTitle = (string) ($article['title'] ?? t('article_list.page_title'));
+                
+                $linkToUse = (trim($articleTitle) === 'ทำไม SEO ถึงสำคัญสำหรับธุรกิจในปีนี้') 
+                             ? '/Corparate_Webpark/article-detail-mockup' 
+                             : $detailUrl;
                 ?>
                 <article class="article-card article-card-slide snap-start group flex flex-col overflow-hidden rounded-[1.5rem] border border-slate-100 bg-white shadow-[0_4px_20px_rgba(0,0,0,0.04)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(0,0,0,0.08)]"
                          data-category="<?= e($categorySlug !== '' ? $categorySlug : 'all') ?>">
                     
                     <!-- ส่วนรูปภาพ ปรับเป็น 4/3 ให้รูปดูเต็มขึ้น -->
-                    <a href="/Corparate_Webpark/article-detail-mockup" class="relative block aspect-[4/3] w-full overflow-hidden">
-                        <img src="<?= e($imageSrc) ?>" alt="<?= e($article['title'] ?? '') ?>" class="article-card__image h-full w-full object-cover transition-transform duration-500 group-hover:scale-105">
+                    <a href="<?= e($linkToUse) ?>" class="relative block aspect-[4/3] w-full overflow-hidden">
+                        <img src="<?= e($imageSrc) ?>" alt="<?= e($articleTitle) ?>" class="article-card__image h-full w-full object-cover transition-transform duration-500 group-hover:scale-105">
                     </a>
                     
                     <!-- ส่วนเนื้อหา -->
@@ -250,9 +267,9 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                         </div>
                         
                         <!-- หัวข้อบทความ -->
-                        <a href="/Corparate_Webpark/article-detail-mockup" class="block mb-3">
+                        <a href="<?= e($linkToUse) ?>" class="block mb-3">
                             <h3 class="article-card__title text-2xl lg:text-lg font-bold text-[#1a2b6d] leading-snug line-clamp-2">
-                                <?= e($article['title'] ?? t('article_list.page_title')) ?>
+                                <?= e($articleTitle) ?>
                             </h3>
                         </a>
                         
@@ -265,7 +282,7 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                         
                         <!-- ปุ่มอ่านเพิ่มเติม (ดันลงล่างสุด และชิดขวา) -->
                         <div class="mt-auto pt-6 flex" style="justify-content: flex-end;">
-                            <a href="/Corparate_Webpark/article-detail-mockup#" class="article-card__cta inline-flex items-center gap-1.5 text-lg lg:text-sm font-semibold text-blue-500 transition-all hover:gap-2 hover:text-blue-700">
+                            <a href="<?= e($linkToUse) ?>" class="article-card__cta inline-flex items-center gap-1.5 text-lg lg:text-sm font-semibold text-blue-500 transition-all hover:gap-2 hover:text-blue-700">
                                 <?= e(t('common.cta_read_more')) ?>
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                                     <path d="M5 12h14M12 5l7 7-7 7"/>
@@ -577,8 +594,42 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     if (scrollLeftBtn && scrollRightBtn && filterTrack) {
-        scrollLeftBtn.addEventListener('click', () => filterTrack.scrollBy({ left: -200, behavior: 'smooth' }));
-        scrollRightBtn.addEventListener('click', () => filterTrack.scrollBy({ left: 200, behavior: 'smooth' }));
+        const updateScrollButtons = () => {
+            const scrollLeft = filterTrack.scrollLeft;
+            const scrollWidth = filterTrack.scrollWidth;
+            const clientWidth = filterTrack.clientWidth;
+            
+            // At the leftmost edge (or if not scrolled at all)
+            if (scrollLeft <= 5) {
+                scrollLeftBtn.classList.add('opacity-0', 'pointer-events-none');
+                scrollRightBtn.classList.remove('opacity-0', 'pointer-events-none');
+            } 
+            // At the rightmost edge
+            else if (Math.ceil(scrollLeft + clientWidth) >= scrollWidth - 5) {
+                scrollLeftBtn.classList.remove('opacity-0', 'pointer-events-none');
+                scrollRightBtn.classList.add('opacity-0', 'pointer-events-none');
+            } 
+            // In the middle
+            else {
+                scrollLeftBtn.classList.remove('opacity-0', 'pointer-events-none');
+                scrollRightBtn.classList.remove('opacity-0', 'pointer-events-none');
+            }
+        };
+
+        filterTrack.addEventListener('scroll', updateScrollButtons);
+        updateScrollButtons();
+        setTimeout(updateScrollButtons, 150);
+        setTimeout(updateScrollButtons, 500);
+        window.addEventListener('resize', updateScrollButtons);
+
+        scrollLeftBtn.addEventListener('click', () => {
+            filterTrack.scrollLeft -= 300;
+            setTimeout(updateScrollButtons, 350);
+        });
+        scrollRightBtn.addEventListener('click', () => {
+            filterTrack.scrollLeft += 300;
+            setTimeout(updateScrollButtons, 350);
+        });
     }
     
     window.addEventListener('resize', () => {
