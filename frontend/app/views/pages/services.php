@@ -327,9 +327,10 @@ $services = $mockServices;
 
 <section id="our-services" class="bg-white py-8 lg:py-16 font-sans scroll-mt-6">
     <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8">
-        <h1 class="text-4xl md:text-6xl lg:text-7xl font-extrabold leading-tight tracking-tight mb-3 md:mb-4 gsap-fade-up" style="color: #0663F6 !important;">
+        <h1 class="text-4xl md:text-6xl lg:text-7xl font-extrabold leading-tight tracking-tight mb-0 md:mb-1 gsap-fade-up" style="color: #0663F6 !important;">
             <?= e(t('common.nav_services') !== 'common.nav_services' ? t('common.nav_services') : (getCurrentLang() === 'th' ? 'บริการของเรา' : 'Our Services')) ?>
         </h1>
+        <div class="mt-2 mb-4 md:mb-6 gsap-fade-up" style="width: 48px; height: 3px; background-color: #0663F6;"></div>
 
         <span class="text-2xl font-bold gsap-fade-up max-w-2xl mb-4 block leading-tight" style="color: #043B94;">
             <?= getCurrentLang() === 'th' ? 'บริการของเรา<br>ครอบคลุมทุกมิติธุรกิจดิจิทัล' : 'Our services<br>cover every dimension of digital business' ?>
@@ -432,8 +433,13 @@ $services = $mockServices;
                 <h2 class="text-3xl md:text-4xl font-extrabold text-white mb-4 leading-tight">
                     <?= getCurrentLang() === 'th' ? 'พร้อมขับเคลื่อนธุรกิจของคุณไปข้างหน้าหรือยัง?' : 'Ready to drive your business forward?' ?>
                 </h2>
-                <p class="text-base md:text-lg max-w-xl mx-auto mb-8 leading-relaxed" style="color: #bfdbfe;">
-                    <?= getCurrentLang() === 'th' ? 'มาคุยกับทีม Webpark เพื่อค้นหาโซลูชันที่เหมาะกับธุรกิจของคุณ ทั้ง Digital Platform, ระบบ AI และ ERP / ERM ในมุมที่ใช้สำหรับองค์กร' : 'Talk to the Webpark team to find the right solution for your business, including Digital Platforms, AI systems, and ERP / ERM tailored for enterprise use.' ?>
+                <!-- Desktop Version -->
+                <p class="hidden md:block text-base md:text-lg max-w-3xl mx-auto mb-8 leading-relaxed" style="color: #bfdbfe;">
+                    <?= getCurrentLang() === 'th' ? 'มาคุยกับทีม Webpark เพื่อค้นหาโซลูชันที่เหมาะกับธุรกิจของคุณ<br>ทั้ง Digital Platform, ระบบ AI และ ERP / ERM ในมุมที่ใช้สำหรับองค์กร' : 'Talk to the Webpark team to find the right solution for your business,<br>including Digital Platforms, AI systems, and ERP / ERM tailored for enterprise use.' ?>
+                </p>
+                <!-- Mobile Version -->
+                <p class="block md:hidden text-base max-w-sm mx-auto mb-8 leading-relaxed" style="color: #bfdbfe;">
+                    <?= getCurrentLang() === 'th' ? 'มาคุยกับทีม WEBPARK<br>เพื่อค้นหาโซลูชัน<br>ที่เหมาะกับธุรกิจของคุณ<br>ทั้ง DIGITAL PLATFORM,<br>ระบบ AI และ ERP / ERM<br>ในมุมที่ใช้สำหรับองค์กร' : 'Talk to the WEBPARK team<br>to find the right solution<br>for your business,<br>including DIGITAL PLATFORMS,<br>AI systems, and ERP / ERM<br>tailored for enterprise use.' ?>
                 </p>
                 <a
                     href="<?= e(route_url('/contact')) ?>"
@@ -452,15 +458,18 @@ $services = $mockServices;
     </div>
 </section>
 
-<section class="bg-white py-8 font-sans">
+<section class="bg-[#eef6ff] py-12 lg:py-16 font-sans">
     <div class="mx-auto max-w-7xl px-6 sm:px-6 lg:px-8">
 
-        <div class="text-left max-w-3xl mb-12">
-            <span class="text-3xl md:text-4xl font-bold text-left gsap-fade-up mb-5 block" style="color: #054FC5 !important; -webkit-text-fill-color: #054FC5 !important; background: none !important;">
-                <?= getCurrentLang() === 'th' ? 'แนวคิดในการทำงานของเรา' : 'Our Approach' ?>
-            </span>
-            <p class="text-slate-500 text-lg md:text-xl leading-relaxed max-w-2xl">
-                <?= getCurrentLang() === 'th' ? 'กระบวนการทำงานที่เป็นระบบ<br>เพื่อส่งมอบโซลูชันดิจิทัลที่ตอบโจทย์ธุรกิจ<br>และความยั่งยืนของข้อมูลธุรกิจที่องค์กรถือครอง' : 'A systematic work process<br>to deliver digital solutions that meet business needs<br>and ensure the sustainability of business data held by the organization.' ?>
+        <div class="flex flex-col items-center text-center max-w-5xl mx-auto mb-12">
+            <div class="flex flex-col items-start mb-4 md:mb-6">
+                <span class="text-3xl md:text-4xl font-bold gsap-fade-up mb-1 block" style="color: #054FC5 !important; -webkit-text-fill-color: #054FC5 !important; background: none !important;">
+                    <?= getCurrentLang() === 'th' ? 'แนวคิดในการทำงานของเรา' : 'Our Approach' ?>
+                </span>
+                <div class="mt-1 gsap-fade-up" style="width: 48px; height: 3px; background-color: #0663F6;"></div>
+            </div>
+            <p class="text-slate-500 text-lg md:text-xl leading-relaxed max-w-4xl text-center mx-auto">
+                <?= getCurrentLang() === 'th' ? 'กระบวนการทำงานที่เป็นระบบ เพื่อส่งมอบโซลูชันดิจิทัลที่ตอบโจทย์ธุรกิจ และความยั่งยืนของข้อมูลธุรกิจที่องค์กรถือครอง' : 'A systematic work process to deliver digital solutions that meet business needs and ensure the sustainability of business data held by the organization.' ?>
             </p>
         </div>
 
