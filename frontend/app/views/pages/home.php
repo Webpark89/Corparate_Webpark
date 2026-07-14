@@ -15,28 +15,15 @@ $heroImage = asset_url('images/HeroHome.svg');
 
 $projectRoot = dirname(__DIR__, 3);
 
-$resolveServiceImage = static function (string $imagePath) use ($projectRoot): string {
+$resolveServiceImage = static function (string $imagePath): string {
     $imagePath = trim($imagePath);
     if ($imagePath === '') return '';
-    if (str_starts_with($imagePath, 'http://') || str_starts_with($imagePath, 'https://')) return $imagePath;
-    if (str_starts_with($imagePath, '/assets/') || str_starts_with($imagePath, 'assets/') || str_starts_with($imagePath, 'public/assets/')) {
-        $normalizedPath = ltrim($imagePath, '/');
-        if (str_starts_with($normalizedPath, 'assets/')) $filePath = $projectRoot . '/public/' . $normalizedPath;
-        elseif (str_starts_with($normalizedPath, 'public/assets/')) $filePath = $projectRoot . '/' . $normalizedPath;
-        else $filePath = $projectRoot . '/public/assets/' . $normalizedPath;
-        return is_file($filePath) ? asset_url($imagePath) : '';
-    }
-    if (str_starts_with($imagePath, '/images/') || str_starts_with($imagePath, 'images/')) {
-        $normalizedPath = ltrim($imagePath, '/');
-        $filePath = $projectRoot . '/public/assets/' . $normalizedPath;
-        return is_file($filePath) ? asset_url($normalizedPath) : '';
-    }
-    if (str_starts_with($imagePath, '/')) return app_url(ltrim($imagePath, '/'));
-    return asset_url('images/' . ltrim($imagePath, '/'));
+    return resolve_article_image_url($imagePath);
 };
 
 $resolveReviewImage = static function (string $imagePath) use ($resolveServiceImage): string {
     $imagePath = trim($imagePath);
+    if ($imagePath === '') return asset_url('images/HeroHome.svg');
     if (str_starts_with($imagePath, '//')) return $imagePath;
     $resolvedImage = $resolveServiceImage($imagePath);
     return $resolvedImage !== '' ? $resolvedImage : asset_url('images/HeroHome.svg');
@@ -309,7 +296,7 @@ $mockArticles = [
                     }
                     
                     $catColor     = $categoryColors[$projectCat] ?? '#0066ff';
-                    $projectImage = asset_url($project['image_path'] ?? 'images/erp.png');
+                    $projectImage = resolve_article_image_url($project['image_path'] ?? '', asset_url('images/erp.png'));
                     ?>
                     <article class="portfolio-card group rounded-[1.2rem] overflow-hidden border border-slate-100 bg-white shadow-sm hover:shadow-xl transition-all duration-500 flex flex-col <?= $isVisible ?>" data-index="<?= $index ?>">
                         <a href="<?= e($projectId > 0 ? route_url('/portfolio', ['id' => $projectId]) : route_url('/portfolio')) ?>" class="flex flex-col h-full">
@@ -879,7 +866,7 @@ document.addEventListener('DOMContentLoaded', function () {
             </p>
         </div>
 
-        <?php $displayArticles = $mockArticles; // ใช้ข้อมูลจำลองบทความชั่วคราว ?>
+        <?php // $displayArticles = $mockArticles; // ใช้ข้อมูลจำลองบทความชั่วคราว ?>
         
         <?php if (count($displayArticles) > 0): ?>
         <div id="knowledge-slider" class="flex lg:grid overflow-x-auto lg:overflow-visible snap-x snap-mandatory flex-nowrap lg:flex-wrap lg:grid-cols-3 gap-8 pt-2 pb-6 hide-scrollbar">
@@ -889,7 +876,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 $artTitle    = (string)($art['title'] ?? 'Article');
                 $artSummary  = mb_strimwidth(strip_tags((string)($art['summary'] ?? '')), 0, 110, '...');
                 $artCat      = (string)($art['category'] ?? 'Knowledge');
-                $artImage    = asset_url($art['image_path'] ?? 'images/erp.png');
+                $artImage    = resolve_article_image_url($art['image_path'] ?? '', asset_url('images/erp.png'));
                 ?>
                 <article class="flex flex-col overflow-hidden rounded-2xl bg-white shadow-sm border border-slate-100 transition-all duration-300 hover:-translate-y-1 hover:shadow-md group w-full lg:w-auto shrink-0 lg:shrink snap-center lg:snap-align-none">
                     <a href="<?= e($artId > 0 ? route_url('/article', ['id' => $artId]) : route_url('/article')) ?>" class="flex flex-col h-full">

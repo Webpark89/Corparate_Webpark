@@ -49,7 +49,7 @@ $data = [
 
 $imagePath = trim($_POST['cover_image'] ?? '');
 try {
-    $uploadedImage = handle_upload('image_file', ['jpg', 'jpeg', 'png', 'webp']);
+    $uploadedImage = handle_upload('image_file', ['jpg', 'jpeg', 'png', 'webp', 'gif']);
     if ($uploadedImage) {
         $data['cover_image'] = $uploadedImage;
     } elseif ($imagePath !== '') {

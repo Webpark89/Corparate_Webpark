@@ -203,7 +203,14 @@ function handle_upload(string $field, array $allowedExtensions = ['jpg', 'jpeg',
 
     $fileInfo = new finfo(FILEINFO_MIME_TYPE);
     $mimeType = $fileInfo->file($file['tmp_name']);
-    $allowedMimeTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+    $allowedMimeTypes = [
+        'image/jpeg',
+        'image/png',
+        'image/webp',
+        'image/gif',
+        'image/svg+xml',
+        'image/svg'
+    ];
 
     if (!in_array($mimeType, $allowedMimeTypes, true)) {
         throw new RuntimeException('Invalid MIME type.');
