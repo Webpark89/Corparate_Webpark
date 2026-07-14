@@ -318,3 +318,28 @@ function resolve_article_image_url(?string $imagePath, string $fallback): string
 
     return $fallback;
 }
+
+/**
+ * Resolve partner logo image path to a public URL.
+ *
+ * @param string|null $path
+ * @return string
+ */
+function partner_logo_url(?string $path): string
+{
+    $path = trim((string) $path);
+    if ($path === '') {
+        return '';
+    }
+
+    if (preg_match('#^https?://#i', $path) === 1 || str_starts_with($path, '//')) {
+        return $path;
+    }
+
+    if (str_contains($path, '/')) {
+        return app_base_url() . '/admin/' . ltrim($path, '/');
+    }
+
+    return app_base_url() . '/admin/uploads/' . $path;
+}
+

@@ -153,6 +153,13 @@ class HomeController
             array_unshift($homeServices, $erpService);
         }
 
+        $partners = [];
+        try {
+            $partners = (new Partner())->getActive();
+        } catch (Throwable $e) {
+            $partners = [];
+        }
+
         $this->view('pages/home.php', array_merge($this->sharedData('home', 'Home'), [
             'activeTab' => $tab,
             'services' => $homeServices,
@@ -160,6 +167,7 @@ class HomeController
             'latestArticles' => $latestArticles,
             'reviews' => $reviews,
             'displayPortfolios' => $displayPortfolios,
+            'partners' => $partners,
         ]));
     }
 

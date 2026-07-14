@@ -119,9 +119,19 @@ $partners = $statement->fetchAll();
                             <td class="px-4 py-3">
                                 <div class="h-10 w-20 rounded border border-slate-200 bg-slate-50 flex items-center justify-center p-1 overflow-hidden">
                                     <?php if (!empty($row['image_url'])): ?>
-                                        <img src="<?= e($row['image_url']) ?>"
-                                            class="w-full h-full object-contain"
-                                            alt="<?= e($row['name']) ?>">
+                                        <?php
+                                        $logoUrl = '';
+                                        if (preg_match('#^https?://#i', $row['image_url'])) {
+                                            $logoUrl = $row['image_url'];
+                                        } elseif (str_contains($row['image_url'], '/')) {
+                                            $logoUrl = SITE_URL . '/admin/' . ltrim($row['image_url'], '/');
+                                        } else {
+                                            $logoUrl = upload_url($row['image_url']);
+                                        }
+                                        ?>
+                                        <img src="<?= e($logoUrl) ?>"
+                                             class="w-full h-full object-contain"
+                                             alt="<?= e($row['name']) ?>">
                                     <?php else: ?>
                                         <span class="text-[10px] text-slate-400">ไม่มีรูป</span>
                                     <?php endif; ?>

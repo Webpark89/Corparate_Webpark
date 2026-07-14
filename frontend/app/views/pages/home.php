@@ -42,11 +42,12 @@ $resolveReviewImage = static function (string $imagePath) use ($resolveServiceIm
     return $resolvedImage !== '' ? $resolvedImage : asset_url('images/HeroHome.svg');
 };
 $partnerLogos = [];
-for ($i = 24; $i <= 69; $i++) {
-    $logoFile = "image {$i}.svg";
-    $filePath = $projectRoot . '/public/assets/images/' . $logoFile;
-    if (is_file($filePath)) {
-        $partnerLogos[] = $logoFile;
+if (!empty($partners) && is_array($partners)) {
+    foreach ($partners as $p) {
+        $partnerLogos[] = [
+            'url' => partner_logo_url($p['image_url']),
+            'alt' => $p['image_alt'] ?: $p['name']
+        ];
     }
 }
 
@@ -622,7 +623,7 @@ if ($totalReviews > 0):
                     ?>
                     <?php foreach ($desktopLogos as $logo): ?>
                         <div class="flex shrink-0 items-center justify-center w-[120px] h-[60px] opacity-80 hover:opacity-100 transition-opacity duration-300">
-                            <img src="<?= e(asset_url('images/' . $logo)) ?>" alt="Partner" class="max-h-full max-w-full object-contain grayscale hover:grayscale-0 transition-all duration-300 cursor-pointer">
+                            <img src="<?= e($logo['url']) ?>" alt="<?= e($logo['alt']) ?>" class="max-h-full max-w-full object-contain grayscale hover:grayscale-0 transition-all duration-300 cursor-pointer">
                         </div>
                     <?php endforeach; ?>
                 </div>
@@ -657,7 +658,7 @@ if ($totalReviews > 0):
                 <div class="flex w-max gap-10 items-center animate-scroll py-2">
                     <?php foreach ($mobileRow1 as $logo): ?>
                         <div class="flex shrink-0 items-center justify-center w-[100px] h-[50px] opacity-90">
-                            <img src="<?= e(asset_url('images/' . $logo)) ?>" alt="Partner" class="max-h-full max-w-full object-contain cursor-pointer">
+                            <img src="<?= e($logo['url']) ?>" alt="<?= e($logo['alt']) ?>" class="max-h-full max-w-full object-contain cursor-pointer">
                         </div>
                     <?php endforeach; ?>
                 </div>
@@ -666,7 +667,7 @@ if ($totalReviews > 0):
                 <div class="flex w-max gap-10 items-center animate-scroll py-2 mt-2">
                     <?php foreach ($mobileRow2 as $logo): ?>
                         <div class="flex shrink-0 items-center justify-center w-[100px] h-[50px] opacity-90">
-                            <img src="<?= e(asset_url('images/' . $logo)) ?>" alt="Partner" class="max-h-full max-w-full object-contain cursor-pointer">
+                            <img src="<?= e($logo['url']) ?>" alt="<?= e($logo['alt']) ?>" class="max-h-full max-w-full object-contain cursor-pointer">
                         </div>
                     <?php endforeach; ?>
                 </div>
@@ -895,6 +896,11 @@ document.addEventListener('DOMContentLoaded', function () {
         </div>
         
         <div id="knowledge-dots" class="flex lg:hidden justify-center items-center gap-2 mt-4 flex-wrap"></div>
+        <?php else: ?>
+        <div class="flex flex-col items-center justify-center py-12 px-4 bg-white rounded-2xl border border-slate-100 shadow-sm w-full">
+            <img src="<?= e(asset_url('images/Empty.gif')) ?>" alt="No articles found" class="w-64 h-auto max-w-full mb-4 object-contain">
+            <p class="text-slate-500 font-medium text-center"><?= getCurrentLang() === 'th' ? 'ไม่มีข้อมูลบทความในขณะนี้' : 'No articles available at the moment' ?></p>
+        </div>
         <?php endif; ?>
     </div>
 </section>

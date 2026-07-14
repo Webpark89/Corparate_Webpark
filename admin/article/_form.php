@@ -6,7 +6,9 @@
 $data = $article ?? [];
 $action = $action ?? 'create';
 $formAction = $formAction ?? 'create.php';
-$status = isset($_POST['status']) && $_POST['status'] === 'published' ? 'published' : 'draft';
+$status = isset($_POST['status']) && in_array($_POST['status'], ['published', 'draft', 'hidden'], true)
+    ? $_POST['status']
+    : ($data['status'] ?? 'draft');
 
 $categories = db()->query('SELECT id, name FROM categories ORDER BY name')->fetchAll();
 $authors = db()->query('SELECT id, display_name FROM authors ORDER BY display_name')->fetchAll();
@@ -312,6 +314,12 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
                 <button type="submit" name="status" value="draft" 
                     class="px-6 h-11 rounded-xl border bg-amber-50 border-amber-300 text-amber-700 font-semibold hover:bg-amber-50 transition">
                     บันทึกเป็นฉบับร่าง
+                </button>
+
+                <button type="submit" name="status" value="hidden" 
+                    class="px-6 h-11 rounded-xl border bg-slate-100 border-slate-300 text-slate-600 font-semibold hover:bg-slate-200 transition inline-flex items-center gap-2">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                    บันทึกและซ่อน
                 </button>
 
                 <button type="submit" name="status" value="published" 

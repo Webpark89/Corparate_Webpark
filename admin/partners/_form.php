@@ -43,7 +43,17 @@ $inputClass = 'w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text
 
                     <div id="imagePreviewContainer" class="w-full h-32 rounded-xl border-2 border-slate-200 bg-slate-50 p-2 flex items-center justify-center overflow-hidden relative shadow-inner group">
                         <?php if (!empty($data['image_url'])): ?>
-                            <img src="<?= e($data['image_url']) ?>" class="w-full h-full object-contain">
+                            <?php
+                            $logoUrl = '';
+                            if (preg_match('#^https?://#i', $data['image_url'])) {
+                                $logoUrl = $data['image_url'];
+                            } elseif (str_contains($data['image_url'], '/')) {
+                                $logoUrl = SITE_URL . '/admin/' . ltrim($data['image_url'], '/');
+                            } else {
+                                $logoUrl = upload_url($data['image_url']);
+                            }
+                            ?>
+                            <img src="<?= e($logoUrl) ?>" class="w-full h-full object-contain">
                         <?php else: ?>
                             <div class="text-center p-2 text-slate-400">
                                 <svg class="w-6 h-6 mx-auto opacity-70" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">

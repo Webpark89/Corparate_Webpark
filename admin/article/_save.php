@@ -44,7 +44,7 @@ $data = [
     'cover_image_alt' => trim($_POST['cover_image_alt'] ?? $metaTitle),
     'content' => $serializedContent,
     'author_id' => (int) ($_POST['author_id'] ?? 0) ?: null,
-    'status' => ($_POST['status'] ?? 'draft') === 'published' ? 'published' : 'draft',
+    'status' => in_array($_POST['status'] ?? 'draft', ['published', 'draft', 'hidden'], true) ? ($_POST['status'] ?? 'draft') : 'draft',
 ];
 
 $imagePath = trim($_POST['cover_image'] ?? '');
