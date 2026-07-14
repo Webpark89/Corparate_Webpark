@@ -235,7 +235,7 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                          data-category="<?= e($categorySlug !== '' ? $categorySlug : 'all') ?>">
                     
                     <!-- ส่วนรูปภาพ ปรับเป็น 4/3 ให้รูปดูเต็มขึ้น -->
-                    <a href="<?= e($detailUrl) ?>" class="relative block aspect-[4/3] w-full overflow-hidden">
+                    <a href="/Corparate_Webpark/article-detail-mockup" class="relative block aspect-[4/3] w-full overflow-hidden">
                         <img src="<?= e($imageSrc) ?>" alt="<?= e($article['title'] ?? '') ?>" class="article-card__image h-full w-full object-cover transition-transform duration-500 group-hover:scale-105">
                     </a>
                     
@@ -250,7 +250,7 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                         </div>
                         
                         <!-- หัวข้อบทความ -->
-                        <a href="<?= e($detailUrl) ?>" class="block mb-3">
+                        <a href="/Corparate_Webpark/article-detail-mockup" class="block mb-3">
                             <h3 class="article-card__title text-2xl lg:text-lg font-bold text-[#1a2b6d] leading-snug line-clamp-2">
                                 <?= e($article['title'] ?? t('article_list.page_title')) ?>
                             </h3>

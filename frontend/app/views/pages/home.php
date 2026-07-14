@@ -109,13 +109,13 @@ $mockArticles = [
                         <?= getCurrentLang() === 'th' ? 'ผู้ให้บริการพัฒนา Digital Platform<br>และระบบ AI ที่ช่วยให้ธุรกิจไทย<br>ก้าวไปข้างหน้า ด้วยเทคโนโลยี<br>ที่ใช้งานได้จริง' : 'Digital Platform and AI system<br>development provider helping Thai businesses<br>move forward with<br>practical technology.' ?>
                     </span>
                     <span class="hidden md:inline">
-                        <?= getCurrentLang() === 'th' ? 'ผู้ให้บริการพัฒนา Digital Platform<br class="hidden sm:block">และระบบ AI ที่ช่วยให้ธุรกิจไทยก้าวไปข้างหน้า<br class="hidden sm:block">ด้วยเทคโนโลยีที่ใช้งานได้จริง' : 'Digital Platform and AI system development provider<br class="hidden sm:block">helping Thai businesses move forward<br class="hidden sm:block">with practical technology.' ?>
+                        <?= getCurrentLang() === 'th' ? 'ผู้ให้บริการพัฒนา Digital Platform และระบบ AI<br>ที่ช่วยให้ธุรกิจไทยก้าวไปข้างหน้าด้วยเทคโนโลยีที่ใช้งานได้จริง' : 'Digital Platform and AI system development provider<br>helping Thai businesses move forward with practical technology.' ?>
                     </span>
                 </p>
 
                 <div class="animate-entrance-up delay-400 flex flex-col items-start md:flex-row md:items-center gap-4">
                     <a href="<?= e(route_url('/services')) ?>" class="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-primary text-white text-base font-semibold rounded-full hover:bg-blue-700 transition-all shadow-md hover:-translate-y-0.5">
-                        <?= e(t('common.cta_view_services')) ?>
+                        <?= getCurrentLang() === 'th' ? 'ปรึกษาผู้เชี่ยวชาญ' : 'Consult an Expert' ?>
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
                         </svg>
@@ -146,22 +146,23 @@ $mockArticles = [
     <div class="mx-auto w-full max-w-7xl px-4 sm:px-4 lg:px-6">
         <div class="w-full flex flex-col lg:flex-row items-stretch lg:bg-white lg:rounded-[1rem] lg:shadow-[0_4px_25px_rgba(0,0,0,0.06)] lg:border lg:border-gray-100 lg:overflow-hidden gap-4 lg:gap-0">
 
-            <div class="hidden lg:flex flex-1 lg:max-w-[180px] items-center justify-center p-6 lg:p-8 border-b lg:border-b-0 lg:border-r border-gray-100 shrink-0 bg-white">
+            <div class="hidden lg:flex flex-1 lg:max-w-[180px] items-center justify-center p-6 lg:p-8 border-b lg:border-b-0 shrink-0 bg-white">
                 <img src="<?= e(asset_url('images/logo.png')) ?>" alt="WEBPARK logo" class="w-32 lg:w-full h-auto object-contain">
             </div>
 
             <div class="group flex-1 lg:max-w-[300px] xl:max-w-[320px] flex flex-col justify-between p-6 lg:p-8 border lg:border-none border-gray-100 lg:border-r shrink-0 bg-white rounded-t-none rounded-b-[2rem] lg:rounded-none shadow-sm lg:shadow-none transition-all duration-300 hover:bg-slate-50/50 cursor-pointer">
                 <div class="grid grid-cols-2 lg:contents items-center gap-4 lg:gap-6 w-full">
                     
-                    <div class="flex items-center justify-center lg:hidden">
+                    <div class="flex items-center justify-center lg:hidden border-r border-gray-200 pr-4 h-fit self-center">
                         <img src="<?= e(asset_url('images/logo.png')) ?>" alt="WEBPARK logo" class="w-full max-w-[120px] md:max-w-[150px] h-auto object-contain">
                     </div>
                     
                     <div class="lg:contents text-left">
                         <div class="flex flex-col justify-between h-full lg:h-auto lg:contents">
                             <div>
-                                <div class="text-left w-full">
-                                    <span class="text-primary font-bold text-lg md:text-sm tracking-wide inline-block border-b-[3px] border-primary pb-0.5 mb-3 mx-0"><?= e(t('common.about_us_heading')) ?></span>
+                                <div class="text-left w-full mb-3">
+                                    <span class="text-primary font-bold text-lg md:text-sm tracking-wide inline-block mx-0"><?= e(t('common.about_us_heading')) ?></span>
+                                    <div class="w-8 h-[3px] bg-primary mt-1"></div>
                                 </div>
                                 <h2 class="text-[#043B94] text-xl xl:text-2xl font-bold leading-tight mb-3 transition-colors duration-300 group-hover:text-blue-700">
                                     <?= e(t('common.we_are_partner')) ?><br class="hidden lg:inline"><?= e(t('common.in_technology')) ?>
@@ -234,8 +235,16 @@ $mockArticles = [
                 <h2 class="text-3xl md:text-4xl font-extrabold leading-none tracking-tighter text-primary m-0">
                     <?= e(t('common.nav_services') !== 'common.nav_services' ? t('common.nav_services') : (getCurrentLang() === 'th' ? 'บริการของเรา' : 'Our Services')) ?>
                 </h2>
-                <div class="flex flex-row items-center justify-between gap-4 mb-4">
-                    <span class="text-base md:text-lg lg:text-xl font-bold leading-tight text-dark"><?= e(t('home.portfolio_subtitle') !== 'home.portfolio_subtitle' ? t('home.portfolio_subtitle') : (getCurrentLang() === 'th' ? 'ตัวอย่างผลงานของเรา' : 'Our Portfolio')) ?></span>
+                <div class="w-12 h-1 bg-primary mt-2 mb-4 rounded-full"></div>
+                
+                <span class="block text-base md:text-lg lg:text-xl font-bold leading-tight text-dark mb-4">
+                    <?= e(t('home.portfolio_subtitle') !== 'home.portfolio_subtitle' ? t('home.portfolio_subtitle') : (getCurrentLang() === 'th' ? 'ตัวอย่างผลงานของเรา' : 'Our Portfolio')) ?>
+                </span>
+                
+                <div class="flex flex-row items-end justify-between gap-4 mb-4">
+                    <p class="text-sm md:text-base leading-relaxed text-slate-500 max-w-xl m-0">
+                        <?= getCurrentLang() === 'th' ? 'รวมผลงานที่เราช่วยออกแบบ<br>และพัฒนาโซลูชันดิจิทัลที่ช่วยให้ธุรกิจเติบโตอย่างยั่งยืน' : 'A collection of digital solutions we designed and developed<br>to help businesses grow sustainably.' ?>
+                    </p>
                     <a href="<?= e(route_url('/services')) ?>" class="shrink-0 inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-primary text-white text-sm font-semibold rounded-full hover:bg-blue-700 transition-all shadow-md hover:-translate-y-0.5">
                         <?= e(t('home.view_all_services') !== 'home.view_all_services' ? t('home.view_all_services') : (getCurrentLang() === 'th' ? 'ดูบริการทั้งหมด' : 'View All Services')) ?>
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
@@ -243,9 +252,6 @@ $mockArticles = [
                         </svg>
                     </a>
                 </div>
-                <p class="text-sm md:text-base leading-relaxed text-slate-500 max-w-xl">
-                    <?= getCurrentLang() === 'th' ? 'รวมผลงานที่เราช่วยออกแบบและพัฒนาโซลูชันดิจิทัล<br>ที่ช่วยให้ธุรกิจเติบโตอย่างยั่งยืน' : 'A collection of digital solutions we designed and developed<br>to help businesses grow sustainably.' ?>
-                </p>
             </div>
 
             <!-- Mobile Layout -->
@@ -290,6 +296,19 @@ $mockArticles = [
                     $projectTitle = (string)($project['title'] ?? 'Portfolio');
                     $projectDesc  = mb_strimwidth(strip_tags((string)($project['description'] ?? $project['summary'] ?? '')), 0, 80, '...');
                     $projectCat   = (string)($project['category'] ?? 'Portfolio');
+                    
+                    if (getCurrentLang() !== 'th') {
+                        if (strpos($projectTitle, 'ผลงานรับทำเว็บไซต์องค์กร') !== false) {
+                            $projectTitle = str_replace('ผลงานรับทำเว็บไซต์องค์กร บริษัท', 'Corporate Website for Client', $projectTitle);
+                            $projectTitle = str_replace('ผลงานรับทำเว็บไซต์องค์กร', 'Corporate Website', $projectTitle);
+                            $projectDesc = 'Design and develop a corporate website to present a professional and reliable image...';
+                        } elseif (strpos($projectTitle, 'ผลงานรับทำระบบ E-commerce') !== false) {
+                            $projectTitle = str_replace('ผลงานรับทำระบบ E-commerce ร้าน', 'E-commerce System for Client', $projectTitle);
+                            $projectTitle = str_replace('ผลงานรับทำระบบ E-commerce', 'E-commerce System', $projectTitle);
+                            $projectDesc = 'Develop an online store system with integrated credit card payment...';
+                        }
+                    }
+                    
                     $catColor     = $categoryColors[$projectCat] ?? '#0066ff';
                     $projectImage = asset_url($project['image_path'] ?? 'images/erp.png');
                     ?>
@@ -492,8 +511,8 @@ if ($totalReviews > 0):
             <h2 class="hidden lg:block text-primary font-bold text-4xl md:text-3xl tracking-normal uppercase mb-3">
                 REVIEW
             </h2>
-            <span class="text-base md:text-lg lg:text-xl font-bold leading-tight text-dark">
-                <?= getCurrentLang() === 'th' ? 'กว่า <span class="text-primary">120</span> องค์กร ที่เลือก <span class="text-primary">WEBPARK</span> เป็นพาร์ทเนอร์ด้านดิจิทัล' : 'Over <span class="text-primary">120</span> organizations trust <span class="text-primary">WEBPARK</span> as their digital partner' ?>
+            <span class="text-xl md:text-2xl lg:text-[28px] font-bold leading-tight text-dark">
+                <?= getCurrentLang() === 'th' ? 'กว่า <span class="text-primary">120</span> องค์กรชั้นนำ ที่เลือก <span class="text-primary">WEBPARK</span> เป็นพาร์ทเนอร์ด้านดิจิทัล' : 'Over <span class="text-primary">120</span> leading organizations trust <span class="text-primary">WEBPARK</span> as their digital partner' ?>
             </span>
         </div>
 
@@ -765,18 +784,22 @@ document.addEventListener('DOMContentLoaded', function () {
 
 <section class="bg-slate-50 pt-10 pb-20 lg:py-20 border-t border-slate-100">
     <div class="mx-auto w-full max-w-7xl px-5 sm:px-6 lg:px-8">
-        <div class="hidden lg:flex items-end justify-between border-b border-slate-200 pb-5 mb-10">
+        <div class="hidden lg:flex flex-row items-end justify-between mb-6">
             <div>
-                <h2 class="text-primary font-bold text-2xl md:text-3xl tracking-normal uppercase mb-1 block">
-                KNOWLEDGE
+                <h2 class="text-primary font-black text-3xl tracking-normal m-0 inline-block">
+                    <?= getCurrentLang() === 'th' ? 'บทความ' : 'Articles' ?>
                 </h2>
-                <span class="text-base md:text-lg lg:text-xl font-extrabold leading-none tracking-tight text-dark m-0">
-                บทความและความรู้
-                </span>
+                <div class="w-12 h-1 bg-primary mt-2 mb-4 rounded-full"></div>
+                <h3 class="text-[#043B94] font-bold text-xl mb-3 tracking-tight">
+                    <?= getCurrentLang() === 'th' ? 'สาระน่ารู้จาก WEBPARK' : 'Knowledge from WEBPARK' ?>
+                </h3>
+                <p class="text-slate-500 text-sm leading-[1.6] font-medium m-0">
+                    <?= getCurrentLang() === 'th' ? 'รวมบทความสาระน่ารู้ ที่จะช่วยต่อยอดแบรนด์<br>และพาธุรกิจสู่วิถีดิจิทัลที่ช่วยให้ธุรกิจเติบโตได้อย่างยั่งยืน' : 'A collection of informative articles to help elevate your brand<br>and guide your business into the digital era for sustainable growth.' ?>
+                </p>
             </div>
-            <a href="<?= e(route_url('/article')) ?>" class="group flex items-center gap-1.5 text-sm font-bold text-primary hover:text-blue-700 transition-colors">
-                ดูทั้งหมด
-                <svg class="h-4 w-4 transform group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <a href="<?= e(route_url('/services')) ?>" class="shrink-0 inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-primary text-white text-sm font-semibold rounded-full hover:bg-blue-700 transition-all shadow-md hover:-translate-y-0.5">
+                <?= getCurrentLang() === 'th' ? 'ดูบริการของเรา' : 'View Our Services' ?>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
                 </svg>
             </a>
@@ -784,13 +807,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
         <div class="lg:hidden mb-6 flex flex-col items-start text-left pl-1">
             <h2 class="text-primary font-black text-2xl tracking-normal mb-2 pb-1 inline-block border-b-[3px] border-primary">
-                บทความ
+                <?= getCurrentLang() === 'th' ? 'บทความ' : 'Articles' ?>
             </h2>
             <h3 class="text-dark font-black text-xl mb-3 mt-1 tracking-tight">
-                สาระน่ารู้จาก WEBPARK
+                <?= getCurrentLang() === 'th' ? 'สาระน่ารู้จาก WEBPARK' : 'Knowledge from WEBPARK' ?>
             </h3>
             <p class="text-slate-600 text-[0.8rem] leading-[1.6] font-medium">
-                รวมบทความสาระน่ารู้ ที่จะช่วยต่อยอดแบรนด์<br>และพาธุรกิจสู่ดิจิทัลที่ช่วยให้ธุรกิจเติบโตได้อย่างยั่งยืน
+                <?= getCurrentLang() === 'th' ? 'รวมบทความสาระน่ารู้ ที่จะช่วยต่อยอดแบรนด์<br>และพาธุรกิจสู่ดิจิทัลที่ช่วยให้ธุรกิจเติบโตได้อย่างยั่งยืน' : 'A collection of informative articles to help elevate your brand<br>and guide your business into the digital era for sustainable growth.' ?>
             </p>
         </div>
 
