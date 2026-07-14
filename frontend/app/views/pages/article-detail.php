@@ -139,73 +139,66 @@ $shareUrl = urlencode(request_origin_url() . ($_SERVER['REQUEST_URI'] ?? ''));
     .delay-400 { animation-delay: 400ms; }
 </style>
 
-<section class="relative overflow-hidden font-sans">
-    <div class="absolute inset-0 z-0 overflow-hidden">
-        <img src="<?= e($coverImage) ?>" alt="WEBPARK Solutions Background" 
-            class="w-full h-full object-cover object-center opacity-100 mix-blend-screen">
+<section class="relative overflow-hidden font-sans bg-[#F4F7FB] pt-12 pb-6 lg:pt-20 lg:pb-8">
+    <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             
-        <div class="absolute inset-0 bg-gradient-to-r from-white via-white/70 to-white/5"></div>
-        <div class="absolute inset-x-0 bottom-0 h-[30%] bg-gradient-to-t from-white to-transparent z-10"></div>
-    </div>
-
-    <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 pt-12 pb-24 lg:pt-28 lg:pb-32 relative z-10">
-        <div class="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-12 lg:gap-20 items-center">
-            
-            <div class="max-w-2xl">
-                <nav aria-label="Breadcrumb" class="animate-fade-up delay-100 mb-6">
-                    <ol class="inline-flex flex-wrap items-center text-sm md:text-base font-medium text-slate-500">
+            <!-- Left Column: Text & Meta -->
+            <div class="max-w-xl">
+                <nav aria-label="Breadcrumb" class="animate-fade-up delay-100 mb-8">
+                    <ol class="inline-flex flex-wrap items-center text-sm md:text-base font-medium text-slate-400">
                         <li>
                             <a href="<?= e(route_url('/')) ?>" class="hover:text-primary transition-colors duration-200">
-                                <?= e(t('article_detail.breadcrumb_home')) ?>
+                                <?= e(t('article_detail.breadcrumb_home', ['default' => 'หน้าแรก'])) ?>
                             </a>
                         </li>
-
-                        <li>
-                            <span class="text-slate-400" style="margin: 0 4px;">/</span>
-                        </li>
-
+                        <li><span class="mx-4">/</span></li>
                         <li>
                             <a href="<?= e(route_url('/article')) ?>" class="hover:text-primary transition-colors duration-200">
-                                <?= e(t('article_detail.breadcrumb_articles')) ?>
+                                <?= e(t('article_detail.breadcrumb_articles', ['default' => 'บทความ'])) ?>
                             </a>
                         </li>
-
-                        <li>
-                            <span class="text-slate-400" style="margin: 0 4px;">/</span>
-                        </li>
-
+                        <li><span class="mx-4">/</span></li>
                         <li aria-current="page">
-                            <span class="text-slate-400 line-clamp-1"><?= e($title) ?></span>
+                            <span class="text-slate-400 line-clamp-1"><?= e($category) ?></span>
                         </li>
                     </ol>
                 </nav>
                 
-                <h1 class="animate-fade-up delay-200 leading-[1.1] mb-2 tracking-tighter">
-                    <span class="text-3xl md:text-4xl lg:text-6xl font-bold bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block py-3">
+                <h1 class="animate-fade-up delay-200 leading-snug mb-6 tracking-tight">
+                    <span class="block text-3xl md:text-4xl lg:text-[44px] font-bold text-[#022862]">
                         <?= e($title) ?>
                     </span>
                 </h1>
-                <div class="animate-fade-up delay-300 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-slate-500">
-                    <span class="inline-flex items-center gap-1.5">
+                
+                <div class="animate-fade-up delay-300 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-[#0663F6] font-medium mb-6">
+                    <span class="inline-flex items-center gap-2">
                         <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
                         <?= e($formattedDate) ?>
                     </span>
-                    <span class="inline-flex items-center gap-1.5">
+                    <span class="inline-flex items-center gap-2">
                         <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
                         <?= e($readingMinutes) ?> นาทีในการอ่าน
                     </span>
                     <?php if ($author !== ''): ?>
-                        <span class="inline-flex items-center gap-1.5">
+                        <span class="inline-flex items-center gap-2">
                             <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
                             <?= e($author) ?>
                         </span>
                     <?php endif; ?>
                 </div>
-
-                <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-lg md:text-xl leading-relaxed max-w-lg mb-10 font-medium">
-                    
+                
+                <p class="animate-fade-up delay-400 mt-6 text-[#022862] text-lg md:text-xl leading-relaxed max-w-lg mb-10 font-medium">
+                    <?= e($summary) ?>
                 </p>
             </div>
+            
+            <!-- Right Column: Image -->
+            <div class="animate-fade-up delay-300 relative w-full rounded-[2rem] overflow-hidden shadow-2xl">
+                <img src="<?= e($coverImage) ?>" alt="<?= e($title) ?>" 
+                    class="w-full h-auto object-cover aspect-[4/3] hover:scale-105 transition-transform duration-700" onerror="this.src='<?= e($fallbackImage) ?>'">
+            </div>
+            
         </div>
     </div>
 </section>
@@ -275,52 +268,7 @@ $shareUrl = urlencode(request_origin_url() . ($_SERVER['REQUEST_URI'] ?? ''));
 
                     </div>
 
-                    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                        <h2 class="text-2xl md:text-3xl font-extrabold text-center text-[#022862] tracking-tight py-10">
-                            ERP ที่ช่วยยกระดับธุรกิจของคุณ
-                        </h2>
 
-                        <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 1.5rem;">
-                            <?php
-                            $erpBenefits = [
-                                [
-                                    'title' => 'ข้อมูลครบถ้วน',
-                                    'desc' => 'รวมทุกแผนกไว้ในระบบเดียว',
-                                    'icon' => asset_url('images/ERP_5.svg'),
-                                ],
-                                [
-                                    'title' => 'ลดงานซ้ำซ้อน',
-                                    'desc' => 'เพิ่มประสิทธิภาพการทำงาน',
-                                    'icon' => asset_url('images/ERP_6.svg'),
-                                ],
-                                [
-                                    'title' => 'ข้อมูลเรียลไทม์',
-                                    'desc' => 'ตัดสินใจได้แม่นยำและรวดเร็ว',
-                                    'icon' => asset_url('images/ERP_7.svg'),
-                                ],
-                                [
-                                    'title' => 'ควบคุมความเสี่ยง',
-                                    'desc' => 'ตรวจสอบและติดตามได้ทุกขั้นตอน',
-                                    'icon' => asset_url('images/ERP_8.svg'),
-                                ],
-                                [
-                                    'title' => 'ขยายได้ตามธุรกิจ',
-                                    'desc' => 'รองรับการเติบโตในอนาคต',
-                                    'icon' => asset_url('images/ERP_9.svg'),
-                                ],
-                            ];
-                            ?>
-                            <?php foreach ($erpBenefits as $benefit): ?>
-                                <div class="bg-white rounded-2xl p-6 text-center border border-slate-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
-                                    <div class="w-14 h-14 mx-auto bg-blue-50/70 rounded-full flex items-center justify-center mb-4">
-                                        <img src="<?= e($benefit['icon']) ?>" alt="<?= e($benefit['title']) ?>" class="h-full w-full object-contain">
-                                    </div>
-                                    <h4 class="text-sm font-bold text-[#043B94] mb-1"><?= e($benefit['title']) ?></h4>
-                                    <p class="text-xs text-slate-500 leading-relaxed"><?= e($benefit['desc']) ?></p>
-                                </div>
-                            <?php endforeach; ?>
-                        </div>
-                    </div>
 
             </article>
 

@@ -25,7 +25,7 @@ $ctaImage = asset_url('images/bg-cta.jpg');
         'image_placeholder' => 'images/erp.png',
         'dropdown_title'    => 'ERP / ERM / HR',
         'subcategories'     => [
-            ['label' => 'ERP System',           'href' => '#'],
+            ['label' => 'ERP System',           'href' => route_url('/erp')],
             ['label' => 'Accounting & Finance', 'href' => '#'],
             ['label' => 'Sales / Purchase',     'href' => '#'],
             ['label' => 'Inventory / Warehouse','href' => '#'],
@@ -72,7 +72,7 @@ $ctaImage = asset_url('images/bg-cta.jpg');
         'subcategories'     => [
             ['label' => 'Digital Marketing Consultant',  'href' => '#'],
             ['label' => 'Media Planner / PR & Media Strategy', 'href' => '#'],
-            ['label' => 'SEO',                           'href' => '#'],
+            ['label' => 'SEO',                           'href' => route_url('/article-detail-mockup')],
             ['label' => 'Social Network',                'href' => '#'],
             ['label' => 'Online Campaign',               'href' => '#'],
             ['label' => 'Monitoring & Analysis',         'href' => '#'],
@@ -332,11 +332,11 @@ $services = $mockServices;
         </h1>
         <div class="mt-2 mb-4 md:mb-6 gsap-fade-up" style="width: 48px; height: 3px; background-color: #0663F6;"></div>
 
-        <span class="text-2xl font-bold gsap-fade-up max-w-2xl mb-4 block leading-tight" style="color: #043B94;">
-            <?= getCurrentLang() === 'th' ? 'บริการของเรา<br>ครอบคลุมทุกมิติธุรกิจดิจิทัล' : 'Our services<br>cover every dimension of digital business' ?>
+        <span class="text-2xl md:text-3xl font-bold gsap-fade-up w-full max-w-none mb-4 block leading-tight" style="color: #043B94;">
+            <?= getCurrentLang() === 'th' ? 'บริการของเรา ครอบคลุมทุกมิติธุรกิจดิจิทัล' : 'Our services cover every dimension of digital business' ?>
         </span>
-        <p class="gsap-fade-up text-slate-500 text-lg md:text-xl leading-relaxed max-w-2xl">
-            <?= getCurrentLang() === 'th' ? 'Webpark ให้บริการแบบครบวงจร ตั้งแต่การวางแผน ออกแบบ พัฒนา ไปจนถึงการดูแลหลังการใช้งาน<br>เพื่อช่วยให้องค์กรเพิ่มประสิทธิภาพ ลดต้นทุน และเติบโตได้อย่างยั่งยืนในยุคดิจิทัล' : 'Webpark provides end-to-end services, from planning, design, and development to post-deployment support.<br>We help organizations increase efficiency, reduce costs, and grow sustainably in the digital era.' ?>
+        <p class="gsap-fade-up text-slate-500 text-lg md:text-[15px] lg:text-base xl:text-[17px] leading-relaxed w-full max-w-none">
+            <?= getCurrentLang() === 'th' ? 'Webpark ให้บริการแบบครบวงจร ตั้งแต่การวางแผน ออกแบบ พัฒนา ไปจนถึงการดูแลหลังการใช้งาน เพื่อช่วยให้องค์กรเพิ่มประสิทธิภาพ ลดต้นทุน และเติบโตได้อย่างยั่งยืนในยุคดิจิทัล' : 'Webpark provides end-to-end services, from planning, design, and development to post-deployment support. We help organizations increase efficiency, reduce costs, and grow sustainably in the digital era.' ?>
         </p>
     </div>
 </section>
