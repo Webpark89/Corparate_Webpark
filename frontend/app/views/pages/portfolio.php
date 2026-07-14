@@ -180,7 +180,12 @@ $initialProjects = $portfolioTabs[$activeFilter] ?? $portfolioTabs['All'] ?? [];
                         title.textContent = item.title || '';
 
                         const desc = document.createElement('p');
-                        desc.className = 'text-sm leading-7 text-slate-600 line-clamp-3';
+                        desc.className = 'text-sm leading-7 text-slate-600 line-clamp-2 overflow-hidden break-words';
+                        desc.style.display = '-webkit-box';
+                        desc.style.webkitLineClamp = '2';
+                        desc.style.webkitBoxOrient = 'vertical';
+                        desc.style.overflow = 'hidden';
+                        desc.style.textOverflow = 'ellipsis';
                         desc.textContent = item.description || '';
 
                         textContainer.appendChild(industry);
@@ -275,7 +280,7 @@ $initialProjects = $portfolioTabs[$activeFilter] ?? $portfolioTabs['All'] ?? [];
                                     <?= e($project['title']) ?>
                                 </h3>
 
-                                <p class="mt-6 text-[#022862] text-base md:text-lg leading-relaxed max-w-lg mb-10 font-medium">
+                                <p class="mt-6 text-[#022862] text-base md:text-lg leading-relaxed max-w-lg mb-10 font-medium line-clamp-2 overflow-hidden break-words" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;">
                                     <?= e($project['description']) ?>
                                 </p>
                             </div>

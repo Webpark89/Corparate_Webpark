@@ -130,7 +130,7 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                     $mobile_desc = "Knowledge articles, tech, and innovation covering ERP systems, digital business, online marketing, AI, and solutions to sustainably grow your organization.";
                 }
                 ?>
-                <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-lg md:text-xl leading-relaxed max-w-lg mb-10 font-medium">
+                <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-lg md:text-xl leading-relaxed max-w-2xl mb-10 font-medium">
                     <span class="block md:hidden leading-[1.75]">
                         <?= $mobile_desc ?>
                     </span>
@@ -236,7 +236,16 @@ $ctaImage = asset_url('images/bg-cta.jpg');
             }
         </style>
         <div id="article-grid" class="article-grid article-grid-container gap-6 hide-scroll scroll-smooth" style="-ms-overflow-style: none; scrollbar-width: none;">
-            <?php foreach ($articles as $article):
+            <?php 
+            array_unshift($articles, [
+                'id' => 9999,
+                'title' => 'ทำความรู้จักระบบ ERP ตัวช่วยจัดการธุรกิจให้ง่ายขึ้น',
+                'category_name' => 'Web Development',
+                'category_slug' => 'all',
+                'image_path' => '',
+                'summary' => 'ระบบ ERP (Enterprise Resource Planning) เป็นซอฟต์แวร์ที่ช่วยเชื่อมโยงและจัดการกระบวนการทำงานต่างๆ ขององค์กร ไม่ว่าจะเป็นการขาย การเงิน การผลิต และอื่นๆ เพื่อให้ทำงานได้อย่างมีประสิทธิภาพสูงสุด ทดสอบความยาว 2 บรรทัด',
+            ]);
+            foreach ($articles as $article):
                 $detailUrl = route_url('/article', ['id' => (int) ($article['id'] ?? 0)]);
                 $categoryName = trim((string) ($article['category_name'] ?? ''));
                 $categorySlug = trim((string) ($article['category_slug'] ?? ''));
@@ -248,40 +257,38 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                              ? '/Corparate_Webpark/article-detail-mockup' 
                              : $detailUrl;
                 ?>
-                <article class="article-card article-card-slide snap-start group flex flex-col overflow-hidden rounded-[1.5rem] border border-slate-100 bg-white shadow-[0_4px_20px_rgba(0,0,0,0.04)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(0,0,0,0.08)]"
+                <article class="article-card article-card-slide snap-start group h-fit flex flex-col overflow-hidden rounded-[1.5rem] border border-slate-100 bg-white shadow-[0_4px_20px_rgba(0,0,0,0.04)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(0,0,0,0.08)]"
                          data-category="<?= e($categorySlug !== '' ? $categorySlug : 'all') ?>">
                     
-                    <!-- ส่วนรูปภาพ ปรับเป็น 4/3 ให้รูปดูเต็มขึ้น -->
-                    <a href="<?= e($linkToUse) ?>" class="relative block aspect-[4/3] w-full overflow-hidden">
+                    <!-- ส่วนรูปภาพ ปรับสัดส่วนให้สมดุลกับส่วนเนื้อหาที่เล็กลง -->
+                    <a href="<?= e($linkToUse) ?>" class="relative block aspect-[16/9] w-full overflow-hidden">
                         <img src="<?= e($imageSrc) ?>" alt="<?= e($articleTitle) ?>" class="article-card__image h-full w-full object-cover transition-transform duration-500 group-hover:scale-105">
                     </a>
                     
                     <!-- ส่วนเนื้อหา -->
-                    <div class="flex h-full flex-col p-6">
+                    <div class="flex flex-col p-4">
                         
                         <!-- Badge หมวดหมู่ (พื้นหลังฟ้า ขอบมนแคปซูล) -->
-                        <div class="mb-4">
-                            <span class="inline-block rounded-full bg-blue-50 px-4 py-2 lg:px-3 lg:py-1.5 text-sm lg:text-xs font-semibold tracking-wide text-blue-700">
+                        <div class="mb-3">
+                            <span class="inline-block rounded-full bg-blue-50 px-3 py-1.5 text-xs font-semibold tracking-wide text-blue-700">
                                 <?= e($categoryName !== '' ? $categoryName : (getCurrentLang() === 'th' ? 'หมวดหมู่' : 'Category')) ?>
                             </span>
                         </div>
                         
                         <!-- หัวข้อบทความ -->
-                        <a href="<?= e($linkToUse) ?>" class="block mb-3">
-                            <h3 class="article-card__title text-2xl lg:text-lg font-bold text-[#1a2b6d] leading-snug line-clamp-2">
+                        <a href="<?= e($linkToUse) ?>" class="block mb-2">
+                            <h3 class="article-card__title text-xl lg:text-lg font-bold text-[#1a2b6d] leading-snug" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 3.25rem;">
                                 <?= e($articleTitle) ?>
                             </h3>
                         </a>
                         
                         <!-- สรุปเนื้อหา (แสดง 3 บรรทัด) -->
-                        <?php if ($summary !== ''): ?>
-                            <p class="article-card__description text-lg lg:text-sm leading-relaxed text-slate-500 line-clamp-3">
-                                <?= e($summary) ?>
-                            </p>
-                        <?php endif; ?>
+                        <p class="article-card__description text-slate-500" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; font-size: 0.875rem; line-height: 1.5rem; height: 3rem; white-space: normal; word-break: break-word;">
+                            <?= e($summary) ?>
+                        </p>
                         
                         <!-- ปุ่มอ่านเพิ่มเติม (ดันลงล่างสุด และชิดขวา) -->
-                        <div class="mt-auto pt-6 flex" style="justify-content: flex-end;">
+                        <div class="flex mt-1" style="justify-content: flex-end;">
                             <a href="<?= e($linkToUse) ?>" class="article-card__cta inline-flex items-center gap-1.5 text-lg lg:text-sm font-semibold text-blue-500 transition-all hover:gap-2 hover:text-blue-700">
                                 <?= e(t('common.cta_read_more')) ?>
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
