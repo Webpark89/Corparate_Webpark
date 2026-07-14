@@ -29,7 +29,7 @@ if ($categoryFilter !== '') {
     $params[] = (int) $categoryFilter;
 }
 
-if (in_array($statusFilter, ['draft', 'published'], true)) {
+if (in_array($statusFilter, ['draft', 'published', 'hidden'], true)) {
     $sql .= ' AND a.status = ?';
     $params[] = $statusFilter;
 }
@@ -84,6 +84,7 @@ $categories = db()->query('SELECT id, name FROM categories ORDER BY name')->fetc
                         <option value="">ทุกสถานะ</option>
                         <option value="published" <?= $statusFilter === 'published' ? 'selected' : '' ?>>เผยแพร่แล้ว</option>
                         <option value="draft" <?= $statusFilter === 'draft' ? 'selected' : '' ?>>ฉบับร่าง</option>
+                        <option value="hidden" <?= $statusFilter === 'hidden' ? 'selected' : '' ?>>ซ่อนอยู่</option>
                     </select>
                 </div>
 
@@ -141,6 +142,11 @@ $categories = db()->query('SELECT id, name FROM categories ORDER BY name')->fetc
                                     <span class="inline-flex rounded-lg border border-emerald-200 bg-emerald-50 px-2.5 py-0.5 text-[11px] font-semibold text-emerald-700">
                                         เผยแพร่
                                     </span>
+                                <?php elseif ($row['status'] === 'hidden'): ?>
+                                    <span class="inline-flex items-center gap-1 rounded-lg border border-slate-300 bg-slate-100 px-2.5 py-0.5 text-[11px] font-semibold text-slate-600">
+                                        <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                                        ซ่อนอยู่
+                                    </span>
                                 <?php else: ?>
                                     <span class="inline-flex rounded-lg border border-amber-200 bg-amber-50 px-2.5 py-0.5 text-[11px] font-semibold text-amber-700">
                                         ฉบับร่าง
@@ -166,11 +172,32 @@ $categories = db()->query('SELECT id, name FROM categories ORDER BY name')->fetc
                                         class="bg-white px-3 py-1.5 text-[11px] font-semibold text-slate-600 transition hover:bg-slate-50">
                                         แก้ไข
                                     </a>
-                                    <button type="button"
-                                        onclick="if(confirm('ยืนยันการลบบทความนี้?')) window.location.href='delete.php?id=<?= (int) $row['id'] ?>'"
-                                        class="border-l border-slate-200 bg-white px-3 py-1.5 text-[11px] font-semibold text-rose-600 transition hover:bg-rose-50 cursor-pointer">
-                                        ลบ
-                                    </button>
+                                    <form action="toggle_status.php" method="post" class="js-toggle-form">
+                                        <input type="hidden" name="id" value="<?= (int) $row['id'] ?>">
+                                        <input type="hidden" name="status" value="<?= e($row['status']) ?>">
+                                        <?= csrf_field() ?>
+                                        <?php if ($row['status'] === 'hidden'): ?>
+                                        <button type="submit"
+                                            class="border-l border-slate-200 bg-white px-3 py-1.5 text-[11px] font-semibold text-emerald-600 transition hover:bg-emerald-50 cursor-pointer"
+                                            title="แสดงบทความนี้ต่อสาธารณะ">
+                                            แสดง
+                                        </button>
+                                        <?php else: ?>
+                                        <button type="submit"
+                                            class="border-l border-slate-200 bg-white px-3 py-1.5 text-[11px] font-semibold text-slate-500 transition hover:bg-slate-100 cursor-pointer"
+                                            title="ซ่อนบทความจากหน้าเว็บ">
+                                            ซ่อน
+                                        </button>
+                                        <?php endif; ?>
+                                    </form>
+                                    <form action="delete.php" method="post" class="js-delete-form">
+                                        <input type="hidden" name="id" value="<?= (int) $row['id'] ?>">
+                                        <?= csrf_field() ?>
+                                        <button type="submit"
+                                            class="border-l border-slate-200 bg-white px-3 py-1.5 text-[11px] font-semibold text-rose-600 transition hover:bg-rose-50 cursor-pointer">
+                                            ลบ
+                                        </button>
+                                    </form>
                                 </div>
                             </td>
 
@@ -201,6 +228,26 @@ $categories = db()->query('SELECT id, name FROM categories ORDER BY name')->fetc
                     if (url) {
                         window.location.href = url;
                     }
+                }
+            });
+        });
+
+        const deleteForms = document.querySelectorAll('.js-delete-form');
+        deleteForms.forEach(form => {
+            form.addEventListener('submit', function(event) {
+                if (!confirm('ยืนยันการลบบทความนี้?')) {
+                    event.preventDefault();
+                }
+            });
+        });
+
+        const toggleForms = document.querySelectorAll('.js-toggle-form');
+        toggleForms.forEach(form => {
+            form.addEventListener('submit', function(event) {
+                const currentStatus = form.querySelector('input[name="status"]').value;
+                const action = currentStatus === 'hidden' ? 'แสดงบทความนี้ให้สาธารณะเห็น' : 'ซ่อนบทความนี้จากหน้าเว็บ';
+                if (!confirm(action + '?')) {
+                    event.preventDefault();
                 }
             });
         });

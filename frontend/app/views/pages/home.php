@@ -11,6 +11,7 @@ $activeTab = $activeTab ?? 'news';
 $displayArticles = $latestArticles ?? $articles ?? $blogs ?? [];
 $displayPortfolios = $displayPortfolios ?? [];
 $reviews = $reviews ?? [];
+$heroImage = asset_url('images/HeroHome.svg');
 
 $projectRoot = dirname(__DIR__, 3);
 
@@ -38,16 +39,17 @@ $resolveReviewImage = static function (string $imagePath) use ($resolveServiceIm
     $imagePath = trim($imagePath);
     if (str_starts_with($imagePath, '//')) return $imagePath;
     $resolvedImage = $resolveServiceImage($imagePath);
-    return $resolvedImage !== '' ? $resolvedImage : asset_url('images/women-office.jpg');
+    return $resolvedImage !== '' ? $resolvedImage : asset_url('images/HeroHome.svg');
 };
-$partnerLogos = [
-    'logo-scg.png', 
-    'logo-ptt.png', 
-    'logo-ais.png', 
-    'logo-true.png', 
-    'logo-bbl.png', 
-    'logo-cpall.png'
-];
+$partnerLogos = [];
+if (!empty($partners) && is_array($partners)) {
+    foreach ($partners as $p) {
+        $partnerLogos[] = [
+            'url' => partner_logo_url($p['image_url']),
+            'alt' => $p['image_alt'] ?: $p['name']
+        ];
+    }
+}
 
 $mockArticles = [
     ['id' => 1, 'title' => getCurrentLang() === 'th' ? 'ระบบ ERP คืออะไร? สรุปครบ จบในที่เดียว!' : 'What is ERP? A Complete Summary!', 'summary' => getCurrentLang() === 'th' ? 'ระบบที่รวบรวมองค์กรและกระบวนการทางธุรกิจเข้าด้วยกัน เพื่อการบริหารจัดการและประสานงานที่มีประสิทธิภาพสูงสุดในองค์กร...' : 'A system that integrates organization and business processes for the highest efficiency in management and coordination...', 'category' => 'ERP', 'image_path' => 'images/erp.png'],
@@ -79,11 +81,8 @@ $mockArticles = [
         .delay-300 { animation-delay: 300ms; }
         .delay-400 { animation-delay: 400ms; }
         .delay-500 { animation-delay: 500ms; }
-        @keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-        .animate-scroll { animation: scroll 20s linear infinite; }
-        .animate-scroll:hover { animation-play-state: paused; }
         /* Custom responsive styles to bypass missing Tailwind build step */
-        .mobile-hero-woman { width: 65%; bottom: -100px; right: -12%; }
+        .mobile-hero-woman { width: 65%; bottom: -0px; right: 0%; }
         @media (min-width: 768px) { .mobile-hero-woman { width: auto; bottom: 0; right: 0; } }
     </style>
 
@@ -133,10 +132,10 @@ $mockArticles = [
             <div class="hidden lg:block lg:col-start-2"></div>
         </div>
 
-        <div class="animate-entrance-left delay-500 absolute right-0 md:right-4 lg:right-8 z-0 pointer-events-none max-w-full transform md:-translate-y-2 flex justify-end mobile-hero-woman">
+        <div class="animate-entrance-left delay-500 absolute top-20 lg:top-28 right-0 md:right-4 lg:right-8 z-0 pointer-events-none max-w-full transform md:-translate-y-2 flex justify-end mobile-hero-woman">
             <picture class="w-full md:w-auto flex justify-end">
-                <source media="(min-width: 768px)" srcset="<?= e(asset_url('images/women.png')) ?>">
-                <img src="<?= e(asset_url('images/women-mobile.svg')) ?>" alt="WEBPARK Presenter" class="w-full md:w-auto object-contain object-right-bottom h-auto md:h-[400px] lg:h-[600px] opacity-95 md:opacity-100">
+                <source media="(min-width: 768px)" srcset="<?= e(asset_url('images/HeroHome.svg')) ?>">
+                <img src="<?= e($heroImage) ?>" alt="WEBPARK Presenter" class="w-full md:w-auto object-contain object-right-bottom h-auto md:h-[400px] lg:h-[600px] opacity-95 md:opacity-100">
             </picture>
         </div>
     </div>
@@ -411,53 +410,58 @@ document.addEventListener('DOMContentLoaded', function () {
         
         if (pageCount <= 1) return;
         
-        // 1. Prev Arrow [<]
+        const wrapper = document.createElement('div');
+        wrapper.className = 'flex items-center overflow-hidden bg-white shadow-sm mx-auto';
+        wrapper.style.borderRadius = '8px';
+        wrapper.style.border = '1px solid #cbd5e1';
+        
         const prevBtnMobile = document.createElement('button');
-        prevBtnMobile.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>`;
-        prevBtnMobile.className = `w-9 h-9 rounded-full flex items-center justify-center border transition-all text-slate-400 hover:text-primary hover:border-primary bg-white disabled:opacity-30 disabled:cursor-not-allowed mr-4`;
+        prevBtnMobile.type = 'button';
+        prevBtnMobile.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" style="height: 18px; width: 18px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>`;
+        prevBtnMobile.className = 'flex items-center justify-center transition-colors hover:bg-slate-50';
+        prevBtnMobile.style.height = '44px';
+        prevBtnMobile.style.width = '48px';
+        prevBtnMobile.style.color = '#1e40af';
+        prevBtnMobile.style.borderRight = '1px solid #cbd5e1';
         prevBtnMobile.disabled = cur === 0;
+        if (cur === 0) prevBtnMobile.style.opacity = '0.3';
         prevBtnMobile.addEventListener('click', () => {
             if (cur > 0) {
                 cur--;
                 update();
             }
         });
-        paginationContainer.appendChild(prevBtnMobile);
+        wrapper.appendChild(prevBtnMobile);
         
-        // 2. Numeric page buttons (up to 3 buttons starting from cur)
-        const maxButtons = 3;
-        for (let i = 0; i < maxButtons; i++) {
-            const pageIndex = cur + i;
-            if (pageIndex >= pageCount) break;
-            
-            const pageBtn = document.createElement('button');
-            pageBtn.textContent = pageIndex + 1;
-            
-            const isActive = i === 0; // The first button is the active one (cur)
-            pageBtn.className = `portfolio-page-btn w-9 h-9 rounded-full text-sm font-semibold transition-all flex items-center justify-center ` +
-                (isActive 
-                    ? 'bg-primary text-white pointer-events-none' 
-                    : 'bg-transparent text-slate-600 hover:text-primary');
-            
-            pageBtn.addEventListener('click', () => {
-                cur = pageIndex;
-                update();
-            });
-            paginationContainer.appendChild(pageBtn);
-        }
+        const infoText = document.createElement('span');
+        infoText.className = 'flex items-center justify-center font-medium tracking-wide';
+        infoText.style.height = '44px';
+        infoText.style.padding = '0 20px';
+        infoText.style.minWidth = '100px';
+        infoText.style.color = '#1e40af';
+        infoText.style.fontSize = '16px';
+        infoText.textContent = `${cur + 1} of ${pageCount}`;
+        wrapper.appendChild(infoText);
         
-        // 3. Next Arrow [>]
         const nextBtnMobile = document.createElement('button');
-        nextBtnMobile.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>`;
-        nextBtnMobile.className = `w-9 h-9 rounded-full flex items-center justify-center border transition-all text-slate-400 hover:text-primary hover:border-primary bg-white disabled:opacity-30 disabled:cursor-not-allowed ml-4`;
+        nextBtnMobile.type = 'button';
+        nextBtnMobile.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" style="height: 18px; width: 18px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>`;
+        nextBtnMobile.className = 'flex items-center justify-center transition-colors hover:bg-slate-50';
+        nextBtnMobile.style.height = '44px';
+        nextBtnMobile.style.width = '48px';
+        nextBtnMobile.style.color = '#1e40af';
+        nextBtnMobile.style.borderLeft = '1px solid #cbd5e1';
         nextBtnMobile.disabled = cur >= pageCount - 1;
+        if (cur >= pageCount - 1) nextBtnMobile.style.opacity = '0.3';
         nextBtnMobile.addEventListener('click', () => {
             if (cur < pageCount - 1) {
                 cur++;
                 update();
             }
         });
-        paginationContainer.appendChild(nextBtnMobile);
+        wrapper.appendChild(nextBtnMobile);
+        
+        paginationContainer.appendChild(wrapper);
     }
 
     if (prevBtn) prevBtn.addEventListener('click', () => {
@@ -620,11 +624,69 @@ if ($totalReviews > 0):
             <h2 class="text-center text-primary font-bold text-2xl md:text-3xl tracking-normal uppercase mb-3 block">
                 <?= e(getCurrentLang() === 'th' ? 'องค์กรชั้นนำที่ไว้วางใจ WEBPARK' : 'Leading Organizations that Trust WEBPARK') ?>
             </h2>
-            <div class="overflow-hidden relative mt-10">
-                <div class="grid grid-cols-3 lg:flex lg:justify-center lg:flex-wrap gap-y-8 gap-x-4 md:gap-16 opacity-80 justify-items-center items-center">
-                    <?php foreach ($partnerLogos as $logo): ?>
-                        <div class="flex shrink-0 items-center justify-center w-[100px] h-[50px]">
-                            <img src="<?= e(asset_url('images/' . $logo)) ?>" alt="Partner" class="max-h-full max-w-full object-contain lg:grayscale lg:hover:grayscale-0 transition-all duration-300 cursor-pointer">
+            <?php 
+            $multiplier = count($partnerLogos) < 10 ? 4 : 2; // Dynamically adapt repeat times based on logo count
+            ?>
+            <!-- Desktop Layout: 1 Row Marquee -->
+            <div class="hidden lg:block overflow-hidden relative mt-10 w-full">
+                <!-- Fade overlays for premium look -->
+                <div class="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-[#f7faff] via-[#f7faff]/80 to-transparent z-10 pointer-events-none"></div>
+                <div class="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-[#f7faff] via-[#f7faff]/80 to-transparent z-10 pointer-events-none"></div>
+
+                <div class="flex w-max gap-16 items-center animate-scroll py-4">
+                    <?php 
+                    $desktopLogos = [];
+                    for ($i = 0; $i < $multiplier; $i++) {
+                        $desktopLogos = array_merge($desktopLogos, $partnerLogos);
+                    }
+                    ?>
+                    <?php foreach ($desktopLogos as $logo): ?>
+                        <div class="flex shrink-0 items-center justify-center w-[120px] h-[60px] opacity-80 hover:opacity-100 transition-opacity duration-300">
+                            <img src="<?= e($logo['url']) ?>" alt="<?= e($logo['alt']) ?>" class="max-h-full max-w-full object-contain grayscale hover:grayscale-0 transition-all duration-300 cursor-pointer">
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+
+            <!-- Mobile Layout: 2 Rows Marquee -->
+            <div class="block lg:hidden overflow-hidden relative mt-8 w-full">
+                <!-- Fade overlays for premium look -->
+                <div class="absolute inset-y-0 left-0 w-12 bg-gradient-to-r from-[#f7faff] to-transparent z-10 pointer-events-none"></div>
+                <div class="absolute inset-y-0 right-0 w-12 bg-gradient-to-l from-[#f7faff] to-transparent z-10 pointer-events-none"></div>
+
+                <?php 
+                $row1 = [];
+                $row2 = [];
+                foreach ($partnerLogos as $index => $logo) {
+                    if ($index % 2 === 0) {
+                        $row1[] = $logo;
+                    } else {
+                        $row2[] = $logo;
+                    }
+                }
+                
+                $mobileRow1 = [];
+                $mobileRow2 = [];
+                for ($i = 0; $i < $multiplier; $i++) {
+                    $mobileRow1 = array_merge($mobileRow1, $row1);
+                    $mobileRow2 = array_merge($mobileRow2, $row2);
+                }
+                ?>
+
+                <!-- Row 1 -->
+                <div class="flex w-max gap-10 items-center animate-scroll py-2">
+                    <?php foreach ($mobileRow1 as $logo): ?>
+                        <div class="flex shrink-0 items-center justify-center w-[100px] h-[50px] opacity-90">
+                            <img src="<?= e($logo['url']) ?>" alt="<?= e($logo['alt']) ?>" class="max-h-full max-w-full object-contain cursor-pointer">
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+
+                <!-- Row 2 -->
+                <div class="flex w-max gap-10 items-center animate-scroll py-2 mt-2">
+                    <?php foreach ($mobileRow2 as $logo): ?>
+                        <div class="flex shrink-0 items-center justify-center w-[100px] h-[50px] opacity-90">
+                            <img src="<?= e($logo['url']) ?>" alt="<?= e($logo['alt']) ?>" class="max-h-full max-w-full object-contain cursor-pointer">
                         </div>
                     <?php endforeach; ?>
                 </div>
@@ -857,6 +919,11 @@ document.addEventListener('DOMContentLoaded', function () {
         </div>
         
         <div id="knowledge-dots" class="flex lg:hidden justify-center items-center gap-2 mt-4 flex-wrap"></div>
+        <?php else: ?>
+        <div class="flex flex-col items-center justify-center py-12 px-4 bg-white rounded-2xl border border-slate-100 shadow-sm w-full">
+            <img src="<?= e(asset_url('images/Empty.gif')) ?>" alt="No articles found" class="w-64 h-auto max-w-full mb-4 object-contain">
+            <p class="text-slate-500 font-medium text-center"><?= getCurrentLang() === 'th' ? 'ไม่มีข้อมูลบทความในขณะนี้' : 'No articles available at the moment' ?></p>
+        </div>
         <?php endif; ?>
     </div>
 </section>

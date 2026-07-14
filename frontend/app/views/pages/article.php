@@ -278,12 +278,8 @@ $ctaImage = asset_url('images/bg-cta.jpg');
             <?php endforeach; ?>
         </div>
 
-        <div id="no-results" class="article-no-results hidden py-14 text-center text-slate-600">
-            <div class="mx-auto mb-4 h-16 w-16 rounded-full border border-slate-200 bg-slate-50 flex items-center justify-center">
-                <svg class="h-8 w-8 text-slate-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9.5L18.5 6M15 10a4 4 0 11-8 0 4 4 0 018 0z"/>
-                </svg>
-            </div>
+        <div id="no-results" class="article-no-results hidden py-14 text-center text-slate-600 flex flex-col items-center justify-center">
+            <img src="<?= e(asset_url('images/Empty.gif')) ?>" alt="No results" class="w-64 h-auto max-w-full mb-4 object-contain">
             <h3 class="text-lg font-bold text-[#1a2b6d] mb-2"><?= e(t('article_list.empty_state_title')) ?></h3>
             <p class="text-sm text-slate-500"><?= e(t('article_list.empty_state_desc')) ?></p>
         </div>
