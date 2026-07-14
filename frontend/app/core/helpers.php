@@ -291,9 +291,13 @@ function asset_url(string $path): string
  * @param string      $fallback   Already-resolved fallback URL (typically from asset_url()).
  * @return string
  */
-function resolve_article_image_url(?string $imagePath, string $fallback): string
+function resolve_article_image_url(?string $imagePath, string $fallback = ''): string
 {
     $candidate = trim((string) $imagePath);
+
+    if ($fallback === '') {
+        $fallback = asset_url('images/story.png');
+    }
 
     if ($candidate === '') {
         return $fallback;
@@ -303,17 +307,45 @@ function resolve_article_image_url(?string $imagePath, string $fallback): string
         return $candidate;
     }
 
-    $candidateUrl = asset_url(ltrim($candidate, '/'));
-    $parsedPath = parse_url($candidateUrl, PHP_URL_PATH);
-    $documentRoot = (string) ($_SERVER['DOCUMENT_ROOT'] ?? '');
+    $cleanPath = ltrim($candidate, '/');
 
-    if (
-        $documentRoot !== ''
-        && $parsedPath !== null
-        && $parsedPath !== ''
-        && is_file($documentRoot . $parsedPath)
-    ) {
-        return $candidateUrl;
+    // Determine project root directory path
+    $projectRoot = dirname(__DIR__, 3);
+
+    $relativeDiskPath = '';
+    $webPath = '';
+
+    if (str_starts_with($cleanPath, 'admin/uploads/')) {
+        $relativeDiskPath = $cleanPath;
+        $webPath = '/' . $cleanPath;
+    } elseif (str_starts_with($cleanPath, 'uploads/')) {
+        $relativeDiskPath = 'admin/' . $cleanPath;
+        $webPath = '/admin/' . $cleanPath;
+    } else {
+        $relativeDiskPath = 'admin/uploads/' . $cleanPath;
+        $webPath = '/admin/uploads/' . $cleanPath;
+    }
+
+    $fullDiskPath = $projectRoot . '/' . $relativeDiskPath;
+
+    if (is_file($fullDiskPath)) {
+        return app_base_url() . $webPath;
+    }
+
+    if (str_starts_with($cleanPath, 'uploads/')) {
+        return app_base_url() . '/admin/' . $cleanPath;
+    }
+
+    // Check in public/assets/
+    $assetDiskPath = $projectRoot . '/frontend/public/assets/' . $cleanPath;
+    if (is_file($assetDiskPath)) {
+        return asset_url($cleanPath);
+    }
+
+    // Check in public/assets/images/
+    $imageAssetDiskPath = $projectRoot . '/frontend/public/assets/images/' . $cleanPath;
+    if (is_file($imageAssetDiskPath)) {
+        return asset_url('images/' . $cleanPath);
     }
 
     return $fallback;

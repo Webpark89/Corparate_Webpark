@@ -3,11 +3,15 @@
 /**
  * Admin service list — browse and manage website service entries.
  */
+require_once __DIR__ . '/../includes/functions.php';
+require_login();
+
 $pageTitle = 'การจัดการบริการ';
 $page = 'services';
-require_once __DIR__ . '/../includes/header.php';
 
 $services = db()->query('SELECT * FROM service ORDER BY created_at DESC')->fetchAll();
+
+require_once __DIR__ . '/../includes/header.php';
 ?>
 
 <div class="mx-auto w-full max-w-none px-2 pb-8 pt-1 text-sm md:px-4 lg:px-8">
@@ -51,7 +55,7 @@ $services = db()->query('SELECT * FROM service ORDER BY created_at DESC')->fetch
                                 data-href="edit.php?id=<?= (int) $row['id'] ?>">
 
                                 <td class="px-4 py-3">
-                                    <img src="<?= e($row['image']) ?>" class="h-10 w-[60px] rounded-lg border border-slate-200 object-cover shadow-sm" alt="<?= e($row['title']) ?>">
+                                    <img src="<?= e(upload_url($row['image'])) ?>" class="h-10 w-[60px] rounded-lg border border-slate-200 object-cover shadow-sm" alt="<?= e($row['title']) ?>">
                                 </td>
 
                                 <td class="px-3 py-3">

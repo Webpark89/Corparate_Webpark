@@ -88,7 +88,7 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
                                     class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 transition-all cursor-pointer">
                             </div>
                             <p class="text-[11px] text-slate-400 px-1">
-                                * รองรับไฟล์นามสกุล: JPEG, PNG, WEBP (ขนาดสูงสุดไม่เกิน 5MB)
+                                * รองรับไฟล์นามสกุล: JPEG, JPG, PNG, WEBP, GIF (ขนาดสูงสุดไม่เกิน 8MB)
                             </p>
                         </div>
 

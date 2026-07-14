@@ -720,7 +720,7 @@ $erpPortfolios = $mockErpPortfolios;
 
         <div id="erp-portfolio-scroll-container" class="flex overflow-x-auto snap-x snap-mandatory scrollbar-none gap-8 pb-6 -mx-4 px-4 md:mx-0 md:px-0 md:grid md:grid-cols-4 lg:grid-cols-4 md:overflow-visible md:snap-none">
             <?php foreach ($erpPortfolios as $port): 
-                $imgSrc = asset_url($port['image_path']);
+                $imgSrc = resolve_article_image_url($port['image_path'] ?? '', asset_url('images/erp.png'));
                 $detailUrl = isset($port['slug']) ? route_url('/portfolio/' . $port['slug']) : route_url('/portfolio');
             ?>
                 <a href="<?= e($detailUrl) ?>" class="block w-[85vw] md:w-auto shrink-0 snap-center">
