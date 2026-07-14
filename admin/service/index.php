@@ -65,9 +65,12 @@ $services = db()->query('SELECT * FROM service ORDER BY created_at DESC')->fetch
 
                                 <td class="px-3 py-3">
                                     <?php if ($row['is_active']): ?>
-                                        <span class="inline-flex rounded-lg border border-emerald-200 bg-emerald-50 px-2.5 py-0.5 text-[11px] font-semibold text-emerald-700">แสดง</span>
+                                        <span class="inline-flex rounded-lg border border-emerald-200 bg-emerald-50 px-2.5 py-0.5 text-[11px] font-semibold text-emerald-700">เผยแพร่</span>
                                     <?php else: ?>
-                                        <span class="inline-flex rounded-lg border border-slate-200 bg-slate-100 px-2.5 py-0.5 text-[11px] font-semibold text-slate-500">ซ่อน</span>
+                                        <span class="inline-flex items-center gap-1 rounded-lg border border-slate-300 bg-slate-100 px-2.5 py-0.5 text-[11px] font-semibold text-slate-600">
+                                            <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                                            ซ่อนอยู่
+                                        </span>
                                     <?php endif; ?>
                                 </td>
 
@@ -75,6 +78,24 @@ $services = db()->query('SELECT * FROM service ORDER BY created_at DESC')->fetch
                                     <div class="inline-flex overflow-hidden rounded-xl border border-slate-200 shadow-sm">
                                         <a href="edit.php?id=<?= (int) $row['id'] ?>"
                                             class="bg-white px-3 py-1.5 text-[11px] font-semibold text-slate-600 transition hover:bg-slate-50">แก้ไข</a>
+                                        <form action="toggle_status.php" method="post" class="js-toggle-form">
+                                            <input type="hidden" name="id" value="<?= (int) $row['id'] ?>">
+                                            <input type="hidden" name="status" value="<?= (int) $row['is_active'] ?>">
+                                            <?= csrf_field() ?>
+                                            <?php if ((int) $row['is_active'] === 0): ?>
+                                            <button type="submit"
+                                                class="border-l border-slate-200 bg-white px-3 py-1.5 text-[11px] font-semibold text-emerald-600 transition hover:bg-emerald-50 cursor-pointer"
+                                                title="เปิดใช้งานบริการนี้">
+                                                แสดง
+                                            </button>
+                                            <?php else: ?>
+                                            <button type="submit"
+                                                class="border-l border-slate-200 bg-white px-3 py-1.5 text-[11px] font-semibold text-slate-500 transition hover:bg-slate-100 cursor-pointer"
+                                                title="ซ่อนบริการนี้จากหน้าเว็บ">
+                                                ซ่อน
+                                            </button>
+                                            <?php endif; ?>
+                                        </form>
                                     </div>
                                 </td>
 
@@ -91,11 +112,22 @@ $services = db()->query('SELECT * FROM service ORDER BY created_at DESC')->fetch
     document.addEventListener('DOMContentLoaded', function() {
         document.querySelectorAll('.js-clickable-row').forEach(row => {
             row.addEventListener('click', function(event) {
-                if (!event.target.closest('a') && !event.target.closest('button')) {
+                if (!event.target.closest('a') && !event.target.closest('button') && !event.target.closest('form')) {
                     const url = this.getAttribute('data-href');
                     if (url) {
                         window.location.href = url;
                     }
+                }
+            });
+        });
+
+        const toggleForms = document.querySelectorAll('.js-toggle-form');
+        toggleForms.forEach(form => {
+            form.addEventListener('submit', function(event) {
+                const currentStatus = parseInt(form.querySelector('input[name="status"]').value);
+                const action = currentStatus === 0 ? 'แสดงบริการนี้บนหน้าเว็บ' : 'ซ่อนบริการนี้จากหน้าเว็บ';
+                if (!confirm(action + '?')) {
+                    event.preventDefault();
                 }
             });
         });
