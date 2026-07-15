@@ -120,14 +120,7 @@ $partners = $statement->fetchAll();
                                 <div class="h-10 w-20 rounded border border-slate-200 bg-slate-50 flex items-center justify-center p-1 overflow-hidden">
                                     <?php if (!empty($row['image_url'])): ?>
                                         <?php
-                                        $logoUrl = '';
-                                        if (preg_match('#^https?://#i', $row['image_url'])) {
-                                            $logoUrl = $row['image_url'];
-                                        } elseif (str_contains($row['image_url'], '/')) {
-                                            $logoUrl = SITE_URL . '/admin/' . ltrim($row['image_url'], '/');
-                                        } else {
-                                            $logoUrl = upload_url($row['image_url']);
-                                        }
+                                            $logoUrl = resolve_admin_image_url($row['image_url']);
                                         ?>
                                         <img src="<?= e($logoUrl) ?>"
                                              class="w-full h-full object-contain"

@@ -7,9 +7,18 @@ $data = $setting ?? [];
 $inputClass = 'w-full rounded-xl border border-slate-200 px-4 py-3 text-sm focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all';
 
 $features = [];
-if (!empty($data['details_json'])) {
+if (!empty($data['id'])) {
+    $stmt = db()->prepare('SELECT title FROM service_features WHERE service_id = ? ORDER BY id ASC');
+    $stmt->execute([$data['id']]);
+    $features = $stmt->fetchAll(PDO::FETCH_COLUMN);
+}
+
+// Fallback to legacy details_json if service_features is empty (migration)
+if (empty($features) && !empty($data['details_json'])) {
     $decoded = json_decode($data['details_json'], true);
-    $features = $decoded['features'] ?? [];
+    if (is_array($decoded) && !empty($decoded['features'])) {
+        $features = $decoded['features'];
+    }
 }
 ?>
 
@@ -45,6 +54,14 @@ if (!empty($data['details_json'])) {
                     <p class="text-xs text-slate-400 mt-1">คำอธิบายสั้น ๆ แสดงบนหน้าแรกหรือหน้ารายละเอียด</p>
                 </div>
 
+                <!-- หัวข้อ Dropdown -->
+                <div>
+                    <label class="text-sm font-bold text-slate-700 block mb-1">หัวข้อ Dropdown (แสดงบนหน้าเว็บ)</label>
+                    <?php $dropdownTitle = (!empty($data['details_json']) ? (json_decode($data['details_json'], true)['dropdown_title'] ?? '') : ''); ?>
+                    <input type="text" name="dropdown_title" value="<?= e($dropdownTitle) ?>" class="<?= $inputClass ?>" placeholder="เช่น ERP / ERM / HR">
+                    <p class="text-xs text-slate-400 mt-1">ข้อความที่จะแสดงบนปุ่ม Dropdown ในหน้าบริการของเรา</p>
+                </div>
+
                 <!-- คุณสมบัติ / Features -->
                 <div>
                     <label class="text-sm font-bold text-slate-700 block mb-2">คุณสมบัติ / Features</label>
@@ -74,7 +91,7 @@ if (!empty($data['details_json'])) {
                 <div>
                     <label class="text-sm font-bold text-slate-700 block mb-1">รูปภาพประกอบ</label>
                     <?php if (!empty($data['image'])): ?>
-                        <div class="mb-2"><img src="<?= e(upload_url($data['image'])) ?>" class="w-24 h-24 rounded-xl object-cover border"></div>
+                        <div class="mb-2"><img src="<?= e(resolve_admin_image_url($data['image'])) ?>" class="w-24 h-24 rounded-xl object-cover border"></div>
                         <input type="hidden" name="old_image" value="<?= e($data['image']) ?>">
                     <?php endif; ?>
                     <input type="file" name="image" class="w-full text-sm">
@@ -101,7 +118,7 @@ if (!empty($data['details_json'])) {
         function updateHidden() {
             // ดึง text จากทุก span.bg-blue-100
             const features = Array.from(container.querySelectorAll('span.bg-blue-100')).map(span => {
-                const textSpan = span.querySelector('span:first-of-type');
+                const textSpan = span.querySelector('span');
                 return textSpan ? textSpan.textContent.trim() : '';
             }).filter(text => text !== '');
             hiddenInput.value = features.join(',');

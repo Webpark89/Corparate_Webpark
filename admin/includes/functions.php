@@ -239,6 +239,37 @@ function upload_url(?string $filename): string
 }
 
 /**
+ * Resolve an image URL from the database. 
+ * If it contains a slash, it is assumed to be an absolute path or external URL.
+ * Otherwise, it is treated as an uploaded filename.
+ */
+function resolve_admin_image_url(?string $filename): string
+{
+    if (empty($filename)) {
+        return '';
+    }
+    if (strpos($filename, '/') !== false || strpos($filename, 'http') === 0) {
+        if (strpos($filename, 'http') === 0) {
+            return $filename;
+        }
+        $webPath = rtrim(SITE_URL, '/') . '/admin/' . ltrim($filename, '/');
+        // Check if it exists on disk, otherwise return placeholder
+        $diskPath = __DIR__ . '/../' . ltrim($filename, '/');
+        if (!file_exists($diskPath)) {
+            return 'https://placehold.co/400x300/e2e8f0/64748b?text=No+Image';
+        }
+        return $webPath;
+    }
+    
+    // Check if uploaded file exists
+    $diskPath = UPLOAD_DIR . '/' . $filename;
+    if (!file_exists($diskPath)) {
+        return 'https://placehold.co/400x300/e2e8f0/64748b?text=No+Image';
+    }
+    return upload_url($filename);
+}
+
+/**
  * @return array{total: int, pages: int, current: int, offset: int, perPage: int}
  */
 function paginate(int $total, int $perPage, int $current): array

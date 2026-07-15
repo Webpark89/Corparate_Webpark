@@ -113,7 +113,7 @@ $reviews = $statement->fetchAll();
                             data-href="edit.php?id=<?= (int) $row['id'] ?>">
 
                             <td class="px-4 py-3 text-center">
-                                <?php $avatarUrl = !empty($row['reviewer_image_url']) ? $row['reviewer_image_url'] : 'https://ui-avatars.com/api/?name=' . urlencode($row['reviewer_name']) . '&background=random'; ?>
+                                <?php $avatarUrl = !empty($row['reviewer_image_url']) ? resolve_admin_image_url($row['reviewer_image_url']) : 'https://ui-avatars.com/api/?name=' . urlencode($row['reviewer_name']) . '&background=random'; ?>
                                 <img src="<?= e($avatarUrl) ?>"
                                     class="h-10 w-10 rounded-full border border-slate-200 object-cover shadow-sm ring-2 ring-transparent group-hover:ring-blue-100 transition-all mx-auto"
                                     alt="<?= e($row['reviewer_name']) ?>">

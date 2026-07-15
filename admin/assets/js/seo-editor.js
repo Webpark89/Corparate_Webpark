@@ -4,11 +4,11 @@
         const titleLen = elements.titleInput.value.length;
         const descLen = elements.descInput.value.length;
 
-        elements.titleCounter.textContent = `${titleLen} / 60`;
-        elements.titleCounter.className = `text-xs font-medium ${titleLen > 60 ? 'text-rose-600' : 'text-slate-500'}`;
+        elements.titleCounter.textContent = `${titleLen} / 150`;
+        elements.titleCounter.className = `text-xs font-medium ${titleLen > 150 ? 'text-rose-600' : 'text-slate-500'}`;
 
-        elements.descCounter.textContent = `${descLen} / 155`;
-        elements.descCounter.className = `text-xs font-medium ${descLen > 155 ? 'text-rose-600' : 'text-slate-500'}`;
+        elements.descCounter.textContent = `${descLen} / 250`;
+        elements.descCounter.className = `text-xs font-medium ${descLen > 250 ? 'text-rose-600' : 'text-slate-500'}`;
     }
 
     function slugify(value) {

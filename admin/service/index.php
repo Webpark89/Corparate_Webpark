@@ -55,7 +55,7 @@ require_once __DIR__ . '/../includes/header.php';
                                 data-href="edit.php?id=<?= (int) $row['id'] ?>">
 
                                 <td class="px-4 py-3">
-                                    <img src="<?= e(upload_url($row['image'])) ?>" class="h-10 w-[60px] rounded-lg border border-slate-200 object-cover shadow-sm" alt="<?= e($row['title']) ?>">
+                                    <img src="<?= e(resolve_admin_image_url($row['image'])) ?>" class="h-10 w-[60px] rounded-lg border border-slate-200 object-cover shadow-sm" alt="<?= e($row['title']) ?>">
                                 </td>
 
                                 <td class="px-3 py-3">

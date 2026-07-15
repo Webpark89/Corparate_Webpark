@@ -41,7 +41,7 @@ $inputClass = 'w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text
 
                     <div id="imagePreviewContainer" class="w-28 h-28 rounded-full border-2 border-slate-200 bg-slate-50 p-1 flex items-center justify-center overflow-hidden relative shadow-inner group">
                         <?php if (!empty($data['reviewer_image_url'])): ?>
-                            <img src="<?= e($data['reviewer_image_url']) ?>" class="w-full h-full object-cover rounded-full">
+                            <img src="<?= e(resolve_admin_image_url($data['reviewer_image_url'])) ?>" class="w-full h-full object-cover rounded-full">
                         <?php else: ?>
                             <div class="text-center p-2 text-slate-400">
                                 <svg class="w-6 h-6 mx-auto opacity-70" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">

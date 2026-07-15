@@ -46,7 +46,7 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
 
                         <div class="w-full h-64 rounded-xl border border-slate-200 bg-slate-50 p-2 flex items-center justify-center overflow-hidden">
                             <?php if (!empty($data['cover_image'])): ?>
-                                <img src="<?= e(upload_url($data['cover_image'])) ?>"
+                                <img src="<?= e(resolve_admin_image_url($data['cover_image'])) ?>"
                                     onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
                                     class="w-full h-full object-contain rounded-lg shadow-sm transition-transform duration-200 hover:scale-[1.01]">
 

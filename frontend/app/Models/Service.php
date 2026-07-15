@@ -184,6 +184,19 @@ class Service
 
         $items = $this->extractItemsFromDetails($details);
 
+        // Fetch features from service_features table
+        $features = [];
+        if (isset($row['id'])) {
+            $stmt = $this->pdo->prepare('SELECT title FROM service_features WHERE service_id = ? ORDER BY id ASC');
+            $stmt->execute([(int)$row['id']]);
+            $features = $stmt->fetchAll(PDO::FETCH_COLUMN);
+        }
+        
+        // Fallback to legacy details_json if service_features is empty (migration)
+        if (empty($features) && !empty($details['features'])) {
+            $features = $details['features'];
+        }
+
         return [
             'id' => (int) $row['id'],
             'slug' => (string) $row['slug'],
@@ -193,6 +206,7 @@ class Service
             'description' => (string) ($row['summary'] ?? ''),
             'image' => (string) ($row['image'] ?? ''),
             'details' => $details,
+            'features' => $features,
             'items' => $items,
             'topics' => !empty($details['topics']) && is_array($details['topics'])
                 ? $details['topics']

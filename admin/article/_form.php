@@ -63,6 +63,20 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
 
         <div class="lg:col-span-12 space-y-6">
 
+            <!-- Language Toggle Tabs (Global for Form) -->
+            <div class="inline-flex items-center gap-2 mb-2">
+                <button type="button" id="global-tab-th" onclick="switchGlobalLanguage('th')"
+                    style="padding-left:1.25rem;padding-right:1.25rem;"
+                    class="py-2 text-sm font-semibold rounded-lg bg-blue-50 text-blue-600 border border-blue-200 hover:bg-blue-100 focus:outline-none transition-all">
+                    ภาษาไทย (0/5)
+                </button>
+                <button type="button" id="global-tab-en" onclick="switchGlobalLanguage('en')"
+                    style="padding-left:1.25rem;padding-right:1.25rem;"
+                    class="py-2 text-sm font-semibold rounded-lg bg-transparent text-slate-500 border border-slate-200 hover:bg-slate-50 hover:text-slate-800 focus:outline-none transition-all">
+                    English (0/5)
+                </button>
+            </div>
+
             <section class="rounded-2xl border border-slate-200/80 bg-white shadow-sm overflow-hidden">
 
                 <div class="border-b border-slate-100 px-6 py-4">
@@ -79,7 +93,7 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
 
                         <div class="w-full h-64 rounded-xl border border-slate-200 bg-slate-50 p-2 flex items-center justify-center overflow-hidden">
                             <?php if (!empty($data['cover_image'])): ?>
-                                <img src="<?= e(upload_url($data['cover_image'])) ?>"
+                                <img src="<?= e(resolve_admin_image_url($data['cover_image'])) ?>"
                                     onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
                                     class="w-full h-full object-contain rounded-lg shadow-sm transition-transform duration-200 hover:scale-[1.01]">
 
@@ -149,48 +163,95 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
 
                 <div class="p-6 space-y-5">
 
-                    <div>
-                        <div class="flex justify-between mb-2">
-                            <label class="text-sm font-medium text-slate-700">
-                                หัวข้อสำหรับ SEO (Meta Title) <span class="text-red-500 ml-0.5">*</span>
-                            </label>
-                            <span id="titleCount" class="text-xs text-slate-500">0 / 60</span>
+                    <!-- Thai SEO Fields -->
+                    <div class="lang-group lang-th-group space-y-5">
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <label class="text-sm font-medium text-slate-700">
+                                    หัวข้อสำหรับ SEO (Meta Title) <span class="text-red-500 ml-0.5">*</span>
+                                </label>
+                                <span id="titleCount" class="text-xs text-slate-500">0 / 150</span>
+                            </div>
+
+                            <input id="mainTitle"
+                                name="meta_title"
+                                value="<?= e($data['meta_title'] ?? '') ?>"
+                                placeholder="ระบุหัวข้อที่ต้องการให้แสดงบนหน้าค้นหาของ Google..."
+                                class="<?= $inputClass ?>"
+                                required>
                         </div>
 
-                        <input id="mainTitle"
-                            name="meta_title"
-                            value="<?= e($data['meta_title'] ?? '') ?>"
-                            placeholder="ระบุหัวข้อที่ต้องการให้แสดงบนหน้าค้นหาของ Google..."
-                            class="<?= $inputClass ?>"
-                            required>
-                    </div>
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <label class="text-sm font-medium text-slate-700">
+                                    คำอธิบายสรุปบทความ (Meta Description) <span class="text-red-500 ml-0.5">*</span>
+                                </label>
+                                <span id="descCount" class="text-xs text-slate-500">0 / 250</span>
+                            </div>
 
-                    <div>
-                        <div class="flex justify-between mb-2">
-                            <label class="text-sm font-medium text-slate-700">
-                                คำอธิบายสรุปบทความ (Meta Description) <span class="text-red-500 ml-0.5">*</span>
-                            </label>
-                            <span id="descCount" class="text-xs text-slate-500">0 / 155</span>
+                            <textarea id="metaDesc"
+                                name="meta_description"
+                                rows="4"
+                                placeholder="เขียนคำอธิบายสั้น ๆ เพื่อดึงดูดใจผู้ใช้งานเมื่อแสดงเป็นสเนปเป็ตบนหน้า Google..."
+                                class="<?= $inputClass ?>"
+                                required><?= e($data['meta_description'] ?? '') ?></textarea>
                         </div>
 
-                        <textarea id="metaDesc"
-                            name="meta_description"
-                            rows="4"
-                            placeholder="เขียนคำอธิบายสั้น ๆ เพื่อดึงดูดใจผู้ใช้งานเมื่อแสดงเป็นสเนปเป็ตบนหน้า Google..."
-                            class="<?= $inputClass ?>"
-                            required><?= e($data['meta_description'] ?? '') ?></textarea>
+                        <div>
+                            <label class="text-sm font-medium mb-2 block text-slate-700">
+                                คำค้นหาสำคัญ (Keywords) <span class="text-red-500 ml-0.5">*</span>
+                            </label>
+
+                            <input name="meta_keywords"
+                                value="<?= e($data['meta_keywords'] ?? '') ?>"
+                                placeholder="ระบุคำค้นหา เช่น เว็บดีไซน์, ความรู้คู่ระบบ, เทคโนโลยี (คั่นด้วยเครื่องหมายจุลภาค , )"
+                                class="<?= $inputClass ?>"
+                                required>
+                        </div>
                     </div>
 
-                    <div>
-                        <label class="text-sm font-medium mb-2 block text-slate-700">
-                            คำค้นหาสำคัญ (Keywords) <span class="text-red-500 ml-0.5">*</span>
-                        </label>
+                    <!-- English SEO Fields -->
+                    <div class="lang-group lang-en-group space-y-5 hidden">
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <label class="text-sm font-medium text-slate-700">
+                                    SEO Title (English) <span class="text-red-500 ml-0.5">*</span>
+                                </label>
+                                <span id="titleCountEn" class="text-xs text-slate-500">0 / 150</span>
+                            </div>
 
-                        <input name="meta_keywords"
-                            value="<?= e($data['meta_keywords'] ?? '') ?>"
-                            placeholder="ระบุคำค้นหา เช่น เว็บดีไซน์, ความรู้คู่ระบบ, เทคโนโลยี (คั่นด้วยเครื่องหมายจุลภาค , )"
-                            class="<?= $inputClass ?>"
-                            required>
+                            <input id="mainTitleEn"
+                                name="meta_title_en"
+                                value="<?= e($data['meta_title_en'] ?? '') ?>"
+                                placeholder="Enter English SEO Title..."
+                                class="<?= $inputClass ?>">
+                        </div>
+
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <label class="text-sm font-medium text-slate-700">
+                                    SEO Description (English) <span class="text-red-500 ml-0.5">*</span>
+                                </label>
+                                <span id="descCountEn" class="text-xs text-slate-500">0 / 250</span>
+                            </div>
+
+                            <textarea id="metaDescEn"
+                                name="meta_description_en"
+                                rows="4"
+                                placeholder="Enter English SEO Description..."
+                                class="<?= $inputClass ?>"><?= e($data['meta_description_en'] ?? '') ?></textarea>
+                        </div>
+
+                        <div>
+                            <label class="text-sm font-medium mb-2 block text-slate-700">
+                                SEO Keywords (English) <span class="text-red-500 ml-0.5">*</span>
+                            </label>
+
+                            <input name="meta_keywords_en"
+                                value="<?= e($data['meta_keywords_en'] ?? '') ?>"
+                                placeholder="Enter keywords separated by commas..."
+                                class="<?= $inputClass ?>">
+                        </div>
                     </div>
 
                 </div>
@@ -224,21 +285,52 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
 
                     </div>
 
+                    <div class="lang-group lang-th-group space-y-6">
+                        <div>
+                            <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 block">
+                                ลิงก์บทความ (URL Slug) <span class="text-red-500 ml-0.5">*</span>
+                            </label>
+                            <div class="flex overflow-hidden rounded-xl border border-slate-200 bg-slate-50 focus-within:border-blue-500 focus-within:ring-4 focus-within:ring-blue-500/5 transition-all">
+                                <span class="flex items-center px-4 bg-slate-100 text-sm text-slate-500 border-r border-slate-200 select-none">
+                                    /article/
+                                </span>
+                                <input id="slug"
+                                    name="slug"
+                                    value="<?= e($data['slug'] ?? '') ?>"
+                                    placeholder="ชื่อเนื้อหาภาษาอังกฤษหรือไทยเพื่อเป็นลิงก์ถาวร"
+                                    class="flex-1 bg-transparent px-4 py-3 text-sm outline-none"
+                                    required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="lang-group lang-en-group space-y-6 hidden">
+                        <div>
+                            <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 block">
+                                URL Slug (English)
+                            </label>
+                            <div class="flex overflow-hidden rounded-xl border border-slate-200 bg-slate-50 focus-within:border-blue-500 focus-within:ring-4 focus-within:ring-blue-500/5 transition-all">
+                                <span class="flex items-center px-4 bg-slate-100 text-sm text-slate-500 border-r border-slate-200 select-none">
+                                    /en/article/
+                                </span>
+                                <input id="slug_en"
+                                    name="slug_en"
+                                    value="<?= e($data['slug_en'] ?? '') ?>"
+                                    placeholder="English URL slug"
+                                    class="flex-1 bg-transparent px-4 py-3 text-sm outline-none">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Source URL Field (Not language specific, but shown for both) -->
                     <div>
                         <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 block">
-                            ลิงก์บทความ (URL Slug) <span class="text-red-500 ml-0.5">*</span>
+                            ที่มาของบทความ (Source / Reference URL)
                         </label>
-                        <div class="flex overflow-hidden rounded-xl border border-slate-200 bg-slate-50 focus-within:border-blue-500 focus-within:ring-4 focus-within:ring-blue-500/5 transition-all">
-                            <span class="flex items-center px-4 bg-slate-100 text-sm text-slate-500 border-r border-slate-200 select-none">
-                                /article/
-                            </span>
-                            <input id="slug"
-                                name="slug"
-                                value="<?= e($data['slug'] ?? '') ?>"
-                                placeholder="ชื่อเนื้อหาภาษาอังกฤษสำหรับเป็นลิงก์ถาวร"
-                                class="flex-1 bg-transparent px-4 py-3 text-sm outline-none"
-                                required>
-                        </div>
+                        <input name="source_url"
+                            value="<?= e($data['source_url'] ?? '') ?>"
+                            placeholder="เช่น https://www.example.com/original-post หรือ ชื่อผู้แต่ง/หนังสืออ้างอิง"
+                            class="<?= $inputClass ?>">
                     </div>
 
                     <div class="space-y-4">
@@ -250,22 +342,8 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
                             เนื้อหาหลักของบทความ (แบ่งแท็บตามภาษา)
                         </label>
 
-                        <!-- Tab Headers -->
-                        <div class="inline-flex items-center gap-2">
-                            <button type="button" id="tab-btn-th" onclick="switchLanguageTab('th')"
-                                style="padding-left:1.25rem;padding-right:1.25rem;"
-                                class="py-2 text-sm font-semibold rounded-lg bg-blue-50 text-blue-600 border border-blue-200 hover:bg-blue-100 focus:outline-none transition-all">
-                                ภาษาไทย (0/5)
-                            </button>
-                            <button type="button" id="tab-btn-en" onclick="switchLanguageTab('en')"
-                                style="padding-left:1.25rem;padding-right:1.25rem;"
-                                class="py-2 text-sm font-semibold rounded-lg bg-transparent text-slate-500 border border-transparent hover:bg-slate-100 hover:text-slate-800 focus:outline-none transition-all">
-                                English (0/5)
-                            </button>
-                        </div>
-
                         <!-- Tab Content: Thai (TH) -->
-                        <div id="tab-content-th" class="pt-5">
+                        <div class="lang-group lang-th-group pt-2">
                             <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 md:p-5 space-y-5">
                                 <div id="th-sections-container" class="space-y-5">
                                     <!-- Dynamic Thai sections will go here -->
@@ -281,7 +359,7 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
                         </div>
 
                         <!-- Tab Content: English (EN) -->
-                        <div id="tab-content-en" class="pt-5 hidden">
+                        <div class="lang-group lang-en-group pt-2 hidden">
                             <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 md:p-5 space-y-5">
                                 <div id="en-sections-container" class="space-y-5">
                                     <!-- Dynamic English sections will go here -->
@@ -469,7 +547,8 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
 
     function updateCounterDisplay(lang) {
         const count = lang === 'th' ? thCount : enCount;
-        const btn = document.getElementById(`tab-btn-${lang}`);
+        
+        const btn = document.getElementById(`global-tab-${lang}`);
         if (btn) {
             const label = lang === 'th' ? 'ภาษาไทย' : 'English';
             btn.textContent = `${label} (${count}/5)`;
@@ -489,22 +568,32 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
         }
     }
 
-    function switchLanguageTab(lang) {
-        const tabs = ['th', 'en'];
-        tabs.forEach(t => {
-            const btn = document.getElementById(`tab-btn-${t}`);
-            const content = document.getElementById(`tab-content-${t}`);
+    function switchGlobalLanguage(lang) {
+        const thGroups = document.querySelectorAll('.lang-th-group');
+        const enGroups = document.querySelectorAll('.lang-en-group');
+        
+        const btnTh = document.getElementById('global-tab-th');
+        const btnEn = document.getElementById('global-tab-en');
+
+        if (lang === 'th') {
+            thGroups.forEach(el => el.classList.remove('hidden'));
+            enGroups.forEach(el => el.classList.add('hidden'));
+
+            btnTh.classList.add('bg-blue-50', 'text-blue-600', 'border-blue-200', 'hover:bg-blue-100');
+            btnTh.classList.remove('bg-transparent', 'text-slate-500', 'border-slate-200', 'hover:bg-slate-50', 'hover:text-slate-800');
             
-            if (t === lang) {
-                btn.classList.add('bg-blue-50', 'text-blue-600', 'border-blue-200', 'hover:bg-blue-100');
-                btn.classList.remove('bg-transparent', 'text-slate-500', 'border-transparent', 'hover:bg-slate-100', 'hover:text-slate-800');
-                content.classList.remove('hidden');
-            } else {
-                btn.classList.remove('bg-blue-50', 'text-blue-600', 'border-blue-200', 'hover:bg-blue-100');
-                btn.classList.add('bg-transparent', 'text-slate-500', 'border-transparent', 'hover:bg-slate-100', 'hover:text-slate-800');
-                content.classList.add('hidden');
-            }
-        });
+            btnEn.classList.add('bg-transparent', 'text-slate-500', 'border-slate-200', 'hover:bg-slate-50', 'hover:text-slate-800');
+            btnEn.classList.remove('bg-blue-50', 'text-blue-600', 'border-blue-200', 'hover:bg-blue-100');
+        } else {
+            thGroups.forEach(el => el.classList.add('hidden'));
+            enGroups.forEach(el => el.classList.remove('hidden'));
+
+            btnEn.classList.add('bg-blue-50', 'text-blue-600', 'border-blue-200', 'hover:bg-blue-100');
+            btnEn.classList.remove('bg-transparent', 'text-slate-500', 'border-slate-200', 'hover:bg-slate-50', 'hover:text-slate-800');
+            
+            btnTh.classList.add('bg-transparent', 'text-slate-500', 'border-slate-200', 'hover:bg-slate-50', 'hover:text-slate-800');
+            btnTh.classList.remove('bg-blue-50', 'text-blue-600', 'border-blue-200', 'hover:bg-blue-100');
+        }
     }
 
     document.addEventListener('DOMContentLoaded', () => {

@@ -117,7 +117,7 @@ $categories = db()->query('SELECT id, name FROM categories ORDER BY name')->fetc
                             data-href="edit.php?id=<?= (int) $row['id'] ?>">
 
                             <td class="px-4 py-3">
-                                <img src="<?= e(upload_url($row['cover_image']) ?: 'https://picsum.photos/seed/' . $row['id'] . '/120/80') ?>"
+                                <img src="<?= e(resolve_admin_image_url($row['cover_image']) ?: 'https://picsum.photos/seed/' . $row['id'] . '/120/80') ?>"
                                     class="h-10 w-[60px] rounded-lg border border-slate-200 object-cover shadow-sm"
                                     alt="<?= e($row['cover_image_alt']) ?>">
                             </td>

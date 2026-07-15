@@ -321,21 +321,33 @@ class HomeController
                 return;
             }
 
-            $descText = trim((string) ($row['meta_description'] ?? ''));
+            $lang = getCurrentLang();
+            
+            $metaTitle = (string) ($row['meta_title'] ?? '');
+            $metaDesc = (string) ($row['meta_description'] ?? '');
+            $metaKeywords = (string) ($row['meta_keywords'] ?? '');
+
+            if ($lang === 'en') {
+                $metaTitle = (string) ($row['meta_title_en'] ?? '') ?: $metaTitle;
+                $metaDesc = (string) ($row['meta_description_en'] ?? '') ?: $metaDesc;
+                $metaKeywords = (string) ($row['meta_keywords_en'] ?? '') ?: $metaKeywords;
+            }
+
+            $descText = trim($metaDesc);
             if ($descText === '') {
-                $lang = getCurrentLang();
                 $descText = get_article_summary_text((string) ($row['content'] ?? ''), $lang);
                 if ($descText !== '') {
                     $descText = mb_strimwidth($descText, 0, 180, '...');
                 }
             }
+
             $article = [
                 'id' => (int) ($row['id'] ?? 0),
-                'title' => (string) ($row['title'] ?? ''),
-                'meta_title' => (string) ($row['meta_title'] ?? ''),
+                'title' => $metaTitle,
+                'meta_title' => $metaTitle,
                 'meta_description' => $descText,
                 'summary' => $descText !== '' ? mb_strimwidth($descText, 0, 140, '...') : '',
-                'meta_keywords' => (string) ($row['meta_keywords'] ?? ''),
+                'meta_keywords' => $metaKeywords,
                 'category' => (string) ($row['category'] ?? 'General'),
                 'image_path' => (string) ($row['image_path'] ?? ''),
                 'cover_image' => (string) ($row['image_path'] ?? ''),
@@ -343,6 +355,7 @@ class HomeController
                 'content' => (string) ($row['content'] ?? ''),
                 'author' => (string) ($row['author'] ?? ''),
                 'created_at' => (string) ($row['created_at'] ?? ''),
+                'source_url' => (string) ($row['source_url'] ?? ''),
             ];
 
             $relatedArticles = [];
@@ -379,7 +392,15 @@ class HomeController
             $rows = $articleModel->getPublished();
             $lang = getCurrentLang();
             $articles = array_map(static function (array $row) use ($lang): array {
-                $description = trim((string) ($row['description'] ?? $row['meta_description'] ?? ''));
+                $metaTitle = (string) ($row['meta_title'] ?? $row['title'] ?? '');
+                $metaDesc = (string) ($row['description'] ?? $row['meta_description'] ?? '');
+
+                if ($lang === 'en') {
+                    $metaTitle = (string) ($row['meta_title_en'] ?? '') ?: $metaTitle;
+                    $metaDesc = (string) ($row['meta_description_en'] ?? '') ?: $metaDesc;
+                }
+
+                $description = trim($metaDesc);
                 $content = trim((string) ($row['content'] ?? ''));
                 if ($description !== '') {
                     $summary = mb_strimwidth(strip_tags($description), 0, 140, '...');
@@ -389,7 +410,7 @@ class HomeController
 
                 return [
                     'id' => (int) ($row['id'] ?? 0),
-                    'title' => (string) ($row['title'] ?? ''),
+                    'title' => $metaTitle,
                     'category_name' => (string) ($row['category'] ?? 'General'),
                     'category_slug' => (string) ($row['category_slug'] ?? ''),
                     'image_path' => (string) ($row['image_path'] ?? ''),

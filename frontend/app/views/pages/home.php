@@ -551,61 +551,54 @@ if ($totalReviews > 0):
             </h2>
         </div>
 
-        <div class="flex items-center justify-between gap-4">
-            <button id="review-prev" class="hidden lg:flex w-12 h-12 rounded-full border-2 border-slate-400 items-center justify-center text-slate-400 hover:bg-white hover:text-primary transition-colors shrink-0 disabled:opacity-30 disabled:cursor-not-allowed" disabled>
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
-                </svg>
-            </button>
+        <style>
+            .pause-on-hover:hover {
+                animation-play-state: paused !important;
+            }
+        </style>
+        <div class="overflow-hidden relative mt-8 w-full" style="-webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent); mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);">
 
-            <div class="flex-1">
-                <div id="review-slider" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <?php foreach ($reviews as $index => $review): ?>
-                        <?php
-                        $reviewerName  = (string)($review['reviewer_name'] ?? '');
-                        $reviewerMeta  = implode(', ', array_values(array_filter([(string)($review['reviewer_position'] ?? ''), (string)($review['reviewer_company'] ?? '')], static fn($v) => trim($v) !== '')));
-                        $reviewerImage = $resolveReviewImage((string)($review['reviewer_image_url'] ?? ''));
-                        $isVisible     = $index < 4 ? '' : 'hidden';
-                        $rating        = max(0, min(5, isset($review['rating']) ? (int)$review['rating'] : 5));
-                        ?>
-                        <article class="review-card group shrink-0 bg-white rounded-[1.5rem] p-5 lg:p-6 shadow-sm border border-[#f3f4f6] flex flex-col justify-between hover:bg-primary hover:-translate-y-1 transition-all duration-300 h-[280px] <?= $isVisible ?>" data-index="<?= $index ?>">
-                            <div class="flex items-center justify-center w-full mb-3 mt-1 shrink-0">
-                                <div class="flex items-center gap-1.5">
-                                    <?php for ($i = 1; $i <= 5; $i++): ?>
-                                        <svg class="w-4 h-4 sm:w-5 sm:h-5 transition-colors <?= $i <= $rating ? 'text-yellow-400 group-hover:text-yellow-300' : 'text-slate-200 group-hover:text-white/30' ?>" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                                            <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd"/>
-                                        </svg>
-                                    <?php endfor; ?>
-                                </div>
+            <div class="flex w-max gap-6 items-center animate-scroll py-4 pause-on-hover">
+                <?php 
+                // Duplicate reviews to create a seamless infinite scroll effect
+                $scrollingReviews = array_merge($reviews, $reviews, $reviews);
+                ?>
+                <?php foreach ($scrollingReviews as $index => $review): ?>
+                    <?php
+                    $reviewerName  = (string)($review['reviewer_name'] ?? '');
+                    $reviewerMeta  = implode(', ', array_values(array_filter([(string)($review['reviewer_position'] ?? ''), (string)($review['reviewer_company'] ?? '')], static fn($v) => trim($v) !== '')));
+                    $reviewerImage = $resolveReviewImage((string)($review['reviewer_image_url'] ?? ''));
+                    $rating        = max(0, min(5, isset($review['rating']) ? (int)$review['rating'] : 5));
+                    ?>
+                    <article class="review-card group flex-none bg-white rounded-[1.5rem] p-5 lg:p-6 shadow-sm border border-[#f3f4f6] flex flex-col justify-between hover:bg-primary hover:-translate-y-1 transition-all duration-300" style="width: 286px; height: 280px;">
+                        <div class="flex items-center justify-center w-full mb-3 mt-1 shrink-0">
+                            <div class="flex items-center gap-1.5">
+                                <?php for ($i = 1; $i <= 5; $i++): ?>
+                                    <svg class="w-4 h-4 sm:w-5 sm:h-5 transition-colors <?= $i <= $rating ? 'text-yellow-400 group-hover:text-yellow-300' : 'text-slate-200 group-hover:text-white/30' ?>" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd"/>
+                                    </svg>
+                                <?php endfor; ?>
                             </div>
-                            <div class="relative">
-                                <span class="absolute -top-3 -left-2 text-4xl font-serif text-slate-200 group-hover:text-white/20 transition-colors select-none" aria-hidden="true">“</span>
-                                <p class="text-sm leading-relaxed text-slate-600 group-hover:text-white transition-colors relative z-10 pl-2 line-clamp-4 overflow-hidden">
-                                    <?= e($review['content'] ?? '') ?>
-                                </p>
+                        </div>
+                        <div class="relative">
+                            <span class="absolute -top-3 -left-2 text-4xl font-serif text-slate-200 group-hover:text-white/20 transition-colors select-none" aria-hidden="true">“</span>
+                            <p class="text-sm leading-relaxed text-slate-600 group-hover:text-white transition-colors relative z-10 pl-2 line-clamp-4 overflow-hidden">
+                                <?= e($review['content'] ?? '') ?>
+                            </p>
+                        </div>
+                        <div class="flex items-center gap-3 mt-4 shrink-0 border-t border-slate-50 group-hover:border-white/10 pt-4">
+                            <img class="h-10 w-10 lg:h-11 lg:w-11 rounded-full object-cover bg-slate-100 shrink-0" src="<?= e($reviewerImage) ?>" alt="<?= e($reviewerName ?: 'Customer') ?>">
+                            <div class="overflow-hidden">
+                                <h4 class="text-sm font-bold text-dark group-hover:text-white transition-colors truncate"><?= e($reviewerName) ?></h4>
+                                <?php if ($reviewerMeta !== ''): ?>
+                                    <p class="text-xs font-medium text-slate-400 group-hover:text-white/80 transition-colors truncate mt-0.5"><?= e($reviewerMeta) ?></p>
+                                <?php endif; ?>
                             </div>
-                            <div class="flex items-center gap-3 mt-4 shrink-0 border-t border-slate-50 group-hover:border-white/10 pt-4">
-                                <img class="h-10 w-10 lg:h-11 lg:w-11 rounded-full object-cover bg-slate-100 shrink-0" src="<?= e($reviewerImage) ?>" alt="<?= e($reviewerName ?: 'Customer') ?>">
-                                <div class="overflow-hidden">
-                                    <h4 class="text-sm font-bold text-dark group-hover:text-white transition-colors truncate"><?= e($reviewerName) ?></h4>
-                                    <?php if ($reviewerMeta !== ''): ?>
-                                        <p class="text-xs font-medium text-slate-400 group-hover:text-white/80 transition-colors truncate mt-0.5"><?= e($reviewerMeta) ?></p>
-                                    <?php endif; ?>
-                                </div>
-                            </div>
-                        </article>
-                    <?php endforeach; ?>
-                </div>
+                        </div>
+                    </article>
+                <?php endforeach; ?>
             </div>
-
-            <button id="review-next" class="hidden lg:flex w-12 h-12 rounded-full border-2 border-slate-400 items-center justify-center text-slate-400 hover:bg-white hover:text-primary transition-colors shrink-0 disabled:opacity-30 disabled:cursor-not-allowed" <?= $totalReviews <= 4 ? 'disabled' : '' ?>>
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
-                </svg>
-            </button>
         </div>
-
-        <div id="review-dots-container" class="flex justify-center items-center gap-2 mt-6 flex-wrap"></div>
 
         <div class="mx-auto w-full max-w-7xl py-8 mt-10">
             <h2 class="text-center text-primary font-bold text-2xl md:text-3xl tracking-normal uppercase mb-3 block">
@@ -685,140 +678,7 @@ if ($totalReviews > 0):
     </div>
 </section>
 
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    const prevBtn = document.getElementById('review-prev');
-    const nextBtn = document.getElementById('review-next');
-    const dotsContainer = document.getElementById('review-dots-container');
-    const cards   = document.querySelectorAll('.review-card');
-    
-    let cur = 0;
-    
-    const getVisibleCount = () => {
-        if (window.innerWidth < 640) {
-            return 1; // Mobile (<640px): 1 card (1 column, 1 row)
-        }
-        if (window.innerWidth < 1024) {
-            return 2; // Tablet (<1024px): 2 cards
-        }
-        return 4; // Desktop (>=1024px): 4 cards
-    };
-    
-    function update() {
-        const visible = getVisibleCount();
-        const max = Math.max(0, Math.ceil(cards.length / visible) - 1);
-        
-        cards.forEach((c, i) => {
-            const isVisible = i >= cur * visible && i < (cur + 1) * visible;
-            c.classList.toggle('hidden', !isVisible);
-        });
-        
-        // Update dots styling
-        const dots = document.querySelectorAll('.review-dot');
-        dots.forEach((d, i) => {
-            d.classList.toggle('bg-primary', i === cur);
-            d.classList.toggle('w-6', i === cur);
-            d.classList.toggle('bg-slate-300', i !== cur);
-            d.classList.toggle('w-2', i !== cur);
-        });
-        
-        if (prevBtn) prevBtn.disabled = cur === 0;
-        if (nextBtn) nextBtn.disabled = cur >= max;
-    }
-    
-    function renderDots() {
-        if (!dotsContainer) return;
-        dotsContainer.innerHTML = '';
-        const visible = getVisibleCount();
-        const pageCount = Math.ceil(cards.length / visible);
-        
-        if (pageCount <= 1) return;
-        
-        for (let i = 0; i < pageCount; i++) {
-            const dot = document.createElement('span');
-            dot.className = `review-dot h-2 rounded-full cursor-pointer transition-all ${i === cur ? 'bg-primary w-6' : 'bg-slate-300 w-2'}`;
-            dot.addEventListener('click', () => {
-                cur = i;
-                update();
-            });
-            dotsContainer.appendChild(dot);
-        }
-    }
 
-    if (prevBtn) {
-        prevBtn.addEventListener('click', () => {
-            if (cur > 0) {
-                cur--;
-                update();
-            }
-        });
-    }
-    
-    if (nextBtn) {
-        nextBtn.addEventListener('click', () => {
-            const visible = getVisibleCount();
-            const max = Math.max(0, Math.ceil(cards.length / visible) - 1);
-            if (cur < max) {
-                cur++;
-                update();
-            }
-        });
-    }
-    
-    // Touch swipe support for mobile
-    let touchStartX = 0;
-    let touchEndX = 0;
-    const slider = document.getElementById('review-slider');
-    if (slider) {
-        slider.addEventListener('touchstart', e => {
-            touchStartX = e.changedTouches[0].screenX;
-        }, { passive: true });
-        
-        slider.addEventListener('touchend', e => {
-            touchEndX = e.changedTouches[0].screenX;
-            handleSwipe();
-        }, { passive: true });
-    }
-    
-    function handleSwipe() {
-        const swipeThreshold = 50;
-        const visible = getVisibleCount();
-        const max = Math.max(0, Math.ceil(cards.length / visible) - 1);
-        
-        if (touchEndX < touchStartX - swipeThreshold) {
-            // Swipe left -> Next page
-            if (cur < max) {
-                cur++;
-                update();
-            }
-        } else if (touchEndX > touchStartX + swipeThreshold) {
-            // Swipe right -> Prev page
-            if (cur > 0) {
-                cur--;
-                update();
-            }
-        }
-    }
-    
-    // Listen to resize to recalculate pages dynamically
-    let prevVisible = getVisibleCount();
-    window.addEventListener('resize', () => {
-        const currentVisible = getVisibleCount();
-        if (currentVisible !== prevVisible) {
-            prevVisible = currentVisible;
-            const max = Math.max(0, Math.ceil(cards.length / currentVisible) - 1);
-            if (cur > max) {
-                cur = max;
-            }
-            renderDots();
-            update();
-        }
-    });
-
-    renderDots();
-    update();
-});
-</script>
 <?php endif; ?>
 
 <style>

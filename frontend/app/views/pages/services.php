@@ -109,7 +109,61 @@ $ctaImage = asset_url('images/bg-cta.jpg');
     ],
 ];
 
-$services = $mockServices;
+// Merge database services with mock subcategories
+if (isset($services) && is_array($services)) {
+    $mergedServices = [];
+    foreach ($services as $dbService) {
+        $slug = $dbService['slug'];
+        $mockMatch = null;
+        if ($slug === 'erp-erm' || str_contains(strtolower($dbService['title']), 'erp')) {
+            $mockMatch = $mockServices[0];
+        } elseif ($slug === 'digital-platform' || str_contains(strtolower($dbService['title']), 'digital')) {
+            $mockMatch = $mockServices[1];
+        } elseif ($slug === 'online-marketing' || str_contains(strtolower($dbService['title']), 'marketing')) {
+            $mockMatch = $mockServices[2];
+        } elseif ($slug === 'creative-design' || str_contains(strtolower($dbService['title']), 'creative')) {
+            $mockMatch = $mockServices[3];
+        } else {
+            $mockMatch = $mockServices[0];
+        }
+
+        // Get features from the model which now loads from service_features table
+        $dbFeatures = $dbService['features'] ?? [];
+        $mappedSubcategories = [];
+        if (!empty($dbFeatures)) {
+            foreach ($dbFeatures as $feature) {
+                if (empty(trim($feature))) continue;
+                // Keep the ERP link for ERP System, else use #
+                $href = ($slug === 'erp-erm' && $feature === 'ERP System') ? route_url('/erp') : '#';
+                if ($feature === 'SEO') $href = route_url('/article-detail-mockup');
+                
+                $mappedSubcategories[] = [
+                    'label' => $feature,
+                    'href' => $href
+                ];
+            }
+        }
+        
+        // Fallback to mock data if database features are empty or corrupted by invalid JSON
+        if (empty($mappedSubcategories)) {
+            $mappedSubcategories = $mockMatch['subcategories'] ?? [];
+        }
+
+        $mergedServices[] = [
+            'id' => $dbService['id'],
+            'icon_emoji' => $mockMatch['icon_emoji'] ?? '⚙️',
+            'title' => $dbService['title'],
+            'summary' => $dbService['summary'],
+            'image_placeholder' => $dbService['image'] ? 'uploads/' . $dbService['image'] : $mockMatch['image_placeholder'],
+            'dropdown_title' => !empty($dbService['details']['dropdown_title']) ? $dbService['details']['dropdown_title'] : $mockMatch['dropdown_title'],
+            'subcategories' => $mappedSubcategories,
+        ];
+    }
+    $services = $mergedServices;
+} else {
+    // Fallback to mock data if database is empty or still has old data
+    $services = $mockServices;
+}
 ?>
 <!-- 
 <section class="relative bg-slate-50 pt-16 pb-12 lg:pt-24 lg:pb-20 font-sans overflow-hidden">
@@ -351,7 +405,7 @@ $services = $mockServices;
                 $sTitle  = (string)($service['title'] ?? '');
                 $sSummary= (string)($service['summary'] ?? '');
                 $sEmoji  = (string)($service['icon_emoji'] ?? '');
-                $imgSrc  = asset_url($service['image_placeholder'] ?? '');
+                $imgSrc  = resolve_article_image_url($service['image_placeholder'] ?? '');
                 $subcats = (array)($service['subcategories'] ?? []);
                 $dropdownText = getCurrentLang() === 'th' ? (string)($service['dropdown_title'] ?? 'ดูหัวข้อย่อย') : (string)($service['dropdown_title'] ?? 'View Subcategories');
             ?>
@@ -379,7 +433,6 @@ $services = $mockServices;
                         <?= e($sSummary) ?>
                     </p>
 
-                    <?php if (!empty($subcats)): ?>
                     <div class="mt-auto border-t border-slate-100 pt-3">
                         <details class="group/details">
                             
@@ -392,6 +445,7 @@ $services = $mockServices;
                                 </svg>
                             </summary>
 
+                            <?php if (!empty($subcats)): ?>
                             <div class="pl-4 pr-3 py-2 space-y-2 border-l-2 border-slate-100 ml-3 mt-1 mb-2">
                                 <?php foreach ($subcats as $item):
                                     $itemLabel = (string)($item['label'] ?? '');
@@ -403,10 +457,10 @@ $services = $mockServices;
                                 </a>
                                 <?php endforeach; ?>
                             </div>
+                            <?php endif; ?>
                             
                         </details>
                     </div>
-                    <?php endif; ?>
 
                 </div>
             </div>
