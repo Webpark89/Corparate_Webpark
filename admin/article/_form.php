@@ -186,7 +186,7 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
                                 <label class="text-sm font-medium text-slate-700">
                                     คำอธิบายสรุปบทความ (Meta Description) <span class="text-red-500 ml-0.5">*</span>
                                 </label>
-                                <span id="descCount" class="text-xs text-slate-500">0 / 250</span>
+                                <span id="descCount" class="text-xs text-slate-500">0 / 500</span>
                             </div>
 
                             <textarea id="metaDesc"
@@ -232,7 +232,7 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
                                 <label class="text-sm font-medium text-slate-700">
                                     SEO Description (English) <span class="text-red-500 ml-0.5">*</span>
                                 </label>
-                                <span id="descCountEn" class="text-xs text-slate-500">0 / 250</span>
+                                <span id="descCountEn" class="text-xs text-slate-500">0 / 500</span>
                             </div>
 
                             <textarea id="metaDescEn"
@@ -437,6 +437,31 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
         titleCounterSelector: '#titleCount',
         descCounterSelector: '#descCount',
         placeholder: 'เริ่มต้นเขียนเนื้อหาที่น่าสนใจของคุณตรงนี้ได้เลย...'
+    });
+
+    // English SEO Counters (Standalone)
+    document.addEventListener('DOMContentLoaded', () => {
+        const titleEn = document.getElementById('mainTitleEn');
+        const descEn = document.getElementById('metaDescEn');
+        const titleCountEn = document.getElementById('titleCountEn');
+        const descCountEn = document.getElementById('descCountEn');
+
+        function updateEnCounters() {
+            if (titleEn && titleCountEn) {
+                const len = titleEn.value.length;
+                titleCountEn.textContent = `${len} / 150`;
+                titleCountEn.className = `text-xs font-medium ${len > 150 ? 'text-rose-600' : 'text-slate-500'}`;
+            }
+            if (descEn && descCountEn) {
+                const len = descEn.value.length;
+                descCountEn.textContent = `${len} / 500`;
+                descCountEn.className = `text-xs font-medium ${len > 500 ? 'text-rose-600' : 'text-slate-500'}`;
+            }
+        }
+
+        if (titleEn) titleEn.addEventListener('input', updateEnCounters);
+        if (descEn) descEn.addEventListener('input', updateEnCounters);
+        updateEnCounters();
     });
 </script>
 

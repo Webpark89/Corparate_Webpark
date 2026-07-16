@@ -192,14 +192,6 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                         </button>
                     <?php endforeach; ?>
                     
-                    <!-- Mock categories for testing scroll -->
-                    <button type="button" data-filter="mock-1" class="article-filter-btn whitespace-nowrap rounded-md border px-5 py-2 text-sm font-medium transition-colors border-blue-200 bg-white text-[#1a2b6d] hover:border-transparent hover:bg-blue-600 hover:text-white">Cloud Solutions</button>
-                    <button type="button" data-filter="mock-2" class="article-filter-btn whitespace-nowrap rounded-md border px-5 py-2 text-sm font-medium transition-colors border-blue-200 bg-white text-[#1a2b6d] hover:border-transparent hover:bg-blue-600 hover:text-white">Cyber Security</button>
-                    <button type="button" data-filter="mock-3" class="article-filter-btn whitespace-nowrap rounded-md border px-5 py-2 text-sm font-medium transition-colors border-blue-200 bg-white text-[#1a2b6d] hover:border-transparent hover:bg-blue-600 hover:text-white">UX/UI Design</button>
-                    <button type="button" data-filter="mock-4" class="article-filter-btn whitespace-nowrap rounded-md border px-5 py-2 text-sm font-medium transition-colors border-blue-200 bg-white text-[#1a2b6d] hover:border-transparent hover:bg-blue-600 hover:text-white">Machine Learning</button>
-                    <button type="button" data-filter="mock-5" class="article-filter-btn whitespace-nowrap rounded-md border px-5 py-2 text-sm font-medium transition-colors border-blue-200 bg-white text-[#1a2b6d] hover:border-transparent hover:bg-blue-600 hover:text-white">Business Intelligence</button>
-                    <button type="button" data-filter="mock-6" class="article-filter-btn whitespace-nowrap rounded-md border px-5 py-2 text-sm font-medium transition-colors border-blue-200 bg-white text-[#1a2b6d] hover:border-transparent hover:bg-blue-600 hover:text-white">Mobile Application</button>
-                    <button type="button" data-filter="mock-7" class="article-filter-btn whitespace-nowrap rounded-md border px-5 py-2 text-sm font-medium transition-colors border-blue-200 bg-white text-[#1a2b6d] hover:border-transparent hover:bg-blue-600 hover:text-white">E-Commerce</button>
 
                 </div>
             </div>

@@ -82,6 +82,28 @@ $content = $content ?? '';
         body, .font-sans {
             font-family: 'Inter', 'Noto Sans Thai', ui-sans-serif, system-ui, sans-serif !important;
         }
+
+        /* Global Article Format Styling for Tables */
+        .article-format table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1.5rem;
+            display: block;
+            overflow-x: auto;
+        }
+        .article-format th, 
+        .article-format td {
+            border: 1px solid #cbd5e1; /* slate-300 */
+            padding: 0.75rem 1rem;
+            text-align: left;
+            vertical-align: top;
+            min-width: 120px;
+        }
+        .article-format th {
+            background-color: #f8fafc; /* slate-50 */
+            font-weight: 700;
+            color: #022862;
+        }
     </style>
     <link rel="stylesheet" href="<?= e(asset_url('assets/css/tailwind.css')) ?>?v=<?= e($tailwindCssVersion) ?>">
     <?php if ($jsonGraph !== []): ?>

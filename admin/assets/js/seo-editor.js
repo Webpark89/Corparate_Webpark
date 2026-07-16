@@ -7,8 +7,8 @@
         elements.titleCounter.textContent = `${titleLen} / 150`;
         elements.titleCounter.className = `text-xs font-medium ${titleLen > 150 ? 'text-rose-600' : 'text-slate-500'}`;
 
-        elements.descCounter.textContent = `${descLen} / 250`;
-        elements.descCounter.className = `text-xs font-medium ${descLen > 250 ? 'text-rose-600' : 'text-slate-500'}`;
+        elements.descCounter.textContent = `${descLen} / 500`;
+        elements.descCounter.className = `text-xs font-medium ${descLen > 500 ? 'text-rose-600' : 'text-slate-500'}`;
     }
 
     function slugify(value) {

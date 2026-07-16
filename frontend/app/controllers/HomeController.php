@@ -363,7 +363,7 @@ class HomeController
                 $relatedArticles = $articleModel->getRelatedByCategory(
                     (int) ($row['category_id'] ?? 0),
                     (int) ($row['id'] ?? 0),
-                    3
+                    2
                 );
             } catch (Throwable $e) {
                 $relatedArticles = [];
@@ -469,15 +469,13 @@ class HomeController
             $categoryNameBySlug[$slug] = $name;
         }
 
-        uasort($categoryNameBySlug, static fn(string $a, string $b): int => strcasecmp($a, $b));
-
-        $categories = [];
-        foreach ($categoryNameBySlug as $slug => $name) {
-            $categories[] = [
-                'slug' => $slug,
-                'name' => $name,
-            ];
-        }
+        // Hardcoded mockup categories as requested by user
+        $categories = [
+            ['slug' => 'erp-erm', 'name' => 'ERP / ERM'],
+            ['slug' => 'digital-platform', 'name' => 'Digital Platform'],
+            ['slug' => 'online-marketing', 'name' => 'Online Marketing'],
+            ['slug' => 'creative-design', 'name' => 'Creative / Design'],
+        ];
 
         $validSlugs = array_values(array_unique(array_filter(array_merge(
             $articleCategorySlugs,
@@ -598,12 +596,13 @@ class HomeController
                 ];
             }, $rows);
 
-            $categoryValues = array_values(array_unique(array_filter(
-                array_map(static fn(array $project): string => (string) $project['category'], $portfolioRows),
-                static fn(string $category): bool => $category !== ''
-            )));
-
-            sort($categoryValues);
+            // Mockup categories requested by user
+            $categoryValues = [
+                'ERP / ERM',
+                'Digital Platform',
+                'Online Marketing',
+                'Creative / Design'
+            ];
 
             if ($categoryValues !== []) {
                 $filters = array_merge(['All'], $categoryValues);

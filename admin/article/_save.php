@@ -73,21 +73,31 @@ try {
     exit;
 }
 
-if ($id) {
-    $sets = [];
-    $params = [];
-    foreach ($data as $column => $value) {
-        $sets[] = "$column = ?";
-        $params[] = $value;
+try {
+    if ($id) {
+        $sets = [];
+        $params = [];
+        foreach ($data as $column => $value) {
+            $sets[] = "$column = ?";
+            $params[] = $value;
+        }
+        $params[] = $id;
+        db()->prepare('UPDATE article SET ' . implode(',', $sets) . ' WHERE id = ?')->execute($params);
+        flash('success', 'Article updated.');
+    } else {
+        $columns = implode(',', array_keys($data));
+        $placeholders = rtrim(str_repeat('?,', count($data)), ',');
+        db()->prepare("INSERT INTO article ($columns) VALUES ($placeholders)")->execute(array_values($data));
+        flash('success', 'Article created.');
     }
-    $params[] = $id;
-    db()->prepare('UPDATE article SET ' . implode(',', $sets) . ' WHERE id = ?')->execute($params);
-    flash('success', 'Article updated.');
-} else {
-    $columns = implode(',', array_keys($data));
-    $placeholders = rtrim(str_repeat('?,', count($data)), ',');
-    db()->prepare("INSERT INTO article ($columns) VALUES ($placeholders)")->execute(array_values($data));
-    flash('success', 'Article created.');
+} catch (PDOException $e) {
+    if ($e->getCode() == 23000) {
+        flash('error', 'Error: URL Slug (ลิงก์บทความ) มีการใช้งานซ้ำกับบทความอื่น กรุณาเปลี่ยนชื่อลิงก์ใหม่ไม่ให้ซ้ำกันครับ');
+    } else {
+        flash('error', 'Database Error: ' . $e->getMessage());
+    }
+    header('Location: ' . ($id ? 'edit.php?id=' . $id : 'create.php'));
+    exit;
 }
 
 header('Location: index.php');

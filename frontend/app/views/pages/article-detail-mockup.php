@@ -353,7 +353,7 @@ declare(strict_types=1);
                                 <h5 class="text-[16px] font-bold text-[#0663F6] mb-2"><?= e(getCurrentLang() === 'th' ? 'AI ช่วยธุรกิจได้จริงอย่างไร?' : 'How does AI actually help businesses?') ?></h5>
                                 <p class="text-[13px] text-slate-500 mb-4 line-clamp-2 leading-relaxed"><?= e(getCurrentLang() === 'th' ? 'รวมตัวอย่างการใช้ AI ในงานต่าง ๆ เช่น วิเคราะห์ข้อมูล บริการลูกค้า การตลาด และการผลิต...' : 'Examples of using AI in various tasks such as data analysis, customer service, marketing, and production...') ?></p>
                                 <div class="text-right">
-                                    <a href="#" class="text-[#0663F6] text-[13px] font-bold hover:underline"><?= e(getCurrentLang() === 'th' ? 'อ่านเพิ่มเติม &rarr;' : 'Read more &rarr;') ?></a>
+                                    <a href="#" class="text-[#0663F6] text-[13px] font-bold hover:underline"><?= e(getCurrentLang() === 'th' ? 'อ่านเพิ่มเติม' : 'Read more') ?> &rarr;</a>
                                 </div>
                             </div>
                         </div>
@@ -365,7 +365,7 @@ declare(strict_types=1);
                                 <h5 class="text-[16px] font-bold text-[#0663F6] mb-2"><?= e(getCurrentLang() === 'th' ? 'AI ช่วยธุรกิจได้จริงอย่างไร?' : 'How does AI actually help businesses?') ?></h5>
                                 <p class="text-[13px] text-slate-500 mb-4 line-clamp-2 leading-relaxed"><?= e(getCurrentLang() === 'th' ? 'รวมตัวอย่างการใช้ AI ในงานต่าง ๆ เช่น วิเคราะห์ข้อมูล บริการลูกค้า การตลาด และการผลิต...' : 'Examples of using AI in various tasks such as data analysis, customer service, marketing, and production...') ?></p>
                                 <div class="text-right">
-                                    <a href="#" class="text-[#0663F6] text-[13px] font-bold hover:underline"><?= e(getCurrentLang() === 'th' ? 'อ่านเพิ่มเติม &rarr;' : 'Read more &rarr;') ?></a>
+                                    <a href="#" class="text-[#0663F6] text-[13px] font-bold hover:underline"><?= e(getCurrentLang() === 'th' ? 'อ่านเพิ่มเติม' : 'Read more') ?> &rarr;</a>
                                 </div>
                             </div>
                         </div>

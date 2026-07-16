@@ -165,8 +165,14 @@ $shareUrl = urlencode(request_origin_url() . ($_SERVER['REQUEST_URI'] ?? ''));
                     </ol>
                 </nav>
                 
-                <h1 class="animate-fade-up delay-200 leading-snug mb-6 tracking-tight">
-                    <span class="block text-3xl md:text-4xl lg:text-[44px] font-bold text-[#022862]">
+                <?php 
+                    $isLongTitle = mb_strlen($title) > 50;
+                    $titleClass = $isLongTitle 
+                        ? 'text-2xl md:text-3xl lg:text-[28px] leading-[1.5] tracking-normal' 
+                        : 'text-3xl md:text-4xl lg:text-[44px] leading-snug tracking-tight'; 
+                ?>
+                <h1 class="animate-fade-up delay-200 mb-6">
+                    <span class="block <?= $titleClass ?> font-bold text-[#022862]">
                         <?= e($title) ?>
                     </span>
                 </h1>
@@ -253,6 +259,26 @@ $shareUrl = urlencode(request_origin_url() . ($_SERVER['REQUEST_URI'] ?? ''));
         display: block;
         margin-top: 0.25rem;
     }
+    .article-format table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 1.5rem;
+        display: block;
+        overflow-x: auto;
+    }
+    .article-format th, 
+    .article-format td {
+        border: 1px solid #cbd5e1; /* slate-300 */
+        padding: 0.75rem 1rem;
+        text-align: left;
+        vertical-align: top;
+        min-width: 120px;
+    }
+    .article-format th {
+        background-color: #f8fafc; /* slate-50 */
+        font-weight: 700;
+        color: #022862;
+    }
 </style>
 
 <section class="py-12 bg-[#F7F9FC]">
@@ -272,53 +298,36 @@ $shareUrl = urlencode(request_origin_url() . ($_SERVER['REQUEST_URI'] ?? ''));
 
             </article>
 
-            <aside class="lg:col-span-4">
-
-                <div class="sticky top-24 bg-white rounded-[2rem] p-6 shadow-sm border border-slate-100">
-
-                    <h3 class="text-xl font-bold text-[#0d6efd] mb-6 px-1">
-                        บทความที่เกี่ยวข้อง
-                    </h3>
-
-                    <div class="flex flex-col gap-6">
+            <!-- Sidebar Right: Related Articles -->
+            <div class="lg:col-span-4 relative h-full">
+                <div class="bg-white rounded-[2rem] p-5 lg:p-6 border border-slate-100 shadow-sm sticky top-[100px] h-max z-20 max-h-[calc(100vh-140px)] overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]" style="position: sticky; top: 100px;">
+                    <h4 class="text-[19px] font-bold text-[#0663F6] mb-4">
+                        <?= e(getCurrentLang() === 'th' ? 'บทความที่เกี่ยวข้อง' : 'Related Articles') ?>
+                    </h4>
+                    <div class="space-y-4">
                         <?php foreach($relatedArticles as $item): ?>
-
-                        <a href="<?= route_url('/article/'.$item['slug']) ?>"
-                           class="group block overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-md">
-
-                            <img
-                                src="<?= resolve_article_image_url($item['image_path'] ?? '') ?>"
-                                class="h-48 w-full object-cover transition duration-300 group-hover:scale-105"
-                                alt="<?= e($item['title']) ?>"
-                            >
-
-                            <div class="p-5 relative bg-white">
-
-                                <h4 class="line-clamp-2 font-bold text-[#022862] group-hover:text-[#0d6efd] transition-colors text-lg leading-snug">
-                                    <?= e($item['title']) ?>
-                                </h4>
-
-                                <p class="mt-3 line-clamp-2 text-sm text-slate-500 leading-relaxed">
-                                    <?= e($item['summary']) ?>
-                                </p>
-
-                                <div class="mt-4 flex items-center text-[#0d6efd] font-semibold text-sm group-hover:gap-2 transition-all">
-                                    อ่านเพิ่มเติม 
-                                    <svg class="w-4 h-4 ml-1 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                                    </svg>
+                            <div class="bg-white border border-slate-100 rounded-[1.5rem] overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                                <a href="<?= route_url('/article/'.$item['slug']) ?>" class="block">
+                                    <img src="<?= resolve_article_image_url($item['image_path'] ?? '') ?>" class="w-full aspect-[16/9] object-cover" alt="<?= e($item['title']) ?>">
+                                </a>
+                                <div class="p-5">
+                                    <a href="<?= route_url('/article/'.$item['slug']) ?>" class="block">
+                                        <h5 class="text-[16px] font-bold text-[#0663F6] mb-2 line-clamp-2"><?= e($item['title']) ?></h5>
+                                    </a>
+                                    <?php 
+                                    $itemLang = getCurrentLang();
+                                    $itemDesc = $itemLang === 'en' && !empty($item['meta_description_en']) ? $item['meta_description_en'] : ($item['description'] ?? '');
+                                    ?>
+                                    <p class="text-[13px] text-slate-500 mb-4 line-clamp-2 leading-relaxed"><?= e($itemDesc) ?></p>
+                                    <div class="text-right">
+                                        <a href="<?= route_url('/article/'.$item['slug']) ?>" class="text-[#0663F6] text-[13px] font-bold hover:underline"><?= e(getCurrentLang() === 'th' ? 'อ่านเพิ่มเติม' : 'Read more') ?> &rarr;</a>
+                                    </div>
                                 </div>
-
                             </div>
-
-                        </a>
-
                         <?php endforeach; ?>
                     </div>
-
                 </div>
-
-            </aside>
+            </div>
         </div>
 
     </div>

@@ -48,6 +48,24 @@ $statement->execute($params);
 $articles = $statement->fetchAll();
 
 $categories = db()->query('SELECT id, name FROM categories ORDER BY name')->fetchAll();
+
+// --- One-time database migration for categories ---
+if (count($categories) !== 4 || $categories[0]['name'] !== 'ERP / ERM') {
+    try {
+        db()->exec('SET FOREIGN_KEY_CHECKS = 0');
+        db()->exec('TRUNCATE TABLE categories');
+        $stmt = db()->prepare('INSERT INTO categories (id, name, slug) VALUES (?, ?, ?)');
+        $stmt->execute([1, 'ERP / ERM', 'erp-erm']);
+        $stmt->execute([2, 'Digital Platform', 'digital-platform']);
+        $stmt->execute([3, 'Online Marketing', 'online-marketing']);
+        $stmt->execute([4, 'Creative / Design', 'creative-design']);
+        db()->exec('SET FOREIGN_KEY_CHECKS = 1');
+        
+        // Refresh after insert
+        $categories = db()->query('SELECT id, name FROM categories ORDER BY name')->fetchAll();
+    } catch (Throwable $e) {}
+}
+// ------------------------------------------------
 ?>
 
 <div class="mx-auto w-full max-w-none px-2 pb-8 pt-1 text-sm md:px-4 lg:px-8">
