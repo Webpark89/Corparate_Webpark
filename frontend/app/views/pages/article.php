@@ -466,6 +466,17 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentPage = 1;
     let isDesktopMode = window.innerWidth >= 1024;
 
+    const scrollToGridTop = () => {
+        const categoryFilters = document.getElementById('category-filters');
+        if (categoryFilters) {
+            const yOffset = -90; // Offset to clear the sticky header (height 64px) and add spacing
+            const y = categoryFilters.getBoundingClientRect().top + (window.scrollY || window.pageYOffset) + yOffset;
+            window.scrollTo({ top: y, behavior: 'smooth' });
+        } else {
+            articleGrid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    };
+
     const ACTIVE_CLASSES = ['border-transparent', 'bg-blue-600', 'text-white'];
     const INACTIVE_CLASSES = ['border-blue-200', 'bg-white', 'text-[#1a2b6d]'];
 
@@ -520,7 +531,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (disabled) return;
                 currentPage = target;
                 render();
-                articleGrid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                scrollToGridTop();
             });
             return btn;
         };
@@ -541,13 +552,72 @@ document.addEventListener('DOMContentLoaded', () => {
         paginationContainer.appendChild(prevBtn);
 
         const infoText = document.createElement('span');
-        infoText.className = 'flex items-center justify-center font-medium tracking-wide';
+        infoText.className = 'flex items-center justify-center font-medium tracking-wide cursor-pointer hover:bg-slate-50 transition-colors select-none';
         infoText.style.height = '44px';
         infoText.style.padding = '0 20px';
         infoText.style.minWidth = '100px';
         infoText.style.color = '#1e40af';
         infoText.style.fontSize = '16px';
+        infoText.title = 'คลิกเพื่อเลือกหน้า / Click to input page';
         infoText.textContent = `${currentPage} of ${totalPages}`;
+
+        infoText.addEventListener('click', (e) => {
+            if (e.target.tagName === 'INPUT') return;
+            
+            infoText.innerHTML = '';
+            
+            const input = document.createElement('input');
+            input.type = 'number';
+            input.min = '1';
+            input.max = totalPages;
+            input.value = currentPage;
+            input.className = 'w-12 h-7 text-center font-bold text-[#1e40af] border border-blue-200 rounded focus:outline-none focus:border-blue-500 bg-slate-50 p-0 text-sm';
+            input.addEventListener('click', (evt) => evt.stopPropagation());
+            
+            const label = document.createElement('span');
+            label.className = 'ml-1.5 text-slate-500 font-medium text-sm';
+            label.textContent = `of ${totalPages}`;
+            
+            infoText.appendChild(input);
+            infoText.appendChild(label);
+            
+            input.focus();
+            input.select();
+            
+            let submitted = false;
+            const finish = () => {
+                if (submitted) return;
+                submitted = true;
+                const val = parseInt(input.value, 10);
+                if (!isNaN(val) && val >= 1 && val <= totalPages) {
+                    if (val !== currentPage) {
+                        currentPage = val;
+                        render();
+                        scrollToGridTop();
+                    } else {
+                        infoText.textContent = `${currentPage} of ${totalPages}`;
+                    }
+                } else {
+                    infoText.textContent = `${currentPage} of ${totalPages}`;
+                }
+            };
+            
+            input.addEventListener('keydown', (evt) => {
+                if (evt.key === 'Enter') {
+                    evt.preventDefault();
+                    finish();
+                } else if (evt.key === 'Escape') {
+                    evt.preventDefault();
+                    submitted = true;
+                    infoText.textContent = `${currentPage} of ${totalPages}`;
+                }
+            });
+            
+            input.addEventListener('blur', () => {
+                setTimeout(finish, 100);
+            });
+        });
+
         paginationContainer.appendChild(infoText);
 
         const nextBtn = createBtn('', currentPage + 1, false, currentPage === totalPages);
