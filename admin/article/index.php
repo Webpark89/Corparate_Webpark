@@ -11,6 +11,13 @@ $search = trim($_GET['search'] ?? '');
 $categoryFilter = $_GET['category_id'] ?? '';
 $statusFilter = $_GET['status'] ?? '';
 
+// Auto-migrate priority column
+try {
+    db()->exec('ALTER TABLE article ADD COLUMN priority INT DEFAULT 999 AFTER category_id');
+} catch (Exception $e) {
+    // Column already exists or other error
+}
+
 $sql = 'SELECT a.*, c.name AS category_name, aut.display_name AS author_name
         FROM article a
         LEFT JOIN categories c ON a.category_id = c.id
@@ -34,7 +41,7 @@ if (in_array($statusFilter, ['draft', 'published', 'hidden'], true)) {
     $params[] = $statusFilter;
 }
 
-$sql .= ' ORDER BY a.created_at DESC';
+$sql .= ' ORDER BY a.priority ASC, a.created_at DESC';
 $statement = db()->prepare($sql);
 $statement->execute($params);
 
@@ -150,6 +157,12 @@ $categories = db()->query('SELECT id, name FROM categories ORDER BY name')->fetc
                                 <?php else: ?>
                                     <span class="inline-flex rounded-lg border border-amber-200 bg-amber-50 px-2.5 py-0.5 text-[11px] font-semibold text-amber-700">
                                         ฉบับร่าง
+                                    </span>
+                                <?php endif; ?>
+
+                                <?php if (isset($row['priority']) && $row['priority'] !== 999): ?>
+                                    <span class="inline-flex rounded-lg border border-purple-200 bg-purple-50 px-2.5 py-0.5 text-[11px] font-semibold text-purple-700 ml-1" title="Priority: <?= $row['priority'] ?>">
+                                        ★ <?= str_pad((string)$row['priority'], 2, '0', STR_PAD_LEFT) ?>
                                     </span>
                                 <?php endif; ?>
                             </td>

@@ -237,14 +237,6 @@ $ctaImage = asset_url('images/bg-cta.jpg');
         </style>
         <div id="article-grid" class="article-grid article-grid-container gap-6 hide-scroll scroll-smooth" style="-ms-overflow-style: none; scrollbar-width: none;">
             <?php 
-            array_unshift($articles, [
-                'id' => 9999,
-                'title' => 'ทำความรู้จักระบบ ERP ตัวช่วยจัดการธุรกิจให้ง่ายขึ้น',
-                'category_name' => 'Web Development',
-                'category_slug' => 'all',
-                'image_path' => '',
-                'summary' => 'ระบบ ERP (Enterprise Resource Planning) เป็นซอฟต์แวร์ที่ช่วยเชื่อมโยงและจัดการกระบวนการทำงานต่างๆ ขององค์กร ไม่ว่าจะเป็นการขาย การเงิน การผลิต และอื่นๆ เพื่อให้ทำงานได้อย่างมีประสิทธิภาพสูงสุด ทดสอบความยาว 2 บรรทัด',
-            ]);
             foreach ($articles as $article):
                 $detailUrl = route_url('/article', ['id' => (int) ($article['id'] ?? 0)]);
                 $categoryName = trim((string) ($article['category_name'] ?? ''));

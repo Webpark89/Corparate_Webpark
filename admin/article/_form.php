@@ -283,6 +283,16 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
                             </select>
                         </div>
 
+                        <div class="w-full">
+                            <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 block">
+                                ลำดับความสำคัญ (Priority) <span class="text-slate-400 ml-0.5">(ไม่บังคับ)</span>
+                            </label>
+                            <input type="number" name="priority"
+                                value="<?= e(isset($data['priority']) && $data['priority'] !== 999 ? str_pad((string)$data['priority'], 2, '0', STR_PAD_LEFT) : '') ?>"
+                                placeholder="เช่น 01, 02 (เว้นว่างไว้หากไม่ระบุ)"
+                                class="<?= $inputClass ?> bg-white h-[46px]">
+                        </div>
+
                     </div>
 
                     <div class="lang-group lang-th-group space-y-6">

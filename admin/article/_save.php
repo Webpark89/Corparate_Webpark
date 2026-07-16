@@ -52,6 +52,7 @@ $data = [
     'meta_description_en' => trim($_POST['meta_description_en'] ?? ''),
     'source_url' => trim($_POST['source_url'] ?? ''),
     'category_id' => (int) ($_POST['category_id'] ?? 0),
+    'priority' => (isset($_POST['priority']) && trim($_POST['priority']) !== '') ? (int) trim($_POST['priority']) : 999,
     'cover_image_alt' => trim($_POST['cover_image_alt'] ?? $metaTitle),
     'content' => $serializedContent,
     'author_id' => (int) ($_POST['author_id'] ?? 0) ?: null,
