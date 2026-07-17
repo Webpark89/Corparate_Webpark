@@ -306,24 +306,22 @@ $shareUrl = urlencode(request_origin_url() . ($_SERVER['REQUEST_URI'] ?? ''));
                     </h4>
                     <div class="space-y-4">
                         <?php foreach($relatedArticles as $item): ?>
-                            <div class="bg-white border border-slate-100 rounded-[1.5rem] overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-                                <a href="<?= route_url('/article/'.$item['slug']) ?>" class="block">
-                                    <img src="<?= resolve_article_image_url($item['image_path'] ?? '') ?>" class="w-full aspect-[16/9] object-cover" alt="<?= e($item['title']) ?>">
-                                </a>
-                                <div class="p-5">
-                                    <a href="<?= route_url('/article/'.$item['slug']) ?>" class="block">
-                                        <h5 class="text-[16px] font-bold text-[#0663F6] mb-2 line-clamp-2"><?= e($item['title']) ?></h5>
-                                    </a>
+                            <a href="<?= route_url('/article', ['id' => (int)$item['id']]) ?>" class="block group bg-white border border-slate-100 rounded-[1.25rem] overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                                <div class="relative w-full overflow-hidden" style="height: 160px;">
+                                    <img src="<?= resolve_article_image_url($item['image_path'] ?? '') ?>" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" style="object-position: center 25%;" alt="<?= e($item['title']) ?>">
+                                </div>
+                                <div class="p-4 flex flex-col justify-between">
+                                    <h5 class="text-[14px] font-bold text-[#0663F6] mb-1.5 line-clamp-2 leading-snug group-hover:underline"><?= e($item['title']) ?></h5>
                                     <?php 
                                     $itemLang = getCurrentLang();
                                     $itemDesc = $itemLang === 'en' && !empty($item['meta_description_en']) ? $item['meta_description_en'] : ($item['description'] ?? '');
                                     ?>
-                                    <p class="text-[13px] text-slate-500 mb-4 line-clamp-2 leading-relaxed"><?= e($itemDesc) ?></p>
+                                    <p class="text-[11.5px] text-slate-500 mb-3 line-clamp-2 leading-relaxed"><?= e($itemDesc) ?></p>
                                     <div class="text-right">
-                                        <a href="<?= route_url('/article/'.$item['slug']) ?>" class="text-[#0663F6] text-[13px] font-bold hover:underline"><?= e(getCurrentLang() === 'th' ? 'อ่านเพิ่มเติม' : 'Read more') ?> &rarr;</a>
+                                        <span class="text-[#0663F6] text-[12px] font-bold"><?= e(getCurrentLang() === 'th' ? 'อ่านเพิ่มเติม' : 'Read more') ?> &rarr;</span>
                                     </div>
                                 </div>
-                            </div>
+                            </a>
                         <?php endforeach; ?>
                     </div>
                 </div>

@@ -41,27 +41,27 @@ $structuredSitemap = [
                 'title' => 'ERP & Business Management',
                 'items' => [
                     ['label' => 'ERP System', 'href' => '/Corparate_Webpark/erp#erp-system'],
-                    ['label' => 'Accounting & Finance', 'href' => '/Corparate_Webpark/erp#accounting'],
-                    ['label' => 'Sales / Purchase', 'href' => '/Corparate_Webpark/erp#sales'],
-                    ['label' => 'Inventory / Warehouse', 'href' => '/Corparate_Webpark/erp#inventory'],
+                    ['label' => 'Accounting & Finance', 'href' => route_url('/article', ['id' => 39])],
+                    ['label' => 'Sales / Purchase', 'href' => route_url('/article', ['id' => 40])],
+                    ['label' => 'Inventory / Warehouse', 'href' => route_url('/article', ['id' => 41])],
                 ],
             ],
             [
                 'title' => 'ERM & CRM Systems',
                 'items' => [
-                    ['label' => 'Customer Management', 'href' => '/Corparate_Webpark/erp#crm'],
+                    ['label' => 'Customer Management', 'href' => route_url('/article', ['id' => 42])],
                     ['label' => 'Lead Management', 'href' => '/Corparate_Webpark/erp#lead-management'],
-                    ['label' => 'Customer Service', 'href' => '/Corparate_Webpark/erp#customer-service'],
-                    ['label' => 'Partner / Supplier Management', 'href' => '/Corparate_Webpark/erp#partner'],
+                    ['label' => 'Customer Service', 'href' => route_url('/article', ['id' => 29])],
+                    ['label' => 'Partner / Supplier Management', 'href' => route_url('/article', ['id' => 30])],
                 ],
             ],
             [
                 'title' => 'HR & Workflow Systems',
                 'items' => [
-                    ['label' => 'HRM System', 'href' => '/Corparate_Webpark/erp#hrm'],
-                    ['label' => 'Attendance / Leave', 'href' => '/Corparate_Webpark/erp#attendance'],
-                    ['label' => 'Payroll', 'href' => '/Corparate_Webpark/erp#payroll'],
-                    ['label' => 'Workflow Approval', 'href' => '/Corparate_Webpark/erp#workflow'],
+                    ['label' => 'HRM System', 'href' => route_url('/article', ['id' => 31])],
+                    ['label' => 'Attendance / Leave', 'href' => route_url('/article', ['id' => 32])],
+                    ['label' => 'Payroll', 'href' => route_url('/article', ['id' => 14])],
+                    ['label' => 'Workflow Approval', 'href' => route_url('/article', ['id' => 34])],
                 ],
             ],
         ],
@@ -71,9 +71,9 @@ $structuredSitemap = [
             [
                 'title' => 'Digital Platforms & Business Systems',
                 'items' => [
-                    ['label' => 'Website / Responsive / CMS', 'href' => '/Corparate_Webpark/services/digital-platform#website'],
-                    ['label' => 'Mobile App / Mobile Site', 'href' => '/Corparate_Webpark/services/digital-platform#mobile'],
-                    ['label' => 'E-commerce', 'href' => '/Corparate_Webpark/services/digital-platform#ecommerce'],
+                    ['label' => 'Website / Responsive / CMS', 'href' => route_url('/article', ['id' => 35])],
+                    ['label' => 'Mobile App / Mobile Site', 'href' => route_url('/article', ['id' => 36])],
+                    ['label' => 'E-commerce', 'href' => route_url('/article', ['id' => 37])],
                     ['label' => 'Custom Web Application', 'href' => '/Corparate_Webpark/services/digital-platform#custom-web'],
                     ['label' => 'Membership / Portal System', 'href' => '/Corparate_Webpark/services/digital-platform#membership'],
                 ],
@@ -105,7 +105,7 @@ $structuredSitemap = [
                 'items' => [
                     ['label' => 'Digital Marketing Consultant', 'href' => '/Corparate_Webpark/services/online-marketing#consultant'],
                     ['label' => 'Media Planner / PR & Media Strategy', 'href' => '/Corparate_Webpark/services/online-marketing#media-planner'],
-                    ['label' => 'SEO', 'href' => '/Corparate_Webpark/services/online-marketing#seo'],
+                    ['label' => 'SEO', 'href' => route_url('/article-detail-mockup')],
                     ['label' => 'Social Network', 'href' => '/Corparate_Webpark/services/online-marketing#social'],
                     ['label' => 'Online Campaign', 'href' => '/Corparate_Webpark/services/online-marketing#campaign'],
                 ],
@@ -145,7 +145,7 @@ $structuredSitemap = [
                 'title' => 'Motion & Video Production',
                 'items' => [
                     ['label' => 'Animation TV & YouTube Online', 'href' => '/Corparate_Webpark/services/creative-design#animation'],
-                    ['label' => 'Motion VDO', 'href' => '/Corparate_Webpark/services/creative-design#motion-vdo'],
+                    ['label' => 'Motion VDO', 'href' => route_url('/article', ['id' => 14])],
                     ['label' => 'Video Editing', 'href' => '/Corparate_Webpark/services/creative-design#video-editing'],
                     ['label' => 'Presentation Video', 'href' => '/Corparate_Webpark/services/creative-design#presentation'],
                 ],
@@ -224,7 +224,7 @@ $socialLinks = [
                                                     <?php foreach (($group['items'] ?? []) as $item): ?>
                                                         <li class="flex items-center gap-2">
                                                             <span class="text-[#043B94] shrink-0 text-sm dt-sitemap-bullet">&bull;</span>
-                                                            <a class="inline-block py-0.5 text-[#043B94] transition-all duration-300 hover:text-[#0663F6] hover:translate-x-1 text-[17px] dt-sitemap-link" href="<?= e($item['href'] ?? '#') ?>">
+                                                            <a class="inline-block py-0.5 text-[#043B94] transition-all duration-300 hover:text-[#0663F6] hover:translate-x-1 text-[17px] dt-sitemap-link" href="<?= $item['href'] ?? '#' ?>">
                                                                 <?= e($item['label'] ?? '') ?>
                                                             </a>
                                                         </li>

@@ -26,17 +26,17 @@ $ctaImage = asset_url('images/bg-cta.jpg');
         'dropdown_title'    => 'ERP / ERM / HR',
         'subcategories'     => [
             ['label' => 'ERP System',           'href' => route_url('/erp')],
-            ['label' => 'Accounting & Finance', 'href' => '#'],
-            ['label' => 'Sales / Purchase',     'href' => '#'],
-            ['label' => 'Inventory / Warehouse','href' => '#'],
-            ['label' => 'Customer Management',  'href' => '#'],
+            ['label' => 'Accounting & Finance', 'href' => route_url('/article', ['id' => 39])],
+            ['label' => 'Sales / Purchase',     'href' => route_url('/article', ['id' => 40])],
+            ['label' => 'Inventory / Warehouse','href' => route_url('/article', ['id' => 41])],
+            ['label' => 'Customer Management',  'href' => route_url('/article', ['id' => 42])],
             ['label' => 'Lead Management',      'href' => '#'],
-            ['label' => 'Customer Service',     'href' => '#'],
-            ['label' => 'Partner / Supplier Management', 'href' => '#'],
-            ['label' => 'HRM System',           'href' => '#'],
-            ['label' => 'Attendance / Leave',   'href' => '#'],
-            ['label' => 'Payroll',              'href' => '#'],
-            ['label' => 'Workflow Approval',    'href' => '#'],
+            ['label' => 'Customer Service',     'href' => route_url('/article', ['id' => 29])],
+            ['label' => 'Partner / Supplier Management', 'href' => route_url('/article', ['id' => 30])],
+            ['label' => 'HRM System',           'href' => route_url('/article', ['id' => 31])],
+            ['label' => 'Attendance / Leave',   'href' => route_url('/article', ['id' => 32])],
+            ['label' => 'Payroll',              'href' => route_url('/article', ['id' => 14])],
+            ['label' => 'Workflow Approval',    'href' => route_url('/article', ['id' => 34])],
         ],
     ],
     [
@@ -47,9 +47,9 @@ $ctaImage = asset_url('images/bg-cta.jpg');
         'image_placeholder' => 'images/bg-cta.jpg',
         'dropdown_title'    => 'Platform / Communication / Data',
         'subcategories'     => [
-            ['label' => 'Website / Responsive / CMS',    'href' => '#'],
-            ['label' => 'Mobile App / Mobile Site',      'href' => '#'],
-            ['label' => 'E-commerce',                    'href' => '#'],
+            ['label' => 'Website / Responsive / CMS',    'href' => route_url('/article', ['id' => 35])],
+            ['label' => 'Mobile App / Mobile Site',      'href' => route_url('/article', ['id' => 36])],
+            ['label' => 'E-commerce',                    'href' => route_url('/article', ['id' => 37])],
             ['label' => 'Custom Web Application',        'href' => '#'],
             ['label' => 'Membership / Portal System',    'href' => '#'],
             ['label' => 'SMS Service',                   'href' => '#'],
@@ -98,7 +98,7 @@ $ctaImage = asset_url('images/bg-cta.jpg');
             ['label' => 'Cartoon & Character Design',    'href' => '#'],
             ['label' => 'Infographic',                   'href' => '#'],
             ['label' => 'Animation TV & YouTube Online', 'href' => '#'],
-            ['label' => 'Motion VDO',                    'href' => '#'],
+            ['label' => 'Motion VDO',                    'href' => route_url('/article', ['id' => 14])],
             ['label' => 'Video Editing',                 'href' => '#'],
             ['label' => 'Presentation Video',            'href' => '#'],
             ['label' => 'E-Magazine',                    'href' => '#'],
@@ -135,7 +135,26 @@ if (isset($services) && is_array($services)) {
                 if (empty(trim($feature))) continue;
                 // Keep the ERP link for ERP System, else use #
                 $href = ($slug === 'erp-erm' && $feature === 'ERP System') ? route_url('/erp') : '#';
-                if ($feature === 'SEO') $href = route_url('/article-detail-mockup');
+                
+                // --- ONLINE MARKETING ---
+                if (str_contains(strtolower($feature), 'seo')) $href = route_url('/article-detail-mockup');
+                if (str_contains(strtolower($feature), 'payroll')) $href = route_url('/article', ['id' => 14]);
+                if (str_contains(strtolower($feature), 'motion')) $href = route_url('/article', ['id' => 14]);
+                // --- ERP / ERM / HR ---
+                if (str_contains(strtolower($feature), 'customer service')) $href = route_url('/article', ['id' => 29]);
+                if (str_contains(strtolower($feature), 'partner')) $href = route_url('/article', ['id' => 30]);
+                if (str_contains(strtolower($feature), 'hrm')) $href = route_url('/article', ['id' => 31]);
+                if (str_contains(strtolower($feature), 'attendance')) $href = route_url('/article', ['id' => 32]);
+                if (str_contains(strtolower($feature), 'workflow')) $href = route_url('/article', ['id' => 34]);
+                if (str_contains(strtolower($feature), 'accounting')) $href = route_url('/article', ['id' => 39]);
+                if (str_contains(strtolower($feature), 'sales')) $href = route_url('/article', ['id' => 40]);
+                if (str_contains(strtolower($feature), 'inventory')) $href = route_url('/article', ['id' => 41]);
+                if (str_contains(strtolower($feature), 'customer management')) $href = route_url('/article', ['id' => 42]);
+                
+                // --- DIGITAL PLATFORMS ---
+                if (str_contains(strtolower($feature), 'website')) $href = route_url('/article', ['id' => 35]);
+                if (str_contains(strtolower($feature), 'mobile')) $href = route_url('/article', ['id' => 36]);
+                if (str_contains(strtolower($feature), 'e-commerce') || str_contains(strtolower($feature), 'ecommerce')) $href = route_url('/article', ['id' => 37]);
                 
                 $mappedSubcategories[] = [
                     'label' => $feature,
@@ -451,7 +470,7 @@ if (isset($services) && is_array($services)) {
                                     $itemLabel = (string)($item['label'] ?? '');
                                     $itemHref  = (string)($item['href'] ?? '#');
                                 ?>
-                                <a href="<?= e($itemHref) ?>" class="group/item flex items-center gap-2 text-sm text-slate-600 hover:text-[#043B94] transition-all duration-300 hover:translate-x-1.5">
+                                <a href="<?= $itemHref ?>" class="group/item flex items-center gap-2 text-sm text-slate-600 hover:text-[#043B94] transition-all duration-300 hover:translate-x-1.5">
                                     <span class="w-1.5 h-1.5 rounded-full bg-slate-300 shrink-0 transition-all duration-300 group-hover/item:bg-[#043B94] group-hover/item:scale-125"></span>
                                     <span><?= e($itemLabel) ?></span>
                                 </a>

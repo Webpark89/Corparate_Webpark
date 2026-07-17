@@ -347,28 +347,32 @@ declare(strict_types=1);
                     <div class="space-y-4">
                         
                         <!-- Mockup Related Article 1 -->
-                        <div class="bg-white border border-slate-100 rounded-[1.5rem] overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-                            <img src="<?= e(asset_url('images/story.png')) ?>" class="w-full aspect-[16/9] object-cover" alt="AI Robot">
-                            <div class="p-5">
-                                <h5 class="text-[16px] font-bold text-[#0663F6] mb-2"><?= e(getCurrentLang() === 'th' ? 'AI ช่วยธุรกิจได้จริงอย่างไร?' : 'How does AI actually help businesses?') ?></h5>
-                                <p class="text-[13px] text-slate-500 mb-4 line-clamp-2 leading-relaxed"><?= e(getCurrentLang() === 'th' ? 'รวมตัวอย่างการใช้ AI ในงานต่าง ๆ เช่น วิเคราะห์ข้อมูล บริการลูกค้า การตลาด และการผลิต...' : 'Examples of using AI in various tasks such as data analysis, customer service, marketing, and production...') ?></p>
+                        <a href="#" class="block group bg-white border border-slate-100 rounded-[1.25rem] overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                            <div class="relative w-full overflow-hidden" style="height: 160px;">
+                                <img src="<?= e(asset_url('images/story.png')) ?>" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" style="object-position: center 25%;" alt="AI Robot">
+                            </div>
+                            <div class="p-4 flex flex-col justify-between">
+                                <h5 class="text-[14px] font-bold text-[#0663F6] mb-1.5 line-clamp-2 leading-snug group-hover:underline"><?= e(getCurrentLang() === 'th' ? 'AI ช่วยธุรกิจได้จริงอย่างไร?' : 'How does AI actually help businesses?') ?></h5>
+                                <p class="text-[11.5px] text-slate-500 mb-3 line-clamp-2 leading-relaxed"><?= e(getCurrentLang() === 'th' ? 'รวมตัวอย่างการใช้ AI ในงานต่าง ๆ เช่น วิเคราะห์ข้อมูล บริการลูกค้า การตลาด และการผลิต...' : 'Examples of using AI in various tasks such as data analysis, customer service, marketing, and production...') ?></p>
                                 <div class="text-right">
-                                    <a href="#" class="text-[#0663F6] text-[13px] font-bold hover:underline"><?= e(getCurrentLang() === 'th' ? 'อ่านเพิ่มเติม' : 'Read more') ?> &rarr;</a>
+                                    <span class="text-[#0663F6] text-[12px] font-bold"><?= e(getCurrentLang() === 'th' ? 'อ่านเพิ่มเติม' : 'Read more') ?> &rarr;</span>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                         
                         <!-- Mockup Related Article 2 -->
-                        <div class="bg-white border border-slate-100 rounded-[1.5rem] overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-                            <img src="<?= e(asset_url('images/story.png')) ?>" class="w-full aspect-[16/9] object-cover" alt="AI Robot">
-                            <div class="p-5">
-                                <h5 class="text-[16px] font-bold text-[#0663F6] mb-2"><?= e(getCurrentLang() === 'th' ? 'AI ช่วยธุรกิจได้จริงอย่างไร?' : 'How does AI actually help businesses?') ?></h5>
-                                <p class="text-[13px] text-slate-500 mb-4 line-clamp-2 leading-relaxed"><?= e(getCurrentLang() === 'th' ? 'รวมตัวอย่างการใช้ AI ในงานต่าง ๆ เช่น วิเคราะห์ข้อมูล บริการลูกค้า การตลาด และการผลิต...' : 'Examples of using AI in various tasks such as data analysis, customer service, marketing, and production...') ?></p>
+                        <a href="#" class="block group bg-white border border-slate-100 rounded-[1.25rem] overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                            <div class="relative w-full overflow-hidden" style="height: 160px;">
+                                <img src="<?= e(asset_url('images/story.png')) ?>" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" style="object-position: center 25%;" alt="AI Robot">
+                            </div>
+                            <div class="p-4 flex flex-col justify-between">
+                                <h5 class="text-[14px] font-bold text-[#0663F6] mb-1.5 line-clamp-2 leading-snug group-hover:underline"><?= e(getCurrentLang() === 'th' ? 'AI ช่วยธุรกิจได้จริงอย่างไร?' : 'How does AI actually help businesses?') ?></h5>
+                                <p class="text-[11.5px] text-slate-500 mb-3 line-clamp-2 leading-relaxed"><?= e(getCurrentLang() === 'th' ? 'รวมตัวอย่างการใช้ AI ในงานต่าง ๆ เช่น วิเคราะห์ข้อมูล บริการลูกค้า การตลาด และการผลิต...' : 'Examples of using AI in various tasks such as data analysis, customer service, marketing, and production...') ?></p>
                                 <div class="text-right">
-                                    <a href="#" class="text-[#0663F6] text-[13px] font-bold hover:underline"><?= e(getCurrentLang() === 'th' ? 'อ่านเพิ่มเติม' : 'Read more') ?> &rarr;</a>
+                                    <span class="text-[#0663F6] text-[12px] font-bold"><?= e(getCurrentLang() === 'th' ? 'อ่านเพิ่มเติม' : 'Read more') ?> &rarr;</span>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                         
                     </div>
                 </div>

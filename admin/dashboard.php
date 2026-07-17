@@ -160,4 +160,414 @@ $recentArticle = db()->query(
         <?php endforeach; ?>
     </div>
 </section>
+
+<!-- โซนกราฟสถิติ (จัดให้พอดีกับ 4 บล็อคด้านบน) -->
+<style>
+    @media (min-width: 1280px) {
+        .xl-col-span-3 { grid-column: span 3 / span 3 !important; }
+        .xl-col-span-1 { grid-column: span 1 / span 1 !important; }
+    }
+</style>
+<div class="mt-8 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+    
+    <!-- ฝั่งซ้าย: กราฟสถิติการเข้าชมเว็บไซต์ (Traffic Chart) กว้างเท่ากับ 3 บล็อค -->
+    <section class="md:col-span-1 xl-col-span-3 bg-white border border-slate-200 rounded-2xl shadow-sm p-6 overflow-hidden flex flex-col min-w-0">
+        <div class="flex items-center justify-between mb-4">
+            <div>
+                <h3 class="text-lg font-bold text-slate-800">สถิติการเข้าชมเว็บไซต์ (Traffic)</h3>
+                <p class="text-xs text-slate-500">ข้อมูลจำลองการเข้าชม (Mock Data)</p>
+            </div>
+            <select id="timeRangeSelector" class="text-xs border-slate-200 rounded-md bg-slate-50 text-slate-600 px-3 py-1.5 focus:ring-primary focus:border-primary">
+                <option value="all">ทั้งหมด</option>
+                <option value="7">7 วันล่าสุด</option>
+                <option value="30">30 วันล่าสุด</option>
+                <option value="365">1 ปีล่าสุด</option>
+            </select>
+        </div>
+        
+        <div class="relative w-full flex-1" style="min-height: 350px;">
+            <canvas id="trafficChart"></canvas>
+        </div>
+    </section>
+
+    <!-- ฝั่งขวา: กราฟวงกลม Top 5 และ Bottom 5 กว้างเท่ากับ 1 บล็อค -->
+    <section class="md:col-span-1 xl-col-span-1 flex flex-col gap-6 min-w-0">
+        <!-- Top 5 -->
+        <div class="bg-white border border-slate-200 rounded-2xl shadow-sm p-5 flex-1 flex flex-col justify-center">
+            <div class="mb-4">
+                <h3 class="text-sm font-bold text-slate-800">5 อันดับบทความยอดฮิต (Top 5)</h3>
+                <p class="text-[10px] text-slate-400">บทความที่มีคนเข้าชมมากที่สุด</p>
+            </div>
+            
+            <div class="flex items-center justify-between gap-4">
+                <!-- คำอธิบาย (Legend) แบบ Custom อยู่ซ้าย -->
+                <div class="flex-1 space-y-2">
+                    <div class="flex items-center justify-between text-xs">
+                        <div class="flex items-center gap-2 truncate">
+                            <span class="w-2.5 h-2.5 rounded-full bg-[#3b82f6] shrink-0"></span>
+                            <span class="text-slate-600 font-medium truncate">ทำเว็บไซต์องค์กร</span>
+                        </div>
+                        <div class="text-right shrink-0">
+                            <span class="font-bold text-slate-800">450</span>
+                            <span class="text-[10px] text-slate-400 ml-0.5">(37%)</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between text-xs">
+                        <div class="flex items-center gap-2 truncate">
+                            <span class="w-2.5 h-2.5 rounded-full bg-[#06b6d4] shrink-0"></span>
+                            <span class="text-slate-600 font-medium truncate">กลยุทธ์การตลาด</span>
+                        </div>
+                        <div class="text-right shrink-0">
+                            <span class="font-bold text-slate-800">320</span>
+                            <span class="text-[10px] text-slate-400 ml-0.5">(26%)</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between text-xs">
+                        <div class="flex items-center gap-2 truncate">
+                            <span class="w-2.5 h-2.5 rounded-full bg-[#10b981] shrink-0"></span>
+                            <span class="text-slate-600 font-medium truncate">ออกแบบโลโก้</span>
+                        </div>
+                        <div class="text-right shrink-0">
+                            <span class="font-bold text-slate-800">210</span>
+                            <span class="text-[10px] text-slate-400 ml-0.5">(17%)</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between text-xs">
+                        <div class="flex items-center gap-2 truncate">
+                            <span class="w-2.5 h-2.5 rounded-full bg-[#f59e0b] shrink-0"></span>
+                            <span class="text-slate-600 font-medium truncate">ยิงแอด Google</span>
+                        </div>
+                        <div class="text-right shrink-0">
+                            <span class="font-bold text-slate-800">150</span>
+                            <span class="text-[10px] text-slate-400 ml-0.5">(12%)</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between text-xs">
+                        <div class="flex items-center gap-2 truncate">
+                            <span class="w-2.5 h-2.5 rounded-full bg-[#8b5cf6] shrink-0"></span>
+                            <span class="text-slate-600 font-medium truncate">ทำ SEO เบื้องต้น</span>
+                        </div>
+                        <div class="text-right shrink-0">
+                            <span class="font-bold text-slate-800">90</span>
+                            <span class="text-[10px] text-slate-400 ml-0.5">(7%)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ตัวกราฟวงกลม อยู่ขวา และมีขนาดเล็กลง -->
+                <div class="relative shrink-0 flex items-center justify-center" style="width: 100px; height: 100px;">
+                    <canvas id="top5Chart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom 5 -->
+        <div class="bg-white border border-slate-200 rounded-2xl shadow-sm p-5 flex-1 flex flex-col justify-center">
+            <div class="mb-4">
+                <h3 class="text-sm font-bold text-slate-800">5 อันดับยอดชมน้อย (Bottom 5)</h3>
+                <p class="text-[10px] text-slate-400">บทความที่ควรปรับปรุงเนื้อหา</p>
+            </div>
+            
+            <div class="flex items-center justify-between gap-4">
+                <!-- คำอธิบาย (Legend) แบบ Custom อยู่ซ้าย -->
+                <div class="flex-1 space-y-2">
+                    <div class="flex items-center justify-between text-xs">
+                        <div class="flex items-center gap-2 truncate">
+                            <span class="w-2.5 h-2.5 rounded-full bg-[#ef4444] shrink-0"></span>
+                            <span class="text-slate-600 font-medium truncate">การเขียนโค้ดเบื้องต้น</span>
+                        </div>
+                        <div class="text-right shrink-0">
+                            <span class="font-bold text-slate-800">12</span>
+                            <span class="text-[10px] text-slate-400 ml-0.5">(9%)</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between text-xs">
+                        <div class="flex items-center gap-2 truncate">
+                            <span class="w-2.5 h-2.5 rounded-full bg-[#f97316] shrink-0"></span>
+                            <span class="text-slate-600 font-medium truncate">ประวัติบริษัทเก่า</span>
+                        </div>
+                        <div class="text-right shrink-0">
+                            <span class="font-bold text-slate-800">18</span>
+                            <span class="text-[10px] text-slate-400 ml-0.5">(14%)</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between text-xs">
+                        <div class="flex items-center gap-2 truncate">
+                            <span class="w-2.5 h-2.5 rounded-full bg-[#facc15] shrink-0"></span>
+                            <span class="text-slate-600 font-medium truncate">รวมรูปกิจกรรม</span>
+                        </div>
+                        <div class="text-right shrink-0">
+                            <span class="font-bold text-slate-800">25</span>
+                            <span class="text-[10px] text-slate-400 ml-0.5">(19%)</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between text-xs">
+                        <div class="flex items-center gap-2 truncate">
+                            <span class="w-2.5 h-2.5 rounded-full bg-[#a8a29e] shrink-0"></span>
+                            <span class="text-slate-600 font-medium truncate">นโยบายปี 2021</span>
+                        </div>
+                        <div class="text-right shrink-0">
+                            <span class="font-bold text-slate-800">30</span>
+                            <span class="text-[10px] text-slate-400 ml-0.5">(23%)</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between text-xs">
+                        <div class="flex items-center gap-2 truncate">
+                            <span class="w-2.5 h-2.5 rounded-full bg-[#94a3b8] shrink-0"></span>
+                            <span class="text-slate-600 font-medium truncate">ประกาศรับสมัครงาน</span>
+                        </div>
+                        <div class="text-right shrink-0">
+                            <span class="font-bold text-slate-800">45</span>
+                            <span class="text-[10px] text-slate-400 ml-0.5">(35%)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ตัวกราฟวงกลม อยู่ขวา และมีขนาดเล็กลง -->
+                <div class="relative shrink-0 flex items-center justify-center" style="width: 100px; height: 100px;">
+                    <canvas id="bottom5Chart"></canvas>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+<!-- ดึงไฟล์ Chart.js จากในเครื่อง Server โดยตรง (แก้ปัญหาเน็ต/แอนตี้ไวรัสบล็อก CDN) -->
+<script src="<?= ADMIN_URL ?>/assets/js/chart.min.js"></script>
+<script>
+    const ctx = document.getElementById('trafficChart').getContext('2d');
+    
+    // สร้าง Gradient สีน้ำเงิน
+    const gradientBlue = ctx.createLinearGradient(0, 0, 0, 350);
+    gradientBlue.addColorStop(0, 'rgba(59, 130, 246, 0.4)');
+    gradientBlue.addColorStop(1, 'rgba(59, 130, 246, 0.0)');
+
+    // สร้าง Gradient สีฟ้าคราม (Teal)
+    const gradientTeal = ctx.createLinearGradient(0, 0, 0, 350);
+    gradientTeal.addColorStop(0, 'rgba(6, 182, 212, 0.4)');
+    gradientTeal.addColorStop(1, 'rgba(6, 182, 212, 0.0)');
+
+    // สร้าง Gradient สีม่วง (Purple)
+    const gradientPurple = ctx.createLinearGradient(0, 0, 0, 350);
+    gradientPurple.addColorStop(0, 'rgba(139, 92, 246, 0.4)');
+    gradientPurple.addColorStop(1, 'rgba(139, 92, 246, 0.0)');
+
+    // ข้อมูล Mock Data 4 แบบ มีการคละตัวเลขให้สมจริง ไม่ให้เพิ่มขึ้นอย่างเดียว
+    const mockData = {
+        'all': {
+            // ใช้คำว่า "ช่วงที่" แทนวันที่หรือเดือน เพื่อให้ครอบคลุมทั้ง วัน (7), สัปดาห์ (4), และเดือน (12)
+            labels: ['ช่วงที่ 1', 'ช่วงที่ 2', 'ช่วงที่ 3', 'ช่วงที่ 4', 'ช่วงที่ 5', 'ช่วงที่ 6', 'ช่วงที่ 7', 'ช่วงที่ 8', 'ช่วงที่ 9', 'ช่วงที่ 10', 'ช่วงที่ 11', 'ช่วงที่ 12'],
+            datasets: [
+                {
+                    label: '7 วันล่าสุด',
+                    data: [320, 250, 480, 190, 510, 890, 720],
+                    borderColor: '#3b82f6', // สีน้ำเงิน
+                    backgroundColor: 'transparent',
+                    borderWidth: 3,
+                    pointBackgroundColor: '#ffffff',
+                    pointBorderColor: '#3b82f6',
+                    tension: 0.4,
+                    fill: false
+                },
+                {
+                    label: '30 วันล่าสุด',
+                    data: [3100, 1850, 4200, 2750],
+                    borderColor: '#06b6d4', // สีฟ้าคราม
+                    backgroundColor: 'transparent',
+                    borderWidth: 3,
+                    pointBackgroundColor: '#ffffff',
+                    pointBorderColor: '#06b6d4',
+                    tension: 0.4,
+                    fill: false
+                },
+                {
+                    label: '1 ปีล่าสุด',
+                    data: [1890, 5000, 3000, 8500, 4200, 9100, 6800, 12500, 7300, 10500, 8200, 14000],
+                    borderColor: '#8b5cf6', // สีม่วง
+                    backgroundColor: 'transparent',
+                    borderWidth: 3,
+                    pointBackgroundColor: '#ffffff',
+                    pointBorderColor: '#8b5cf6',
+                    tension: 0.4,
+                    fill: false
+                }
+            ],
+            max: 15000
+        },
+        '7': {
+            labels: ['จันทร์', 'อังคาร', 'พุธ', 'พฤหัสฯ', 'ศุกร์', 'เสาร์', 'อาทิตย์'],
+            datasets: [{
+                label: 'ผู้เข้าชมเว็บไซต์ (7 วัน)',
+                data: [320, 250, 480, 190, 510, 890, 720],
+                borderColor: '#3b82f6', // สีน้ำเงิน
+                backgroundColor: gradientBlue,
+                borderWidth: 3,
+                pointBackgroundColor: '#ffffff',
+                pointBorderColor: '#3b82f6',
+                tension: 0.4,
+                fill: true
+            }],
+            max: 1000
+        },
+        '30': {
+            labels: ['สัปดาห์ที่ 1', 'สัปดาห์ที่ 2', 'สัปดาห์ที่ 3', 'สัปดาห์ที่ 4'],
+            datasets: [{
+                label: 'ผู้เข้าชมเว็บไซต์ (30 วัน)',
+                data: [3100, 1850, 4200, 2750], 
+                borderColor: '#06b6d4', // สีฟ้าคราม
+                backgroundColor: gradientTeal,
+                borderWidth: 3,
+                pointBackgroundColor: '#ffffff',
+                pointBorderColor: '#06b6d4',
+                tension: 0.4,
+                fill: true
+            }],
+            max: 5000
+        },
+        '365': {
+            labels: ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'],
+            datasets: [{
+                label: 'ผู้เข้าชมเว็บไซต์ (1 ปี)',
+                data: [1890, 5000, 3000, 8500, 4200, 9100, 6800, 12500, 7300, 10500, 8200, 14000],
+                borderColor: '#8b5cf6', // สีม่วง
+                backgroundColor: gradientPurple,
+                borderWidth: 3,
+                pointBackgroundColor: '#ffffff',
+                pointBorderColor: '#8b5cf6',
+                tension: 0.4,
+                fill: true
+            }],
+            max: 15000
+        }
+    };
+
+    let trafficChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: mockData['all'].labels,
+            datasets: mockData['all'].datasets.map(ds => ({ ...ds, data: [...ds.data] }))
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { 
+                    display: true,
+                    position: 'top',
+                    align: 'end',
+                    labels: { boxWidth: 10, usePointStyle: true, font: { family: 'sans-serif', size: 12, weight: '500' }, padding: 20, color: '#475569' }
+                },
+                tooltip: {
+                    backgroundColor: '#0f172a',
+                    padding: 14,
+                    titleFont: { size: 13, family: 'sans-serif', weight: 'bold' },
+                    bodyFont: { size: 13, family: 'sans-serif' },
+                    bodySpacing: 6,
+                    cornerRadius: 12,
+                    mode: 'index',
+                    intersect: false,
+                    boxPadding: 6
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: mockData['all'].max,
+                    grid: { color: '#f1f5f9', drawBorder: false, borderDash: [5, 5] },
+                    ticks: { color: '#94a3b8', font: { size: 11 }, padding: 10 }
+                },
+                x: {
+                    grid: { display: false, drawBorder: false },
+                    ticks: { color: '#64748b', font: { size: 11 }, padding: 10 }
+                }
+            },
+            interaction: { mode: 'index', intersect: false },
+            elements: { 
+                line: { borderJoinStyle: 'round' },
+                point: { pointBorderWidth: 2, pointRadius: 4, pointHoverRadius: 6 }
+            }
+        }
+    });
+
+    // จับเหตุการณ์เมื่อเปลี่ยน Dropdown
+    document.getElementById('timeRangeSelector').addEventListener('change', function(e) {
+        const type = e.target.value; 
+        const data = mockData[type];
+        
+        // อัปเดตข้อมูลในกราฟ (ใช้ map เพื่อไม่ให้ object Gradient สีพัง)
+        trafficChart.data.labels = data.labels;
+        trafficChart.data.datasets = data.datasets.map(ds => ({
+            ...ds,
+            data: [...ds.data]
+        }));
+        
+        // อัปเดตสเกล Y ให้สอดคล้องกับจำนวนข้อมูล
+        trafficChart.options.scales.y.max = data.max;
+        
+        // สั่งให้กราฟวาดตัวเองใหม่
+        trafficChart.update();
+    });
+
+    // กราฟวงกลม: 5 อันดับยอดฮิต (Top 5)
+    new Chart(document.getElementById('top5Chart').getContext('2d'), {
+        type: 'doughnut',
+        data: {
+            labels: ['ทำเว็บไซต์องค์กร', 'กลยุทธ์การตลาด', 'ออกแบบโลโก้', 'ยิงแอด Google', 'ทำ SEO เบื้องต้น'],
+            datasets: [{
+                data: [450, 320, 210, 150, 90],
+                backgroundColor: ['#3b82f6', '#06b6d4', '#10b981', '#f59e0b', '#8b5cf6'],
+                borderWidth: 0,
+                hoverOffset: 5
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: '70%',
+            plugins: {
+                legend: { display: false }, // ซ่อน legend เพราะจะกินพื้นที่ ให้ดูจาก tooltip แทน
+                tooltip: {
+                    backgroundColor: '#0f172a',
+                    titleFont: { family: 'sans-serif', size: 12 },
+                    bodyFont: { family: 'sans-serif', size: 12 },
+                    padding: 10,
+                    cornerRadius: 8,
+                    displayColors: true
+                }
+            }
+        }
+    });
+
+    // กราฟวงกลม: 5 อันดับยอดชมน้อย (Bottom 5)
+    new Chart(document.getElementById('bottom5Chart').getContext('2d'), {
+        type: 'doughnut',
+        data: {
+            labels: ['การเขียนโค้ดเบื้องต้น', 'ประวัติบริษัทเก่า', 'รวมรูปกิจกรรม', 'นโยบายปี 2021', 'ประกาศรับสมัครงาน'],
+            datasets: [{
+                data: [12, 18, 25, 30, 45],
+                backgroundColor: ['#ef4444', '#f97316', '#facc15', '#a8a29e', '#94a3b8'],
+                borderWidth: 0,
+                hoverOffset: 5
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: '70%',
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    backgroundColor: '#0f172a',
+                    titleFont: { family: 'sans-serif', size: 12 },
+                    bodyFont: { family: 'sans-serif', size: 12 },
+                    padding: 10,
+                    cornerRadius: 8,
+                    displayColors: true
+                }
+            }
+        }
+    });
+</script>
+
 <?php require_once __DIR__ . '/includes/footer.php'; ?>
