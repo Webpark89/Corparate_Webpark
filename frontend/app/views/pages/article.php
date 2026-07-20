@@ -233,10 +233,17 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                 $detailUrl = route_url('/article', ['id' => (int) ($article['id'] ?? 0)]);
                 $categoryName = trim((string) ($article['category_name'] ?? ''));
                 $categorySlug = trim((string) ($article['category_slug'] ?? ''));
-                $summary = trim(strip_tags((string) ($article['summary'] ?? '')));
-                $imageSrc = resolve_article_image_url((string) ($article['image_path'] ?? ''), $fallbackImage);
+                $itemLang = getCurrentLang();
                 $articleTitle = (string) ($article['title'] ?? t('article_list.page_title'));
+                if ($itemLang === 'en' && !empty($article['meta_title_en'])) {
+                    $articleTitle = $article['meta_title_en'];
+                }
                 
+                $summary = trim(strip_tags((string) ($article['summary'] ?? '')));
+                if ($itemLang === 'en' && !empty($article['meta_description_en'])) {
+                    $summary = trim(strip_tags((string) $article['meta_description_en']));
+                }
+                $imageSrc = resolve_article_image_url((string) ($article['image_path'] ?? ''), $fallbackImage);
                 $linkToUse = (trim($articleTitle) === 'ทำไม SEO ถึงสำคัญสำหรับธุรกิจในปีนี้') 
                              ? '/Corparate_Webpark/article-detail-mockup' 
                              : $detailUrl;

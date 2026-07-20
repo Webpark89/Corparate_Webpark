@@ -733,8 +733,17 @@ if ($totalReviews > 0):
             <?php foreach ($displayArticles as $art): ?>
                 <?php
                 $artId       = (int)($art['id'] ?? 0);
-                $artTitle    = (string)($art['title'] ?? 'Article');
-                $artSummary  = mb_strimwidth(strip_tags((string)($art['summary'] ?? '')), 0, 110, '...');
+                $itemLang = getCurrentLang();
+                $artTitle = (string)($art['title'] ?? 'Article');
+                if ($itemLang === 'en' && !empty($art['meta_title_en'])) {
+                    $artTitle = $art['meta_title_en'];
+                }
+                
+                $summaryContent = (string)($art['description'] ?? $art['summary'] ?? '');
+                if ($itemLang === 'en' && !empty($art['meta_description_en'])) {
+                    $summaryContent = (string)$art['meta_description_en'];
+                }
+                $artSummary  = mb_strimwidth(strip_tags($summaryContent), 0, 110, '...');
                 $artCat      = (string)($art['category'] ?? 'Knowledge');
                 $artImage    = resolve_article_image_url($art['image_path'] ?? '', asset_url('images/erp.png'));
                 ?>

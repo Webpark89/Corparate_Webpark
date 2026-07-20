@@ -1,0 +1,5 @@
+[20-Jul-2026 06:41:57 Europe/Berlin] PHP Warning:  require_once(C:\xampp\htdocs\Corparate_Webpark/includes/init.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\Corparate_Webpark\admin\article\upload_image.php on line 7
+[20-Jul-2026 06:41:57 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required 'C:\xampp\htdocs\Corparate_Webpark/includes/init.php' (include_path='\xampp\php\PEAR') in C:\xampp\htdocs\Corparate_Webpark\admin\article\upload_image.php:7
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\Corparate_Webpark\admin\article\upload_image.php on line 7
