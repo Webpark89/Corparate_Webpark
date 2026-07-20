@@ -38,16 +38,11 @@ if (!empty($partners) && is_array($partners)) {
     }
 }
 
-$mockArticles = [
-    ['id' => 1, 'title' => getCurrentLang() === 'th' ? 'ระบบ ERP คืออะไร? สรุปครบ จบในที่เดียว!' : 'What is ERP? A Complete Summary!', 'summary' => getCurrentLang() === 'th' ? 'ระบบที่รวบรวมองค์กรและกระบวนการทางธุรกิจเข้าด้วยกัน เพื่อการบริหารจัดการและประสานงานที่มีประสิทธิภาพสูงสุดในองค์กร...' : 'A system that integrates organization and business processes for the highest efficiency in management and coordination...', 'category' => 'ERP', 'image_path' => 'images/erp.png'],
-    ['id' => 2, 'title' => getCurrentLang() === 'th' ? 'Gemini 3 กับยุคใหม่ของการทำงาน เมื่อ AI ไม่ได้แค่คิด แต่ลงมือทำแทนคน' : 'Gemini 3 and the New Era of Work: When AI Doesn\'t Just Think, But Acts', 'summary' => getCurrentLang() === 'th' ? 'พัฒนาการของระบบ AI อัจฉริยะที่เข้ามาช่วยเพิ่มขีดความสามารถและลดขั้นตอนการทำงานให้รวดเร็ว แม่นยำ และตอบโจทย์ธุรกิจ...' : 'The evolution of intelligent AI systems that help increase capabilities and reduce work steps to be fast, accurate, and meet business needs...', 'category' => 'AI', 'image_path' => 'images/bg-cta.jpg'],
-    ['id' => 3, 'title' => getCurrentLang() === 'th' ? 'Cloud 2026 เก่งกว่าที่คุณคิด: องค์กรไหนรู้ก่อน ได้เปรียบก่อน' : 'Cloud 2026 is Smarter Than You Think: First to Know, First to Gain', 'summary' => getCurrentLang() === 'th' ? 'อัปเดตเทคโนโลยีคลาวด์อัจฉริยะในปี 2026 ที่จะช่วยพลิกโฉมการจัดเก็บฐานข้อมูลและการประมวลผลให้มีความปลอดภัยและยืดหยุ่น...' : 'Updating intelligent cloud technology in 2026 that will revolutionize database storage and processing to be secure and flexible...', 'category' => 'CLOUD', 'image_path' => 'images/bg-hand.jpg']
-];
 ?>
 
 <section class="relative font-sans bg-[#f7faff] overflow-hidden mt-0 mx-4 mb-4 sm:mt-0 sm:mx-6 sm:mb-6 rounded-t-none rounded-b-[2rem] lg:m-0 lg:rounded-none">
     <div class="absolute inset-0 z-0">
-        <img src="<?= e(asset_url('images/bg-5.png')) ?>" alt="bg" class="w-full h-full object-cover object-center opacity-70 mix-blend-screen">
+        <img src="<?= e(asset_url('images/bg-5.png')) ?>" alt="bg" class="hero-parallax-img w-full h-full object-cover object-center opacity-70 mix-blend-screen">
         <div class="absolute inset-0 bg-gradient-to-r from-white via-white/80 to-white/5"></div>
         <div class="absolute inset-x-0 bottom-0 h-[30%] bg-gradient-to-t from-white to-transparent z-10"></div>
     </div>
@@ -71,6 +66,29 @@ $mockArticles = [
         /* Custom responsive styles to bypass missing Tailwind build step */
         .mobile-hero-woman { width: 65%; bottom: -0px; right: 0%; }
         @media (min-width: 768px) { .mobile-hero-woman { width: auto; bottom: 0; right: 0; } }
+
+        /* Parallax & Accessibility */
+        .hero-parallax-img {
+            transform: scale(1.12);
+            will-change: transform;
+        }
+
+        /* Right Bleed Wrapper for Home Info Section (เหมือนหน้า ERP) */
+        @media (min-width: 1280px) {
+            .home-bleed-wrapper {
+                max-width: 100% !important;
+                padding-left: calc(50% - 640px + 2rem) !important;
+                padding-right: 2rem !important;
+            }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.001ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.001ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
     </style>
 
     <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 pt-10 pb-16 md:pt-12 md:pb-24 lg:pt-28 lg:pb-32 relative z-10">
@@ -128,8 +146,8 @@ $mockArticles = [
     </div>
 </section>
 
-<section class="relative z-20 mt-0 md:mt-0 lg:-mt-18 pb-6 lg:pb-16">
-    <div class="mx-auto w-full max-w-7xl px-4 sm:px-4 lg:px-6">
+<section class="relative z-20 mt-0 md:mt-0 lg:-mt-18 pb-6 lg:pb-16 overflow-hidden">
+    <div class="home-bleed-wrapper mx-auto w-full max-w-7xl px-4 sm:px-4 lg:px-6">
         <div class="w-full flex flex-col lg:flex-row items-stretch lg:bg-white lg:rounded-[1rem] lg:shadow-[0_4px_25px_rgba(0,0,0,0.06)] lg:border lg:border-gray-100 lg:overflow-hidden gap-4 lg:gap-0">
 
             <div class="hidden lg:flex flex-1 lg:max-w-[180px] items-center justify-center p-6 lg:p-8 border-b lg:border-b-0 shrink-0 bg-white">
@@ -187,7 +205,7 @@ $mockArticles = [
                         $borderClass = 'border-r';
                     }
                 ?>
-                    <div class="relative group cursor-pointer flex flex-col justify-between p-6 lg:p-8 <?= $borderClass ?> border-gray-100 bg-white transition-all duration-300 ease-out hover:shadow-[0_0_30px_rgba(0,0,0,0.08)] hover:-translate-y-1 hover:z-10 hover:rounded-xl">
+                    <div class="gsap-home-service-card relative group cursor-pointer flex flex-col justify-between p-6 lg:p-8 <?= $borderClass ?> border-gray-100 bg-white transition-all duration-300 ease-out hover:shadow-[0_0_30px_rgba(0,0,0,0.08)] hover:-translate-y-1 hover:z-10 hover:rounded-xl opacity-0 translate-y-10">
                     <div>
                         <div class="h-14 w-14 mx-auto mb-5 flex items-center justify-center transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:-translate-y-2 group-hover:scale-110">
                             <img src="<?= e(asset_url('images/' . $card['icon'])) ?>" alt="<?= e($card['title']) ?>" class="h-full w-full object-contain">
@@ -298,7 +316,7 @@ $mockArticles = [
                     $catColor     = $categoryColors[$projectCat] ?? '#0066ff';
                     $projectImage = resolve_article_image_url($project['image_path'] ?? '', asset_url('images/erp.png'));
                     ?>
-                    <article class="portfolio-card group rounded-[1.2rem] overflow-hidden border border-slate-100 bg-white shadow-sm hover:shadow-xl transition-all duration-500 flex flex-col <?= $isVisible ?>" data-index="<?= $index ?>">
+                    <article class="portfolio-card gsap-home-portfolio-card group rounded-[1.2rem] overflow-hidden border border-slate-100 bg-white shadow-sm hover:shadow-xl transition-all duration-500 flex flex-col <?= $isVisible ?> opacity-0 translate-y-10" data-index="<?= $index ?>">
                         <a href="<?= e($projectId > 0 ? route_url('/portfolio', ['id' => $projectId]) : route_url('/portfolio')) ?>" class="flex flex-col h-full">
                             <div class="h-[200px] sm:h-[180px] lg:h-[200px] w-full overflow-hidden bg-slate-100 shrink-0">
                                 <img src="<?= e($projectImage) ?>" alt="<?= e($projectTitle) ?>" class="h-full w-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out">
@@ -529,7 +547,7 @@ if ($totalReviews > 0):
                 <div class="bg-white rounded-2xl shadow-sm hover:shadow-md transition-shadow p-5 flex flex-row items-center justify-start gap-5 border border-slate-100">
                     <img src="/Corparate_Webpark/frontend/public/assets/images/Capa_3.svg" alt="50+" class="w-20 h-20 object-contain flex-shrink-0" />
                     <div class="flex flex-col text-left">
-                        <h3 class="text-2xl font-black text-blue-600 mb-1 tracking-tight underline decoration-[4px] underline-offset-4 decoration-blue-500">50+</h3>
+                        <h3 class="text-2xl font-black text-blue-600 mb-1 tracking-tight decoration-blue-500">50+</h3>
                         <p class="text-slate-600 text-sm font-medium mt-1"><?= e(getCurrentLang() === 'th' ? 'ระบบและโปรเจกต์ ที่ส่งมอบ' : 'Systems & Projects Delivered') ?></p>
                     </div>
                 </div>
@@ -726,7 +744,7 @@ if ($totalReviews > 0):
             </p>
         </div>
 
-        <?php // $displayArticles = $mockArticles; // ใช้ข้อมูลจำลองบทความชั่วคราว ?>
+
         
         <?php if (count($displayArticles) > 0): ?>
         <div id="knowledge-slider" class="flex lg:grid overflow-x-auto lg:overflow-visible snap-x snap-mandatory flex-nowrap lg:flex-wrap lg:grid-cols-3 gap-8 pt-2 pb-6 hide-scrollbar">
@@ -747,7 +765,7 @@ if ($totalReviews > 0):
                 $artCat      = (string)($art['category'] ?? 'Knowledge');
                 $artImage    = resolve_article_image_url($art['image_path'] ?? '', asset_url('images/erp.png'));
                 ?>
-                <article class="flex flex-col overflow-hidden rounded-2xl bg-white shadow-sm border border-slate-100 transition-all duration-300 hover:-translate-y-1 hover:shadow-md group w-full lg:w-auto shrink-0 lg:shrink snap-center lg:snap-align-none">
+                <article class="gsap-home-article-card flex flex-col overflow-hidden rounded-2xl bg-white shadow-sm border border-slate-100 transition-all duration-300 hover:-translate-y-1 hover:shadow-md group w-full lg:w-auto shrink-0 lg:shrink snap-center lg:snap-align-none opacity-0 translate-y-10">
                     <a href="<?= e($artId > 0 ? route_url('/article', ['id' => $artId]) : route_url('/article')) ?>" class="flex flex-col h-full">
                         <div class="relative aspect-[16/9] w-full bg-slate-900 overflow-hidden shrink-0">
                             <img src="<?= e($artImage) ?>" alt="<?= e($artTitle) ?>" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105">
@@ -826,5 +844,83 @@ document.addEventListener('DOMContentLoaded', function () {
         slider.addEventListener('scroll', updateKnowledgeDots, { passive: true });
         window.addEventListener('resize', updateKnowledgeDots, { passive: true });
     }
+});
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    gsap.registerPlugin(ScrollTrigger);
+
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    function revealOnScroll(selector, options = {}) {
+        const els = gsap.utils.toArray(selector);
+        if (!els.length) return;
+
+        if (prefersReducedMotion) {
+            gsap.set(els, { y: 0, opacity: 1 });
+            return;
+        }
+
+        els.forEach((el) => {
+            gsap.to(el, {
+                scrollTrigger: {
+                    trigger: el,
+                    start: "top 85%",
+                    toggleActions: "play none none reverse"
+                },
+                y: 0,
+                opacity: 1,
+                duration: 0.6,
+                ease: "power2.out",
+                stagger: options.stagger || 0
+            });
+        });
+    }
+
+    // 1. Hero Parallax
+    if (!prefersReducedMotion) {
+        gsap.utils.toArray(".hero-parallax-img").forEach((img) => {
+            gsap.to(img, {
+                yPercent: 12,
+                ease: "none",
+                scrollTrigger: {
+                    trigger: "section",
+                    start: "top top",
+                    end: "bottom top",
+                    scrub: true
+                }
+            });
+        });
+    }
+
+    // 2. Service Cards Stagger
+    const serviceCards = gsap.utils.toArray(".gsap-home-service-card");
+    if (serviceCards.length) {
+        if (prefersReducedMotion) {
+            gsap.set(serviceCards, { y: 0, opacity: 1 });
+        } else {
+            gsap.to(serviceCards, {
+                scrollTrigger: {
+                    trigger: ".gsap-home-service-card",
+                    start: "top 85%",
+                    toggleActions: "play none none reverse"
+                },
+                y: 0,
+                opacity: 1,
+                duration: 0.5,
+                stagger: 0.1,
+                ease: "power2.out"
+            });
+        }
+    }
+
+    // 3. Portfolio Cards
+    revealOnScroll(".gsap-home-portfolio-card", { stagger: 0.1 });
+
+    // 4. Articles Section
+    revealOnScroll(".gsap-home-article-card", { stagger: 0.08 });
 });
 </script>
