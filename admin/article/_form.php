@@ -480,6 +480,93 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
             .replace(/'/g, '&#039;');
     }
 
+    class MyUploadAdapter {
+        constructor(loader) {
+            this.loader = loader;
+        }
+        upload() {
+            return this.loader.file
+                .then(file => new Promise((resolve, reject) => {
+                    // Check if it is an image
+                    if (!file.type.startsWith('image/')) {
+                        return reject('กรุณาอัปโหลดไฟล์รูปภาพเท่านั้น');
+                    }
+
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        const img = new Image();
+                        img.onload = () => {
+                            const canvas = document.createElement('canvas');
+                            let width = img.width;
+                            let height = img.height;
+                            const max_size = 1200; // จำกัดขนาดความกว้าง/สูง สูงสุด 1200px
+
+                            if (width > height) {
+                                if (width > max_size) {
+                                    height = Math.round((height * max_size) / width);
+                                    width = max_size;
+                                }
+                            } else {
+                                if (height > max_size) {
+                                    width = Math.round((width * max_size) / height);
+                                    height = max_size;
+                                }
+                            }
+
+                            canvas.width = width;
+                            canvas.height = height;
+                            const ctx = canvas.getContext('2d');
+                            ctx.drawImage(img, 0, 0, width, height);
+
+                            canvas.toBlob((blob) => {
+                                const data = new FormData();
+                                // บังคับให้เป็น .jpg เพื่อให้ไฟล์มีขนาดเล็กลง
+                                const newFileName = file.name.replace(/\.[^/.]+$/, "") + ".jpg";
+                                data.append('upload', blob, newFileName);
+
+                                fetch('upload_image.php', {
+                                    method: 'POST',
+                                    body: data,
+                                    credentials: 'same-origin'
+                                })
+                                .then(response => {
+                                    if (!response.ok) {
+                                        console.error('Upload response not OK:', response);
+                                    }
+                                    return response.text();
+                                })
+                                .then(text => {
+                                    try {
+                                        const result = JSON.parse(text);
+                                        if (result.error) reject(result.error.message || 'Upload error from server');
+                                        else resolve({ default: result.url });
+                                    } catch (err) {
+                                        console.error('Invalid JSON response:', text);
+                                        reject('Server Error: ' + text.substring(0, 100));
+                                    }
+                                })
+                                .catch(err => {
+                                    console.error('Upload catch error:', err);
+                                    reject('Upload failed: ' + err.toString());
+                                });
+                            }, 'image/jpeg', 0.85); // บีบอัด 85%
+                        };
+                        img.onerror = () => reject('ไฟล์รูปภาพไม่ถูกต้อง');
+                        img.src = e.target.result;
+                    };
+                    reader.onerror = () => reject('ไม่สามารถอ่านไฟล์ได้');
+                    reader.readAsDataURL(file);
+                }));
+        }
+        abort() {}
+    }
+
+    function MyCustomUploadAdapterPlugin(editor) {
+        editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
+            return new MyUploadAdapter(loader);
+        };
+    }
+
     function createSectionElement(lang, index, topicVal = '', bodyVal = '') {
         const container = document.getElementById(lang + '-sections-container');
         const id = `editor-${lang}-${index}`;
@@ -511,8 +598,9 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
         
         ClassicEditor.create(document.querySelector(`#${id}`), {
             licenseKey: 'GPL',
+            extraPlugins: [MyCustomUploadAdapterPlugin],
             toolbar: {
-                items: [ 'heading', '|', 'bold', 'italic', 'link', '|', 'bulletedList', 'numberedList', 'blockQuote', '|', 'undo', 'redo' ],
+                items: [ 'heading', '|', 'bold', 'italic', 'link', 'uploadImage', 'insertImage', '|', 'bulletedList', 'numberedList', 'blockQuote', '|', 'undo', 'redo' ],
                 shouldNotGroupWhenFull: true
             }
         }).then(editor => {

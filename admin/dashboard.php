@@ -104,6 +104,27 @@ $recentArticle = db()->query(
      LEFT JOIN categories c ON c.id = a.category_id
      ORDER BY a.created_at DESC LIMIT 5'
 )->fetchAll();
+
+// Fetch 10 articles for mock stats to replace dummy text, ordered by priority to match the admin list
+$statsArticles = db()->query('SELECT meta_title FROM article ORDER BY priority ASC, created_at DESC LIMIT 10')->fetchAll();
+$mockTop5 = [];
+$mockBottom5 = [];
+$topViews = [450, 320, 210, 150, 90];
+$topPercents = [37, 26, 17, 12, 7];
+$bottomViews = [12, 18, 25, 30, 45];
+$bottomPercents = [9, 14, 19, 23, 35];
+$topColors = ['#3b82f6', '#06b6d4', '#10b981', '#f59e0b', '#8b5cf6'];
+$bottomColors = ['#ef4444', '#f97316', '#facc15', '#a8a29e', '#94a3b8'];
+
+for ($i = 0; $i < 5; $i++) {
+    $title = isset($statsArticles[$i]) ? $statsArticles[$i]['meta_title'] : 'Article ' . ($i+1);
+    $mockTop5[] = ['title' => $title, 'views' => $topViews[$i], 'percent' => $topPercents[$i], 'color' => $topColors[$i]];
+}
+for ($i = 0; $i < 5; $i++) {
+    $idx = $i + 5;
+    $title = isset($statsArticles[$idx]) ? $statsArticles[$idx]['meta_title'] : 'Article ' . ($idx+1);
+    $mockBottom5[] = ['title' => $title, 'views' => $bottomViews[$i], 'percent' => $bottomPercents[$i], 'color' => $bottomColors[$i]];
+}
 ?>
 
 <section class="space-y-4" aria-labelledby="dashboardOverviewTitle">
@@ -201,57 +222,18 @@ $recentArticle = db()->query(
             
             <div class="flex items-center justify-between gap-4">
                 <!-- คำอธิบาย (Legend) แบบ Custom อยู่ซ้าย -->
-                <div class="flex-1 space-y-2">
-                    <div class="flex items-center justify-between text-xs">
-                        <div class="flex items-center gap-2 truncate">
-                            <span class="w-2.5 h-2.5 rounded-full bg-[#3b82f6] shrink-0"></span>
-                            <span class="text-slate-600 font-medium truncate">ทำเว็บไซต์องค์กร</span>
+                <div class="flex-1 space-y-2 min-w-0">
+                    <?php foreach ($mockTop5 as $stat): ?>
+                    <div class="flex items-center justify-between text-xs gap-2">
+                        <div class="flex items-center gap-2 min-w-0 flex-1">
+                            <span class="w-2.5 h-2.5 rounded-full shrink-0" style="background-color: <?= e($stat['color']) ?>"></span>
+                            <span class="text-slate-600 font-medium truncate"><?= e($stat['title']) ?></span>
                         </div>
                         <div class="text-right shrink-0">
-                            <span class="font-bold text-slate-800">450</span>
-                            <span class="text-[10px] text-slate-400 ml-0.5">(37%)</span>
+                            <span class="font-bold text-slate-800"><?= $stat['views'] ?></span>
                         </div>
                     </div>
-                    <div class="flex items-center justify-between text-xs">
-                        <div class="flex items-center gap-2 truncate">
-                            <span class="w-2.5 h-2.5 rounded-full bg-[#06b6d4] shrink-0"></span>
-                            <span class="text-slate-600 font-medium truncate">กลยุทธ์การตลาด</span>
-                        </div>
-                        <div class="text-right shrink-0">
-                            <span class="font-bold text-slate-800">320</span>
-                            <span class="text-[10px] text-slate-400 ml-0.5">(26%)</span>
-                        </div>
-                    </div>
-                    <div class="flex items-center justify-between text-xs">
-                        <div class="flex items-center gap-2 truncate">
-                            <span class="w-2.5 h-2.5 rounded-full bg-[#10b981] shrink-0"></span>
-                            <span class="text-slate-600 font-medium truncate">ออกแบบโลโก้</span>
-                        </div>
-                        <div class="text-right shrink-0">
-                            <span class="font-bold text-slate-800">210</span>
-                            <span class="text-[10px] text-slate-400 ml-0.5">(17%)</span>
-                        </div>
-                    </div>
-                    <div class="flex items-center justify-between text-xs">
-                        <div class="flex items-center gap-2 truncate">
-                            <span class="w-2.5 h-2.5 rounded-full bg-[#f59e0b] shrink-0"></span>
-                            <span class="text-slate-600 font-medium truncate">ยิงแอด Google</span>
-                        </div>
-                        <div class="text-right shrink-0">
-                            <span class="font-bold text-slate-800">150</span>
-                            <span class="text-[10px] text-slate-400 ml-0.5">(12%)</span>
-                        </div>
-                    </div>
-                    <div class="flex items-center justify-between text-xs">
-                        <div class="flex items-center gap-2 truncate">
-                            <span class="w-2.5 h-2.5 rounded-full bg-[#8b5cf6] shrink-0"></span>
-                            <span class="text-slate-600 font-medium truncate">ทำ SEO เบื้องต้น</span>
-                        </div>
-                        <div class="text-right shrink-0">
-                            <span class="font-bold text-slate-800">90</span>
-                            <span class="text-[10px] text-slate-400 ml-0.5">(7%)</span>
-                        </div>
-                    </div>
+                    <?php endforeach; ?>
                 </div>
 
                 <!-- ตัวกราฟวงกลม อยู่ขวา และมีขนาดเล็กลง -->
@@ -270,57 +252,18 @@ $recentArticle = db()->query(
             
             <div class="flex items-center justify-between gap-4">
                 <!-- คำอธิบาย (Legend) แบบ Custom อยู่ซ้าย -->
-                <div class="flex-1 space-y-2">
-                    <div class="flex items-center justify-between text-xs">
-                        <div class="flex items-center gap-2 truncate">
-                            <span class="w-2.5 h-2.5 rounded-full bg-[#ef4444] shrink-0"></span>
-                            <span class="text-slate-600 font-medium truncate">การเขียนโค้ดเบื้องต้น</span>
+                <div class="flex-1 space-y-2 min-w-0">
+                    <?php foreach ($mockBottom5 as $stat): ?>
+                    <div class="flex items-center justify-between text-xs gap-2">
+                        <div class="flex items-center gap-2 min-w-0 flex-1">
+                            <span class="w-2.5 h-2.5 rounded-full shrink-0" style="background-color: <?= e($stat['color']) ?>"></span>
+                            <span class="text-slate-600 font-medium truncate"><?= e($stat['title']) ?></span>
                         </div>
                         <div class="text-right shrink-0">
-                            <span class="font-bold text-slate-800">12</span>
-                            <span class="text-[10px] text-slate-400 ml-0.5">(9%)</span>
+                            <span class="font-bold text-slate-800"><?= $stat['views'] ?></span>
                         </div>
                     </div>
-                    <div class="flex items-center justify-between text-xs">
-                        <div class="flex items-center gap-2 truncate">
-                            <span class="w-2.5 h-2.5 rounded-full bg-[#f97316] shrink-0"></span>
-                            <span class="text-slate-600 font-medium truncate">ประวัติบริษัทเก่า</span>
-                        </div>
-                        <div class="text-right shrink-0">
-                            <span class="font-bold text-slate-800">18</span>
-                            <span class="text-[10px] text-slate-400 ml-0.5">(14%)</span>
-                        </div>
-                    </div>
-                    <div class="flex items-center justify-between text-xs">
-                        <div class="flex items-center gap-2 truncate">
-                            <span class="w-2.5 h-2.5 rounded-full bg-[#facc15] shrink-0"></span>
-                            <span class="text-slate-600 font-medium truncate">รวมรูปกิจกรรม</span>
-                        </div>
-                        <div class="text-right shrink-0">
-                            <span class="font-bold text-slate-800">25</span>
-                            <span class="text-[10px] text-slate-400 ml-0.5">(19%)</span>
-                        </div>
-                    </div>
-                    <div class="flex items-center justify-between text-xs">
-                        <div class="flex items-center gap-2 truncate">
-                            <span class="w-2.5 h-2.5 rounded-full bg-[#a8a29e] shrink-0"></span>
-                            <span class="text-slate-600 font-medium truncate">นโยบายปี 2021</span>
-                        </div>
-                        <div class="text-right shrink-0">
-                            <span class="font-bold text-slate-800">30</span>
-                            <span class="text-[10px] text-slate-400 ml-0.5">(23%)</span>
-                        </div>
-                    </div>
-                    <div class="flex items-center justify-between text-xs">
-                        <div class="flex items-center gap-2 truncate">
-                            <span class="w-2.5 h-2.5 rounded-full bg-[#94a3b8] shrink-0"></span>
-                            <span class="text-slate-600 font-medium truncate">ประกาศรับสมัครงาน</span>
-                        </div>
-                        <div class="text-right shrink-0">
-                            <span class="font-bold text-slate-800">45</span>
-                            <span class="text-[10px] text-slate-400 ml-0.5">(35%)</span>
-                        </div>
-                    </div>
+                    <?php endforeach; ?>
                 </div>
 
                 <!-- ตัวกราฟวงกลม อยู่ขวา และมีขนาดเล็กลง -->
