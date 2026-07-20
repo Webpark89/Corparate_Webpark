@@ -182,6 +182,7 @@ if (isset($services) && is_array($services)) {
 } else {
     // Fallback to mock data if database is empty or still has old data
     $services = $mockServices;
+}
 ?>
 
 <style>
