@@ -54,6 +54,9 @@ declare(strict_types=1);
     .delay-300 { animation-delay: 300ms; }
 </style>
 
+<!-- Top Reading Progress Bar -->
+<div id="reading-progress" class="fixed top-0 left-0 h-1 bg-gradient-to-r from-blue-500 to-indigo-600 z-[9999] transition-all duration-150 ease-out" style="width: 0%;"></div>
+
 <section class="relative overflow-hidden font-sans bg-[#F4F7FB] pt-12 pb-6 lg:pt-20 lg:pb-8">
     <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
@@ -381,5 +384,18 @@ declare(strict_types=1);
         </div>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const progressBar = document.getElementById('reading-progress');
+    window.addEventListener('scroll', () => {
+        const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+        if (totalHeight > 0 && progressBar) {
+            const progress = (window.scrollY / totalHeight) * 100;
+            progressBar.style.width = Math.min(100, Math.max(0, progress)) + '%';
+        }
+    }, { passive: true });
+});
+</script>
 
 

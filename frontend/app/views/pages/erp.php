@@ -174,46 +174,32 @@ $erpPortfolios = $mockErpPortfolios;
         -ms-overflow-style: none;  /* สำหรับ IE และ Edge */
         scrollbar-width: none;  /* สำหรับ Firefox */
     }
+
+    /* Parallax: ขยายรูปเผื่อไว้ล่วงหน้า เพื่อไม่ให้เห็นขอบโหว่ตอนรูปเลื่อนตาม scroll */
+    .hero-parallax-img {
+        transform: scale(1.15);
+        will-change: transform;
+    }
+
+    /* Accessibility: เคารพการตั้งค่า Reduce Motion ของผู้ใช้ */
+    @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after {
+            animation-duration: 0.001ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.001ms !important;
+            scroll-behavior: auto !important;
+        }
+    }
 </style>
 
 
 
-<!-- <section class="relative font-sans bg-gradient-to-b from-blue-50/80 to-white overflow-hidden pt-24 pb-20 lg:pt-32 lg:pb-28">
-    <div class="absolute inset-0 z-0 pointer-events-none">
-        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-primary/5 rounded-full blur-3xl"></div>
-    </div>
 
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-        <div class="animate-entrance inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-blue-200 bg-white mb-6 shadow-sm">
-            <span class="w-2 h-2 rounded-full bg-blue-600 animate-pulse"></span>
-            <span class="text-xs md:text-sm font-bold text-primary uppercase tracking-wide">Enterprise Resource Planning</span>
-        </div>
 
-        <h1 class="animate-entrance delay-100 text-4xl md:text-5xl lg:text-6xl font-extrabold leading-[1.2] text-[#022862] mb-6 tracking-tight">
-            ยกระดับองค์กรด้วยระบบ <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">ERP</span><br class="hidden sm:block">
-            เชื่อมต่อทุกแผนกให้เป็นหนึ่งเดียว
-        </h1>
-
-        <p class="animate-entrance delay-200 text-base md:text-lg text-slate-500 max-w-3xl mx-auto leading-relaxed mb-10 font-medium">
-            ระบบบริหารจัดการทรัพยากรองค์กรที่ออกแบบมาเพื่อธุรกิจของคุณโดยเฉพาะ ช่วยลดต้นทุน 
-            เพิ่มประสิทธิภาพการทำงาน และเปลี่ยนข้อมูลที่ซับซ้อนให้เป็นการตัดสินใจที่แม่นยำ
-        </p>
-
-        <div class="animate-entrance delay-300 flex flex-wrap items-center justify-center gap-4">
-            <a href="#modules" class="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-primary text-white text-sm font-semibold rounded-full hover:bg-blue-700 transition-all shadow-md hover:-translate-y-0.5">
-                ดูโมดูลทั้งหมด
-            </a>
-            <a href="<?= e(route_url('/contact')) ?>" class="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-white text-[#022862] border border-slate-200 text-sm font-semibold rounded-full hover:bg-slate-50 transition-all shadow-sm hover:-translate-y-0.5">
-                ปรึกษาผู้เชี่ยวชาญ
-            </a>
-        </div>
-    </div>
-</section> -->
-
-<section class="relative font-sans bg-[#f7faff] overflow-hidden mt-0 mx-4 mb-4 sm:mt-0 sm:mx-6 sm:mb-6 rounded-t-none rounded-b-[2rem] lg:m-0 lg:rounded-none">
+<section id="erp-hero" class="relative font-sans bg-[#f7faff] overflow-hidden mt-0 mx-4 mb-4 sm:mt-0 sm:mx-6 sm:mb-6 rounded-t-none rounded-b-[2rem] lg:m-0 lg:rounded-none">
     <div class="hidden lg:block absolute inset-0 z-0 overflow-hidden">
         <img src="<?= e($heroImage) ?>" alt="WEBPARK Solutions Background" 
-            class="w-full h-full object-cover object-center opacity-100 mix-blend-screen">
+            class="hero-parallax-img w-full h-full object-cover object-center opacity-100 mix-blend-screen">
             
         <div class="absolute inset-0 bg-gradient-to-r from-white via-white/70 to-white/5"></div>
         <div class="absolute inset-x-0 bottom-0 h-[30%] bg-gradient-to-t from-white to-transparent z-10"></div>
@@ -243,7 +229,7 @@ $erpPortfolios = $mockErpPortfolios;
         <!-- Mobile Background Image (Only covers this Hero container) -->
         <div class="absolute inset-0 z-0 overflow-hidden lg:hidden rounded-2xl">
             <img src="<?= e($heroImage) ?>" alt="WEBPARK Solutions Background" 
-                class="w-full h-full object-cover object-[75%_center] opacity-100 mix-blend-screen">
+                class="hero-parallax-img w-full h-full object-cover object-[75%_center] opacity-100 mix-blend-screen">
             <div class="absolute inset-0 bg-gradient-to-b from-white/90 via-white/70 to-white/40"></div>
             <div class="absolute inset-x-0 bottom-0 h-[30%] bg-gradient-to-t from-white to-transparent"></div>
         </div>
@@ -362,71 +348,7 @@ $erpPortfolios = $mockErpPortfolios;
         </div>
     </div>
 
-    <!-- <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-6 relative z-20 -mt-10 lg:-mt-18 pb-6 lg:pb-16">
-        <div class="w-full rounded-[1rem] bg-white flex flex-col lg:flex-row items-stretch shadow-[0_4px_25px_rgba(0,0,0,0.06)] border border-gray-100 overflow-hidden">
 
-            <div class="group flex-1 lg:max-w-[300px] xl:max-w-[320px] flex flex-col justify-between p-6 lg:p-8 border-b lg:border-b-0 lg:border-r border-gray-100 shrink-0 bg-white transition-all duration-300 hover:bg-slate-50/50 cursor-pointer">
-                <div>
-                    <h2 class="text-[#043B94] text-xl xl:text-2xl font-bold leading-tight mb-4 transition-colors duration-300 group-hover:text-blue-700">
-                        <?= e(t('common.about_us_heading')) ?>
-                    </h2>
-                    <span class="text-primary font-bold text-md block mb-3">
-                        <?= e(t('common.we_are_partner')) ?><br><?= e(t('common.in_technology')) ?>
-                    </span>
-                    <p class="text-gray-500 text-sm leading-relaxed mb-6">
-                        <?= e(t('common.partner_description')) ?>
-                    </p>
-                </div>
-            </div>
-
-            <div class="flex-[4] grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 w-full">
-                <?php
-                $serviceCards = [
-                    ['icon' => asset_url('images/ERP_1.svg'), 'title' => getCurrentLang() === 'th' ? 'ข้อมูลเชื่อมต่อครบทุกแผนก' : 'Connected Data Across Departments', 'desc' => getCurrentLang() === 'th' ? 'ข้อมูลเป็นหนึ่งเดียว ไม่ต้องทำงานซ้ำ' : 'Single source of truth, eliminating duplicate work.', 'href' => '#'],
-                    ['icon' => asset_url('images/ERP_2.svg'), 'title' => getCurrentLang() === 'th' ? 'ทำงานอัตโนมัติ ลดความผิดพลาด' : 'Automated Processes & Reduced Errors', 'desc' => getCurrentLang() === 'th' ? 'ลดขั้นตอนงานเอกสาร เพิ่มความแม่นยำ' : 'Minimize paperwork and increase accuracy.', 'href' => '#'],
-                    ['icon' => asset_url('images/ERP_3.svg'), 'title' => getCurrentLang() === 'th' ? 'มองเห็นแบบเรียลไทม์ ตัดสินใจได้ไว' : 'Real-time Visibility & Quick Decisions', 'desc' => getCurrentLang() === 'th' ? 'รายงานและ Dashboard อัปเดตตลอดเวลา' : 'Always-updated reports and dashboards.', 'href' => '#'],
-                    ['icon' => asset_url('images/ERP_4.svg'), 'title' => getCurrentLang() === 'th' ? 'รองรับการเติบโต ของธุรกิจ' : 'Supports Business Growth', 'desc' => getCurrentLang() === 'th' ? 'ขยายระบบได้ตามความต้องการ พร้อมเติบโตในอนาคต' : 'Scalable system ready to grow with your business in the future.', 'href' => '#'],
-                ];
-                $lastIdx = count($serviceCards) - 1;
-                foreach ($serviceCards as $i => $card):
-                    $borderClass = '';
-                    if ($i < $lastIdx) {
-                        $borderClass .= ' border-b';
-                    }
-                    if ($i < 2) {
-                        $borderClass .= ' sm:border-b';
-                    } else {
-                        $borderClass .= ' sm:border-b-0';
-                    }
-                    if ($i % 2 === 0) {
-                        $borderClass .= ' sm:border-r';
-                    } else {
-                        $borderClass .= ' sm:border-r-0';
-                    }
-                    $borderClass .= ' lg:border-b-0';
-                    if ($i < 3) {
-                        $borderClass .= ' lg:border-r';
-                    } else {
-                        $borderClass .= ' lg:border-r-0';
-                    }
-                ?>
-                    <div class="relative group cursor-pointer flex flex-col justify-between p-6 lg:p-8 <?= $borderClass ?> border-gray-100 bg-white transition-all duration-300 ease-out hover:shadow-[0_0_30px_rgba(0,0,0,0.08)] hover:-translate-y-1 hover:z-10 hover:rounded-xl">
-                        <div>
-                            <div class="h-14 w-14 mx-auto mb-5 flex items-center justify-center transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:-translate-y-2 group-hover:scale-110">
-                                <img src="<?= e($card['icon']) ?>" alt="<?= e($card['title']) ?>" class="h-full w-full object-contain">
-                            </div>
-                            <h2 class="text-[#043B94] font-bold text-base md:text-lg xl:text-xl text-center mb-3 whitespace-normal tracking-tight transition-colors duration-300 group-hover:text-blue-600">
-                                <?= e($card['title']) ?>
-                            </h2>
-                            <p class="text-gray-500 text-sm md:text-base leading-relaxed mb-6 text-left transition-colors duration-300 group-hover:text-gray-600">
-                                <?= e($card['desc']) ?>
-                            </p>
-                        </div>
-                    </div>
-                <?php endforeach; ?>
-            </div>
-        </div>
-    </div> -->
 
 </section>
 
@@ -448,7 +370,7 @@ $erpPortfolios = $mockErpPortfolios;
     <div class="erp-bleed-wrapper mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8 relative z-20 -mt-10 lg:-mt-18 pb-6 lg:pb-16 overflow-hidden">
         <div class="w-full rounded-[1rem] bg-white flex flex-col lg:flex-row items-stretch shadow-[0_4px_25px_rgba(0,0,0,0.06)] border border-gray-100 overflow-hidden">
 
-            <div class="erp-left-col group flex-1 flex flex-col justify-center p-6 lg:p-8 border-b lg:border-b-0 lg:border-r border-gray-100 shrink-0 bg-white transition-all duration-300 hover:bg-slate-50/50 cursor-pointer">
+            <div class="erp-left-col gsap-erp-about-left group flex-1 flex flex-col justify-center p-6 lg:p-8 border-b lg:border-b-0 lg:border-r border-gray-100 shrink-0 bg-white transition-all duration-300 hover:bg-slate-50/50 cursor-pointer opacity-0 translate-y-10">
                 <div>
                     <span class="text-primary font-bold text-lg md:text-base tracking-wide inline-block mb-3 mx-0 uppercase">
                         <span class="border-b-[3px] border-primary pb-0.5">ERP</span> SYSTEM
@@ -465,7 +387,7 @@ $erpPortfolios = $mockErpPortfolios;
                 </div>
             </div>
 
-            <div class="erp-right-col flex-[4] grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 w-full">
+            <div class="erp-right-col gsap-erp-about-right flex-[4] grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 w-full opacity-0 translate-y-10">
                 <?php
                 $serviceCards = [
                     ['icon' => asset_url('images/ERP_1.svg'), 'title' => getCurrentLang() === 'th' ? 'ข้อมูลเชื่อมต่อครบทุกแผนก' : 'Connected Data Across Departments', 'desc' => getCurrentLang() === 'th' ? 'ข้อมูลเป็นหนึ่งเดียว ไม่ต้องทำงานซ้ำ' : 'Single source of truth, eliminating duplicate work.', 'href' => '#'],
@@ -496,7 +418,7 @@ $erpPortfolios = $mockErpPortfolios;
                         $borderClass .= ' lg:border-r-0';
                     }
                 ?>
-                    <div class="relative group cursor-pointer flex flex-col justify-center p-6 lg:p-8 <?= $borderClass ?> border-gray-100 bg-white transition-all duration-300 ease-out hover:shadow-[0_0_30px_rgba(0,0,0,0.08)] hover:-translate-y-1 hover:z-10 hover:rounded-xl">
+                    <div class="gsap-erp-about-card relative group cursor-pointer flex flex-col justify-center p-6 lg:p-8 <?= $borderClass ?> border-gray-100 bg-white transition-all duration-300 ease-out hover:shadow-[0_0_30px_rgba(0,0,0,0.08)] hover:-translate-y-1 hover:z-10 hover:rounded-xl opacity-0 translate-y-10">
                         <div>
                             <div class="h-14 w-14 mx-auto mb-5 flex items-center justify-center transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:-translate-y-2 group-hover:scale-110">
                                 <img src="<?= e($card['icon']) ?>" alt="<?= e($card['title']) ?>" class="h-full w-full object-contain">
@@ -515,35 +437,7 @@ $erpPortfolios = $mockErpPortfolios;
     </div>
 </section>
 
-<!-- <section class="bg-white py-16 font-sans border-t border-slate-100">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">        
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div class="bg-slate-50 rounded-2xl p-8 border border-slate-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
-                <div class="w-14 h-14 bg-white rounded-xl shadow-sm flex items-center justify-center mb-6">
-                    <svg class="w-7 h-7 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
-                </div>
-                <h3 class="text-xl font-bold text-[#043B94] mb-3">ลดต้นทุน เพิ่มกำไร</h3>
-                <p class="text-sm text-slate-500 leading-relaxed">มองเห็นรอยรั่วไหลของต้นทุน ควบคุมงบประมาณและสต็อกสินค้าได้อย่างมีประสิทธิภาพสูงสุด ลดความสูญเสียที่ไม่จำเป็น</p>
-            </div>
-            
-            <div class="bg-slate-50 rounded-2xl p-8 border border-slate-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
-                <div class="w-14 h-14 bg-white rounded-xl shadow-sm flex items-center justify-center mb-6">
-                    <svg class="w-7 h-7 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                </div>
-                <h3 class="text-xl font-bold text-[#043B94] mb-3">ข้อมูล Real-Time</h3>
-                <p class="text-sm text-slate-500 leading-relaxed">ข้อมูลทุกแผนกเชื่อมโยงถึงกัน อัปเดตแบบวินาทีต่อวินาที ทำให้ผู้บริหารตัดสินใจได้ทันท่วงทีบนฐานข้อมูลที่ถูกต้อง</p>
-            </div>
 
-            <div class="bg-slate-50 rounded-2xl p-8 border border-slate-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
-                <div class="w-14 h-14 bg-white rounded-xl shadow-sm flex items-center justify-center mb-6">
-                    <svg class="w-7 h-7 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
-                </div>
-                <h3 class="text-xl font-bold text-[#043B94] mb-3">ลดความซ้ำซ้อน</h3>
-                <p class="text-sm text-slate-500 leading-relaxed">ทำงานผ่านแพลตฟอร์มเดียว บอกลาการใช้ Excel หลายไฟล์หรือระบบที่ไม่เชื่อมต่อกัน ลดข้อผิดพลาดจากการกรอกข้อมูลซ้ำ (Human Error)</p>
-            </div>
-        </div>
-    </div>
-</section> -->
 
 <section id="modules" class="bg-slate-50 py-10 lg:py-12 font-sans border-t border-slate-100">
     <div class="mx-auto max-w-7xl px-6 sm:px-6 lg:px-8">
@@ -561,7 +455,7 @@ $erpPortfolios = $mockErpPortfolios;
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-2 lg:gap-6">
             <?php foreach ($modulesData as $module): ?>
-                <div class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm hover:shadow-xl hover:bg-primary hover:border-primary transition-all duration-300 group hover:-translate-y-1 relative overflow-hidden">
+                <div class="gsap-erp-module-card bg-white rounded-2xl p-6 border border-slate-100 shadow-sm hover:shadow-xl hover:bg-primary hover:border-primary transition-all duration-300 group hover:-translate-y-1 relative overflow-hidden opacity-0 translate-y-10">
                     
                     <div class="relative z-10 flex flex-row items-center gap-5">
                         <div class="shrink-0 w-16 h-16 bg-blue-50/60 group-hover:bg-white/20 rounded-full flex items-center justify-center transition-colors duration-300">
@@ -583,59 +477,7 @@ $erpPortfolios = $mockErpPortfolios;
     </div>
 </section>
 
-<!-- <section class="bg-white py-20 font-sans border-t border-slate-100">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div class="bg-slate-50 rounded-2xl p-8 border border-slate-100 hover:shadow-lg transition-all duration-300">
-                <div class="w-14 h-14 bg-white rounded-xl shadow-sm flex items-center justify-center mb-6">
-                    <svg class="w-7 h-7 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z"/></svg>
-                </div>
-                <h3 class="text-lg font-extrabold text-primary mb-3 uppercase tracking-wide">QUALITY CONTROL</h3>
-                <p class="text-sm text-slate-500 leading-relaxed mb-4">
-                    ควบคุมคุณภาพผลผลิตและกระบวนการผลิตได้มาตรฐานและตรวจสอบได้
-                </p>
-                <ul class="space-y-2.5">
-                    <li class="flex items-start gap-2 text-sm text-slate-600">
-                        <svg class="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-                        ตั้งมาตรฐานคุณภาพ (QC Plan)
-                    </li>
-                    <li class="flex items-start gap-2 text-sm text-slate-600">
-                        <svg class="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-                        ตรวจสอบคุณภาพ / บันทึกผล 3 ขั้นตอน
-                    </li>
-                    <li class="flex items-start gap-2 text-sm text-slate-600">
-                        <svg class="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-                        จัดการข้อบกพร่องพร้อมแนวทางการแก้ไข (CAPA)
-                    </li>
-                </ul>
-            </div>
 
-            <div class="bg-slate-50 rounded-2xl p-8 border border-slate-100 hover:shadow-lg transition-all duration-300">
-                <div class="w-14 h-14 bg-white rounded-xl shadow-sm flex items-center justify-center mb-6">
-                    <svg class="w-7 h-7 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M11.42 15.17L17.25 21A2.652 2.652 0 0021 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 11-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 004.486-6.336l-3.276 3.277a3.004 3.004 0 01-2.25-2.25l3.276-3.276a4.5 4.5 0 00-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085m-1.745 1.437L5.909 7.5H4.5L2.25 3.75l1.5-1.5L7.5 4.5v1.409l4.26 4.26m-1.745 1.437l1.745-1.437m6.615 8.206L15.75 15.75M4.867 19.125h.008v.008h-.008v-.008z"/></svg>
-                </div>
-                <h3 class="text-lg font-extrabold text-primary mb-3 uppercase tracking-wide">MAINTENANCE</h3>
-                <p class="text-sm text-slate-500 leading-relaxed mb-4">
-                    บริหารจัดการงานบำรุงรักษาเครื่องจักรและอุปกรณ์ ลด Downtime เพิ่มประสิทธิภาพการทำงาน
-                </p>
-                <ul class="space-y-2.5">
-                    <li class="flex items-start gap-2 text-sm text-slate-600">
-                        <svg class="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-                        แผนบำรุงรักษาเชิงป้องกัน (PM)
-                    </li>
-                    <li class="flex items-start gap-2 text-sm text-slate-600">
-                        <svg class="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-                        แจ้งซ่อม / ติดตามงาน / ประวัติการซ่อม
-                    </li>
-                    <li class="flex items-start gap-2 text-sm text-slate-600">
-                        <svg class="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-                        ควบคุมค่าใช้จ่ายและเวลาการบำรุงรักษา
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</section> -->
 
 <section class="bg-slate-50 py-10 lg:py-10 font-sans border-t border-slate-100">
     <div class="mx-auto max-w-7xl px-6 sm:px-6 lg:px-8">
@@ -683,7 +525,7 @@ $erpPortfolios = $mockErpPortfolios;
             <?php foreach ($erpBenefits as $index => $benefit): ?>
                 <?php if($index === 4): ?>
                     <!-- 5th Block: Horizontal rectangle on mobile, Square on desktop -->
-                    <div class="bg-white rounded-2xl py-10 px-6 sm:p-6 border border-slate-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 mobile-span-2 sm:col-span-1 flex flex-row sm:block items-center text-left sm:text-center gap-6 sm:gap-0">
+                    <div class="gsap-erp-benefit-card bg-white rounded-2xl py-10 px-6 sm:p-6 border border-slate-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 mobile-span-2 sm:col-span-1 flex flex-row sm:block items-center text-left sm:text-center gap-6 sm:gap-0 opacity-0 translate-y-10">
                         <div class="w-16 h-16 sm:w-14 sm:h-14 sm:mx-auto shrink-0 bg-blue-50/70 rounded-full flex items-center justify-center sm:mb-4">
                             <img src="<?= e($benefit['icon']) ?>" alt="<?= e($benefit['title']) ?>" class="h-full w-full object-contain">
                         </div>
@@ -694,7 +536,7 @@ $erpPortfolios = $mockErpPortfolios;
                     </div>
                 <?php else: ?>
                     <!-- Blocks 1-4: Square -->
-                    <div class="bg-white rounded-2xl p-6 text-center border border-slate-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+                    <div class="gsap-erp-benefit-card bg-white rounded-2xl p-6 text-center border border-slate-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 opacity-0 translate-y-10">
                         <div class="w-14 h-14 mx-auto bg-blue-50/70 rounded-full flex items-center justify-center mb-4 shrink-0">
                             <img src="<?= e($benefit['icon']) ?>" alt="<?= e($benefit['title']) ?>" class="h-full w-full object-contain">
                         </div>
@@ -726,7 +568,7 @@ $erpPortfolios = $mockErpPortfolios;
                 $imgSrc = resolve_article_image_url($port['image_path'] ?? '', asset_url('images/erp.png'));
                 $detailUrl = isset($port['slug']) ? route_url('/portfolio/' . $port['slug']) : route_url('/portfolio');
             ?>
-                <a href="<?= e($detailUrl) ?>" class="block w-[85vw] md:w-auto shrink-0 snap-center">
+                <a href="<?= e($detailUrl) ?>" class="gsap-erp-portfolio-card block w-[85vw] md:w-auto shrink-0 snap-center opacity-0 translate-y-10">
                     <article class="group w-full h-full rounded-2xl overflow-hidden border border-slate-100 bg-white shadow-sm hover:shadow-xl transition-all duration-500 flex flex-col hover:-translate-y-1">
                     <div class="h-[220px] w-full overflow-hidden bg-slate-100 relative">
                         <img src="<?= e($imgSrc) ?>" alt="<?= e($port['title']) ?>" class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105">
@@ -818,89 +660,141 @@ $erpPortfolios = $mockErpPortfolios;
 </section>
 <?php endif; ?>
 
-<!-- <section class="relative font-sans py-20 overflow-hidden">
-    <div class="absolute inset-0 bg-gradient-to-r from-[#021a4a] via-[#03245c] to-[#0b3f9e]">
-        <img src="<?= e(asset_url('images/bg-cta.jpg')) ?>" alt="" class="absolute inset-0 w-full h-full object-cover opacity-30 mix-blend-luminosity">
-        <div class="absolute inset-0 bg-gradient-to-r from-[#021a4a]/90 via-[#021a4a]/70 to-[#0b3f9e]/60"></div>
-    </div>
 
-    <div class="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
-            <div>
-                <h2 class="text-2xl md:text-4xl font-extrabold text-white leading-tight mb-4 drop-shadow-sm">
-                    พร้อมเริ่มต้นโครงการ ERP<br class="hidden sm:block">
-                    ยกระดับองค์กรของคุณแล้วหรือยัง?
-                </h2>
-                <p class="text-white/90 text-sm md:text-base leading-relaxed mb-8 max-w-xl">
-                    ทีมผู้เชี่ยวชาญของเราพร้อมให้คำปรึกษาและออกแบบระบบ
-                    ที่เหมาะสมกับธุรกิจของคุณ
-                </p>
-                <a href="<?= e(route_url('/contact')) ?>" class="inline-flex items-center gap-2 px-8 py-3.5 bg-white text-[#022862] text-sm font-bold rounded-full hover:bg-blue-50 transition-all shadow-md hover:-translate-y-0.5">
-                    ปรึกษาผู้เชี่ยวชาญ
-                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-                </a>
-            </div>
-            <div class="hidden md:flex items-center justify-center">
-                <img src="<?= e(asset_url('images/bg-hand.jpg')) ?>" alt="ทีมงาน ERP"
-                    class="rounded-2xl w-full h-[280px] object-cover shadow-2xl border border-white/20"
-                    onerror="this.closest('div').innerHTML='<div class=&quot;w-full h-[280px] rounded-2xl bg-white/10 border border-white/20 flex items-center justify-center&quot;><svg class=&quot;w-16 h-16 text-white/40&quot; fill=&quot;none&quot; viewBox=&quot;0 0 24 24&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;1.5&quot;><path stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot; d=&quot;M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3 16.5V18a2.25 2.25 0 002.25 2.25h13.5A2.25 2.25 0 0021 18v-1.5m-18 0V6A2.25 2.25 0 015.25 3.75h13.5A2.25 2.25 0 0121 6v10.5m-18 0h18M8.25 9a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z&quot;/></svg></div>'">
-            </div>
-        </div>
-    </div>
-</section> -->
 
-<!-- <section class="bg-white py-20 font-sans border-t border-slate-100">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div>
-                <span class="text-primary font-bold text-xs md:text-sm tracking-widest uppercase mb-2 block">GET IN TOUCH</span>
-                <h2 class="text-3xl md:text-4xl font-extrabold text-[#022862] tracking-tight mb-4">
-                    ปรึกษาโซลูชัน ERP<br>กับผู้เชี่ยวชาญของเรา
-                </h2>
-                <p class="text-slate-500 text-sm md:text-base leading-relaxed mb-8 max-w-md">
-                    กรอกข้อมูลเพื่อให้ทีมงานติดต่อกลับ
-                    และวางแผนการใช้งานระบบที่เหมาะกับธุรกิจของคุณ
-                </p>
-            </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        gsap.registerPlugin(ScrollTrigger);
 
-            <div class="bg-slate-50 rounded-2xl p-8 border border-slate-100 shadow-sm">
-                <form action="<?= e(route_url('/contact/submit')) ?>" method="post" class="space-y-4">
-                    <?php if (function_exists('csrf_field')): ?>
-                        <?= csrf_field() ?>
-                    <?php endif; ?>
-                    <input type="hidden" name="source" value="erp_page">
+        const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <input type="text" name="full_name" required placeholder="ชื่อ - นามสกุล"
-                            class="w-full rounded-lg border border-slate-200 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary">
-                        <input type="tel" name="phone" required placeholder="เบอร์โทรศัพท์"
-                            class="w-full rounded-lg border border-slate-200 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary">
-                    </div>
+        // Helper function for reveal on scroll
+        function revealOnScroll(selector, options = {}) {
+            const els = gsap.utils.toArray(selector);
+            if (!els.length) return;
 
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <input type="email" name="email" required placeholder="อีเมล"
-                            class="w-full rounded-lg border border-slate-200 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary">
-                        <input type="text" name="company" placeholder="บริษัท"
-                            class="w-full rounded-lg border border-slate-200 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary">
-                    </div>
+            if (prefersReducedMotion) {
+                gsap.set(els, { y: 0, opacity: 1 });
+                return;
+            }
 
-                    <textarea name="message" rows="4" placeholder="รายละเอียด / ความต้องการ"
-                        class="w-full rounded-lg border border-slate-200 px-4 py-3 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary"></textarea>
+            els.forEach((el) => {
+                gsap.to(el, {
+                    scrollTrigger: {
+                        trigger: el,
+                        start: "top 85%",
+                        toggleActions: "play none none reverse"
+                    },
+                    y: 0,
+                    opacity: 1,
+                    duration: 0.6,
+                    ease: "power2.out",
+                    stagger: options.stagger || 0
+                });
+            });
+        }
 
-                    <label class="flex items-start gap-2 text-xs text-slate-500">
-                        <input type="checkbox" name="consent" required class="mt-0.5 rounded border-slate-300 text-primary focus:ring-primary/40">
-                        <span>
-                            ฉันยินยอมตาม <a href="<?= e(route_url('/privacy-policy')) ?>" class="text-primary underline">นโยบายความเป็นส่วนตัว</a>
-                            และข้อกำหนดและเงื่อนไขของเว็บไซต์
-                        </span>
-                    </label>
+        // 1. Hero Parallax Background Image
+        if (!prefersReducedMotion) {
+            gsap.utils.toArray(".hero-parallax-img").forEach((img) => {
+                gsap.to(img, {
+                    yPercent: 12,
+                    ease: "none",
+                    scrollTrigger: {
+                        trigger: "#erp-hero",
+                        start: "top top",
+                        end: "bottom top",
+                        scrub: true
+                    }
+                });
+            });
+        }
 
-                    <button type="submit" class="w-full inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-primary text-white text-sm font-bold rounded-full hover:bg-blue-700 transition-all shadow-md hover:-translate-y-0.5">
-                        ส่งข้อมูล
-                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-                    </button>
-                </form>
-            </div>
-        </div>
-    </div>
-</section> -->
+        // 2. Section "ระบบ ERP คืออะไร"
+        revealOnScroll(".gsap-erp-about-left");
+        revealOnScroll(".gsap-erp-about-right");
+        
+        if (!prefersReducedMotion) {
+            const aboutCards = gsap.utils.toArray(".gsap-erp-about-card");
+            if (aboutCards.length) {
+                gsap.to(aboutCards, {
+                    scrollTrigger: {
+                        trigger: ".gsap-erp-about-right",
+                        start: "top 85%",
+                        toggleActions: "play none none reverse"
+                    },
+                    y: 0,
+                    opacity: 1,
+                    duration: 0.5,
+                    stagger: 0.1,
+                    ease: "power1.out"
+                });
+            }
+        }
+
+        // 3. Section "ERP Modules" (10 Modules Staggered)
+        const moduleCards = gsap.utils.toArray(".gsap-erp-module-card");
+        if (moduleCards.length) {
+            if (prefersReducedMotion) {
+                gsap.set(moduleCards, { y: 0, opacity: 1 });
+            } else {
+                gsap.to(moduleCards, {
+                    scrollTrigger: {
+                        trigger: "#modules",
+                        start: "top 80%",
+                        toggleActions: "play none none reverse"
+                    },
+                    y: 0,
+                    opacity: 1,
+                    duration: 0.5,
+                    stagger: 0.08,
+                    ease: "power2.out"
+                });
+            }
+        }
+
+        // 4. Section "ERP Benefits" (5 Benefits Staggered)
+        const benefitCards = gsap.utils.toArray(".gsap-erp-benefit-card");
+        if (benefitCards.length) {
+            if (prefersReducedMotion) {
+                gsap.set(benefitCards, { y: 0, opacity: 1 });
+            } else {
+                gsap.to(benefitCards, {
+                    scrollTrigger: {
+                        trigger: ".gsap-erp-benefit-card",
+                        start: "top 85%",
+                        toggleActions: "play none none reverse"
+                    },
+                    y: 0,
+                    opacity: 1,
+                    duration: 0.5,
+                    stagger: 0.08,
+                    ease: "power2.out"
+                });
+            }
+        }
+
+        // 5. Section "Portfolio Showcase"
+        const portfolioCards = gsap.utils.toArray(".gsap-erp-portfolio-card");
+        if (portfolioCards.length) {
+            if (prefersReducedMotion) {
+                gsap.set(portfolioCards, { y: 0, opacity: 1 });
+            } else {
+                gsap.to(portfolioCards, {
+                    scrollTrigger: {
+                        trigger: "#erp-portfolio-scroll-container",
+                        start: "top 85%",
+                        toggleActions: "play none none reverse"
+                    },
+                    y: 0,
+                    opacity: 1,
+                    duration: 0.6,
+                    stagger: 0.1,
+                    ease: "power2.out"
+                });
+            }
+        }
+    });
+</script>

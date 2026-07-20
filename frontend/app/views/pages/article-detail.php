@@ -137,7 +137,8 @@ $shareUrl = urlencode(request_origin_url() . ($_SERVER['REQUEST_URI'] ?? ''));
     .delay-200 { animation-delay: 200ms; }
     .delay-300 { animation-delay: 300ms; }
     .delay-400 { animation-delay: 400ms; }
-</style>
+<!-- Top Reading Progress Bar -->
+<div id="reading-progress" class="fixed top-0 left-0 h-1 bg-gradient-to-r from-blue-500 to-indigo-600 z-[9999] transition-all duration-150 ease-out" style="width: 0%;"></div>
 
 <section class="relative overflow-hidden font-sans bg-[#F4F7FB] pt-12 pb-6 lg:pt-20 lg:pb-8">
     <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
@@ -330,3 +331,38 @@ $shareUrl = urlencode(request_origin_url() . ($_SERVER['REQUEST_URI'] ?? ''));
 
     </div>
 </section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Reading Progress Bar
+    const progressBar = document.getElementById('reading-progress');
+    window.addEventListener('scroll', () => {
+        const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+        if (totalHeight > 0 && progressBar) {
+            const progress = (window.scrollY / totalHeight) * 100;
+            progressBar.style.width = Math.min(100, Math.max(0, progress)) + '%';
+        }
+    }, { passive: true });
+
+    // GSAP Related Articles Reveal
+    gsap.registerPlugin(ScrollTrigger);
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (!prefersReducedMotion) {
+        gsap.from(".lg\\:col-span-4 a", {
+            scrollTrigger: {
+                trigger: ".lg\\:col-span-4",
+                start: "top 85%",
+                toggleActions: "play none none reverse"
+            },
+            y: 20,
+            opacity: 0,
+            duration: 0.5,
+            stagger: 0.1,
+            ease: "power2.out"
+        });
+    }
+});
+</script>

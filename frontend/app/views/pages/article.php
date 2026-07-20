@@ -60,13 +60,26 @@ $ctaImage = asset_url('images/bg-cta.jpg');
             background: linear-gradient(to right, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.9) 60%, rgba(255, 255, 255, 0.1) 100%) !important;
         }
     }
+
+    .hero-parallax-img {
+        transform: scale(1.12);
+        will-change: transform;
+    }
+    @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after {
+            animation-duration: 0.001ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.001ms !important;
+            scroll-behavior: auto !important;
+        }
+    }
 </style>
 
 <!-- นำขอบโค้งและ margin ออก เพื่อให้ชิดขอบจอด้านบนและด้านข้างแบบ Edge-to-Edge -->
-<section class="relative overflow-hidden font-sans bg-white border-none">
+<section id="article-hero" class="relative overflow-hidden font-sans bg-white border-none">
     <div class="absolute inset-0 z-0">
         <img src="<?= e($heroImage) ?>" alt="WEBPARK Solutions Background" 
-            class="w-full h-full object-cover md:object-contain hero-bg-img opacity-100">
+            class="hero-parallax-img w-full h-full object-cover md:object-contain hero-bg-img opacity-100">
             
         <div class="absolute inset-0 hero-overlay-mobile"></div>
         <div class="absolute inset-0 hero-overlay-gradient"></div>
@@ -295,70 +308,6 @@ $ctaImage = asset_url('images/bg-cta.jpg');
         <nav id="pagination" class="article-pagination mt-8 flex items-center justify-center gap-2" aria-label="Article pagination"></nav>
     </div>
 </section>
-
-<!-- อันเก่าโค้ดสำหรับดูเป็นแนวทาง -->
-
-<!-- 
-<section class="bg-white px-4 py-16">
-    
-    <div class="mx-auto max-w-7xl overflow-hidden rounded-[2rem] p-8 lg:p-12 text-white shadow-[0_25px_70px_rgba(15,23,42,0.35)] relative"
-         style="background-image: url('<?= e($ctaImage) ?>'); background-size: cover; background-position: center;">
-        
-        
-        <div class="absolute inset-0 bg-[#0b1b42]/80 z-0"></div>
-
-        
-        <div class="relative z-10 grid gap-6 lg:grid-cols-2 lg:items-center">
-            <div class="space-y-4">
-                <p class="text-xs uppercase tracking-[0.4em] text-blue-200"><?= e(t('article_list.cta_banner_ready_title')) ?></p>
-                <h2 class="text-3xl font-extrabold leading-tight lg:text-4xl">
-                    <?= e(t('article_list.cta_banner_ready_title2')) ?><br>
-                    <?= e(t('article_list.cta_banner_digital_shift')) ?>
-                </h2>
-                <p class="text-sm leading-7 text-white/80"><?= e(t('article_list.cta_banner_desc')) ?></p>
-                <a href="<?= e(route_url('/contact')) ?>" class="inline-flex w-fit items-center justify-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-bold text-[#0b1b42] transition hover:bg-slate-100">
-                    <?= e(t('article_list.cta_free_contact')) ?>
-                    <span class="text-base leading-none">→</span>
-                </a>
-            </div>
-        </div>
-    </div>
-</section> 
--->
-
-<!-- โค้ดใหม่สำหรับปรับปรุงแล้ว -->
-
-<!-- <section class="bg-white px-4 py-16">
-    <div class="mx-auto overflow-hidden rounded-[2rem] px-8 py-10 lg:px-12 lg:py-8 text-white shadow-[0_25px_70px_rgba(15,23,42,0.35)] relative flex items-center min-h-[400px]"
-         style="max-width: 1216px; width: 100%; background-image: url('<?= e($ctaImage) ?>'); background-size: cover; background-position: right center;">
-        
-        <div class="absolute inset-0 z-0" style="background: linear-gradient(to right, #002868 0%, rgba(0, 51, 128, 0.95) 45%, rgba(0, 51, 128, 0) 100%);"></div>
-
-        <div class="relative z-10 grid gap-6 lg:grid-cols-2 lg:items-center w-full">
-            <div class="space-y-5">
-                <p class="text-sm font-medium text-blue-200 lg:text-base">
-                    <?= e(t('article_list.cta_consult_webpark_expert')) ?>
-                </p>
-                
-                <h2 class="text-3xl font-bold leading-[1.4] lg:text-5xl lg:leading-[1.3]">
-                    <?= e(t('article_list.cta_banner_ready_title2')) ?><br>
-                    <?= e(t('article_list.cta_banner_digital_shift')) ?>
-                </h2>
-                
-                <p class="text-base leading-relaxed text-white/90 lg:text-lg">
-                    <?= e(t('article_list.cta_banner_desc2')) ?>
-                </p>
-                
-                <div class="pt-2">
-                    <a href="<?= e(route_url('/contact')) ?>" class="inline-flex w-fit items-center justify-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-bold text-[#0b1b42] transition hover:bg-slate-100">
-                        <?= e(t('article_list.cta_free_contact')) ?>
-                        <span class="text-base leading-none">→</span>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-</section> -->
 
 <style>
 .article-pagination__btn {
@@ -636,6 +585,17 @@ document.addEventListener('DOMContentLoaded', () => {
         const visible = filteredCards.slice(start, start + PAGE_SIZE);
         visible.forEach(card => card.classList.remove('hidden'));
 
+        // เล่น GSAP animation สลับการ์ดบทความเมื่อเปลี่ยนหน้า/หมวดหมู่
+        if (typeof gsap !== 'undefined') {
+            const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+            if (!prefersReducedMotion) {
+                gsap.fromTo(visible, 
+                    { opacity: 0, y: 20 },
+                    { opacity: 1, y: 0, duration: 0.45, stagger: 0.08, ease: "power2.out" }
+                );
+            }
+        }
+
         noResults.classList.toggle('hidden', filteredCards.length > 0);
         setTimeout(renderPagination, 100); 
     };
@@ -707,5 +667,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
     setActiveButton(currentFilter);
     render();
+});
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    gsap.registerPlugin(ScrollTrigger);
+
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    // Hero Parallax Background
+    if (!prefersReducedMotion) {
+        gsap.utils.toArray(".hero-parallax-img").forEach((img) => {
+            gsap.to(img, {
+                yPercent: 12,
+                ease: "none",
+                scrollTrigger: {
+                    trigger: "#article-hero",
+                    start: "top top",
+                    end: "bottom top",
+                    scrub: true
+                }
+            });
+        });
+    }
 });
 </script>

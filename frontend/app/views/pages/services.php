@@ -182,60 +182,7 @@ if (isset($services) && is_array($services)) {
 } else {
     // Fallback to mock data if database is empty or still has old data
     $services = $mockServices;
-}
 ?>
-<!-- 
-<section class="relative bg-slate-50 pt-16 pb-12 lg:pt-24 lg:pb-20 font-sans overflow-hidden">
-    <div class="absolute top-0 right-0 -translate-y-1/4 translate-x-1/4 w-[500px] h-[500px] bg-blue-200/30 rounded-full blur-3xl pointer-events-none"></div>
-    <div class="absolute bottom-0 left-0 translate-y-1/4 -translate-x-1/4 w-[300px] h-[300px] bg-indigo-100/40 rounded-full blur-2xl pointer-events-none"></div>
-
-    <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center">
-            
-            <div class="flex flex-col items-start text-left">
-                <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-4 border" 
-                      style="background-color: #eff6ff; color: #043B94; border-color: #bfdbfe;">
-                    + SOLUTIONS by Webpark
-                </span>
-                <h1 class="text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-tight leading-tight mb-4" style="color: #022862;">
-                    ความเชี่ยวชาญ และจุดเด่น
-                </h1>
-                <p class="text-slate-600 text-sm md:text-base leading-relaxed mb-8 max-w-xl">
-                    เราผสานเทคโนโลยีและนวัตกรรมดิจิทัลเพื่อขับเคลื่อนธุรกิจของคุณอย่างยั่งยืน ครอบคลุมการยกระดับการทำงานด้วยระบบ ERP/ERM, การสร้างสรรค์ Digital Platform, ขยายการเติบوةด้วย Online Marketing และสื่อสารภาพลักษณ์ที่โดดเด่นผ่านเทรนด์ Creative & Design ล่าสุด
-                </p>
-                <div class="flex flex-wrap gap-4">
-                    <a href="#our-services" 
-                       class="inline-flex items-center gap-2 font-bold text-sm px-6 py-3 rounded-full text-white transition-all duration-200"
-                       style="background-color: #043B94; box-shadow: 0 4px 14px rgba(4,59,148,0.25);"
-                       onmouseover="this.style.backgroundColor='#022862';"
-                       onmouseout="this.style.backgroundColor='#043B94';">
-                        ดูบริการของเรา
-                    </a>
-                    <a href="<?= e(route_url('/contact')) ?>" 
-                       class="inline-flex items-center gap-2 font-bold text-sm px-6 py-3 rounded-full border transition-all duration-200"
-                       style="background-color: #ffffff; color: #043B94; border-color: #cbd5e1;"
-                       onmouseover="this.style.backgroundColor='#f8fafc';"
-                       onmouseout="this.style.backgroundColor='#ffffff';">
-                        ติดต่อเรา
-                    </a>
-                </div>
-            </div>
-
-            <div class="relative flex justify-center lg:justify-end">
-                <div class="relative w-full max-w-md lg:max-w-lg aspect-square flex items-center justify-center">
-                    <img 
-                        src="<?= e(asset_url('images/hero-hologram.png')) ?>" 
-                        alt="Webpark 3D Hologram Solutions" 
-                        class="w-full h-auto object-contain drop-shadow-2xl transition-transform duration-500 hover:scale-102"
-                        loading="eager"
-                        onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80'; this.className='w-full h-full object-cover rounded-3xl shadow-xl';"
-                    >
-                </div>
-            </div>
-
-        </div>
-    </div>
-</section> -->
 
 <style>
     /* 1. แอนิเมชันสำหรับสไลด์ขึ้นจากด้านล่าง (Entrance) */
@@ -292,10 +239,10 @@ if (isset($services) && is_array($services)) {
     }
 </style>
 
-<section class="relative font-sans bg-[#f7faff] overflow-hidden m-0 border-none rounded-none">
+<section id="services-hero" class="relative font-sans bg-[#f7faff] overflow-hidden m-0 border-none rounded-none">
     <div class="hidden lg:block absolute inset-0 z-0 overflow-hidden">
         <img src="<?= e($heroImage) ?>" alt="WEBPARK Solutions Background" 
-            class="w-full h-full object-cover object-center opacity-100 mix-blend-screen">
+            class="hero-parallax-img w-full h-full object-cover object-center opacity-100 mix-blend-screen">
             
         <div class="absolute inset-0 bg-gradient-to-r from-white via-white/70 to-white/5"></div>
         <div class="absolute inset-x-0 bottom-0 h-[30%] bg-gradient-to-t from-white to-transparent z-10"></div>
@@ -328,13 +275,51 @@ if (isset($services) && is_array($services)) {
             /* เฉดสีขาวเฉพาะฝั่งซ้ายและด้านบนที่ตัวหนังสืออยู่ ปล่อยฝั่งขวาให้โปร่งใสเพื่อให้เห็นรูปภาพ */
             background: linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.95) 50%, rgba(255, 255, 255, 0) 85%) !important;
         }
+
+        /* Parallax: ขยายรูปเผื่อไว้ล่วงหน้า เพื่อไม่ให้เห็นขอบโหว่ตอนรูปเลื่อนตาม scroll */
+        .hero-parallax-img {
+            transform: scale(1.15);
+            will-change: transform;
+        }
+
+        /* ไอคอนขั้นตอน Our Approach: hover แล้วขยับ+หมุนเบาๆ (ทำงานหลังจาก GSAP เคลียร์ inline transform ตอน entrance เสร็จ) */
+        .gsap-approach-icon {
+            transition: transform 0.3s ease;
+        }
+        .gsap-approach-step:hover .gsap-approach-icon {
+            transform: scale(1.12) rotate(-6deg);
+        }
+
+        /* ไอคอน emoji ในการ์ดบริการ: bounce ตอน hover การ์ด */
+        @keyframes iconEmojiBounce {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            30%      { transform: translateY(-6px) rotate(-10deg); }
+            55%      { transform: translateY(0) rotate(8deg); }
+            75%      { transform: translateY(-2px) rotate(-4deg); }
+        }
+        .group:hover .service-icon-emoji {
+            animation: iconEmojiBounce 0.6s ease-in-out;
+        }
+        .service-icon-emoji {
+            display: inline-block;
+        }
+
+        /* Accessibility: เคารพการตั้งค่า Reduce Motion ของผู้ใช้ ลด/ปิด animation แบบ CSS ทั้งหมดในหน้านี้ */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.001ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.001ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
     </style>
 
     <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8 pt-12 pb-24 lg:pt-28 lg:pb-32 relative z-10">
         <!-- Mobile Background Image (Only covers this Hero container) -->
         <div class="absolute inset-0 z-0 overflow-hidden lg:hidden">
             <img src="<?= e($heroImage) ?>" alt="WEBPARK Solutions Background" 
-                class="w-full h-full object-cover hero-bg-img-services opacity-100">
+                class="hero-parallax-img w-full h-full object-cover hero-bg-img-services opacity-100">
             <div class="absolute inset-0 hero-overlay-mobile-services"></div>
             <div class="absolute inset-x-0 bottom-0 h-[30%] bg-gradient-to-t from-white/50 to-transparent"></div>
         </div>
@@ -415,7 +400,7 @@ if (isset($services) && is_array($services)) {
 </section>
 
 
-<section class="bg-white py-8 lg:py-16 font-sans">
+<section id="gsap-services-grid" class="bg-white py-8 lg:py-16 font-sans">
     <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8">
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 items-start">
@@ -444,7 +429,7 @@ if (isset($services) && is_array($services)) {
                 <div class="flex flex-col flex-1 p-5 lg:p-6">
 
                     <div class="flex items-center gap-2 mb-2">
-                        <span class="text-2xl leading-none"><?= e($sEmoji) ?></span>
+                        <span class="service-icon-emoji text-2xl leading-none"><?= e($sEmoji) ?></span>
                         <h2 class="text-lg lg:text-xl font-extrabold" style="color: #022862;"><?= e($sTitle) ?></h2>
                     </div>
 
@@ -492,7 +477,7 @@ if (isset($services) && is_array($services)) {
 
 <section class="font-sans pb-12">
     <div class="mx-auto max-w-7xl px-6 sm:px-6 lg:px-8">
-        <div class="relative rounded-3xl overflow-hidden"
+        <div class="gsap-cta-box relative rounded-3xl overflow-hidden opacity-0 translate-y-10"
             style="background: linear-gradient(120deg, #011431 0%, #043B94 55%, #1e40af 100%); min-height: 200px;">
 
             <div class="absolute inset-0 pointer-events-none overflow-hidden">
@@ -580,7 +565,7 @@ if (isset($services) && is_array($services)) {
             <div class="gsap-approach-step flex flex-row items-center md:items-start gap-5 md:gap-6 rounded-3xl border border-blue-50/50 bg-white p-6 md:p-8 transition-all duration-300 opacity-0 translate-y-10"
                 style="box-shadow: 0 8px 30px -10px rgba(4,59,148,0.08);">
 
-                <div class="w-16 h-16 md:w-20 md:h-20 shrink-0 flex items-center justify-center md:pt-1">
+                <div class="gsap-approach-icon w-16 h-16 md:w-20 md:h-20 shrink-0 flex items-center justify-center md:pt-1">
                     <img src="<?= e($step['icon']) ?>"
                          alt="<?= e($step['title']) ?>"
                          class="w-14 h-14 md:w-16 md:h-16 object-contain drop-shadow-sm"
@@ -588,7 +573,7 @@ if (isset($services) && is_array($services)) {
                 </div>
 
                 <div class="flex flex-col gap-1 md:gap-1.5 md:pt-1">
-                    <span class="text-2xl md:text-3xl font-extrabold" style="color: #043B94;"><?= e($step['number']) ?></span>
+                    <span class="gsap-approach-number text-2xl md:text-3xl font-extrabold" style="color: #043B94;"><?= e($step['number']) ?></span>
                     <h3 class="text-xl md:text-2xl font-extrabold mb-1" style="color: #022862;"><?= e($step['title']) ?></h3>
                     <p class="text-slate-600 text-base md:text-lg leading-[1.7]"><?= e($step['desc']) ?></p>
                 </div>
@@ -607,50 +592,189 @@ if (isset($services) && is_array($services)) {
         // ลงทะเบียน ScrollTrigger
         gsap.registerPlugin(ScrollTrigger);
 
-        // 1. Animation สำหรับหัวข้อ OUR SERVICES
-        gsap.from(".gsap-fade-up", {
-            scrollTrigger: {
-                trigger: "#our-services",
-                start: "top 85%", // เริ่มเมื่อขอบบนของ section เลื่อนมาถึง 85% ของหน้าจอ
-                toggleActions: "play none none reverse" // เล่นเมื่อเจอ ถอยกลับเมื่อเลื่อนขึ้น
-            },
-            y: 40,
-            opacity: 0,
-            duration: 0.8,
-            stagger: 0.2, // ให้ h1 กับ p ค่อยๆ ขึ้นมาเหลื่อมเวลากันเล็กน้อย
-            ease: "power2.out"
-        });
+        // เช็คว่าผู้ใช้ตั้งค่าเครื่องให้ลด Motion ไว้หรือไม่ (Accessibility)
+        // ถ้าใช่ จะข้าม animation ที่เกี่ยวกับการเคลื่อนไหวเยอะๆ (parallax, pin, elastic pop)
+        // และแสดงเนื้อหาแบบปกติทันที โดยยังคง fade เบาๆ ไว้เพื่อไม่ให้กระพริบ
+        const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-        // 2. Animation สำหรับการ์ดบริการ (แก้ไขใหม่: ให้ทำงานแยกทีละใบ)
-        const serviceCards = gsap.utils.toArray(".gsap-service-card");
-        serviceCards.forEach((card) => {
-            gsap.to(card, {
+        // 0. Parallax รูปพื้นหลัง Hero — รูปเลื่อนช้ากว่าคอนเทนต์เล็กน้อยตอน scroll ผ่าน section
+        if (!prefersReducedMotion) {
+            gsap.utils.toArray(".hero-parallax-img").forEach((img) => {
+                gsap.to(img, {
+                    yPercent: 12,
+                    ease: "none",
+                    scrollTrigger: {
+                        trigger: "#services-hero",
+                        start: "top top",
+                        end: "bottom top",
+                        scrub: true // ผูกตรงกับตำแหน่ง scroll แบบ real-time ไม่มี delay
+                    }
+                });
+            });
+        }
+
+        // 1. Animation สำหรับหัวข้อ OUR SERVICES
+        if (prefersReducedMotion) {
+            gsap.set(".gsap-fade-up", { y: 0, opacity: 1 });
+        } else {
+            gsap.from(".gsap-fade-up", {
                 scrollTrigger: {
-                    trigger: card, // ให้ตัวมันเองเป็นคนเช็คตำแหน่งว่าเลื่อนมาถึงหรือยัง
-                    start: "top 85%", // เมื่อขอบบนของการ์ดใบนี้ ถึงจุด 85% ของจอ ค่อยทำงาน
-                    toggleActions: "play none none reverse"
+                    trigger: "#our-services",
+                    start: "top 85%", // เริ่มเมื่อขอบบนของ section เลื่อนมาถึง 85% ของหน้าจอ
+                    toggleActions: "play none none reverse" // เล่นเมื่อเจอ ถอยกลับเมื่อเลื่อนขึ้น
                 },
-                y: 0,
-                opacity: 1,
-                duration: 0.6,
+                y: 40,
+                opacity: 0,
+                duration: 0.8,
+                stagger: 0.2, // ให้ h1 กับ p ค่อยๆ ขึ้นมาเหลื่อมเวลากันเล็กน้อย
                 ease: "power2.out"
             });
-        });
+        }
 
-        // 3. Animation สำหรับ Our Approach (แก้ไขใหม่เหมือนกัน)
+        // 2. Animation สำหรับการ์ดบริการ
+        // Desktop/Tablet (≥768px): Pin ทั้ง section ไว้ แล้วให้การ์ดโผล่ทีละใบตามระยะที่เลื่อน (scrub)
+        //   จนกว่าจะครบ 4 ใบ ถึงจะปลดล็อกให้เลื่อนผ่าน section นี้ไปต่อได้
+        // Mobile (<768px): ใช้แบบเดิม (โผล่ทีละใบเมื่อเลื่อนมาถึง ไม่ pin) เพราะจอเล็ก pin ยาวๆ จะกระทบ UX
+        const serviceCardsWrapper = document.querySelector("#gsap-services-grid");
+        const serviceCards = gsap.utils.toArray(".gsap-service-card");
+
+        if (serviceCardsWrapper && serviceCards.length && prefersReducedMotion) {
+            // Reduced motion: แสดงการ์ดทั้งหมดทันที ไม่ pin ไม่ scrub
+            gsap.set(serviceCards, { y: 0, opacity: 1 });
+        } else if (serviceCardsWrapper && serviceCards.length) {
+            ScrollTrigger.matchMedia({
+
+                // --- Desktop / Tablet: Pin + Scrub ---
+                "(min-width: 768px)": function () {
+                    const cardsTimeline = gsap.timeline({
+                        scrollTrigger: {
+                            trigger: serviceCardsWrapper,
+                            start: "top top+=80", // เผื่อระยะ header/nav ที่ sticky อยู่ด้านบน ปรับเลขนี้ตามความสูง header จริง
+                            end: "+=" + (serviceCards.length * 500), // ระยะ scroll รวม ~500px ต่อการ์ด 1 ใบ ปรับได้ตามความรู้สึก
+                            pin: true,
+                            scrub: 1, // ค่อยๆ ตามการเลื่อน 1 วินาที ให้ความรู้สึกลื่นไหล ไม่กระตุก
+                            anticipatePin: 1,
+                            // markers: true, // เปิดบรรทัดนี้ตอน debug เพื่อดูตำแหน่ง start/end บนจอ
+                        }
+                    });
+
+                    serviceCards.forEach((card, index) => {
+                        cardsTimeline.to(card, {
+                            y: 0,
+                            opacity: 1,
+                            duration: 1,
+                            ease: "power2.out"
+                        }, index); // แต่ละใบเริ่ม animate เรียงตามลำดับเวลาในไทม์ไลน์ ทำให้โผล่ทีละใบ
+                    });
+
+                    // ฟังก์ชัน cleanup: เรียกอัตโนมัติเมื่อ media query ไม่ตรงแล้ว (เช่น ย่อจอลงต่ำกว่า 768px)
+                    return () => {
+                        cardsTimeline.scrollTrigger && cardsTimeline.scrollTrigger.kill();
+                        cardsTimeline.kill();
+                    };
+                },
+
+                // --- Mobile: แบบเดิม ไม่ pin ---
+                "(max-width: 767px)": function () {
+                    const mobileTriggers = serviceCards.map((card) => {
+                        return gsap.to(card, {
+                            scrollTrigger: {
+                                trigger: card,
+                                start: "top 85%",
+                                toggleActions: "play none none reverse"
+                            },
+                            y: 0,
+                            opacity: 1,
+                            duration: 0.6,
+                            ease: "power2.out"
+                        });
+                    });
+
+                    return () => {
+                        mobileTriggers.forEach((tween) => {
+                            tween.scrollTrigger && tween.scrollTrigger.kill();
+                            tween.kill();
+                        });
+                    };
+                }
+
+            });
+        }
+
+        // 2.5 Animation สำหรับ CTA Box ท้ายหน้า — fade + slide ขึ้นตอน scroll มาถึง
+        const ctaBox = document.querySelector(".gsap-cta-box");
+        if (ctaBox) {
+            if (prefersReducedMotion) {
+                gsap.set(ctaBox, { y: 0, opacity: 1 });
+            } else {
+                gsap.to(ctaBox, {
+                    scrollTrigger: {
+                        trigger: ctaBox,
+                        start: "top 85%",
+                        toggleActions: "play none none reverse"
+                    },
+                    y: 0,
+                    opacity: 1,
+                    duration: 0.7,
+                    ease: "power2.out"
+                });
+            }
+        }
+
+        // 3. Animation สำหรับ Our Approach
+        // การ์ดทั้งใบ fade+slide ขึ้นตามปกติ ส่วนไอคอนกับเลขลำดับ (01-04) จะ "pop" ตามเข้ามาทีหลังเล็กน้อย
+        // แบบ elastic ให้ความรู้สึกมีชีวิตชีวา ส่วน hover ของไอคอนคุมด้วย CSS (.gsap-approach-step:hover .gsap-approach-icon)
         const approachSteps = gsap.utils.toArray(".gsap-approach-step");
         approachSteps.forEach((step) => {
-            gsap.to(step, {
+            const icon = step.querySelector(".gsap-approach-icon");
+            const number = step.querySelector(".gsap-approach-number");
+
+            if (prefersReducedMotion) {
+                gsap.set(step, { y: 0, opacity: 1 });
+                if (icon) gsap.set(icon, { clearProps: "opacity,transform" });
+                if (number) gsap.set(number, { clearProps: "opacity,transform" });
+                return;
+            }
+
+            // ตั้งค่าเริ่มต้นของไอคอน/เลข ให้เล็กและโปร่งใสก่อน pop เข้ามา
+            if (icon) gsap.set(icon, { opacity: 0, scale: 0.5, rotate: 14 });
+            if (number) gsap.set(number, { opacity: 0, scale: 0.3 });
+
+            const stepTimeline = gsap.timeline({
                 scrollTrigger: {
                     trigger: step, // ให้กล่อง step แต่ละอันเป็น trigger ของตัวเอง
                     start: "top 90%",
                     toggleActions: "play none none reverse"
-                },
+                }
+            });
+
+            stepTimeline.to(step, {
                 y: 0,
                 opacity: 1,
                 duration: 0.6,
                 ease: "power2.out"
             });
+
+            if (number) {
+                stepTimeline.to(number, {
+                    opacity: 1,
+                    scale: 1,
+                    duration: 0.5,
+                    ease: "back.out(2.5)",
+                    clearProps: "transform" // เคลียร์ inline transform หลังจบ ให้ไม่ค้างทับ hover/css อื่นภายหลัง
+                }, "-=0.35");
+            }
+
+            if (icon) {
+                stepTimeline.to(icon, {
+                    opacity: 1,
+                    scale: 1,
+                    rotate: 0,
+                    duration: 0.55,
+                    ease: "back.out(1.7)",
+                    clearProps: "transform" // เคลียร์แล้วให้ CSS hover (.gsap-approach-step:hover .gsap-approach-icon) ควบคุมต่อได้
+                }, "-=0.3");
+            }
         });
     });
 </script>
