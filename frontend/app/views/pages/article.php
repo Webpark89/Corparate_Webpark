@@ -1,7 +1,5 @@
 <?php
-
 declare(strict_types=1);
-
 $articles = is_array($articles ?? null) ? $articles : [];
 $categories = is_array($categories ?? null) ? $categories : [];
 $activeCategorySlug = (string) ($activeCategorySlug ?? 'all');
@@ -9,19 +7,15 @@ $fallbackImage = asset_url('images/story.png');
 $heroImage = asset_url('images/bg-7.png');
 $ctaImage = asset_url('images/bg-cta.jpg');
 ?>
-
 <style>
-    /* 1. แอนิเมชันสำหรับสไลด์ขึ้นจากด้านล่าง (Entrance) */
     @keyframes fadeSlideUp {
         0% { opacity: 0; transform: translateY(30px); }
         100% { opacity: 1; transform: translateY(0); }
     }
     .animate-fade-up {
-        opacity: 0; /* ซ่อนไว้ก่อนเริ่ม */
+        opacity: 0;
         animation: fadeSlideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
-
-    /* 2. แอนิเมชันสำหรับตัวอักษรสีเหลือบ (Gradient Flow) */
     @keyframes text-gradient-pan {
         0% { background-position: 0% center; }
         50% { background-position: 100% center; }
@@ -31,23 +25,18 @@ $ctaImage = asset_url('images/bg-cta.jpg');
         background-size: 200% auto;
         animation: text-gradient-pan 6s linear infinite;
     }
-
-    /* คลาสหน่วงเวลา เพื่อให้เนื้อหาไล่ลำดับกันขึ้นมา */
     .delay-100 { animation-delay: 100ms; }
     .delay-200 { animation-delay: 200ms; }
     .delay-300 { animation-delay: 300ms; }
     .delay-400 { animation-delay: 400ms; }
-    /* บังคับตำแหน่งรูปภาพและ Overlay ด้วย CSS โดยตรง เพื่อเลี่ยงปัญหา Tailwind ไม่คอมไพล์ */
     .hero-bg-img {
-        /* ปรับ object-position เป็น 85% เพื่อดึงโน้ตบุ๊กกลับเข้ามาในจอ และ 0% คือชิดขอบบน */
         object-position: 85% 0% !important;
     }
     .hero-overlay-mobile {
-        /* เฉดสีขาวเฉพาะฝั่งซ้ายและด้านบนที่ตัวหนังสืออยู่ ปล่อยฝั่งขวาให้โปร่งใสเพื่อให้เห็นรูปภาพ */
         background: linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.9) 45%, rgba(255, 255, 255, 0) 80%) !important;
     }
     .hero-overlay-gradient {
-        background: transparent !important; /* ยกเลิก gradient ซ้ำซ้อนบนมือถือ */
+        background: transparent !important;
     }
     @media (min-width: 768px) {
         .hero-bg-img {
@@ -60,7 +49,6 @@ $ctaImage = asset_url('images/bg-cta.jpg');
             background: linear-gradient(to right, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.9) 60%, rgba(255, 255, 255, 0.1) 100%) !important;
         }
     }
-
     .hero-parallax-img {
         transform: scale(1.12);
         will-change: transform;
@@ -74,21 +62,16 @@ $ctaImage = asset_url('images/bg-cta.jpg');
         }
     }
 </style>
-
-<!-- นำขอบโค้งและ margin ออก เพื่อให้ชิดขอบจอด้านบนและด้านข้างแบบ Edge-to-Edge -->
 <section id="article-hero" class="relative overflow-hidden font-sans bg-white border-none">
     <div class="absolute inset-0 z-0">
         <img src="<?= e($heroImage) ?>" alt="WEBPARK Solutions Background" 
             class="hero-parallax-img w-full h-full object-cover md:object-contain hero-bg-img opacity-100">
-            
         <div class="absolute inset-0 hero-overlay-mobile"></div>
         <div class="absolute inset-0 hero-overlay-gradient"></div>
         <div class="absolute inset-x-0 bottom-0 h-[30%] bg-gradient-to-t from-white/50 to-transparent z-10"></div>
     </div>
-
     <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 pt-12 pb-24 lg:pt-28 lg:pb-32 relative z-10">
         <div class="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-12 lg:gap-20 items-center">
-            
             <div class="max-w-3xl lg:max-w-none">
                 <nav aria-label="Breadcrumb" class="hidden md:block animate-fade-up delay-100 mb-6">
                     <ol class="inline-flex items-center text-sm md:text-base font-medium text-slate-500">
@@ -100,13 +83,11 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                         <li>
                             <span class="text-slate-400" style="margin: 0 4px;">/</span>
                         </li>
-                        
                         <li aria-current="page">
                             <span class="text-slate-400"><?= e(t('article_list.page_title')) ?></span>
                         </li>
                     </ol>
                 </nav>
-                
                 <style>
                     .hero-title-text {
                         font-size: 2.25rem;
@@ -135,7 +116,6 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                         <?= e(getCurrentLang() === 'th' ? 'และอัพเดต' : '& Updates') ?>
                     </span>
                 </h1>
-
                 <?php
                 if (getCurrentLang() === 'th') {
                     $mobile_desc = "รวบรวมบทความรู้ เทคโนโลยี นวัตกรรม และแนวทาง<br>การทำธุรกิจ ครอบคลุม ERP ระบบธุรกิจดิจิทัล การ<br>ตลาดออนไลน์ AI และโซลูชัน ที่ช่วยพัฒนาองค์กรให้<br>เติบโตได้อย่างยั่งยืน";
@@ -163,7 +143,6 @@ $ctaImage = asset_url('images/bg-cta.jpg');
         </div>
     </div>
 </section>
-
 <section class="bg-white" style="padding-top: 1.5rem; padding-bottom: 2.5rem;">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div class="flex flex-col gap-4 md:flex-row md:items-center relative w-full">
@@ -177,18 +156,13 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                     </svg>
                 </button>
             </div>
-
             <div class="relative flex-1 overflow-hidden">
                 <div id="category-filters" class="article-filter-track flex gap-3 overflow-x-auto py-1 hide-scroll scroll-smooth" style="-ms-overflow-style: none; scrollbar-width: none;">
-                    
-                    <!-- ปุ่ม: ทั้งหมด -->
                     <button type="button"
                             data-filter="all"
                             class="article-filter-btn whitespace-nowrap rounded-md border px-5 py-2 text-sm font-medium transition-colors <?= $activeCategorySlug === 'all' ? 'border-transparent bg-blue-600 text-white' : 'border-blue-200 bg-white text-[#1a2b6d] hover:bg-blue-600 hover:text-white hover:border-transparent' ?>">
                         <?= e(t('common.cta_view_all')) ?>
                     </button>
-
-                    <!-- ปุ่ม: หมวดหมู่ตาม Loop -->
                     <?php foreach ($categories as $category):
                         $slug = trim((string) ($category['slug'] ?? ''));
                         // You could use translated category names if they are dynamically loaded with current language
@@ -204,11 +178,8 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                             <?= e($name) ?>
                         </button>
                     <?php endforeach; ?>
-                    
-
                 </div>
             </div>
-
             <div class="hidden items-center md:flex shrink-0 pl-4">
                 <button id="filter-scroll-right"
                         type="button"
@@ -222,7 +193,6 @@ $ctaImage = asset_url('images/bg-cta.jpg');
         </div>
     </div>
 </section>
-
 <section class="bg-white pb-20">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <style>
@@ -251,47 +221,32 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                 if ($itemLang === 'en' && !empty($article['meta_title_en'])) {
                     $articleTitle = $article['meta_title_en'];
                 }
-                
                 $summary = trim(strip_tags((string) ($article['summary'] ?? '')));
                 if ($itemLang === 'en' && !empty($article['meta_description_en'])) {
                     $summary = trim(strip_tags((string) $article['meta_description_en']));
                 }
                 $imageSrc = resolve_article_image_url((string) ($article['image_path'] ?? ''), $fallbackImage);
-                $linkToUse = (trim($articleTitle) === 'ทำไม SEO ถึงสำคัญสำหรับธุรกิจในปีนี้') 
-                             ? '/Corparate_Webpark/article-detail-mockup' 
-                             : $detailUrl;
+                $linkToUse = $detailUrl;
                 ?>
                 <article class="article-card article-card-slide snap-start group h-fit flex flex-col overflow-hidden rounded-[1.5rem] border border-slate-100 bg-white shadow-[0_4px_20px_rgba(0,0,0,0.04)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(0,0,0,0.08)]"
                          data-category="<?= e($categorySlug !== '' ? $categorySlug : 'all') ?>">
-                    
-                    <!-- ส่วนรูปภาพ ปรับสัดส่วนให้สมดุลกับส่วนเนื้อหาที่เล็กลง -->
                     <a href="<?= e($linkToUse) ?>" class="relative block aspect-[16/9] w-full overflow-hidden">
                         <img src="<?= e($imageSrc) ?>" alt="<?= e($articleTitle) ?>" class="article-card__image h-full w-full object-cover transition-transform duration-500 group-hover:scale-105">
                     </a>
-                    
-                    <!-- ส่วนเนื้อหา -->
                     <div class="flex flex-col p-4">
-                        
-                        <!-- Badge หมวดหมู่ (พื้นหลังฟ้า ขอบมนแคปซูล) -->
                         <div class="mb-3">
                             <span class="inline-block rounded-full bg-blue-50 px-3 py-1.5 text-xs font-semibold tracking-wide text-blue-700">
                                 <?= e($categoryName !== '' ? $categoryName : (getCurrentLang() === 'th' ? 'หมวดหมู่' : 'Category')) ?>
                             </span>
                         </div>
-                        
-                        <!-- หัวข้อบทความ -->
                         <a href="<?= e($linkToUse) ?>" class="block mb-2">
                             <h3 class="article-card__title text-xl lg:text-lg font-bold text-[#1a2b6d] leading-snug" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 3.25rem;">
                                 <?= e($articleTitle) ?>
                             </h3>
                         </a>
-                        
-                        <!-- สรุปเนื้อหา (แสดง 3 บรรทัด) -->
                         <p class="article-card__description text-slate-500" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; font-size: 0.875rem; line-height: 1.5rem; height: 3rem; white-space: normal; word-break: break-word;">
                             <?= e($summary) ?>
                         </p>
-                        
-                        <!-- ปุ่มอ่านเพิ่มเติม (ดันลงล่างสุด และชิดขวา) -->
                         <div class="flex mt-1" style="justify-content: flex-end;">
                             <a href="<?= e($linkToUse) ?>" class="article-card__cta inline-flex items-center gap-1.5 text-lg lg:text-sm font-semibold text-blue-500 transition-all hover:gap-2 hover:text-blue-700">
                                 <?= e(t('common.cta_read_more')) ?>
@@ -301,21 +256,17 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                             </a>
                         </div>
                     </div>
-                    
                 </article>
             <?php endforeach; ?>
         </div>
-
         <div id="no-results" class="article-no-results hidden py-14 text-center text-slate-600 flex flex-col items-center justify-center">
             <img src="<?= e(asset_url('images/Empty.gif')) ?>" alt="No results" class="w-64 h-auto max-w-full mb-4 object-contain">
             <h3 class="text-lg font-bold text-[#1a2b6d] mb-2"><?= e(t('article_list.empty_state_title')) ?></h3>
             <p class="text-sm text-slate-500"><?= e(t('article_list.empty_state_desc')) ?></p>
         </div>
-
         <nav id="pagination" class="article-pagination mt-8 flex items-center justify-center gap-2" aria-label="Article pagination"></nav>
     </div>
 </section>
-
 <style>
 .article-pagination__btn {
     display: flex;
@@ -394,7 +345,6 @@ $ctaImage = asset_url('images/bg-cta.jpg');
     }
 }
 </style>
-
 <script>
 document.addEventListener('DOMContentLoaded', () => {
     const filterBtns = Array.from(document.querySelectorAll('.article-filter-btn'));
@@ -405,15 +355,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const articleCards = Array.from(document.querySelectorAll('.article-card'));
     const paginationEl = document.getElementById('pagination');
     const noResults = document.getElementById('no-results');
-    
     const PAGE_SIZE = 3;
     const DEFAULT_FILTER = 'all';
-
     let currentFilter = '<?= e($activeCategorySlug) ?>';
     let filteredCards = [];
     let currentPage = 1;
     let isDesktopMode = window.innerWidth >= 1024;
-
     const scrollToGridTop = () => {
         const categoryFilters = document.getElementById('category-filters');
         if (categoryFilters) {
@@ -424,10 +371,8 @@ document.addEventListener('DOMContentLoaded', () => {
             articleGrid.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
     };
-
     const ACTIVE_CLASSES = ['border-transparent', 'bg-blue-600', 'text-white'];
     const INACTIVE_CLASSES = ['border-blue-200', 'bg-white', 'text-[#1a2b6d]'];
-
     const setActiveButton = (slug) => {
         filterBtns.forEach(btn => {
             const value = btn.dataset.filter || DEFAULT_FILTER;
@@ -436,21 +381,17 @@ document.addEventListener('DOMContentLoaded', () => {
             btn.classList.add(...(isActive ? ACTIVE_CLASSES : INACTIVE_CLASSES));
         });
     };
-
     const getFilteredCards = () => articleCards.filter(card => {
         const category = card.dataset.category || DEFAULT_FILTER;
         return currentFilter === DEFAULT_FILTER || category === currentFilter;
     });
-
     const updateDots = () => {
         if (isDesktopMode) return;
         const dots = Array.from(paginationEl.querySelectorAll('.article-pagination__dot'));
         if (dots.length === 0) return;
-        
         const scrollLeft = articleGrid.scrollLeft;
         const width = articleGrid.offsetWidth;
         const index = Math.round(scrollLeft / width);
-        
         dots.forEach((dot, i) => {
             if (i === index) {
                 dot.classList.add('article-pagination__dot--active');
@@ -459,14 +400,11 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     };
-
     const renderPagination = () => {
         paginationEl.innerHTML = '';
         if (filteredCards.length <= 1) return;
-
         const totalPages = Math.max(1, Math.ceil(filteredCards.length / PAGE_SIZE));
         if (totalPages <= 1) return;
-
         const createBtn = (label, target, active = false, disabled = false) => {
             const btn = document.createElement('button');
             btn.type = 'button';
@@ -483,12 +421,10 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             return btn;
         };
-
         const paginationContainer = document.createElement('div');
         paginationContainer.className = 'flex items-center overflow-hidden bg-white shadow-sm mx-auto';
         paginationContainer.style.borderRadius = '8px';
         paginationContainer.style.border = '1px solid #cbd5e1';
-        
         const prevBtn = createBtn('', currentPage - 1, false, currentPage === 1);
         prevBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" style="height: 18px; width: 18px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>`;
         prevBtn.className = 'flex items-center justify-center transition-colors hover:bg-slate-50';
@@ -498,7 +434,6 @@ document.addEventListener('DOMContentLoaded', () => {
         prevBtn.style.borderRight = '1px solid #cbd5e1';
         if (currentPage === 1) prevBtn.style.opacity = '0.3';
         paginationContainer.appendChild(prevBtn);
-
         const infoText = document.createElement('span');
         infoText.className = 'flex items-center justify-center font-medium tracking-wide cursor-pointer hover:bg-slate-50 transition-colors select-none';
         infoText.style.height = '44px';
@@ -508,12 +443,9 @@ document.addEventListener('DOMContentLoaded', () => {
         infoText.style.fontSize = '16px';
         infoText.title = 'คลิกเพื่อเลือกหน้า / Click to input page';
         infoText.textContent = `${currentPage} of ${totalPages}`;
-
         infoText.addEventListener('click', (e) => {
             if (e.target.tagName === 'INPUT') return;
-            
             infoText.innerHTML = '';
-            
             const input = document.createElement('input');
             input.type = 'number';
             input.min = '1';
@@ -521,17 +453,13 @@ document.addEventListener('DOMContentLoaded', () => {
             input.value = currentPage;
             input.className = 'w-12 h-7 text-center font-bold text-[#1e40af] border border-blue-200 rounded focus:outline-none focus:border-blue-500 bg-slate-50 p-0 text-sm';
             input.addEventListener('click', (evt) => evt.stopPropagation());
-            
             const label = document.createElement('span');
             label.className = 'ml-1.5 text-slate-500 font-medium text-sm';
             label.textContent = `of ${totalPages}`;
-            
             infoText.appendChild(input);
             infoText.appendChild(label);
-            
             input.focus();
             input.select();
-            
             let submitted = false;
             const finish = () => {
                 if (submitted) return;
@@ -549,7 +477,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     infoText.textContent = `${currentPage} of ${totalPages}`;
                 }
             };
-            
             input.addEventListener('keydown', (evt) => {
                 if (evt.key === 'Enter') {
                     evt.preventDefault();
@@ -560,14 +487,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     infoText.textContent = `${currentPage} of ${totalPages}`;
                 }
             });
-            
             input.addEventListener('blur', () => {
                 setTimeout(finish, 100);
             });
         });
-
         paginationContainer.appendChild(infoText);
-
         const nextBtn = createBtn('', currentPage + 1, false, currentPage === totalPages);
         nextBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" style="height: 18px; width: 18px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>`;
         nextBtn.className = 'flex items-center justify-center transition-colors hover:bg-slate-50';
@@ -577,21 +501,16 @@ document.addEventListener('DOMContentLoaded', () => {
         nextBtn.style.borderLeft = '1px solid #cbd5e1';
         if (currentPage === totalPages) nextBtn.style.opacity = '0.3';
         paginationContainer.appendChild(nextBtn);
-
         paginationEl.appendChild(paginationContainer);
     };
-
     const render = () => {
         filteredCards = getFilteredCards();
         articleCards.forEach(card => card.classList.add('hidden'));
-
         const totalPages = Math.max(1, Math.ceil(filteredCards.length / PAGE_SIZE));
         if (currentPage > totalPages) currentPage = Math.max(1, totalPages);
-        
         const start = (currentPage - 1) * PAGE_SIZE;
         const visible = filteredCards.slice(start, start + PAGE_SIZE);
         visible.forEach(card => card.classList.remove('hidden'));
-
         // เล่น GSAP animation สลับการ์ดบทความเมื่อเปลี่ยนหน้า/หมวดหมู่
         if (typeof gsap !== 'undefined') {
             const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -602,15 +521,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 );
             }
         }
-
         noResults.classList.toggle('hidden', filteredCards.length > 0);
         setTimeout(renderPagination, 100); 
     };
-
     articleGrid.addEventListener('scroll', () => {
         if (!isDesktopMode) requestAnimationFrame(updateDots);
     });
-
     filterBtns.forEach(btn => {
         btn.addEventListener('click', () => {
             currentFilter = btn.dataset.filter || DEFAULT_FILTER;
@@ -620,13 +536,11 @@ document.addEventListener('DOMContentLoaded', () => {
             btn.scrollIntoView({ inline: 'center', behavior: 'smooth', block: 'nearest' });
         });
     });
-
     if (scrollLeftBtn && scrollRightBtn && filterTrack) {
         const updateScrollButtons = () => {
             const scrollLeft = filterTrack.scrollLeft;
             const scrollWidth = filterTrack.scrollWidth;
             const clientWidth = filterTrack.clientWidth;
-            
             // At the leftmost edge (or if not scrolled at all)
             if (scrollLeft <= 5) {
                 scrollLeftBtn.classList.add('opacity-0', 'pointer-events-none');
@@ -643,13 +557,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 scrollRightBtn.classList.remove('opacity-0', 'pointer-events-none');
             }
         };
-
         filterTrack.addEventListener('scroll', updateScrollButtons);
         updateScrollButtons();
         setTimeout(updateScrollButtons, 150);
         setTimeout(updateScrollButtons, 500);
         window.addEventListener('resize', updateScrollButtons);
-
         scrollLeftBtn.addEventListener('click', () => {
             filterTrack.scrollLeft -= 300;
             setTimeout(updateScrollButtons, 350);
@@ -659,7 +571,6 @@ document.addEventListener('DOMContentLoaded', () => {
             setTimeout(updateScrollButtons, 350);
         });
     }
-    
     window.addEventListener('resize', () => {
         const currentIsDesktop = window.innerWidth >= 1024;
         if (currentIsDesktop !== isDesktopMode) {
@@ -671,20 +582,16 @@ document.addEventListener('DOMContentLoaded', () => {
             updateDots();
         }
     });
-
     setActiveButton(currentFilter);
     render();
 });
 </script>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 <script>
 document.addEventListener("DOMContentLoaded", () => {
     gsap.registerPlugin(ScrollTrigger);
-
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
     // Hero Parallax Background
     if (!prefersReducedMotion) {
         gsap.utils.toArray(".hero-parallax-img").forEach((img) => {

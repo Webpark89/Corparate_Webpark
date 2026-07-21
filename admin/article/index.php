@@ -1,54 +1,43 @@
 <?php
-
 /**
  * Admin article list — search, filter, and manage articles.
  */
 $pageTitle = 'Article Management';
 $page = 'article';
 require_once __DIR__ . '/../includes/header.php';
-
 $search = trim($_GET['search'] ?? '');
 $categoryFilter = $_GET['category_id'] ?? '';
 $statusFilter = $_GET['status'] ?? '';
-
 // Auto-migrate priority column
 try {
     db()->exec('ALTER TABLE article ADD COLUMN priority INT DEFAULT 999 AFTER category_id');
 } catch (Exception $e) {
     // Column already exists or other error
 }
-
 $sql = 'SELECT a.*, c.name AS category_name, aut.display_name AS author_name
         FROM article a
         LEFT JOIN categories c ON a.category_id = c.id
         LEFT JOIN authors aut ON a.author_id = aut.id
         WHERE 1=1';
 $params = [];
-
 if ($search !== '') {
     $sql .= ' AND (a.meta_title LIKE ? OR a.meta_description LIKE ?)';
     $params[] = "%$search%";
     $params[] = "%$search%";
 }
-
 if ($categoryFilter !== '') {
     $sql .= ' AND a.category_id = ?';
     $params[] = (int) $categoryFilter;
 }
-
 if (in_array($statusFilter, ['draft', 'published', 'hidden'], true)) {
     $sql .= ' AND a.status = ?';
     $params[] = $statusFilter;
 }
-
 $sql .= ' ORDER BY a.priority ASC, a.created_at DESC';
 $statement = db()->prepare($sql);
 $statement->execute($params);
-
 $articles = $statement->fetchAll();
-
 $categories = db()->query('SELECT id, name FROM categories ORDER BY name')->fetchAll();
-
 // --- One-time database migration for categories ---
 if (count($categories) !== 4 || $categories[0]['name'] !== 'ERP / ERM') {
     try {
@@ -60,28 +49,23 @@ if (count($categories) !== 4 || $categories[0]['name'] !== 'ERP / ERM') {
         $stmt->execute([3, 'Online Marketing', 'online-marketing']);
         $stmt->execute([4, 'Creative / Design', 'creative-design']);
         db()->exec('SET FOREIGN_KEY_CHECKS = 1');
-        
         // Refresh after insert
         $categories = db()->query('SELECT id, name FROM categories ORDER BY name')->fetchAll();
     } catch (Throwable $e) {}
 }
 // ------------------------------------------------
 ?>
-
 <div class="mx-auto w-full max-w-none px-2 pb-8 pt-1 text-sm md:px-4 lg:px-8">
-
     <header class="mb-5 flex flex-col gap-3 border-l-4 border-blue-500 pl-4 md:flex-row md:items-center md:justify-between">
         <div>
             <h2 class="text-lg font-bold text-slate-900">การจัดการบทความ</h2>
             <p class="mt-1 text-xs text-slate-500">รายการบทความทั้งหมดในระบบ อัปเดตล่าสุดปี 2026</p>
         </div>
-
         <a href="create.php"
             class="inline-flex h-9 items-center rounded-xl bg-blue-600 px-4 text-xs font-semibold text-white transition hover:bg-blue-300 shadow-sm shadow-blue-500/10">
             + สร้างบทความใหม่
         </a>
     </header>
-
     <section class="mb-5 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
         <div class="p-4">
             <form method="get" class="grid grid-cols-1 gap-3 md:grid-cols-12 items-center">
@@ -92,7 +76,6 @@ if (count($categories) !== 4 || $categories[0]['name'] !== 'ERP / ERM') {
                             class="w-full border-0 bg-transparent px-3 py-2 text-xs text-slate-700 placeholder:text-slate-400 focus:outline-none focus:ring-0">
                     </div>
                 </div>
-
                 <div class="md:col-span-3">
                     <select name="category_id" onchange="this.form.submit()"
                         class="w-full rounded-xl border border-slate-200 bg-slate-50/50 px-3 py-2 text-xs text-slate-700 focus:bg-white focus:border-blue-500 focus:outline-none transition-all">
@@ -102,7 +85,6 @@ if (count($categories) !== 4 || $categories[0]['name'] !== 'ERP / ERM') {
                         <?php endforeach; ?>
                     </select>
                 </div>
-
                 <div class="md:col-span-3">
                     <select name="status" onchange="this.form.submit()"
                         class="w-full rounded-xl border border-slate-200 bg-slate-50/50 px-3 py-2 text-xs text-slate-700 focus:bg-white focus:border-blue-500 focus:outline-none transition-all">
@@ -112,7 +94,6 @@ if (count($categories) !== 4 || $categories[0]['name'] !== 'ERP / ERM') {
                         <option value="hidden" <?= $statusFilter === 'hidden' ? 'selected' : '' ?>>ซ่อนอยู่</option>
                     </select>
                 </div>
-
                 <div class="flex gap-2 md:col-span-2">
                     <button type="submit" class="flex-1 h-8 rounded-xl bg-slate-900 text-xs font-semibold text-white transition hover:bg-slate-800">กรอง</button>
                     <a href="index.php" class="inline-flex flex-1 items-center justify-center h-8 rounded-xl border border-slate-200 bg-white text-xs font-medium text-slate-600 transition hover:bg-slate-50">ล้าง</a>
@@ -120,7 +101,6 @@ if (count($categories) !== 4 || $categories[0]['name'] !== 'ERP / ERM') {
             </form>
         </div>
     </section>
-
     <section class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
         <div class="overflow-x-auto">
             <table class="min-w-full divide-y divide-slate-200 text-xs">
@@ -135,18 +115,15 @@ if (count($categories) !== 4 || $categories[0]['name'] !== 'ERP / ERM') {
                         <th class="px-4 py-3 text-right">การจัดการ</th>
                     </tr>
                 </thead>
-
                 <tbody class="divide-y divide-slate-100 bg-white">
                     <?php foreach ($articles as $row): ?>
                         <tr class="hover:bg-slate-50/50 transition-colors cursor-pointer js-clickable-row"
                             data-href="edit.php?id=<?= (int) $row['id'] ?>">
-
                             <td class="px-4 py-3">
                                 <img src="<?= e(resolve_admin_image_url($row['cover_image']) ?: 'https://picsum.photos/seed/' . $row['id'] . '/120/80') ?>"
                                     class="h-10 w-[60px] rounded-lg border border-slate-200 object-cover shadow-sm"
                                     alt="<?= e($row['cover_image_alt']) ?>">
                             </td>
-
                             <td class="px-3 py-3">
                                 <div class="max-w-[280px] truncate font-semibold text-slate-900">
                                     <?= e($row['meta_title'] ?: 'ไม่มีหัวข้อ') ?>
@@ -155,13 +132,11 @@ if (count($categories) !== 4 || $categories[0]['name'] !== 'ERP / ERM') {
                                     /article/<?= e($row['slug']) ?>
                                 </div>
                             </td>
-
                             <td class="px-3 py-3">
                                 <span class="inline-flex rounded-md border border-slate-200 bg-slate-50 px-2 py-0.5 text-[11px] font-medium text-slate-600">
                                     <?= e($row['category_name']) ?>
                                 </span>
                             </td>
-
                             <td class="px-3 py-3">
                                 <?php if ($row['status'] === 'published'): ?>
                                     <span class="inline-flex rounded-lg border border-emerald-200 bg-emerald-50 px-2.5 py-0.5 text-[11px] font-semibold text-emerald-700">
@@ -177,18 +152,15 @@ if (count($categories) !== 4 || $categories[0]['name'] !== 'ERP / ERM') {
                                         ฉบับร่าง
                                     </span>
                                 <?php endif; ?>
-
                                 <?php if (isset($row['priority']) && $row['priority'] !== 999): ?>
                                     <span class="inline-flex rounded-lg border border-purple-200 bg-purple-50 px-2.5 py-0.5 text-[11px] font-semibold text-purple-700 ml-1" title="Priority: <?= $row['priority'] ?>">
                                         ★ <?= str_pad((string)$row['priority'], 2, '0', STR_PAD_LEFT) ?>
                                     </span>
                                 <?php endif; ?>
                             </td>
-
                             <td class="px-3 py-3 text-[11px] text-slate-500 font-mono">
                                 <?= date('d/m/Y', strtotime($row['created_at'])) ?>
                             </td>
-
                             <td class="px-3 py-3 text-[11px] text-slate-500 font-mono">
                                 <?php if (!empty($row['updated_at'])): ?>
                                     <?= date('d/m/Y H:i', strtotime($row['updated_at'])) ?> น.
@@ -196,7 +168,6 @@ if (count($categories) !== 4 || $categories[0]['name'] !== 'ERP / ERM') {
                                     <span class="text-slate-400 italic">-</span>
                                 <?php endif; ?>
                             </td>
-
                             <td class="px-4 py-3 text-right" onclick="event.stopPropagation();">
                                 <div class="inline-flex overflow-hidden rounded-xl border border-slate-200 shadow-sm">
                                     <a href="edit.php?id=<?= (int) $row['id'] ?>"
@@ -231,10 +202,8 @@ if (count($categories) !== 4 || $categories[0]['name'] !== 'ERP / ERM') {
                                     </form>
                                 </div>
                             </td>
-
                         </tr>
                     <?php endforeach; ?>
-
                     <?php if (!$articles): ?>
                         <tr>
                             <td colspan="7" class="px-4 py-12 text-center text-xs text-slate-400 border-dashed">
@@ -246,9 +215,7 @@ if (count($categories) !== 4 || $categories[0]['name'] !== 'ERP / ERM') {
             </table>
         </div>
     </section>
-
 </div>
-
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const rows = document.querySelectorAll('.js-clickable-row');
@@ -262,7 +229,6 @@ if (count($categories) !== 4 || $categories[0]['name'] !== 'ERP / ERM') {
                 }
             });
         });
-
         const deleteForms = document.querySelectorAll('.js-delete-form');
         deleteForms.forEach(form => {
             form.addEventListener('submit', function(event) {
@@ -271,7 +237,6 @@ if (count($categories) !== 4 || $categories[0]['name'] !== 'ERP / ERM') {
                 }
             });
         });
-
         const toggleForms = document.querySelectorAll('.js-toggle-form');
         toggleForms.forEach(form => {
             form.addEventListener('submit', function(event) {
@@ -284,5 +249,4 @@ if (count($categories) !== 4 || $categories[0]['name'] !== 'ERP / ERM') {
         });
     });
 </script>
-
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>

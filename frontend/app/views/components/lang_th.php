@@ -1,12 +1,9 @@
 <?php
-
 declare(strict_types=1);
-
 /**
  * Thai language translation dictionary.
  * Auto-generated from lang_th.json — keep both in sync.
  */
-
 return [
     'common' => [
         'nav_home' => 'หน้าแรก',

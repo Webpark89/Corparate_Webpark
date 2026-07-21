@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Shared article create/edit form partial.
  */
@@ -9,25 +8,49 @@ $formAction = $formAction ?? 'create.php';
 $status = isset($_POST['status']) && in_array($_POST['status'], ['published', 'draft', 'hidden'], true)
     ? $_POST['status']
     : ($data['status'] ?? 'draft');
-
 $categories = db()->query('SELECT id, name FROM categories ORDER BY name')->fetchAll();
 $authors = db()->query('SELECT id, display_name FROM authors ORDER BY display_name')->fetchAll();
-
 $sections = [];
 if (!empty($data['content'])) {
-    $decoded = json_decode($data['content'], true);
-    if (is_array($decoded)) {
+    $rawContent = (string)$data['content'];
+    $decoded = json_decode($rawContent, true);
+    if (!is_array($decoded)) {
+        $decoded = json_decode(stripslashes($rawContent), true);
+    }
+    if (!is_array($decoded)) {
+        // Regex fallback for malformed JSON strings in database
+        $decoded = [];
+        preg_match_all('/\{\s*"lang"\s*:\s*"(th|en)"\s*,\s*"topic"\s*:\s*"(.*?)"\s*,\s*"body"\s*:\s*"(.*?)"\s*\}/s', $rawContent, $matches, PREG_SET_ORDER);
+        if (!empty($matches)) {
+            foreach ($matches as $m) {
+                $decoded[] = [
+                    'lang' => $m[1],
+                    'topic' => str_replace(['\\"', '\\/'], ['"', '/'], $m[2]),
+                    'body' => str_replace(['\\"', '\\/'], ['"', '/'], $m[3]),
+                ];
+            }
+        }
+    }
+    if (is_array($decoded) && !empty($decoded)) {
+        foreach ($decoded as &$sec) {
+            if (isset($sec['body'])) {
+                $sec['body'] = str_replace(['\r\n', '\n', '\r', '\t', '<\/', '\"', '\/', '<\span>', '<\p>', '<\strong>', '<\h2>', '<\h3>', '<\div>', '§', '&sect;'], [' ', ' ', ' ', ' ', '</', '"', '/', '</span>', '</p>', '</strong>', '</h2>', '</h3>', '</div>', '', ''], $sec['body']);
+            }
+            if (isset($sec['topic'])) {
+                $sec['topic'] = str_replace(['\r\n', '\n', '\r', '\t', '<\/', '\"', '\/', '§', '&sect;'], [' ', ' ', ' ', ' ', '</', '"', '/', '', ''], $sec['topic']);
+            }
+        }
+        unset($sec);
         $sections = $decoded;
     } else {
+        $cleanBody = str_replace(['\r\n', '\n', '\r', '\t', '<\/', '\"', '\/', '<\span>', '<\p>', '<\strong>', '<\h2>', '<\h3>', '<\div>', '§', '&sect;'], [' ', ' ', ' ', ' ', '</', '"', '/', '</span>', '</p>', '</strong>', '</h2>', '</h3>', '</div>', '', ''], $rawContent);
         $sections = [
-            ['lang' => 'th', 'topic' => 'เนื้อหาเดิม', 'body' => $data['content']]
+            ['lang' => 'th', 'topic' => 'เนื้อหาบทความ', 'body' => $cleanBody]
         ];
     }
 }
-
 $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition';
 ?>
-
 <style>
     /* Make CKEditor sit flush inside our own rounded/bordered frame */
     .editor-frame .ck.ck-toolbar {
@@ -46,23 +69,17 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
         box-shadow: none !important;
     }
 </style>
-
 <div class="mx-auto max-w-7xl px-4 py-6 lg:px-8">
-
     <form method="post"
         action="<?= e($formAction) ?>"
         enctype="multipart/form-data"
         id="unifiedForm"
         class="grid grid-cols-1 gap-6 lg:grid-cols-12">
-
         <?= csrf_field() ?>
-
         <?php if ($action === 'edit'): ?>
             <input type="hidden" name="id" value="<?= (int)($data['id'] ?? 0) ?>">
         <?php endif; ?>
-
         <div class="lg:col-span-12 space-y-6">
-
             <!-- Language Toggle Tabs (Global for Form) -->
             <div class="inline-flex items-center gap-2 mb-2">
                 <button type="button" id="global-tab-th" onclick="switchGlobalLanguage('th')"
@@ -76,27 +93,21 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
                     English (0/5)
                 </button>
             </div>
-
             <section class="rounded-2xl border border-slate-200/80 bg-white shadow-sm overflow-hidden">
-
                 <div class="border-b border-slate-100 px-6 py-4">
                     <h3 class="text-sm font-semibold text-slate-900">ตั้งค่ารูปภาพหน้าปก</h3>
                     <p class="text-xs text-slate-500 mt-0.5">อัปโหลดและจัดการรูปภาพหลักสำหรับใช้แสดงผลในบทความนี้</p>
                 </div>
-
                 <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
-
                     <div class="flex flex-col">
                         <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 block">
                             ตัวอย่างรูปภาพ
                         </label>
-
                         <div class="w-full h-64 rounded-xl border border-slate-200 bg-slate-50 p-2 flex items-center justify-center overflow-hidden">
                             <?php if (!empty($data['cover_image'])): ?>
                                 <img src="<?= e(resolve_admin_image_url($data['cover_image'])) ?>"
                                     onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
                                     class="w-full h-full object-contain rounded-lg shadow-sm transition-transform duration-200 hover:scale-[1.01]">
-
                                 <div class="hidden text-center p-6 space-y-2">
                                     <div class="mx-auto w-12 h-12 rounded-full bg-red-50 flex items-center justify-center text-red-400">
                                         <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
@@ -118,9 +129,7 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
                             <?php endif; ?>
                         </div>
                     </div>
-
                     <div class="flex flex-col justify-center space-y-5">
-
                         <div class="space-y-2">
                             <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider block">
                                 อัปโหลดไฟล์ใหม่
@@ -137,7 +146,6 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
                                 * รองรับไฟล์นามสกุล: JPEG, JPG, PNG, WEBP, GIF (ขนาดสูงสุดไม่เกิน 8MB)
                             </p>
                         </div>
-
                         <div class="space-y-2">
                             <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider block">
                                 ข้อความอธิบายรูปภาพ (SEO Alt Text) <span class="text-red-500 ml-0.5">*</span>
@@ -148,60 +156,49 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
                                 class="w-full rounded-xl border border-slate-200 bg-slate-50/50 px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/5 outline-none transition-all duration-200"
                                 required>
                         </div>
-
                     </div>
-
                 </div>
             </section>
-
             <section class="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden">
-
                 <div class="border-b px-6 py-4">
                     <h3 class="text-sm font-semibold">การปรับแต่งประสิทธิภาพ SEO</h3>
                     <p class="text-xs text-slate-500 mt-1">เพิ่มโอกาสในการติดอันดับการค้นหาที่ดีบน Google</p>
                 </div>
-
                 <div class="p-6 space-y-5">
-
                     <!-- Thai SEO Fields -->
                     <div class="lang-group lang-th-group space-y-5">
                         <div>
                             <div class="flex justify-between mb-2">
                                 <label class="text-sm font-medium text-slate-700">
-                                    หัวข้อสำหรับ SEO (Meta Title) <span class="text-red-500 ml-0.5">*</span>
+                                    หัวข้อบทความ (Article Title) <span class="text-red-500 ml-0.5">*</span>
                                 </label>
                                 <span id="titleCount" class="text-xs text-slate-500">0 / 150</span>
                             </div>
-
                             <input id="mainTitle"
                                 name="meta_title"
                                 value="<?= e($data['meta_title'] ?? '') ?>"
-                                placeholder="ระบุหัวข้อที่ต้องการให้แสดงบนหน้าค้นหาของ Google..."
+                                placeholder="ระบุหัวข้อบทความหลัก..."
                                 class="<?= $inputClass ?>"
                                 required>
                         </div>
-
                         <div>
                             <div class="flex justify-between mb-2">
                                 <label class="text-sm font-medium text-slate-700">
-                                    คำอธิบายสรุปบทความ (Meta Description) <span class="text-red-500 ml-0.5">*</span>
+                                    คำอธิบายสรุปบทความ (Article Summary) <span class="text-red-500 ml-0.5">*</span>
                                 </label>
                                 <span id="descCount" class="text-xs text-slate-500">0 / 500</span>
                             </div>
-
                             <textarea id="metaDesc"
                                 name="meta_description"
                                 rows="4"
-                                placeholder="เขียนคำอธิบายสั้น ๆ เพื่อดึงดูดใจผู้ใช้งานเมื่อแสดงเป็นสเนปเป็ตบนหน้า Google..."
+                                placeholder="เขียนคำอธิบายสั้น ๆ สรุปเนื้อหาบทความ..."
                                 class="<?= $inputClass ?>"
                                 required><?= e($data['meta_description'] ?? '') ?></textarea>
                         </div>
-
                         <div>
                             <label class="text-sm font-medium mb-2 block text-slate-700">
                                 คำค้นหาสำคัญ (Keywords) <span class="text-red-500 ml-0.5">*</span>
                             </label>
-
                             <input name="meta_keywords"
                                 value="<?= e($data['meta_keywords'] ?? '') ?>"
                                 placeholder="ระบุคำค้นหา เช่น เว็บดีไซน์, ความรู้คู่ระบบ, เทคโนโลยี (คั่นด้วยเครื่องหมายจุลภาค , )"
@@ -209,24 +206,21 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
                                 required>
                         </div>
                     </div>
-
                     <!-- English SEO Fields -->
                     <div class="lang-group lang-en-group space-y-5 hidden">
                         <div>
                             <div class="flex justify-between mb-2">
                                 <label class="text-sm font-medium text-slate-700">
-                                    SEO Title (English) <span class="text-red-500 ml-0.5">*</span>
+                                    หัวข้อบทความ (EN) <span class="text-red-500 ml-0.5">*</span>
                                 </label>
                                 <span id="titleCountEn" class="text-xs text-slate-500">0 / 150</span>
                             </div>
-
                             <input id="mainTitleEn"
                                 name="meta_title_en"
                                 value="<?= e($data['meta_title_en'] ?? '') ?>"
                                 placeholder="Enter English SEO Title..."
                                 class="<?= $inputClass ?>">
                         </div>
-
                         <div>
                             <div class="flex justify-between mb-2">
                                 <label class="text-sm font-medium text-slate-700">
@@ -234,40 +228,31 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
                                 </label>
                                 <span id="descCountEn" class="text-xs text-slate-500">0 / 500</span>
                             </div>
-
                             <textarea id="metaDescEn"
                                 name="meta_description_en"
                                 rows="4"
                                 placeholder="Enter English SEO Description..."
                                 class="<?= $inputClass ?>"><?= e($data['meta_description_en'] ?? '') ?></textarea>
                         </div>
-
                         <div>
                             <label class="text-sm font-medium mb-2 block text-slate-700">
                                 SEO Keywords (English) <span class="text-red-500 ml-0.5">*</span>
                             </label>
-
                             <input name="meta_keywords_en"
                                 value="<?= e($data['meta_keywords_en'] ?? '') ?>"
                                 placeholder="Enter keywords separated by commas..."
                                 class="<?= $inputClass ?>">
                         </div>
                     </div>
-
                 </div>
             </section>
-
             <section class="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden">
-
                 <div class="border-b border-slate-100 px-6 py-4">
                     <h3 class="text-sm font-semibold text-slate-900">เนื้อหาบทความและการตั้งค่า</h3>
                     <p class="text-xs text-slate-500 mt-0.5">จัดการเขียนบทความหลักและกำหนดสถานะการเปิดเผยข้อมูลบนเว็บไซต์</p>
                 </div>
-
                 <div class="p-6 space-y-6">
-
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-end">
-                        
                         <div class="w-full">
                             <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 block">
                                 หมวดหมู่บทความ <span class="text-red-500 ml-0.5">*</span>
@@ -282,7 +267,6 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
                                 <?php endforeach; ?>
                             </select>
                         </div>
-
                         <div class="w-full">
                             <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 block">
                                 ลำดับความสำคัญ (Priority) <span class="text-slate-400 ml-0.5">(ไม่บังคับ)</span>
@@ -292,9 +276,7 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
                                 placeholder="เช่น 01, 02 (เว้นว่างไว้หากไม่ระบุ)"
                                 class="<?= $inputClass ?> bg-white h-[46px]">
                         </div>
-
                     </div>
-
                     <div class="lang-group lang-th-group space-y-6">
                         <div>
                             <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 block">
@@ -313,7 +295,6 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
                             </div>
                         </div>
                     </div>
-
                     <div class="lang-group lang-en-group space-y-6 hidden">
                         <div>
                             <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 block">
@@ -331,7 +312,6 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
                             </div>
                         </div>
                     </div>
-
                     <!-- Source URL Field (Not language specific, but shown for both) -->
                     <div>
                         <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 block">
@@ -342,16 +322,13 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
                             placeholder="เช่น https://www.example.com/original-post หรือ ชื่อผู้แต่ง/หนังสืออ้างอิง"
                             class="<?= $inputClass ?>">
                     </div>
-
                     <div class="space-y-4">
                         <!-- Dummy fields to keep WEBPARKSeoEditor happy without modifying shared assets -->
                         <div id="mainEditor" class="hidden"></div>
                         <textarea id="mainEditorData" name="dummy_content" class="hidden"></textarea>
-
                         <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider block">
                             เนื้อหาหลักของบทความ (แบ่งแท็บตามภาษา)
                         </label>
-
                         <!-- Tab Content: Thai (TH) -->
                         <div class="lang-group lang-th-group pt-2">
                             <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 md:p-5 space-y-5">
@@ -367,7 +344,6 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
                                 </button>
                             </div>
                         </div>
-
                         <!-- Tab Content: English (EN) -->
                         <div class="lang-group lang-en-group pt-2 hidden">
                             <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 md:p-5 space-y-5">
@@ -384,48 +360,37 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
                             </div>
                         </div>
                     </div>
-
                 </div>
             </section>
         </div>
-
         <div class="lg:col-span-12 pt-4">
             <section class="sticky bottom-0 bg-white/90 backdrop-blur-sm p-4 -m-4 rounded-2xl border border-slate-200 shadow-sm">
              <div class="flex items-center justify-between">
-            
             <a href="index.php" class="px-6 h-11 flex items-center justify-center rounded-xl border border-slate-200 text-slate-700 hover:bg-slate-50 transition">
                 ยกเลิก
             </a>
-
             <div class="flex items-center gap-3">
-                
                 <button type="submit" name="status" value="draft" 
                     class="px-6 h-11 rounded-xl border bg-amber-50 border-amber-300 text-amber-700 font-semibold hover:bg-amber-50 transition">
                     บันทึกเป็นฉบับร่าง
                 </button>
-
                 <button type="submit" name="status" value="hidden" 
                     class="px-6 h-11 rounded-xl border bg-slate-100 border-slate-300 text-slate-600 font-semibold hover:bg-slate-200 transition inline-flex items-center gap-2">
                     <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
                     บันทึกและซ่อน
                 </button>
-
                 <button type="submit" name="status" value="published" 
                     class="px-6 h-11 rounded-xl border bg-emerald-50 border-emerald-300 text-emerald-700 font-semibold hover:bg-emerald-50 transition">
                     บันทึกและเผยแพร่
                 </button>
-
                  </div>
                     </div>
                 </section>
         </div>
-
     </form>
 </div>
-
-<script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/tinymce@6.8.3/tinymce.min.js" referrerpolicy="origin"></script>
 <script src="../assets/js/seo-editor.js"></script>
-
 <script>
     window.WEBPARKSeoEditor.init({
         formSelector: '#unifiedForm',
@@ -438,14 +403,12 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
         descCounterSelector: '#descCount',
         placeholder: 'เริ่มต้นเขียนเนื้อหาที่น่าสนใจของคุณตรงนี้ได้เลย...'
     });
-
     // English SEO Counters (Standalone)
     document.addEventListener('DOMContentLoaded', () => {
         const titleEn = document.getElementById('mainTitleEn');
         const descEn = document.getElementById('metaDescEn');
         const titleCountEn = document.getElementById('titleCountEn');
         const descCountEn = document.getElementById('descCountEn');
-
         function updateEnCounters() {
             if (titleEn && titleCountEn) {
                 const len = titleEn.value.length;
@@ -458,19 +421,16 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
                 descCountEn.className = `text-xs font-medium ${len > 500 ? 'text-rose-600' : 'text-slate-500'}`;
             }
         }
-
         if (titleEn) titleEn.addEventListener('input', updateEnCounters);
         if (descEn) descEn.addEventListener('input', updateEnCounters);
         updateEnCounters();
     });
 </script>
-
 <script>
     const preloadedSections = <?= json_encode($sections, JSON_UNESCAPED_UNICODE) ?>;
     const editors = {};
     let thCount = 0;
     let enCount = 0;
-
     function escapeHtml(string) {
         return String(string)
             .replace(/&/g, '&amp;')
@@ -479,103 +439,44 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
             .replace(/"/g, '&quot;')
             .replace(/'/g, '&#039;');
     }
-
-    class MyUploadAdapter {
-        constructor(loader) {
-            this.loader = loader;
-        }
-        upload() {
-            return this.loader.file
-                .then(file => new Promise((resolve, reject) => {
-                    // Check if it is an image
-                    if (!file.type.startsWith('image/')) {
-                        return reject('กรุณาอัปโหลดไฟล์รูปภาพเท่านั้น');
-                    }
-
-                    const reader = new FileReader();
-                    reader.onload = (e) => {
-                        const img = new Image();
-                        img.onload = () => {
-                            const canvas = document.createElement('canvas');
-                            let width = img.width;
-                            let height = img.height;
-                            const max_size = 1200; // จำกัดขนาดความกว้าง/สูง สูงสุด 1200px
-
-                            if (width > height) {
-                                if (width > max_size) {
-                                    height = Math.round((height * max_size) / width);
-                                    width = max_size;
-                                }
-                            } else {
-                                if (height > max_size) {
-                                    width = Math.round((width * max_size) / height);
-                                    height = max_size;
-                                }
-                            }
-
-                            canvas.width = width;
-                            canvas.height = height;
-                            const ctx = canvas.getContext('2d');
-                            ctx.drawImage(img, 0, 0, width, height);
-
-                            canvas.toBlob((blob) => {
-                                const data = new FormData();
-                                // บังคับให้เป็น .jpg เพื่อให้ไฟล์มีขนาดเล็กลง
-                                const newFileName = file.name.replace(/\.[^/.]+$/, "") + ".jpg";
-                                data.append('upload', blob, newFileName);
-
-                                fetch('upload_image.php', {
-                                    method: 'POST',
-                                    body: data,
-                                    credentials: 'same-origin'
-                                })
-                                .then(response => {
-                                    if (!response.ok) {
-                                        console.error('Upload response not OK:', response);
-                                    }
-                                    return response.text();
-                                })
-                                .then(text => {
-                                    try {
-                                        const result = JSON.parse(text);
-                                        if (result.error) reject(result.error.message || 'Upload error from server');
-                                        else resolve({ default: result.url });
-                                    } catch (err) {
-                                        console.error('Invalid JSON response:', text);
-                                        reject('Server Error: ' + text.substring(0, 100));
-                                    }
-                                })
-                                .catch(err => {
-                                    console.error('Upload catch error:', err);
-                                    reject('Upload failed: ' + err.toString());
-                                });
-                            }, 'image/jpeg', 0.85); // บีบอัด 85%
-                        };
-                        img.onerror = () => reject('ไฟล์รูปภาพไม่ถูกต้อง');
-                        img.src = e.target.result;
-                    };
-                    reader.onerror = () => reject('ไม่สามารถอ่านไฟล์ได้');
-                    reader.readAsDataURL(file);
-                }));
-        }
-        abort() {}
+    function tinymceImageUploadHandler(blobInfo, progress) {
+        return new Promise((resolve, reject) => {
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', 'upload_image.php');
+            xhr.upload.onprogress = (e) => {
+                progress(e.loaded / e.total * 100);
+            };
+            xhr.onload = () => {
+                if (xhr.status === 403) {
+                    reject({ message: 'HTTP Error: ' + xhr.status, remove: true });
+                    return;
+                }
+                if (xhr.status < 200 || xhr.status >= 300) {
+                    reject('HTTP Error: ' + xhr.status);
+                    return;
+                }
+                const json = JSON.parse(xhr.responseText);
+                if (!json || typeof json.url != 'string') {
+                    reject('Invalid JSON: ' + xhr.responseText);
+                    return;
+                }
+                resolve(json.url);
+            };
+            xhr.onerror = () => {
+                reject('Image upload failed due to a XHR Transport error. Code: ' + xhr.status);
+            };
+            const formData = new FormData();
+            formData.append('upload', blobInfo.blob(), blobInfo.filename());
+            xhr.send(formData);
+        });
     }
-
-    function MyCustomUploadAdapterPlugin(editor) {
-        editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
-            return new MyUploadAdapter(loader);
-        };
-    }
-
     function createSectionElement(lang, index, topicVal = '', bodyVal = '') {
         const container = document.getElementById(lang + '-sections-container');
         const id = `editor-${lang}-${index}`;
-        
         const div = document.createElement('div');
         div.className = 'section-item bg-white border border-slate-300 rounded-2xl shadow-sm overflow-hidden';
         div.dataset.lang = lang;
         div.dataset.index = index;
-        
         div.innerHTML = `
             <div class="flex items-center justify-between gap-3 px-6 py-4 bg-slate-50 border-b border-slate-200">
                 <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider">หัวข้อย่อยบทความ (${lang.toUpperCase()}) <span class="text-red-500">*</span></label>
@@ -593,22 +494,37 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
                 </div>
             </div>
         `;
-        
         container.appendChild(div);
-        
-        ClassicEditor.create(document.querySelector(`#${id}`), {
-            licenseKey: 'GPL',
-            extraPlugins: [MyCustomUploadAdapterPlugin],
-            toolbar: {
-                items: [ 'heading', '|', 'bold', 'italic', 'link', 'uploadImage', 'insertImage', '|', 'bulletedList', 'numberedList', 'blockQuote', '|', 'undo', 'redo' ],
-                shouldNotGroupWhenFull: true
+        tinymce.init({
+            selector: `#${id}`,
+            plugins: 'autoresize lists link image code table wordcount',
+            toolbar: 'blocks | bold italic forecolor backcolor | bullist numlist | alignleft aligncenter alignright alignjustify | link image | removeformat',
+            menubar: false,
+            color_map: [
+                '0663F6', 'Primary Blue',
+                '022862', 'Dark Blue',
+                '475569', 'Slate',
+                '000000', 'Black',
+                'FFFFFF', 'White',
+                'FF0000', 'Red',
+                '00FF00', 'Green',
+                '0000FF', 'Blue',
+                'FFFF00', 'Yellow',
+                'FF9900', 'Orange'
+            ],
+            custom_colors: true,
+            min_height: 250,
+            max_height: 800,
+            autoresize_bottom_margin: 20,
+            content_style: 'body { font-family: Inter, "Noto Sans Thai", ui-sans-serif, system-ui, sans-serif; font-size: 16px; line-height: 1.75; color: #475569; } p, span, li, div { font-size: 16px !important; line-height: 1.75 !important; }',
+            images_upload_handler: tinymceImageUploadHandler,
+            setup: function (editor) {
+                editors[id] = editor;
+                editor.addShortcut('ctrl+q', 'Apply Primary Color', function () {
+                    editor.execCommand('ForeColor', false, '#0663F6');
+                });
             }
-        }).then(editor => {
-            editors[id] = editor;
-        }).catch(error => {
-            console.error('Error initializing editor:', error);
         });
-
         if (lang === 'th') {
             thCount++;
         } else {
@@ -616,7 +532,6 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
         }
         updateCounterDisplay(lang);
     }
-
     function addSection(lang) {
         const count = lang === 'th' ? thCount : enCount;
         if (lang === 'th' && count >= 5) {
@@ -629,24 +544,20 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
         }
         createSectionElement(lang, count, '', '');
     }
-
     function removeSection(button, lang) {
         const item = button.closest('.section-item');
         const textarea = item.querySelector('textarea');
         if (textarea && editors[textarea.id]) {
-            editors[textarea.id].destroy().then(() => {
-                delete editors[textarea.id];
-            });
+            editors[textarea.id].remove();
+            delete editors[textarea.id];
         }
         item.remove();
         reindexSections(lang);
     }
-
     function reindexSections(lang) {
         const container = document.getElementById(lang + '-sections-container');
         const items = container.querySelectorAll('.section-item');
         let count = 0;
-        
         items.forEach((item, index) => {
             item.dataset.index = index;
             const input = item.querySelector('input[type="text"]');
@@ -659,7 +570,6 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
             }
             count++;
         });
-        
         if (lang === 'th') {
             thCount = count;
         } else {
@@ -667,16 +577,13 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
         }
         updateCounterDisplay(lang);
     }
-
     function updateCounterDisplay(lang) {
         const count = lang === 'th' ? thCount : enCount;
-        
         const btn = document.getElementById(`global-tab-${lang}`);
         if (btn) {
             const label = lang === 'th' ? 'ภาษาไทย' : 'English';
             btn.textContent = `${label} (${count}/5)`;
         }
-        
         const addBtn = document.getElementById(`add-btn-${lang}`);
         if (addBtn) {
             if (count >= 5) {
@@ -690,50 +597,40 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
             }
         }
     }
-
     function switchGlobalLanguage(lang) {
         const thGroups = document.querySelectorAll('.lang-th-group');
         const enGroups = document.querySelectorAll('.lang-en-group');
-        
         const btnTh = document.getElementById('global-tab-th');
         const btnEn = document.getElementById('global-tab-en');
-
         if (lang === 'th') {
             thGroups.forEach(el => el.classList.remove('hidden'));
             enGroups.forEach(el => el.classList.add('hidden'));
-
             btnTh.classList.add('bg-blue-50', 'text-blue-600', 'border-blue-200', 'hover:bg-blue-100');
             btnTh.classList.remove('bg-transparent', 'text-slate-500', 'border-slate-200', 'hover:bg-slate-50', 'hover:text-slate-800');
-            
             btnEn.classList.add('bg-transparent', 'text-slate-500', 'border-slate-200', 'hover:bg-slate-50', 'hover:text-slate-800');
             btnEn.classList.remove('bg-blue-50', 'text-blue-600', 'border-blue-200', 'hover:bg-blue-100');
         } else {
             thGroups.forEach(el => el.classList.add('hidden'));
             enGroups.forEach(el => el.classList.remove('hidden'));
-
             btnEn.classList.add('bg-blue-50', 'text-blue-600', 'border-blue-200', 'hover:bg-blue-100');
             btnEn.classList.remove('bg-transparent', 'text-slate-500', 'border-slate-200', 'hover:bg-slate-50', 'hover:text-slate-800');
-            
             btnTh.classList.add('bg-transparent', 'text-slate-500', 'border-slate-200', 'hover:bg-slate-50', 'hover:text-slate-800');
             btnTh.classList.remove('bg-blue-50', 'text-blue-600', 'border-blue-200', 'hover:bg-blue-100');
         }
     }
-
     document.addEventListener('DOMContentLoaded', () => {
         const thSections = preloadedSections.filter(s => (s.lang || 'th') === 'th');
         const enSections = preloadedSections.filter(s => s.lang === 'en');
-        
         thSections.forEach((s, idx) => createSectionElement('th', idx, s.topic || '', s.body || ''));
         enSections.forEach((s, idx) => createSectionElement('en', idx, s.topic || '', s.body || ''));
-        
         const form = document.querySelector('#unifiedForm');
         if (form) {
             form.addEventListener('submit', () => {
                 for (const id in editors) {
                     if (editors.hasOwnProperty(id)) {
                         const textarea = document.getElementById(id);
-                        if (textarea) {
-                            textarea.value = editors[id].getData();
+                        if (textarea && editors[id] && typeof editors[id].getContent === 'function') {
+                            textarea.value = editors[id].getContent();
                         }
                     }
                 }
@@ -741,18 +638,15 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
         }
     });
 </script>
-
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const fileInput = document.querySelector('input[name="image_file"]');
         const previewContainer = document.querySelector('.w-full.h-64.rounded-xl.border');
-
         if (fileInput && previewContainer) {
             fileInput.addEventListener('change', function(event) {
                 const file = event.target.files[0];
                 if (file && file.type.startsWith('image/')) {
                     const reader = new FileReader();
-
                     reader.onload = function(loadEvent) {
                         previewContainer.innerHTML = '';
                         const img = document.createElement('img');
@@ -760,7 +654,6 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
                         img.className = 'w-full h-full object-contain rounded-lg';
                         previewContainer.appendChild(img);
                     };
-
                     reader.readAsDataURL(file);
                 }
             });

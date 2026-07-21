@@ -1,39 +1,46 @@
 <?php
-
 declare(strict_types=1);
-
 /**
  * Single article detail page view with sidebar TOC, related articles, and share widgets.
  */
-
 $article = is_array($article) ? $article : [];
 $siteName = config('app.name', 'WEBPARK');
 $fallbackImage = asset_url('images/story.png');
 $coverImage = resolve_article_image_url(
-    $article['image_path'] ?? $article['image'] ?? '',
+    $article['cover_image'] ?? $article['image_path'] ?? $article['image'] ?? '',
     $fallbackImage
 );
-
 $months = [
     1 => 'ม.ค.', 2 => 'ก.พ.', 3 => 'มี.ค.', 4 => 'เม.ย.', 5 => 'พ.ค.', 6 => 'มิ.ย.',
     7 => 'ก.ค.', 8 => 'ส.ค.', 9 => 'ก.ย.', 10 => 'ต.ค.', 11 => 'พ.ย.', 12 => 'ธ.ค.',
 ];
-
 $title = normalize_text($article['title'] ?? 'ระบบ ERP คืออะไร? สรุปครบ จบที่เดียว!');
 $author = normalize_text($article['author'] ?? 'Webpark Team');
 $content = (string) ($article['content'] ?? $article['summary'] ?? '');
-
 $decodedSections = json_decode($content, true);
-if (is_array($decodedSections)) {
+if (!is_array($decodedSections)) {
+    $decodedSections = json_decode(stripslashes($content), true);
+}
+if (!is_array($decodedSections)) {
+    // Regex fallback for malformed JSON strings stored in the database
+    $decodedSections = [];
+    preg_match_all('/\{\s*"lang"\s*:\s*"(th|en)"\s*,\s*"topic"\s*:\s*"(.*?)"\s*,\s*"body"\s*:\s*"(.*?)"\s*\}/s', $content, $matches, PREG_SET_ORDER);
+    if (!empty($matches)) {
+        foreach ($matches as $m) {
+            $decodedSections[] = [
+                'lang' => $m[1],
+                'topic' => str_replace(['\\"', '\\/'], ['"', '/'], $m[2]),
+                'body' => str_replace(['\\"', '\\/'], ['"', '/'], $m[3]),
+            ];
+        }
+    }
+}
+
+if (is_array($decodedSections) && !empty($decodedSections)) {
     $currentLang = getCurrentLang();
     $filteredSections = array_filter($decodedSections, function($sec) use ($currentLang) {
         return ($sec['lang'] ?? 'th') === $currentLang;
     });
-    if (empty($filteredSections)) {
-        $filteredSections = array_filter($decodedSections, function($sec) {
-            return ($sec['lang'] ?? 'th') === 'th';
-        });
-    }
     $htmlParts = [];
     foreach ($filteredSections as $sec) {
         if (!empty($sec['topic'])) {
@@ -45,22 +52,21 @@ if (is_array($decodedSections)) {
     }
     $content = implode("\n", $htmlParts);
 }
-
+// Clean up any literal escaped slashes, quotes, \r\n, and § artifacts from old database entries or Word pastes
+$content = str_replace(['\r\n', '\n', '\r', '\t', '<\/', '\"', '\/', '§', '&sect;'], [' ', ' ', ' ', ' ', '</', '"', '/', '', ''], $content);
+// Clean up MS Word &nbsp; indentation at start of paragraphs
+$content = preg_replace('/<p>(\s|&nbsp;)+/i', '<p>', $content);
 $summary = normalize_text($article['summary'] ?? '');
 $category = normalize_text($article['category'] ?? 'ERP System');
 $relatedArticles = $relatedArticles ?? [];
-
 $date = $article['created_at'] ?? '';
 $ts = !empty($date) ? strtotime($date) : false;
 $formattedDate = $ts ? sprintf('%d %s %d', date('j', $ts), $months[(int) date('n', $ts)] ?? '', date('Y', $ts) + 543) : '24 พฤษภาคม 2567';
-
 // Reading time estimate
 $wordCount = mb_strlen(strip_tags($content));
 $readingMinutes = $wordCount > 0 ? max(1, (int) ceil($wordCount / 350)) : 12;
-
 // Popular tags
 $popularCategories = $popularCategories ?? [];
-
 /**
  * สร้างสารบัญบทความ (Table of Contents) จากหัวข้อ h2/h3 ภายในเนื้อหา
  * พร้อมใส่ id ให้กับหัวข้อแต่ละหัวข้อในเนื้อหาเพื่อให้ลิงก์เลื่อนไปยังตำแหน่งได้
@@ -68,23 +74,18 @@ $popularCategories = $popularCategories ?? [];
 function build_table_of_contents(string $html): array
 {
     $toc = [];
-
     if (trim($html) === '') {
         return [$html, $toc];
     }
-
     $doc = new DOMDocument();
     libxml_use_internal_errors(true);
     $doc->loadHTML('<?xml encoding="utf-8" ?><div id="__root">' . $html . '</div>', LIBXML_NOERROR | LIBXML_NOWARNING);
     libxml_clear_errors();
-
     $xpath = new DOMXPath($doc);
     $headings = $xpath->query('//h2 | //h3');
-
     if ($headings === false || $headings->length === 0) {
         return [$html, $toc];
     }
-
     $usedSlugs = [];
     foreach ($headings as $index => $heading) {
         /** @var DOMElement $heading */
@@ -92,18 +93,15 @@ function build_table_of_contents(string $html): array
         if ($text === '') {
             continue;
         }
-
         $slug = 'toc-section-' . ($index + 1);
         $usedSlugs[$slug] = true;
         $heading->setAttribute('id', $slug);
-
         $toc[] = [
             'id' => $slug,
             'text' => $text,
             'level' => strtolower($heading->nodeName) === 'h3' ? 3 : 2,
         ];
     }
-
     $root = $doc->getElementById('__root');
     $innerHtml = '';
     if ($root !== null) {
@@ -113,16 +111,11 @@ function build_table_of_contents(string $html): array
     } else {
         $innerHtml = $html;
     }
-
     return [$innerHtml, $toc];
 }
-
 [$content, $tableOfContents] = build_table_of_contents($content);
-
 $shareUrl = urlencode(request_origin_url() . ($_SERVER['REQUEST_URI'] ?? ''));
-
 ?>
-
 <style>
     /* แอนิเมชันสำหรับสไลด์ขึ้นจากด้านล่าง (Entrance) — ใช้ชุดเดียวกับหน้า article list */
     @keyframes fadeSlideUp {
@@ -137,14 +130,11 @@ $shareUrl = urlencode(request_origin_url() . ($_SERVER['REQUEST_URI'] ?? ''));
     .delay-200 { animation-delay: 200ms; }
     .delay-300 { animation-delay: 300ms; }
     .delay-400 { animation-delay: 400ms; }
-<!-- Top Reading Progress Bar -->
+</style>
 <div id="reading-progress" class="fixed top-0 left-0 h-1 bg-gradient-to-r from-blue-500 to-indigo-600 z-[9999] transition-all duration-150 ease-out" style="width: 0%;"></div>
-
 <section class="relative overflow-hidden font-sans bg-[#F4F7FB] pt-12 pb-6 lg:pt-20 lg:pb-8">
     <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-            
-            <!-- Left Column: Text & Meta -->
             <div class="max-w-xl">
                 <nav aria-label="Breadcrumb" class="animate-fade-up delay-100 mb-8">
                     <ol class="inline-flex flex-wrap items-center text-sm md:text-base font-medium text-slate-400">
@@ -165,19 +155,28 @@ $shareUrl = urlencode(request_origin_url() . ($_SERVER['REQUEST_URI'] ?? ''));
                         </li>
                     </ol>
                 </nav>
-                
                 <?php 
                     $isLongTitle = mb_strlen($title) > 50;
                     $titleClass = $isLongTitle 
                         ? 'text-2xl md:text-3xl lg:text-[28px] leading-[1.5] tracking-normal' 
                         : 'text-3xl md:text-4xl lg:text-[44px] leading-snug tracking-tight'; 
+                    
+                    $titleParts = explode('? ', $title, 2);
                 ?>
                 <h1 class="animate-fade-up delay-200 mb-6">
-                    <span class="block <?= $titleClass ?> font-bold text-[#022862]">
-                        <?= e($title) ?>
-                    </span>
+                    <?php if (count($titleParts) === 2): ?>
+                        <span class="block <?= $titleClass ?> font-bold text-slate-500 mb-2">
+                            <?= e($titleParts[0] . '?') ?>
+                        </span>
+                        <span class="block <?= $titleClass ?> font-bold text-[#022862]">
+                            <?= e($titleParts[1]) ?>
+                        </span>
+                    <?php else: ?>
+                        <span class="block <?= $titleClass ?> font-bold text-[#022862]">
+                            <?= e($title) ?>
+                        </span>
+                    <?php endif; ?>
                 </h1>
-                
                 <div class="animate-fade-up delay-300 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-[#0663F6] font-medium mb-6">
                     <span class="inline-flex items-center gap-2">
                         <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
@@ -194,68 +193,106 @@ $shareUrl = urlencode(request_origin_url() . ($_SERVER['REQUEST_URI'] ?? ''));
                         </span>
                     <?php endif; ?>
                 </div>
-                
                 <p class="animate-fade-up delay-400 mt-6 text-[#022862] text-lg md:text-xl leading-relaxed max-w-lg mb-10 font-medium">
                     <?= e($summary) ?>
                 </p>
             </div>
-            
-            <!-- Right Column: Image -->
             <div class="animate-fade-up delay-300 relative w-full rounded-[2rem] overflow-hidden shadow-2xl">
                 <img src="<?= e($coverImage) ?>" alt="<?= e($title) ?>" 
                     class="w-full h-auto object-cover aspect-[4/3] hover:scale-105 transition-transform duration-700" onerror="this.src='<?= e($fallbackImage) ?>'">
             </div>
-            
         </div>
     </div>
 </section>
 <style>
-    /* Article Typography */
     .article-format {
-        color: #475569; /* slate-600 */
+        color: #475569;
         font-size: 1rem;
-        line-height: 1.8;
+        line-height: 1.75;
+    }
+    .article-format, .article-format * {
+        font-family: 'Inter', 'Noto Sans Thai', ui-sans-serif, system-ui, sans-serif !important;
+        text-indent: 0 !important; /* Kill MS Word indentations */
+    }
+    .article-format p, 
+    .article-format span, 
+    .article-format li, 
+    .article-format div {
+        font-size: 1rem !important;
+        line-height: 1.75 !important;
+    }
+    .article-format h2, 
+    .article-format h3 {
+        color: #0d6efd; 
+        font-weight: 700 !important;
+        margin-top: 2.5rem !important;
+        margin-bottom: 1rem !important;
+        scroll-margin-top: 6rem;
+        line-height: 1.4 !important;
     }
     .article-format h2 {
-        color: #0663F6; /* Primary Blue */
-        font-weight: 700;
-        margin-top: 2.5rem;
-        margin-bottom: 1rem;
-        line-height: 1.4;
-        font-size: 1.5rem;
+        font-size: 1.75rem !important;
     }
     .article-format h3 {
-        color: #022862; /* Dark Navy */
-        font-weight: 700;
-        margin-top: 1.5rem;
-        margin-bottom: 0;
-        line-height: 1.4;
-        font-size: 1.125rem;
+        font-size: 1.35rem !important;
     }
     .article-format p {
-        margin-bottom: 1.25rem;
+        margin-top: 0 !important; /* Override MS Word margins */
+        margin-bottom: 1.25rem !important;
+    }
+    .article-format img {
+        border-radius: 0.75rem;
+        margin: 2rem auto;
+        box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+        max-width: 100%;
+        height: auto;
+    }
+    /* CKEditor Image Alignments */
+    .article-format figure.image-style-align-left,
+    .article-format img.image-style-align-left {
+        float: left;
+        margin-right: 1.5rem;
+        margin-bottom: 1rem;
+        margin-top: 0.5rem;
+    }
+    .article-format figure.image-style-align-right,
+    .article-format img.image-style-align-right,
+    .article-format figure.image-style-side,
+    .article-format img.image-style-side {
+        float: right;
+        margin-left: 1.5rem;
+        margin-bottom: 1rem;
+        margin-top: 0.5rem;
+    }
+    .article-format ul, .article-format ol {
+        margin-bottom: 1.5rem;
+        padding-left: 0;
+        list-style-position: inside;
+    }
+    .article-format li {
+        margin-bottom: 0;
+        line-height: 1.8;
     }
     .article-format ul {
-        list-style-type: disc;
-        padding-left: 1.5rem;
-        margin-bottom: 1.5rem;
+        list-style-type: disc !important;
     }
-    .article-format ul li {
-        margin-bottom: 0.5rem;
+    .article-format ul ul {
+        list-style-type: circle !important;
+    }
+    .article-format ul ul ul {
+        list-style-type: square !important;
     }
     .article-format ul li::marker {
-        color: #0d6efd; /* สีจุด Bullet */
+        color: #0d6efd;
     }
     .article-format ol {
         list-style-type: decimal;
-        padding-left: 1.5rem;
-        margin-bottom: 1.5rem;
-        font-weight: 700; /* ทำให้ตัวเลขและหัวข้อหนาตามภาพ */
+        font-weight: 700;
         color: #022862;
     }
     .article-format ol p, 
     .article-format ol span {
-        font-weight: 400; /* เนื้อหาในข้อไม่ต้องหนา */
+        font-weight: 400;
         color: #475569;
         display: block;
         margin-top: 0.25rem;
@@ -281,25 +318,14 @@ $shareUrl = urlencode(request_origin_url() . ($_SERVER['REQUEST_URI'] ?? ''));
         color: #022862;
     }
 </style>
-
 <section class="py-12 bg-[#F7F9FC]">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-
             <article class="lg:col-span-8 bg-white rounded-[2rem] p-6 md:p-10 shadow-sm border border-slate-100">
-
                 <div class="article-format">
-                    
                     <?= $content ?>
-
-                    </div>
-
-
-
+                </div>
             </article>
-
-            <!-- Sidebar Right: Related Articles -->
             <div class="lg:col-span-4 relative h-full">
                 <div class="bg-white rounded-[2rem] p-5 lg:p-6 border border-slate-100 shadow-sm sticky top-[100px] h-max z-20 max-h-[calc(100vh-140px)] overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]" style="position: sticky; top: 100px;">
                     <h4 class="text-[19px] font-bold text-[#0663F6] mb-4">
@@ -329,10 +355,8 @@ $shareUrl = urlencode(request_origin_url() . ($_SERVER['REQUEST_URI'] ?? ''));
                 </div>
             </div>
         </div>
-
     </div>
 </section>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 <script>
@@ -346,11 +370,9 @@ document.addEventListener('DOMContentLoaded', function() {
             progressBar.style.width = Math.min(100, Math.max(0, progress)) + '%';
         }
     }, { passive: true });
-
     // GSAP Related Articles Reveal
     gsap.registerPlugin(ScrollTrigger);
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
     if (!prefersReducedMotion) {
         gsap.from(".lg\\:col-span-4 a", {
             scrollTrigger: {

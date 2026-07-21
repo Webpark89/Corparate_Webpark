@@ -1,17 +1,13 @@
 <?php
-
 /**
  * Admin contact settings list — bulk-edit contact group settings.
  */
 $pageTitle = 'จัดการข้อมูลติดต่อ';
 $page = 'contact';
 require_once __DIR__ . '/../includes/header.php';
-
 $settings = db()->query("SELECT * FROM settings WHERE `group` = 'contact' ORDER BY config_key ASC")->fetchAll();
 ?>
-
 <div class="mx-auto w-full max-w-none px-2 pb-8 pt-1 text-sm md:px-4 lg:px-8">
-
     <header class="mb-5 flex flex-col gap-3 border-l-4 border-blue-500 pl-4 md:flex-row md:items-center md:justify-between">
         <div>
             <h2 class="text-lg font-bold text-slate-900">การจัดการข้อมูลติดต่อ</h2>
@@ -21,7 +17,6 @@ $settings = db()->query("SELECT * FROM settings WHERE `group` = 'contact' ORDER 
             + เพิ่มรายการติดต่อใหม่
         </a>
     </header>
-
     <section class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
         <form method="post" action="_save.php" class="divide-y divide-slate-100">
             <?= csrf_field() ?>
@@ -38,7 +33,6 @@ $settings = db()->query("SELECT * FROM settings WHERE `group` = 'contact' ORDER 
                     </div>
                 </div>
             <?php endforeach; ?>
-
             <div class="px-6 py-4 bg-slate-50 border-t border-slate-200 flex justify-end">
                 <button type="submit" class="px-8 py-2.5 bg-slate-900 text-white text-sm font-semibold rounded-xl hover:bg-black transition shadow-lg">
                     บันทึก

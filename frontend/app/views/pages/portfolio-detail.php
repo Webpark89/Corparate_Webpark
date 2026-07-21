@@ -1,16 +1,12 @@
 <?php
-
 declare(strict_types=1);
-
 /**
  * Single portfolio project detail page view.
  */
-
 $project = $project ?? [];
 $relatedPortfolio = $relatedPortfolio ?? [];
 $siteName = config('app.name', 'WEBPARK');
 $temporaryImage = asset_url('images/story.png');
-
 $title = normalize_text($project['title'] ?? '');
 $clientName = normalize_text($project['client_name'] ?? $project['industry'] ?? '');
 $categoryName = normalize_text($project['category'] ?? '');
@@ -29,21 +25,16 @@ $imageAlt = seo_fallback([
 ], $siteName);
 $imageSrc = $temporaryImage;
 $title = seo_fallback([$metaTitle, $title, $clientName, $siteName], $siteName);
-
 $excerpt = static function (string $text, int $limit = 180): string {
     $text = normalize_text($text);
-
     if ($text === '') {
         return '';
     }
-
     if (function_exists('mb_substr')) {
         return normalize_text(mb_substr($text, 0, $limit));
     }
-
     return normalize_text(substr($text, 0, $limit));
 };
-
 $metaDescription = seo_fallback([
     $metaDescription,
     $summary,
@@ -59,7 +50,6 @@ $authorName = seo_fallback([$clientName, $siteName], $siteName);
 $canonicalUrl = absolute_url(route_url('/portfolio', ['id' => (int) ($project['id'] ?? 0)]));
 $imageUrl = absolute_url($temporaryImage);
 $type = 'article';
-
 $months = [1 => 'ม.ค.', 2 => 'ก.พ.', 3 => 'มี.ค.', 4 => 'เม.ย.', 5 => 'พ.ค.', 6 => 'มิ.ย.', 7 => 'ก.ค.', 8 => 'ส.ค.', 9 => 'ก.ย.', 10 => 'ต.ค.', 11 => 'พ.ย.', 12 => 'ธ.ค.'];
 $date = $project['created_at'] ?? '';
 $ts = $date === '' ? false : strtotime($date);
@@ -71,10 +61,8 @@ if ($ts === false || $ts <= 0) {
     $year = date('Y', $ts);
     $formattedDate = trim("$day $month $year");
 }
-
 $publishedTime = $ts ? date('c', $ts) : date('c');
 $modifiedTime = $publishedTime;
-
 $jsonLd = [
     '@context' => 'https://schema.org',
     '@type' => 'CreativeWork',
@@ -94,30 +82,23 @@ $jsonLd = [
     'dateModified' => $modifiedTime,
     'keywords' => $metaKeywords,
 ];
-
 $renderContent = static function (string $text): string {
     $text = trim($text);
     if ($text === '') {
         return '';
     }
-
     if (preg_match('/<[^>]+>/', $text) === 1) {
         return $text;
     }
-
     return nl2br(e($text));
 };
-
 ?>
-
-
 <section class="bg-slate-950 text-white">
     <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 pt-20 pb-24 lg:pt-32 lg:pb-32 relative z-10">
         <a class="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-sm font-semibold text-white/90 transition hover:bg-white/10" href="<?= e(route_url('/')) ?>">
             <span aria-hidden="true">‹</span>
             ย้อนกลับ
         </a>
-
         <div class="mt-10 max-w-4xl">
             <p class="text-sm font-semibold uppercase tracking-[0.32em] text-cyan-300"><?= e($categoryName) ?></p>
             <h1 class="mt-4 text-4xl font-black tracking-tight sm:text-5xl"><?= e($title) ?></h1>
@@ -128,7 +109,6 @@ $renderContent = static function (string $text): string {
         </div>
     </div>
 </section>
-
 <section class="bg-slate-50 py-16 sm:py-20">
     <div class="mx-auto w-full max-w-7xl px-4 sm:px-4 lg:px-6"> 
         <article class="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
@@ -138,24 +118,20 @@ $renderContent = static function (string $text): string {
                     <div class="absolute inset-0 bg-gradient-to-t from-slate-950/40 via-transparent to-transparent"></div>
                 </figure>
             <?php endif; ?>
-
             <div class="px-6 py-8 sm:px-10 sm:py-10">
                 <p class="text-base leading-8 text-slate-600 sm:text-lg">
                     <?= e($summary) ?>
                 </p>
-
                 <?php if ($description !== ''): ?>
                     <div class="prose prose-slate mt-8 max-w-none prose-p:leading-8 prose-p:text-slate-600 prose-headings:text-slate-900">
                         <?= $renderContent($description) ?>
                     </div>
                 <?php endif; ?>
-
                 <?php if ($tech !== ''): ?>
                     <div class="mt-8 rounded-2xl bg-slate-50 px-5 py-4 text-sm font-medium text-slate-700">
                         <span class="font-semibold text-slate-900">Tech Stack:</span> <?= e($tech) ?>
                     </div>
                 <?php endif; ?>
-
                 <?php if ($web !== ''): ?>
                     <div class="mt-8">
                         <a class="inline-flex items-center gap-2 rounded-full bg-sky-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-sky-700" href="<?= e($web) ?>" target="_blank" rel="noopener noreferrer">
@@ -168,7 +144,6 @@ $renderContent = static function (string $text): string {
         </article>
     </div>
 </section>
-
 <section class="bg-white py-16 sm:py-20">
     <div class="mx-auto w-full max-w-7xl px-4 sm:px-4 lg:px-6"> 
         <div class="flex items-center justify-between gap-4">
@@ -178,12 +153,10 @@ $renderContent = static function (string $text): string {
                 <span aria-hidden="true">›</span>
             </a>
         </div>
-
         <div class="mt-6 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
             <?php foreach (array_slice($relatedPortfolio, 0, 4) as $item): ?>
                 <?php
                 $relatedImageSrc = $temporaryImage;
-
                 $relatedDate = (string) ($item['created_at'] ?? '');
                 $relatedTs = $relatedDate !== '' ? strtotime($relatedDate) : false;
                 $relatedFormattedDate = '';

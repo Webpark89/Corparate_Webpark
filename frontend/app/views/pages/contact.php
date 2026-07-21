@@ -1,11 +1,8 @@
 <?php
-
 declare(strict_types=1);
-
 /**
  * Contact page view — hero, inquiry form, company info, and map embed.
  */
-
 $errors = $errors ?? [];
 $submitted = $submitted ?? false;
 $form = $form ?? [];
@@ -20,12 +17,10 @@ $form = $form ?? [];
         opacity: 0;
         animation: fadeSlideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
-
     .delay-100 { animation-delay: 100ms; }
     .delay-200 { animation-delay: 200ms; }
     .delay-300 { animation-delay: 300ms; }
     .delay-400 { animation-delay: 400ms; }
-
     .hero-parallax-img {
         transform: scale(1.12);
         will-change: transform;
@@ -39,18 +34,14 @@ $form = $form ?? [];
         }
     }
 </style>
-
-<!-- นำขอบโค้งและ margin ออก เพื่อให้ชิดขอบจอด้านบนและด้านข้างแบบ Edge-to-Edge -->
 <section id="contact-hero" class="relative overflow-hidden font-sans bg-white border-none">
     <div class="absolute inset-0 z-0">
         <img src="<?= e(asset_url('images/bg-5.png')) ?>" alt="WEBPARK Solutions Background" class="hero-parallax-img w-full h-full object-cover object-center opacity-70 mix-blend-screen">
         <div class="absolute inset-0 bg-gradient-to-r from-white via-white/70 to-white/5"></div>
         <div class="absolute inset-x-0 bottom-0 h-[30%] bg-gradient-to-t from-white to-transparent z-10"></div>
     </div>
-
     <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 pt-12 pb-10 lg:pt-28 lg:pb-32 relative z-10">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-            
             <div class="max-w-2xl px-4 md:px-0">
                 <nav aria-label="Breadcrumb" class="hidden md:block animate-fade-up delay-100 mb-6">
                     <ol class="inline-flex items-center text-sm md:text-base font-medium text-slate-500">
@@ -67,7 +58,6 @@ $form = $form ?? [];
                         </li>
                     </ol>
                 </nav>
-
                 <style>
                     .hero-title-text {
                         font-size: 2.25rem;
@@ -117,7 +107,6 @@ $form = $form ?? [];
                         <?= e(getCurrentLang() === 'th' ? 'ERP / ERM และโซลูชันดิจิทัลเพื่อธุรกิจของคุณ' : 'or ERP/ERM and digital solutions for your business.') ?>
                     </span>
                 </p>
-
                 <div class="animate-fade-up delay-400 flex flex-col sm:flex-row items-start sm:items-center gap-2 md:gap-4">
                     <a href="<?= e(route_url('/services')) ?>" class="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-primary text-white text-sm font-semibold rounded-full hover:bg-blue-700 transition-all shadow-md hover:-translate-y-0.5">
                         <?= e(t('common.cta_view_services')) ?>
@@ -125,7 +114,6 @@ $form = $form ?? [];
                             <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                         </svg>
                     </a>
-                    
                     <a href="#" class="inline-flex items-center gap-3 transition-all hover:-translate-y-0.5 group">
                         <div class="h-12 w-12 bg-white flex items-center justify-center rounded-full shadow-sm border border-slate-200 transition-all group-hover:bg-slate-50 group-hover:shadow-md group-hover:scale-105">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-primary fill-current" viewBox="0 0 24 24">
@@ -136,7 +124,6 @@ $form = $form ?? [];
                     </a>
                 </div>
             </div>
-            
         </div>
     </div>
 </section>
@@ -151,16 +138,13 @@ $form = $form ?? [];
             transform: translate3d(0, 0, 0);
         }
     }
-
     .animate-fade-in-up {
         animation: fadeInUp 0.6s ease-out forwards;
     }
-
     /* Animation Delay Utilities */
     .animation-delay-200 { animation-delay: 0.2s; }
     .animation-delay-400 { animation-delay: 0.4s; }
 </style>
-
 <section id="contact-section" class="bg-white pt-6 pb-16 lg:py-24 font-sans border-none">
     <div class="mx-auto w-full max-w-7xl px-4 sm:px-4 lg:px-6"> 
         <style>
@@ -181,7 +165,6 @@ $form = $form ?? [];
                 <h2 class="text-2xl md:text-3xl font-bold text-dark mb-6">
                     <?= e(t('contact.form_title')) ?>
                 </h2>
-
                 <?php if ($submitted): ?>
                     <div class="text-center py-16 flex flex-col items-center justify-center flex-grow">
                         <div class="w-16 h-16 bg-blue-50 text-primary rounded-full flex items-center justify-center mx-auto mb-4">
@@ -203,7 +186,6 @@ $form = $form ?? [];
                             <input type="text" id="contact_name_desktop" name="name" placeholder="<?= e(t('common.form_label_fullname')) ?>" value="<?= e($form['name'] ?? '') ?>" required maxlength="100"
                                 class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-base text-slate-900 outline-none transition-all duration-300 custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary focus:shadow-inner">
                         </div>
-
                         <!-- Mobile Name Fields (2 fields) -->
                         <div id="contact_mobile-name-wrapper" class="grid grid-cols-1 gap-4 lg:hidden">
                             <input type="text" id="contact_name_mobile_first" name="firstname" placeholder="<?= e(getCurrentLang() === 'th' ? 'ชื่อ' : 'First Name') ?>" value="<?= e($form['firstname'] ?? '') ?>" required maxlength="50"
@@ -211,14 +193,12 @@ $form = $form ?? [];
                             <input type="text" id="contact_name_mobile_last" name="lastname" placeholder="<?= e(getCurrentLang() === 'th' ? 'นามสกุล' : 'Last Name') ?>" value="<?= e($form['lastname'] ?? '') ?>" required maxlength="50"
                                 class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-base text-slate-900 outline-none transition-all duration-300 custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary focus:shadow-inner">
                         </div>
-
                         <script>
                             function updateContactFormLayout() {
                                 const isDesktop = window.innerWidth >= 1024; // lg breakpoint
                                 const nameDesktop = document.getElementById('contact_name_desktop');
                                 const nameMobileFirst = document.getElementById('contact_name_mobile_first');
                                 const nameMobileLast = document.getElementById('contact_name_mobile_last');
-                                
                                 if (isDesktop) {
                                     if(nameDesktop) nameDesktop.disabled = false;
                                     if(nameMobileFirst) nameMobileFirst.disabled = true;
@@ -236,27 +216,22 @@ $form = $form ?? [];
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <input type="text" name="phone" placeholder="<?= e(t('common.form_label_phone')) ?>" value="<?= e($form['phone'] ?? '') ?>" required maxlength="40"
                                 class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-base text-slate-900 outline-none transition-all duration-300 custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary focus:shadow-inner">
-
                             <input type="email" name="email" placeholder="<?= e(t('common.form_label_email')) ?>" value="<?= e($form['email'] ?? '') ?>" required maxlength="255"
                                 class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-base text-slate-900 outline-none transition-all duration-300 custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary focus:shadow-inner">
                         </div>
-
                         <div>
                             <textarea name="message" placeholder="<?= e(t('common.form_label_details')) ?>" required maxlength="1000" rows="5"
                                 class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-base text-slate-900 outline-none transition-all duration-300 custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary resize-none focus:shadow-inner"><?= e($form['message'] ?? '') ?></textarea>
                         </div>
-
                         <div class="flex items-start gap-3 pt-2">
                             <input type="checkbox" id="privacy" name="privacy_agreed" required class="mt-1 w-4 h-4 rounded border-slate-300 text-primary focus:ring-primary cursor-pointer transition-all duration-200">
                             <label for="privacy" class="text-sm md:text-base leading-relaxed cursor-pointer select-none">
                                 <span style="color: #022862;"><?= e(t('common.form_consent_prefix')) ?></span> <a href="#" style="color: #0663F6;" class="hover:underline transition-colors duration-200"><?= e(t('common.form_consent_privacy_policy')) ?></a> <span style="color: #0663F6;"><?= e(t('common.form_consent_terms_suffix')) ?></span>
                             </label>
                         </div>
-
                         <?php if ($errors !== []): ?>
                             <p class="text-xs font-bold text-red-500 pt-1"><?= e($errors[0]) ?></p>
                         <?php endif; ?>
-
                         <div class="pt-2 mt-auto flex justify-center">
                             <button type="submit" class="px-8 py-3.5 bg-primary hover:bg-blue-700 text-white font-bold text-base rounded-full shadow-md shadow-blue-500/10 transition-all duration-300 cursor-pointer hover:shadow-lg hover:-translate-y-0.5 flex items-center justify-center gap-2">
                                 <?= e(t('contact.cta_send_message')) ?>
@@ -268,17 +243,14 @@ $form = $form ?? [];
                     </form>
                 <?php endif; ?>
             </div>
-
             <div id="company-info" class="lg:col-span-6 space-y-4">
                 <h2 class="text-xl md:text-2xl font-bold text-dark mb-6"><?= e(t('contact.company_info_title')) ?></h2>
-                
                 <div class="gsap-contact-info-card bg-white border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.01)] rounded-2xl p-5 flex items-center gap-4 transition-all duration-300 hover:shadow-md hover:-translate-y-1 hover:border-blue-50 opacity-0 translate-y-10">
                     <div class="w-12 h-12 bg-blue-50 text-primary rounded-xl flex items-center justify-center shrink-0">
                         <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
                     </div>
                     <div><h4 style="color: #054FC5;" class="font-bold text-[17px] md:text-lg"><?= e(t('contact.company_name')) ?></h4></div>
                 </div>
-
                 <div class="gsap-contact-info-card bg-white border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.01)] rounded-2xl p-5 flex items-start gap-4 transition-all duration-300 hover:shadow-md hover:-translate-y-1 hover:border-blue-50 opacity-0 translate-y-10">
                     <div class="w-12 h-12 bg-blue-50 text-primary rounded-xl flex items-center justify-center shrink-0 mt-0.5">
                         <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
@@ -288,7 +260,6 @@ $form = $form ?? [];
                         <p style="color: #054FC5;" class="text-base font-medium leading-relaxed"><?= e(t('contact.company_address')) ?></p>
                     </div>
                 </div>
-
                 <div class="gsap-contact-info-card bg-white border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.01)] rounded-2xl p-5 flex items-start gap-4 transition-all duration-300 hover:shadow-md hover:-translate-y-1 hover:border-blue-50 opacity-0 translate-y-10">
                     <div class="w-12 h-12 bg-blue-50 text-primary rounded-xl flex items-center justify-center shrink-0 mt-0.5">
                         <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.94.725l.548 2.2a1 1 0 01-.321.988l-1.305.98a10.582 10.582 0 004.872 4.872l.98-1.305a1 1 0 01.988-.321l2.2.548a1 1 0 01.725.94V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
@@ -298,7 +269,6 @@ $form = $form ?? [];
                         <p style="color: #054FC5;" class="text-base font-semibold tracking-wide">095-539-2666</p>
                     </div>
                 </div>
-
                 <div class="gsap-contact-info-card bg-white border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.01)] rounded-2xl p-5 flex items-start gap-4 transition-all duration-300 hover:shadow-md hover:-translate-y-1 hover:border-blue-50 opacity-0 translate-y-10">
                     <div class="w-12 h-12 bg-blue-50 text-primary rounded-xl flex items-center justify-center shrink-0 mt-0.5">
                         <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
@@ -308,7 +278,6 @@ $form = $form ?? [];
                         <p style="color: #054FC5;" class="text-base font-semibold">oraphan@webpark.co.th</p>
                     </div>
                 </div>
-
                 <div class="gsap-contact-info-card bg-white border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.01)] rounded-2xl p-5 flex items-start gap-4 transition-all duration-300 hover:shadow-md hover:-translate-y-1 hover:border-blue-50 opacity-0 translate-y-10">
                     <div class="w-12 h-12 bg-blue-50 text-primary rounded-xl flex items-center justify-center shrink-0 mt-0.5">
                         <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
@@ -320,7 +289,6 @@ $form = $form ?? [];
                 </div>
             </div>
         </div>
-
         <div class="mt-10 bg-[#eef4fc] border border-blue-200 rounded-xl py-6 px-6 flex flex-row items-center justify-center sm:justify-start gap-6 transition-all duration-300">
             <div class="text-[#043B94] shrink-0">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-14 h-14">
@@ -342,11 +310,9 @@ $form = $form ?? [];
         </div>
     </div>
 </section>
-
 <section class="bg-white pb-20 font-sans">
     <div class="mx-auto w-full max-w-7xl px-4 sm:px-4 lg:px-6"> 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 bg-[#f4f9ff] border border-blue-50/50 rounded-[2rem] p-6 md:p-8">
-            
             <div class="flex items-start gap-4 p-4">
                 <div class="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center shrink-0 shadow-sm"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg></div>
                 <div>
@@ -354,7 +320,6 @@ $form = $form ?? [];
                     <p style="color: #022862;" class="text-base leading-relaxed"><?= e(t('contact.fast_response_desc')) ?></p>
                 </div>
             </div>
-
             <div class="flex items-start gap-4 p-4 border-y md:border-y-0 md:border-x border-blue-100/50">
                 <div class="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center shrink-0 shadow-sm"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg></div>
                 <div>
@@ -362,7 +327,6 @@ $form = $form ?? [];
                     <p style="color: #022862;" class="text-base leading-relaxed"><?= e(t('contact.expert_advice_desc')) ?></p>
                 </div>
             </div>
-
             <div class="flex items-start gap-4 p-4">
                 <div class="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center shrink-0 shadow-sm"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg></div>
                 <div>
@@ -370,21 +334,17 @@ $form = $form ?? [];
                     <p style="color: #022862;" class="text-base leading-relaxed"><?= e(t('contact.full_system_support_desc')) ?></p>
                 </div>
             </div>
-
         </div>
     </div>
 </section>
-
 <section class="bg-white pb-20 font-sans">
     <div class="mx-auto w-full max-w-7xl px-4 sm:px-4 lg:px-6"> 
         <h2 class="text-xl md:text-2xl font-bold text-dark mb-8 relative inline-block">
             <?= e(t('contact.location_title')) ?>
             <span class="absolute left-0 bottom-[-8px] w-10 h-1 bg-primary rounded-full"></span>
         </h2>
-
         <div class="w-full h-[400px] md:h-[500px] rounded-[2.5rem] overflow-hidden relative border border-slate-100 shadow-sm">
             <iframe class="w-full h-full border-0" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3875.311743152067!2d100.6172557!3d13.7901399!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x311d62445b2b2b11%3A0x67ee1c03c2a9bb4c!2sWEBPARK!5e0!3m2!1sth!2sth!4v1700000000000!5m2!1sth!2sth" allowfullscreen="" loading="lazy"></iframe>
-
             <div class="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 bg-white rounded-3xl p-6 shadow-xl border border-slate-100 max-w-sm z-10 hidden sm:block">
                 <div style="color: #021E4A;" class="flex items-center gap-2 font-bold text-sm mb-3">
                     <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/></svg>
@@ -400,25 +360,20 @@ $form = $form ?? [];
         </div>
     </div>
 </section>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 <script>
 document.addEventListener("DOMContentLoaded", () => {
     gsap.registerPlugin(ScrollTrigger);
-
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
     // Helper function for reveal on scroll
     function revealOnScroll(selector, options = {}) {
         const els = gsap.utils.toArray(selector);
         if (!els.length) return;
-
         if (prefersReducedMotion) {
             gsap.set(els, { y: 0, opacity: 1 });
             return;
         }
-
         els.forEach((el) => {
             gsap.to(el, {
                 scrollTrigger: {
@@ -434,7 +389,6 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         });
     }
-
     // 1. Hero Parallax
     if (!prefersReducedMotion) {
         gsap.utils.toArray(".hero-parallax-img").forEach((img) => {
@@ -450,7 +404,6 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         });
     }
-
     // 2. Form & Info Cards Stagger
     revealOnScroll(".gsap-contact-form");
     revealOnScroll(".gsap-contact-info-card", { stagger: 0.1 });

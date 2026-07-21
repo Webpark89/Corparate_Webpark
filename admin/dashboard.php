@@ -1,38 +1,32 @@
 <?php
-
 /**
  * Admin dashboard — overview stats and recent articles/portfolio activity.
  */
 $pageTitle = 'Dashboard';
 $page = 'dashboard';
 require_once __DIR__ . '/includes/header.php';
-
 $counts = [
     'article' => [
         'total' => (int) db()->query('SELECT COUNT(*) FROM article')->fetchColumn(),
         'published' => (int) db()->query('SELECT COUNT(*) FROM article WHERE status = \'published\'')->fetchColumn(),
         'draft' => (int) db()->query('SELECT COUNT(*) FROM article WHERE status = \'draft\'')->fetchColumn(),
     ],
-
     'portfolio' => [
         'total' => (int) db()->query('SELECT COUNT(*) FROM portfolio')->fetchColumn(),
         'published' => (int) db()->query('SELECT COUNT(*) FROM portfolio WHERE status = \'published\'')->fetchColumn(),
         'draft' => (int) db()->query('SELECT COUNT(*) FROM portfolio WHERE status = \'draft\'')->fetchColumn(),
     ],
-
     'partners' => [
         'total' => (int) db()->query('SELECT COUNT(*) FROM partners')->fetchColumn(),
         'active' => (int) db()->query('SELECT COALESCE(SUM(CASE WHEN is_active = 1 THEN 1 ELSE 0 END), 0) FROM partners')->fetchColumn(),
         'inactive' => (int) db()->query('SELECT COALESCE(SUM(CASE WHEN is_active = 0 THEN 1 ELSE 0 END), 0) FROM partners')->fetchColumn(),
     ],
-
     'review' => [
         'total' => (int) db()->query('SELECT COUNT(*) FROM review')->fetchColumn(),
         'active' => (int) db()->query('SELECT COALESCE(SUM(CASE WHEN is_active = 1 THEN 1 ELSE 0 END), 0) FROM review')->fetchColumn(),
         'inactive' => (int) db()->query('SELECT COALESCE(SUM(CASE WHEN is_active = 0 THEN 1 ELSE 0 END), 0) FROM review')->fetchColumn(),
     ],
 ];
-
 $dashboardCards = [
     [
         'key' => 'article',
@@ -91,20 +85,17 @@ $dashboardCards = [
         'secondaryKey' => 'inactive',
     ],
 ];
-
 $recentPortfolio = db()->query(
     'SELECT p.id, p.meta_title, p.client_name, p.created_at
      FROM portfolio p
      ORDER BY p.created_at DESC LIMIT 5'
 )->fetchAll();
-
 $recentArticle = db()->query(
     'SELECT a.id, a.meta_title, c.name AS category, a.created_at
      FROM article a
      LEFT JOIN categories c ON c.id = a.category_id
      ORDER BY a.created_at DESC LIMIT 5'
 )->fetchAll();
-
 // Fetch 10 articles for mock stats to replace dummy text, ordered by priority to match the admin list
 $statsArticles = db()->query('SELECT meta_title FROM article ORDER BY priority ASC, created_at DESC LIMIT 10')->fetchAll();
 $mockTop5 = [];
@@ -115,7 +106,6 @@ $bottomViews = [12, 18, 25, 30, 45];
 $bottomPercents = [9, 14, 19, 23, 35];
 $topColors = ['#3b82f6', '#06b6d4', '#10b981', '#f59e0b', '#8b5cf6'];
 $bottomColors = ['#ef4444', '#f97316', '#facc15', '#a8a29e', '#94a3b8'];
-
 for ($i = 0; $i < 5; $i++) {
     $title = isset($statsArticles[$i]) ? $statsArticles[$i]['meta_title'] : 'Article ' . ($i+1);
     $mockTop5[] = ['title' => $title, 'views' => $topViews[$i], 'percent' => $topPercents[$i], 'color' => $topColors[$i]];
@@ -126,7 +116,6 @@ for ($i = 0; $i < 5; $i++) {
     $mockBottom5[] = ['title' => $title, 'views' => $bottomViews[$i], 'percent' => $bottomPercents[$i], 'color' => $bottomColors[$i]];
 }
 ?>
-
 <section class="space-y-4" aria-labelledby="dashboardOverviewTitle">
     <header class="section-header">
         <div>
@@ -134,7 +123,6 @@ for ($i = 0; $i < 5; $i++) {
             <p class="section-note text-xs text-slate-500">ภาพรวมสถิติข้อมูลในระบบจัดการเนื้อหา</p>
         </div>
     </header>
-
     <div class="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-4">
         <?php foreach ($dashboardCards as $card): ?>
             <?php
@@ -151,7 +139,6 @@ for ($i = 0; $i < 5; $i++) {
                         <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider block"><?= e($card['title']) ?></span>
                         <div class="text-3xl font-extrabold font-mono <?= e($card['totalTextColor']) ?> mt-0.5"><?= $total ?> <span class="text-xs font-normal text-slate-500"><?= e($card['unit']) ?></span></div>
                     </div>
-
                     <div class="space-y-1.5 pt-1">
                         <div class="flex items-center gap-2 text-xs font-medium text-slate-600">
                             <span class="w-2.5 h-2.5 rounded-md" style="background-color: <?= e($card['primaryColor']) ?>"></span>
@@ -163,7 +150,6 @@ for ($i = 0; $i < 5; $i++) {
                         </div>
                     </div>
                 </div>
-
                 <div class="relative flex items-center justify-center w-28 h-28 shrink-0">
                     <svg class="w-full h-full transform -rotate-90" viewBox="0 0 120 120">
                         <circle cx="60" cy="60" r="50" stroke-width="12" stroke="<?= e($card['secondaryColor']) ?>" fill="transparent" />
@@ -181,8 +167,6 @@ for ($i = 0; $i < 5; $i++) {
         <?php endforeach; ?>
     </div>
 </section>
-
-<!-- โซนกราฟสถิติ (จัดให้พอดีกับ 4 บล็อคด้านบน) -->
 <style>
     @media (min-width: 1280px) {
         .xl-col-span-3 { grid-column: span 3 / span 3 !important; }
@@ -190,8 +174,6 @@ for ($i = 0; $i < 5; $i++) {
     }
 </style>
 <div class="mt-8 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
-    
-    <!-- ฝั่งซ้าย: กราฟสถิติการเข้าชมเว็บไซต์ (Traffic Chart) กว้างเท่ากับ 3 บล็อค -->
     <section class="md:col-span-1 xl-col-span-3 bg-white border border-slate-200 rounded-2xl shadow-sm p-6 overflow-hidden flex flex-col min-w-0">
         <div class="flex items-center justify-between mb-4">
             <div>
@@ -205,13 +187,10 @@ for ($i = 0; $i < 5; $i++) {
                 <option value="365">1 ปีล่าสุด</option>
             </select>
         </div>
-        
         <div class="relative w-full flex-1" style="min-height: 350px;">
             <canvas id="trafficChart"></canvas>
         </div>
     </section>
-
-    <!-- ฝั่งขวา: กราฟวงกลม Top 5 และ Bottom 5 กว้างเท่ากับ 1 บล็อค -->
     <section class="md:col-span-1 xl-col-span-1 flex flex-col gap-6 min-w-0">
         <!-- Top 5 -->
         <div class="bg-white border border-slate-200 rounded-2xl shadow-sm p-5 flex-1 flex flex-col justify-center">
@@ -219,9 +198,7 @@ for ($i = 0; $i < 5; $i++) {
                 <h3 class="text-sm font-bold text-slate-800">5 อันดับบทความยอดฮิต (Top 5)</h3>
                 <p class="text-[10px] text-slate-400">บทความที่มีคนเข้าชมมากที่สุด</p>
             </div>
-            
             <div class="flex items-center justify-between gap-4">
-                <!-- คำอธิบาย (Legend) แบบ Custom อยู่ซ้าย -->
                 <div class="flex-1 space-y-2 min-w-0">
                     <?php foreach ($mockTop5 as $stat): ?>
                     <div class="flex items-center justify-between text-xs gap-2">
@@ -235,23 +212,18 @@ for ($i = 0; $i < 5; $i++) {
                     </div>
                     <?php endforeach; ?>
                 </div>
-
-                <!-- ตัวกราฟวงกลม อยู่ขวา และมีขนาดเล็กลง -->
                 <div class="relative shrink-0 flex items-center justify-center" style="width: 100px; height: 100px;">
                     <canvas id="top5Chart"></canvas>
                 </div>
             </div>
         </div>
-
         <!-- Bottom 5 -->
         <div class="bg-white border border-slate-200 rounded-2xl shadow-sm p-5 flex-1 flex flex-col justify-center">
             <div class="mb-4">
                 <h3 class="text-sm font-bold text-slate-800">5 อันดับยอดชมน้อย (Bottom 5)</h3>
                 <p class="text-[10px] text-slate-400">บทความที่ควรปรับปรุงเนื้อหา</p>
             </div>
-            
             <div class="flex items-center justify-between gap-4">
-                <!-- คำอธิบาย (Legend) แบบ Custom อยู่ซ้าย -->
                 <div class="flex-1 space-y-2 min-w-0">
                     <?php foreach ($mockBottom5 as $stat): ?>
                     <div class="flex items-center justify-between text-xs gap-2">
@@ -265,37 +237,28 @@ for ($i = 0; $i < 5; $i++) {
                     </div>
                     <?php endforeach; ?>
                 </div>
-
-                <!-- ตัวกราฟวงกลม อยู่ขวา และมีขนาดเล็กลง -->
                 <div class="relative shrink-0 flex items-center justify-center" style="width: 100px; height: 100px;">
                     <canvas id="bottom5Chart"></canvas>
                 </div>
             </div>
         </div>
     </section>
-
 </div>
-
-<!-- ดึงไฟล์ Chart.js จากในเครื่อง Server โดยตรง (แก้ปัญหาเน็ต/แอนตี้ไวรัสบล็อก CDN) -->
 <script src="<?= ADMIN_URL ?>/assets/js/chart.min.js"></script>
 <script>
     const ctx = document.getElementById('trafficChart').getContext('2d');
-    
     // สร้าง Gradient สีน้ำเงิน
     const gradientBlue = ctx.createLinearGradient(0, 0, 0, 350);
     gradientBlue.addColorStop(0, 'rgba(59, 130, 246, 0.4)');
     gradientBlue.addColorStop(1, 'rgba(59, 130, 246, 0.0)');
-
     // สร้าง Gradient สีฟ้าคราม (Teal)
     const gradientTeal = ctx.createLinearGradient(0, 0, 0, 350);
     gradientTeal.addColorStop(0, 'rgba(6, 182, 212, 0.4)');
     gradientTeal.addColorStop(1, 'rgba(6, 182, 212, 0.0)');
-
     // สร้าง Gradient สีม่วง (Purple)
     const gradientPurple = ctx.createLinearGradient(0, 0, 0, 350);
     gradientPurple.addColorStop(0, 'rgba(139, 92, 246, 0.4)');
     gradientPurple.addColorStop(1, 'rgba(139, 92, 246, 0.0)');
-
     // ข้อมูล Mock Data 4 แบบ มีการคละตัวเลขให้สมจริง ไม่ให้เพิ่มขึ้นอย่างเดียว
     const mockData = {
         'all': {
@@ -384,7 +347,6 @@ for ($i = 0; $i < 5; $i++) {
             max: 15000
         }
     };
-
     let trafficChart = new Chart(ctx, {
         type: 'line',
         data: {
@@ -432,26 +394,21 @@ for ($i = 0; $i < 5; $i++) {
             }
         }
     });
-
     // จับเหตุการณ์เมื่อเปลี่ยน Dropdown
     document.getElementById('timeRangeSelector').addEventListener('change', function(e) {
         const type = e.target.value; 
         const data = mockData[type];
-        
         // อัปเดตข้อมูลในกราฟ (ใช้ map เพื่อไม่ให้ object Gradient สีพัง)
         trafficChart.data.labels = data.labels;
         trafficChart.data.datasets = data.datasets.map(ds => ({
             ...ds,
             data: [...ds.data]
         }));
-        
         // อัปเดตสเกล Y ให้สอดคล้องกับจำนวนข้อมูล
         trafficChart.options.scales.y.max = data.max;
-        
         // สั่งให้กราฟวาดตัวเองใหม่
         trafficChart.update();
     });
-
     // กราฟวงกลม: 5 อันดับยอดฮิต (Top 5)
     new Chart(document.getElementById('top5Chart').getContext('2d'), {
         type: 'doughnut',
@@ -481,7 +438,6 @@ for ($i = 0; $i < 5; $i++) {
             }
         }
     });
-
     // กราฟวงกลม: 5 อันดับยอดชมน้อย (Bottom 5)
     new Chart(document.getElementById('bottom5Chart').getContext('2d'), {
         type: 'doughnut',
@@ -512,5 +468,4 @@ for ($i = 0; $i < 5; $i++) {
         }
     });
 </script>
-
 <?php require_once __DIR__ . '/includes/footer.php'; ?>

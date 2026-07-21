@@ -1,24 +1,20 @@
 <?php
-
 declare(strict_types=1);
-
 /**
  * Site footer component with expandable sitemap and company contact info.
  */
-
 require_once __DIR__ . '/../../Models/Service.php';
-
 $company = config('company', []) ?: ($company ?? []);
 $companyName = $company['name'] ?? '';
-
 $email = $company['contact']['email'] ?? '';
 $phone = $company['contact']['phone'] ?? '';
 $phone = str_replace(' ', '-', $phone);
 $address = $company['contact']['address'] ?? '';
-$officeLabel = 'สำนักงานใหญ่ :';
-$officeValue = $company['contact']['address'] ?? '525/89 ซอยลาดพร้าว126 แขวงพลับพลา เขตวังทองหลาง กรุงเทพมหานคร 10310';
+$officeLabel = t('footer.office_headquarters_label');
+$officeValue = t('footer.office_address');
+$emailLabel = t('footer.email_label');
+$phoneLabel = t('footer.phone_label');
 $phoneHref = preg_replace('/[^0-9+]/', '', $phone) ?? '';
-
 $structuredSitemap = [
     'PAGE' => [
         'groups' => [
@@ -162,7 +158,6 @@ $structuredSitemap = [
         ],
     ],
 ];
-
 $socialLinks = [
     ['label' => 'Facebook', 'href' => 'https://www.facebook.com/'],
     ['label' => 'Instagram', 'href' => 'https://www.instagram.com/'],
@@ -170,14 +165,10 @@ $socialLinks = [
     ['label' => 'X', 'href' => 'https://x.com/'],
 ];
 ?>
-
 <footer class="overflow-hidden">
-
     <div id="footerSitemapSection" style="background-color: #ffffff; transition: background-color 0.3s ease;">
         <div class="mx-auto w-full max-w-7xl px-4 sm:px-4 lg:px-6">
-
             <div class="js-scroll-animate opacity-0 translate-y-5 transition-all duration-700 ease-out" style="transition-delay: 100ms;">
-
                 <button
                     type="button"
                     id="footerSitemapToggle"
@@ -186,7 +177,6 @@ $socialLinks = [
                     aria-controls="footerSitemapPanel"
                 >
                     <span id="footerSitemapLabel" class="mb-2 tracking-[2px]" style="color: #043B94; font-size: 25px; font-weight: 700;">SITEMAP</span>
-
                     <span
                         id="footerSitemapArrow"
                         class="inline-flex items-center justify-center transition-transform duration-300"
@@ -199,7 +189,6 @@ $socialLinks = [
                         </svg>
                     </span>
                 </button>
-
                 <div id="footerSitemapPanel" class="overflow-hidden" style="height: 0px;">
                     <div class="px-4 sm:px-4 lg:px-0 pt-5 pb-6" id="footerSitemapPanelInner">
                         <div class="grid gap-5 sm:grid-cols-2 xl:grid-cols-5 dt-sitemap-grid" data-footer-content>
@@ -211,7 +200,6 @@ $socialLinks = [
                                 'ONLINE MARKETING',
                                 'CREATIVE / DESIGN',
                             ];
-
                             $renderColumn = function($title, $column) {
                                 $groups = $column['groups'] ?? [];
                                 ?>
@@ -236,7 +224,6 @@ $socialLinks = [
                                 </section>
                                 <?php
                             };
-
                             foreach ($targetTitles as $tTitle) {
                                 $col = $structuredSitemap[$tTitle] ?? null;
                                 if ($col) {
@@ -249,7 +236,6 @@ $socialLinks = [
                         </div>
                     </div>
                 </div>
-
             </div></div></div>    <style>
         #footerInfoSection { background-color: #022862 !important; }
         #footerSitemapToggle:hover #footerSitemapLabel,
@@ -279,32 +265,27 @@ $socialLinks = [
             <hr style="border: 0; border-top: 1px solid #cbd5e1; margin-bottom: 2rem;">
             <div style="display: grid; gap: 2rem; grid-template-columns: 1fr; align-items: center;">
             <div id="footerInfoGrid">
-
                     <div style="display: flex; justify-content: center; margin-bottom: 1rem;">
                         <div style="height: 120px; width: 160px; overflow: hidden; display: flex; justify-content: center;">
                             <img src="<?= e(asset_url('images/logo.png')) ?>" alt="WEBPARK Logo" style="height: 100%; width: 100%; object-fit: contain;">
                         </div>
                     </div>
-
                     <div style="display: flex; flex-direction: column; gap: 0.5rem;">
                         <span style="font-weight: 700; color: #0663F6; font-size: 1.125rem;"><?= e($officeLabel) ?></span>
                         <span class="address-text" style="font-size: 0.9rem; color: #054FC5; line-height: 1.5;"><?= e($officeValue) ?></span>
                     </div>
-
                     <div class="footer-contact-block" style="display: flex; flex-direction: column; gap: 0.75rem;">
-                        <div style="display: flex; flex-wrap: wrap; gap: 0.25rem; align-items: baseline;">
-                            <span style="font-weight: 700; color: #0663F6; font-size: 1.125rem;">อีเมล :</span>
+                        <div>
+                            <span style="font-weight: 700; color: #0663F6; font-size: 1.125rem;"><?= e($emailLabel) ?></span>
                             <a style="font-size: 0.9rem; color: #054FC5; text-decoration: none;" href="mailto:<?= e($email) ?>"><?= e($email) ?></a>
                         </div>
-                        <div style="display: flex; flex-wrap: wrap; gap: 0.25rem; align-items: baseline;">
-                            <span style="font-weight: 700; color: #0663F6; font-size: 1.125rem;">เบอร์โทร :</span>
+                        <div>
+                            <span style="font-weight: 700; color: #0663F6; font-size: 1.125rem;"><?= e($phoneLabel) ?></span>
                             <a style="font-size: 0.9rem; color: #054FC5; text-decoration: none;" href="tel:<?= e($phoneHref) ?>"><?= e($phone) ?></a>
                         </div>
                     </div>
-
                 </div>
             </div>
-
             <div class="footer-bottom-bar">
                 <style>
                     .footer-bottom-link { font-size: 0.75rem; color: #043B94 !important; text-decoration: none; transition: color 0.3s ease; }
@@ -317,14 +298,11 @@ $socialLinks = [
                     <?php endforeach; ?>
                 </nav>
             </div>
-
         </div>
-        
         <div style="background-color: #022862; padding: 1rem 0; text-align: center; width: 100%;">
             <p style="margin: 0; font-size: 0.75rem; color: #ffffff;">Copyright © <?= date('Y') ?> WEBPARK All rights reserved.</p>
         </div>
     </div></footer>
-
 <script>
     (() => {
         const footerSitemapToggle   = document.getElementById('footerSitemapToggle');
@@ -334,47 +312,38 @@ $socialLinks = [
         const footerSitemapSection  = document.getElementById('footerSitemapSection');
         const footerSitemapLabel    = document.getElementById('footerSitemapLabel');
         const footerSitemapArrowSvg = document.getElementById('footerSitemapArrowSvg');
-
         const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         const durationMs = reduceMotion ? 0 : 350;
-
         const setPanelHeight = () => {
             if (!footerSitemapPanelInner) return;
             footerSitemapPanel.style.height = footerSitemapPanelInner.scrollHeight + 'px';
         };
-
         const setSitemapState = (isExpanded) => {
             if (footerSitemapToggle) footerSitemapToggle.setAttribute('aria-expanded', isExpanded ? 'true' : 'false');
             if (footerSitemapArrow) footerSitemapArrow.style.transform = isExpanded ? 'rotate(180deg)' : 'rotate(0deg)';
-            
             if (footerSitemapSection) footerSitemapSection.style.backgroundColor = '#ffffff';
             if (footerSitemapLabel) footerSitemapLabel.style.color = '#043B94';
             if (footerSitemapArrowSvg) footerSitemapArrowSvg.style.color = '#043B94';
         };
-
         const collapsePanel = () => {
             if (!footerSitemapPanel) return;
             footerSitemapPanel.style.transition = `height ${durationMs}ms ease`;
             footerSitemapPanel.style.height = '0px';
             setSitemapState(false);
         };
-
         const expandPanel = () => {
             if (!footerSitemapPanel) return;
             footerSitemapPanel.style.transition = `height ${durationMs}ms ease`;
             setPanelHeight();
             setSitemapState(true);
         };
-
         const initPanel = () => {
             if (!footerSitemapToggle || !footerSitemapPanel) return;
             collapsePanel();
-
             footerSitemapToggle.addEventListener('click', () => {
                 const isExpanded = footerSitemapToggle.getAttribute('aria-expanded') === 'true';
                 isExpanded ? collapsePanel() : expandPanel();
             });
-
             window.addEventListener('resize', () => {
                 const isExpanded = footerSitemapToggle.getAttribute('aria-expanded') === 'true';
                 if (isExpanded) {
@@ -385,9 +354,7 @@ $socialLinks = [
                 }
             });
         };
-
         initPanel();
-
         const observer = new IntersectionObserver((entries, obs) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -397,7 +364,6 @@ $socialLinks = [
                 }
             });
         }, { root: null, rootMargin: '0px', threshold: 0.05 });
-
         document.querySelectorAll('.js-scroll-animate').forEach(el => observer.observe(el));
     })();
 </script>

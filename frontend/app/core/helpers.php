@@ -59,6 +59,7 @@ function normalize_text(mixed $value): string
     }
 
     $text = html_entity_decode(strip_tags($text), ENT_QUOTES, 'UTF-8');
+    $text = str_replace(['\r\n', '\n', '\r', '\t'], ' ', $text);
     $text = preg_replace('/\s+/u', ' ', $text) ?? '';
 
     return trim($text);

@@ -1,14 +1,11 @@
 <?php
-
 /**
  * PDO database connection singleton and db() helper for the admin panel.
  */
 require_once __DIR__ . '/config.php';
-
 class Database
 {
     private static ?PDO $instance = null;
-
     public static function conn(): PDO
     {
         if (self::$instance === null) {
@@ -33,7 +30,6 @@ class Database
         return self::$instance;
     }
 }
-
 function db(): PDO
 {
     return Database::conn();

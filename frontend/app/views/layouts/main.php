@@ -1,7 +1,5 @@
 <?php
-
 declare(strict_types=1);
-
 /**
  * Main HTML layout — SEO meta, Open Graph, JSON-LD, and page shell.
  *
@@ -22,30 +20,25 @@ $jsonLd = isset($jsonLd) && is_array($jsonLd) ? $jsonLd : [];
 $jsonGraph = [];
 $tailwindCssFile = realpath(__DIR__ . '/../../../public/assets/css/tailwind.css');
 $tailwindCssVersion = $tailwindCssFile !== false ? filemtime($tailwindCssFile) : time();
-
 if (!headers_sent()) {
     header('Content-Type: text/html; charset=UTF-8');
 }
-
 if ($jsonLd !== []) {
     if (isset($jsonLd['@graph']) && is_array($jsonLd['@graph'])) {
         $jsonGraph = $jsonLd;
     } else {
         $isList = array_keys($jsonLd) === range(0, count($jsonLd) - 1);
-
         $jsonGraph = [
             '@context' => 'https://schema.org',
             '@graph' => $isList ? $jsonLd : [$jsonLd],
         ];
     }
 }
-
 $currentPage = $currentPage ?? '';
 $content = $content ?? '';
 ?>
 <!DOCTYPE html>
 <html lang="<?= e(function_exists('getCurrentLang') ? getCurrentLang() : 'th') ?>">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -82,7 +75,6 @@ $content = $content ?? '';
         body, .font-sans {
             font-family: 'Inter', 'Noto Sans Thai', ui-sans-serif, system-ui, sans-serif !important;
         }
-
         /* Global Article Format Styling for Tables */
         .article-format table {
             width: 100%;
@@ -112,26 +104,20 @@ $content = $content ?? '';
         </script>
     <?php endif; ?>
 </head>
-
 <body class="bg-slate-50 text-slate-900 antialiased">
     <?php require __DIR__ . '/../components/navbar.php'; ?>
-
     <main class="min-h-screen">
         <?= $content ?>
     </main>
-
     <?php if ($currentPage !== 'contact'): ?>
         <?php require __DIR__ . '/../components/cta.php'; ?>
     <?php endif; ?>
-    
     <?php require __DIR__ . '/../components/footer.php'; ?>
-
-    <!-- Scroll to Top Button (Pure CSS to avoid Tailwind JIT issues) -->
     <style>
         #scrollToTopBtn {
             position: fixed;
-            bottom: 40px; /* Positioned at bottom right, outside the hero image */
-            right: 40px; /* Fully to the right */
+            bottom: 40px;
+            right: 40px;
             z-index: 99999;
             width: 50px;
             height: 50px;
@@ -145,7 +131,6 @@ $content = $content ?? '';
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             cursor: pointer;
             transition: all 0.3s ease-in-out;
-            /* Always visible */
             opacity: 1;
             visibility: visible;
         }
@@ -163,13 +148,11 @@ $content = $content ?? '';
             transform: translateY(-3px);
         }
     </style>
-
     <button id="scrollToTopBtn" aria-label="Scroll to top">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
             <path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
         </svg>
     </button>
-
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const scrollBtn = document.getElementById('scrollToTopBtn');
@@ -183,8 +166,6 @@ $content = $content ?? '';
             }
         });
     </script>
-
     <script src="<?= e(asset_url('assets/js/main.js')) ?>"></script>
 </body>
-
 </html>

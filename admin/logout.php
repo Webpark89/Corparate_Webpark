@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Admin logout — destroys the session and redirects to the login page.
  */

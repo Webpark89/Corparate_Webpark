@@ -1,7 +1,5 @@
 <?php
-
 declare(strict_types=1);
-
 /**
  * 404 not found page view.
  */
@@ -22,7 +20,6 @@ declare(strict_types=1);
         animation: pulseGlow 3s ease-in-out infinite;
     }
 </style>
-
 <section class="bg-white py-16 lg:py-24 text-center overflow-hidden">
     <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 pt-20 pb-24 lg:pt-32 lg:pb-32 relative z-10">
         <div class="animate-float-bounce mb-4 text-7xl md:text-9xl font-black tracking-tight text-blue-600">404</div>

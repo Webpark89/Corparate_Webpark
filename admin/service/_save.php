@@ -1,23 +1,19 @@
 <?php
-
 /**
  * Shared service save logic used by create.php and edit.php.
  */
 require_once __DIR__ . '/../includes/functions.php';
 csrf_verify();
-
 $id = $_POST['id'] ?? null;
 $title = $_POST['title'];
 $slug = $_POST['slug'];
 $summary = $_POST['summary'];
 $isActive = isset($_POST['is_active']) ? 1 : 0;
-
 $featuresList = array_filter(array_map('trim', explode(',', $_POST['features'])));
 $dropdownTitle = trim($_POST['dropdown_title'] ?? '');
 $detailsJson = json_encode([
     'dropdown_title' => $dropdownTitle
 ]);
-
 $imagePath = $_POST['old_image'] ?? '';
 try {
     if (!empty($_FILES['image']['name'])) {
@@ -29,7 +25,6 @@ try {
     header("Location: $redirectUrl");
     exit;
 }
-
 try {
     $serviceId = $id;
     if ($id) {
@@ -42,15 +37,12 @@ try {
         $serviceId = db()->lastInsertId();
         flash('success', 'เพิ่มบริการใหม่เรียบร้อย');
     }
-    
     // Sync service_features
     if ($serviceId) {
         $stmt = db()->prepare('SELECT id, title FROM service_features WHERE service_id = ?');
         $stmt->execute([$serviceId]);
         $existingFeatures = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        
         $existingTitles = array_column($existingFeatures, 'title');
-        
         // Find features to add
         $featuresToAdd = array_diff($featuresList, $existingTitles);
         if (!empty($featuresToAdd)) {
@@ -59,7 +51,6 @@ try {
                 $insertStmt->execute([$serviceId, $featureTitle]);
             }
         }
-        
         // Find features to delete
         $featuresToDelete = array_diff($existingTitles, $featuresList);
         if (!empty($featuresToDelete)) {
@@ -78,6 +69,5 @@ try {
     }
     throw $e;
 }
-
 header('Location: index.php');
 exit;

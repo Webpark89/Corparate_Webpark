@@ -1,43 +1,34 @@
 <?php
-
 /**
  * Admin login page — CSRF-protected with session-based rate limiting.
  */
 require_once __DIR__ . '/includes/functions.php';
-
 header('X-Frame-Options: SAMEORIGIN');
 header('X-Content-Type-Options: nosniff');
 header("Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:");
 header('X-XSS-Protection: 1; mode=block');
 header('Referrer-Policy: strict-origin-when-cross-origin');
-
 $errorMessage = null;
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     csrf_verify();
-
     $clientIp = $_SERVER['REMOTE_ADDR'] ?? 'unknown';
     $rateLimitKey = 'login_' . $clientIp;
-
     if (!check_rate_limit($rateLimitKey, LOGIN_MAX_ATTEMPTS, LOGIN_ATTEMPT_WINDOW)) {
         $remaining = get_rate_limit_remaining($rateLimitKey, LOGIN_MAX_ATTEMPTS, LOGIN_ATTEMPT_WINDOW);
         $errorMessage = 'จำนวนครั้งการลองเข้าสู่ระบบเกินกำหนด กรุณารอ 10 นาทีก่อนลองอีกครั้ง (ความพยายามที่เหลือ: ' . $remaining . ')';
     } else {
         $username = trim($_POST['username'] ?? '');
         $password = (string) ($_POST['password'] ?? '');
-
         if ($username === '' || $password === '') {
             $errorMessage = 'กรุณากรอกข้อมูลให้ครบถ้วน';
         } elseif ($username === ADMIN_USERNAME && password_verify($password, ADMIN_PASSWORD_HASH)) {
             unset($_SESSION['ratelimit_' . $rateLimitKey]);
-
             session_regenerate_id(true);
             $_SESSION['admin_logged_in'] = true;
             $_SESSION['admin_username'] = ADMIN_USERNAME;
             $_SESSION['admin_full_name'] = 'Administrator';
             $_SESSION['admin_role'] = 'admin';
             $_SESSION['last_activity'] = time();
-
             header('Location: ' . ADMIN_URL . '/index.php');
             exit;
         } else {
@@ -48,7 +39,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 <!doctype html>
 <html lang="th">
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -58,18 +48,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+Thai:wght@400;600;700&display=swap" rel="stylesheet">
     <link href="/Corparate_Webpark/admin/assets/css/dist/tailwind.css" rel="stylesheet">
 </head>
-
 <body class="min-h-screen bg-slate-100 overflow-hidden">
-
     <div class="absolute inset-0 overflow-hidden">
         <div class="absolute top-[-120px] left-[-120px] w-[320px] h-[320px] bg-cyan-300/40 blur-3xl rounded-full"></div>
         <div class="absolute bottom-[-120px] right-[-120px] w-[320px] h-[320px] bg-indigo-300/40 blur-3xl rounded-full"></div>
     </div>
-
     <main class="relative z-10 flex items-center justify-center min-h-screen px-6">
         <div class="w-full max-w-md">
             <div class="rounded-3xl bg-white border border-slate-200 shadow-2xl p-8">
-
                 <div class="text-center mb-8">
                     <div class="flex justify-center mb-5">
                         <div class="w-25 h-25 flex items-center justify-center overflow-hidden shadow-sm">
@@ -79,25 +65,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 class="w-14 h-14 object-contain">
                         </div>
                     </div>
-
                     <h1 class="text-3xl font-bold tracking-tight text-slate-900">
                         เข้าสู่ระบบ
                     </h1>
-
                     <p class="text-sm text-slate-500 mt-2">
                         ระบบบริหารจัดการข้อมูล
                     </p>
                 </div>
-
                 <?php if ($errorMessage || !empty($_GET['timeout'])): ?>
                     <div class="mb-5 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
                         <?= e($errorMessage ?: 'Session timed out. Please log in again.') ?>
                     </div>
                 <?php endif; ?>
-
                 <form method="post" autocomplete="off" class="space-y-5">
                     <?= csrf_field() ?>
-
                     <div>
                         <label for="username" class="block text-sm font-medium text-slate-700 mb-2">
                             ชื่อผู้ใช้
@@ -116,7 +97,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 class="w-full rounded-xl border border-slate-300 bg-white px-11 py-3 text-slate-900 placeholder:text-slate-400 outline-none transition focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/15">
                         </div>
                     </div>
-
                     <div>
                         <label for="password" class="block text-sm font-medium text-slate-700 mb-2">
                             รหัสผ่าน
@@ -134,7 +114,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 class="w-full rounded-xl border border-slate-300 bg-white px-11 py-3 text-slate-900 placeholder:text-slate-400 outline-none transition focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/15">
                         </div>
                     </div>
-
                     <button
                         type="submit"
                         class="w-full rounded-xl bg-blue-600 px-4 py-3 font-semibold text-white transition-all duration-300 hover:bg-blue-800 hover:shadow-lg">
@@ -144,7 +123,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </span>
                     </button>
                 </form>
-
                 <div class="mt-8 border-t border-slate-200 pt-5 text-center text-xs text-slate-500">
                     <div>Secure Authentication System</div>
                     <div class="mt-1">
@@ -155,5 +133,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     </main>
 </body>
-
 </html>

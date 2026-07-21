@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CKEditor Test</title>
+    <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/super-build/ckeditor.js"></script>
+</head>
+<body>
+    <textarea id="editor">Test content</textarea>
+    <script>
+        class MyUploadAdapter {
+            constructor(loader) { this.loader = loader; }
+            upload() { return Promise.resolve({ default: 'test.jpg' }); }
+            abort() {}
+        }
+        function MyCustomUploadAdapterPlugin(editor) {
+            editor.plugins.get('FileRepository').createUploadAdapter = (loader) => new MyUploadAdapter(loader);
+        }
+
+        const EditorClass = window.CKEDITOR.ClassicEditor;
+        EditorClass.create(document.querySelector('#editor'), {
+            licenseKey: 'GPL',
+            extraPlugins: [MyCustomUploadAdapterPlugin],
+            toolbar: {
+                items: [ 'heading', '|', 'bold', 'italic', 'fontColor', 'fontBackgroundColor', 'link', 'uploadImage', 'insertImage', '|', 'bulletedList', 'numberedList', 'blockQuote', '|', 'undo', 'redo' ]
+            }
+        }).catch(err => {
+            console.error(err);
+            document.body.innerHTML += '<div style="color:red">' + err + '</div>';
+        });
+    </script>
+</body>
+</html>

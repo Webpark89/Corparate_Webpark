@@ -20,8 +20,8 @@
 
     async function initSeoEditor(options) {
         const editorEl = document.querySelector(options.editorSelector);
-        const ClassicEditor = window.ClassicEditor || (window.CKEDITOR && window.CKEDITOR.ClassicEditor);
-        if (!editorEl || !ClassicEditor) {
+        const tinymce = window.tinymce;
+        if (!editorEl || !tinymce) {
             return null;
         }
 
@@ -44,27 +44,71 @@
             editorEl.innerHTML = elements.contentInput.value;
         }
 
-        const editor = await ClassicEditor.create(editorEl, {
-            licenseKey: 'GPL',
-            placeholder: options.placeholder || 'เริ่มเขียนบทความที่น่าสนใจของคุณที่นี่...',
-            toolbar: {
-                items: [ 'heading', '|', 'bold', 'italic', 'link', '|', 'bulletedList', 'numberedList', 'blockQuote', '|', 'undo', 'redo' ],
-                shouldNotGroupWhenFull: true
+        tinymce.init({
+            target: editorEl,
+            plugins: 'autoresize lists link image code table wordcount',
+            toolbar: 'blocks | bold italic forecolor backcolor | bullist numlist | alignleft aligncenter alignright alignjustify | link image | removeformat',
+            menubar: false,
+            color_map: [
+                '0663F6', 'Primary Blue',
+                '022862', 'Dark Blue',
+                '475569', 'Slate',
+                '000000', 'Black',
+                'FFFFFF', 'White',
+                'FF0000', 'Red',
+                '00FF00', 'Green',
+                '0000FF', 'Blue',
+                'FFFF00', 'Yellow',
+                'FF9900', 'Orange'
+            ],
+            custom_colors: true,
+            min_height: 300,
+            max_height: 800,
+            autoresize_bottom_margin: 20,
+            content_style: 'body { font-family: Inter, "Noto Sans Thai", ui-sans-serif, system-ui, sans-serif; font-size: 16px; line-height: 1.75; color: #475569; } p, span, li, div { font-size: 16px !important; line-height: 1.75 !important; }',
+            images_upload_handler: function (blobInfo, progress) {
+                return new Promise((resolve, reject) => {
+                    const xhr = new XMLHttpRequest();
+                    xhr.open('POST', 'upload_image.php');
+                    xhr.upload.onprogress = (e) => {
+                        progress(e.loaded / e.total * 100);
+                    };
+                    xhr.onload = () => {
+                        if (xhr.status === 403) {
+                            reject({ message: 'HTTP Error: ' + xhr.status, remove: true });
+                            return;
+                        }
+                        if (xhr.status < 200 || xhr.status >= 300) {
+                            reject('HTTP Error: ' + xhr.status);
+                            return;
+                        }
+                        const json = JSON.parse(xhr.responseText);
+                        if (!json || typeof json.url != 'string') {
+                            reject('Invalid JSON: ' + xhr.responseText);
+                            return;
+                        }
+                        resolve(json.url);
+                    };
+                    xhr.onerror = () => {
+                        reject('Image upload failed due to a XHR Transport error. Code: ' + xhr.status);
+                    };
+                    const formData = new FormData();
+                    formData.append('upload', blobInfo.blob(), blobInfo.filename());
+                    xhr.send(formData);
+                });
             },
-            heading: {
-                options: [
-                    { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
-                    { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
-                    { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' },
-                    { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3' },
-                    { model: 'heading4', view: 'h4', title: 'Heading 4', class: 'ck-heading_heading4' },
-                    { model: 'heading5', view: 'h5', title: 'Heading 5', class: 'ck-heading_heading5' },
-                    { model: 'heading6', view: 'h6', title: 'Heading 6', class: 'ck-heading_heading6' },
-                ]
-            },
-            link: {
-                addTargetToExternalLinks: true,
-                defaultProtocol: 'https://'
+            setup: function(editor) {
+                editor.addShortcut('ctrl+q', 'Apply Primary Color', function () {
+                    editor.execCommand('ForeColor', false, '#0663F6');
+                });
+                editor.on('change keyup paste', function(e) {
+                    elements.contentInput.value = editor.getContent();
+                    updateSeoState();
+                });
+                
+                elements.form.addEventListener('submit', () => {
+                    elements.contentInput.value = editor.getContent();
+                });
             }
         });
 
@@ -88,16 +132,8 @@
             updateSeoState();
         });
 
-        editor.model.document.on('change:data', updateSeoState);
-        editor.model.document.on('change:data', () => {
-            elements.contentInput.value = editor.getData();
-        });
-        elements.form.addEventListener('submit', () => {
-            elements.contentInput.value = editor.getData();
-        });
-
         syncSeoCounters(elements);
-        elements.contentInput.value = editor.getData();
+        // The setup function inside tinymce.init handles content syncing
         return editor;
     }
 

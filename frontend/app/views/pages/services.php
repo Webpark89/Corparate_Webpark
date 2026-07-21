@@ -1,13 +1,10 @@
 <?php
-
 declare(strict_types=1);
-
 $categories = is_array($categories ?? null) ? $categories : [];
 $activeCategorySlug = (string) ($activeCategorySlug ?? 'all');
 $fallbackImage = asset_url('images/story.png');
 $heroImage = asset_url('images/bg-6.png');
 $ctaImage = asset_url('images/bg-cta.jpg');
-
 /**
  * Services listing page — grid 2-column card layout.
  *
@@ -15,7 +12,6 @@ $ctaImage = asset_url('images/bg-cta.jpg');
  * ข้อมูล  : $mockServices (เปลี่ยนเป็น DB query ได้ภายหลัง)
  * รูป     : ใช้ image_placeholder เดิมจาก mockServices
  */
-
  $mockServices = [
     [
         'id'                => 1,
@@ -108,7 +104,6 @@ $ctaImage = asset_url('images/bg-cta.jpg');
         ],
     ],
 ];
-
 // Merge database services with mock subcategories
 if (isset($services) && is_array($services)) {
     $mergedServices = [];
@@ -126,7 +121,6 @@ if (isset($services) && is_array($services)) {
         } else {
             $mockMatch = $mockServices[0];
         }
-
         // Get features from the model which now loads from service_features table
         $dbFeatures = $dbService['features'] ?? [];
         $mappedSubcategories = [];
@@ -135,7 +129,6 @@ if (isset($services) && is_array($services)) {
                 if (empty(trim($feature))) continue;
                 // Keep the ERP link for ERP System, else use #
                 $href = ($slug === 'erp-erm' && $feature === 'ERP System') ? route_url('/erp') : '#';
-                
                 // --- ONLINE MARKETING ---
                 if (str_contains(strtolower($feature), 'seo')) $href = route_url('/article-detail-mockup');
                 if (str_contains(strtolower($feature), 'payroll')) $href = route_url('/article', ['id' => 14]);
@@ -150,29 +143,25 @@ if (isset($services) && is_array($services)) {
                 if (str_contains(strtolower($feature), 'sales')) $href = route_url('/article', ['id' => 40]);
                 if (str_contains(strtolower($feature), 'inventory')) $href = route_url('/article', ['id' => 41]);
                 if (str_contains(strtolower($feature), 'customer management')) $href = route_url('/article', ['id' => 42]);
-                
                 // --- DIGITAL PLATFORMS ---
                 if (str_contains(strtolower($feature), 'website')) $href = route_url('/article', ['id' => 35]);
                 if (str_contains(strtolower($feature), 'mobile')) $href = route_url('/article', ['id' => 36]);
                 if (str_contains(strtolower($feature), 'e-commerce') || str_contains(strtolower($feature), 'ecommerce')) $href = route_url('/article', ['id' => 37]);
-                
                 $mappedSubcategories[] = [
                     'label' => $feature,
                     'href' => $href
                 ];
             }
         }
-        
         // Fallback to mock data if database features are empty or corrupted by invalid JSON
         if (empty($mappedSubcategories)) {
             $mappedSubcategories = $mockMatch['subcategories'] ?? [];
         }
-
         $mergedServices[] = [
             'id' => $dbService['id'],
             'icon_emoji' => $mockMatch['icon_emoji'] ?? '⚙️',
-            'title' => $dbService['title'],
-            'summary' => $dbService['summary'],
+            'title' => getCurrentLang() === 'en' ? ($mockMatch['title_en'] ?? $mockMatch['title'] ?? $dbService['title']) : $dbService['title'],
+            'summary' => getCurrentLang() === 'en' ? ($mockMatch['summary_en'] ?? $mockMatch['summary'] ?? $dbService['summary']) : $dbService['summary'],
             'image_placeholder' => $dbService['image'] ? 'uploads/' . $dbService['image'] : $mockMatch['image_placeholder'],
             'dropdown_title' => !empty($dbService['details']['dropdown_title']) ? $dbService['details']['dropdown_title'] : $mockMatch['dropdown_title'],
             'subcategories' => $mappedSubcategories,
@@ -184,7 +173,6 @@ if (isset($services) && is_array($services)) {
     $services = $mockServices;
 }
 ?>
-
 <style>
     /* 1. แอนิเมชันสำหรับสไลด์ขึ้นจากด้านล่าง (Entrance) */
     @keyframes fadeSlideUp {
@@ -195,7 +183,6 @@ if (isset($services) && is_array($services)) {
         opacity: 0; /* ซ่อนไว้ก่อนเริ่ม */
         animation: fadeSlideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
-
     /* 2. แอนิเมชันสำหรับตัวอักษรสีเหลือบ (Gradient Flow) */
     @keyframes text-gradient-pan {
         0% { background-position: 0% center; }
@@ -206,7 +193,6 @@ if (isset($services) && is_array($services)) {
         background-size: 200% auto;
         animation: text-gradient-pan 6s linear infinite;
     }
-
     /* คลาสหน่วงเวลา เพื่อให้เนื้อหาไล่ลำดับกันขึ้นมา */
     .delay-100 { animation-delay: 100ms; }
     .delay-200 { animation-delay: 200ms; }
@@ -222,12 +208,10 @@ if (isset($services) && is_array($services)) {
     /* ซ่อนลูกศร Default ของแท็ก <summary> */
     details > summary { list-style: none; }
     details > summary::-webkit-details-marker { display: none; }
-
     /* แอนิเมชันสำหรับเนื้อหาด้านใน Dropdown เมื่อถูกเปิด */
     details[open] summary ~ * {
         animation: dropDownFade .3s ease-in-out forwards;
     }
-
     @keyframes dropDownFade {
         0% {
             opacity: 0;
@@ -239,12 +223,10 @@ if (isset($services) && is_array($services)) {
         }
     }
 </style>
-
 <section id="services-hero" class="relative font-sans bg-[#f7faff] overflow-hidden m-0 border-none rounded-none">
     <div class="hidden lg:block absolute inset-0 z-0 overflow-hidden">
         <img src="<?= e($heroImage) ?>" alt="WEBPARK Solutions Background" 
             class="hero-parallax-img w-full h-full object-cover object-center opacity-100 mix-blend-screen">
-            
         <div class="absolute inset-0 bg-gradient-to-r from-white via-white/70 to-white/5"></div>
         <div class="absolute inset-x-0 bottom-0 h-[30%] bg-gradient-to-t from-white to-transparent z-10"></div>
     </div>
@@ -267,7 +249,6 @@ if (isset($services) && is_array($services)) {
         @keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
         .animate-scroll { animation: scroll 20s linear infinite; }
         .animate-scroll:hover { animation-play-state: paused; }
-        
         /* บังคับตำแหน่งรูปภาพและ Overlay ด้วย CSS โดยตรง เพื่อเลี่ยงปัญหา Tailwind ไม่คอมไพล์ */
         .hero-bg-img-services {
             object-position: 85% 0% !important;
@@ -276,13 +257,11 @@ if (isset($services) && is_array($services)) {
             /* เฉดสีขาวเฉพาะฝั่งซ้ายและด้านบนที่ตัวหนังสืออยู่ ปล่อยฝั่งขวาให้โปร่งใสเพื่อให้เห็นรูปภาพ */
             background: linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.95) 50%, rgba(255, 255, 255, 0) 85%) !important;
         }
-
         /* Parallax: ขยายรูปเผื่อไว้ล่วงหน้า เพื่อไม่ให้เห็นขอบโหว่ตอนรูปเลื่อนตาม scroll */
         .hero-parallax-img {
             transform: scale(1.15);
             will-change: transform;
         }
-
         /* ไอคอนขั้นตอน Our Approach: hover แล้วขยับ+หมุนเบาๆ (ทำงานหลังจาก GSAP เคลียร์ inline transform ตอน entrance เสร็จ) */
         .gsap-approach-icon {
             transition: transform 0.3s ease;
@@ -290,7 +269,6 @@ if (isset($services) && is_array($services)) {
         .gsap-approach-step:hover .gsap-approach-icon {
             transform: scale(1.12) rotate(-6deg);
         }
-
         /* ไอคอน emoji ในการ์ดบริการ: bounce ตอน hover การ์ด */
         @keyframes iconEmojiBounce {
             0%, 100% { transform: translateY(0) rotate(0deg); }
@@ -304,7 +282,6 @@ if (isset($services) && is_array($services)) {
         .service-icon-emoji {
             display: inline-block;
         }
-
         /* Accessibility: เคารพการตั้งค่า Reduce Motion ของผู้ใช้ ลด/ปิด animation แบบ CSS ทั้งหมดในหน้านี้ */
         @media (prefers-reduced-motion: reduce) {
             *, *::before, *::after {
@@ -315,7 +292,6 @@ if (isset($services) && is_array($services)) {
             }
         }
     </style>
-
     <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8 pt-12 pb-24 lg:pt-28 lg:pb-32 relative z-10">
         <!-- Mobile Background Image (Only covers this Hero container) -->
         <div class="absolute inset-0 z-0 overflow-hidden lg:hidden">
@@ -324,9 +300,7 @@ if (isset($services) && is_array($services)) {
             <div class="absolute inset-0 hero-overlay-mobile-services"></div>
             <div class="absolute inset-x-0 bottom-0 h-[30%] bg-gradient-to-t from-white/50 to-transparent"></div>
         </div>
-
         <div class="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-12 lg:gap-20 items-center relative z-10">
-            
             <div class="max-w-2xl">
                 <nav aria-label="Breadcrumb" class="animate-fade-up delay-100 mb-6 hidden sm:block">
                         <ol class="inline-flex items-center text-sm md:text-base font-medium text-slate-500">
@@ -335,27 +309,22 @@ if (isset($services) && is_array($services)) {
                                     <?= e(t('common.nav_home')) ?>
                                 </a>
                             </li>
-                            
                             <li>
                                 <span class="text-slate-400" style="margin: 0 4px;">/</span>
                             </li>
-                            
                             <li aria-current="page">
                                 <span class="text-slate-400"><?= e(t('common.nav_services')) ?></span>
                             </li>
                         </ol>
                     </nav>
-                    
                 <h1 class="animate-fade-up delay-200 mb-2 tracking-tighter flex flex-col items-start">
                     <span class="text-5xl md:text-6xl lg:text-8xl font-bold bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient py-2">
                         <?= getCurrentLang() === 'th' ? 'ความเชี่ยวชาญ' : 'Expertise' ?>
                     </span>
-
                     <span class="text-5xl md:text-6xl lg:text-8xl font-bold bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient py-4 -mt-4 md:-mt-6 lg:-mt-8" style="animation-delay: -3s;">
                         <?= getCurrentLang() === 'th' ? 'และจุดเด่น' : '& Strengths' ?>
                     </span>
                 </h1>
-
                 <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-lg md:text-xl leading-relaxed max-w-lg mb-10 font-medium">
                     <?php if (getCurrentLang() === 'th'): ?>
                         มากกว่า 20 ปี ที่เราสร้างสรรค์โซลูชันดิจิทัลครบวงจร<br class="block sm:hidden"> ผสานเทคโนโลยี ความเชี่ยวชาญ และความเข้าใจธุรกิจ<br class="block sm:hidden"> เพื่อเพิ่มประสิทธิภาพ สร้างการเติบโต<br class="block sm:hidden"> และยกระดับองค์กรสู่อนาคตอย่างยั่งยืน
@@ -383,14 +352,12 @@ if (isset($services) && is_array($services)) {
         </div>
     </div>
 </section>
-
 <section id="our-services" class="bg-white py-8 lg:py-16 font-sans scroll-mt-6">
     <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8">
         <h1 class="text-4xl md:text-6xl lg:text-7xl font-extrabold leading-tight tracking-tight mb-0 md:mb-1 gsap-fade-up" style="color: #0663F6 !important;">
             <?= e(t('common.nav_services') !== 'common.nav_services' ? t('common.nav_services') : (getCurrentLang() === 'th' ? 'บริการของเรา' : 'Our Services')) ?>
         </h1>
         <div class="mt-2 mb-4 md:mb-6 gsap-fade-up" style="width: 48px; height: 3px; background-color: #0663F6;"></div>
-
         <span class="text-2xl md:text-3xl font-bold gsap-fade-up w-full max-w-none mb-4 block leading-tight" style="color: #043B94;">
             <?= getCurrentLang() === 'th' ? 'บริการของเรา ครอบคลุมทุกมิติธุรกิจดิจิทัล' : 'Our services cover every dimension of digital business' ?>
         </span>
@@ -399,13 +366,9 @@ if (isset($services) && is_array($services)) {
         </p>
     </div>
 </section>
-
-
 <section id="gsap-services-grid" class="bg-white py-8 lg:py-16 font-sans">
     <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8">
-
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 items-start">
-
             <?php foreach ($services as $service):
                 $sTitle  = (string)($service['title'] ?? '');
                 $sSummary= (string)($service['summary'] ?? '');
@@ -414,10 +377,8 @@ if (isset($services) && is_array($services)) {
                 $subcats = (array)($service['subcategories'] ?? []);
                 $dropdownText = getCurrentLang() === 'th' ? (string)($service['dropdown_title'] ?? 'ดูหัวข้อย่อย') : (string)($service['dropdown_title'] ?? 'View Subcategories');
             ?>
-
             <div class="gsap-service-card group rounded-2xl border border-slate-100 bg-white overflow-hidden flex flex-col opacity-0 translate-y-10"
                 style="box-shadow: 0 2px 12px 0 rgba(4,59,148,0.07);">
-
                 <div class="relative w-full overflow-hidden bg-slate-100" style="aspect-ratio: 16/9;">
                     <img
                         src="<?= e($imgSrc) ?>"
@@ -426,30 +387,23 @@ if (isset($services) && is_array($services)) {
                         loading="lazy"
                     >
                 </div>
-
                 <div class="flex flex-col flex-1 p-5 lg:p-6">
-
                     <div class="flex items-center gap-2 mb-2">
                         <span class="service-icon-emoji text-2xl leading-none"><?= e($sEmoji) ?></span>
                         <h2 class="text-lg lg:text-xl font-extrabold" style="color: #022862;"><?= e($sTitle) ?></h2>
                     </div>
-
                     <p class="text-slate-500 text-sm leading-relaxed mb-4">
                         <?= e($sSummary) ?>
                     </p>
-
                     <div class="mt-auto border-t border-slate-100 pt-3">
                         <details class="group/details">
-                            
                             <summary class="flex items-center justify-between px-3 py-2 rounded-lg text-sm font-bold cursor-pointer transition-colors duration-150 hover:bg-[#f0f5ff] text-[#022862] list-none">
                                 <span><?= e($dropdownText) ?></span>
-                                
                                 <svg class="w-4 h-4 shrink-0 text-slate-400 transition-transform duration-200 group-open/details:rotate-180"
                                      fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
                                 </svg>
                             </summary>
-
                             <?php if (!empty($subcats)): ?>
                             <div class="pl-4 pr-3 py-2 space-y-2 border-l-2 border-slate-100 ml-3 mt-1 mb-2">
                                 <?php foreach ($subcats as $item):
@@ -463,31 +417,24 @@ if (isset($services) && is_array($services)) {
                                 <?php endforeach; ?>
                             </div>
                             <?php endif; ?>
-                            
                         </details>
                     </div>
-
                 </div>
             </div>
-
             <?php endforeach; ?>
-
         </div>
     </div>
 </section>
-
 <section class="font-sans pb-12">
     <div class="mx-auto max-w-7xl px-6 sm:px-6 lg:px-8">
         <div class="gsap-cta-box relative rounded-3xl overflow-hidden opacity-0 translate-y-10"
             style="background: linear-gradient(120deg, #011431 0%, #043B94 55%, #1e40af 100%); min-height: 200px;">
-
             <div class="absolute inset-0 pointer-events-none overflow-hidden">
                 <div class="absolute right-0 top-0 h-full w-1/2"
                     style="background: url('<?= e(asset_url('images/bg-cta.jpg')) ?>') center/cover no-repeat; opacity: 0.18;"></div>
                 <div class="absolute inset-0"
                     style="background: linear-gradient(to right, #011431 40%, transparent 100%);"></div>
             </div>
-
             <div class="relative px-8 py-14 md:py-16 text-center" style="z-index: 10;">
                 <h2 class="text-3xl md:text-4xl font-extrabold text-white mb-4 leading-tight">
                     <?= getCurrentLang() === 'th' ? 'พร้อมขับเคลื่อนธุรกิจของคุณไปข้างหน้าหรือยัง?' : 'Ready to drive your business forward?' ?>
@@ -516,10 +463,8 @@ if (isset($services) && is_array($services)) {
         </div>
     </div>
 </section>
-
 <section class="bg-[#eef6ff] py-12 lg:py-16 font-sans">
     <div class="mx-auto max-w-7xl px-6 sm:px-6 lg:px-8">
-
         <div class="flex flex-col items-center text-center max-w-5xl mx-auto mb-12">
             <div class="flex flex-col items-start mb-4 md:mb-6">
                 <span class="text-3xl md:text-4xl font-bold gsap-fade-up mb-1 block" style="color: #054FC5 !important; -webkit-text-fill-color: #054FC5 !important; background: none !important;">
@@ -531,7 +476,6 @@ if (isset($services) && is_array($services)) {
                 <?= getCurrentLang() === 'th' ? 'กระบวนการทำงานที่เป็นระบบ เพื่อส่งมอบโซลูชันดิจิทัลที่ตอบโจทย์ธุรกิจ และความยั่งยืนของข้อมูลธุรกิจที่องค์กรถือครอง' : 'A systematic work process to deliver digital solutions that meet business needs and ensure the sustainability of business data held by the organization.' ?>
             </p>
         </div>
-
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 max-w-5xl mx-auto">
             <?php
             $approachSteps = [
@@ -560,44 +504,36 @@ if (isset($services) && is_array($services)) {
                     'desc'   => getCurrentLang() === 'th' ? 'พัฒนาระบบที่ยืดหยุ่น สามารถขยายตัว และปรับตามธุรกิจที่เติบโตในอนาคต' : 'Develop flexible systems capable of scaling and adapting as the business grows in the future.',
                 ],
             ];
-
             foreach ($approachSteps as $step):
             ?>
             <div class="gsap-approach-step flex flex-row items-center md:items-start gap-5 md:gap-6 rounded-3xl border border-blue-50/50 bg-white p-6 md:p-8 transition-all duration-300 opacity-0 translate-y-10"
                 style="box-shadow: 0 8px 30px -10px rgba(4,59,148,0.08);">
-
                 <div class="gsap-approach-icon w-16 h-16 md:w-20 md:h-20 shrink-0 flex items-center justify-center md:pt-1">
                     <img src="<?= e($step['icon']) ?>"
                          alt="<?= e($step['title']) ?>"
                          class="w-14 h-14 md:w-16 md:h-16 object-contain drop-shadow-sm"
                          onerror="this.onerror=null;this.style.display='none'">
                 </div>
-
                 <div class="flex flex-col gap-1 md:gap-1.5 md:pt-1">
                     <span class="gsap-approach-number text-2xl md:text-3xl font-extrabold" style="color: #043B94;"><?= e($step['number']) ?></span>
                     <h3 class="text-xl md:text-2xl font-extrabold mb-1" style="color: #022862;"><?= e($step['title']) ?></h3>
                     <p class="text-slate-600 text-base md:text-lg leading-[1.7]"><?= e($step['desc']) ?></p>
                 </div>
-
             </div>
             <?php endforeach; ?>
         </div>
-
     </div>
 </section>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", (event) => {
         // ลงทะเบียน ScrollTrigger
         gsap.registerPlugin(ScrollTrigger);
-
         // เช็คว่าผู้ใช้ตั้งค่าเครื่องให้ลด Motion ไว้หรือไม่ (Accessibility)
         // ถ้าใช่ จะข้าม animation ที่เกี่ยวกับการเคลื่อนไหวเยอะๆ (parallax, pin, elastic pop)
         // และแสดงเนื้อหาแบบปกติทันที โดยยังคง fade เบาๆ ไว้เพื่อไม่ให้กระพริบ
         const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
         // 0. Parallax รูปพื้นหลัง Hero — รูปเลื่อนช้ากว่าคอนเทนต์เล็กน้อยตอน scroll ผ่าน section
         if (!prefersReducedMotion) {
             gsap.utils.toArray(".hero-parallax-img").forEach((img) => {
@@ -613,7 +549,6 @@ if (isset($services) && is_array($services)) {
                 });
             });
         }
-
         // 1. Animation สำหรับหัวข้อ OUR SERVICES
         if (prefersReducedMotion) {
             gsap.set(".gsap-fade-up", { y: 0, opacity: 1 });
@@ -631,20 +566,17 @@ if (isset($services) && is_array($services)) {
                 ease: "power2.out"
             });
         }
-
         // 2. Animation สำหรับการ์ดบริการ
         // Desktop/Tablet (≥768px): Pin ทั้ง section ไว้ แล้วให้การ์ดโผล่ทีละใบตามระยะที่เลื่อน (scrub)
         //   จนกว่าจะครบ 4 ใบ ถึงจะปลดล็อกให้เลื่อนผ่าน section นี้ไปต่อได้
         // Mobile (<768px): ใช้แบบเดิม (โผล่ทีละใบเมื่อเลื่อนมาถึง ไม่ pin) เพราะจอเล็ก pin ยาวๆ จะกระทบ UX
         const serviceCardsWrapper = document.querySelector("#gsap-services-grid");
         const serviceCards = gsap.utils.toArray(".gsap-service-card");
-
         if (serviceCardsWrapper && serviceCards.length && prefersReducedMotion) {
             // Reduced motion: แสดงการ์ดทั้งหมดทันที ไม่ pin ไม่ scrub
             gsap.set(serviceCards, { y: 0, opacity: 1 });
         } else if (serviceCardsWrapper && serviceCards.length) {
             ScrollTrigger.matchMedia({
-
                 // --- Desktop / Tablet: Pin + Scrub ---
                 "(min-width: 768px)": function () {
                     const cardsTimeline = gsap.timeline({
@@ -658,7 +590,6 @@ if (isset($services) && is_array($services)) {
                             // markers: true, // เปิดบรรทัดนี้ตอน debug เพื่อดูตำแหน่ง start/end บนจอ
                         }
                     });
-
                     serviceCards.forEach((card, index) => {
                         cardsTimeline.to(card, {
                             y: 0,
@@ -667,14 +598,12 @@ if (isset($services) && is_array($services)) {
                             ease: "power2.out"
                         }, index); // แต่ละใบเริ่ม animate เรียงตามลำดับเวลาในไทม์ไลน์ ทำให้โผล่ทีละใบ
                     });
-
                     // ฟังก์ชัน cleanup: เรียกอัตโนมัติเมื่อ media query ไม่ตรงแล้ว (เช่น ย่อจอลงต่ำกว่า 768px)
                     return () => {
                         cardsTimeline.scrollTrigger && cardsTimeline.scrollTrigger.kill();
                         cardsTimeline.kill();
                     };
                 },
-
                 // --- Mobile: แบบเดิม ไม่ pin ---
                 "(max-width: 767px)": function () {
                     const mobileTriggers = serviceCards.map((card) => {
@@ -690,7 +619,6 @@ if (isset($services) && is_array($services)) {
                             ease: "power2.out"
                         });
                     });
-
                     return () => {
                         mobileTriggers.forEach((tween) => {
                             tween.scrollTrigger && tween.scrollTrigger.kill();
@@ -698,10 +626,8 @@ if (isset($services) && is_array($services)) {
                         });
                     };
                 }
-
             });
         }
-
         // 2.5 Animation สำหรับ CTA Box ท้ายหน้า — fade + slide ขึ้นตอน scroll มาถึง
         const ctaBox = document.querySelector(".gsap-cta-box");
         if (ctaBox) {
@@ -721,7 +647,6 @@ if (isset($services) && is_array($services)) {
                 });
             }
         }
-
         // 3. Animation สำหรับ Our Approach
         // การ์ดทั้งใบ fade+slide ขึ้นตามปกติ ส่วนไอคอนกับเลขลำดับ (01-04) จะ "pop" ตามเข้ามาทีหลังเล็กน้อย
         // แบบ elastic ให้ความรู้สึกมีชีวิตชีวา ส่วน hover ของไอคอนคุมด้วย CSS (.gsap-approach-step:hover .gsap-approach-icon)
@@ -729,18 +654,15 @@ if (isset($services) && is_array($services)) {
         approachSteps.forEach((step) => {
             const icon = step.querySelector(".gsap-approach-icon");
             const number = step.querySelector(".gsap-approach-number");
-
             if (prefersReducedMotion) {
                 gsap.set(step, { y: 0, opacity: 1 });
                 if (icon) gsap.set(icon, { clearProps: "opacity,transform" });
                 if (number) gsap.set(number, { clearProps: "opacity,transform" });
                 return;
             }
-
             // ตั้งค่าเริ่มต้นของไอคอน/เลข ให้เล็กและโปร่งใสก่อน pop เข้ามา
             if (icon) gsap.set(icon, { opacity: 0, scale: 0.5, rotate: 14 });
             if (number) gsap.set(number, { opacity: 0, scale: 0.3 });
-
             const stepTimeline = gsap.timeline({
                 scrollTrigger: {
                     trigger: step, // ให้กล่อง step แต่ละอันเป็น trigger ของตัวเอง
@@ -748,14 +670,12 @@ if (isset($services) && is_array($services)) {
                     toggleActions: "play none none reverse"
                 }
             });
-
             stepTimeline.to(step, {
                 y: 0,
                 opacity: 1,
                 duration: 0.6,
                 ease: "power2.out"
             });
-
             if (number) {
                 stepTimeline.to(number, {
                     opacity: 1,
@@ -765,7 +685,6 @@ if (isset($services) && is_array($services)) {
                     clearProps: "transform" // เคลียร์ inline transform หลังจบ ให้ไม่ค้างทับ hover/css อื่นภายหลัง
                 }, "-=0.35");
             }
-
             if (icon) {
                 stepTimeline.to(icon, {
                     opacity: 1,

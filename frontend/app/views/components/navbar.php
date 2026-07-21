@@ -1,6 +1,5 @@
 <?php
 declare(strict_types=1);
-
 $currentPage = $currentPage ?? 'home';
 $navItems = [
     ['path' => '/', 'label' => t('common.nav_home'), 'page' => 'home'],
@@ -10,18 +9,14 @@ $navItems = [
     ['path' => '/article', 'label' => t('common.nav_articles'), 'page' => 'articles'],
     ['path' => '/contact', 'label' => t('common.nav_contact'), 'page' => 'contact'],
 ];
-
 $currentLang = getCurrentLang();
 ?>
-
 <header class="sticky top-0 z-[1000] border-b border-slate-200 bg-white backdrop-blur">
     <div class="mx-auto flex h-16 w-full items-center justify-between px-4 md:px-8 lg:px-12">
-
         <!-- Logo -->
         <a class="flex items-center gap-3" href="<?= e(route_url('/')) ?>">
             <img class="h-10 w-auto object-contain" src="<?= e(asset_url('images/logo.png')) ?>" alt="WEBPARK logo" style="border: none; outline: none;">
         </a>
-
         <!-- Desktop Navigation -->
         <style>
             .desktop-nav-link {
@@ -47,7 +42,6 @@ $currentLang = getCurrentLang();
                 <?php endif; ?>
             <?php endforeach; ?>
         </nav>
-
         <!-- Right Section -->
         <div class="flex items-center gap-4">
             <!-- Language Switcher -->
@@ -56,13 +50,11 @@ $currentLang = getCurrentLang();
                 <span style="color: #011431;" class="mx-1">|</span>
                 <a href="<?= e(current_url_with_lang('en')) ?>" style="<?= $currentLang === 'en' ? 'color: #0663F6;' : 'color: #011431;' ?>" class="hover:opacity-80">EN</a>
             </div>
-
             <!-- CTA Button (Hidden on Desktop as per design) -->
             <a href="<?= e(route_url('/contact')) ?>"
                class="hidden items-center justify-center px-6 py-2.5 bg-primary text-white text-sm font-semibold rounded-full shadow-md transition hover:bg-blue-700 hover:-translate-y-0.5">
                <?= e(t('common.nav_cta_advice')) ?>
             </a>
-
             <!-- Mobile Menu Toggle -->
             <button id="mobileMenuToggle"
                     class="lg:hidden inline-flex h-11 w-11 items-center justify-center rounded-xl border border-slate-200 text-lg font-bold"
@@ -73,7 +65,6 @@ $currentLang = getCurrentLang();
             </button>
         </div>
     </div>
-
     <!-- Mobile Menu -->
     <div id="mobileMenu" class="hidden border-t border-slate-200 bg-white px-4 py-4 lg:hidden">
         <div class="flex flex-col w-full gap-2">
@@ -85,15 +76,12 @@ $currentLang = getCurrentLang();
                     <a href="<?= e(current_url_with_lang('en')) ?>" class="<?= $currentLang === 'th' ? 'opacity-40 hover:text-primary' : 'text-primary' ?>">EN</a>
                 </div>
             </div>
-
             <?php foreach ($navItems as $item): ?>
                 <a href="<?= e(route_url($item['path'])) ?>"
                    class="rounded-xl px-4 py-3 transition hover:bg-slate-50 <?= $currentPage === $item['page'] ? 'bg-blue-50 text-primary font-semibold' : 'text-slate-700' ?>">
                    <?= e($item['label']) ?>
                 </a>
             <?php endforeach; ?>
-
-
             <!-- CTA Button -->
             <a href="<?= e(route_url('/contact')) ?>"
                class="inline-flex self-start mt-2 items-center justify-center px-6 py-2.5 bg-primary text-white text-sm font-semibold rounded-full shadow-md transition hover:bg-blue-700 hover:-translate-y-0.5">
@@ -101,7 +89,6 @@ $currentLang = getCurrentLang();
             </a>
         </div>
     </div>
-
     <!-- Scripts -->
     <script>
         // Mobile menu toggle

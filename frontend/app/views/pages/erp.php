@@ -1,18 +1,13 @@
 <?php
-
 declare(strict_types=1);
-
 $categories = is_array($categories ?? null) ? $categories : [];
 $activeCategorySlug = (string) ($activeCategorySlug ?? 'all');
 $fallbackImage = asset_url('images/story.png');
 $heroImage = asset_url('images/bg-6.png');
 $ctaImage = asset_url('images/bg-cta.jpg');
-
 /**
  * ERP product page view — modules, benefits, and portfolio showcase.
  */
-
-
  $mockModules = [
     [
         'id' => 1,
@@ -95,8 +90,6 @@ $ctaImage = asset_url('images/bg-cta.jpg');
         'icon' => 'ERP_19.svg'
     ],
 ];
-
-
 $mockErpPortfolios = [
     [
         'id' => 1,
@@ -123,7 +116,6 @@ $mockErpPortfolios = [
         'image_path' => 'images/bg-hand.jpg'
     ]
 ];
-
 // ใช้ Mock Data แทน Database ชั่วคราว
 $modulesData = $mockModules;
 $erpPortfolios = $mockErpPortfolios;
@@ -140,17 +132,14 @@ $erpPortfolios = $mockErpPortfolios;
     .delay-100 { animation-delay: 100ms; }
     .delay-200 { animation-delay: 200ms; }
     .delay-300 { animation-delay: 300ms; }
-    /* 1. แอนิเมชันสำหรับสไลด์ขึ้นจากด้านล่าง (Entrance) */
     @keyframes fadeSlideUp {
         0% { opacity: 0; transform: translateY(30px); }
         100% { opacity: 1; transform: translateY(0); }
     }
     .animate-fade-up {
-        opacity: 0; /* ซ่อนไว้ก่อนเริ่ม */
+        opacity: 0;
         animation: fadeSlideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
-
-    /* 2. แอนิเมชันสำหรับตัวอักษรสีเหลือบ (Gradient Flow) */
     @keyframes text-gradient-pan {
         0% { background-position: 0% center; }
         50% { background-position: 100% center; }
@@ -160,28 +149,21 @@ $erpPortfolios = $mockErpPortfolios;
         background-size: 200% auto;
         animation: text-gradient-pan 6s linear infinite;
     }
-
-    /* คลาสหน่วงเวลา เพื่อให้เนื้อหาไล่ลำดับกันขึ้นมา */
     .delay-100 { animation-delay: 100ms; }
     .delay-200 { animation-delay: 200ms; }
     .delay-300 { animation-delay: 300ms; }
     .delay-400 { animation-delay: 400ms; }
-
     .scrollbar-none::-webkit-scrollbar {
-        display: none; /* สำหรับ Chrome, Safari และ Opera */
+        display: none;
     }
     .scrollbar-none {
-        -ms-overflow-style: none;  /* สำหรับ IE และ Edge */
-        scrollbar-width: none;  /* สำหรับ Firefox */
+        -ms-overflow-style: none;
+        scrollbar-width: none;
     }
-
-    /* Parallax: ขยายรูปเผื่อไว้ล่วงหน้า เพื่อไม่ให้เห็นขอบโหว่ตอนรูปเลื่อนตาม scroll */
     .hero-parallax-img {
         transform: scale(1.15);
         will-change: transform;
     }
-
-    /* Accessibility: เคารพการตั้งค่า Reduce Motion ของผู้ใช้ */
     @media (prefers-reduced-motion: reduce) {
         *, *::before, *::after {
             animation-duration: 0.001ms !important;
@@ -191,16 +173,10 @@ $erpPortfolios = $mockErpPortfolios;
         }
     }
 </style>
-
-
-
-
-
 <section id="erp-hero" class="relative font-sans bg-[#f7faff] overflow-hidden mt-0 mx-4 mb-4 sm:mt-0 sm:mx-6 sm:mb-6 rounded-t-none rounded-b-[2rem] lg:m-0 lg:rounded-none">
     <div class="hidden lg:block absolute inset-0 z-0 overflow-hidden">
         <img src="<?= e($heroImage) ?>" alt="WEBPARK Solutions Background" 
             class="hero-parallax-img w-full h-full object-cover object-center opacity-100 mix-blend-screen">
-            
         <div class="absolute inset-0 bg-gradient-to-r from-white via-white/70 to-white/5"></div>
         <div class="absolute inset-x-0 bottom-0 h-[30%] bg-gradient-to-t from-white to-transparent z-10"></div>
     </div>
@@ -224,7 +200,6 @@ $erpPortfolios = $mockErpPortfolios;
         .animate-scroll { animation: scroll 20s linear infinite; }
         .animate-scroll:hover { animation-play-state: paused; }
     </style>
-
     <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8 pt-12 pb-24 lg:pt-28 lg:pb-32 relative z-10">
         <!-- Mobile Background Image (Only covers this Hero container) -->
         <div class="absolute inset-0 z-0 overflow-hidden lg:hidden rounded-2xl">
@@ -233,9 +208,7 @@ $erpPortfolios = $mockErpPortfolios;
             <div class="absolute inset-0 bg-gradient-to-b from-white/90 via-white/70 to-white/40"></div>
             <div class="absolute inset-x-0 bottom-0 h-[30%] bg-gradient-to-t from-white to-transparent"></div>
         </div>
-
         <div class="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-12 lg:gap-20 items-center relative z-10">
-            
             <div class="max-w-2xl">
                 <nav aria-label="Breadcrumb" class="animate-fade-up delay-100 mb-6 hidden sm:block">
                         <ol class="inline-flex items-center text-sm md:text-base font-medium text-slate-500">
@@ -244,17 +217,14 @@ $erpPortfolios = $mockErpPortfolios;
                                     <?= e(t('common.nav_home')) ?>
                                 </a>
                             </li>
-                            
                             <li>
                                 <span class="text-slate-400" style="margin: 0 4px;">/</span>
                             </li>
-                            
                             <li aria-current="page">
                                 <span class="text-slate-400">ERP System</span>
                             </li>
                         </ol>
                     </nav>
-                
                 <!-- Mobile Only Hero Content -->
                 <div class="block md:hidden">
                     <h1 class="animate-fade-up delay-200 leading-[1.1] mb-2 tracking-tighter">
@@ -264,12 +234,10 @@ $erpPortfolios = $mockErpPortfolios;
                         <span class="text-5xl font-extrabold bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block pb-0 pt-2 ml-1">
                             <?= getCurrentLang() === 'th' ? 'ERP' : 'Systems' ?>
                         </span><br>
-
                         <span class="text-xl font-bold leading-[1.4] bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block mt-0 pb-3 pt-1" style="animation-delay: -3s;">
                             <?= getCurrentLang() === 'th' ? 'เชื่อมต่อทุกกระบวนการธุรกิจ<br>แบบครบวงจรในแพลตฟอร์มเดียว' : 'Connecting every business process<br>end-to-end on a single platform' ?>
                         </span>
                     </h1>
-
                     <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-lg md:text-xl leading-relaxed max-w-lg mb-10 font-medium">
                         <?php if (getCurrentLang() === 'th'): ?>
                             ระบบบริหารจัดการทรัพยากรองค์กร<br>
@@ -284,7 +252,6 @@ $erpPortfolios = $mockErpPortfolios;
                             <?= e(t('common.articles_growth_summary')) ?>
                         <?php endif; ?>
                     </p>
-                    
                     <div class="animate-entrance-up delay-400 flex flex-col items-start gap-4">
                         <a href="<?= e(route_url('/service')) ?>" class="inline-flex items-center justify-center gap-2 px-6 py-2.5 bg-primary text-white text-sm font-semibold rounded-full hover:bg-blue-700 transition-all shadow-md hover:-translate-y-0.5">
                             <?= getCurrentLang() === 'th' ? 'ปรึกษาผู้เชี่ยวชาญ' : 'Consult an Expert' ?>
@@ -302,7 +269,6 @@ $erpPortfolios = $mockErpPortfolios;
                         </a>
                     </div>
                 </div>
-
                 <!-- Desktop Only Hero Content -->
                 <div class="hidden md:block">
                     <h1 class="animate-fade-up delay-200 leading-[1.1] mb-2 tracking-tighter">
@@ -312,12 +278,10 @@ $erpPortfolios = $mockErpPortfolios;
                         <span class="text-4xl md:text-6xl lg:text-8xl font-bold bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block pb-0 pt-2 ml-1 lg:ml-2">
                             <?= getCurrentLang() === 'th' ? 'ERP' : 'Systems' ?>
                         </span><br>
-
                         <span class="text-xl md:text-2xl lg:text-4xl font-medium leading-snug bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block mt-0 pb-3 pt-1" style="animation-delay: -3s;">
                             <?= getCurrentLang() === 'th' ? 'เชื่อมต่อทุกกระบวนการธุรกิจ<br>แบบครบวงจรในแพลตฟอร์มเดียว' : 'Connecting every business process<br>end-to-end on a single platform' ?>
                         </span>
                     </h1>
-
                     <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-lg md:text-xl leading-relaxed max-w-lg mb-10 font-medium">
                         <?php if (getCurrentLang() === 'th'): ?>
                             รวบรวมบทความรู้ เทคโนโลยี นวัตกรรม และแนวทางการทำธุรกิจ<br>ครอบคลุม ERP ระบบธุรกิจดิจิทัล การตลาดออนไลน์ AI<br>และโซลูชัน ที่ช่วยพัฒนาองค์กรให้เติบโตได้อย่างยั่งยืน
@@ -347,11 +311,7 @@ $erpPortfolios = $mockErpPortfolios;
             </div>
         </div>
     </div>
-
-
-
 </section>
-
 <style>
     @media (min-width: 1024px) {
         .erp-left-col { flex: none !important; width: 480px !important; max-width: 480px !important; }
@@ -369,7 +329,6 @@ $erpPortfolios = $mockErpPortfolios;
 <section class="bg-white pt-8 pb-4 lg:pt-24 lg:pb-8">
     <div class="erp-bleed-wrapper mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8 relative z-20 -mt-10 lg:-mt-18 pb-6 lg:pb-16 overflow-hidden">
         <div class="w-full rounded-[1rem] bg-white flex flex-col lg:flex-row items-stretch shadow-[0_4px_25px_rgba(0,0,0,0.06)] border border-gray-100 overflow-hidden">
-
             <div class="erp-left-col gsap-erp-about-left group flex-1 flex flex-col justify-center p-6 lg:p-8 border-b lg:border-b-0 lg:border-r border-gray-100 shrink-0 bg-white transition-all duration-300 hover:bg-slate-50/50 cursor-pointer opacity-0 translate-y-10">
                 <div>
                     <span class="text-primary font-bold text-lg md:text-base tracking-wide inline-block mb-3 mx-0 uppercase">
@@ -386,7 +345,6 @@ $erpPortfolios = $mockErpPortfolios;
                     </p>
                 </div>
             </div>
-
             <div class="erp-right-col gsap-erp-about-right flex-[4] grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 w-full opacity-0 translate-y-10">
                 <?php
                 $serviceCards = [
@@ -436,12 +394,8 @@ $erpPortfolios = $mockErpPortfolios;
         </div>
     </div>
 </section>
-
-
-
 <section id="modules" class="bg-slate-50 py-10 lg:py-12 font-sans border-t border-slate-100">
     <div class="mx-auto max-w-7xl px-6 sm:px-6 lg:px-8">
-        
         <div class="text-center max-w-3xl mx-auto mb-10 lg:mb-16">
             <h2 class="text-3xl md:text-4xl font-extrabold text-blue-600 tracking-tight mb-4">
                 <span class="lg:hidden">ERP modules</span>
@@ -452,11 +406,9 @@ $erpPortfolios = $mockErpPortfolios;
                 <span class="hidden lg:inline"><?= e(getCurrentLang() === 'th' ? 'ครบทุกโมดูล ตอบโจทย์ทุกการทำงานขององค์กร' : 'Complete modules for all enterprise operations') ?></span>
             </span>
         </div>
-
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-2 lg:gap-6">
             <?php foreach ($modulesData as $module): ?>
                 <div class="gsap-erp-module-card bg-white rounded-2xl p-6 border border-slate-100 shadow-sm hover:shadow-xl hover:bg-primary hover:border-primary transition-all duration-300 group hover:-translate-y-1 relative overflow-hidden opacity-0 translate-y-10">
-                    
                     <div class="relative z-10 flex flex-row items-center gap-5">
                         <div class="shrink-0 w-16 h-16 bg-blue-50/60 group-hover:bg-white/20 rounded-full flex items-center justify-center transition-colors duration-300">
                             <img src="<?= e(asset_url('images/' . $module['icon'])) ?>" alt="<?= e($module['name_en']) ?>" class="w-10 h-10 object-contain group-hover:scale-110 transition-all duration-300" />
@@ -473,18 +425,13 @@ $erpPortfolios = $mockErpPortfolios;
                 </div>
             <?php endforeach; ?>
         </div>
-
     </div>
 </section>
-
-
-
 <section class="bg-slate-50 py-10 lg:py-10 font-sans border-t border-slate-100">
     <div class="mx-auto max-w-7xl px-6 sm:px-6 lg:px-8">
         <h2 class="text-2xl md:text-3xl font-extrabold text-center text-[#022862] tracking-tight py-10">
             <?= e(t('erp.cta_banner_title') !== 'erp.cta_banner_title' ? t('erp.cta_banner_title') : (getCurrentLang() === 'th' ? 'ERP ที่ช่วยยกระดับธุรกิจของคุณ' : 'ERP That Elevates Your Business')) ?>
         </h2>
-
         <style>
             @media (max-width: 639px) {
                 .mobile-span-2 {
@@ -550,11 +497,9 @@ $erpPortfolios = $mockErpPortfolios;
         </div>
     </div>
 </section>
-
 <?php if (!empty($erpPortfolios)): ?>
 <section class="bg-white py-10 lg:py-20 font-sans">
     <div class="mx-auto max-w-7xl px-6 sm:px-6 lg:px-8">
-        
         <div class="flex flex-col md:flex-row md:items-end justify-between border-b border-slate-200 pb-5 mb-10 gap-4">
             <div>
                 <h2 class="text-2xl md:text-3xl font-extrabold leading-none tracking-tight text-[#022862] m-0">
@@ -562,7 +507,6 @@ $erpPortfolios = $mockErpPortfolios;
                 </h2>
             </div>
         </div>
-
         <div id="erp-portfolio-scroll-container" class="flex overflow-x-auto snap-x snap-mandatory scrollbar-none gap-8 pb-6 -mx-4 px-4 md:mx-0 md:px-0 md:grid md:grid-cols-4 lg:grid-cols-4 md:overflow-visible md:snap-none">
             <?php foreach ($erpPortfolios as $port): 
                 $imgSrc = resolve_article_image_url($port['image_path'] ?? '', asset_url('images/erp.png'));
@@ -598,7 +542,6 @@ $erpPortfolios = $mockErpPortfolios;
                 </a>
             <?php endforeach; ?>
         </div>
-
         <div class="flex justify-center gap-2 mt-2 md:hidden" id="erp-portfolio-dots">
             <?php for ($i = 0; $i < count($erpPortfolios); $i++): ?>
                 <button 
@@ -608,24 +551,18 @@ $erpPortfolios = $mockErpPortfolios;
                 ></button>
             <?php endfor; ?>
         </div>
-
         <script>
         document.addEventListener('DOMContentLoaded', function() {
             const container = document.getElementById('erp-portfolio-scroll-container');
             const dots = document.querySelectorAll('#erp-portfolio-dots button');
-            
             if (!container || dots.length === 0) return;
-            
             container.addEventListener('scroll', function() {
                 const scrollLeft = container.scrollLeft;
                 const width = container.clientWidth;
-                
                 let closestIndex = 0;
                 let minDiff = Infinity;
-                
                 const children = container.children;
                 const cardElements = Array.from(children).filter(el => el.tagName === 'A');
-                
                 cardElements.forEach((el, index) => {
                     const diff = Math.abs(el.offsetLeft - scrollLeft - (width - el.clientWidth) / 2);
                     if (diff < minDiff) {
@@ -633,7 +570,6 @@ $erpPortfolios = $mockErpPortfolios;
                         closestIndex = index;
                     }
                 });
-                
                 dots.forEach((dot, index) => {
                     if (index === closestIndex) {
                         dot.classList.add('bg-primary', 'w-5');
@@ -645,7 +581,6 @@ $erpPortfolios = $mockErpPortfolios;
                 });
             });
         });
-
         function scrollToErpPortfolio(index) {
             const container = document.getElementById('erp-portfolio-scroll-container');
             if (!container) return;
@@ -655,31 +590,23 @@ $erpPortfolios = $mockErpPortfolios;
             }
         }
         </script>
-
     </div>
 </section>
 <?php endif; ?>
-
-
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", () => {
         gsap.registerPlugin(ScrollTrigger);
-
         const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
         // Helper function for reveal on scroll
         function revealOnScroll(selector, options = {}) {
             const els = gsap.utils.toArray(selector);
             if (!els.length) return;
-
             if (prefersReducedMotion) {
                 gsap.set(els, { y: 0, opacity: 1 });
                 return;
             }
-
             els.forEach((el) => {
                 gsap.to(el, {
                     scrollTrigger: {
@@ -695,7 +622,6 @@ $erpPortfolios = $mockErpPortfolios;
                 });
             });
         }
-
         // 1. Hero Parallax Background Image
         if (!prefersReducedMotion) {
             gsap.utils.toArray(".hero-parallax-img").forEach((img) => {
@@ -711,11 +637,9 @@ $erpPortfolios = $mockErpPortfolios;
                 });
             });
         }
-
         // 2. Section "ระบบ ERP คืออะไร"
         revealOnScroll(".gsap-erp-about-left");
         revealOnScroll(".gsap-erp-about-right");
-        
         if (!prefersReducedMotion) {
             const aboutCards = gsap.utils.toArray(".gsap-erp-about-card");
             if (aboutCards.length) {
@@ -733,7 +657,6 @@ $erpPortfolios = $mockErpPortfolios;
                 });
             }
         }
-
         // 3. Section "ERP Modules" (10 Modules Staggered)
         const moduleCards = gsap.utils.toArray(".gsap-erp-module-card");
         if (moduleCards.length) {
@@ -754,7 +677,6 @@ $erpPortfolios = $mockErpPortfolios;
                 });
             }
         }
-
         // 4. Section "ERP Benefits" (5 Benefits Staggered)
         const benefitCards = gsap.utils.toArray(".gsap-erp-benefit-card");
         if (benefitCards.length) {
@@ -775,7 +697,6 @@ $erpPortfolios = $mockErpPortfolios;
                 });
             }
         }
-
         // 5. Section "Portfolio Showcase"
         const portfolioCards = gsap.utils.toArray(".gsap-erp-portfolio-card");
         if (portfolioCards.length) {
