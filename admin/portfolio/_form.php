@@ -8,7 +8,7 @@ $formAction = $formAction ?? 'create.php';
 $categories = db()->query('SELECT id, name FROM categories ORDER BY name')->fetchAll();
 $authors = db()->query('SELECT id, display_name FROM authors ORDER BY display_name')->fetchAll();
 $content = $data['description'] ?? ($data['content'] ?? '');
-$inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition';
+$inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-4 text-lg text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition';
 ?>
 <div class="mx-auto max-w-7xl px-4 py-6 lg:px-8">
     <form method="post"
@@ -160,42 +160,42 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
                                 class="<?= $inputClass ?>">
                         </div>
                     </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-end">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
                         <div class="w-full">
                             <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 block">
                                 สถานะการเผยแพร่ผลงาน
                             </label>
-                            <div class="grid grid-cols-3 gap-3 h-[46px]">
-                                <label class="block cursor-pointer h-full">
+                            <div class="grid grid-cols-1 xl:grid-cols-3 gap-3">
+                                <label class="block cursor-pointer">
                                     <input
                                         type="radio"
                                         name="status"
                                         value="draft"
                                         class="peer sr-only"
                                         <?= (($data['status'] ?? 'draft') === 'draft') ? 'checked' : '' ?>>
-                                    <div class="h-full w-full flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 text-center text-sm font-semibold text-slate-600 transition-all duration-200 hover:bg-slate-50 peer-checked:border-amber-400 peer-checked:bg-amber-50/60 peer-checked:text-amber-800">
+                                    <div class="w-full flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-4 text-center text-lg font-semibold text-slate-600 transition-all duration-200 hover:bg-slate-50 peer-checked:border-amber-400 peer-checked:bg-amber-50/60 peer-checked:text-amber-800">
                                         แบบร่าง (Draft)
                                     </div>
                                 </label>
-                                <label class="block cursor-pointer h-full">
+                                <label class="block cursor-pointer">
                                     <input
                                         type="radio"
                                         name="status"
                                         value="hidden"
                                         class="peer sr-only"
                                         <?= (($data['status'] ?? 'draft') === 'hidden') ? 'checked' : '' ?>>
-                                    <div class="h-full w-full flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 text-center text-sm font-semibold text-slate-600 transition-all duration-200 hover:bg-slate-50 peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-800">
+                                    <div class="w-full flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-4 text-center text-lg font-semibold text-slate-600 transition-all duration-200 hover:bg-slate-50 peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-800">
                                         ซ่อนอยู่ (Hidden)
                                     </div>
                                 </label>
-                                <label class="block cursor-pointer h-full">
+                                <label class="block cursor-pointer">
                                     <input
                                         type="radio"
                                         name="status"
                                         value="published"
                                         class="peer sr-only"
                                         <?= (($data['status'] ?? 'draft') === 'published') ? 'checked' : '' ?>>
-                                    <div class="h-full w-full flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 text-center text-sm font-semibold text-slate-600 transition-all duration-200 hover:bg-slate-50 peer-checked:border-emerald-500 peer-checked:bg-emerald-50/60 peer-checked:text-emerald-800">
+                                    <div class="w-full flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-4 text-center text-lg font-semibold text-slate-600 transition-all duration-200 hover:bg-slate-50 peer-checked:border-emerald-500 peer-checked:bg-emerald-50/60 peer-checked:text-emerald-800">
                                         เผยแพร่ (Published)
                                     </div>
                                 </label>
@@ -205,7 +205,7 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
                             <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 block">
                                 หมวดหมู่ผลงานโครงการ <span class="text-red-500 ml-0.5">*</span>
                             </label>
-                            <select name="category_id" class="<?= $inputClass ?> bg-white border-slate-200 h-[46px] py-0" required>
+                            <select name="category_id" class="<?= $inputClass ?> bg-white border-slate-200" required>
                                 <option value="">เลือกหมวดหมู่ผลงานโครงการ...</option>
                                 <?php foreach ($categories as $category): ?>
                                     <option value="<?= (int) $category['id'] ?>" <?= (int) ($data['category_id'] ?? 0) === (int) $category['id'] ? 'selected' : '' ?>>

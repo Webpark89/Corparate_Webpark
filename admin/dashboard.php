@@ -193,8 +193,8 @@ for ($i = 0; $i < 5; $i++) {
     </section>
     <section class="md:col-span-1 xl-col-span-1 flex flex-col gap-6 min-w-0">
         <!-- Top 5 -->
-        <div class="bg-white border border-slate-200 rounded-2xl shadow-sm p-5 flex-1 flex flex-col justify-center">
-            <div class="mb-4">
+        <div class="bg-white border border-slate-200 rounded-2xl shadow-sm p-6 flex-1 flex flex-col justify-center">
+            <div class="mb-4 ml-2">
                 <h3 class="text-sm font-bold text-slate-800">5 อันดับบทความยอดฮิต (Top 5)</h3>
                 <p class="text-[10px] text-slate-400">บทความที่มีคนเข้าชมมากที่สุด</p>
             </div>
@@ -218,8 +218,8 @@ for ($i = 0; $i < 5; $i++) {
             </div>
         </div>
         <!-- Bottom 5 -->
-        <div class="bg-white border border-slate-200 rounded-2xl shadow-sm p-5 flex-1 flex flex-col justify-center">
-            <div class="mb-4">
+        <div class="bg-white border border-slate-200 rounded-2xl shadow-sm p-6 flex-1 flex flex-col justify-center">
+            <div class="mb-4 ml-2">
                 <h3 class="text-sm font-bold text-slate-800">5 อันดับยอดชมน้อย (Bottom 5)</h3>
                 <p class="text-[10px] text-slate-400">บทความที่ควรปรับปรุงเนื้อหา</p>
             </div>

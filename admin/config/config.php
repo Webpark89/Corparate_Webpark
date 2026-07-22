@@ -12,7 +12,7 @@ define('DB_PORT', '3306');
 define('DB_CHARSET', 'utf8mb4');
 // ---- Admin Login ----
 define('ADMIN_USERNAME', 'admin');
-define('ADMIN_PASSWORD_HASH', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi'); // Password is 'password'
+define('ADMIN_PASSWORD_HASH', '$2y$10$ZF8ZANwMN4lI485CyREtTOFRZW0dNaoe0t9qb395Uxasv/K5lYUcK'); // Password is 'password'
 // ---- Site ----
 define('SITE_NAME', 'WEBPARK');
 define('SITE_URL', 'http://localhost/Corparate_Webpark');           // no trailing slash

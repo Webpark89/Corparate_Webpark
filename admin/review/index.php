@@ -51,7 +51,7 @@ $reviews = $statement->fetchAll();
                     </div>
                 </div>
                 <div class="md:col-span-3">
-                    <select name="rating" onchange="this.form.submit()"
+                    <select name="rating"
                         class="w-full rounded-xl border border-slate-200 bg-slate-50/50 px-3 py-2 text-sm text-slate-700 focus:bg-white focus:border-blue-500 focus:outline-none transition-all">
                         <option value="">ทุกคะแนนรีวิว</option>
                         <option value="5" <?= $ratingFilter === '5' ? 'selected' : '' ?>>5 ดาว</option>
@@ -62,7 +62,7 @@ $reviews = $statement->fetchAll();
                     </select>
                 </div>
                 <div class="md:col-span-3">
-                    <select name="status" onchange="this.form.submit()"
+                    <select name="status"
                         class="w-full rounded-xl border border-slate-200 bg-slate-50/50 px-3 py-2 text-sm text-slate-700 focus:bg-white focus:border-blue-500 focus:outline-none transition-all">
                         <option value="">ทุกสถานะ</option>
                         <option value="1" <?= $statusFilter === '1' ? 'selected' : '' ?>>เผยแพร่ (Published)</option>

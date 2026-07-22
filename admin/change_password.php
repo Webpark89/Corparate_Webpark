@@ -1,7 +1,8 @@
 <?php
-$pageTitle = 'เปลี่ยนรหัสผ่าน';
-$page = 'change_password';
-require_once __DIR__ . '/includes/header.php';
+/**
+ * Admin change password page (standalone, no login required for demo).
+ */
+require_once __DIR__ . '/includes/functions.php';
 
 $success = false;
 $error = '';
@@ -22,22 +23,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif (strlen($newPassword) < 8) {
         $error = 'รหัสผ่านใหม่ต้องมีความยาวอย่างน้อย 8 ตัวอักษร';
     } else {
-        // Generate new hash
         $newHash = password_hash($newPassword, PASSWORD_DEFAULT);
         
-        // Read config.php
         $configFile = __DIR__ . '/config/config.php';
         if (is_writable($configFile)) {
             $configContent = file_get_contents($configFile);
-            
-            // Use regex to replace the hash safely
             $pattern = "/define\('ADMIN_PASSWORD_HASH',\s*'.*?'\);/";
-            $replacement = "define('ADMIN_PASSWORD_HASH', '" . addcslashes($newHash, "'\\") . "');";
             
             if (preg_match($pattern, $configContent)) {
-                $newConfigContent = preg_replace($pattern, $replacement, $configContent);
+                $newConfigContent = preg_replace_callback($pattern, function($matches) use ($newHash) {
+                    return "define('ADMIN_PASSWORD_HASH', '" . addcslashes($newHash, "'\\") . "');";
+                }, $configContent);
                 if (file_put_contents($configFile, $newConfigContent)) {
-                    $success = true;
+                    // Update the database admins table for the user's reference (plain text as requested + updated_at)
+                    try {
+                        $db = Database::conn();
+                        $stmt = $db->prepare("UPDATE admins SET password_hash = :plain, updated_at = NOW() WHERE id = 1");
+                        $stmt->execute(['plain' => 'Plaintext: ' . $newPassword]);
+                    } catch (Exception $e) {
+                        // ignore db errors
+                    }
+
+                    // Redirect to login page on success
+                    header('Location: login.php?password_changed=1');
+                    exit;
                 } else {
                     $error = 'ไม่สามารถบันทึกข้อมูลลงไฟล์ config.php ได้';
                 }
@@ -45,66 +54,102 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $error = 'ไม่พบค่า ADMIN_PASSWORD_HASH ในไฟล์ config.php';
             }
         } else {
-            $error = 'ไฟล์ config.php ไม่สามารถเขียนได้ กรุณาตรวจสอบ Permission (Chmod 666 หรือ 777 ชั่วคราว)';
+            $error = 'ไฟล์ config.php ไม่สามารถเขียนได้';
         }
     }
 }
 ?>
-
-<div class="max-w-xl">
-    <div class="mb-6">
-        <h1 class="text-2xl font-bold text-slate-800">เปลี่ยนรหัสผ่าน</h1>
-        <p class="text-slate-500 mt-1">อัปเดตรหัสผ่านสำหรับเข้าสู่ระบบผู้ดูแลระบบ</p>
+<!doctype html>
+<html lang="th">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>เปลี่ยนรหัสผ่าน | <?= e(SITE_NAME) ?></title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+Thai:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="/Corparate_Webpark/admin/assets/css/dist/tailwind.css" rel="stylesheet">
+    <style>
+        .password-toggle {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #94a3b8;
+            width: 20px;
+            height: 20px;
+        }
+        .password-toggle:hover { color: #475569; }
+    </style>
+</head>
+<body class="min-h-screen bg-slate-100 overflow-hidden">
+    <div class="absolute inset-0 overflow-hidden">
+        <div class="absolute top-[-120px] left-[-120px] w-[320px] h-[320px] bg-cyan-300/40 blur-3xl rounded-full"></div>
+        <div class="absolute bottom-[-120px] right-[-120px] w-[320px] h-[320px] bg-indigo-300/40 blur-3xl rounded-full"></div>
     </div>
-
-    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-        <div class="p-6 md:p-8">
-            <?php if ($success): ?>
-                <div class="mb-6 bg-green-50 text-green-700 p-4 rounded-xl border border-green-200 flex gap-3 items-start">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-                    <div>
-                        <p class="font-semibold">เปลี่ยนรหัสผ่านสำเร็จ!</p>
-                        <p class="text-sm mt-1">รหัสผ่านของคุณถูกอัปเดตเรียบร้อยแล้ว ในการเข้าสู่ระบบครั้งต่อไป กรุณาใช้รหัสผ่านใหม่นี้</p>
+    <main class="relative z-10 flex items-center justify-center min-h-screen px-6">
+        <div class="w-full max-w-md">
+            <div class="rounded-3xl bg-white border border-slate-200 shadow-2xl p-8">
+                <div class="text-center mb-8">
+                    <div class="flex justify-center mb-5">
+                        <img src="/Corparate_Webpark/admin/assets/images/logo.png" alt="Logo" class="h-12 w-auto">
                     </div>
-                </div>
-            <?php endif; ?>
-
-            <?php if ($error): ?>
-                <div class="mb-6 bg-red-50 text-red-700 p-4 rounded-xl border border-red-200 flex gap-3 items-start">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
-                    <p class="text-sm font-medium"><?= e($error) ?></p>
-                </div>
-            <?php endif; ?>
-
-            <form method="post" action="">
-                <?= csrf_field() ?>
-                
-                <div class="space-y-5">
-                    <div>
-                        <label for="current_password" class="block text-sm font-medium text-slate-700 mb-1.5">รหัสผ่านปัจจุบัน</label>
-                        <input type="password" name="current_password" id="current_password" required class="w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-slate-900 placeholder:text-slate-400 outline-none transition focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20">
-                    </div>
-                    
-                    <div>
-                        <label for="new_password" class="block text-sm font-medium text-slate-700 mb-1.5">รหัสผ่านใหม่ (อย่างน้อย 8 ตัวอักษร)</label>
-                        <input type="password" name="new_password" id="new_password" required minlength="8" class="w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-slate-900 placeholder:text-slate-400 outline-none transition focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20">
-                    </div>
-                    
-                    <div>
-                        <label for="confirm_password" class="block text-sm font-medium text-slate-700 mb-1.5">ยืนยันรหัสผ่านใหม่</label>
-                        <input type="password" name="confirm_password" id="confirm_password" required minlength="8" class="w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-slate-900 placeholder:text-slate-400 outline-none transition focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20">
-                    </div>
-                </div>
-
-                <div class="mt-8">
-                    <button type="submit" class="inline-flex justify-center items-center gap-2 px-6 py-2.5 bg-cyan-600 hover:bg-cyan-700 text-white font-medium rounded-xl transition shadow-sm w-full md:w-auto">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                    <h1 class="text-2xl font-bold text-slate-800 tracking-tight">
                         เปลี่ยนรหัสผ่าน
-                    </button>
+                    </h1>
                 </div>
-            </form>
-        </div>
-    </div>
-</div>
 
-<?php require_once __DIR__ . '/includes/footer.php'; ?>
+                <?php if ($error): ?>
+                    <div class="mb-5 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+                        <?= e($error) ?>
+                    </div>
+                <?php endif; ?>
+
+                <form method="post" autocomplete="off" class="space-y-5">
+                    <?= csrf_field() ?>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-2">รหัสผ่านปัจจุบัน</label>
+                        <div class="relative">
+                            <input name="current_password" id="current_password" type="password" required class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 pr-10 text-slate-900 outline-none transition focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/15">
+                            <svg class="w-5 h-5 password-toggle" onclick="togglePassword('current_password', this)" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" /></svg>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-2">รหัสผ่านใหม่</label>
+                        <div class="relative">
+                            <input name="new_password" id="new_password" type="password" required class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 pr-10 text-slate-900 outline-none transition focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/15">
+                            <svg class="w-5 h-5 password-toggle" onclick="togglePassword('new_password', this)" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" /></svg>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-2">ยืนยันรหัสผ่านใหม่</label>
+                        <div class="relative">
+                            <input name="confirm_password" id="confirm_password" type="password" required class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 pr-10 text-slate-900 outline-none transition focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/15">
+                            <svg class="w-5 h-5 password-toggle" onclick="togglePassword('confirm_password', this)" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" /></svg>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="w-full rounded-xl bg-blue-600 px-4 py-3 font-semibold text-white transition-all duration-300 hover:bg-blue-800">
+                        บันทึกรหัสผ่านใหม่
+                    </button>
+                    
+                    <a href="login.php" class="mt-4 flex w-full justify-center rounded-xl border border-slate-300 bg-white px-4 py-3 font-semibold text-slate-700 transition-all duration-300 hover:bg-slate-50">
+                        กลับไปหน้าเข้าสู่ระบบ
+                    </a>
+                </form>
+            </div>
+        </div>
+    </main>
+    <script>
+        function togglePassword(inputId, icon) {
+            const input = document.getElementById(inputId);
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />';
+            } else {
+                input.type = 'password';
+                icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />';
+            }
+        }
+    </script>
+</body>
+</html>
