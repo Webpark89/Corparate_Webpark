@@ -75,6 +75,14 @@ module.exports = {
         lift: 'lift 0.18s ease',
         'fade-in': 'fade-in 180ms ease',
         'slide-up': 'slide-up 220ms ease'
+      },
+      screens: {
+        'tablet': '768px',
+        'laptop': '1024px',
+        'desktop': '1280px',
+        '3xl': '1920px',
+        '4xl': '2560px',
+        '5xl': '3840px',
       }
     }
   },
