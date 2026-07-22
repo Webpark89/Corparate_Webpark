@@ -216,7 +216,7 @@ $form = $form ?? [];
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <input type="text" inputmode="numeric" name="phone" placeholder="<?= e(t('common.form_label_phone')) ?>" value="<?= e($form['phone'] ?? '') ?>" required maxlength="10" pattern="\d{10}" oninput="this.value = this.value.replace(/[^0-9]/g, '');"
                                 class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-base text-slate-900 outline-none transition-all duration-300 custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary focus:shadow-inner">
-                            <input type="email" name="email" placeholder="<?= e(t('common.form_label_email')) ?>" value="<?= e($form['email'] ?? '') ?>" required maxlength="255"
+                            <input type="email" name="email" placeholder="<?= e(t('common.form_label_email')) ?>" value="<?= e($form['email'] ?? '') ?>" required maxlength="255" oninvalid="this.setCustomValidity('กรุณาระบุอีเมลที่มี @')" oninput="this.setCustomValidity('')" onblur="if(this.value && !this.value.includes('@')) { this.setCustomValidity('กรุณาระบุอีเมลที่มี @'); this.reportValidity(); }"
                                 class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-base text-slate-900 outline-none transition-all duration-300 custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary focus:shadow-inner">
                         </div>
                         <div>
@@ -337,30 +337,28 @@ $form = $form ?? [];
         </div>
     </div>
 </section>
-<section class="bg-white pb-20 font-sans">
+<section class="bg-white pb-16 font-sans">
     <div class="mx-auto w-full max-w-7xl px-4 sm:px-4 lg:px-6"> 
-        <h2 class="text-xl md:text-2xl font-bold text-dark mb-8 relative inline-block">
+        <h2 class="text-xl md:text-2xl font-bold text-dark mb-6 relative inline-block">
             <?= e(t('contact.location_title')) ?>
             <span class="absolute left-0 bottom-[-8px] w-10 h-1 bg-primary rounded-full"></span>
         </h2>
-        <div class="w-full h-[400px] md:h-[500px] rounded-[2.5rem] overflow-hidden relative border border-slate-100 shadow-sm group" onclick="this.querySelector('iframe').style.pointerEvents='auto';" onmouseleave="this.querySelector('iframe').style.pointerEvents='none';">
-            <!-- Overlay hint for desktop (optional, but helps UX) -->
-            <div class="absolute inset-0 bg-black/5 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" style="z-index: 5;">
-                <span class="bg-white/90 text-slate-800 text-sm font-semibold px-4 py-2 rounded-full shadow-sm">แตะเพื่อใช้งานแผนที่</span>
-            </div>
-            <iframe style="pointer-events: none;" class="w-full h-full border-0 relative z-0" src="https://maps.google.com/maps?q=บริษัท%20เวบปาค%20จำกัด%20525/89%20ซอยลาดพร้าว%20126&t=&z=16&ie=UTF8&iwloc=&output=embed" allowfullscreen="" loading="lazy"></iframe>
-            <div class="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 bg-white rounded-3xl p-6 shadow-xl border border-slate-100 max-w-sm z-10 hidden sm:block">
-                <div style="color: #021E4A;" class="flex items-center gap-2 font-bold text-sm mb-3">
-                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/></svg>
-                    <?= e(t('contact.company_name')) ?>
-                </div>
-                <p style="color: #022862;" class="text-xs md:text-[13px] leading-relaxed font-medium mb-4">
-                    <?= e(t('contact.company_address')) ?>
-                </p>
-                <a href="https://maps.google.com/maps?q=บริษัท%20เวบปาค%20จำกัด%20525/89%20ซอยลาดพร้าว%20126" target="_blank" class="inline-flex items-center gap-1.5 text-xs font-bold text-primary hover:underline" style="pointer-events: auto;">
-                    <?= e(t('contact.cta_get_directions')) ?> <span>→</span>
-                </a>
-            </div>
+        
+        <div class="w-full h-[260px] md:h-[320px] rounded-2xl overflow-hidden relative border border-slate-200 shadow-sm group">
+            <!-- Full Overlay Link: Clicking anywhere opens Google Maps Pin directly -->
+            <a href="https://www.google.com/maps/search/?api=1&query=บริษัท+เวบปาค+จำกัด+525/89+ซอยลาดพร้าว+126" 
+               target="_blank" 
+               rel="noopener noreferrer"
+               title="เปิดใน Google Maps"
+               class="absolute inset-0 z-20 flex items-center justify-center bg-black/5 hover:bg-black/15 transition-all duration-300">
+                <span class="bg-white/95 text-slate-800 text-xs md:text-sm font-bold px-4 py-2.5 rounded-full shadow-lg border border-slate-200 flex items-center gap-2 backdrop-blur-sm group-hover:scale-105 transition-transform">
+                    <svg class="w-4 h-4 text-red-500 shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                    <?= e(getCurrentLang() === 'th' ? 'แตะเพื่อเปิดปักหมุดบน Google Maps ↗' : 'Tap to Open Google Maps Pin ↗') ?>
+                </span>
+            </a>
+
+            <!-- Embedded Background Map Preview -->
+            <iframe style="pointer-events: none;" class="w-full h-full border-0 relative z-0" src="https://maps.google.com/maps?q=บริษัท%20เวบปาค%20จำกัด%20525/89%20ซอยลาดพร้าว%20126&t=&z=16&ie=UTF8&iwloc=&output=embed" loading="lazy"></iframe>
         </div>
     </div>
 </section>

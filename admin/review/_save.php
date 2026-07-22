@@ -24,7 +24,7 @@ $data = [
     'reviewer_name' => $reviewerName,
     'reviewer_position' => trim($_POST['reviewer_position'] ?? ''),
     'reviewer_company' => trim($_POST['reviewer_company'] ?? ''),
-    'sort_order' => (int) ($_POST['sort_order'] ?? 0),
+    'sort_order' => (int) ($_POST['sort_order'] ?? 1),
     'is_active' => isset($_POST['is_active']) ? (int) $_POST['is_active'] : 1,
 ];
 $imagePath = trim($_POST['reviewer_image_url'] ?? '');

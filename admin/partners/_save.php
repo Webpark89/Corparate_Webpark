@@ -22,7 +22,7 @@ $data = [
     'name' => $name,
     'image_alt' => trim($_POST['image_alt'] ?? ''),
     'category_id' => $categoryId,
-    'sort_order' => (int) ($_POST['sort_order'] ?? 0),
+    'sort_order' => (int) ($_POST['sort_order'] ?? 1),
     'is_active' => isset($_POST['is_active']) ? (int) $_POST['is_active'] : 1,
 ];
 $imagePath = trim($_POST['image_url'] ?? '');
