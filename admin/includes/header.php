@@ -22,14 +22,33 @@ $navItems = [
 <html lang="th">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title><?= e($pageTitle ?? 'ผู้ดูแลระบบ') ?> | <?= e(SITE_NAME) ?></title>
     <link href="<?= ADMIN_URL ?>/assets/css/dist/tailwind.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@100..900&display=swap" rel="stylesheet">
+    <style>
+        html, body {
+            width: 100% !important;
+            max-width: 100% !important;
+            overflow-x: hidden !important;
+            position: relative;
+            margin: 0;
+            padding: 0;
+            touch-action: pan-y;
+        }
+        .admin-layout, #adminMain, section.content {
+            max-width: 100% !important;
+            overflow-x: hidden !important;
+        }
+        * {
+            box-sizing: border-box !important;
+        }
+    </style>
 </head>
-<body class="admin-body bg-slate-50 font-sans antialiased text-slate-800">
+<body class="admin-body bg-slate-50 font-sans antialiased text-slate-800 overflow-x-hidden relative w-full max-w-full">
+    <div class="admin-wrapper overflow-x-hidden relative w-full max-w-full min-h-screen">
     <div id="sidebarOverlay" class="fixed inset-0 bg-black/50 z-40 hidden md:hidden"></div>
     <div class="admin-layout">
         <aside id="adminSidebar" class="fixed left-0 top-0 h-screen w-[260px] bg-white border-r border-gray-200 flex flex-col z-50 transition-transform duration-300 -translate-x-full md:translate-x-0">

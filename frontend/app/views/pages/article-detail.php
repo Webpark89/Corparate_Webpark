@@ -209,10 +209,18 @@ $shareUrl = urlencode(request_origin_url() . ($_SERVER['REQUEST_URI'] ?? ''));
         color: #475569;
         font-size: 1rem;
         line-height: 1.75;
+        max-width: 100% !important;
+        overflow-x: hidden !important;
+        word-break: break-word !important;
+        overflow-wrap: anywhere !important;
     }
     .article-format, .article-format * {
         font-family: 'Noto Sans Thai', 'Inter', ui-sans-serif, system-ui, sans-serif !important;
         text-indent: 0 !important; /* Kill MS Word indentations */
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        word-break: break-word !important;
+        overflow-wrap: anywhere !important;
     }
     .article-format p, 
     .article-format span, 
@@ -317,13 +325,36 @@ $shareUrl = urlencode(request_origin_url() . ($_SERVER['REQUEST_URI'] ?? ''));
         font-weight: 700;
         color: #022862;
     }
+    
+    @media (max-width: 1023px) {
+        .mobile-collapsed {
+            max-height: 450px !important;
+            overflow: hidden !important;
+        }
+    }
 </style>
 <section class="py-12 bg-[#F7F9FC]">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-            <article class="lg:col-span-8 bg-white rounded-[2rem] p-6 md:p-10 shadow-sm border border-slate-100">
-                <div class="article-format">
-                    <?= $content ?>
+            <article class="lg:col-span-8 bg-white rounded-[2rem] p-6 md:p-10 shadow-sm border border-slate-100 relative">
+                <div id="article-content-container" class="relative mobile-collapsed transition-[max-height] duration-500 ease-in-out">
+                    <div class="article-format pb-12 lg:pb-0" id="article-format-content">
+                        <?= $content ?>
+                    </div>
+                    <!-- Read More Overlay (Mobile Only) -->
+                    <div id="read-more-overlay" onclick="expandArticle()" class="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-white via-white/95 to-transparent flex items-center justify-center pt-16 lg:hidden transition-opacity duration-300 z-20 cursor-pointer">
+                        <button type="button" class="text-white px-8 py-3.5 rounded-full font-bold shadow-xl active:scale-95 transition-all flex items-center gap-2 text-[15px] z-30" style="background-color: #0663F6;">
+                            <?= e(getCurrentLang() === 'th' ? 'อ่านเพิ่มเติม' : 'Read more') ?>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </button>
+                    </div>
+                    <!-- Show Less Button (Mobile Only) -->
+                    <div id="show-less-container" class="hidden lg:hidden justify-center mt-8 mb-2">
+                        <button onclick="collapseArticle()" type="button" class="bg-white border-2 border-[#0663F6] text-[#0663F6] px-8 py-3 rounded-full font-bold shadow-sm active:scale-95 transition-all flex items-center gap-2 text-[15px] cursor-pointer">
+                            <?= e(getCurrentLang() === 'th' ? 'ย่อเนื้อหา' : 'Show less') ?>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path></svg>
+                        </button>
+                    </div>
                 </div>
             </article>
             <div class="lg:col-span-4 relative h-full">
@@ -360,7 +391,72 @@ $shareUrl = urlencode(request_origin_url() . ($_SERVER['REQUEST_URI'] ?? ''));
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 <script>
+function expandArticle() {
+    const container = document.getElementById('article-content-container');
+    const overlay = document.getElementById('read-more-overlay');
+    const showLess = document.getElementById('show-less-container');
+    if (container) {
+        container.style.maxHeight = '450px';
+        container.classList.remove('mobile-collapsed');
+        // Trigger reflow
+        void container.offsetHeight;
+        container.style.maxHeight = container.scrollHeight + 150 + 'px';
+        setTimeout(() => {
+            container.style.maxHeight = 'none';
+        }, 500);
+    }
+    if (overlay) {
+        overlay.style.opacity = '0';
+        setTimeout(() => overlay.style.display = 'none', 300);
+    }
+    if (showLess) {
+        showLess.classList.remove('hidden');
+        showLess.classList.add('flex');
+    }
+}
+
+function collapseArticle() {
+    const container = document.getElementById('article-content-container');
+    const overlay = document.getElementById('read-more-overlay');
+    const showLess = document.getElementById('show-less-container');
+    
+    if (container) {
+        container.style.maxHeight = container.scrollHeight + 'px';
+        void container.offsetHeight;
+        container.classList.add('mobile-collapsed');
+        container.style.maxHeight = '';
+        
+        const yOffset = -80; 
+        const y = container.getBoundingClientRect().top + window.pageYOffset + yOffset;
+        window.scrollTo({top: y, behavior: 'smooth'});
+    }
+    if (overlay) {
+        overlay.style.display = 'flex';
+        setTimeout(() => {
+            overlay.style.opacity = '1';
+        }, 10);
+    }
+    if (showLess) {
+        showLess.classList.add('hidden');
+        showLess.classList.remove('flex');
+    }
+}
 document.addEventListener('DOMContentLoaded', function() {
+    // Check mobile content height for read more logic
+    if (window.innerWidth < 1024) {
+        const container = document.getElementById('article-content-container');
+        const overlay = document.getElementById('read-more-overlay');
+        const formatDiv = document.getElementById('article-format-content');
+        
+        // Add a slight delay to ensure fonts/images are rendered before calculating height
+        setTimeout(() => {
+            if (formatDiv && formatDiv.scrollHeight <= 450) {
+                container.classList.remove('mobile-collapsed');
+                if (overlay) overlay.style.display = 'none';
+            }
+        }, 150);
+    }
+
     // Reading Progress Bar
     const progressBar = document.getElementById('reading-progress');
     window.addEventListener('scroll', () => {

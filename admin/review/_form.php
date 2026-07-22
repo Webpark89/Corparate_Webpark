@@ -103,10 +103,10 @@ $inputClass = 'w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text
                         </label>
                         <input type="number"
                             name="sort_order"
-                            value="<?= (int)($data['sort_order'] ?? 0) ?>"
-                            placeholder="ระบุตัวเลข เช่น 0, 1, 2 (ค่าน้อยจะแสดงผลก่อน)"
+                            value="<?= (int)($data['sort_order'] ?? 1) ?>"
+                            placeholder="ระบุตัวเลข (ค่าน้อยจะแสดงผลก่อน)"
                             class="<?= $inputClass ?> h-[46px]"
-                            min="0">
+                            min="1">
                         <p class="text-xs text-slate-400 mt-1">ตัวเลขน้อยจะถูกแสดงก่อนตัวเลขมาก</p>
                     </div>
                 </div>

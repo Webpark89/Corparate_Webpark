@@ -387,17 +387,17 @@ if (isset($services) && is_array($services)) {
                         loading="lazy"
                     >
                 </div>
-                <div class="flex flex-col flex-1 p-5 lg:p-6">
+                <div class="flex flex-col flex-1 p-6">
                     <div class="flex items-center gap-2 mb-2">
                         <span class="service-icon-emoji text-2xl leading-none"><?= e($sEmoji) ?></span>
-                        <h2 class="text-lg lg:text-xl font-extrabold" style="color: #022862;"><?= e($sTitle) ?></h2>
+                        <h2 class="text-xl font-extrabold" style="color: #022862;"><?= e($sTitle) ?></h2>
                     </div>
                     <p class="text-slate-500 text-sm leading-relaxed mb-4">
                         <?= e($sSummary) ?>
                     </p>
                     <div class="mt-auto border-t border-slate-100 pt-3">
                         <details class="group/details">
-                            <summary class="flex items-center justify-between px-3 py-2 rounded-lg text-sm font-bold cursor-pointer transition-colors duration-150 hover:bg-[#f0f5ff] text-[#022862] list-none">
+                            <summary class="flex items-center justify-between py-2 rounded-lg text-sm font-bold cursor-pointer transition-colors duration-150 hover:text-[#043B94] text-[#022862] list-none">
                                 <span><?= e($dropdownText) ?></span>
                                 <svg class="w-4 h-4 shrink-0 text-slate-400 transition-transform duration-200 group-open/details:rotate-180"
                                      fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
@@ -405,7 +405,7 @@ if (isset($services) && is_array($services)) {
                                 </svg>
                             </summary>
                             <?php if (!empty($subcats)): ?>
-                            <div class="pl-4 pr-3 py-2 space-y-2 border-l-2 border-slate-100 ml-3 mt-1 mb-2">
+                            <div class="pl-3 pr-3 py-2 space-y-2 border-l-2 border-slate-100 ml-1 mt-1 mb-2">
                                 <?php foreach ($subcats as $item):
                                     $itemLabel = (string)($item['label'] ?? '');
                                     $itemHref  = (string)($item['href'] ?? '#');
@@ -435,21 +435,16 @@ if (isset($services) && is_array($services)) {
                 <div class="absolute inset-0"
                     style="background: linear-gradient(to right, #011431 40%, transparent 100%);"></div>
             </div>
-            <div class="relative px-8 py-14 md:py-16 text-center" style="z-index: 10;">
-                <h2 class="text-3xl md:text-4xl font-extrabold text-white mb-4 leading-tight">
+            <div class="relative px-6 py-10 sm:px-8 sm:py-14 md:py-16 text-center" style="z-index: 10;">
+                <h2 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white mb-4 leading-snug">
                     <?= getCurrentLang() === 'th' ? 'พร้อมขับเคลื่อนธุรกิจของคุณไปข้างหน้าหรือยัง?' : 'Ready to drive your business forward?' ?>
                 </h2>
-                <!-- Desktop Version -->
-                <p class="hidden md:block text-base md:text-lg max-w-3xl mx-auto mb-8 leading-relaxed" style="color: #bfdbfe;">
-                    <?= getCurrentLang() === 'th' ? 'มาคุยกับทีม Webpark เพื่อค้นหาโซลูชันที่เหมาะกับธุรกิจของคุณ<br>ทั้ง Digital Platform, ระบบ AI และ ERP / ERM ในมุมที่ใช้สำหรับองค์กร' : 'Talk to the Webpark team to find the right solution for your business,<br>including Digital Platforms, AI systems, and ERP / ERM tailored for enterprise use.' ?>
-                </p>
-                <!-- Mobile Version -->
-                <p class="block md:hidden text-base max-w-sm mx-auto mb-8 leading-relaxed" style="color: #bfdbfe;">
-                    <?= getCurrentLang() === 'th' ? 'มาคุยกับทีม WEBPARK<br>เพื่อค้นหาโซลูชัน<br>ที่เหมาะกับธุรกิจของคุณ<br>ทั้ง DIGITAL PLATFORM,<br>ระบบ AI และ ERP / ERM<br>ในมุมที่ใช้สำหรับองค์กร' : 'Talk to the WEBPARK team<br>to find the right solution<br>for your business,<br>including DIGITAL PLATFORMS,<br>AI systems, and ERP / ERM<br>tailored for enterprise use.' ?>
+                <p class="text-sm sm:text-base md:text-lg max-w-2xl mx-auto mb-8 leading-relaxed font-normal" style="color: #bfdbfe;">
+                    <?= getCurrentLang() === 'th' ? 'มาคุยกับทีม Webpark เพื่อค้นหาโซลูชันที่เหมาะกับธุรกิจของคุณ ทั้ง Digital Platform, ระบบ AI และ ERP / ERM ในมุมที่ใช้สำหรับองค์กร' : 'Talk to the Webpark team to find the right solution for your business, including Digital Platforms, AI systems, and ERP / ERM tailored for enterprise use.' ?>
                 </p>
                 <a
                     href="<?= e(route_url('/contact')) ?>"
-                    class="inline-flex items-center gap-2 font-bold text-base px-7 py-3 rounded-full transition-colors duration-200"
+                    class="inline-flex items-center gap-2 font-bold text-sm sm:text-base px-7 py-3 rounded-full transition-all duration-200 hover:scale-105"
                     style="background: #ffffff; color: #043B94; box-shadow: 0 4px 14px rgba(0,0,0,0.15);"
                     onmouseover="this.style.background='#eff6ff';"
                     onmouseout="this.style.background='#ffffff';"

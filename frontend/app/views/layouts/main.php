@@ -41,7 +41,7 @@ $content = $content ?? '';
 <html lang="<?= e(function_exists('getCurrentLang') ? getCurrentLang() : 'th') ?>">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title><?= e($title) ?></title>
     <meta name="description" content="<?= e($metaDescription) ?>">
     <meta name="robots" content="<?= e($robots) ?>">
@@ -104,16 +104,31 @@ $content = $content ?? '';
             <?= json_encode($jsonGraph, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>
         </script>
     <?php endif; ?>
+    <style>
+        html, body {
+            width: 100% !important;
+            max-width: 100% !important;
+            overflow-x: hidden !important;
+            position: relative;
+            margin: 0;
+            padding: 0;
+        }
+        main, section, header, footer {
+            max-width: 100% !important;
+        }
+    </style>
 </head>
-<body class="bg-slate-50 text-slate-900 antialiased">
-    <?php require __DIR__ . '/../components/navbar.php'; ?>
-    <main class="min-h-screen">
-        <?= $content ?>
-    </main>
-    <?php if ($currentPage !== 'contact'): ?>
-        <?php require __DIR__ . '/../components/cta.php'; ?>
-    <?php endif; ?>
-    <?php require __DIR__ . '/../components/footer.php'; ?>
+<body class="bg-slate-50 text-slate-900 antialiased overflow-x-hidden relative w-full max-w-full">
+    <div class="site-wrapper overflow-x-hidden relative w-full max-w-full min-h-screen">
+        <?php require __DIR__ . '/../components/navbar.php'; ?>
+        <main class="min-h-screen overflow-x-hidden w-full max-w-full">
+            <?= $content ?>
+        </main>
+        <?php if ($currentPage !== 'contact'): ?>
+            <?php require __DIR__ . '/../components/cta.php'; ?>
+        <?php endif; ?>
+        <?php require __DIR__ . '/../components/footer.php'; ?>
+    </div>
     <style>
         #scrollToTopBtn {
             position: fixed;

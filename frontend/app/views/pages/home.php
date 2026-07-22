@@ -54,8 +54,8 @@ if (!empty($partners) && is_array($partners)) {
         .delay-300 { animation-delay: 300ms; }
         .delay-400 { animation-delay: 400ms; }
         .delay-500 { animation-delay: 500ms; }
-        .mobile-hero-woman { width: 65%; bottom: -0px; right: 0%; }
-        @media (min-width: 768px) { .mobile-hero-woman { width: auto; bottom: 0; right: 0; } }
+        .mobile-hero-woman { width: 52%; bottom: 0px; right: -2%; opacity: 0.85; }
+        @media (min-width: 768px) { .mobile-hero-woman { width: auto; bottom: 0; right: 0; opacity: 1; } }
         .hero-parallax-img {
             transform: scale(1.12);
             will-change: transform;
@@ -71,7 +71,9 @@ if (!empty($partners) && is_array($partners)) {
         }
     </style>
     <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 pt-10 pb-16 md:pt-12 md:pb-24 lg:pt-28 lg:pb-32 relative z-10">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+        <!-- Mobile Gradient Mask to prevent text overlapping presenter image -->
+        <div class="absolute inset-0 bg-gradient-to-r from-white via-white/90 to-white/30 md:hidden z-0 pointer-events-none"></div>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center relative z-10">
             <div class="max-w-3xl relative z-10">
                 <div class="animate-entrance-up delay-100 inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary mb-6 shadow-sm">
                     <span class="text-blue-500 font-bold hidden md:inline">+</span>
@@ -112,9 +114,9 @@ if (!empty($partners) && is_array($partners)) {
             </div>
             <div class="hidden lg:block lg:col-start-2"></div>
         </div>
-        <div class="animate-entrance-left delay-500 absolute top-20 lg:top-28 right-0 md:right-4 lg:right-8 z-0 pointer-events-none max-w-full transform md:-translate-y-2 flex justify-end mobile-hero-woman">
+        <div class="animate-entrance-left delay-500 absolute top-auto bottom-0 lg:top-28 lg:bottom-auto right-0 md:right-4 lg:right-8 z-0 pointer-events-none max-w-full transform md:-translate-y-2 flex justify-end mobile-hero-woman">
             <picture class="w-full md:w-auto flex justify-end">
-                <source media="(min-width: 768px)" srcset="<?= e(asset_url('images/HeroHome.svg')) ?>">
+                <source media="(min-width: 768px)" srcset="<?= e(asset_url('images/women-mobile.svg')) ?>">
                 <img src="<?= e($heroImage) ?>" alt="WEBPARK Presenter" class="w-full md:w-auto object-contain object-right-bottom h-auto md:h-[400px] lg:h-[600px] opacity-95 md:opacity-100">
             </picture>
         </div>
@@ -436,7 +438,6 @@ document.addEventListener('DOMContentLoaded', function () {
 </script>
 <?php
 $totalReviews = count($reviews);
-if ($totalReviews > 0):
 ?>
 <section class="relative pt-6 pb-10 lg:pt-10 lg:pb-20 overflow-hidden">
     <div class="absolute inset-0 -z-10 pointer-events-none">
@@ -445,9 +446,11 @@ if ($totalReviews > 0):
     </div>
     <div class="relative mx-auto w-full max-w-7xl px-5 sm:px-6 lg:px-8">
         <div class="mb-8 lg:mb-12 text-center max-w-4xl mx-auto">
+            <?php if ($totalReviews > 0): ?>
             <h2 class="hidden lg:block text-primary font-bold text-4xl md:text-3xl tracking-normal uppercase mb-3">
                 REVIEW
             </h2>
+            <?php endif; ?>
             <span class="text-xl md:text-2xl lg:text-[28px] font-bold leading-tight text-dark">
                 <?= getCurrentLang() === 'th' ? 'กว่า <span class="text-primary">120</span> องค์กรชั้นนำ ที่เลือก <span class="text-primary">WEBPARK</span> เป็นพาร์ทเนอร์ด้านดิจิทัล' : 'Over <span class="text-primary">120</span> leading organizations trust <span class="text-primary">WEBPARK</span> as their digital partner' ?>
             </span>
@@ -484,6 +487,7 @@ if ($totalReviews > 0):
                 </div>
             </div>
         </div>
+        <?php if ($totalReviews > 0): ?>
         <div class="lg:hidden text-center mb-6">
             <h2 class="text-primary font-bold text-2xl tracking-normal mb-2">
                 <?= e(getCurrentLang() === 'th' ? 'เสียงจากลูกค้าของเรา' : 'Testimonials') ?>
@@ -536,6 +540,7 @@ if ($totalReviews > 0):
                 <?php endforeach; ?>
             </div>
         </div>
+        <?php endif; ?>
         <div class="mx-auto w-full max-w-7xl py-8 mt-10">
             <h2 class="text-center text-primary font-bold text-2xl md:text-3xl tracking-normal uppercase mb-3 block">
                 <?= e(getCurrentLang() === 'th' ? 'องค์กรชั้นนำที่ไว้วางใจ WEBPARK' : 'Leading Organizations that Trust WEBPARK') ?>
@@ -607,7 +612,6 @@ if ($totalReviews > 0):
         </div>
     </div>
 </section>
-<?php endif; ?>
 <style>
 .hide-scrollbar::-webkit-scrollbar {
     display: none;

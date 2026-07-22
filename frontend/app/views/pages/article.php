@@ -109,10 +109,10 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                     }
                 </style>
                 <h1 class="animate-fade-up delay-200 tracking-tight mb-2">
-                    <span class="hero-title-text font-bold bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block pb-1 md:pb-2 whitespace-nowrap">
+                    <span class="hero-title-text font-bold bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block pb-1 md:pb-2">
                         <?= e(getCurrentLang() === 'th' ? 'บทความความรู้' : 'Knowledge Articles') ?>
                     </span><br>
-                    <span class="hero-title-text font-bold bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block -mt-2 md:-mt-8 whitespace-nowrap" style="animation-delay: -3s;">
+                    <span class="hero-title-text font-bold bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block -mt-2 md:-mt-8" style="animation-delay: -3s;">
                         <?= e(getCurrentLang() === 'th' ? 'และอัพเดต' : '& Updates') ?>
                     </span>
                 </h1>
@@ -146,7 +146,7 @@ $ctaImage = asset_url('images/bg-cta.jpg');
 <section class="bg-white" style="padding-top: 1.5rem; padding-bottom: 2.5rem;">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div class="flex flex-col gap-4 md:flex-row md:items-center relative w-full">
-            <div class="hidden items-center md:flex shrink-0 pr-4">
+            <div class="hidden items-center shrink-0 pr-4">
                 <button id="filter-scroll-left"
                         type="button"
                         class="article-filter-arrow flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 text-slate-500 transition-all duration-300 hover:bg-slate-50 opacity-0 pointer-events-none"
@@ -157,7 +157,7 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                 </button>
             </div>
             <div class="relative flex-1 overflow-hidden">
-                <div id="category-filters" class="article-filter-track flex gap-3 overflow-x-auto py-1 hide-scroll scroll-smooth" style="-ms-overflow-style: none; scrollbar-width: none;">
+                <div id="category-filters" class="article-filter-track flex justify-start md:justify-center gap-3 overflow-x-auto py-1 px-2 md:px-0 hide-scroll scroll-smooth" style="-ms-overflow-style: none; scrollbar-width: none;">
                     <button type="button"
                             data-filter="all"
                             class="article-filter-btn whitespace-nowrap rounded-md border px-5 py-2 text-sm font-medium transition-colors <?= $activeCategorySlug === 'all' ? 'border-transparent bg-blue-600 text-white' : 'border-blue-200 bg-white text-[#1a2b6d] hover:bg-blue-600 hover:text-white hover:border-transparent' ?>">
@@ -180,7 +180,7 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                     <?php endforeach; ?>
                 </div>
             </div>
-            <div class="hidden items-center md:flex shrink-0 pl-4">
+            <div class="hidden items-center shrink-0 pl-4">
                 <button id="filter-scroll-right"
                         type="button"
                         class="article-filter-arrow flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 text-slate-500 transition-all duration-300 hover:bg-slate-50"
@@ -240,11 +240,11 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                             </span>
                         </div>
                         <a href="<?= e($linkToUse) ?>" class="block mb-2">
-                            <h3 class="article-card__title text-xl lg:text-lg font-bold text-[#1a2b6d] leading-snug" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 3.25rem;">
+                            <h3 class="article-card__title text-lg font-bold text-[#1a2b6d] leading-snug line-clamp-2 min-h-[2.8rem]">
                                 <?= e($articleTitle) ?>
                             </h3>
                         </a>
-                        <p class="article-card__description text-slate-500" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; font-size: 0.875rem; line-height: 1.5rem; height: 3rem; white-space: normal; word-break: break-word;">
+                        <p class="article-card__description text-slate-500 text-sm leading-relaxed line-clamp-2 min-h-[2.5rem] mb-3">
                             <?= e($summary) ?>
                         </p>
                         <div class="flex mt-1" style="justify-content: flex-end;">
