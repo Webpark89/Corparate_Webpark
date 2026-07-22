@@ -516,7 +516,7 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
             min_height: 250,
             max_height: 800,
             autoresize_bottom_margin: 20,
-            content_style: 'body { font-family: Inter, "Noto Sans Thai", ui-sans-serif, system-ui, sans-serif; font-size: 16px; line-height: 1.75; color: #475569; } p, span, li, div { font-size: 16px !important; line-height: 1.75 !important; }',
+            content_style: 'body { font-family: "Noto Sans Thai", Inter, ui-sans-serif, system-ui, sans-serif; font-size: 16px; line-height: 1.75; color: #475569; } p, span, li, div { font-size: 16px !important; line-height: 1.75 !important; }',
             images_upload_handler: tinymceImageUploadHandler,
             setup: function (editor) {
                 editors[id] = editor;

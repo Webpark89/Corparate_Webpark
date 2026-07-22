@@ -211,7 +211,7 @@ $shareUrl = urlencode(request_origin_url() . ($_SERVER['REQUEST_URI'] ?? ''));
         line-height: 1.75;
     }
     .article-format, .article-format * {
-        font-family: 'Inter', 'Noto Sans Thai', ui-sans-serif, system-ui, sans-serif !important;
+        font-family: 'Noto Sans Thai', 'Inter', ui-sans-serif, system-ui, sans-serif !important;
         text-indent: 0 !important; /* Kill MS Word indentations */
     }
     .article-format p, 

@@ -71,9 +71,10 @@ $content = $content ?? '';
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+Thai:wght@100..900&display=swap" rel="stylesheet">
     <style>
-        /* Prioritize Inter for English characters to fix spacing and improve aesthetics */
+        /* Set Noto Sans Thai as default system font */
         body, .font-sans {
-            font-family: 'Inter', 'Noto Sans Thai', ui-sans-serif, system-ui, sans-serif !important;
+            font-family: 'Noto Sans Thai', 'Inter', ui-sans-serif, system-ui, sans-serif !important;
+            line-height: 1.6;
         }
         /* Global Article Format Styling for Tables */
         .article-format table {

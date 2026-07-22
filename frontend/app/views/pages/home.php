@@ -120,8 +120,8 @@ if (!empty($partners) && is_array($partners)) {
         </div>
     </div>
 </section>
-<section class="relative z-20 mt-0 md:mt-0 lg:-mt-18 pb-6 lg:pb-16 overflow-hidden">
-    <div class="mr-auto ml-4 lg:ml-8 xl:ml-12 w-full max-w-[1440px] px-4 sm:px-4 lg:px-8">
+<section class="relative bg-white z-20 mt-0 md:mt-0 lg:-mt-1 pb-6 lg:pb-6 overflow-hidden">
+    <div class="mx-auto w-full max-w-[1720px] px-4 sm:px-6 lg:px-10 bg-white">
         <div class="w-full flex flex-col lg:flex-row items-stretch lg:bg-white lg:rounded-[1rem] lg:shadow-[0_4px_25px_rgba(0,0,0,0.06)] lg:border lg:border-gray-100 lg:overflow-hidden gap-4 lg:gap-0">
             <div class="hidden lg:flex flex-1 lg:max-w-[280px] xl:max-w-[320px] items-center justify-center p-6 lg:p-8 border-b lg:border-b-0 shrink-0 bg-white">
                 <img src="<?= e(asset_url('images/logo.png')) ?>" alt="WEBPARK logo" class="w-32 lg:w-48 xl:w-56 h-auto object-contain">

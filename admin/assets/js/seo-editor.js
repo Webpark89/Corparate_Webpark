@@ -65,7 +65,7 @@
             min_height: 300,
             max_height: 800,
             autoresize_bottom_margin: 20,
-            content_style: 'body { font-family: Inter, "Noto Sans Thai", ui-sans-serif, system-ui, sans-serif; font-size: 16px; line-height: 1.75; color: #475569; } p, span, li, div { font-size: 16px !important; line-height: 1.75 !important; }',
+            content_style: 'body { font-family: "Noto Sans Thai", Inter, ui-sans-serif, system-ui, sans-serif; font-size: 16px; line-height: 1.75; color: #475569; } p, span, li, div { font-size: 16px !important; line-height: 1.75 !important; }',
             images_upload_handler: function (blobInfo, progress) {
                 return new Promise((resolve, reject) => {
                     const xhr = new XMLHttpRequest();

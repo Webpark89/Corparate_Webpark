@@ -8,7 +8,7 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Noto Sans Thai', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        sans: ['Noto Sans Thai', 'ui-sans-serif', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
       },
       boxShadow: {
         soft: '0 8px 30px rgba(1, 29, 81, 0.06)',
@@ -25,9 +25,9 @@ module.exports = {
         },
       },
       fontSize: {
-        '2xs': ['11px', { lineHeight: '1.4' }],
-        '3xs': ['12px', { lineHeight: '1.4' }],
-        '3.5': ['13.5px', { lineHeight: '1.4' }],
+        '2xs': ['11px', { lineHeight: '1.5' }],
+        '3xs': ['12px', { lineHeight: '1.5' }],
+        '3.5': ['13.5px', { lineHeight: '1.5' }],
       },
       minHeight: {
         'card-sm': '65px',
@@ -40,6 +40,7 @@ module.exports = {
       },
       lineHeight: {
         tighter: '1.3',
+        relaxed: '1.625',
         relaxeds: '1.625',
       },
     },
