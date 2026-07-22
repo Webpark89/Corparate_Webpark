@@ -241,11 +241,11 @@ $socialLinks = [
         #footerSitemapToggle:hover #footerSitemapLabel,
         #footerSitemapToggle:hover #footerSitemapArrowSvg { color: #0663F6 !important; transition: color 0.3s ease; }
         #footerInfoGrid { display: grid; gap: 2rem; align-items: center; grid-template-columns: 1fr; }
-        .footer-bottom-bar { margin-top: 3rem; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; }
+        .footer-bottom-bar { margin-top: 1.5rem; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; }
         .dt-sitemap-list { border-left: 2px solid #94a3b8; }
         @media (min-width: 768px) { 
             #footerInfoGrid { grid-template-columns: 1fr 2fr 1.5fr; } 
-            .footer-bottom-bar { padding: 0; }
+            .footer-bottom-bar { padding: 0 10%; }
             .address-text { white-space: nowrap !important; }
         }
         @media (min-width: 1024px) {

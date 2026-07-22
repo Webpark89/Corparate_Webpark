@@ -39,7 +39,7 @@ $navItems = [
             <nav class="flex-1 py-6 overflow-y-auto">
                 <?php foreach ($navItems as $item):
                     $isActive = ($page === $item['page']);
-                    $baseClasses = 'px-6 py-3 text-sm flex items-center gap-3 transition-colors';
+                    $baseClasses = 'px-6 py-3 text-base flex items-center gap-3 transition-colors';
                     if ($isActive) {
                         $classes = $baseClasses . ' border-l-4 pl-5 font-semibold';
                         $style = 'background-color: rgba(6, 99, 246, 0.1); color: #0663F6; border-color: #0663F6;';
@@ -56,7 +56,7 @@ $navItems = [
                 <?php endforeach; ?>
             </nav>
             <div class="border-t border-gray-200 py-4 flex-shrink-0">
-                <a href="<?= ADMIN_URL ?>/logout.php" class="px-6 py-3 text-sm text-red-500 hover:bg-red-50 hover:text-red-600 flex items-center gap-3 transition-colors">
+                <a href="<?= ADMIN_URL ?>/logout.php" class="px-6 py-3 text-base text-red-500 hover:bg-red-50 hover:text-red-600 flex items-center gap-3 transition-colors">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                     </svg>
