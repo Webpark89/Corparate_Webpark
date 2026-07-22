@@ -343,8 +343,12 @@ $form = $form ?? [];
             <?= e(t('contact.location_title')) ?>
             <span class="absolute left-0 bottom-[-8px] w-10 h-1 bg-primary rounded-full"></span>
         </h2>
-        <div class="w-full h-[400px] md:h-[500px] rounded-[2.5rem] overflow-hidden relative border border-slate-100 shadow-sm">
-            <iframe class="w-full h-full border-0" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3875.311743152067!2d100.6172557!3d13.7901399!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x311d62445b2b2b11%3A0x67ee1c03c2a9bb4c!2sWEBPARK!5e0!3m2!1sth!2sth!4v1700000000000!5m2!1sth!2sth" allowfullscreen="" loading="lazy"></iframe>
+        <div class="w-full h-[400px] md:h-[500px] rounded-[2.5rem] overflow-hidden relative border border-slate-100 shadow-sm group" onclick="this.querySelector('iframe').style.pointerEvents='auto';" onmouseleave="this.querySelector('iframe').style.pointerEvents='none';">
+            <!-- Overlay hint for desktop (optional, but helps UX) -->
+            <div class="absolute inset-0 bg-black/5 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" style="z-index: 5;">
+                <span class="bg-white/90 text-slate-800 text-sm font-semibold px-4 py-2 rounded-full shadow-sm">แตะเพื่อใช้งานแผนที่</span>
+            </div>
+            <iframe style="pointer-events: none;" class="w-full h-full border-0 relative z-0" src="https://maps.google.com/maps?q=บริษัท%20เวบปาค%20จำกัด%20525/89%20ซอยลาดพร้าว%20126&t=&z=16&ie=UTF8&iwloc=&output=embed" allowfullscreen="" loading="lazy"></iframe>
             <div class="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 bg-white rounded-3xl p-6 shadow-xl border border-slate-100 max-w-sm z-10 hidden sm:block">
                 <div style="color: #021E4A;" class="flex items-center gap-2 font-bold text-sm mb-3">
                     <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/></svg>
@@ -353,7 +357,7 @@ $form = $form ?? [];
                 <p style="color: #022862;" class="text-xs md:text-[13px] leading-relaxed font-medium mb-4">
                     <?= e(t('contact.company_address')) ?>
                 </p>
-                <a href="https://maps.google.com" target="_blank" class="inline-flex items-center gap-1.5 text-xs font-bold text-primary hover:underline">
+                <a href="https://maps.google.com/maps?q=บริษัท%20เวบปาค%20จำกัด%20525/89%20ซอยลาดพร้าว%20126" target="_blank" class="inline-flex items-center gap-1.5 text-xs font-bold text-primary hover:underline" style="pointer-events: auto;">
                     <?= e(t('contact.cta_get_directions')) ?> <span>→</span>
                 </a>
             </div>

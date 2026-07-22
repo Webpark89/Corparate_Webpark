@@ -77,7 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <?= e($errorMessage ?: 'Session timed out. Please log in again.') ?>
                     </div>
                 <?php endif; ?>
-                <form method="post" autocomplete="off" class="space-y-5">
+                <form method="post" autocomplete="on" class="space-y-5">
                     <?= csrf_field() ?>
                     <div>
                         <label for="username" class="block text-sm font-medium text-slate-700 mb-2">
@@ -93,6 +93,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 type="text"
                                 required
                                 autofocus
+                                autocomplete="username"
+                                value="admin"
                                 placeholder="กรอกชื่อผู้ใช้"
                                 class="w-full rounded-xl border border-slate-300 bg-white px-11 py-3 text-slate-900 placeholder:text-slate-400 outline-none transition focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/15">
                         </div>
@@ -110,6 +112,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 name="password"
                                 type="password"
                                 required
+                                autocomplete="current-password"
+                                value="password"
                                 placeholder="••••••••"
                                 class="w-full rounded-xl border border-slate-300 bg-white px-11 py-3 text-slate-900 placeholder:text-slate-400 outline-none transition focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/15">
                         </div>

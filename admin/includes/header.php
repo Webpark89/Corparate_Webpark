@@ -15,6 +15,7 @@ $navItems = [
     ['name' => 'การจัดการลูกค้า', 'url' => '/partners/index.php', 'page' => 'partners'],
     ['name' => 'การจัดการบริการ', 'url' => '/service/index.php', 'page' => 'service'],
     ['name' => 'การตั้งค่าการติดต่อ', 'url' => '/contact/index.php', 'page' => 'contact'],
+    ['name' => 'เปลี่ยนรหัสผ่าน', 'url' => '/change_password.php', 'page' => 'change_password'],
 ];
 ?>
 <!doctype html>

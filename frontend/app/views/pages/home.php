@@ -60,14 +60,7 @@ if (!empty($partners) && is_array($partners)) {
             transform: scale(1.12);
             will-change: transform;
         }
-        /* Right Bleed Wrapper for Home Info Section (เหมือนหน้า ERP) */
-        @media (min-width: 1280px) {
-            .home-bleed-wrapper {
-                max-width: 100% !important;
-                padding-left: calc(50% - 640px + 2rem) !important;
-                padding-right: 2rem !important;
-            }
-        }
+
         @media (prefers-reduced-motion: reduce) {
             *, *::before, *::after {
                 animation-duration: 0.001ms !important;
@@ -128,10 +121,10 @@ if (!empty($partners) && is_array($partners)) {
     </div>
 </section>
 <section class="relative z-20 mt-0 md:mt-0 lg:-mt-18 pb-6 lg:pb-16 overflow-hidden">
-    <div class="home-bleed-wrapper mx-auto w-full max-w-7xl px-4 sm:px-4 lg:px-6">
+    <div class="mr-auto ml-4 lg:ml-8 xl:ml-12 w-full max-w-[1440px] px-4 sm:px-4 lg:px-8">
         <div class="w-full flex flex-col lg:flex-row items-stretch lg:bg-white lg:rounded-[1rem] lg:shadow-[0_4px_25px_rgba(0,0,0,0.06)] lg:border lg:border-gray-100 lg:overflow-hidden gap-4 lg:gap-0">
-            <div class="hidden lg:flex flex-1 lg:max-w-[180px] items-center justify-center p-6 lg:p-8 border-b lg:border-b-0 shrink-0 bg-white">
-                <img src="<?= e(asset_url('images/logo.png')) ?>" alt="WEBPARK logo" class="w-32 lg:w-full h-auto object-contain">
+            <div class="hidden lg:flex flex-1 lg:max-w-[280px] xl:max-w-[320px] items-center justify-center p-6 lg:p-8 border-b lg:border-b-0 shrink-0 bg-white">
+                <img src="<?= e(asset_url('images/logo.png')) ?>" alt="WEBPARK logo" class="w-32 lg:w-48 xl:w-56 h-auto object-contain">
             </div>
             <div class="group flex-1 lg:max-w-[300px] xl:max-w-[320px] flex flex-col justify-between p-6 lg:p-8 border lg:border-none border-gray-100 lg:border-r shrink-0 bg-white rounded-t-none rounded-b-[2rem] lg:rounded-none shadow-sm lg:shadow-none transition-all duration-300 hover:bg-slate-50/50 cursor-pointer">
                 <div class="grid grid-cols-2 lg:contents items-center gap-4 lg:gap-6 w-full">
@@ -207,7 +200,6 @@ if (!empty($partners) && is_array($partners)) {
 <section class="bg-white pt-16 pb-6 lg:pt-20 lg:pb-8 overflow-hidden">
     <div class="mx-auto w-full max-w-7xl px-5 sm:px-6 lg:px-8">
         <div class="mb-10">
-            <!-- Desktop Layout -->
             <div class="hidden md:block">
                 <h2 class="text-3xl md:text-4xl font-extrabold leading-none tracking-tighter text-primary m-0">
                     <?= e(t('common.nav_services') !== 'common.nav_services' ? t('common.nav_services') : (getCurrentLang() === 'th' ? 'บริการของเรา' : 'Our Services')) ?>
@@ -228,7 +220,6 @@ if (!empty($partners) && is_array($partners)) {
                     </a>
                 </div>
             </div>
-            <!-- Mobile Layout -->
             <div class="block md:hidden text-left">
                 <span class="text-primary font-bold text-xl tracking-wide inline-block border-b-2 border-primary pb-1 mb-3"><?= e(t('common.nav_services') !== 'common.nav_services' ? t('common.nav_services') : (getCurrentLang() === 'th' ? 'บริการของเรา' : 'Our Services')) ?></span>
                 <h2 class="text-dark font-bold text-2xl leading-tight mb-3"><?= e(t('home.portfolio_subtitle') !== 'home.portfolio_subtitle' ? t('home.portfolio_subtitle') : (getCurrentLang() === 'th' ? 'ตัวอย่างผลงานของเรา' : 'Our Portfolio')) ?></h2>
@@ -641,8 +632,8 @@ if ($totalReviews > 0):
                     <?= getCurrentLang() === 'th' ? 'รวมบทความสาระน่ารู้ ที่จะช่วยต่อยอดแบรนด์<br>และพาธุรกิจสู่วิถีดิจิทัลที่ช่วยให้ธุรกิจเติบโตได้อย่างยั่งยืน' : 'A collection of informative articles to help elevate your brand<br>and guide your business into the digital era for sustainable growth.' ?>
                 </p>
             </div>
-            <a href="<?= e(route_url('/services')) ?>" class="shrink-0 inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-primary text-white text-sm font-semibold rounded-full hover:bg-blue-700 transition-all shadow-md hover:-translate-y-0.5">
-                <?= getCurrentLang() === 'th' ? 'ดูบริการของเรา' : 'View Our Services' ?>
+            <a href="<?= e(route_url('/article')) ?>" class="shrink-0 inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-primary text-white text-sm font-semibold rounded-full hover:bg-blue-700 transition-all shadow-md hover:-translate-y-0.5">
+                <?= getCurrentLang() === 'th' ? 'ดูบทความของเรา' : 'View Our Articles' ?>
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
                 </svg>
