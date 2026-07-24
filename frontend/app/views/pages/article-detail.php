@@ -226,8 +226,17 @@ $shareUrl = urlencode(request_origin_url() . ($_SERVER['REQUEST_URI'] ?? ''));
     .article-format span, 
     .article-format li, 
     .article-format div {
-        font-size: 1rem !important;
-        line-height: 1.75 !important;
+        font-size: 1.15rem !important;
+        line-height: 1.8 !important;
+    }
+    @media (min-width: 768px) {
+        .article-format p, 
+        .article-format span, 
+        .article-format li, 
+        .article-format div {
+            font-size: 1rem !important;
+            line-height: 1.75 !important;
+        }
     }
     .article-format h2, 
     .article-format h3 {
@@ -332,6 +341,64 @@ $shareUrl = urlencode(request_origin_url() . ($_SERVER['REQUEST_URI'] ?? ''));
             overflow: hidden !important;
         }
     }
+    
+    /* iPad Pro Touch specific override (Portrait & Landscape up to 1366px) */
+    @media (min-width: 1024px) and (max-width: 1366px) and (pointer: coarse) {
+        .mobile-collapsed {
+            max-height: 450px !important;
+            overflow: hidden !important;
+        }
+        .lg\:grid-cols-12 { grid-template-columns: repeat(1, minmax(0, 1fr)) !important; }
+        .lg\:col-span-8 { grid-column: span 1 / span 1 !important; }
+        .lg\:col-span-4 { grid-column: span 1 / span 1 !important; }
+        .lg\:pb-0 { padding-bottom: 3rem !important; }
+        
+        /* Increase article font size for better readability on iPad Pro */
+        .article-format p, 
+        .article-format span, 
+        .article-format li, 
+        .article-format div {
+            font-size: 1.25rem !important;
+            line-height: 1.8 !important;
+        }
+        .article-format h2 {
+            font-size: 2rem !important;
+        }
+        .article-format h3 {
+            font-size: 1.5rem !important;
+        }
+        
+        /* Side-by-side layout for Related Articles on iPad Pro */
+        .related-articles-grid {
+            display: grid !important;
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+            gap: 1.25rem !important;
+        }
+        .related-articles-grid > a {
+            margin-top: 0 !important;
+        }
+        
+        .related-article-img-container {
+            height: 240px !important;
+        }
+        .related-article-title {
+            font-size: 1.15rem !important; /* ~18.4px */
+        }
+        .related-article-desc {
+            font-size: 0.95rem !important; /* ~15.2px */
+            -webkit-line-clamp: 3 !important; /* Show more text since box is taller */
+        }
+        .related-article-readmore {
+            font-size: 0.95rem !important;
+        }
+    }
+    
+    /* Hide expand buttons strictly on Desktop (non-touch) or screens larger than iPad Pro */
+    @media (min-width: 1024px) and (pointer: fine), (min-width: 1367px) {
+        .desktop-hidden {
+            display: none !important;
+        }
+    }
 </style>
 <section class="py-12 bg-[#F7F9FC]">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -342,14 +409,14 @@ $shareUrl = urlencode(request_origin_url() . ($_SERVER['REQUEST_URI'] ?? ''));
                         <?= $content ?>
                     </div>
                     <!-- Read More Overlay (Mobile Only) -->
-                    <div id="read-more-overlay" onclick="expandArticle()" class="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-white via-white/95 to-transparent flex items-center justify-center pt-16 lg:hidden transition-opacity duration-300 z-20 cursor-pointer">
+                    <div id="read-more-overlay" onclick="expandArticle()" class="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-white via-white/95 to-transparent flex items-center justify-center pt-16 desktop-hidden transition-opacity duration-300 z-20 cursor-pointer">
                         <button type="button" class="text-white px-8 py-3.5 rounded-full font-bold shadow-xl active:scale-95 transition-all flex items-center gap-2 text-[15px] z-30" style="background-color: #0663F6;">
                             <?= e(getCurrentLang() === 'th' ? 'อ่านเพิ่มเติม' : 'Read more') ?>
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                         </button>
                     </div>
                     <!-- Show Less Button (Mobile Only) -->
-                    <div id="show-less-container" class="hidden lg:hidden justify-center mt-8 mb-2">
+                    <div id="show-less-container" class="hidden desktop-hidden justify-center mt-8 mb-2">
                         <button onclick="collapseArticle()" type="button" class="bg-white border-2 border-[#0663F6] text-[#0663F6] px-8 py-3 rounded-full font-bold shadow-sm active:scale-95 transition-all flex items-center gap-2 text-[15px] cursor-pointer">
                             <?= e(getCurrentLang() === 'th' ? 'ย่อเนื้อหา' : 'Show less') ?>
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path></svg>
@@ -362,10 +429,10 @@ $shareUrl = urlencode(request_origin_url() . ($_SERVER['REQUEST_URI'] ?? ''));
                     <h4 class="text-[19px] font-bold text-[#0663F6] mb-4">
                         <?= e(getCurrentLang() === 'th' ? 'บทความที่เกี่ยวข้อง' : 'Related Articles') ?>
                     </h4>
-                    <div class="space-y-4">
+                    <div class="space-y-4 related-articles-grid">
                         <?php foreach($relatedArticles as $item): ?>
                             <a href="<?= route_url('/article', ['id' => (int)$item['id']]) ?>" class="block group bg-white border border-slate-100 rounded-[1.25rem] overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-                                <div class="relative w-full overflow-hidden" style="height: 160px;">
+                                <div class="relative w-full overflow-hidden related-article-img-container" style="height: 160px;">
                                     <img src="<?= resolve_article_image_url($item['image_path'] ?? '') ?>" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" style="object-position: center 25%;" alt="<?= e($item['title']) ?>">
                                 </div>
                                 <div class="p-4 flex flex-col justify-between">
@@ -374,10 +441,10 @@ $shareUrl = urlencode(request_origin_url() . ($_SERVER['REQUEST_URI'] ?? ''));
                                     $itemTitle = $itemLang === 'en' && !empty($item['meta_title_en']) ? $item['meta_title_en'] : ($item['title'] ?? '');
                                     $itemDesc = $itemLang === 'en' && !empty($item['meta_description_en']) ? $item['meta_description_en'] : ($item['description'] ?? '');
                                     ?>
-                                    <h5 class="text-[14px] font-bold text-[#0663F6] mb-1.5 line-clamp-2 leading-snug group-hover:underline"><?= e($itemTitle) ?></h5>
-                                    <p class="text-[11.5px] text-slate-500 mb-3 line-clamp-2 leading-relaxed"><?= e($itemDesc) ?></p>
+                                    <h5 class="text-base md:text-[14px] font-bold text-[#0663F6] mb-1.5 line-clamp-2 leading-snug group-hover:underline related-article-title"><?= e($itemTitle) ?></h5>
+                                    <p class="text-sm md:text-[11.5px] text-slate-500 mb-3 line-clamp-2 leading-relaxed related-article-desc"><?= e($itemDesc) ?></p>
                                     <div class="text-right">
-                                        <span class="text-[#0663F6] text-[12px] font-bold"><?= e(getCurrentLang() === 'th' ? 'อ่านเพิ่มเติม' : 'Read more') ?> &rarr;</span>
+                                        <span class="text-[#0663F6] text-sm md:text-[12px] font-bold related-article-readmore"><?= e(getCurrentLang() === 'th' ? 'อ่านเพิ่มเติม' : 'Read more') ?> &rarr;</span>
                                     </div>
                                 </div>
                             </a>
@@ -410,7 +477,7 @@ function expandArticle() {
         setTimeout(() => overlay.style.display = 'none', 300);
     }
     if (showLess) {
-        showLess.classList.remove('hidden');
+        showLess.classList.remove('hidden', 'desktop-hidden', 'lg:hidden');
         showLess.classList.add('flex');
     }
 }
@@ -437,7 +504,7 @@ function collapseArticle() {
         }, 10);
     }
     if (showLess) {
-        showLess.classList.add('hidden');
+        showLess.classList.add('hidden', 'desktop-hidden');
         showLess.classList.remove('flex');
     }
 }
@@ -455,6 +522,26 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (overlay) overlay.style.display = 'none';
             }
         }, 150);
+    }
+
+    // Force Thai translation for specific text on iPad Pro (portrait & landscape) ONLY when language is Thai
+    if (
+        document.documentElement.lang === 'th' &&
+        ((window.innerWidth === 1024) || 
+         (window.innerWidth >= 1024 && window.innerWidth <= 1366 && window.matchMedia("(pointer: coarse)").matches))
+    ) {
+        const formatDiv = document.getElementById('article-format-content');
+        if (formatDiv) {
+            formatDiv.innerHTML = formatDiv.innerHTML
+                .replace(/ \(Webpark Co\., Ltd\.\)/gi, '')
+                .replace(/Soi Ladprao 126 \(Karnporn\)/gi, 'ซอยลาดพร้าว 126')
+                .replace(/Phlapphal/gi, 'แขวงพลับพลา')
+                .replace(/Phlapphla/gi, 'แขวงพลับพลา')
+                .replace(/Wangthonglang/gi, 'เขตวังทองหลาง')
+                .replace(/Bangkok/gi, 'กรุงเทพมหานคร')
+                .replace(/Email:/gi, 'อีเมล:')
+                .replace(/Tel:/gi, 'โทร:');
+        }
     }
 
     // Reading Progress Bar

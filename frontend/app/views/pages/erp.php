@@ -238,6 +238,25 @@ $erpPortfolios = $mockErpPortfolios;
         .delay-500 { animation-delay: 500ms; }
         .animate-scroll { animation: scroll 20s linear infinite; }
         .animate-scroll:hover { animation-play-state: paused; }
+        .animate-scroll:hover { animation-play-state: paused; }
+
+        /* Custom Layout for iPad Pro Portrait (1024px - 1279px) */
+        @media (min-width: 1024px) and (max-width: 1279px) {
+            .ipad-pro-erp-hero-p {
+                max-width: 95% !important; /* Increase max width to prevent awkward wrapping */
+            }
+            .ipad-pro-erp-hero-subtitle {
+                margin-top: 1.25rem !important; /* Add space above subtitle */
+                margin-bottom: 0.75rem !important; /* Add space below subtitle */
+                padding-bottom: 0 !important; /* Reset padding to balance visually */
+            }
+            .ipad-pro-erp-about-card-desc {
+                font-size: 1.05rem !important; /* Reduce font size slightly so it fits on one line */
+                line-height: 1.5 !important;
+                padding-left: 0.5rem !important;
+                padding-right: 0.5rem !important;
+            }
+        }
 
         /* สไตล์พิเศษสำหรับหน้าจอ Desktop (ใหญ่กว่า iPad Pro) เพื่อให้เหมือนหน้าอื่นๆ */
         @media (min-width: 1025px) {
@@ -462,27 +481,6 @@ $erpPortfolios = $mockErpPortfolios;
                 padding-bottom: 0.75rem !important;
                 margin: 0 !important;
             }
-            /* ซ่อน text ข้างล่างการ์ดผลงาน ให้เหลือแต่รูปล้วนแบบในดีไซน์ */
-            .desktop-erp-portfolio-text {
-                display: none !important;
-            }
-            .desktop-erp-portfolio-img-container {
-                height: auto !important; /* ปล่อยให้สูงตามสัดส่วนภาพ */
-                background: transparent !important;
-            }
-            .desktop-erp-portfolio-img-container img {
-                border-radius: 1rem !important;
-            }
-            .desktop-erp-portfolio-badge {
-                display: none !important;
-            }
-            .desktop-erp-portfolio-card {
-                border: none !important;
-                box-shadow: none !important;
-            }
-            .desktop-erp-portfolio-card:hover {
-                box-shadow: 0 20px 40px -10px rgba(0,0,0,0.1) !important;
-            }
         }
     </style>
     <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8 pt-12 pb-24 lg:pt-28 lg:pb-32 relative z-10 desktop-wide-container-erp">
@@ -554,25 +552,26 @@ $erpPortfolios = $mockErpPortfolios;
                         </a>
                     </div>
                 </div>
-                <!-- Desktop Only Hero Content -->
                 <div class="hidden md:block">
                     <h1 class="animate-fade-up delay-200 leading-[1.1] mb-2 tracking-tighter desktop-erp-hero-h1">
-                        <span class="text-4xl md:text-6xl lg:text-8xl font-bold bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block pb-0 pt-2 desktop-erp-hero-text-1">
+                        <span class="text-4xl md:text-6xl xl:text-8xl font-bold bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block pb-0 pt-2 desktop-erp-hero-text-1">
                             <?= getCurrentLang() === 'th' ? 'ระบบ' : 'ERP' ?>
                         </span>
-                        <span class="text-4xl md:text-6xl lg:text-8xl font-bold bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block pb-0 pt-2 ml-1 lg:ml-2 desktop-erp-hero-text-2">
+                        <span class="text-4xl md:text-6xl xl:text-8xl font-bold bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block pb-0 pt-2 ml-1 xl:ml-2 desktop-erp-hero-text-2">
                             <?= getCurrentLang() === 'th' ? 'ERP' : 'Systems' ?>
                         </span><br>
-                        <span class="text-xl md:text-2xl lg:text-4xl font-medium leading-snug bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block mt-0 pb-3 pt-1 desktop-erp-hero-subtitle" style="animation-delay: -3s;">
+                        <span class="text-xl md:text-2xl xl:text-4xl font-medium leading-snug bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block mt-0 pb-3 pt-1 desktop-erp-hero-subtitle ipad-pro-erp-hero-subtitle" style="animation-delay: -3s;">
                             <?= getCurrentLang() === 'th' ? 'เชื่อมต่อทุกกระบวนการธุรกิจ<br>แบบครบวงจรในแพลตฟอร์มเดียว' : 'Connecting every business process<br>end-to-end on a single platform' ?>
                         </span>
                     </h1>
-                    <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-lg md:text-xl leading-relaxed max-w-lg mb-10 font-medium desktop-erp-hero-p">
+                    <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-lg md:text-xl leading-relaxed max-w-lg mb-10 font-medium desktop-erp-hero-p ipad-pro-erp-hero-p">
                         <?php if (getCurrentLang() === 'th'): ?>
-                            รวบรวมบทความรู้ เทคโนโลยี นวัตกรรม และแนวทางการทำธุรกิจ<br>ครอบคลุม ERP ระบบธุรกิจดิจิทัล การตลาดออนไลน์ AI<br>และโซลูชัน ที่ช่วยพัฒนาองค์กรให้เติบโตได้อย่างยั่งยืน
+                            รวบรวมบทความรู้ เทคโนโลยี นวัตกรรม และแนวทางการทำธุรกิจ<br class="hidden xl:block">
+                            ครอบคลุม ERP ระบบธุรกิจดิจิทัล การตลาดออนไลน์ AI<br class="hidden xl:block">
+                            และโซลูชัน ที่ช่วยพัฒนาองค์กรให้เติบโตได้อย่างยั่งยืน
                         <?php else: ?>
-                            <?= e(t('common.articles_knowledge_summary')) ?> <br class="hidden md:block">
-                            <?= e(t('common.articles_coverage_summary')) ?><br class="hidden md:block">
+                            <?= e(t('common.articles_knowledge_summary')) ?> <br class="hidden xl:block">
+                            <?= e(t('common.articles_coverage_summary')) ?><br class="hidden xl:block">
                             <?= e(t('common.articles_growth_summary')) ?>
                         <?php endif; ?>
                     </p>
@@ -663,7 +662,7 @@ $erpPortfolios = $mockErpPortfolios;
                             <h2 class="text-[#043B94] font-bold text-lg md:text-xl lg:text-2xl xl:text-3xl text-center mb-3 whitespace-normal tracking-tight transition-colors duration-300 group-hover:text-blue-600 desktop-erp-about-card-title">
                                 <?= e($card['title']) ?>
                             </h2>
-                            <p class="text-gray-500 text-base md:text-lg lg:text-xl leading-relaxed mb-6 text-center transition-colors duration-300 group-hover:text-gray-600 desktop-erp-about-card-desc">
+                            <p class="text-gray-500 text-base md:text-lg lg:text-xl leading-relaxed mb-6 text-center transition-colors duration-300 group-hover:text-gray-600 desktop-erp-about-card-desc ipad-pro-erp-about-card-desc">
                                 <?= e($card['desc']) ?>
                             </p>
                         </div>
@@ -730,8 +729,20 @@ $erpPortfolios = $mockErpPortfolios;
                     grid-column: span 2 / span 2 !important;
                 }
             }
+            /* Custom Grid for iPad Pro Portrait (1024px - 1279px) */
+            @media (min-width: 1024px) and (max-width: 1279px) {
+                .ipad-pro-benefits-grid {
+                    grid-template-columns: repeat(6, minmax(0, 1fr)) !important;
+                }
+                .ipad-pro-span-top {
+                    grid-column: span 2 / span 2 !important;
+                }
+                .ipad-pro-span-bottom {
+                    grid-column: span 3 / span 3 !important;
+                }
+            }
         </style>
-        <div class="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-5 gap-6">
+        <div class="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-5 gap-6 ipad-pro-benefits-grid">
             <?php
             $erpBenefits = [
                 [
@@ -761,10 +772,17 @@ $erpPortfolios = $mockErpPortfolios;
                 ],
             ];
             ?>
-            <?php foreach ($erpBenefits as $index => $benefit): ?>
+            <?php foreach ($erpBenefits as $index => $benefit): 
+                // Set custom class for iPad Pro 6-col grid logic
+                if ($index < 3) {
+                    $lgClass = 'ipad-pro-span-top';
+                } else {
+                    $lgClass = 'ipad-pro-span-bottom';
+                }
+            ?>
                 <?php if($index === 4): ?>
                     <!-- 5th Block: Horizontal rectangle on mobile, Square on desktop -->
-                    <div class="gsap-erp-benefit-card bg-white rounded-2xl py-10 px-6 sm:p-6 border border-slate-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 mobile-span-2 sm:col-span-1 flex flex-row sm:block items-center text-left sm:text-center gap-6 sm:gap-0 opacity-0 translate-y-10 desktop-erp-benefit-card">
+                    <div class="gsap-erp-benefit-card bg-white rounded-2xl py-10 px-6 sm:p-6 border border-slate-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 mobile-span-2 sm:col-span-1 <?= $lgClass ?> flex flex-row sm:block items-center text-left sm:text-center gap-6 sm:gap-0 opacity-0 translate-y-10 desktop-erp-benefit-card">
                         <div class="w-16 h-16 sm:w-14 sm:h-14 sm:mx-auto shrink-0 bg-blue-50/70 rounded-full flex items-center justify-center sm:mb-4 desktop-erp-benefit-icon-wrap">
                             <img src="<?= e($benefit['icon']) ?>" alt="<?= e($benefit['title']) ?>" class="h-full w-full object-contain desktop-erp-benefit-icon-img">
                         </div>
@@ -775,7 +793,7 @@ $erpPortfolios = $mockErpPortfolios;
                     </div>
                 <?php else: ?>
                     <!-- Blocks 1-4: Square -->
-                    <div class="gsap-erp-benefit-card bg-white rounded-2xl p-6 text-center border border-slate-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 opacity-0 translate-y-10 desktop-erp-benefit-card">
+                    <div class="gsap-erp-benefit-card bg-white rounded-2xl p-6 text-center border border-slate-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 opacity-0 translate-y-10 desktop-erp-benefit-card sm:col-span-1 <?= $lgClass ?>">
                         <div class="w-14 h-14 mx-auto bg-blue-50/70 rounded-full flex items-center justify-center mb-4 shrink-0 desktop-erp-benefit-icon-wrap">
                             <img src="<?= e($benefit['icon']) ?>" alt="<?= e($benefit['title']) ?>" class="h-full w-full object-contain desktop-erp-benefit-icon-img">
                         </div>
@@ -810,23 +828,24 @@ $erpPortfolios = $mockErpPortfolios;
                         <img src="<?= e($imgSrc) ?>" alt="<?= e($port['title']) ?>" class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105">
                         <span class="absolute bottom-3 left-3 bg-primary/95 backdrop-blur text-white text-[10px] font-bold px-2.5 py-1 rounded-md uppercase tracking-wider shadow-sm desktop-erp-portfolio-badge">ERP SYSTEM</span>
                     </div>
-                    <div class="p-6 flex flex-col flex-1 desktop-erp-portfolio-text">
-                        <h3 class="text-base font-bold text-[#0b1b42] leading-snug line-clamp-2 group-hover:text-primary transition-colors mb-3">
-                            <?= e($port['title']) ?>
-                        </h3>
-                        <p class="text-[13px] text-slate-500 leading-relaxed line-clamp-3 mb-5 flex-1">
-                            <?= e($port['description']) ?>
-                        </p>
-                        <div class="mt-auto pt-4 border-t border-slate-50"> 
-                            <span
-                                class="inline-flex items-center justify-center
-                                    rounded-full border-2 border-primary
-                                    px-3 py-1
-                                    text-sm font-medium
-
-                                    text-primary
-                                    hover:bg-primary hover:text-white
-                                    transition-colors">
+                    <div class="p-6 flex flex-col flex-1 desktop-erp-portfolio-text bg-white lg:group-hover:bg-[#0663F6] transition-colors duration-500">
+                        <div class="flex items-center gap-3 mb-6 lg:group-hover:mb-3 transition-all duration-500">
+                            <?php if (!empty($port['logo_path'])): ?>
+                                <div class="bg-white rounded-full flex items-center justify-center shrink-0 w-10 h-10 overflow-hidden shadow-sm">
+                                    <img src="<?= e(asset_url($port['logo_path'])) ?>" class="h-6 w-6 object-contain" alt="">
+                                </div>
+                            <?php endif; ?>
+                            <h3 class="text-base lg:text-lg font-bold text-[#0b1b42] lg:group-hover:!text-white leading-snug line-clamp-2 transition-colors duration-500">
+                                <?= e($port['title']) ?>
+                            </h3>
+                        </div>
+                        <div class="hidden lg:block max-h-0 overflow-hidden opacity-0 lg:group-hover:max-h-24 lg:group-hover:opacity-100 lg:group-hover:mb-6 transition-all duration-500">
+                            <p class="text-white text-[13px] leading-relaxed line-clamp-3 font-light">
+                                <?= e($port['description']) ?>
+                            </p>
+                        </div>
+                        <div class="mt-auto lg:pt-0"> 
+                            <span class="inline-flex items-center justify-center rounded-full border-2 border-primary px-3 py-1 text-sm font-medium text-primary lg:group-hover:!border-white lg:group-hover:!text-white transition-all duration-500">
                                 ERP System
                             </span>
                         </div>

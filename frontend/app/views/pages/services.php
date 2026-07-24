@@ -282,6 +282,80 @@ if (isset($services) && is_array($services)) {
         .service-icon-emoji {
             display: inline-block;
         }
+
+        /* Custom Layout for iPad Pro Portrait (1024px - 1279px) */
+        @media (min-width: 1024px) and (max-width: 1279px) {
+            .ipad-pro-services-h1 {
+                flex-direction: row !important;
+                flex-wrap: wrap !important;
+                align-items: baseline !important;
+                gap: 1rem !important;
+            }
+            .ipad-pro-services-text-1, .ipad-pro-services-text-2 {
+                margin-top: 0 !important;
+                padding-top: 0 !important;
+                padding-bottom: 0 !important;
+                font-size: 4.5rem !important; /* Adjusted to fit on one line */
+                line-height: 1.2 !important;
+            }
+            
+            /* Increase font size for Services title section */
+            .ipad-pro-services-h1-text {
+                font-size: 5.5rem !important; /* Larger than 4.5rem/3.75rem */
+            }
+            .ipad-pro-services-subtitle {
+                font-size: 2.25rem !important; /* Larger than 1.875rem */
+            }
+            .ipad-pro-services-desc {
+                font-size: 1.35rem !important; /* Adjusted to fit exactly on 2 lines */
+                line-height: 1.7 !important;
+                max-width: 100% !important; /* Allow full width to prevent spilling to 3rd line */
+                padding-right: 0 !important;
+            }
+
+            /* Increase font size for Service Cards on iPad Pro */
+            .ipad-pro-service-card-title {
+                font-size: 1.75rem !important; /* Increase from text-xl */
+            }
+            .ipad-pro-service-card-desc {
+                font-size: 1.15rem !important; /* Increase from text-sm */
+                display: -webkit-box !important;
+                -webkit-line-clamp: 2 !important;
+                -webkit-box-orient: vertical !important;
+                overflow: hidden !important;
+            }
+            .ipad-pro-service-card-dropdown {
+                font-size: 1.15rem !important; /* Increase from text-sm */
+            }
+            .ipad-pro-services-approach-section {
+                padding-top: 2rem !important; /* Reduce top padding */
+                padding-bottom: 3rem !important;
+            }
+            
+            /* Reduce size of Our Approach blocks on iPad Pro */
+            .ipad-pro-services-approach-card {
+                padding: 1.5rem !important;
+                gap: 1rem !important;
+            }
+            .ipad-pro-services-approach-icon-wrap {
+                width: 3.5rem !important;
+                height: 3.5rem !important;
+            }
+            .ipad-pro-services-approach-icon-img {
+                width: 2.75rem !important;
+                height: 2.75rem !important;
+            }
+            .ipad-pro-services-approach-number {
+                font-size: 1.25rem !important;
+            }
+            .ipad-pro-services-approach-title {
+                font-size: 1.125rem !important;
+            }
+            .ipad-pro-services-approach-desc {
+                font-size: 1.05rem !important; /* Increased from 0.875rem for better readability */
+                line-height: 1.6 !important;
+            }
+        }
         
         /* สไตล์พิเศษสำหรับหน้าจอ Desktop (ใหญ่กว่า iPad Pro) */
         @media (min-width: 1025px) {
@@ -484,11 +558,11 @@ if (isset($services) && is_array($services)) {
                             </li>
                         </ol>
                     </nav>
-                <h1 class="animate-fade-up delay-200 mb-2 tracking-tighter flex flex-col items-start">
-                    <span class="text-5xl md:text-6xl lg:text-8xl font-bold bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient py-2 desktop-services-hero-h1 desktop-services-hero-text-1">
+                <h1 class="animate-fade-up delay-200 mb-2 tracking-tighter flex flex-col items-start ipad-pro-services-h1">
+                    <span class="text-5xl md:text-6xl lg:text-8xl font-bold bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient py-2 desktop-services-hero-h1 desktop-services-hero-text-1 ipad-pro-services-text-1">
                         <?= getCurrentLang() === 'th' ? 'ความเชี่ยวชาญ' : 'Expertise' ?>
                     </span>
-                    <span class="text-5xl md:text-6xl lg:text-8xl font-bold bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient py-4 -mt-4 md:-mt-6 lg:-mt-8 desktop-services-hero-h1 desktop-services-hero-text-2" style="animation-delay: -3s;">
+                    <span class="text-5xl md:text-6xl lg:text-8xl font-bold bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient py-4 -mt-4 md:-mt-6 lg:-mt-8 desktop-services-hero-h1 desktop-services-hero-text-2 ipad-pro-services-text-2" style="animation-delay: -3s;">
                         <?= getCurrentLang() === 'th' ? 'และจุดเด่น' : '& Strengths' ?>
                     </span>
                 </h1>
@@ -521,14 +595,14 @@ if (isset($services) && is_array($services)) {
 </section>
 <section id="our-services" class="bg-white py-8 lg:py-16 font-sans scroll-mt-6">
     <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8 desktop-wide-container-services">
-        <h1 class="text-4xl md:text-6xl lg:text-7xl font-extrabold leading-tight tracking-tight mb-0 md:mb-1 gsap-fade-up" style="color: #0663F6 !important;">
+        <h1 class="text-4xl md:text-6xl lg:text-7xl font-extrabold leading-tight tracking-tight mb-0 md:mb-1 gsap-fade-up ipad-pro-services-h1-text" style="color: #0663F6 !important;">
             <?= e(t('common.nav_services') !== 'common.nav_services' ? t('common.nav_services') : (getCurrentLang() === 'th' ? 'บริการของเรา' : 'Our Services')) ?>
         </h1>
         <div class="mt-2 mb-4 md:mb-6 gsap-fade-up" style="width: 48px; height: 3px; background-color: #0663F6;"></div>
-        <span class="text-2xl md:text-3xl font-bold gsap-fade-up w-full max-w-none mb-4 block leading-tight" style="color: #043B94;">
+        <span class="text-lg sm:text-xl md:text-3xl font-bold gsap-fade-up w-full max-w-none mb-4 block leading-tight tracking-tighter md:tracking-normal whitespace-nowrap ipad-pro-services-subtitle" style="color: #043B94;">
             <?= getCurrentLang() === 'th' ? 'บริการของเรา ครอบคลุมทุกมิติธุรกิจดิจิทัล' : 'Our services cover every dimension of digital business' ?>
         </span>
-        <p class="gsap-fade-up text-slate-500 text-lg md:text-[15px] lg:text-base xl:text-[17px] leading-relaxed w-full max-w-none">
+        <p class="gsap-fade-up text-slate-500 text-lg md:text-[15px] lg:text-base xl:text-[17px] leading-relaxed w-full max-w-none ipad-pro-services-desc">
             <?= getCurrentLang() === 'th' ? 'Webpark ให้บริการแบบครบวงจร ตั้งแต่การวางแผน ออกแบบ พัฒนา ไปจนถึงการดูแลหลังการใช้งาน เพื่อช่วยให้องค์กรเพิ่มประสิทธิภาพ ลดต้นทุน และเติบโตได้อย่างยั่งยืนในยุคดิจิทัล' : 'Webpark provides end-to-end services, from planning, design, and development to post-deployment support. We help organizations increase efficiency, reduce costs, and grow sustainably in the digital era.' ?>
         </p>
     </div>
@@ -557,14 +631,14 @@ if (isset($services) && is_array($services)) {
                 <div class="flex flex-col flex-1 p-6 desktop-service-card-inner">
                     <div class="flex items-center gap-2 mb-2">
                         <span class="service-icon-emoji text-2xl leading-none desktop-service-emoji"><?= e($sEmoji) ?></span>
-                        <h2 class="text-xl font-extrabold desktop-service-title" style="color: #022862;"><?= e($sTitle) ?></h2>
+                        <h2 class="text-xl font-extrabold desktop-service-title ipad-pro-service-card-title" style="color: #022862;"><?= e($sTitle) ?></h2>
                     </div>
-                    <p class="text-slate-500 text-sm leading-relaxed mb-4 desktop-service-desc">
+                    <p class="text-slate-500 text-sm leading-relaxed mb-4 desktop-service-desc ipad-pro-service-card-desc">
                         <?= e($sSummary) ?>
                     </p>
                     <div class="mt-auto border-t border-slate-100 pt-3 desktop-service-details-wrap">
                         <details class="group/details">
-                            <summary class="flex items-center justify-between py-2 rounded-lg text-sm font-bold cursor-pointer transition-colors duration-150 hover:text-[#043B94] text-[#022862] list-none desktop-service-summary">
+                            <summary class="flex items-center justify-between py-2 rounded-lg text-sm font-bold cursor-pointer transition-colors duration-150 hover:text-[#043B94] text-[#022862] list-none desktop-service-summary ipad-pro-service-card-dropdown">
                                 <span class="desktop-service-summary-text"><?= e($dropdownText) ?></span>
                                 <svg class="w-4 h-4 shrink-0 text-slate-400 transition-transform duration-200 group-open/details:rotate-180 desktop-service-arrow"
                                      fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
@@ -628,17 +702,17 @@ if (isset($services) && is_array($services)) {
         </div>
     </div>
 </section>
-<section id="our-approach" class="py-16 lg:py-24" style="background-color: #f1f5f9;">
+<section id="our-approach" class="py-16 lg:py-24 ipad-pro-services-approach-section" style="background-color: #f1f5f9;">
     <div class="mx-auto max-w-7xl px-6 sm:px-6 lg:px-8 desktop-approach-container">
-        <div class="text-center mb-10 md:mb-16 flex flex-col items-center">
+        <div class="text-left md:text-center mb-10 md:mb-16 flex flex-col items-start md:items-center">
             <div class="flex flex-col items-start mb-4 md:mb-6">
                 <span class="text-3xl md:text-4xl font-bold gsap-fade-up mb-1 block" style="color: #054FC5 !important; -webkit-text-fill-color: #054FC5 !important; background: none !important;">
                     <?= getCurrentLang() === 'th' ? 'แนวคิดในการทำงานของเรา' : 'Our Approach' ?>
                 </span>
                 <div class="mt-1 gsap-fade-up" style="width: 48px; height: 3px; background-color: #0663F6;"></div>
             </div>
-            <p class="text-slate-500 text-lg md:text-xl leading-relaxed max-w-4xl text-center mx-auto desktop-approach-subtitle">
-                <?= getCurrentLang() === 'th' ? 'กระบวนการทำงานที่เป็นระบบ เพื่อส่งมอบโซลูชันดิจิทัลที่ตอบโจทย์ธุรกิจ <br> และความยั่งยืนของข้อมูลธุรกิจที่องค์กรถือครอง' : 'A systematic work process to deliver digital solutions that meet business needs and ensure the sustainability of business data held by the organization.' ?>
+            <p class="text-slate-500 text-lg md:text-xl leading-relaxed max-w-4xl text-left md:text-center mx-0 md:mx-auto desktop-approach-subtitle">
+                <?= getCurrentLang() === 'th' ? 'กระบวนการทำงานที่เป็นระบบ เพื่อส่งมอบโซลูชันดิจิทัลที่ตอบโจทย์ธุรกิจ <br class="hidden md:block"> และความยั่งยืนของข้อมูลธุรกิจที่องค์กรถือครอง' : 'A systematic work process to deliver digital solutions that meet business needs and ensure the sustainability of business data held by the organization.' ?>
             </p>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 max-w-5xl mx-auto desktop-approach-container">
@@ -671,20 +745,20 @@ if (isset($services) && is_array($services)) {
             ];
             foreach ($approachSteps as $step):
             ?>
-            <div class="gsap-approach-step flex flex-row items-center md:items-start gap-5 md:gap-6 rounded-3xl border border-blue-50/50 bg-white p-6 md:p-8 transition-all duration-300 opacity-0 translate-y-10 desktop-approach-card"
+            <div class="gsap-approach-step flex flex-row items-center md:items-start gap-5 md:gap-6 rounded-3xl border border-blue-50/50 bg-white p-6 md:p-8 transition-all duration-300 opacity-0 translate-y-10 desktop-approach-card ipad-pro-services-approach-card"
                 style="box-shadow: 0 8px 30px -10px rgba(4,59,148,0.08);">
-                <div class="gsap-approach-icon w-16 h-16 md:w-20 md:h-20 shrink-0 flex items-center justify-center md:pt-1 desktop-approach-icon-wrap">
+                <div class="gsap-approach-icon w-16 h-16 md:w-20 md:h-20 shrink-0 flex items-center justify-center md:pt-1 desktop-approach-icon-wrap ipad-pro-services-approach-icon-wrap">
                     <img src="<?= e($step['icon']) ?>"
                          alt="<?= e($step['title']) ?>"
-                         class="w-14 h-14 md:w-16 md:h-16 object-contain drop-shadow-sm desktop-approach-icon-img"
+                         class="w-14 h-14 md:w-16 md:h-16 object-contain drop-shadow-sm desktop-approach-icon-img ipad-pro-services-approach-icon-img"
                          onerror="this.onerror=null;this.style.display='none'">
                 </div>
                 <div class="flex flex-col gap-1 md:gap-1.5 md:pt-1 desktop-approach-content">
-                    <div class="desktop-approach-header flex flex-col">
-                        <span class="gsap-approach-number text-2xl md:text-3xl font-extrabold desktop-approach-number" style="color: #043B94;"><?= e($step['number']) ?></span>
-                        <h3 class="text-xl md:text-2xl font-extrabold mb-1 desktop-approach-title" style="color: #022862;"><?= e($step['title']) ?></h3>
+                    <div class="desktop-approach-header flex flex-row items-center gap-2 md:flex-col md:items-start md:gap-0">
+                        <span class="gsap-approach-number text-2xl md:text-3xl font-extrabold desktop-approach-number ipad-pro-services-approach-number" style="color: #043B94;"><?= e($step['number']) ?></span>
+                        <h3 class="text-xl md:text-2xl font-extrabold mb-0 md:mb-1 desktop-approach-title ipad-pro-services-approach-title" style="color: #022862;"><?= e($step['title']) ?></h3>
                     </div>
-                    <p class="text-slate-600 text-base md:text-lg leading-[1.7] desktop-approach-desc"><?= e($step['desc']) ?></p>
+                    <p class="text-slate-600 text-base md:text-lg leading-[1.7] desktop-approach-desc ipad-pro-services-approach-desc"><?= e($step['desc']) ?></p>
                 </div>
             </div>
             <?php endforeach; ?>

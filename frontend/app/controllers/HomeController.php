@@ -113,25 +113,45 @@ class HomeController
             $reviews = [];
         }
 
-        // Load portfolios for homepage
-        $displayPortfolios = [];
-        try {
-            $portfolioModel = new Portfolio();
-            $portfolioRows = $portfolioModel->getPublished();
-            $displayPortfolios = array_map(static function (array $row): array {
-                return [
-                    'id' => (int) ($row['id'] ?? 0),
-                    'title' => (string) ($row['title'] ?? ''),
-                    'description' => (string) ($row['description'] ?? ''),
-                    'category' => (string) ($row['category'] ?? 'Portfolio'),
-                    'image_path' => (string) ($row['image_path'] ?? $row['cover_image'] ?? ''),
-                    'cover_image' => (string) ($row['cover_image'] ?? $row['image_path'] ?? ''),
-                    'items' => (string) ($row['items'] ?? ''),
-                ];
-            }, array_slice($portfolioRows, 0, 4));
-        } catch (Throwable $e) {
-            $displayPortfolios = [];
-        }
+        // Load portfolios for homepage (Mocked data to match design)
+        $displayPortfolios = [
+            [
+                'id' => 1,
+                'title' => 'KPN Click',
+                'description' => 'ระบบ ERP สำหรับบริหารข้อมูลและกระบวนการทำงานภายในองค์กร',
+                'category' => 'ERP System',
+                'image_path' => 'uploads/portfolios/kpn-click.png',
+                'cover_image' => 'uploads/portfolios/kpn-click.png',
+                'logo_path' => 'uploads/portfolios/kpn-logo.png'
+            ],
+            [
+                'id' => 2,
+                'title' => 'Yamaha LEAD',
+                'description' => 'ระบบ ERP สำหรับบริหารข้อมูลและกระบวนการทำงานภายในองค์กร ช่วยลดขั้นตอนซ้ำซ้อนและเพิ่มประสิทธิภาพการจัดการงานอย่างเป็นระบบ',
+                'category' => 'ERP System',
+                'image_path' => 'uploads/portfolios/yamaha-lead.png',
+                'cover_image' => 'uploads/portfolios/yamaha-lead.png',
+                'logo_path' => 'uploads/portfolios/yamaha-logo.png'
+            ],
+            [
+                'id' => 3,
+                'title' => 'Nusasiri',
+                'description' => 'ระบบ ERP สำหรับบริหารโครงการอสังหาริมทรัพย์',
+                'category' => 'ERP System',
+                'image_path' => 'uploads/portfolios/nusasiri.png',
+                'cover_image' => 'uploads/portfolios/nusasiri.png',
+                'logo_path' => 'uploads/portfolios/nusasiri-logo.png'
+            ],
+            [
+                'id' => 4,
+                'title' => 'NS Gas',
+                'description' => 'ระบบ ERP สำหรับบริหารจัดการก๊าซและขนส่ง',
+                'category' => 'ERP System',
+                'image_path' => 'uploads/portfolios/nsgas.png',
+                'cover_image' => 'uploads/portfolios/nsgas.png',
+                'logo_path' => 'uploads/portfolios/nsgas-logo.png'
+            ]
+        ];
 
         // Build simplified services for homepage using the full catalog (first 4)
         $serviceModel = $this->getServiceModel();
@@ -786,26 +806,44 @@ class HomeController
 
         $currentModule = $moduleMap[$activeModule] ?? $modules[0];
 
-        $erpPortfolios = [];
-        try {
-            $portfolioModel = new Portfolio();
-            $rows = array_values(array_filter($portfolioModel->getByCategoryName('ERP'), static function (array $row): bool {
-                $status = strtolower(trim((string) ($row['status'] ?? '')));
-                return $status !== 'draft';
-            }));
-
-            $erpPortfolios = array_map(static function (array $row): array {
-                return [
-                    'id' => (int) ($row['id'] ?? 0),
-                    'title' => (string) ($row['title'] ?? ''),
-                    'description' => (string) ($row['description'] ?? ''),
-                    'slug' => (string) ($row['slug'] ?? ''),
-                    'image_path' => (string) ($row['image_path'] ?? $row['cover_image'] ?? ''),
-                ];
-            }, $rows);
-        } catch (Throwable $e) {
-            $erpPortfolios = [];
-        }
+        $erpPortfolios = [
+            [
+                'id' => 1,
+                'title' => 'KPN Click',
+                'description' => 'ระบบ ERP สำหรับบริหารข้อมูลและกระบวนการทำงานภายในองค์กร',
+                'slug' => 'kpn-click',
+                'image_path' => 'uploads/portfolios/kpn-click.png',
+                'cover_image' => 'uploads/portfolios/kpn-click.png',
+                'logo_path' => 'uploads/portfolios/kpn-logo.png'
+            ],
+            [
+                'id' => 2,
+                'title' => 'Yamaha LEAD',
+                'description' => 'ระบบ ERP สำหรับบริหารข้อมูลและกระบวนการทำงานภายในองค์กร ช่วยลดขั้นตอนซ้ำซ้อนและเพิ่มประสิทธิภาพการจัดการงานอย่างเป็นระบบ',
+                'slug' => 'yamaha-lead',
+                'image_path' => 'uploads/portfolios/yamaha-lead.png',
+                'cover_image' => 'uploads/portfolios/yamaha-lead.png',
+                'logo_path' => 'uploads/portfolios/yamaha-logo.png'
+            ],
+            [
+                'id' => 3,
+                'title' => 'Nusasiri',
+                'description' => 'ระบบ ERP สำหรับบริหารโครงการอสังหาริมทรัพย์',
+                'slug' => 'nusasiri',
+                'image_path' => 'uploads/portfolios/nusasiri.png',
+                'cover_image' => 'uploads/portfolios/nusasiri.png',
+                'logo_path' => 'uploads/portfolios/nusasiri-logo.png'
+            ],
+            [
+                'id' => 4,
+                'title' => 'NS Gas',
+                'description' => 'ระบบ ERP สำหรับบริหารจัดการก๊าซและขนส่ง',
+                'slug' => 'ns-gas',
+                'image_path' => 'uploads/portfolios/nsgas.png',
+                'cover_image' => 'uploads/portfolios/nsgas.png',
+                'logo_path' => 'uploads/portfolios/nsgas-logo.png'
+            ]
+        ];
 
         $this->view('pages/erp.php', array_merge($this->sharedData('erp', 'ERP System'), [
             'benefits' => $benefits,

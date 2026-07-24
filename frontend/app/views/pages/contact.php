@@ -108,7 +108,7 @@ $form = $form ?? [];
                 </style>
                 <h1 class="animate-fade-up delay-200 tracking-tight mb-2">
                     <span class="hero-title-text font-bold bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block pb-1 md:pb-2 whitespace-nowrap desktop-contact-hero-h1"><?= e(t('contact.hero_title')) ?></span><br>
-                    <span class="hero-title-text font-bold bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block -mt-2 md:-mt-8 whitespace-nowrap desktop-contact-hero-h1" style="animation-delay: -3s;">WEBPARK</span>
+                    <span class="hero-title-text font-bold bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block -mt-2 md:-mt-2 whitespace-nowrap desktop-contact-hero-h1" style="animation-delay: -3s;">WEBPARK</span>
                 </h1>
                 <?php
                 if (getCurrentLang() === 'th') {

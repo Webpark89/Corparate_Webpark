@@ -108,6 +108,21 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                         .hero-title-text { font-size: 5rem; line-height: 1.2; }
                     }
                     
+                    /* Custom Layout for iPad Pro Portrait (1024px - 1279px) */
+                    @media (min-width: 1024px) and (max-width: 1279px) {
+                        .ipad-pro-article-hero-p {
+                            max-width: 95% !important; /* Increase max width to prevent awkward wrapping */
+                        }
+                        .ipad-pro-article-hero-h1 {
+                            font-size: 3.75rem !important; /* Reduce font size on iPad Pro */
+                            white-space: nowrap !important; /* Keep Knowledge Articles on one line */
+                        }
+                        .ipad-pro-category-center {
+                            justify-content: center !important;
+                            width: 100% !important;
+                        }
+                    }
+                    
                     /* สไตล์พิเศษสำหรับหน้าจอ Desktop (ใหญ่กว่า iPad Pro) */
                     @media (min-width: 1025px) {
                         .desktop-wide-container-article {
@@ -150,10 +165,10 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                     }
                 </style>
                 <h1 class="animate-fade-up delay-200 tracking-tight mb-2">
-                    <span class="hero-title-text font-bold bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block pb-1 md:pb-2 desktop-article-hero-h1">
+                    <span class="hero-title-text font-bold bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block pb-1 md:pb-2 desktop-article-hero-h1 ipad-pro-article-hero-h1">
                         <?= e(getCurrentLang() === 'th' ? 'บทความความรู้' : 'Knowledge Articles') ?>
                     </span><br>
-                    <span class="hero-title-text font-bold bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block -mt-2 md:-mt-8 desktop-article-hero-h1" style="animation-delay: -3s;">
+                    <span class="hero-title-text font-bold bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block -mt-2 md:-mt-2 desktop-article-hero-h1 ipad-pro-article-hero-h1" style="animation-delay: -3s;">
                         <?= e(getCurrentLang() === 'th' ? 'และอัพเดต' : '& Updates') ?>
                     </span>
                 </h1>
@@ -164,7 +179,7 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                     $mobile_desc = "Knowledge articles, tech, and innovation covering ERP systems, digital business, online marketing, AI, and solutions to sustainably grow your organization.";
                 }
                 ?>
-                <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-lg md:text-xl leading-relaxed max-w-2xl mb-10 font-medium desktop-article-hero-p">
+                <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-lg md:text-xl leading-relaxed max-w-2xl mb-10 font-medium desktop-article-hero-p ipad-pro-article-hero-p">
                     <span class="block md:hidden leading-[1.75]">
                         <?= $mobile_desc ?>
                     </span>
@@ -198,7 +213,7 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                 </button>
             </div>
             <div class="relative flex-1 overflow-hidden">
-                <div id="category-filters" class="article-filter-track flex justify-start md:justify-center gap-3 overflow-x-auto py-1 px-2 md:px-0 hide-scroll scroll-smooth desktop-category-center" style="-ms-overflow-style: none; scrollbar-width: none;">
+                <div id="category-filters" class="article-filter-track flex justify-start md:justify-center gap-3 overflow-x-auto py-1 px-2 md:px-0 hide-scroll scroll-smooth desktop-category-center ipad-pro-category-center" style="-ms-overflow-style: none; scrollbar-width: none;">
                     <button type="button"
                             data-filter="all"
                             class="article-filter-btn whitespace-nowrap rounded-md border px-5 py-2 text-sm font-medium transition-colors desktop-filter-btn-large <?= $activeCategorySlug === 'all' ? 'border-transparent bg-blue-600 text-white' : 'border-blue-200 bg-white text-[#1a2b6d] hover:bg-blue-600 hover:text-white hover:border-transparent' ?>">
@@ -289,7 +304,7 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                                 <?= e($articleTitle) ?>
                             </h3>
                         </a>
-                        <p class="article-card__description text-slate-600 text-sm md:text-base lg:text-lg leading-relaxed line-clamp-2 min-h-[2.5rem] mb-3 desktop-article-card-desc">
+                        <p class="article-card__description text-slate-600 text-[15px] md:text-base lg:text-lg leading-relaxed line-clamp-2 min-h-[2.5rem] mb-3 desktop-article-card-desc">
                             <?= e($summary) ?>
                         </p>
                         <div class="flex mt-1" style="justify-content: flex-end;">

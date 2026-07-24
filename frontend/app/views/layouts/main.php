@@ -38,8 +38,9 @@ $currentPage = $currentPage ?? '';
 $content = $content ?? '';
 ?>
 <!DOCTYPE html>
-<html lang="<?= e(function_exists('getCurrentLang') ? getCurrentLang() : 'th') ?>">
+<html lang="<?= e(function_exists('getCurrentLang') ? getCurrentLang() : 'th') ?>" translate="no">
 <head>
+    <meta name="google" content="notranslate">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title><?= e($title) ?></title>

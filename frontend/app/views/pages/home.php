@@ -54,8 +54,8 @@ if (!empty($partners) && is_array($partners)) {
         .delay-300 { animation-delay: 300ms; }
         .delay-400 { animation-delay: 400ms; }
         .delay-500 { animation-delay: 500ms; }
-        .mobile-hero-woman { width: 52%; bottom: 0px; right: -2%; opacity: 0.85; }
-        @media (min-width: 768px) { .mobile-hero-woman { width: auto; bottom: 0; right: 0; opacity: 1; } }
+        .mobile-hero-woman { width: 62%; bottom: 0px; right: -8%; opacity: 1; z-index: 0; }
+        @media (min-width: 768px) { .mobile-hero-woman { width: auto; bottom: 0; right: 0; opacity: 1; z-index: 0; } }
         .hero-parallax-img {
             transform: scale(1.12);
             will-change: transform;
@@ -74,39 +74,40 @@ if (!empty($partners) && is_array($partners)) {
         <!-- Mobile Gradient Mask to prevent text overlapping presenter image -->
         <div class="absolute inset-0 bg-gradient-to-r from-white via-white/90 to-white/30 md:hidden z-0 pointer-events-none"></div>
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center relative z-10">
-            <div class="max-w-3xl relative z-10 text-center md:text-left mx-auto md:mx-0 flex flex-col items-center md:items-start w-full">
-                <div class="animate-entrance-up delay-100 inline-flex items-center gap-3 px-7 py-2.5 rounded-full border border-slate-200 mb-6 shadow-sm bg-white/40">
-                    <span class="text-blue-600 font-black text-3xl leading-none mb-1">•</span>
-                    <span class="text-base lg:text-lg font-bold text-blue-600 tracking-wide">
+            <div class="max-w-3xl relative z-10 text-left mx-0 flex flex-col items-start w-full">
+                <div class="animate-entrance-up delay-100 inline-flex items-center gap-2 md:gap-3 px-4 py-2 md:px-7 md:py-2.5 rounded-full border-2 border-blue-600 md:border md:border-slate-200 mb-6 shadow-sm bg-white/40">
+                    <span class="text-blue-600 font-black text-xl md:text-3xl leading-none mt-1 md:mt-0 md:mb-1">•</span>
+                    <span class="text-[12px] sm:text-[13px] md:text-base lg:text-lg font-bold text-blue-600 tracking-wide whitespace-nowrap">
                         Digital Solutions for Modern Business
                     </span>
                 </div>
-                <h1 class="animate-entrance-up delay-200 text-5xl md:text-7xl lg:text-8xl font-black leading-[1.05] mb-4 tracking-tighter">
+                <h1 class="animate-entrance-up delay-200 text-5xl md:text-7xl lg:text-8xl font-black leading-[1.05] mb-4 tracking-tighter text-left">
                     <span class="bg-gradient-to-r from-[#898F98] to-[#000208] bg-clip-text text-transparent block">WEBPARK</span>
                     <span class="bg-gradient-to-r from-[#003380] to-[#0055ff] bg-clip-text text-transparent block mt-1">COMPANY</span>
                 </h1>
-                <p class="animate-entrance-up delay-300 mt-5 md:mt-6 text-[#0b1b42] text-sm md:text-base lg:text-lg leading-relaxed max-w-lg mx-auto md:mx-0 mb-8 md:mb-10 font-semibold w-full text-left">
+                <p class="animate-entrance-up delay-300 mt-5 md:mt-6 text-blue-900 md:text-[#0b1b42] text-base md:text-lg leading-relaxed max-w-lg mx-0 mb-8 md:mb-10 font-bold md:font-semibold w-11/12 sm:w-3/4 md:w-full text-left relative z-20 ipad-pro-hero-desc">
                     <span class="md:hidden">
-                        <?= getCurrentLang() === 'th' ? 'ผู้ให้บริการพัฒนา Digital Platform<br>และระบบ AI ที่ช่วยให้ธุรกิจไทย<br>ก้าวไปข้างหน้าด้วยเทคโนโลยีที่ใช้งานได้จริง' : 'Digital Platform and AI system<br>development provider helping Thai businesses<br>move forward with practical technology.' ?>
+                        <?= getCurrentLang() === 'th' ? 'ผู้ให้บริการพัฒนา Digital Platform<br>และระบบ AI ที่ช่วยให้ธุรกิจไทย<br>ก้าวไปข้างหน้า ด้วยเทคโนโลยี<br>ที่ใช้งานได้จริง' : 'Digital Platform and AI system<br>development provider helping Thai businesses<br>move forward with practical technology.' ?>
                     </span>
                     <span class="hidden md:inline">
-                        <?= getCurrentLang() === 'th' ? 'ผู้ให้บริการพัฒนา Digital Platform และระบบ AI<br>ที่ช่วยให้ธุรกิจไทยก้าวไปข้างหน้าด้วยเทคโนโลยีที่ใช้งานได้จริง' : 'Digital Platform and AI system development provider<br>helping Thai businesses move forward with practical technology.' ?>
+                        <?= getCurrentLang() === 'th' ? 'ผู้ให้บริการพัฒนา Digital Platform และระบบ AI<br>ที่ช่วยให้ธุรกิจไทยก้าวไปข้างหน้าด้วยเทคโนโลยีที่ใช้งานได้จริง' : 'Digital Platform and AI system development provider <br class="ipad-pro-strict-hidden">helping Thai businesses move forward with practical technology.' ?>
                     </span>
                 </p>
-                <div class="animate-entrance-up delay-400 flex flex-col items-center md:items-start md:flex-row md:justify-start gap-4">
-                    <a href="<?= e(route_url('/services')) ?>" class="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-primary text-white text-base font-semibold rounded-full hover:bg-blue-700 transition-all shadow-md hover:-translate-y-0.5">
-                        <?= getCurrentLang() === 'th' ? 'ปรึกษาผู้เชี่ยวชาญ' : 'Consult an Expert' ?>
+                <div class="animate-entrance-up delay-400 flex flex-col items-start self-start md:self-auto md:flex-row md:justify-start gap-3 md:gap-4">
+                    <a href="<?= e(route_url('/services')) ?>" class="inline-flex items-center justify-center gap-2 px-6 py-2.5 md:px-8 md:py-3.5 bg-primary text-white text-sm md:text-base font-semibold rounded-full hover:bg-blue-700 transition-all shadow-md hover:-translate-y-0.5 whitespace-nowrap">
+                        <span class="md:hidden"><?= getCurrentLang() === 'th' ? 'ดูบริการของเรา' : 'Our Services' ?></span>
+                        <span class="hidden md:inline"><?= getCurrentLang() === 'th' ? 'ปรึกษาผู้เชี่ยวชาญ' : 'Consult an Expert' ?></span>
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
                         </svg>
                     </a>
-                    <a href="#about" class="inline-flex items-center gap-4 transition-all hover:-translate-y-0.5 group">
-                        <div class="h-14 w-14 bg-white flex items-center justify-center rounded-full shadow-lg border border-slate-200 transition-all group-hover:bg-slate-50 group-hover:shadow-xl group-hover:scale-105">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600 fill-current" viewBox="0 0 24 24">
+                    <a href="#about" class="inline-flex items-center gap-3 md:gap-4 transition-all hover:-translate-y-0.5 group whitespace-nowrap">
+                        <div class="h-12 w-12 md:h-14 md:w-14 bg-white flex items-center justify-center rounded-full shadow-lg border border-slate-200 transition-all group-hover:bg-slate-50 group-hover:shadow-xl group-hover:scale-105 shrink-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 md:h-6 md:w-6 text-blue-600 fill-current" viewBox="0 0 24 24">
                                 <path d="M8 5v14l11-7z"/>
                             </svg>
                         </div>
-                        <span class="text-slate-800 text-lg font-semibold group-hover:text-primary transition-colors"><?= e(t('common.cta_watch_intro_video')) ?></span>
+                        <span class="text-slate-800 text-sm md:text-lg font-semibold group-hover:text-primary transition-colors"><?= e(t('common.cta_watch_intro_video')) ?></span>
                     </a>
                 </div>
             </div>
@@ -125,37 +126,85 @@ if (!empty($partners) && is_array($partners)) {
         <div class="animate-entrance-left delay-500 absolute top-auto bottom-0 lg:top-28 lg:bottom-auto right-0 md:right-4 lg:right-8 z-0 pointer-events-none max-w-full transform md:-translate-y-2 flex justify-end mobile-hero-woman desktop-hero-woman">
             <picture class="w-full md:w-auto flex justify-end">
                 <source media="(min-width: 768px)" srcset="<?= e(asset_url('images/women-mobile.svg')) ?>">
-                <img src="<?= e($heroImage) ?>" alt="WEBPARK Presenter" class="w-full md:w-auto object-contain object-right-bottom h-auto md:h-[400px] lg:h-[600px] opacity-95 md:opacity-100">
+                <img src="<?= e($heroImage) ?>" alt="WEBPARK Presenter" class="w-full md:w-auto object-contain object-right-bottom h-auto md:h-[400px] lg:h-[600px] opacity-100">
             </picture>
         </div>
     </div>
 </section>
+<style>
+/* iPad Pro (1024px) override to keep the layout stacked */
+@media (max-width: 1024px) {
+    .ipad-pro-stack-override { flex-direction: column !important; background: transparent !important; border: none !important; box-shadow: none !important; gap: 1rem !important; overflow: visible !important; }
+    .ipad-pro-hidden { display: none !important; }
+    .ipad-pro-w-full-override { max-width: 100% !important; border-right: none !important; border-radius: 0 0 2rem 2rem !important; border: 1px solid #f3f4f6 !important; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important; }
+    .ipad-pro-flex-visible { display: flex !important; }
+    .ipad-pro-grid-2-override { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; border-radius: 2rem !important; border: 1px solid #f3f4f6 !important; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important; }
+    .ipad-pro-border-b { border-bottom: 1px solid #f3f4f6 !important; border-right: none !important; }
+    .ipad-pro-border-r { border-right: 1px solid #f3f4f6 !important; border-bottom: none !important; }
+    .ipad-pro-border-br { border-right: 1px solid #f3f4f6 !important; border-bottom: 1px solid #f3f4f6 !important; }
+    .ipad-pro-border-none { border: none !important; }
+    .ipad-pro-p-6 { padding: 1.5rem !important; }
+    
+    /* Overrides for About Us inner layout */
+    .ipad-pro-display-grid { display: grid !important; }
+    .ipad-pro-display-block { display: block !important; }
+    .ipad-pro-display-flex { display: flex !important; }
+    
+    /* Overrides for Articles layout */
+    .ipad-pro-articles-slider { display: flex !important; flex-wrap: nowrap !important; overflow-x: auto !important; overflow-y: hidden !important; }
+    .ipad-pro-articles-card { width: 100% !important; flex-shrink: 0 !important; scroll-snap-align: center !important; }
+}
+
+/* Strict override for exactly 1024px (iPad Pro portrait) */
+@media (min-width: 1024px) and (max-width: 1024px) {
+    .ipad-pro-strict-hidden { display: none !important; }
+    .ipad-pro-hero-desc { font-size: 1.375rem !important; line-height: 2rem !important; width: 600px !important; max-width: 600px !important; }
+    
+    /* iPad Pro (1024px) Font Size Overrides */
+    .ipad-pro-font-about-tag { font-size: 1.125rem !important; line-height: 1.75rem !important; }
+    .ipad-pro-font-about-h2 { font-size: 1.875rem !important; line-height: 2.25rem !important; }
+    .ipad-pro-font-title { font-size: 1.5rem !important; line-height: 2rem !important; }
+    .ipad-pro-font-desc { font-size: 1.125rem !important; line-height: 1.75rem !important; }
+    .ipad-pro-font-link { font-size: 1rem !important; line-height: 1.5rem !important; }
+    .ipad-pro-font-h2 { font-size: 3rem !important; line-height: 1 !important; }
+    .ipad-pro-font-subtitle { font-size: 2.25rem !important; line-height: 2.5rem !important; }
+    
+    /* iPad Pro (1024px) Articles Font Size Overrides */
+    .ipad-pro-article-h2 { font-size: 2.5rem !important; line-height: 1.2 !important; }
+    .ipad-pro-article-h3 { font-size: 1.75rem !important; line-height: 1.3 !important; }
+    .ipad-pro-article-desc { font-size: 1.25rem !important; line-height: 1.75 !important; }
+    .ipad-pro-card-title { font-size: 1.625rem !important; line-height: 1.4 !important; }
+    .ipad-pro-card-desc { font-size: 1.25rem !important; line-height: 1.6 !important; }
+    .ipad-pro-card-link { font-size: 1.125rem !important; line-height: 1.5 !important; }
+    .ipad-pro-card-badge { font-size: 1rem !important; padding: 0.375rem 0.75rem !important; }
+}
+</style>
 <section class="relative bg-white z-20 mt-0 md:mt-0 lg:-mt-1 pb-6 lg:pb-6 overflow-hidden">
     <div class="mx-auto w-full max-w-[1720px] px-4 sm:px-6 lg:px-10 bg-white">
-        <div class="w-full flex flex-col lg:flex-row items-stretch lg:bg-white lg:rounded-[1rem] lg:shadow-[0_4px_25px_rgba(0,0,0,0.06)] lg:border lg:border-gray-100 lg:overflow-hidden gap-4 lg:gap-0">
-            <div class="hidden lg:flex flex-1 lg:max-w-[280px] xl:max-w-[320px] items-center justify-center p-6 lg:p-8 border-b lg:border-b-0 shrink-0 bg-white">
+        <div class="w-full flex flex-col lg:flex-row items-stretch lg:bg-white lg:rounded-[1rem] lg:shadow-[0_4px_25px_rgba(0,0,0,0.06)] lg:border lg:border-gray-100 lg:overflow-hidden gap-4 lg:gap-0 ipad-pro-stack-override">
+            <div class="hidden lg:flex flex-1 lg:max-w-[280px] xl:max-w-[320px] items-center justify-center p-6 lg:p-8 border-b lg:border-b-0 shrink-0 bg-white ipad-pro-hidden">
                 <img src="<?= e(asset_url('images/logo.png')) ?>" alt="WEBPARK logo" class="w-32 lg:w-48 xl:w-56 h-auto object-contain">
             </div>
-            <div class="group flex-1 lg:max-w-[300px] xl:max-w-[320px] flex flex-col justify-between p-6 lg:p-8 border lg:border-none border-gray-100 lg:border-r shrink-0 bg-white rounded-t-none rounded-b-[2rem] lg:rounded-none shadow-sm lg:shadow-none transition-all duration-300 hover:bg-slate-50/50 cursor-pointer">
-                <div class="grid grid-cols-2 lg:contents items-center gap-4 lg:gap-6 w-full">
-                    <div class="flex items-center justify-center lg:hidden border-r border-gray-200 pr-4 h-fit self-center">
+            <div class="group flex-1 lg:max-w-[300px] xl:max-w-[320px] flex flex-col justify-between p-6 lg:p-8 border lg:border-none border-gray-100 lg:border-r shrink-0 bg-white rounded-t-none rounded-b-[2rem] lg:rounded-none shadow-sm lg:shadow-none transition-all duration-300 hover:bg-slate-50/50 cursor-pointer ipad-pro-w-full-override ipad-pro-p-6">
+                <div class="grid grid-cols-2 lg:contents items-center gap-4 lg:gap-6 w-full ipad-pro-display-grid">
+                    <div class="flex items-center justify-center lg:hidden border-r border-gray-200 pr-4 h-fit self-center ipad-pro-flex-visible">
                         <img src="<?= e(asset_url('images/logo.png')) ?>" alt="WEBPARK logo" class="w-full max-w-[120px] md:max-w-[150px] h-auto object-contain">
                     </div>
-                    <div class="lg:contents text-left">
-                        <div class="flex flex-col justify-between h-full lg:h-auto lg:contents">
+                    <div class="lg:contents text-left ipad-pro-display-block">
+                        <div class="flex flex-col justify-between h-full lg:h-auto lg:contents ipad-pro-display-flex">
                             <div>
                                 <div class="text-left w-full mb-3">
-                                    <span class="text-primary font-bold text-lg md:text-sm tracking-wide inline-block mx-0"><?= e(t('common.about_us_heading')) ?></span>
+                                    <span class="text-primary font-bold text-lg md:text-sm tracking-wide inline-block mx-0 ipad-pro-font-about-tag"><?= e(t('common.about_us_heading')) ?></span>
                                     <div class="w-8 h-[3px] bg-primary mt-1"></div>
                                 </div>
-                                <h2 class="text-[#043B94] text-xl xl:text-2xl font-bold leading-tight mb-3 transition-colors duration-300 group-hover:text-blue-700">
+                                <h2 class="text-[#043B94] text-xl xl:text-2xl font-bold leading-tight mb-3 transition-colors duration-300 group-hover:text-blue-700 ipad-pro-font-about-h2">
                                     <?= e(t('common.we_are_partner')) ?><br class="hidden lg:inline"><?= e(t('common.in_technology')) ?>
                                 </h2>
-                                <p class="text-gray-500 text-[0.8rem] md:text-sm leading-relaxed mb-4">
+                                <p class="text-gray-500 text-[0.8rem] md:text-sm leading-relaxed mb-4 ipad-pro-font-desc">
                                     <?= e(t('common.partner_description')) ?>
                                 </p>
                             </div>
-                            <a href="<?= e(route_url('/about')) ?>" class="inline-flex items-center text-primary text-sm font-semibold transition-colors duration-300 group-hover:text-blue-700 w-max mt-auto">
+                            <a href="<?= e(route_url('/about')) ?>" class="inline-flex items-center text-primary text-sm font-semibold transition-colors duration-300 group-hover:text-blue-700 w-max mt-auto ipad-pro-font-link">
                                 <?= e(t('common.cta_read_more')) ?>
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1.5 transition-transform duration-300 ease-out group-hover:translate-x-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
@@ -165,7 +214,7 @@ if (!empty($partners) && is_array($partners)) {
                     </div>
                 </div>
             </div>
-            <div class="flex-[4] grid grid-cols-2 lg:grid-cols-4 w-full bg-white rounded-[2rem] lg:rounded-none shadow-sm lg:shadow-none border border-gray-100 lg:border-none overflow-hidden">
+            <div class="flex-[4] grid grid-cols-2 lg:grid-cols-4 w-full bg-white rounded-[2rem] lg:rounded-none shadow-sm lg:shadow-none border border-gray-100 lg:border-none overflow-hidden ipad-pro-grid-2-override">
                 <?php
                 $serviceCards = [
                     ['icon' => 'icon-3.png', 'title' => getCurrentLang() === 'th' ? 'ระบบ ERP / ERM' : 'ERP / ERM',        'desc' => t('common.solution_org_control'), 'href' => route_url('/erp')],
@@ -175,27 +224,33 @@ if (!empty($partners) && is_array($partners)) {
                 ];
                 foreach ($serviceCards as $i => $card):
                     $borderClass = '';
+                    $ipadProBorderClass = '';
                     if ($i === 0) {
                         $borderClass = 'border-r border-b lg:border-b-0';
+                        $ipadProBorderClass = 'ipad-pro-border-br';
                     } elseif ($i === 1) {
                         $borderClass = 'border-b lg:border-r lg:border-b-0';
+                        $ipadProBorderClass = 'ipad-pro-border-b';
                     } elseif ($i === 2) {
                         $borderClass = 'border-r';
+                        $ipadProBorderClass = 'ipad-pro-border-r';
+                    } elseif ($i === 3) {
+                        $ipadProBorderClass = 'ipad-pro-border-none';
                     }
                 ?>
-                    <div class="gsap-home-service-card relative group cursor-pointer flex flex-col justify-between p-6 lg:p-8 <?= $borderClass ?> border-gray-100 bg-white transition-all duration-300 ease-out hover:shadow-[0_0_30px_rgba(0,0,0,0.08)] hover:-translate-y-1 hover:z-10 hover:rounded-xl opacity-0 translate-y-10">
+                    <div class="gsap-home-service-card relative group cursor-pointer flex flex-col justify-between p-6 lg:p-8 <?= $borderClass ?> <?= $ipadProBorderClass ?> border-gray-100 bg-white transition-all duration-300 ease-out hover:shadow-[0_0_30px_rgba(0,0,0,0.08)] hover:-translate-y-1 hover:z-10 hover:rounded-xl opacity-0 translate-y-10 ipad-pro-p-6">
                     <div>
                         <div class="h-14 w-14 mx-auto mb-5 flex items-center justify-center transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:-translate-y-2 group-hover:scale-110">
                             <img src="<?= e(asset_url('images/' . $card['icon'])) ?>" alt="<?= e($card['title']) ?>" class="h-full w-full object-contain">
                         </div>
-                        <h2 class="text-[#043B94] font-bold text-base md:text-lg xl:text-xl text-center mb-3 whitespace-normal lg:whitespace-nowrap tracking-tight transition-colors duration-300 group-hover:text-blue-600">
+                        <h2 class="text-[#043B94] font-bold text-base md:text-lg xl:text-xl text-center mb-3 whitespace-normal lg:whitespace-nowrap tracking-tight transition-colors duration-300 group-hover:text-blue-600 ipad-pro-font-title">
                             <?= e($card['title']) ?>
                         </h2>
-                        <p class="text-gray-500 text-sm md:text-base leading-relaxed mb-6 text-left transition-colors duration-300 group-hover:text-gray-600">
+                        <p class="text-gray-500 text-sm md:text-base leading-relaxed mb-6 text-left transition-colors duration-300 group-hover:text-gray-600 ipad-pro-font-desc">
                             <?= e($card['desc']) ?>
                         </p>
                     </div>
-                    <a href="<?= e($card['href']) ?>" class="inline-flex items-center text-primary text-sm font-medium transition-colors duration-300 group-hover:text-blue-700 w-max mt-auto">
+                    <a href="<?= e($card['href']) ?>" class="inline-flex items-center text-primary text-sm font-medium transition-colors duration-300 group-hover:text-blue-700 w-max mt-auto ipad-pro-font-link">
                         <?= e(t('common.cta_read_more')) ?>
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1.5 transition-transform duration-300 ease-out group-hover:translate-x-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
@@ -211,14 +266,14 @@ if (!empty($partners) && is_array($partners)) {
     <div class="mx-auto w-full max-w-[1720px] px-4 sm:px-6 lg:px-10">
         <div class="mb-10">
             <div class="hidden md:block">
-                <h2 class="text-3xl md:text-4xl font-extrabold leading-none tracking-tighter text-blue-600 m-0 mb-4">
+                <h2 class="text-3xl md:text-4xl font-extrabold leading-none tracking-tighter text-blue-600 m-0 mb-4 ipad-pro-font-h2">
                     <?= e(t('common.nav_services') !== 'common.nav_services' ? t('common.nav_services') : (getCurrentLang() === 'th' ? 'บริการของเรา' : 'Our Services')) ?>
                 </h2>
-                <span class="block text-2xl lg:text-3xl font-bold leading-tight text-[#0b1b42] mb-6">
+                <span class="block text-2xl lg:text-3xl font-bold leading-tight text-[#0b1b42] mb-6 ipad-pro-font-subtitle">
                     <?= e(t('home.portfolio_subtitle') !== 'home.portfolio_subtitle' ? t('home.portfolio_subtitle') : (getCurrentLang() === 'th' ? 'ตัวอย่างผลงานของเรา' : 'Our Portfolio')) ?>
                 </span>
                 <div class="flex flex-row items-end justify-between gap-4 mb-8">
-                    <p class="text-sm md:text-base leading-relaxed text-slate-500 max-w-xl m-0">
+                    <p class="text-sm md:text-base leading-relaxed text-slate-500 max-w-xl m-0 ipad-pro-font-desc">
                         <?= getCurrentLang() === 'th' ? 'รวมผลงานที่ช่วยต่อยอดแบรนด์<br>และพาธุรกิจสู่มิติใหม่ที่ช่วยให้ธุรกิจเติบโตได้อย่างยั่งยืน' : 'A collection of digital solutions we designed and developed<br>to help businesses grow sustainably.' ?>
                     </p>
                     <a href="<?= e(route_url('/services')) ?>" class="shrink-0 inline-flex items-center justify-center gap-2 px-8 py-3 bg-blue-600 text-white text-base font-semibold rounded-full hover:bg-blue-700 transition-all shadow-md">
@@ -285,15 +340,20 @@ if (!empty($partners) && is_array($partners)) {
                             <div class="h-[200px] sm:h-[180px] lg:h-[200px] w-full overflow-hidden bg-slate-100 shrink-0">
                                 <img src="<?= e($projectImage) ?>" alt="<?= e($projectTitle) ?>" class="h-full w-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out">
                             </div>
-                            <div class="p-5 sm:p-4 lg:p-6 flex flex-col flex-1 bg-white">
-                                <div class="flex items-center gap-3 mb-6">
+                            <div class="p-5 sm:p-4 lg:p-6 flex flex-col flex-1 bg-white lg:group-hover:bg-[#0663F6] transition-colors duration-500">
+                                <div class="flex items-center gap-3 mb-6 lg:group-hover:mb-3 transition-all duration-500">
                                     <?php if (!empty($project['logo_path'])): ?>
-                                        <img src="<?= e(asset_url($project['logo_path'])) ?>" class="h-6 object-contain" alt="">
+                                        <div class="bg-white rounded-full flex items-center justify-center shrink-0 w-10 h-10 overflow-hidden shadow-sm">
+                                            <img src="<?= e(asset_url($project['logo_path'])) ?>" class="h-6 w-6 object-contain" alt="">
+                                        </div>
                                     <?php endif; ?>
-                                    <h3 class="text-lg lg:text-xl font-bold text-[#0b1b42] leading-snug line-clamp-1"><?= e($projectTitle) ?></h3>
+                                    <h3 class="text-lg lg:text-xl font-bold text-[#0b1b42] lg:group-hover:!text-white leading-snug line-clamp-1 transition-colors duration-500"><?= e($projectTitle) ?></h3>
+                                </div>
+                                <div class="hidden lg:block max-h-0 overflow-hidden opacity-0 lg:group-hover:max-h-24 lg:group-hover:opacity-100 lg:group-hover:mb-6 transition-all duration-500">
+                                    <p class="text-white text-sm leading-relaxed line-clamp-3 font-light"><?= e($projectDesc) ?></p>
                                 </div>
                                 <div class="mt-auto">
-                                    <span class="inline-block text-sm font-semibold px-5 py-1.5 rounded-full border" style="color:<?= e($catColor) ?>;border-color:<?= e($catColor) ?>;">
+                                    <span class="inline-block text-sm font-semibold px-5 py-1.5 rounded-full border lg:group-hover:!border-white lg:group-hover:!text-white transition-all duration-500" style="color:<?= e($catColor) ?>;border-color:<?= e($catColor) ?>;">
                                         <?= e($projectCat) ?>
                                     </span>
                                 </div>
@@ -629,7 +689,7 @@ $totalReviews = count($reviews);
 </style>
 <section class="bg-slate-50 pt-10 pb-20 lg:py-20 border-t border-slate-100">
     <div class="mx-auto w-full max-w-[1720px] px-4 sm:px-6 lg:px-10">
-        <div class="hidden lg:flex flex-row items-end justify-between mb-6">
+        <div class="hidden lg:flex flex-row items-end justify-between mb-6 ipad-pro-hidden">
             <div>
                 <h2 class="text-primary font-black text-3xl tracking-normal m-0 inline-block">
                     <?= getCurrentLang() === 'th' ? 'บทความ' : 'Articles' ?>
@@ -649,19 +709,19 @@ $totalReviews = count($reviews);
                 </svg>
             </a>
         </div>
-        <div class="lg:hidden mb-6 flex flex-col items-start text-left pl-1">
-            <h2 class="text-primary font-black text-2xl tracking-normal mb-2 pb-1 inline-block border-b-[3px] border-primary">
+        <div class="lg:hidden mb-6 flex flex-col items-start text-left pl-1 ipad-pro-flex-visible">
+            <h2 class="text-primary font-black text-3xl md:text-2xl tracking-normal mb-2 pb-1 inline-block border-b-[3px] border-primary ipad-pro-article-h2">
                 <?= getCurrentLang() === 'th' ? 'บทความ' : 'Articles' ?>
             </h2>
-            <h3 class="text-dark font-black text-xl mb-3 mt-1 tracking-tight">
+            <h3 class="text-dark font-black text-2xl md:text-xl mb-3 mt-1 tracking-tight ipad-pro-article-h3">
                 <?= getCurrentLang() === 'th' ? 'สาระน่ารู้จาก WEBPARK' : 'Knowledge from WEBPARK' ?>
             </h3>
-            <p class="text-slate-600 text-[0.8rem] leading-[1.6] font-medium">
+            <p class="text-slate-600 text-sm md:text-[0.8rem] leading-[1.6] font-medium ipad-pro-article-desc">
                 <?= getCurrentLang() === 'th' ? 'รวมบทความสาระน่ารู้ ที่จะช่วยต่อยอดแบรนด์<br>และพาธุรกิจสู่ดิจิทัลที่ช่วยให้ธุรกิจเติบโตได้อย่างยั่งยืน' : 'A collection of informative articles to help elevate your brand<br>and guide your business into the digital era for sustainable growth.' ?>
             </p>
         </div>
         <?php if (count($displayArticles) > 0): ?>
-        <div id="knowledge-slider" class="flex lg:grid overflow-x-auto lg:overflow-visible snap-x snap-mandatory flex-nowrap lg:flex-wrap lg:grid-cols-3 gap-8 pt-2 pb-6 hide-scrollbar">
+        <div id="knowledge-slider" class="flex lg:grid overflow-x-auto lg:overflow-visible snap-x snap-mandatory flex-nowrap lg:flex-wrap lg:grid-cols-3 gap-8 pt-2 pb-6 hide-scrollbar ipad-pro-articles-slider">
             <?php foreach ($displayArticles as $art): ?>
                 <?php
                 $artId       = (int)($art['id'] ?? 0);
@@ -678,22 +738,22 @@ $totalReviews = count($reviews);
                 $artCat      = (string)($art['category'] ?? 'Knowledge');
                 $artImage    = resolve_article_image_url($art['image_path'] ?? '', asset_url('images/erp.png'));
                 ?>
-                <article class="gsap-home-article-card flex flex-col overflow-hidden rounded-2xl bg-white shadow-sm border border-slate-100 transition-all duration-300 hover:-translate-y-1 hover:shadow-md group w-full lg:w-auto shrink-0 lg:shrink snap-center lg:snap-align-none opacity-0 translate-y-10">
+                <article class="gsap-home-article-card flex flex-col overflow-hidden rounded-2xl bg-white shadow-sm border border-slate-100 transition-all duration-300 hover:-translate-y-1 hover:shadow-md group w-full lg:w-auto shrink-0 lg:shrink snap-center lg:snap-align-none opacity-0 translate-y-10 ipad-pro-articles-card">
                     <a href="<?= e($artId > 0 ? route_url('/article', ['id' => $artId]) : route_url('/article')) ?>" class="flex flex-col h-full">
                         <div class="relative aspect-[16/9] w-full bg-slate-900 overflow-hidden shrink-0">
                             <img src="<?= e($artImage) ?>" alt="<?= e($artTitle) ?>" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105">
-                            <span class="absolute bottom-3 left-3 rounded-md bg-primary/95 backdrop-blur-sm px-2.5 py-1 text-[10px] font-bold tracking-wider text-white uppercase shadow-sm">
+                            <span class="absolute bottom-3 left-3 rounded-md bg-primary/95 backdrop-blur-sm px-2.5 py-1 text-[10px] font-bold tracking-wider text-white uppercase shadow-sm ipad-pro-card-badge">
                                 <?= e($artCat) ?>
                             </span>
                         </div>
                         <div class="flex flex-col flex-1 p-6">
-                            <h3 class="text-base font-bold text-slate-900 leading-snug line-clamp-2 group-hover:text-primary transition-colors mb-3">
+                            <h3 class="text-[17px] md:text-base font-bold text-slate-900 leading-snug line-clamp-2 group-hover:text-primary transition-colors mb-3 ipad-pro-card-title">
                                 <?= e($artTitle) ?>
                             </h3>
-                            <p class="text-[13px] text-slate-500 leading-relaxed line-clamp-3 mb-5 flex-1">
+                            <p class="text-[14px] md:text-[13px] text-slate-500 leading-relaxed line-clamp-3 mb-5 flex-1 ipad-pro-card-desc">
                                 <?= e($artSummary) ?>
                             </p>
-                            <div class="mt-auto pt-4 border-t border-slate-50 flex items-center gap-1 text-xs font-bold text-primary">
+                            <div class="mt-auto pt-4 border-t border-slate-50 flex items-center gap-1 text-[13px] md:text-xs font-bold text-primary ipad-pro-card-link">
                                 <?= e(t('common.cta_read_more')) ?>
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0 transform group-hover:translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
@@ -704,7 +764,7 @@ $totalReviews = count($reviews);
                 </article>
             <?php endforeach; ?>
         </div>
-        <div id="knowledge-dots" class="flex lg:hidden justify-center items-center gap-2 mt-4 flex-wrap"></div>
+        <div id="knowledge-dots" class="flex lg:hidden justify-center items-center gap-2 mt-4 flex-wrap ipad-pro-flex-visible"></div>
         <?php else: ?>
         <div class="flex flex-col items-center justify-center py-12 px-4 bg-white rounded-2xl border border-slate-100 shadow-sm w-full">
             <img src="<?= e(asset_url('images/Empty.gif')) ?>" alt="No articles found" class="w-64 h-auto max-w-full mb-4 object-contain">
