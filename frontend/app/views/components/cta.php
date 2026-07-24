@@ -11,14 +11,21 @@ $contactSubtitle = $csubtitle ?? (getCurrentLang() === 'th' ? 'พูดคุ�
 $contactButtonText = $cbuttonText ?? t('common.nav_contact');
 $contactButtonUrl = $cbuttonUrl ?? '/contact';
 ?>
+<style>
+/* iPad Pro (1024px) override to keep CTA layout stacked */
+@media (max-width: 1024px) {
+    .ipad-pro-cta-grid-override { grid-template-columns: repeat(1, minmax(0, 1fr)) !important; }
+    .ipad-pro-cta-col-override { grid-column: span 1 / span 1 !important; }
+}
+</style>
 <section class="bg-white py-10 lg:py-10 font-sans">
     <div class="mx-auto w-full max-w-[1720px] px-4 sm:px-6 lg:px-10 relative z-10">
-        <div class="relative w-full rounded-[2rem] p-8 md:p-12 lg:p-14 grid grid-cols-1 lg:grid-cols-12 gap-10 items-start overflow-hidden shadow-xl">
+        <div class="relative w-full rounded-[2rem] p-8 md:p-12 lg:p-14 grid grid-cols-1 lg:grid-cols-12 gap-10 items-start overflow-hidden shadow-xl ipad-pro-cta-grid-override">
             <div class="absolute inset-0 z-0 rounded-[2rem] overflow-hidden">
                 <img src="<?= e(asset_url('images/bg-cta.jpg')) ?>" alt="City Network Overlay" class="w-full h-full opacity-80 object-cover">
                 <div class="absolute inset-0 z-0" style="background: linear-gradient(135deg, rgba(1, 47, 122, 0.95) 0%, rgba(0, 79, 207, 0.6) 100%);"></div>
             </div>
-            <div class="relative z-10 lg:col-span-5 flex flex-col items-start text-left lg:pt-2">
+            <div class="relative z-10 lg:col-span-5 flex flex-col items-start text-left lg:pt-2 ipad-pro-cta-col-override">
                 <div class="mb-4 relative">
                     <span class="text-white font-black text-4xl md:text-5xl lg:text-[3rem] tracking-tight block">
                         <?= e(t('common.nav_contact')) ?>
@@ -32,7 +39,7 @@ $contactButtonUrl = $cbuttonUrl ?? '/contact';
                     <?= $contactSubtitle ?>
                 </p>
             </div>
-            <div class="relative z-10 lg:col-span-7 w-full">
+            <div class="relative z-10 lg:col-span-7 w-full ipad-pro-cta-col-override">
                 <div class="rounded-3xl bg-white p-6 md:p-8 shadow-2xl border border-slate-50">
                     <?php if ($submitted): ?>
                         <div class="text-center py-12">

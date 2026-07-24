@@ -271,18 +271,18 @@ $socialLinks = [
                             <img src="<?= e(asset_url('images/logo.png')) ?>" alt="WEBPARK Logo" style="height: 100%; width: 100%; object-fit: contain;">
                         </div>
                     </div>
-                    <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.5rem;">
+                    <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.5rem; text-align: left; align-items: flex-start;">
                         <span style="font-weight: 700; color: #0663F6; font-size: 1.125rem;"><?= e($officeLabel) ?></span>
-                        <span class="address-text" style="font-size: 1.125rem; color: #054FC5; line-height: 1.6;"><?= e($officeValue) ?></span>
+                        <span class="address-text" style="font-size: 1.125rem; color: #054FC5; line-height: 1.6; text-align: left;"><?= e($officeValue) ?></span>
                     </div>
-                    <div class="footer-contact-block" style="display: flex; flex-direction: column; gap: 0.75rem; margin-top: 0.5rem;">
+                    <div class="footer-contact-block" style="display: flex; flex-direction: column; gap: 0.75rem; margin-top: 0.5rem; text-align: left; align-items: flex-start;">
                         <div style="display: flex; align-items: baseline; gap: 0.5rem; flex-wrap: wrap;">
-                            <span style="font-weight: 700; color: #0663F6; font-size: 1.125rem; min-width: 60px;"><?= e($emailLabel) ?></span>
-                            <a style="font-size: 1.125rem; color: #054FC5; text-decoration: none;" href="mailto:<?= e($email) ?>"><?= e($email) ?></a>
+                            <span style="font-weight: 700; color: #0663F6; font-size: 1.125rem; min-width: 60px; text-align: left;"><?= e($emailLabel) ?></span>
+                            <a style="font-size: 1.125rem; color: #054FC5; text-decoration: none; text-align: left;" href="mailto:<?= e($email) ?>"><?= e($email) ?></a>
                         </div>
                         <div style="display: flex; align-items: baseline; gap: 0.5rem; flex-wrap: wrap;">
-                            <span style="font-weight: 700; color: #0663F6; font-size: 1.125rem; min-width: 60px;"><?= e($phoneLabel) ?></span>
-                            <a style="font-size: 1.125rem; color: #054FC5; text-decoration: none;" href="tel:<?= e(preg_replace('/[^0-9]/', '', $phone)) ?>"><?= e($phone) ?></a>
+                            <span style="font-weight: 700; color: #0663F6; font-size: 1.125rem; min-width: 60px; text-align: left;"><?= e($phoneLabel) ?></span>
+                            <a style="font-size: 1.125rem; color: #054FC5; text-decoration: none; text-align: left;" href="tel:<?= e(preg_replace('/[^0-9]/', '', $phone)) ?>"><?= e($phone) ?></a>
                         </div>
                     </div>
                 </div>
