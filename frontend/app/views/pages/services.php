@@ -226,8 +226,8 @@ if (isset($services) && is_array($services)) {
 <section id="services-hero" class="relative font-sans bg-[#f7faff] overflow-hidden m-0 border-none rounded-none">
     <div class="hidden lg:block absolute inset-0 z-0 overflow-hidden">
         <img src="<?= e($heroImage) ?>" alt="WEBPARK Solutions Background" 
-            class="hero-parallax-img w-full h-full object-cover object-center opacity-100 mix-blend-screen">
-        <div class="absolute inset-0 bg-gradient-to-r from-white via-white/70 to-white/5"></div>
+            class="hero-parallax-img w-full h-full object-cover object-center opacity-100 mix-blend-screen desktop-bg-vibrant-services">
+        <div class="absolute inset-0 bg-gradient-to-r from-white via-white/70 to-transparent"></div>
         <div class="absolute inset-x-0 bottom-0 h-[30%] bg-gradient-to-t from-white to-transparent z-10"></div>
     </div>
     <style>
@@ -282,6 +282,173 @@ if (isset($services) && is_array($services)) {
         .service-icon-emoji {
             display: inline-block;
         }
+        
+        /* สไตล์พิเศษสำหรับหน้าจอ Desktop (ใหญ่กว่า iPad Pro) */
+        @media (min-width: 1025px) {
+            .desktop-wide-container-services {
+                max-width: 1720px !important;
+                padding-left: 2.5rem !important;
+                padding-right: 2.5rem !important;
+            }
+            .desktop-bg-vibrant-services {
+                mix-blend-mode: normal !important;
+                opacity: 1 !important;
+            }
+            .desktop-services-hero-h1 {
+                font-size: 7rem !important;
+                line-height: 1.1 !important;
+                white-space: nowrap !important; /* บังคับไม่ให้ข้อความตกร่องกลางคำ */
+            }
+            .desktop-services-hero-text-1 {
+                background: none !important;
+                -webkit-text-fill-color: #475569 !important; /* สีเทาเข้ม Solid */
+                color: #475569 !important;
+            }
+            .desktop-services-hero-text-2 {
+                background: none !important;
+                -webkit-text-fill-color: #2563eb !important; /* สีน้ำเงิน Solid */
+                color: #2563eb !important;
+            }
+            .desktop-services-hero-p {
+                font-size: 1.375rem !important;
+                line-height: 1.8 !important;
+                max-width: 38rem !important; /* ขยายความกว้างข้อความอธิบายให้สมดุล */
+            }
+            /* ปรับรูปแบบการ์ดบริการ (Services Grid) ให้เหมือนรูปตัวอย่างบน Desktop */
+            .desktop-service-card-inner {
+                flex: 1 0 auto !important; /* แก้ปัญหา height ไม่ยอมขยายตามเนื้อหา */
+            }
+            .desktop-service-emoji {
+                display: none !important;
+            }
+            .desktop-service-title {
+                color: #0663F6 !important;
+                font-size: 1.45rem !important; /* ขยายขนาดหัวข้อสีน้ำเงินตามที่ลูกค้าต้องการ */
+            }
+            .desktop-service-desc {
+                font-size: 1.05rem !important; /* ขยายขนาดข้อความสีเทาตามที่ลูกค้าต้องการ */
+                margin-bottom: 0 !important;
+            }
+            .desktop-service-details-wrap {
+                border-top: none !important;
+                padding-top: 0 !important;
+            }
+            .desktop-service-summary {
+                padding: 0 !important;
+                justify-content: flex-end !important;
+                margin-top: -1.5rem !important; /* ดึงลูกศรขึ้นไปให้อยู่บรรทัดเดียวกับ desc */
+            }
+            .desktop-service-summary-text {
+                display: none !important;
+            }
+            .desktop-service-arrow {
+                color: #0663F6 !important;
+                width: 1.5rem !important;
+                height: 1.5rem !important;
+                background-color: white !important; /* พื้นหลังสีขาวเพื่อทับข้อความถ้ายาวเกิน */
+                border-radius: 50% !important;
+            }
+            .desktop-service-dropdown-content {
+                margin-top: 1.5rem !important;
+                border-top: 1px solid #f1f5f9 !important;
+                padding-top: 1rem !important;
+                padding-bottom: 2rem !important; /* เพิ่มพื้นที่ด้านล่างให้กล่องขยายเต็มที่ */
+            }
+            /* บังคับให้การ์ดและ Grid ขยายตามเนื้อหา Dropdown แน่นอน 100% */
+            #gsap-services-grid, 
+            .desktop-wide-container-services, 
+            .gsap-service-card {
+                height: auto !important;
+                min-height: min-content !important; /* เปลี่ยนเป็น min-content เพื่อให้ยืดหยุ่นสุดๆ */
+                overflow: visible !important; /* ป้องกันไม่ให้เนื้อหาโดนซ่อนถ้ายาวเกิน */
+            }
+
+            /* ปรับกล่องสีน้ำเงิน (CTA) ด้านล่างสุด */
+            .desktop-cta-container {
+                max-width: 1720px !important;
+            }
+            .desktop-cta-bg-img {
+                width: 100% !important;
+                opacity: 0.5 !important;
+                background-position: center !important;
+            }
+            .desktop-cta-gradient-overlay {
+                background: linear-gradient(to right, rgba(1, 20, 49, 0.9) 0%, rgba(4, 59, 148, 0.4) 50%, rgba(30, 64, 175, 0.2) 100%) !important;
+            }
+            .desktop-cta-title {
+                font-size: 2.75rem !important;
+            }
+            .desktop-cta-desc {
+                font-size: 1.15rem !important;
+                max-width: none !important; /* ขยายกว้างสุดเพื่อให้อยู่บรรทัดเดียวกัน */
+                text-transform: uppercase !important; /* ทำให้คำภาษาอังกฤษเป็นพิมพ์ใหญ่ตามรูป */
+            }
+            .desktop-cta-btn {
+                padding: 1rem 2.5rem !important;
+                font-size: 1.125rem !important;
+                color: #0663F6 !important;
+            }
+            .chevron-icon {
+                display: none !important;
+            }
+            .arrow-icon {
+                display: block !important;
+            }
+
+            /* Our Approach (Desktop) */
+            .desktop-approach-container {
+                max-width: 1600px !important;
+            }
+            .desktop-approach-subtitle {
+                max-width: none !important;
+            }
+            .desktop-approach-subtitle br {
+                display: none !important; /* ซ่อน <br> เพื่อให้อยู่บรรทัดเดียว */
+            }
+            .desktop-approach-card {
+                padding: 2.5rem 3.5rem !important;
+                gap: 3rem !important;
+                border-color: #bae6fd !important; /* Light blue border */
+            }
+            .desktop-approach-card:hover {
+                border-color: #38bdf8 !important; /* Cyan border on hover */
+                box-shadow: 0 10px 40px -10px rgba(56, 189, 248, 0.3) !important;
+            }
+            .desktop-approach-icon-wrap {
+                width: 7rem !important;
+                height: 7rem !important;
+            }
+            .desktop-approach-icon-img {
+                width: 6rem !important;
+                height: 6rem !important;
+            }
+            .desktop-approach-content {
+                gap: 0.5rem !important;
+                justify-content: flex-start !important;
+            }
+            .desktop-approach-header {
+                display: flex !important;
+                flex-direction: row !important;
+                align-items: center !important;
+                gap: 1rem !important;
+                margin-bottom: 0.25rem !important;
+            }
+            .desktop-approach-number {
+                font-size: 1.4rem !important; /* เพิ่มขนาดตัวเลข */
+                margin-bottom: 0 !important;
+                color: #043B94 !important;
+            }
+            .desktop-approach-title {
+                font-size: 1.5rem !important; /* เพิ่มขนาดชื่อหัวข้อ */
+                margin-bottom: 0 !important;
+            }
+            .desktop-approach-desc {
+                font-size: 0.9rem !important;
+                line-height: 1.7 !important;
+                color: #64748b !important;
+            }
+        }
+
         /* Accessibility: เคารพการตั้งค่า Reduce Motion ของผู้ใช้ ลด/ปิด animation แบบ CSS ทั้งหมดในหน้านี้ */
         @media (prefers-reduced-motion: reduce) {
             *, *::before, *::after {
@@ -292,7 +459,7 @@ if (isset($services) && is_array($services)) {
             }
         }
     </style>
-    <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8 pt-12 pb-24 lg:pt-28 lg:pb-32 relative z-10">
+    <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8 pt-12 pb-24 lg:pt-28 lg:pb-32 relative z-10 desktop-wide-container-services">
         <!-- Mobile Background Image (Only covers this Hero container) -->
         <div class="absolute inset-0 z-0 overflow-hidden lg:hidden">
             <img src="<?= e($heroImage) ?>" alt="WEBPARK Solutions Background" 
@@ -318,14 +485,14 @@ if (isset($services) && is_array($services)) {
                         </ol>
                     </nav>
                 <h1 class="animate-fade-up delay-200 mb-2 tracking-tighter flex flex-col items-start">
-                    <span class="text-5xl md:text-6xl lg:text-8xl font-bold bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient py-2">
+                    <span class="text-5xl md:text-6xl lg:text-8xl font-bold bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient py-2 desktop-services-hero-h1 desktop-services-hero-text-1">
                         <?= getCurrentLang() === 'th' ? 'ความเชี่ยวชาญ' : 'Expertise' ?>
                     </span>
-                    <span class="text-5xl md:text-6xl lg:text-8xl font-bold bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient py-4 -mt-4 md:-mt-6 lg:-mt-8" style="animation-delay: -3s;">
+                    <span class="text-5xl md:text-6xl lg:text-8xl font-bold bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient py-4 -mt-4 md:-mt-6 lg:-mt-8 desktop-services-hero-h1 desktop-services-hero-text-2" style="animation-delay: -3s;">
                         <?= getCurrentLang() === 'th' ? 'และจุดเด่น' : '& Strengths' ?>
                     </span>
                 </h1>
-                <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-lg md:text-xl leading-relaxed max-w-lg mb-10 font-medium">
+                <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-lg md:text-xl leading-relaxed max-w-lg mb-10 font-medium desktop-services-hero-p">
                     <?php if (getCurrentLang() === 'th'): ?>
                         มากกว่า 20 ปี ที่เราสร้างสรรค์โซลูชันดิจิทัลครบวงจร<br class="block sm:hidden"> ผสานเทคโนโลยี ความเชี่ยวชาญ และความเข้าใจธุรกิจ<br class="block sm:hidden"> เพื่อเพิ่มประสิทธิภาพ สร้างการเติบโต<br class="block sm:hidden"> และยกระดับองค์กรสู่อนาคตอย่างยั่งยืน
                     <?php else: ?>
@@ -353,7 +520,7 @@ if (isset($services) && is_array($services)) {
     </div>
 </section>
 <section id="our-services" class="bg-white py-8 lg:py-16 font-sans scroll-mt-6">
-    <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8">
+    <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8 desktop-wide-container-services">
         <h1 class="text-4xl md:text-6xl lg:text-7xl font-extrabold leading-tight tracking-tight mb-0 md:mb-1 gsap-fade-up" style="color: #0663F6 !important;">
             <?= e(t('common.nav_services') !== 'common.nav_services' ? t('common.nav_services') : (getCurrentLang() === 'th' ? 'บริการของเรา' : 'Our Services')) ?>
         </h1>
@@ -367,7 +534,7 @@ if (isset($services) && is_array($services)) {
     </div>
 </section>
 <section id="gsap-services-grid" class="bg-white py-8 lg:py-16 font-sans">
-    <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8">
+    <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8 desktop-wide-container-services">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 items-start">
             <?php foreach ($services as $service):
                 $sTitle  = (string)($service['title'] ?? '');
@@ -387,25 +554,25 @@ if (isset($services) && is_array($services)) {
                         loading="lazy"
                     >
                 </div>
-                <div class="flex flex-col flex-1 p-6">
+                <div class="flex flex-col flex-1 p-6 desktop-service-card-inner">
                     <div class="flex items-center gap-2 mb-2">
-                        <span class="service-icon-emoji text-2xl leading-none"><?= e($sEmoji) ?></span>
-                        <h2 class="text-xl font-extrabold" style="color: #022862;"><?= e($sTitle) ?></h2>
+                        <span class="service-icon-emoji text-2xl leading-none desktop-service-emoji"><?= e($sEmoji) ?></span>
+                        <h2 class="text-xl font-extrabold desktop-service-title" style="color: #022862;"><?= e($sTitle) ?></h2>
                     </div>
-                    <p class="text-slate-500 text-sm leading-relaxed mb-4">
+                    <p class="text-slate-500 text-sm leading-relaxed mb-4 desktop-service-desc">
                         <?= e($sSummary) ?>
                     </p>
-                    <div class="mt-auto border-t border-slate-100 pt-3">
+                    <div class="mt-auto border-t border-slate-100 pt-3 desktop-service-details-wrap">
                         <details class="group/details">
-                            <summary class="flex items-center justify-between py-2 rounded-lg text-sm font-bold cursor-pointer transition-colors duration-150 hover:text-[#043B94] text-[#022862] list-none">
-                                <span><?= e($dropdownText) ?></span>
-                                <svg class="w-4 h-4 shrink-0 text-slate-400 transition-transform duration-200 group-open/details:rotate-180"
+                            <summary class="flex items-center justify-between py-2 rounded-lg text-sm font-bold cursor-pointer transition-colors duration-150 hover:text-[#043B94] text-[#022862] list-none desktop-service-summary">
+                                <span class="desktop-service-summary-text"><?= e($dropdownText) ?></span>
+                                <svg class="w-4 h-4 shrink-0 text-slate-400 transition-transform duration-200 group-open/details:rotate-180 desktop-service-arrow"
                                      fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
                                 </svg>
                             </summary>
                             <?php if (!empty($subcats)): ?>
-                            <div class="pl-3 pr-3 py-2 space-y-2 border-l-2 border-slate-100 ml-1 mt-1 mb-2">
+                            <div class="pl-3 pr-3 py-2 space-y-2 border-l-2 border-slate-100 ml-1 mt-1 mb-2 desktop-service-dropdown-content">
                                 <?php foreach ($subcats as $item):
                                     $itemLabel = (string)($item['label'] ?? '');
                                     $itemHref  = (string)($item['href'] ?? '#');
@@ -426,52 +593,55 @@ if (isset($services) && is_array($services)) {
     </div>
 </section>
 <section class="font-sans pb-12">
-    <div class="mx-auto max-w-7xl px-6 sm:px-6 lg:px-8">
+    <div class="mx-auto max-w-7xl px-6 sm:px-6 lg:px-8 desktop-cta-container">
         <div class="gsap-cta-box relative rounded-3xl overflow-hidden opacity-0 translate-y-10"
             style="background: linear-gradient(120deg, #011431 0%, #043B94 55%, #1e40af 100%); min-height: 200px;">
             <div class="absolute inset-0 pointer-events-none overflow-hidden">
-                <div class="absolute right-0 top-0 h-full w-1/2"
+                <div class="absolute right-0 top-0 h-full w-1/2 desktop-cta-bg-img"
                     style="background: url('<?= e(asset_url('images/bg-cta.jpg')) ?>') center/cover no-repeat; opacity: 0.18;"></div>
-                <div class="absolute inset-0"
+                <div class="absolute inset-0 desktop-cta-gradient-overlay"
                     style="background: linear-gradient(to right, #011431 40%, transparent 100%);"></div>
             </div>
             <div class="relative px-6 py-10 sm:px-8 sm:py-14 md:py-16 text-center" style="z-index: 10;">
-                <h2 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white mb-4 leading-snug">
+                <h2 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white mb-4 leading-snug desktop-cta-title">
                     <?= getCurrentLang() === 'th' ? 'พร้อมขับเคลื่อนธุรกิจของคุณไปข้างหน้าหรือยัง?' : 'Ready to drive your business forward?' ?>
                 </h2>
-                <p class="text-sm sm:text-base md:text-lg max-w-2xl mx-auto mb-8 leading-relaxed font-normal" style="color: #bfdbfe;">
+                <p class="text-sm sm:text-base md:text-lg max-w-2xl mx-auto mb-8 leading-relaxed font-normal desktop-cta-desc" style="color: #bfdbfe;">
                     <?= getCurrentLang() === 'th' ? 'มาคุยกับทีม Webpark เพื่อค้นหาโซลูชันที่เหมาะกับธุรกิจของคุณ ทั้ง Digital Platform, ระบบ AI และ ERP / ERM ในมุมที่ใช้สำหรับองค์กร' : 'Talk to the Webpark team to find the right solution for your business, including Digital Platforms, AI systems, and ERP / ERM tailored for enterprise use.' ?>
                 </p>
                 <a
                     href="<?= e(route_url('/contact')) ?>"
-                    class="inline-flex items-center gap-2 font-bold text-sm sm:text-base px-7 py-3 rounded-full transition-all duration-200 hover:scale-105"
+                    class="inline-flex items-center gap-2 font-bold text-sm sm:text-base px-7 py-3 rounded-full transition-all duration-200 hover:scale-105 desktop-cta-btn"
                     style="background: #ffffff; color: #043B94; box-shadow: 0 4px 14px rgba(0,0,0,0.15);"
                     onmouseover="this.style.background='#eff6ff';"
                     onmouseout="this.style.background='#ffffff';"
                 >
                     <?= getCurrentLang() === 'th' ? 'เริ่มต้นปรึกษากับเรา' : 'Start Consulting with Us' ?>
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                    <svg class="w-4 h-4 chevron-icon" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+                    </svg>
+                    <svg class="w-5 h-5 hidden arrow-icon" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M12 5l7 7-7 7"/>
                     </svg>
                 </a>
             </div>
         </div>
     </div>
 </section>
-<section class="bg-[#eef6ff] py-12 lg:py-16 font-sans">
-    <div class="mx-auto max-w-7xl px-6 sm:px-6 lg:px-8">
-        <div class="flex flex-col items-center text-center max-w-5xl mx-auto mb-12">
+<section id="our-approach" class="py-16 lg:py-24" style="background-color: #f1f5f9;">
+    <div class="mx-auto max-w-7xl px-6 sm:px-6 lg:px-8 desktop-approach-container">
+        <div class="text-center mb-10 md:mb-16 flex flex-col items-center">
             <div class="flex flex-col items-start mb-4 md:mb-6">
                 <span class="text-3xl md:text-4xl font-bold gsap-fade-up mb-1 block" style="color: #054FC5 !important; -webkit-text-fill-color: #054FC5 !important; background: none !important;">
                     <?= getCurrentLang() === 'th' ? 'แนวคิดในการทำงานของเรา' : 'Our Approach' ?>
                 </span>
                 <div class="mt-1 gsap-fade-up" style="width: 48px; height: 3px; background-color: #0663F6;"></div>
             </div>
-            <p class="text-slate-500 text-lg md:text-xl leading-relaxed max-w-4xl text-center mx-auto">
+            <p class="text-slate-500 text-lg md:text-xl leading-relaxed max-w-4xl text-center mx-auto desktop-approach-subtitle">
                 <?= getCurrentLang() === 'th' ? 'กระบวนการทำงานที่เป็นระบบ เพื่อส่งมอบโซลูชันดิจิทัลที่ตอบโจทย์ธุรกิจ <br> และความยั่งยืนของข้อมูลธุรกิจที่องค์กรถือครอง' : 'A systematic work process to deliver digital solutions that meet business needs and ensure the sustainability of business data held by the organization.' ?>
             </p>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 max-w-5xl mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 max-w-5xl mx-auto desktop-approach-container">
             <?php
             $approachSteps = [
                 [
@@ -501,18 +671,20 @@ if (isset($services) && is_array($services)) {
             ];
             foreach ($approachSteps as $step):
             ?>
-            <div class="gsap-approach-step flex flex-row items-center md:items-start gap-5 md:gap-6 rounded-3xl border border-blue-50/50 bg-white p-6 md:p-8 transition-all duration-300 opacity-0 translate-y-10"
+            <div class="gsap-approach-step flex flex-row items-center md:items-start gap-5 md:gap-6 rounded-3xl border border-blue-50/50 bg-white p-6 md:p-8 transition-all duration-300 opacity-0 translate-y-10 desktop-approach-card"
                 style="box-shadow: 0 8px 30px -10px rgba(4,59,148,0.08);">
-                <div class="gsap-approach-icon w-16 h-16 md:w-20 md:h-20 shrink-0 flex items-center justify-center md:pt-1">
+                <div class="gsap-approach-icon w-16 h-16 md:w-20 md:h-20 shrink-0 flex items-center justify-center md:pt-1 desktop-approach-icon-wrap">
                     <img src="<?= e($step['icon']) ?>"
                          alt="<?= e($step['title']) ?>"
-                         class="w-14 h-14 md:w-16 md:h-16 object-contain drop-shadow-sm"
+                         class="w-14 h-14 md:w-16 md:h-16 object-contain drop-shadow-sm desktop-approach-icon-img"
                          onerror="this.onerror=null;this.style.display='none'">
                 </div>
-                <div class="flex flex-col gap-1 md:gap-1.5 md:pt-1">
-                    <span class="gsap-approach-number text-2xl md:text-3xl font-extrabold" style="color: #043B94;"><?= e($step['number']) ?></span>
-                    <h3 class="text-xl md:text-2xl font-extrabold mb-1" style="color: #022862;"><?= e($step['title']) ?></h3>
-                    <p class="text-slate-600 text-base md:text-lg leading-[1.7]"><?= e($step['desc']) ?></p>
+                <div class="flex flex-col gap-1 md:gap-1.5 md:pt-1 desktop-approach-content">
+                    <div class="desktop-approach-header flex flex-col">
+                        <span class="gsap-approach-number text-2xl md:text-3xl font-extrabold desktop-approach-number" style="color: #043B94;"><?= e($step['number']) ?></span>
+                        <h3 class="text-xl md:text-2xl font-extrabold mb-1 desktop-approach-title" style="color: #022862;"><?= e($step['title']) ?></h3>
+                    </div>
+                    <p class="text-slate-600 text-base md:text-lg leading-[1.7] desktop-approach-desc"><?= e($step['desc']) ?></p>
                 </div>
             </div>
             <?php endforeach; ?>
@@ -690,6 +862,17 @@ if (isset($services) && is_array($services)) {
                     clearProps: "transform" // เคลียร์แล้วให้ CSS hover (.gsap-approach-step:hover .gsap-approach-icon) ควบคุมต่อได้
                 }, "-=0.3");
             }
+        });
+
+        // แก้ปัญหาเวลากดเปิด Dropdown แล้วความสูงเปลี่ยน แต่ GSAP ที่ Pin ไว้ไม่ยอมดันกล่องสีน้ำเงินลง
+        const serviceDetails = document.querySelectorAll(".desktop-service-details-wrap details");
+        serviceDetails.forEach(detail => {
+            detail.addEventListener("toggle", () => {
+                // ให้เวลา DOM วาดความสูงเสร็จแป๊บนึง (0 มิลลิวินาทีใน setTimeout มักจะพอ) แล้วค่อยสั่ง refresh
+                setTimeout(() => {
+                    ScrollTrigger.refresh();
+                }, 50);
+            });
         });
     });
 </script>

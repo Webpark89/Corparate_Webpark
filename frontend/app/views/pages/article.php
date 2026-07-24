@@ -70,7 +70,7 @@ $ctaImage = asset_url('images/bg-cta.jpg');
         <div class="absolute inset-0 hero-overlay-gradient"></div>
         <div class="absolute inset-x-0 bottom-0 h-[30%] bg-gradient-to-t from-white/50 to-transparent z-10"></div>
     </div>
-    <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 pt-12 pb-24 lg:pt-28 lg:pb-32 relative z-10">
+    <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 pt-12 pb-24 lg:pt-28 lg:pb-32 relative z-10 desktop-wide-container-article">
         <div class="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-12 lg:gap-20 items-center">
             <div class="max-w-3xl lg:max-w-none">
                 <nav aria-label="Breadcrumb" class="hidden md:block animate-fade-up delay-100 mb-6">
@@ -107,12 +107,53 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                     @media (min-width: 1280px) {
                         .hero-title-text { font-size: 5rem; line-height: 1.2; }
                     }
+                    
+                    /* สไตล์พิเศษสำหรับหน้าจอ Desktop (ใหญ่กว่า iPad Pro) */
+                    @media (min-width: 1025px) {
+                        .desktop-wide-container-article {
+                            max-width: 1720px !important;
+                            padding-left: 2.5rem !important;
+                            padding-right: 2.5rem !important;
+                        }
+                        .desktop-article-hero-h1 {
+                            font-size: 5.5rem !important;
+                            line-height: 1.1 !important;
+                        }
+                        .desktop-article-hero-p {
+                            font-size: 1.375rem !important;
+                            line-height: 1.8 !important;
+                            max-width: 48rem !important;
+                        }
+                        .desktop-badge-outside {
+                            display: none !important;
+                        }
+                        .desktop-badge-inside {
+                            display: inline-block !important;
+                        }
+                        .desktop-article-card-title {
+                            font-size: 1.25rem !important;
+                            line-height: 1.5 !important;
+                            margin-top: 0.5rem !important;
+                        }
+                        .desktop-article-card-desc {
+                            font-size: 1rem !important;
+                            line-height: 1.6 !important;
+                        }
+                        .desktop-category-center {
+                            justify-content: center !important;
+                            width: 100% !important;
+                        }
+                        .desktop-filter-btn-large {
+                            font-size: 1.125rem !important;
+                            padding: 0.75rem 2rem !important;
+                        }
+                    }
                 </style>
                 <h1 class="animate-fade-up delay-200 tracking-tight mb-2">
-                    <span class="hero-title-text font-bold bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block pb-1 md:pb-2">
+                    <span class="hero-title-text font-bold bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block pb-1 md:pb-2 desktop-article-hero-h1">
                         <?= e(getCurrentLang() === 'th' ? 'บทความความรู้' : 'Knowledge Articles') ?>
                     </span><br>
-                    <span class="hero-title-text font-bold bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block -mt-2 md:-mt-8" style="animation-delay: -3s;">
+                    <span class="hero-title-text font-bold bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block -mt-2 md:-mt-8 desktop-article-hero-h1" style="animation-delay: -3s;">
                         <?= e(getCurrentLang() === 'th' ? 'และอัพเดต' : '& Updates') ?>
                     </span>
                 </h1>
@@ -123,19 +164,19 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                     $mobile_desc = "Knowledge articles, tech, and innovation covering ERP systems, digital business, online marketing, AI, and solutions to sustainably grow your organization.";
                 }
                 ?>
-                <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-lg md:text-xl leading-relaxed max-w-2xl mb-10 font-medium">
+                <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-lg md:text-xl leading-relaxed max-w-2xl mb-10 font-medium desktop-article-hero-p">
                     <span class="block md:hidden leading-[1.75]">
                         <?= $mobile_desc ?>
                     </span>
                     <span class="hidden md:block leading-relaxed">
                         <?php if (getCurrentLang() === 'th'): ?>
-                            <?= e(t('common.articles_knowledge_summary')) ?> <br>
-                            ครอบคลุม ERP ระบบธุรกิจดิจิทัล การตลาดออนไลน์ AI และโซลูชัน<br>
+                            <?= e(t('common.articles_knowledge_summary')) ?> <br class="hidden xl:block">
+                            ครอบคลุม ERP ระบบธุรกิจดิจิทัล การตลาดออนไลน์ AI และโซลูชัน <br class="hidden xl:block">
                             <?= e(t('common.articles_growth_summary')) ?>
                         <?php else: ?>
-                            A collection of articles on technology, innovation, and business<br>
-                            strategy covering ERP systems, digital business, online marketing,<br>
-                            AI, and solutions that help organizations grow sustainably.
+                            A collection of articles on technology, innovation, and business strategy <br class="hidden xl:block">
+                            covering ERP, digital business systems, online marketing, AI, and solutions <br class="hidden xl:block">
+                            that help organizations grow sustainably.
                         <?php endif; ?>
                     </span>
                 </p>
@@ -144,7 +185,7 @@ $ctaImage = asset_url('images/bg-cta.jpg');
     </div>
 </section>
 <section class="bg-white" style="padding-top: 1.5rem; padding-bottom: 2.5rem;">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 desktop-wide-container-article">
         <div class="flex flex-col gap-4 md:flex-row md:items-center relative w-full">
             <div class="hidden items-center shrink-0 pr-4">
                 <button id="filter-scroll-left"
@@ -157,10 +198,10 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                 </button>
             </div>
             <div class="relative flex-1 overflow-hidden">
-                <div id="category-filters" class="article-filter-track flex justify-start md:justify-center gap-3 overflow-x-auto py-1 px-2 md:px-0 hide-scroll scroll-smooth" style="-ms-overflow-style: none; scrollbar-width: none;">
+                <div id="category-filters" class="article-filter-track flex justify-start md:justify-center gap-3 overflow-x-auto py-1 px-2 md:px-0 hide-scroll scroll-smooth desktop-category-center" style="-ms-overflow-style: none; scrollbar-width: none;">
                     <button type="button"
                             data-filter="all"
-                            class="article-filter-btn whitespace-nowrap rounded-md border px-5 py-2 text-sm font-medium transition-colors <?= $activeCategorySlug === 'all' ? 'border-transparent bg-blue-600 text-white' : 'border-blue-200 bg-white text-[#1a2b6d] hover:bg-blue-600 hover:text-white hover:border-transparent' ?>">
+                            class="article-filter-btn whitespace-nowrap rounded-md border px-5 py-2 text-sm font-medium transition-colors desktop-filter-btn-large <?= $activeCategorySlug === 'all' ? 'border-transparent bg-blue-600 text-white' : 'border-blue-200 bg-white text-[#1a2b6d] hover:bg-blue-600 hover:text-white hover:border-transparent' ?>">
                         <?= e(t('common.cta_view_all')) ?>
                     </button>
                     <?php foreach ($categories as $category):
@@ -174,7 +215,7 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                     ?>
                         <button type="button"
                                 data-filter="<?= e($slug) ?>"
-                                class="article-filter-btn whitespace-nowrap rounded-md border px-5 py-2 text-sm font-medium transition-colors <?= $isActive ? 'border-transparent bg-blue-600 text-white' : 'border-blue-200 bg-white text-[#1a2b6d] hover:border-transparent hover:bg-blue-600 hover:text-white' ?>">
+                                class="article-filter-btn whitespace-nowrap rounded-md border px-5 py-2 text-sm font-medium transition-colors desktop-filter-btn-large <?= $isActive ? 'border-transparent bg-blue-600 text-white' : 'border-blue-200 bg-white text-[#1a2b6d] hover:border-transparent hover:bg-blue-600 hover:text-white' ?>">
                             <?= e($name) ?>
                         </button>
                     <?php endforeach; ?>
@@ -194,7 +235,7 @@ $ctaImage = asset_url('images/bg-cta.jpg');
     </div>
 </section>
 <section class="bg-white pb-20">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 desktop-wide-container-article">
         <style>
             .article-grid-container {
                 display: grid;
@@ -232,19 +273,23 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                          data-category="<?= e($categorySlug !== '' ? $categorySlug : 'all') ?>">
                     <a href="<?= e($linkToUse) ?>" class="relative block aspect-[16/9] w-full overflow-hidden">
                         <img src="<?= e($imageSrc) ?>" alt="<?= e($articleTitle) ?>" class="article-card__image h-full w-full object-cover transition-transform duration-500 group-hover:scale-105">
+                        <!-- Badge inside image for Desktop -->
+                        <span class="desktop-badge-inside hidden absolute bottom-3 left-3 bg-blue-600 text-white px-2.5 py-1 text-[10px] sm:text-[11px] font-bold rounded-md uppercase tracking-wider shadow-sm z-10">
+                            <?= e($categoryName !== '' ? $categoryName : (getCurrentLang() === 'th' ? 'หมวดหมู่' : 'Category')) ?>
+                        </span>
                     </a>
                     <div class="flex flex-col p-4">
-                        <div class="mb-3">
+                        <div class="mb-3 desktop-badge-outside">
                             <span class="inline-block rounded-full bg-blue-50 px-3 py-1.5 text-xs font-semibold tracking-wide text-blue-700">
                                 <?= e($categoryName !== '' ? $categoryName : (getCurrentLang() === 'th' ? 'หมวดหมู่' : 'Category')) ?>
                             </span>
                         </div>
                         <a href="<?= e($linkToUse) ?>" class="block mb-2">
-                            <h3 class="article-card__title text-lg font-bold text-[#1a2b6d] leading-snug line-clamp-2 min-h-[2.8rem]">
+                            <h3 class="article-card__title text-lg md:text-xl lg:text-2xl font-bold text-[#1a2b6d] leading-snug line-clamp-2 min-h-[2.8rem] desktop-article-card-title">
                                 <?= e($articleTitle) ?>
                             </h3>
                         </a>
-                        <p class="article-card__description text-slate-500 text-sm leading-relaxed line-clamp-2 min-h-[2.5rem] mb-3">
+                        <p class="article-card__description text-slate-600 text-sm md:text-base lg:text-lg leading-relaxed line-clamp-2 min-h-[2.5rem] mb-3 desktop-article-card-desc">
                             <?= e($summary) ?>
                         </p>
                         <div class="flex mt-1" style="justify-content: flex-end;">

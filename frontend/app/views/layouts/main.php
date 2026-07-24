@@ -108,7 +108,6 @@ $content = $content ?? '';
         html, body {
             width: 100% !important;
             max-width: 100% !important;
-            overflow-x: hidden !important;
             position: relative;
             margin: 0;
             padding: 0;
@@ -118,10 +117,10 @@ $content = $content ?? '';
         }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-900 antialiased overflow-x-hidden relative w-full max-w-full">
-    <div class="site-wrapper overflow-x-hidden relative w-full max-w-full min-h-screen">
+<body class="bg-slate-50 text-slate-900 antialiased relative w-full max-w-full">
+    <div class="site-wrapper relative w-full max-w-full min-h-screen">
         <?php require __DIR__ . '/../components/navbar.php'; ?>
-        <main class="min-h-screen overflow-x-hidden w-full max-w-full">
+        <main class="min-h-screen w-full max-w-full">
             <?= $content ?>
         </main>
         <?php if ($currentPage !== 'contact'): ?>
