@@ -70,32 +70,30 @@ if (!empty($partners) && is_array($partners)) {
             }
         }
     </style>
-    <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 pt-10 pb-16 md:pt-12 md:pb-24 lg:pt-28 lg:pb-32 relative z-10">
+    <div class="mx-auto w-full max-w-[1720px] px-4 sm:px-6 lg:px-10 pt-10 pb-16 md:pt-12 md:pb-24 lg:pt-28 lg:pb-32 relative z-10">
         <!-- Mobile Gradient Mask to prevent text overlapping presenter image -->
         <div class="absolute inset-0 bg-gradient-to-r from-white via-white/90 to-white/30 md:hidden z-0 pointer-events-none"></div>
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center relative z-10">
-            <div class="max-w-3xl relative z-10">
-                <div class="animate-entrance-up delay-100 inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary mb-6 shadow-sm">
-                    <span class="text-blue-500 font-bold hidden md:inline">+</span>
-                    <span class="text-blue-500 font-bold md:hidden">•</span>
-                    <span class="text-xs md:text-sm font-semibold text-primary tracking-wide">
-                        <span class="md:hidden">Digital Solutions for Modern Business</span>
-                        <span class="hidden md:inline uppercase">DIGITAL SOLUTIONS FOR MODERN BUSINESS</span>
+            <div class="max-w-3xl relative z-10 text-center md:text-left mx-auto md:mx-0 flex flex-col items-center md:items-start w-full">
+                <div class="animate-entrance-up delay-100 inline-flex items-center gap-3 px-7 py-2.5 rounded-full border border-slate-200 mb-6 shadow-sm bg-white/40">
+                    <span class="text-blue-600 font-black text-3xl leading-none mb-1">•</span>
+                    <span class="text-base lg:text-lg font-bold text-blue-600 tracking-wide">
+                        Digital Solutions for Modern Business
                     </span>
                 </div>
-                <h1 class="animate-entrance-up delay-200 text-5xl md:text-6xl lg:text-8xl font-bold leading-[1.1] mb-2 tracking-tighter">
-                    <span class="bg-gradient-to-r from-[#898F98] to-[#000208] bg-clip-text text-transparent inline-block">WEBPARK</span><br>
-                    <span class="bg-gradient-to-r from-[#003380] to-[#0055ff] bg-clip-text text-transparent inline-block">COMPANY</span>
+                <h1 class="animate-entrance-up delay-200 text-5xl md:text-7xl lg:text-8xl font-black leading-[1.05] mb-4 tracking-tighter">
+                    <span class="bg-gradient-to-r from-[#898F98] to-[#000208] bg-clip-text text-transparent block">WEBPARK</span>
+                    <span class="bg-gradient-to-r from-[#003380] to-[#0055ff] bg-clip-text text-transparent block mt-1">COMPANY</span>
                 </h1>
-                <p class="animate-entrance-up delay-300 mt-5 md:mt-6 text-[#022862] text-sm md:text-base lg:text-lg leading-relaxed max-w-lg mb-8 md:mb-10 font-medium">
+                <p class="animate-entrance-up delay-300 mt-5 md:mt-6 text-[#0b1b42] text-sm md:text-base lg:text-lg leading-relaxed max-w-lg mx-auto md:mx-0 mb-8 md:mb-10 font-semibold w-full text-left">
                     <span class="md:hidden">
-                        <?= getCurrentLang() === 'th' ? 'ผู้ให้บริการพัฒนา Digital Platform<br>และระบบ AI ที่ช่วยให้ธุรกิจไทย<br>ก้าวไปข้างหน้า ด้วยเทคโนโลยี<br>ที่ใช้งานได้จริง' : 'Digital Platform and AI system<br>development provider helping Thai businesses<br>move forward with<br>practical technology.' ?>
+                        <?= getCurrentLang() === 'th' ? 'ผู้ให้บริการพัฒนา Digital Platform<br>และระบบ AI ที่ช่วยให้ธุรกิจไทย<br>ก้าวไปข้างหน้าด้วยเทคโนโลยีที่ใช้งานได้จริง' : 'Digital Platform and AI system<br>development provider helping Thai businesses<br>move forward with practical technology.' ?>
                     </span>
                     <span class="hidden md:inline">
                         <?= getCurrentLang() === 'th' ? 'ผู้ให้บริการพัฒนา Digital Platform และระบบ AI<br>ที่ช่วยให้ธุรกิจไทยก้าวไปข้างหน้าด้วยเทคโนโลยีที่ใช้งานได้จริง' : 'Digital Platform and AI system development provider<br>helping Thai businesses move forward with practical technology.' ?>
                     </span>
                 </p>
-                <div class="animate-entrance-up delay-400 flex flex-col items-start md:flex-row md:items-center gap-4">
+                <div class="animate-entrance-up delay-400 flex flex-col items-center md:items-start md:flex-row md:justify-start gap-4">
                     <a href="<?= e(route_url('/services')) ?>" class="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-primary text-white text-base font-semibold rounded-full hover:bg-blue-700 transition-all shadow-md hover:-translate-y-0.5">
                         <?= getCurrentLang() === 'th' ? 'ปรึกษาผู้เชี่ยวชาญ' : 'Consult an Expert' ?>
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
@@ -114,7 +112,17 @@ if (!empty($partners) && is_array($partners)) {
             </div>
             <div class="hidden lg:block lg:col-start-2"></div>
         </div>
-        <div class="animate-entrance-left delay-500 absolute top-auto bottom-0 lg:top-28 lg:bottom-auto right-0 md:right-4 lg:right-8 z-0 pointer-events-none max-w-full transform md:-translate-y-2 flex justify-end mobile-hero-woman">
+        <style>
+            @media (min-width: 1280px) {
+                .desktop-hero-woman { top: auto !important; bottom: -120px !important; }
+                .desktop-hero-woman img { height: 800px !important; max-width: none !important; }
+            }
+            @media (min-width: 1536px) {
+                .desktop-hero-woman { bottom: -250px !important; }
+                .desktop-hero-woman img { height: 950px !important; }
+            }
+        </style>
+        <div class="animate-entrance-left delay-500 absolute top-auto bottom-0 lg:top-28 lg:bottom-auto right-0 md:right-4 lg:right-8 z-0 pointer-events-none max-w-full transform md:-translate-y-2 flex justify-end mobile-hero-woman desktop-hero-woman">
             <picture class="w-full md:w-auto flex justify-end">
                 <source media="(min-width: 768px)" srcset="<?= e(asset_url('images/women-mobile.svg')) ?>">
                 <img src="<?= e($heroImage) ?>" alt="WEBPARK Presenter" class="w-full md:w-auto object-contain object-right-bottom h-auto md:h-[400px] lg:h-[600px] opacity-95 md:opacity-100">
@@ -200,23 +208,22 @@ if (!empty($partners) && is_array($partners)) {
     </div>
 </section>
 <section class="bg-white pt-16 pb-6 lg:pt-20 lg:pb-8 overflow-hidden">
-    <div class="mx-auto w-full max-w-7xl px-5 sm:px-6 lg:px-8">
+    <div class="mx-auto w-full max-w-[1720px] px-4 sm:px-6 lg:px-10">
         <div class="mb-10">
             <div class="hidden md:block">
-                <h2 class="text-3xl md:text-4xl font-extrabold leading-none tracking-tighter text-primary m-0">
+                <h2 class="text-3xl md:text-4xl font-extrabold leading-none tracking-tighter text-blue-600 m-0 mb-4">
                     <?= e(t('common.nav_services') !== 'common.nav_services' ? t('common.nav_services') : (getCurrentLang() === 'th' ? 'บริการของเรา' : 'Our Services')) ?>
                 </h2>
-                <div class="w-12 h-1 bg-primary mt-2 mb-4 rounded-full"></div>
-                <span class="block text-base md:text-lg lg:text-xl font-bold leading-tight text-dark mb-4">
+                <span class="block text-2xl lg:text-3xl font-bold leading-tight text-[#0b1b42] mb-6">
                     <?= e(t('home.portfolio_subtitle') !== 'home.portfolio_subtitle' ? t('home.portfolio_subtitle') : (getCurrentLang() === 'th' ? 'ตัวอย่างผลงานของเรา' : 'Our Portfolio')) ?>
                 </span>
-                <div class="flex flex-row items-end justify-between gap-4 mb-4">
+                <div class="flex flex-row items-end justify-between gap-4 mb-8">
                     <p class="text-sm md:text-base leading-relaxed text-slate-500 max-w-xl m-0">
-                        <?= getCurrentLang() === 'th' ? 'รวมผลงานที่เราช่วยออกแบบ<br>และพัฒนาโซลูชันดิจิทัลที่ช่วยให้ธุรกิจเติบโตอย่างยั่งยืน' : 'A collection of digital solutions we designed and developed<br>to help businesses grow sustainably.' ?>
+                        <?= getCurrentLang() === 'th' ? 'รวมผลงานที่ช่วยต่อยอดแบรนด์<br>และพาธุรกิจสู่มิติใหม่ที่ช่วยให้ธุรกิจเติบโตได้อย่างยั่งยืน' : 'A collection of digital solutions we designed and developed<br>to help businesses grow sustainably.' ?>
                     </p>
-                    <a href="<?= e(route_url('/services')) ?>" class="shrink-0 inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-primary text-white text-sm font-semibold rounded-full hover:bg-blue-700 transition-all shadow-md hover:-translate-y-0.5">
-                        <?= e(t('home.view_all_services') !== 'home.view_all_services' ? t('home.view_all_services') : (getCurrentLang() === 'th' ? 'ดูบริการทั้งหมด' : 'View All Services')) ?>
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                    <a href="<?= e(route_url('/services')) ?>" class="shrink-0 inline-flex items-center justify-center gap-2 px-8 py-3 bg-blue-600 text-white text-base font-semibold rounded-full hover:bg-blue-700 transition-all shadow-md">
+                        <?= e(t('home.view_all_services') !== 'home.view_all_services' ? t('home.view_all_services') : (getCurrentLang() === 'th' ? 'ดูบริการของเรา' : 'View Our Services')) ?>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
                         </svg>
                     </a>
@@ -278,16 +285,15 @@ if (!empty($partners) && is_array($partners)) {
                             <div class="h-[200px] sm:h-[180px] lg:h-[200px] w-full overflow-hidden bg-slate-100 shrink-0">
                                 <img src="<?= e($projectImage) ?>" alt="<?= e($projectTitle) ?>" class="h-full w-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out">
                             </div>
-                            <div class="p-5 sm:p-4 lg:p-5 flex flex-col flex-1">
-                                <div class="flex items-center gap-3 mb-3">
-                                    <div class="flex sm:hidden lg:flex w-9 h-9 rounded-full bg-slate-100 border border-slate-200 items-center justify-center shrink-0">
-                                        <span class="text-[11px] font-bold text-slate-500"><?= e(mb_substr($projectTitle, 0, 2)) ?></span>
-                                    </div>
-                                    <h3 class="text-base sm:text-sm lg:text-base font-bold text-[#0b1b42] leading-snug line-clamp-1"><?= e($projectTitle) ?></h3>
+                            <div class="p-5 sm:p-4 lg:p-6 flex flex-col flex-1 bg-white">
+                                <div class="flex items-center gap-3 mb-6">
+                                    <?php if (!empty($project['logo_path'])): ?>
+                                        <img src="<?= e(asset_url($project['logo_path'])) ?>" class="h-6 object-contain" alt="">
+                                    <?php endif; ?>
+                                    <h3 class="text-lg lg:text-xl font-bold text-[#0b1b42] leading-snug line-clamp-1"><?= e($projectTitle) ?></h3>
                                 </div>
-                                <p class="text-[13px] text-slate-500 leading-relaxed line-clamp-2 mb-4 flex-1"><?= e($projectDesc) ?></p>
                                 <div class="mt-auto">
-                                    <span class="inline-block text-xs font-semibold px-3 py-1 rounded-full border" style="color:<?= e($catColor) ?>;border-color:<?= e($catColor) ?>;">
+                                    <span class="inline-block text-sm font-semibold px-5 py-1.5 rounded-full border" style="color:<?= e($catColor) ?>;border-color:<?= e($catColor) ?>;">
                                         <?= e($projectCat) ?>
                                     </span>
                                 </div>
@@ -622,7 +628,7 @@ $totalReviews = count($reviews);
 }
 </style>
 <section class="bg-slate-50 pt-10 pb-20 lg:py-20 border-t border-slate-100">
-    <div class="mx-auto w-full max-w-7xl px-5 sm:px-6 lg:px-8">
+    <div class="mx-auto w-full max-w-[1720px] px-4 sm:px-6 lg:px-10">
         <div class="hidden lg:flex flex-row items-end justify-between mb-6">
             <div>
                 <h2 class="text-primary font-black text-3xl tracking-normal m-0 inline-block">

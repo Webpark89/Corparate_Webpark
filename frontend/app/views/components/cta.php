@@ -12,7 +12,7 @@ $contactButtonText = $cbuttonText ?? t('common.nav_contact');
 $contactButtonUrl = $cbuttonUrl ?? '/contact';
 ?>
 <section class="bg-white py-10 lg:py-10 font-sans">
-    <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
+    <div class="mx-auto w-full max-w-[1720px] px-4 sm:px-6 lg:px-10 relative z-10">
         <div class="relative w-full rounded-[2rem] p-8 md:p-12 lg:p-14 grid grid-cols-1 lg:grid-cols-12 gap-10 items-start overflow-hidden shadow-xl">
             <div class="absolute inset-0 z-0 rounded-[2rem] overflow-hidden">
                 <img src="<?= e(asset_url('images/bg-cta.jpg')) ?>" alt="City Network Overlay" class="w-full h-full opacity-80 object-cover">
@@ -28,7 +28,7 @@ $contactButtonUrl = $cbuttonUrl ?? '/contact';
                     <span class="mt-4 text-white text-base md:text-lg leading-relaxed font-medium">
                         <?= e($contactTitle) ?>
                     </span>
-                <p class="mt-4 text-white text-base md:text-lg leading-relaxed font-medium">
+                <p class="mt-1 text-white text-base md:text-lg leading-snug font-medium">
                     <?= $contactSubtitle ?>
                 </p>
             </div>

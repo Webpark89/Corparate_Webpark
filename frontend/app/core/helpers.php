@@ -75,7 +75,10 @@ function get_article_summary_text(string $content, string $lang = 'th'): string
         return '';
     }
 
-    $decoded = json_decode($clean, true);
+    // Decode HTML entities first in case the JSON was saved with encoded quotes (&quot;)
+    $decodedEntities = html_entity_decode($clean, ENT_QUOTES, 'UTF-8');
+    $decoded = json_decode($decodedEntities, true);
+    
     if (is_array($decoded)) {
         $texts = [];
         foreach ($decoded as $section) {
@@ -91,6 +94,35 @@ function get_article_summary_text(string $content, string $lang = 'th'): string
         }
         $combined = implode(' ', $texts);
         return normalize_text($combined);
+    }
+    
+    // Fallback: If json_decode fails (e.g. truncated string) but it looks like our JSON format
+    if (strpos($decodedEntities, '"lang":') !== false) {
+        $pattern = '/"lang"\s*:\s*"' . preg_quote($lang, '/') . '"(.*?(?="lang"\s*:|$))/is';
+        if (preg_match_all($pattern, $decodedEntities, $matches)) {
+            $text = implode(' ', $matches[1]);
+            $text = preg_replace('/"topic"\s*:\s*/i', '', $text);
+            $text = preg_replace('/"body"\s*:\s*/i', '', $text);
+            $text = str_replace(['[', ']', '{', '}', '"', ','], ' ', $text);
+            $text = preg_replace('/\s+/', ' ', $text);
+            $text = normalize_text(trim($text));
+            if (!empty($text)) {
+                return $text;
+            }
+        }
+        
+        // If the requested language block wasn't found in malformed JSON, avoid showing the wrong language (except for TH default)
+        if ($lang !== 'th') {
+            return '';
+        }
+
+        $text = $decodedEntities;
+        $text = preg_replace('/"lang"\s*:\s*"[^"]*"/i', '', $text);
+        $text = preg_replace('/"topic"\s*:\s*/i', '', $text);
+        $text = preg_replace('/"body"\s*:\s*/i', '', $text);
+        $text = str_replace(['[', ']', '{', '}', '"', ','], ' ', $text);
+        $text = preg_replace('/\s+/', ' ', $text);
+        return normalize_text(trim($text));
     }
 
     return normalize_text($clean);
