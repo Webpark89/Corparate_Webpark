@@ -54,7 +54,7 @@ if (!empty($partners) && is_array($partners)) {
         .delay-300 { animation-delay: 300ms; }
         .delay-400 { animation-delay: 400ms; }
         .delay-500 { animation-delay: 500ms; }
-        .mobile-hero-woman { width: 52%; bottom: 0px; right: -2%; opacity: 0.85; }
+        .mobile-hero-woman { width: 62%; bottom: 0px; right: -2%; opacity: 1; z-index: 5; }
         @media (min-width: 768px) { .mobile-hero-woman { width: auto; bottom: 0; right: 0; opacity: 1; } }
         .hero-parallax-img {
             transform: scale(1.12);
@@ -70,43 +70,43 @@ if (!empty($partners) && is_array($partners)) {
             }
         }
     </style>
-    <div class="mx-auto w-full max-w-[1720px] px-4 sm:px-6 lg:px-10 pt-10 pb-16 md:pt-12 md:pb-24 lg:pt-28 lg:pb-32 relative z-10">
+    <div class="mx-auto w-full max-w-[1720px] px-4 sm:px-6 lg:px-10 pt-8 pb-12 md:pt-12 md:pb-24 lg:pt-28 lg:pb-32 relative z-10">
         <!-- Mobile Gradient Mask to prevent text overlapping presenter image -->
-        <div class="absolute inset-0 bg-gradient-to-r from-white via-white/90 to-white/30 md:hidden z-0 pointer-events-none"></div>
+        <div class="absolute inset-0 bg-gradient-to-r from-white via-white/90 to-white/20 md:hidden z-0 pointer-events-none"></div>
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center relative z-10">
-            <div class="max-w-3xl relative z-10 text-center md:text-left mx-auto md:mx-0 flex flex-col items-center md:items-start w-full">
-                <div class="animate-entrance-up delay-100 inline-flex items-center gap-3 px-7 py-2.5 rounded-full border border-slate-200 mb-6 shadow-sm bg-white/40">
-                    <span class="text-blue-600 font-black text-3xl leading-none mb-1">•</span>
-                    <span class="text-base lg:text-lg font-bold text-blue-600 tracking-wide">
+            <div class="max-w-3xl relative z-10 text-left mx-0 flex flex-col items-start w-full pr-14 md:pr-0">
+                <div class="animate-entrance-up delay-100 inline-flex items-center gap-2 px-3.5 py-1.5 sm:px-6 sm:py-2.5 rounded-full mb-4 sm:mb-6 shadow-sm bg-white/90 self-start" style="border: 2px solid #0663F6;">
+                    <span class="font-black text-base sm:text-2xl leading-none" style="color: #0663F6;">•</span>
+                    <span class="text-xs sm:text-base lg:text-lg font-bold tracking-wide" style="color: #0663F6;">
                         Digital Solutions for Modern Business
                     </span>
                 </div>
-                <h1 class="animate-entrance-up delay-200 text-5xl md:text-7xl lg:text-8xl font-black leading-[1.05] mb-4 tracking-tighter">
-                    <span class="bg-gradient-to-r from-[#898F98] to-[#000208] bg-clip-text text-transparent block">WEBPARK</span>
-                    <span class="bg-gradient-to-r from-[#003380] to-[#0055ff] bg-clip-text text-transparent block mt-1">COMPANY</span>
+                <h1 class="animate-entrance-up delay-200 text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black leading-[1.05] mb-3 sm:mb-4 tracking-tighter text-left">
+                    <span class="bg-gradient-to-r from-[#898F98] to-[#000208] bg-clip-text text-transparent inline-block font-extrabold">WEBPARK</span>
+                    <span class="bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent block mt-0 sm:mt-1 font-extrabold">COMPANY</span>
                 </h1>
-                <p class="animate-entrance-up delay-300 mt-5 md:mt-6 text-[#0b1b42] text-sm md:text-base lg:text-lg leading-relaxed max-w-lg mx-auto md:mx-0 mb-8 md:mb-10 font-semibold w-full text-left">
+                <p class="animate-entrance-up delay-300 mt-2 sm:mt-5 md:mt-6 text-[#022862] text-xs sm:text-sm md:text-base lg:text-lg leading-relaxed max-w-[260px] sm:max-w-lg mx-0 mb-6 md:mb-10 font-medium text-left">
                     <span class="md:hidden">
-                        <?= getCurrentLang() === 'th' ? 'ผู้ให้บริการพัฒนา Digital Platform<br>และระบบ AI ที่ช่วยให้ธุรกิจไทย<br>ก้าวไปข้างหน้าด้วยเทคโนโลยีที่ใช้งานได้จริง' : 'Digital Platform and AI system<br>development provider helping Thai businesses<br>move forward with practical technology.' ?>
+                        <?= getCurrentLang() === 'th' ? 'ผู้ให้บริการพัฒนา Digital Platform<br>และระบบ AI ที่ช่วยให้ธุรกิจไทย<br>ก้าวไปข้างหน้า ด้วยเทคโนโลยี<br>ที่ใช้งานได้จริง' : 'Digital Platform and AI system<br>development provider helping Thai businesses<br>move forward with practical technology.' ?>
                     </span>
                     <span class="hidden md:inline">
                         <?= getCurrentLang() === 'th' ? 'ผู้ให้บริการพัฒนา Digital Platform และระบบ AI<br>ที่ช่วยให้ธุรกิจไทยก้าวไปข้างหน้าด้วยเทคโนโลยีที่ใช้งานได้จริง' : 'Digital Platform and AI system development provider<br>helping Thai businesses move forward with practical technology.' ?>
                     </span>
                 </p>
-                <div class="animate-entrance-up delay-400 flex flex-col items-center md:items-start md:flex-row md:justify-start gap-4">
-                    <a href="<?= e(route_url('/services')) ?>" class="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-primary text-white text-base font-semibold rounded-full hover:bg-blue-700 transition-all shadow-md hover:-translate-y-0.5">
-                        <?= getCurrentLang() === 'th' ? 'ปรึกษาผู้เชี่ยวชาญ' : 'Consult an Expert' ?>
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <div class="animate-entrance-up delay-400 flex flex-col items-start justify-start gap-3 md:flex-row md:justify-start w-full">
+                    <a href="<?= e(route_url('/services')) ?>" class="inline-flex items-center justify-center gap-2 px-6 py-3 sm:px-8 sm:py-3.5 text-white text-sm sm:text-base font-semibold rounded-full shadow-md transition-all duration-300 hover:opacity-85 hover:-translate-y-0.5" style="background-color: #0663F6; color: #ffffff !important;">
+                        <?= getCurrentLang() === 'th' ? 'ดูบริการของเรา' : 'Our Services' ?>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
                         </svg>
                     </a>
-                    <a href="#about" class="inline-flex items-center gap-4 transition-all hover:-translate-y-0.5 group">
-                        <div class="h-14 w-14 bg-white flex items-center justify-center rounded-full shadow-lg border border-slate-200 transition-all group-hover:bg-slate-50 group-hover:shadow-xl group-hover:scale-105">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600 fill-current" viewBox="0 0 24 24">
+                    <a href="#about" class="inline-flex items-center gap-3 transition-all hover:-translate-y-0.5 group mt-1 md:mt-0">
+                        <div class="h-10 w-10 sm:h-14 sm:w-14 bg-white flex items-center justify-center rounded-full shadow-md border border-slate-200 transition-all group-hover:bg-slate-50 group-hover:shadow-lg group-hover:scale-105">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-6 sm:w-6 text-[#0663F6] fill-current" viewBox="0 0 24 24">
                                 <path d="M8 5v14l11-7z"/>
                             </svg>
                         </div>
-                        <span class="text-slate-800 text-lg font-semibold group-hover:text-primary transition-colors"><?= e(t('common.cta_watch_intro_video')) ?></span>
+                        <span class="text-slate-400 text-xs sm:text-lg font-medium group-hover:text-primary transition-colors"><?= e(t('common.cta_watch_intro_video')) ?></span>
                     </a>
                 </div>
             </div>

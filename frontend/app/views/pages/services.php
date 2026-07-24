@@ -484,9 +484,20 @@ if (isset($services) && is_array($services)) {
                         <?= getCurrentLang() === 'th' ? 'และจุดเด่น' : '& Strengths' ?>
                     </span>
                 </h1>
-                <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-lg md:text-xl leading-relaxed max-w-lg mb-10 font-medium desktop-services-hero-p">
+                <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-base sm:text-lg md:text-xl leading-relaxed max-w-lg mb-10 font-medium desktop-services-hero-p">
                     <?php if (getCurrentLang() === 'th'): ?>
-                        มากกว่า 20 ปี ที่เราสร้างสรรค์โซลูชันดิจิทัลครบวงจร<br class="block sm:hidden"> ผสานเทคโนโลยี ความเชี่ยวชาญ และความเข้าใจธุรกิจ<br class="block sm:hidden"> เพื่อเพิ่มประสิทธิภาพ สร้างการเติบโต<br class="block sm:hidden"> และยกระดับองค์กรสู่อนาคตอย่างยั่งยืน
+                        <span class="block sm:hidden leading-relaxed">
+                            มากกว่า 20 ปี ที่เราสร้างสรรค์โซลูชันดิจิทัล<br>
+                            ครบวงจร ผสานเทคโนโลยี ความเชี่ยวชาญ<br>
+                            และความเข้าใจธุรกิจ เพื่อเพิ่มประสิทธิภาพ<br>
+                            สร้างการเติบโต และยกระดับองค์กร<br>
+                            สู่อนาคตอย่างยั่งยืน
+                        </span>
+                        <span class="hidden sm:block">
+                            มากกว่า 20 ปี ที่เราสร้างสรรค์โซลูชันดิจิทัลครบวงจร<br>
+                            ผสานเทคโนโลยี ความเชี่ยวชาญ และความเข้าใจธุรกิจ<br>
+                            เพื่อเพิ่มประสิทธิภาพ สร้างการเติบโต และยกระดับองค์กรสู่อนาคตอย่างยั่งยืน
+                        </span>
                     <?php else: ?>
                         Over 20 years of creating comprehensive digital solutions. We combine technology, expertise, and business understanding to help organizations increase efficiency and elevate into the future.
                     <?php endif; ?>
