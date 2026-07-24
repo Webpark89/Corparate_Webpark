@@ -30,7 +30,7 @@ $currentLang = getCurrentLang();
                 color: #0663F6;
                 font-weight: 700;
             }
-            @media (min-width: 768px) {
+            @media (min-width: 1024px) {
                 .nav-desktop-container {
                     display: flex !important;
                 }
@@ -45,22 +45,22 @@ $currentLang = getCurrentLang();
                 }
             }
         </style>
-        <nav class="nav-desktop-container hidden md:flex items-center gap-2 md:gap-3 lg:gap-4" aria-label="Primary Navigation">
+        <nav class="nav-desktop-container hidden lg:flex items-center gap-3 lg:gap-4" aria-label="Primary Navigation">
             <?php foreach ($navItems as $index => $item): ?>
                 <a href="<?= e(route_url($item['path'])) ?>"
-                   class="desktop-nav-link relative py-2 px-1 md:px-1.5 transition-colors <?= $currentPage === $item['page'] ? 'active' : '' ?> text-sm md:text-base lg:text-lg"
+                   class="desktop-nav-link relative py-2 px-1 lg:px-1.5 transition-colors <?= $currentPage === $item['page'] ? 'active' : '' ?> text-base lg:text-lg"
                    <?= $currentPage === $item['page'] ? 'aria-current="page"' : '' ?>>
                    <?= e($item['label']) ?>
                 </a>
                 <?php if ($index < count($navItems) - 1): ?>
-                    <span class="mx-2 md:mx-3 lg:mx-4 text-sm md:text-base opacity-40" style="color: #011431;">•</span>
+                    <span class="mx-3 lg:mx-4 text-base opacity-40" style="color: #011431;">•</span>
                 <?php endif; ?>
             <?php endforeach; ?>
         </nav>
         <!-- Right Section -->
         <div class="flex items-center gap-6 lg:gap-8">
             <!-- Language Switcher -->
-            <div class="lang-switcher-container hidden md:flex items-center text-base md:text-lg lg:text-xl font-bold transition-colors">
+            <div class="lang-switcher-container hidden lg:flex items-center text-lg lg:text-xl font-bold transition-colors">
                 <a href="<?= e(current_url_with_lang('th')) ?>" style="<?= $currentLang === 'th' ? 'color: #0663F6;' : 'color: #011431;' ?>" class="hover:opacity-80">TH</a>
                 <span style="color: #011431;" class="mx-2 opacity-40">|</span>
                 <a href="<?= e(current_url_with_lang('en')) ?>" style="<?= $currentLang === 'en' ? 'color: #0663F6;' : 'color: #011431;' ?>" class="hover:opacity-80">EN</a>
@@ -72,7 +72,7 @@ $currentLang = getCurrentLang();
             </a>
             <!-- Mobile Menu Toggle -->
             <button id="mobileMenuToggle"
-                    class="md:hidden inline-flex h-11 w-11 items-center justify-center rounded-xl border border-slate-200 text-lg font-bold"
+                    class="lg:hidden inline-flex h-11 w-11 items-center justify-center rounded-xl border border-slate-200 text-lg font-bold"
                     aria-label="Toggle navigation"
                     aria-expanded="false"
                     aria-controls="mobileMenu">
@@ -81,7 +81,7 @@ $currentLang = getCurrentLang();
         </div>
     </div>
     <!-- Mobile Menu -->
-    <div id="mobileMenu" class="hidden border-t border-slate-200 bg-white px-4 py-4 md:hidden">
+    <div id="mobileMenu" class="hidden border-t border-slate-200 bg-white px-4 py-4 lg:hidden">
         <div class="flex flex-col w-full gap-2">
             <!-- Mobile Language Switcher -->
             <div class="w-full flex justify-end">

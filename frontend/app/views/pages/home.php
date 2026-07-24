@@ -8,7 +8,7 @@ $activeTab = $activeTab ?? 'news';
 $displayArticles = $latestArticles ?? $articles ?? $blogs ?? [];
 $displayPortfolios = $displayPortfolios ?? [];
 $reviews = $reviews ?? [];
-$heroImage = asset_url('images/HeroHome.svg');
+$heroImage = asset_url('images/Pkatty.webp');
 $projectRoot = dirname(__DIR__, 3);
 $resolveServiceImage = static function (string $imagePath): string {
     $imagePath = trim($imagePath);
@@ -17,10 +17,10 @@ $resolveServiceImage = static function (string $imagePath): string {
 };
 $resolveReviewImage = static function (string $imagePath) use ($resolveServiceImage): string {
     $imagePath = trim($imagePath);
-    if ($imagePath === '') return asset_url('images/HeroHome.svg');
+    if ($imagePath === '') return asset_url('images/Pkatty.webp');
     if (str_starts_with($imagePath, '//')) return $imagePath;
     $resolvedImage = $resolveServiceImage($imagePath);
-    return $resolvedImage !== '' ? $resolvedImage : asset_url('images/HeroHome.svg');
+    return $resolvedImage !== '' ? $resolvedImage : asset_url('images/Pkatty.webp');
 };
 $partnerLogos = [];
 if (!empty($partners) && is_array($partners)) {
@@ -113,18 +113,22 @@ if (!empty($partners) && is_array($partners)) {
             <div class="hidden lg:block lg:col-start-2"></div>
         </div>
         <style>
+            @media (min-width: 1024px) {
+                .desktop-hero-woman { top: auto !important; bottom: 0 !important; }
+                .desktop-hero-woman img { height: 590px !important; max-width: none !important; object-fit: contain !important; object-position: bottom right !important; }
+            }
             @media (min-width: 1280px) {
-                .desktop-hero-woman { top: auto !important; bottom: -120px !important; }
-                .desktop-hero-woman img { height: 800px !important; max-width: none !important; }
+                .desktop-hero-woman { top: auto !important; bottom: 0 !important; }
+                .desktop-hero-woman img { height: 670px !important; }
             }
             @media (min-width: 1536px) {
-                .desktop-hero-woman { bottom: -250px !important; }
-                .desktop-hero-woman img { height: 950px !important; }
+                .desktop-hero-woman { top: auto !important; bottom: 0 !important; }
+                .desktop-hero-woman img { height: 720px !important; }
             }
         </style>
         <div class="animate-entrance-left delay-500 absolute top-auto bottom-0 lg:top-28 lg:bottom-auto right-0 md:right-4 lg:right-8 z-0 pointer-events-none max-w-full transform md:-translate-y-2 flex justify-end mobile-hero-woman desktop-hero-woman">
             <picture class="w-full md:w-auto flex justify-end">
-                <source media="(min-width: 768px)" srcset="<?= e(asset_url('images/women-mobile.svg')) ?>">
+                <source media="(min-width: 768px)" srcset="<?= e(asset_url('images/Pkatty.webp')) ?>">
                 <img src="<?= e($heroImage) ?>" alt="WEBPARK Presenter" class="w-full md:w-auto object-contain object-right-bottom h-auto md:h-[400px] lg:h-[600px] opacity-95 md:opacity-100">
             </picture>
         </div>
@@ -251,13 +255,13 @@ if (!empty($partners) && is_array($partners)) {
         ?>
         <div class="relative">
             <button id="portfolio-prev"
-                    class="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-5 z-10 w-10 h-10 rounded-full bg-white border border-slate-200 shadow-md hidden sm:flex items-center justify-center text-slate-400 hover:text-primary hover:border-primary transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+                    class="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-5 z-10 w-10 h-10 rounded-full bg-white border border-slate-200 shadow-md hidden lg:flex items-center justify-center text-slate-400 hover:text-primary hover:border-primary transition-all disabled:opacity-30 disabled:cursor-not-allowed"
                     <?= $totalPortfolios <= $visibleCount ? 'disabled' : '' ?> aria-label="Previous">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
                 </svg>
             </button>
-            <div id="portfolio-slider" class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+            <div id="portfolio-slider" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 <?php foreach ($displayPortfolios as $index => $project): ?>
                     <?php
                     $project      = (array)$project;
@@ -303,7 +307,7 @@ if (!empty($partners) && is_array($partners)) {
                 <?php endforeach; ?>
             </div>
             <button id="portfolio-next"
-                    class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-5 z-10 w-10 h-10 rounded-full bg-white border border-slate-200 shadow-md hidden sm:flex items-center justify-center text-slate-400 hover:text-primary hover:border-primary transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+                    class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-5 z-10 w-10 h-10 rounded-full bg-white border border-slate-200 shadow-md hidden lg:flex items-center justify-center text-slate-400 hover:text-primary hover:border-primary transition-all disabled:opacity-30 disabled:cursor-not-allowed"
                     <?= $totalPortfolios <= $visibleCount ? 'disabled' : '' ?> aria-label="Next">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
@@ -462,7 +466,7 @@ $totalReviews = count($reviews);
             </span>
         </div>
         <div class="lg:hidden mb-12">
-            <div class="grid grid-cols-1 gap-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div class="bg-white rounded-2xl shadow-sm hover:shadow-md transition-shadow p-5 flex flex-row items-center justify-start gap-5 border border-slate-100">
                     <img src="/Corparate_Webpark/frontend/public/assets/images/Capa_2.svg" alt="120+ องค์กรชั้นนำ" class="w-20 h-20 object-contain flex-shrink-0" />
                     <div class="flex flex-col text-left">

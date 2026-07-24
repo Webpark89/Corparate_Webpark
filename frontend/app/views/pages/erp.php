@@ -725,13 +725,22 @@ $erpPortfolios = $mockErpPortfolios;
             <?= e(t('erp.cta_banner_title') !== 'erp.cta_banner_title' ? t('erp.cta_banner_title') : (getCurrentLang() === 'th' ? 'ERP ที่ช่วยยกระดับธุรกิจของคุณ' : 'ERP That Elevates Your Business')) ?>
         </h2>
         <style>
-            @media (max-width: 639px) {
-                .mobile-span-2 {
-                    grid-column: span 2 / span 2 !important;
+            .erp-benefit-grid-container {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 1.5rem;
+            }
+            .erp-benefit-card-wrapper {
+                width: calc(50% - 0.75rem);
+            }
+            @media (min-width: 1280px) {
+                .erp-benefit-card-wrapper {
+                    width: calc(20% - 1.2rem);
                 }
             }
         </style>
-        <div class="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-5 gap-6">
+        <div class="erp-benefit-grid-container">
             <?php
             $erpBenefits = [
                 [
@@ -762,29 +771,15 @@ $erpPortfolios = $mockErpPortfolios;
             ];
             ?>
             <?php foreach ($erpBenefits as $index => $benefit): ?>
-                <?php if($index === 4): ?>
-                    <!-- 5th Block: Horizontal rectangle on mobile, Square on desktop -->
-                    <div class="gsap-erp-benefit-card bg-white rounded-2xl py-10 px-6 sm:p-6 border border-slate-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 mobile-span-2 sm:col-span-1 flex flex-row sm:block items-center text-left sm:text-center gap-6 sm:gap-0 opacity-0 translate-y-10 desktop-erp-benefit-card">
-                        <div class="w-16 h-16 sm:w-14 sm:h-14 sm:mx-auto shrink-0 bg-blue-50/70 rounded-full flex items-center justify-center sm:mb-4 desktop-erp-benefit-icon-wrap">
-                            <img src="<?= e($benefit['icon']) ?>" alt="<?= e($benefit['title']) ?>" class="h-full w-full object-contain desktop-erp-benefit-icon-img">
-                        </div>
-                        <div>
-                            <h4 class="text-lg sm:text-base font-bold text-[#043B94] mb-1 sm:mb-1 desktop-erp-benefit-title"><?= e($benefit['title']) ?></h4>
-                            <p class="text-base sm:text-sm text-slate-500 leading-relaxed desktop-erp-benefit-desc"><?= e($benefit['desc']) ?></p>
-                        </div>
+                <div class="erp-benefit-card-wrapper gsap-erp-benefit-card bg-white rounded-2xl p-6 text-center border border-slate-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 opacity-0 translate-y-10 desktop-erp-benefit-card">
+                    <div class="w-14 h-14 mx-auto bg-blue-50/70 rounded-full flex items-center justify-center mb-4 shrink-0 desktop-erp-benefit-icon-wrap">
+                        <img src="<?= e($benefit['icon']) ?>" alt="<?= e($benefit['title']) ?>" class="h-full w-full object-contain desktop-erp-benefit-icon-img">
                     </div>
-                <?php else: ?>
-                    <!-- Blocks 1-4: Square -->
-                    <div class="gsap-erp-benefit-card bg-white rounded-2xl p-6 text-center border border-slate-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 opacity-0 translate-y-10 desktop-erp-benefit-card">
-                        <div class="w-14 h-14 mx-auto bg-blue-50/70 rounded-full flex items-center justify-center mb-4 shrink-0 desktop-erp-benefit-icon-wrap">
-                            <img src="<?= e($benefit['icon']) ?>" alt="<?= e($benefit['title']) ?>" class="h-full w-full object-contain desktop-erp-benefit-icon-img">
-                        </div>
-                        <div>
-                            <h4 class="text-base font-bold text-[#043B94] mb-1 desktop-erp-benefit-title"><?= e($benefit['title']) ?></h4>
-                            <p class="text-sm text-slate-500 leading-relaxed desktop-erp-benefit-desc"><?= e($benefit['desc']) ?></p>
-                        </div>
+                    <div>
+                        <h4 class="text-base font-bold text-[#043B94] mb-1 desktop-erp-benefit-title"><?= e($benefit['title']) ?></h4>
+                        <p class="text-sm text-slate-500 leading-relaxed desktop-erp-benefit-desc"><?= e($benefit['desc']) ?></p>
                     </div>
-                <?php endif; ?>
+                </div>
             <?php endforeach; ?>
         </div>
     </div>
@@ -799,12 +794,35 @@ $erpPortfolios = $mockErpPortfolios;
                 </h2>
             </div>
         </div>
-        <div id="erp-portfolio-scroll-container" class="flex overflow-x-auto snap-x snap-mandatory scrollbar-none gap-8 pb-6 -mx-4 px-4 md:mx-0 md:px-0 md:grid md:grid-cols-4 lg:grid-cols-4 md:overflow-visible md:snap-none">
+        <style>
+            @media (min-width: 768px) and (max-width: 1023px) {
+                .tablet-slider-container {
+                    display: flex !important;
+                    overflow-x: auto !important;
+                    scroll-snap-type: x mandatory !important;
+                    -webkit-overflow-scrolling: touch;
+                    padding-bottom: 1.5rem !important;
+                    gap: 1.5rem !important;
+                }
+                .tablet-slider-card {
+                    width: calc(50% - 0.75rem) !important;
+                    flex-shrink: 0 !important;
+                    scroll-snap-align: start !important;
+                }
+                .tablet-show-dots {
+                    display: flex !important;
+                }
+                #erp-portfolio-dots button:nth-child(n+4) {
+                    display: none !important;
+                }
+            }
+        </style>
+        <div id="erp-portfolio-scroll-container" class="tablet-slider-container flex overflow-x-auto snap-x snap-mandatory scrollbar-none gap-8 pb-6 -mx-4 px-4 md:mx-0 md:px-0 lg:grid lg:grid-cols-4 lg:overflow-visible lg:snap-none">
             <?php foreach ($erpPortfolios as $port): 
                 $imgSrc = resolve_article_image_url($port['image_path'] ?? '', asset_url('images/erp.png'));
                 $detailUrl = isset($port['slug']) ? route_url('/portfolio/' . $port['slug']) : route_url('/portfolio');
             ?>
-                <a href="<?= e($detailUrl) ?>" class="gsap-erp-portfolio-card block w-[85vw] md:w-auto shrink-0 snap-center opacity-0 translate-y-10 desktop-erp-portfolio-card">
+                <a href="<?= e($detailUrl) ?>" class="tablet-slider-card gsap-erp-portfolio-card block w-[85vw] lg:w-auto shrink-0 snap-center opacity-0 translate-y-10 desktop-erp-portfolio-card">
                     <article class="group w-full h-full rounded-2xl overflow-hidden border border-slate-100 bg-white shadow-sm hover:shadow-xl transition-all duration-500 flex flex-col hover:-translate-y-1">
                     <div class="h-[220px] w-full overflow-hidden bg-slate-100 relative desktop-erp-portfolio-img-container">
                         <img src="<?= e($imgSrc) ?>" alt="<?= e($port['title']) ?>" class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105">
@@ -835,7 +853,7 @@ $erpPortfolios = $mockErpPortfolios;
                 </a>
             <?php endforeach; ?>
         </div>
-        <div class="flex justify-center gap-2 mt-2 md:hidden" id="erp-portfolio-dots">
+        <div class="tablet-show-dots flex justify-center gap-2 mt-2 lg:hidden" id="erp-portfolio-dots">
             <?php for ($i = 0; $i < count($erpPortfolios); $i++): ?>
                 <button 
                     class="w-2.5 h-2.5 rounded-full transition-all duration-300 <?= $i === 0 ? 'bg-primary w-5' : 'bg-slate-300' ?>" 
@@ -863,8 +881,14 @@ $erpPortfolios = $mockErpPortfolios;
                         closestIndex = index;
                     }
                 });
+                
+                let activeIndex = closestIndex;
+                if (window.innerWidth >= 768 && window.innerWidth < 1024) {
+                    activeIndex = Math.min(closestIndex, 2);
+                }
+
                 dots.forEach((dot, index) => {
-                    if (index === closestIndex) {
+                    if (index === activeIndex) {
                         dot.classList.add('bg-primary', 'w-5');
                         dot.classList.remove('bg-slate-300');
                     } else {

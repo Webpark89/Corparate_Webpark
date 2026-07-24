@@ -223,11 +223,11 @@ if (isset($services) && is_array($services)) {
         }
     }
 </style>
-<section id="services-hero" class="relative font-sans bg-[#f7faff] overflow-hidden m-0 border-none rounded-none">
-    <div class="hidden lg:block absolute inset-0 z-0 overflow-hidden">
-        <img src="<?= e($heroImage) ?>" alt="WEBPARK Solutions Background" 
-            class="hero-parallax-img w-full h-full object-cover object-center opacity-100 mix-blend-screen desktop-bg-vibrant-services">
-        <div class="absolute inset-0 bg-gradient-to-r from-white via-white/70 to-transparent"></div>
+<section id="services-hero" class="relative font-sans bg-[#f7faff] overflow-hidden mt-0 mx-4 mb-4 sm:mt-0 sm:mx-6 sm:mb-6 rounded-t-none rounded-b-[2rem] lg:m-0 lg:rounded-none">
+    <!-- Desktop Background Image -->
+    <div class="absolute inset-0 z-0 hidden lg:block">
+        <img src="<?= e($heroImage) ?>" alt="bg" class="hero-parallax-img w-full h-full object-cover object-[75%_center] opacity-100 mix-blend-screen">
+        <div class="absolute inset-0 bg-gradient-to-r from-white via-white/80 to-white/5"></div>
         <div class="absolute inset-x-0 bottom-0 h-[30%] bg-gradient-to-t from-white to-transparent z-10"></div>
     </div>
     <style>
@@ -249,14 +249,6 @@ if (isset($services) && is_array($services)) {
         @keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
         .animate-scroll { animation: scroll 20s linear infinite; }
         .animate-scroll:hover { animation-play-state: paused; }
-        /* บังคับตำแหน่งรูปภาพและ Overlay ด้วย CSS โดยตรง เพื่อเลี่ยงปัญหา Tailwind ไม่คอมไพล์ */
-        .hero-bg-img-services {
-            object-position: 85% 0% !important;
-        }
-        .hero-overlay-mobile-services {
-            /* เฉดสีขาวเฉพาะฝั่งซ้ายและด้านบนที่ตัวหนังสืออยู่ ปล่อยฝั่งขวาให้โปร่งใสเพื่อให้เห็นรูปภาพ */
-            background: linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.95) 50%, rgba(255, 255, 255, 0) 85%) !important;
-        }
         /* Parallax: ขยายรูปเผื่อไว้ล่วงหน้า เพื่อไม่ให้เห็นขอบโหว่ตอนรูปเลื่อนตาม scroll */
         .hero-parallax-img {
             transform: scale(1.15);
@@ -461,11 +453,11 @@ if (isset($services) && is_array($services)) {
     </style>
     <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8 pt-12 pb-24 lg:pt-28 lg:pb-32 relative z-10 desktop-wide-container-services">
         <!-- Mobile Background Image (Only covers this Hero container) -->
-        <div class="absolute inset-0 z-0 overflow-hidden lg:hidden">
+        <div class="absolute inset-0 z-0 overflow-hidden lg:hidden rounded-2xl">
             <img src="<?= e($heroImage) ?>" alt="WEBPARK Solutions Background" 
-                class="hero-parallax-img w-full h-full object-cover hero-bg-img-services opacity-100">
-            <div class="absolute inset-0 hero-overlay-mobile-services"></div>
-            <div class="absolute inset-x-0 bottom-0 h-[30%] bg-gradient-to-t from-white/50 to-transparent"></div>
+                class="hero-parallax-img w-full h-full object-cover object-[75%_center] opacity-100 mix-blend-screen">
+            <div class="absolute inset-0 bg-gradient-to-b from-white/90 via-white/70 to-white/40"></div>
+            <div class="absolute inset-x-0 bottom-0 h-[30%] bg-gradient-to-t from-white to-transparent"></div>
         </div>
         <div class="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-12 lg:gap-20 items-center relative z-10">
             <div class="max-w-2xl">

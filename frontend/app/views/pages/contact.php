@@ -87,7 +87,7 @@ $form = $form ?? [];
                         }
                         .desktop-contact-hero-h1 {
                             font-size: 5.5rem !important;
-                            line-height: 1.1 !important;
+                            line-height: 1.25 !important;
                         }
                         .desktop-contact-hero-p {
                             font-size: 1.375rem !important;
@@ -107,8 +107,8 @@ $form = $form ?? [];
                     }
                 </style>
                 <h1 class="animate-fade-up delay-200 tracking-tight mb-2">
-                    <span class="hero-title-text font-bold bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block pb-1 md:pb-2 whitespace-nowrap desktop-contact-hero-h1"><?= e(t('contact.hero_title')) ?></span><br>
-                    <span class="hero-title-text font-bold bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block -mt-2 md:-mt-8 whitespace-nowrap desktop-contact-hero-h1" style="animation-delay: -3s;">WEBPARK</span>
+                    <span class="hero-title-text font-bold bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block pb-2 md:pb-3 whitespace-nowrap desktop-contact-hero-h1"><?= e(t('contact.hero_title')) ?></span><br>
+                    <span class="hero-title-text font-bold bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block mt-1 md:mt-2 whitespace-nowrap desktop-contact-hero-h1" style="animation-delay: -3s;">WEBPARK</span>
                 </h1>
                 <?php
                 if (getCurrentLang() === 'th') {
@@ -197,6 +197,19 @@ $form = $form ?? [];
                 .mobile-swap-container {
                     display: flex !important;
                     flex-direction: column-reverse !important;
+                }
+            }
+            @media (min-width: 768px) and (max-width: 1023px) {
+                .mobile-swap-container {
+                    width: 100% !important;
+                }
+                .gsap-contact-form,
+                #company-info {
+                    width: 100% !important;
+                    max-width: 100% !important;
+                }
+                #contact_mobile-name-wrapper {
+                    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
                 }
             }
         </style>

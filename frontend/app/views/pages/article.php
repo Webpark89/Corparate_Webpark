@@ -4,7 +4,7 @@ $articles = is_array($articles ?? null) ? $articles : [];
 $categories = is_array($categories ?? null) ? $categories : [];
 $activeCategorySlug = (string) ($activeCategorySlug ?? 'all');
 $fallbackImage = asset_url('images/story.png');
-$heroImage = asset_url('images/bg-7.png');
+$heroImage = asset_url('images/bg-6.png');
 $ctaImage = asset_url('images/bg-cta.jpg');
 ?>
 <style>
@@ -29,28 +29,8 @@ $ctaImage = asset_url('images/bg-cta.jpg');
     .delay-200 { animation-delay: 200ms; }
     .delay-300 { animation-delay: 300ms; }
     .delay-400 { animation-delay: 400ms; }
-    .hero-bg-img {
-        object-position: 85% 0% !important;
-    }
-    .hero-overlay-mobile {
-        background: linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.9) 45%, rgba(255, 255, 255, 0) 80%) !important;
-    }
-    .hero-overlay-gradient {
-        background: transparent !important;
-    }
-    @media (min-width: 768px) {
-        .hero-bg-img {
-            object-position: right center !important;
-        }
-        .hero-overlay-mobile {
-            background: transparent !important;
-        }
-        .hero-overlay-gradient {
-            background: linear-gradient(to right, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.9) 60%, rgba(255, 255, 255, 0.1) 100%) !important;
-        }
-    }
     .hero-parallax-img {
-        transform: scale(1.12);
+        transform: scale(1.15, 1.15);
         will-change: transform;
     }
     @media (prefers-reduced-motion: reduce) {
@@ -62,15 +42,21 @@ $ctaImage = asset_url('images/bg-cta.jpg');
         }
     }
 </style>
-<section id="article-hero" class="relative overflow-hidden font-sans bg-white border-none">
-    <div class="absolute inset-0 z-0">
-        <img src="<?= e($heroImage) ?>" alt="WEBPARK Solutions Background" 
-            class="hero-parallax-img w-full h-full object-cover md:object-contain hero-bg-img opacity-100">
-        <div class="absolute inset-0 hero-overlay-mobile"></div>
-        <div class="absolute inset-0 hero-overlay-gradient"></div>
-        <div class="absolute inset-x-0 bottom-0 h-[30%] bg-gradient-to-t from-white/50 to-transparent z-10"></div>
+<section id="article-hero" class="relative font-sans bg-[#f7faff] overflow-hidden mt-0 mx-4 mb-4 sm:mt-0 sm:mx-6 sm:mb-6 rounded-t-none rounded-b-[2rem] lg:m-0 lg:rounded-none">
+    <!-- Desktop Background Image -->
+    <div class="absolute inset-0 z-0 hidden lg:block">
+        <img src="<?= e($heroImage) ?>" alt="bg" class="hero-parallax-img w-full h-full object-cover object-[75%_center] opacity-100 mix-blend-screen">
+        <div class="absolute inset-0 bg-gradient-to-r from-white via-white/80 to-white/5"></div>
+        <div class="absolute inset-x-0 bottom-0 h-[30%] bg-gradient-to-t from-white to-transparent z-10"></div>
     </div>
-    <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 pt-12 pb-24 lg:pt-28 lg:pb-32 relative z-10 desktop-wide-container-article">
+    <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8 pt-12 pb-24 lg:pt-28 lg:pb-32 relative z-10 desktop-wide-container-article">
+        <!-- Mobile Background Image (Only covers this Hero container) -->
+        <div class="absolute inset-0 z-0 overflow-hidden lg:hidden rounded-2xl">
+            <img src="<?= e($heroImage) ?>" alt="WEBPARK Solutions Background" 
+                class="hero-parallax-img w-full h-full object-cover object-[75%_center] opacity-100 mix-blend-screen">
+            <div class="absolute inset-0 bg-gradient-to-b from-white/90 via-white/70 to-white/40"></div>
+            <div class="absolute inset-x-0 bottom-0 h-[30%] bg-gradient-to-t from-white to-transparent"></div>
+        </div>
         <div class="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-12 lg:gap-20 items-center">
             <div class="max-w-3xl lg:max-w-none">
                 <nav aria-label="Breadcrumb" class="hidden md:block animate-fade-up delay-100 mb-6">
@@ -120,9 +106,9 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                             line-height: 1.1 !important;
                         }
                         .desktop-article-hero-p {
-                            font-size: 1.375rem !important;
-                            line-height: 1.8 !important;
-                            max-width: 48rem !important;
+                            font-size: 1.25rem !important;
+                            line-height: 1.75 !important;
+                            max-width: 34rem !important;
                         }
                         .desktop-badge-outside {
                             display: none !important;
@@ -139,9 +125,11 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                             font-size: 1rem !important;
                             line-height: 1.6 !important;
                         }
-                        .desktop-category-center {
-                            justify-content: center !important;
-                            width: 100% !important;
+                        @media (min-width: 768px) {
+                            .desktop-category-center {
+                                justify-content: center !important;
+                                width: 100% !important;
+                            }
                         }
                         .desktop-filter-btn-large {
                             font-size: 1.125rem !important;
@@ -164,7 +152,7 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                     $mobile_desc = "Knowledge articles, tech, and innovation covering ERP systems, digital business, online marketing, AI, and solutions to sustainably grow your organization.";
                 }
                 ?>
-                <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-lg md:text-xl leading-relaxed max-w-2xl mb-10 font-medium desktop-article-hero-p">
+                <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-lg md:text-xl leading-relaxed max-w-lg md:max-w-xl mb-10 font-medium desktop-article-hero-p">
                     <span class="block md:hidden leading-[1.75]">
                         <?= $mobile_desc ?>
                     </span>
