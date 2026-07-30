@@ -233,7 +233,7 @@ $contactAddress = $company['contact']['address'] ?? '525/89 ซอยลาด�
             <div class="absolute inset-x-0 bottom-0 h-[30%] bg-gradient-to-t from-white to-transparent"></div>
         </div>
         <div class="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-12 lg:gap-20 items-center relative z-10">
-            <div class="max-w-2xl desktop-about-hero-content-wrapper">
+            <div class="max-w-2xl lg:ml-12 xl:ml-24 desktop-about-hero-content-wrapper">
                 <nav aria-label="Breadcrumb" class="animate-fade-up delay-100 mb-6 hidden sm:block">
                     <ol class="inline-flex items-center text-sm md:text-base font-medium text-slate-500">
                         <li>
@@ -250,8 +250,8 @@ $contactAddress = $company['contact']['address'] ?? '525/89 ซอยลาด�
                     </ol>
                 </nav>
                 <h1 class="animate-fade-up delay-200 text-5xl sm:text-4xl md:text-6xl lg:text-8xl font-bold leading-[1.1] mb-2 tracking-tighter ipad-pro-about-hero-h1">
-                    <span class="bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block py-3 desktop-hero-nowrap ipad-pro-about-hero-span1"><?= e(getCurrentLang() === 'th' ? 'ผู้ให้บริการด้าน' : 'Service Provider for') ?></span><br class="hidden sm:inline">
-                    <span class="bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] text-bold bg-clip-text text-transparent animate-text-gradient inline-block desktop-hero-nowrap" style="animation-delay: -3s;">ERP / ERM</span>
+                    <span class="bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block py-2 md:py-2.5 desktop-hero-nowrap ipad-pro-about-hero-span1"><?= e(getCurrentLang() === 'th' ? 'ผู้ให้บริการด้าน' : 'Service Provider for') ?></span><br class="hidden sm:inline">
+                    <span class="bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] text-bold bg-clip-text text-transparent animate-text-gradient inline-block py-1 md:py-2 -mt-1 md:-mt-2 lg:-mt-2 desktop-hero-nowrap" style="animation-delay: -3s;">ERP / ERM</span>
                 </h1>
                 <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-lg md:text-xl leading-relaxed max-w-lg mb-10 font-medium desktop-about-hero-p ipad-pro-about-hero-p">
                     <?= getCurrentLang() === 'th' ? 'WEBPARK ผู้เชี่ยวชาญด้าน ERP/ERM และระบบดิจิทัล <br class="hidden xl:block">ครบวงจร เราช่วยให้องค์กรของคุณทำงานอย่างชาญฉลาด <br class="hidden xl:block">ด้วยเทคโนโลยีล้ำสมัยแพลตฟอร์มดจิทัลและ AI <br class="hidden xl:block">เพื่อการเติบโตที่ยั่งยืนในยุคดิจิทัล' : 'WEBPARK, expert in ERP/ERM and comprehensive <br class="hidden xl:block">digital systems. We help your organization work smartly <br class="hidden xl:block">with cutting-edge digital platforms and AI <br class="hidden xl:block">for sustainable growth in the digital era.' ?>

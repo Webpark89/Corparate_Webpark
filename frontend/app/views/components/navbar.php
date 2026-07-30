@@ -45,7 +45,7 @@ $currentLang = getCurrentLang();
                 }
             }
         </style>
-        <nav class="nav-desktop-container hidden lg:flex items-center gap-3 lg:gap-4" aria-label="Primary Navigation">
+        <nav class="nav-desktop-container hidden lg:flex items-center gap-1 lg:gap-1" aria-label="Primary Navigation">
             <?php foreach ($navItems as $index => $item): ?>
                 <a href="<?= e(route_url($item['path'])) ?>"
                    class="desktop-nav-link relative py-2 px-1 lg:px-1.5 transition-colors <?= $currentPage === $item['page'] ? 'active' : '' ?> text-base lg:text-lg"
@@ -53,7 +53,7 @@ $currentLang = getCurrentLang();
                    <?= e($item['label']) ?>
                 </a>
                 <?php if ($index < count($navItems) - 1): ?>
-                    <span class="mx-3 lg:mx-4 text-base opacity-40" style="color: #011431;">•</span>
+                    <span class="mx-1 lg:mx-1 text-base opacity-40" style="color: #011431;">•</span>
                 <?php endif; ?>
             <?php endforeach; ?>
         </nav>

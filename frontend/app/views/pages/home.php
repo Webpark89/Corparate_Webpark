@@ -73,17 +73,17 @@ if (!empty($partners) && is_array($partners)) {
     <div class="mx-auto w-full max-w-[1720px] px-4 sm:px-6 lg:px-10 pt-8 pb-12 md:pt-12 md:pb-24 lg:pt-28 lg:pb-32 relative z-10">
         <!-- Mobile Gradient Mask to prevent text overlapping presenter image -->
         <div class="absolute inset-0 bg-gradient-to-r from-white via-white/90 to-white/20 md:hidden z-0 pointer-events-none"></div>
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center relative z-10">
-            <div class="max-w-3xl relative z-10 text-left mx-0 flex flex-col items-start w-full">
-                <div class="animate-entrance-up delay-100 inline-flex items-center gap-2 md:gap-3 px-4 py-2 md:px-7 md:py-2.5 rounded-full border-2 border-blue-600 md:border md:border-slate-200 mb-6 shadow-sm bg-white/40">
-                    <span class="text-blue-600 font-black text-xl md:text-3xl leading-none mt-1 md:mt-0 md:mb-1">•</span>
-                    <span class="text-[12px] sm:text-[13px] md:text-base lg:text-lg font-bold text-blue-600 tracking-wide whitespace-nowrap">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:pb-12 lg:gap-10 items-center relative z-10">
+            <div class="max-w-3xl relative z-10 text-left mx-0 lg:ml-12 xl:ml-24 flex flex-col items-start w-full">
+                <div class="animate-entrance-up delay-100 inline-flex items-center justify-center gap-2 md:gap-2.5 px-4 py-2 md:px-6 md:py-2.5 rounded-full border border-blue-600 mb-6 shadow-sm bg-white/40">
+                    <span class="text-blue-600 font-black text-base md:text-xl leading-none flex items-center shrink-0">•</span>
+                    <span class="text-[12px] sm:text-[13px] md:text-base lg:text-lg font-bold text-blue-600 tracking-wide whitespace-nowrap leading-none">
                         Digital Solutions for Modern Business
                     </span>
                 </div>
-                <h1 class="animate-entrance-up delay-200 text-5xl md:text-7xl lg:text-8xl font-black leading-[1.05] mb-4 tracking-tighter text-left">
-                    <span class="bg-gradient-to-r from-[#898F98] to-[#000208] bg-clip-text text-transparent block">WEBPARK</span>
-                    <span class="bg-gradient-to-r from-[#003380] to-[#0055ff] bg-clip-text text-transparent block mt-1">COMPANY</span>
+                <h1 class="animate-entrance-up delay-200 text-5xl md:text-7xl lg:text-8xl font-black leading-[1.1] mb-4 tracking-tighter text-left">
+                    <span class="bg-gradient-to-r from-[#898F98] to-[#000208] bg-clip-text text-transparent inline-block py-2 md:py-2.5">WEBPARK</span><br>
+                    <span class="bg-gradient-to-r from-[#003380] to-[#0055ff] bg-clip-text text-transparent inline-block py-1 md:py-2 -mt-1 md:-mt-2 lg:-mt-2">COMPANY</span>
                 </h1>
                 <p class="animate-entrance-up delay-300 mt-5 md:mt-6 text-blue-900 md:text-[#0b1b42] text-base md:text-lg leading-relaxed max-w-lg mx-0 mb-8 md:mb-10 font-bold md:font-semibold w-11/12 sm:w-3/4 md:w-full text-left relative z-20 ipad-pro-hero-desc">
                     <span class="md:hidden">
@@ -129,7 +129,6 @@ if (!empty($partners) && is_array($partners)) {
         </style>
         <div class="animate-entrance-left delay-500 absolute top-auto bottom-0 lg:top-28 lg:bottom-auto right-0 md:right-4 lg:right-8 z-0 pointer-events-none max-w-full transform md:-translate-y-2 flex justify-end mobile-hero-woman desktop-hero-woman">
             <picture class="w-full md:w-auto flex justify-end">
-                <source media="(min-width: 768px)" srcset="<?= e(asset_url('images/women-mobile.svg')) ?>">
                 <img src="<?= e($heroImage) ?>" alt="WEBPARK Presenter" class="w-full md:w-auto object-contain object-right-bottom h-auto md:h-[400px] lg:h-[600px] opacity-100">
             </picture>
         </div>

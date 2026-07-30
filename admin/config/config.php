@@ -20,10 +20,10 @@ define('ADMIN_URL', SITE_URL . '/admin');
 define('UPLOAD_DIR', __DIR__ . '/../uploads');
 define('UPLOAD_URL', ADMIN_URL . '/uploads');
 // ---- Security ----
-define('SESSION_TIMEOUT', 1800); // 30 minutes
+define('SESSION_TIMEOUT', 3600); // 60 minutes
 define('CSRF_TOKEN_NAME', '_csrf');
-define('LOGIN_MAX_ATTEMPTS', 5); // Max login attempts
-define('LOGIN_ATTEMPT_WINDOW', 600); // 10 minutes in seconds
+define('LOGIN_MAX_ATTEMPTS', 3); // Max login attempts before initial lockout
+define('LOGIN_ATTEMPT_WINDOW', 600); // Base lockout duration (10 minutes in seconds, doubles on consecutive failures)
 define('SESSION_REGENERATE_INTERVAL', 3600); // Regenerate session every hour
 // ---- Errors ----
 ini_set('display_errors', '1');

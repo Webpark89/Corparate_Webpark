@@ -275,35 +275,75 @@ function can_admin(): bool
     return ($admin['role'] ?? null) === 'admin';
 }
 /**
- * Sliding-window rate limiter stored in session.
+ * Exponential Backoff rate limiter stored in session.
  */
-function check_rate_limit(string $key, int $maxAttempts = 5, int $windowSeconds = 600): bool
+function is_rate_limited(string $key): bool
 {
     $sessionKey = 'ratelimit_' . $key;
-    $now = time();
-    if (!isset($_SESSION[$sessionKey])) {
-        $_SESSION[$sessionKey] = [];
-    }
-    $_SESSION[$sessionKey] = array_filter(
-        $_SESSION[$sessionKey],
-        static fn(int $timestamp) => $now - $timestamp < $windowSeconds
-    );
-    if (count($_SESSION[$sessionKey]) >= $maxAttempts) {
+    if (empty($_SESSION[$sessionKey]) || !is_array($_SESSION[$sessionKey])) {
         return false;
     }
-    $_SESSION[$sessionKey][] = $now;
-    return true;
+    $lockedUntil = $_SESSION[$sessionKey]['locked_until'] ?? 0;
+    return time() < $lockedUntil;
 }
-function get_rate_limit_remaining(string $key, int $maxAttempts = 5, int $windowSeconds = 600): int
+
+function get_rate_limit_lockout_remaining(string $key): int
 {
     $sessionKey = 'ratelimit_' . $key;
-    $now = time();
-    if (!isset($_SESSION[$sessionKey])) {
+    if (empty($_SESSION[$sessionKey]) || !is_array($_SESSION[$sessionKey])) {
+        return 0;
+    }
+    $lockedUntil = $_SESSION[$sessionKey]['locked_until'] ?? 0;
+    return max(0, $lockedUntil - time());
+}
+
+function get_rate_limit_attempts_left(string $key, int $maxAttempts = LOGIN_MAX_ATTEMPTS): int
+{
+    $sessionKey = 'ratelimit_' . $key;
+    if (empty($_SESSION[$sessionKey]) || !is_array($_SESSION[$sessionKey])) {
         return $maxAttempts;
     }
-    $_SESSION[$sessionKey] = array_filter(
-        $_SESSION[$sessionKey],
-        static fn(int $timestamp) => $now - $timestamp < $windowSeconds
-    );
-    return max(0, $maxAttempts - count($_SESSION[$sessionKey]));
+    $failedCount = $_SESSION[$sessionKey]['failed_count'] ?? 0;
+    return max(0, $maxAttempts - $failedCount);
+}
+
+function record_failed_attempt(string $key, int $maxAttempts = LOGIN_MAX_ATTEMPTS, int $baseWindowSeconds = LOGIN_ATTEMPT_WINDOW): array
+{
+    $sessionKey = 'ratelimit_' . $key;
+    if (empty($_SESSION[$sessionKey]) || !is_array($_SESSION[$sessionKey])) {
+        $_SESSION[$sessionKey] = [
+            'failed_count' => 0,
+            'locked_until' => 0,
+        ];
+    }
+    
+    $_SESSION[$sessionKey]['failed_count']++;
+    $failedCount = $_SESSION[$sessionKey]['failed_count'];
+    
+    if ($failedCount >= $maxAttempts) {
+        $exceededCount = $failedCount - $maxAttempts; // 0 for attempt 3, 1 for attempt 4, 2 for attempt 5...
+        $multiplier = (int) pow(2, $exceededCount);
+        $lockoutSeconds = $baseWindowSeconds * $multiplier;
+        $_SESSION[$sessionKey]['locked_until'] = time() + $lockoutSeconds;
+    }
+    
+    return $_SESSION[$sessionKey];
+}
+
+function reset_rate_limit(string $key): void
+{
+    unset($_SESSION['ratelimit_' . $key]);
+}
+
+/**
+ * Backward compatibility wrappers.
+ */
+function check_rate_limit(string $key, int $maxAttempts = LOGIN_MAX_ATTEMPTS, int $windowSeconds = LOGIN_ATTEMPT_WINDOW): bool
+{
+    return !is_rate_limited($key);
+}
+
+function get_rate_limit_remaining(string $key, int $maxAttempts = LOGIN_MAX_ATTEMPTS, int $windowSeconds = LOGIN_ATTEMPT_WINDOW): int
+{
+    return get_rate_limit_attempts_left($key, $maxAttempts);
 }

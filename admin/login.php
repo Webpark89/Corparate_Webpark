@@ -13,17 +13,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     csrf_verify();
     $clientIp = $_SERVER['REMOTE_ADDR'] ?? 'unknown';
     $rateLimitKey = 'login_' . $clientIp;
-    unset($_SESSION['ratelimit_' . $rateLimitKey]); // Temporary fix to clear lockout
-    if (!check_rate_limit($rateLimitKey, LOGIN_MAX_ATTEMPTS, LOGIN_ATTEMPT_WINDOW)) {
-        $remaining = get_rate_limit_remaining($rateLimitKey, LOGIN_MAX_ATTEMPTS, LOGIN_ATTEMPT_WINDOW);
-        $errorMessage = 'จำนวนครั้งการลองเข้าสู่ระบบเกินกำหนด กรุณารอ 10 นาทีก่อนลองอีกครั้ง (ความพยายามที่เหลือ: ' . $remaining . ')';
+    if (is_rate_limited($rateLimitKey)) {
+        $secondsRemaining = get_rate_limit_lockout_remaining($rateLimitKey);
+        $minutes = max(1, (int) ceil($secondsRemaining / 60));
+        $errorMessage = 'จำนวนครั้งการลองเข้าสู่ระบบเกินกำหนด กรุณารอ ' . $minutes . ' นาทีก่อนลองอีกครั้ง';
     } else {
         $username = trim($_POST['username'] ?? '');
         $password = (string) ($_POST['password'] ?? '');
         if ($username === '' || $password === '') {
             $errorMessage = 'กรุณากรอกข้อมูลให้ครบถ้วน';
         } elseif ($username === ADMIN_USERNAME && password_verify($password, ADMIN_PASSWORD_HASH)) {
-            unset($_SESSION['ratelimit_' . $rateLimitKey]);
+            reset_rate_limit($rateLimitKey);
             session_regenerate_id(true);
             $_SESSION['admin_logged_in'] = true;
             $_SESSION['admin_username'] = ADMIN_USERNAME;
@@ -33,7 +33,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             header('Location: ' . ADMIN_URL . '/index.php');
             exit;
         } else {
-            $errorMessage = 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง';
+            record_failed_attempt($rateLimitKey, LOGIN_MAX_ATTEMPTS, LOGIN_ATTEMPT_WINDOW);
+            if (is_rate_limited($rateLimitKey)) {
+                $secondsRemaining = get_rate_limit_lockout_remaining($rateLimitKey);
+                $minutes = max(1, (int) ceil($secondsRemaining / 60));
+                $errorMessage = 'จำนวนครั้งการลองเข้าสู่ระบบเกินกำหนด กรุณารอ ' . $minutes . ' นาทีก่อนลองอีกครั้ง';
+            } else {
+                $attemptsLeft = get_rate_limit_attempts_left($rateLimitKey, LOGIN_MAX_ATTEMPTS);
+                $errorMessage = 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง (พยายามได้อีก ' . $attemptsLeft . ' ครั้ง)';
+            }
         }
     }
 }

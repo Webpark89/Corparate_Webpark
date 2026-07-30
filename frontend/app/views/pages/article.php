@@ -58,7 +58,7 @@ $ctaImage = asset_url('images/bg-cta.jpg');
             <div class="absolute inset-x-0 bottom-0 h-[30%] bg-gradient-to-t from-white to-transparent"></div>
         </div>
         <div class="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-12 lg:gap-20 items-center">
-            <div class="max-w-3xl lg:max-w-none">
+            <div class="max-w-3xl lg:max-w-none lg:ml-12 xl:ml-24">
                 <nav aria-label="Breadcrumb" class="hidden md:block animate-fade-up delay-100 mb-6">
                     <ol class="inline-flex items-center text-sm md:text-base font-medium text-slate-500">
                         <li>
@@ -152,22 +152,22 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                         }
                     }
                 </style>
-                <h1 class="animate-fade-up delay-200 tracking-tight mb-2">
-                    <span class="hero-title-text font-bold bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block pb-1 md:pb-2 desktop-article-hero-h1 ipad-pro-article-hero-h1">
+                <h1 class="animate-fade-up delay-200 tracking-tight mb-2 leading-[1.1]">
+                    <span class="hero-title-text font-bold bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block py-2 md:py-2.5 desktop-article-hero-h1 ipad-pro-article-hero-h1">
                         <?= e(getCurrentLang() === 'th' ? 'บทความความรู้' : 'Knowledge Articles') ?>
                     </span><br>
-                    <span class="hero-title-text font-bold bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block -mt-2 md:-mt-2 desktop-article-hero-h1 ipad-pro-article-hero-h1" style="animation-delay: -3s;">
+                    <span class="hero-title-text font-bold bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block py-1 md:py-2 -mt-1 md:-mt-2 lg:-mt-2 desktop-article-hero-h1 ipad-pro-article-hero-h1" style="animation-delay: -3s;">
                         <?= e(getCurrentLang() === 'th' ? 'และอัพเดต' : '& Updates') ?>
                     </span>
                 </h1>
                 <?php
                 if (getCurrentLang() === 'th') {
-                    $mobile_desc = "รวบรวมบทความรู้ เทคโนโลยี นวัตกรรม และแนวทาง<br>การทำธุรกิจ ครอบคลุม ERP ระบบธุรกิจดิจิทัล การ<br>ตลาดออนไลน์ AI และโซลูชัน ที่ช่วยพัฒนาองค์กรให้<br>เติบโตได้อย่างยั่งยืน";
+                    $mobile_desc = "รวบรวมบทความรู้ เทคโนโลยี นวัตกรรม<br>และแนวทางการทำธุรกิจ ครอบคลุม ERP<br>ระบบธุรกิจดิจิทัล การตลาดออนไลน์ AI<br>และโซลูชัน ที่ช่วยพัฒนาองค์กร<br>ให้เติบโตได้อย่างยั่งยืน";
                 } else {
                     $mobile_desc = "Knowledge articles, tech, and innovation covering ERP systems, digital business, online marketing, AI, and solutions to sustainably grow your organization.";
                 }
                 ?>
-                <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-lg md:text-xl leading-relaxed max-w-2xl mb-10 font-medium desktop-article-hero-p ipad-pro-article-hero-p">
+                <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-lg md:text-xl leading-relaxed max-w-lg md:max-w-xl mb-10 font-medium desktop-article-hero-p ipad-pro-article-hero-p">
                     <span class="block md:hidden leading-[1.75]">
                         <?= $mobile_desc ?>
                     </span>

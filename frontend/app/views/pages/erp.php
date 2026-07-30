@@ -242,6 +242,10 @@ $erpPortfolios = $mockErpPortfolios;
 
         /* Custom Layout for iPad Pro Portrait (1024px - 1279px) */
         @media (min-width: 1024px) and (max-width: 1279px) {
+            .ipad-pro-erp-hero-h1 {
+                font-size: 3.75rem !important;
+                white-space: nowrap !important;
+            }
             .ipad-pro-erp-hero-p {
                 max-width: 95% !important; /* Increase max width to prevent awkward wrapping */
             }
@@ -290,7 +294,7 @@ $erpPortfolios = $mockErpPortfolios;
             .desktop-erp-hero-p {
                 font-size: 1.375rem !important;
                 line-height: 1.8 !important;
-                max-width: none !important; /* ยกเลิกการจำกัดความกว้างให้บรรทัดยาวเต็มที่ */
+                max-width: 38rem !important;
             }
             .desktop-erp-hero-content-wrapper {
                 max-width: none !important; /* ปลดล็อคกล่องนอกสุดที่บังคับให้ตัดคำ */
@@ -492,7 +496,7 @@ $erpPortfolios = $mockErpPortfolios;
             <div class="absolute inset-x-0 bottom-0 h-[30%] bg-gradient-to-t from-white to-transparent"></div>
         </div>
         <div class="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-12 lg:gap-20 items-center relative z-10">
-            <div class="max-w-2xl desktop-erp-hero-content-wrapper">
+            <div class="max-w-2xl lg:ml-12 xl:ml-24 desktop-erp-hero-content-wrapper">
                 <nav aria-label="Breadcrumb" class="animate-fade-up delay-100 mb-6 hidden sm:block">
                         <ol class="inline-flex items-center text-sm md:text-base font-medium text-slate-500">
                             <li>
@@ -508,89 +512,52 @@ $erpPortfolios = $mockErpPortfolios;
                             </li>
                         </ol>
                     </nav>
-                <!-- Mobile Only Hero Content -->
-                <div class="block md:hidden">
-                    <h1 class="animate-fade-up delay-200 leading-[1.1] mb-2 tracking-tighter">
-                        <span class="text-5xl font-extrabold bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block pb-0 pt-2">
-                            <?= getCurrentLang() === 'th' ? 'ระบบ' : 'ERP' ?>
+                <h1 class="animate-fade-up delay-200 leading-[1.1] mb-2 tracking-tighter desktop-erp-hero-h1 ipad-pro-erp-hero-h1">
+                    <span class="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block py-2 md:py-2.5 desktop-erp-hero-text-1">
+                        <?= getCurrentLang() === 'th' ? 'ระบบ' : 'ERP' ?>
+                    </span>
+                    <span class="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block py-2 md:py-2.5 ml-1 xl:ml-2 desktop-erp-hero-text-2">
+                        <?= getCurrentLang() === 'th' ? 'ERP' : 'Systems' ?>
+                    </span><br>
+                    <span class="text-xl sm:text-2xl md:text-3xl xl:text-4xl font-medium leading-snug bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block py-1 md:py-2 -mt-1 md:-mt-2 lg:-mt-2 pb-3 desktop-erp-hero-subtitle ipad-pro-erp-hero-subtitle" style="animation-delay: -3s;">
+                        <?= getCurrentLang() === 'th' ? 'เชื่อมต่อทุกกระบวนการธุรกิจ<br>แบบครบวงจรในแพลตฟอร์มเดียว' : 'Connecting every business process<br>end-to-end on a single platform' ?>
+                    </span>
+                </h1>
+                <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-base sm:text-lg md:text-xl leading-relaxed max-w-lg mb-10 font-medium desktop-erp-hero-p ipad-pro-erp-hero-p">
+                    <?php if (getCurrentLang() === 'th'): ?>
+                        <span class="block sm:hidden leading-relaxed">
+                            รวบรวมบทความรู้ เทคโนโลยี นวัตกรรม<br>
+                            และแนวทางการทำธุรกิจ ครอบคลุม ERP<br>
+                            ระบบธุรกิจดิจิทัล การตลาดออนไลน์ AI<br>
+                            และโซลูชัน ที่ช่วยพัฒนาองค์กร<br>
+                            ให้เติบโตได้อย่างยั่งยืน
                         </span>
-                        <span class="text-5xl font-extrabold bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block pb-0 pt-2 ml-1">
-                            <?= getCurrentLang() === 'th' ? 'ERP' : 'Systems' ?>
-                        </span><br>
-                        <span class="text-xl font-bold leading-[1.4] bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block mt-0 pb-3 pt-1" style="animation-delay: -3s;">
-                            <?= getCurrentLang() === 'th' ? 'เชื่อมต่อทุกกระบวนการธุรกิจ<br>แบบครบวงจรในแพลตฟอร์มเดียว' : 'Connecting every business process<br>end-to-end on a single platform' ?>
-                        </span>
-                    </h1>
-                    <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-lg md:text-xl leading-relaxed max-w-lg mb-10 font-medium">
-                        <?php if (getCurrentLang() === 'th'): ?>
-                            ระบบบริหารจัดการทรัพยากรองค์กร<br>
-                            (Enterprise Resource Planning)<br>
-                            ที่ช่วยรวมข้อมูลและกระบวนการทำงาน<br>
-                            สำคัญขององค์กรไว้ในระบบเดียว<br>
-                            ลดงานซ้ำซ้อน เพิ่มประสิทธิภาพการทำงาน<br>
-                            และขับเคลื่อนองค์กรสู่อนาคตดิจิทัล
-                        <?php else: ?>
-                            <?= e(t('common.articles_knowledge_summary')) ?> <br>
-                            <?= e(t('common.articles_coverage_summary')) ?><br>
-                            <?= e(t('common.articles_growth_summary')) ?>
-                        <?php endif; ?>
-                    </p>
-                    <div class="animate-entrance-up delay-400 flex flex-col items-start gap-4">
-                        <a href="<?= e(route_url('/service')) ?>" class="inline-flex items-center justify-center gap-2 px-6 py-2.5 bg-primary text-white text-sm font-semibold rounded-full hover:bg-blue-700 transition-all shadow-md hover:-translate-y-0.5">
-                            <?= getCurrentLang() === 'th' ? 'ปรึกษาผู้เชี่ยวชาญ' : 'Consult an Expert' ?>
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
-                            </svg>
-                        </a>
-                        <a href="#about" class="inline-flex items-center gap-3 transition-all hover:-translate-y-0.5 group">
-                            <div class="h-12 w-12 bg-white flex items-center justify-center rounded-full shadow-lg border border-slate-200 transition-all group-hover:bg-slate-50 group-hover:shadow-xl group-hover:scale-105">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-600 fill-current" viewBox="0 0 24 24">
-                                    <path d="M8 5v14l11-7z"/>
-                                </svg>
-                            </div>
-                            <span class="text-slate-800 text-sm font-semibold group-hover:text-primary transition-colors"><?= e(t('common.cta_watch_intro_video')) ?></span>
-                        </a>
-                    </div>
-                </div>
-                <div class="hidden md:block">
-                    <h1 class="animate-fade-up delay-200 leading-[1.1] mb-2 tracking-tighter desktop-erp-hero-h1">
-                        <span class="text-4xl md:text-6xl xl:text-8xl font-bold bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block pb-0 pt-2 desktop-erp-hero-text-1">
-                            <?= getCurrentLang() === 'th' ? 'ระบบ' : 'ERP' ?>
-                        </span>
-                        <span class="text-4xl md:text-6xl xl:text-8xl font-bold bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block pb-0 pt-2 ml-1 xl:ml-2 desktop-erp-hero-text-2">
-                            <?= getCurrentLang() === 'th' ? 'ERP' : 'Systems' ?>
-                        </span><br>
-                        <span class="text-xl md:text-2xl xl:text-4xl font-medium leading-snug bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block mt-0 pb-3 pt-1 desktop-erp-hero-subtitle ipad-pro-erp-hero-subtitle" style="animation-delay: -3s;">
-                            <?= getCurrentLang() === 'th' ? 'เชื่อมต่อทุกกระบวนการธุรกิจ<br>แบบครบวงจรในแพลตฟอร์มเดียว' : 'Connecting every business process<br>end-to-end on a single platform' ?>
-                        </span>
-                    </h1>
-                    <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-lg md:text-xl leading-relaxed max-w-lg mb-10 font-medium desktop-erp-hero-p ipad-pro-erp-hero-p">
-                        <?php if (getCurrentLang() === 'th'): ?>
+                        <span class="hidden sm:block">
                             รวบรวมบทความรู้ เทคโนโลยี นวัตกรรม และแนวทางการทำธุรกิจ<br class="hidden xl:block">
                             ครอบคลุม ERP ระบบธุรกิจดิจิทัล การตลาดออนไลน์ AI<br class="hidden xl:block">
                             และโซลูชัน ที่ช่วยพัฒนาองค์กรให้เติบโตได้อย่างยั่งยืน
-                        <?php else: ?>
-                            <?= e(t('common.articles_knowledge_summary')) ?> <br class="hidden xl:block">
-                            <?= e(t('common.articles_coverage_summary')) ?><br class="hidden xl:block">
-                            <?= e(t('common.articles_growth_summary')) ?>
-                        <?php endif; ?>
-                    </p>
-                    <div class="animate-entrance-up delay-400 flex flex-col sm:flex-row items-start gap-4">
-                        <a href="<?= e(route_url('/contact')) ?>" class="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-primary text-white text-base md:text-lg font-semibold rounded-full hover:bg-blue-700 transition-all shadow-md hover:-translate-y-0.5">
-                            <?= getCurrentLang() === 'th' ? 'ปรึกษาผู้เชี่ยวชาญ' : 'Consult an Expert' ?>
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                        </span>
+                    <?php else: ?>
+                        <?= e(t('common.articles_knowledge_summary')) ?> <br class="hidden xl:block">
+                        <?= e(t('common.articles_coverage_summary')) ?><br class="hidden xl:block">
+                        <?= e(t('common.articles_growth_summary')) ?>
+                    <?php endif; ?>
+                </p>
+                <div class="animate-entrance-up delay-400 flex flex-col sm:flex-row items-start gap-4">
+                    <a href="<?= e(route_url('/contact')) ?>" class="inline-flex items-center justify-center gap-2 px-6 py-3 sm:px-8 sm:py-3.5 bg-primary text-white text-base md:text-lg font-semibold rounded-full hover:bg-blue-700 transition-all shadow-md hover:-translate-y-0.5 whitespace-nowrap">
+                        <?= getCurrentLang() === 'th' ? 'ปรึกษาผู้เชี่ยวชาญ' : 'Consult an Expert' ?>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                        </svg>
+                    </a>
+                    <a href="#about" class="inline-flex items-center gap-3 sm:gap-4 transition-all hover:-translate-y-0.5 group whitespace-nowrap">
+                        <div class="h-12 w-12 sm:h-14 sm:w-14 bg-white flex items-center justify-center rounded-full shadow-lg border border-slate-200 transition-all group-hover:bg-slate-50 group-hover:shadow-xl group-hover:scale-105 shrink-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6 text-blue-600 fill-current" viewBox="0 0 24 24">
+                                <path d="M8 5v14l11-7z"/>
                             </svg>
-                        </a>
-                        <a href="#about" class="inline-flex items-center gap-4 transition-all hover:-translate-y-0.5 group">
-                            <div class="h-14 w-14 bg-white flex items-center justify-center rounded-full shadow-lg border border-slate-200 transition-all group-hover:bg-slate-50 group-hover:shadow-xl group-hover:scale-105">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600 fill-current" viewBox="0 0 24 24">
-                                    <path d="M8 5v14l11-7z"/>
-                                </svg>
-                            </div>
-                            <span class="text-slate-800 text-lg font-semibold group-hover:text-primary transition-colors"><?= e(t('common.cta_watch_intro_video')) ?></span>
-                        </a>
-                    </div>
+                        </div>
+                        <span class="text-slate-800 text-base sm:text-lg font-semibold group-hover:text-primary transition-colors"><?= e(t('common.cta_watch_intro_video')) ?></span>
+                    </a>
                 </div>
             </div>
         </div>
@@ -738,8 +705,8 @@ $erpPortfolios = $mockErpPortfolios;
                     width: calc(20% - 1.2rem);
                 }
             }
-            /* Custom Grid for iPad Pro Portrait (1024px - 1279px) */
-            @media (min-width: 1024px) and (max-width: 1279px) {
+            /* Custom Grid for iPad Air, Galaxy Tab & iPad Pro (768px - 1279px) */
+            @media (min-width: 768px) and (max-width: 1279px) {
                 .ipad-pro-benefits-grid {
                     grid-template-columns: repeat(6, minmax(0, 1fr)) !important;
                 }
@@ -811,7 +778,7 @@ $erpPortfolios = $mockErpPortfolios;
                             <p class="text-sm text-slate-500 leading-relaxed desktop-erp-benefit-desc"><?= e($benefit['desc']) ?></p>
                         </div>
                     </div>
-                </div>
+                <?php endif; ?>
             <?php endforeach; ?>
         </div>
     </div>

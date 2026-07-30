@@ -534,7 +534,7 @@ if (isset($services) && is_array($services)) {
             <div class="absolute inset-x-0 bottom-0 h-[30%] bg-gradient-to-t from-white to-transparent"></div>
         </div>
         <div class="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-12 lg:gap-20 items-center relative z-10">
-            <div class="max-w-2xl">
+            <div class="max-w-2xl lg:ml-12 xl:ml-24">
                 <nav aria-label="Breadcrumb" class="animate-fade-up delay-100 mb-6 hidden sm:block">
                         <ol class="inline-flex items-center text-sm md:text-base font-medium text-slate-500">
                             <li>
@@ -550,11 +550,11 @@ if (isset($services) && is_array($services)) {
                             </li>
                         </ol>
                     </nav>
-                <h1 class="animate-fade-up delay-200 mb-2 tracking-tighter flex flex-col items-start ipad-pro-services-h1">
-                    <span class="text-5xl md:text-6xl lg:text-8xl font-bold bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient py-2 desktop-services-hero-h1 desktop-services-hero-text-1 ipad-pro-services-text-1">
+                <h1 class="animate-fade-up delay-200 mb-2 tracking-tighter flex flex-col items-start leading-[1.1] ipad-pro-services-h1">
+                    <span class="text-5xl md:text-6xl lg:text-8xl font-bold bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block py-2 md:py-2.5 desktop-services-hero-h1 desktop-services-hero-text-1 ipad-pro-services-text-1">
                         <?= getCurrentLang() === 'th' ? 'ความเชี่ยวชาญ' : 'Expertise' ?>
                     </span>
-                    <span class="text-5xl md:text-6xl lg:text-8xl font-bold bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient py-4 -mt-4 md:-mt-6 lg:-mt-8 desktop-services-hero-h1 desktop-services-hero-text-2 ipad-pro-services-text-2" style="animation-delay: -3s;">
+                    <span class="text-5xl md:text-6xl lg:text-8xl font-bold bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block py-1 md:py-2 -mt-1 md:-mt-2 lg:-mt-2 desktop-services-hero-h1 desktop-services-hero-text-2 ipad-pro-services-text-2" style="animation-delay: -3s;">
                         <?= getCurrentLang() === 'th' ? 'และจุดเด่น' : '& Strengths' ?>
                     </span>
                 </h1>
