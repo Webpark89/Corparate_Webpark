@@ -496,7 +496,7 @@ $erpPortfolios = $mockErpPortfolios;
             <div class="absolute inset-x-0 bottom-0 h-[30%] bg-gradient-to-t from-white to-transparent"></div>
         </div>
         <div class="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-12 lg:gap-20 items-center relative z-10">
-            <div class="max-w-2xl lg:ml-12 xl:ml-24 desktop-erp-hero-content-wrapper">
+            <div class="max-w-2xl lg:ml-12 ipad-pro-ml-0 xl:ml-24 desktop-erp-hero-content-wrapper">
                 <nav aria-label="Breadcrumb" class="animate-fade-up delay-100 mb-6 hidden sm:block">
                         <ol class="inline-flex items-center text-sm md:text-base font-medium text-slate-500">
                             <li>

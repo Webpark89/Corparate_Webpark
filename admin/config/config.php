@@ -15,7 +15,9 @@ define('ADMIN_USERNAME', 'admin');
 define('ADMIN_PASSWORD_HASH', '$2y$10$XsSqtj8zXCoMnPhkOOdcDemQVrmnN09BnnuGoSRQv98RPalokOHza'); // Password is 'password'
 // ---- Site ----
 define('SITE_NAME', 'WEBPARK');
-define('SITE_URL', 'http://localhost/Corparate_Webpark');           // no trailing slash
+$protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http';
+$host = $_SERVER['HTTP_HOST'] ?? 'localhost';
+define('SITE_URL', $protocol . '://' . $host . '/Corparate_Webpark');
 define('ADMIN_URL', SITE_URL . '/admin');
 define('UPLOAD_DIR', __DIR__ . '/../uploads');
 define('UPLOAD_URL', ADMIN_URL . '/uploads');

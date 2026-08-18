@@ -298,6 +298,11 @@ if (isset($services) && is_array($services)) {
             .ipad-pro-services-subtitle {
                 font-size: 2.25rem !important; /* Larger than 1.875rem */
             }
+            
+            .ipad-pro-hero-btn {
+                white-space: nowrap !important;
+            }
+
             .ipad-pro-services-desc {
                 font-size: 1.35rem !important; /* Adjusted to fit exactly on 2 lines */
                 line-height: 1.7 !important;
@@ -308,44 +313,92 @@ if (isset($services) && is_array($services)) {
             /* Increase font size for Service Cards on iPad Pro */
             .ipad-pro-service-card-title {
                 font-size: 1.75rem !important; /* Increase from text-xl */
+                min-height: 4.5rem !important; /* Force 2-line height */
+                display: flex;
+                align-items: center;
             }
             .ipad-pro-service-card-desc {
                 font-size: 1.15rem !important; /* Increase from text-sm */
+                min-height: 3.5rem !important; /* Force 2-line height */
                 display: -webkit-box !important;
                 -webkit-line-clamp: 2 !important;
                 -webkit-box-orient: vertical !important;
                 overflow: hidden !important;
             }
             .ipad-pro-service-card-dropdown {
-                font-size: 1.15rem !important; /* Increase from text-sm */
+                font-size: 1.5rem !important;
+                line-height: 1.4 !important;
+                padding-top: 1.25rem !important;
+                padding-bottom: 1.25rem !important;
+                padding-right: 2rem !important;
+                min-height: 6.5rem !important;
+            }
+            .ipad-pro-service-grid {
+                align-items: flex-start !important;
+            }
+            .ipad-pro-dropdown-item {
+                font-size: 1.4rem !important;
+                padding-top: 0.85rem !important;
+                padding-bottom: 0.85rem !important;
             }
             .ipad-pro-services-approach-section {
                 padding-top: 2rem !important; /* Reduce top padding */
                 padding-bottom: 3rem !important;
             }
+            .ipad-pro-approach-title {
+                font-size: 3rem !important;
+                line-height: 1.2 !important;
+            }
+            .ipad-pro-approach-desc {
+                font-size: 1.4rem !important;
+                line-height: 1.6 !important;
+            }
             
-            /* Reduce size of Our Approach blocks on iPad Pro */
+            /* Our Approach blocks on iPad Pro */
             .ipad-pro-services-approach-card {
                 padding: 1.5rem !important;
-                gap: 1rem !important;
+                gap: 1.25rem !important;
+            }
+            .ipad-pro-services-approach-header {
+                flex-direction: row !important;
+                align-items: center !important;
+                gap: 0.75rem !important;
             }
             .ipad-pro-services-approach-icon-wrap {
+                width: 4rem !important;
+                height: 4rem !important;
+            }
+            .ipad-pro-services-approach-icon-img {
                 width: 3.5rem !important;
                 height: 3.5rem !important;
             }
-            .ipad-pro-services-approach-icon-img {
-                width: 2.75rem !important;
-                height: 2.75rem !important;
-            }
             .ipad-pro-services-approach-number {
-                font-size: 1.25rem !important;
+                font-size: 1.75rem !important;
             }
             .ipad-pro-services-approach-title {
-                font-size: 1.125rem !important;
+                font-size: 1.5rem !important;
+                margin-bottom: 0 !important;
             }
             .ipad-pro-services-approach-desc {
-                font-size: 1.05rem !important; /* Increased from 0.875rem for better readability */
+                font-size: 1.25rem !important;
                 line-height: 1.6 !important;
+                margin-top: 0.5rem !important;
+            }
+            .ipad-pro-services-hero-p {
+                margin-top: -1rem !important; /* Reduce gap further */
+            }
+            .ipad-pro-services-hero-content {
+                margin-left: 0 !important;
+            }
+            .ipad-pro-hidden {
+                display: none !important;
+            }
+            .ipad-pro-services-text-1 {
+                padding-bottom: 0 !important;
+            }
+            .ipad-pro-services-text-2 {
+                padding-top: 0 !important;
+                margin-top: -1.5rem !important;
             }
         }
         
@@ -534,7 +587,7 @@ if (isset($services) && is_array($services)) {
             <div class="absolute inset-x-0 bottom-0 h-[30%] bg-gradient-to-t from-white to-transparent"></div>
         </div>
         <div class="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-12 lg:gap-20 items-center relative z-10">
-            <div class="max-w-2xl lg:ml-12 xl:ml-24">
+            <div class="max-w-2xl lg:ml-12 xl:ml-24 ipad-pro-services-hero-content">
                 <nav aria-label="Breadcrumb" class="animate-fade-up delay-100 mb-6 hidden sm:block">
                         <ol class="inline-flex items-center text-sm md:text-base font-medium text-slate-500">
                             <li>
@@ -558,7 +611,7 @@ if (isset($services) && is_array($services)) {
                         <?= getCurrentLang() === 'th' ? 'และจุดเด่น' : '& Strengths' ?>
                     </span>
                 </h1>
-                <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-base sm:text-lg md:text-xl leading-relaxed max-w-lg mb-10 font-medium desktop-services-hero-p">
+                <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-base sm:text-lg md:text-xl leading-relaxed max-w-lg mb-10 font-medium desktop-services-hero-p ipad-pro-services-hero-p">
                     <?php if (getCurrentLang() === 'th'): ?>
                         <span class="block sm:hidden leading-relaxed">
                             มากกว่า 20 ปี ที่เราสร้างสรรค์โซลูชันดิจิทัล<br>
@@ -568,8 +621,8 @@ if (isset($services) && is_array($services)) {
                             สู่อนาคตอย่างยั่งยืน
                         </span>
                         <span class="hidden sm:block">
-                            มากกว่า 20 ปี ที่เราสร้างสรรค์โซลูชันดิจิทัลครบวงจร<br>
-                            ผสานเทคโนโลยี ความเชี่ยวชาญ และความเข้าใจธุรกิจ<br>
+                            มากกว่า 20 ปี ที่เราสร้างสรรค์โซลูชันดิจิทัลครบวงจร<br class="ipad-pro-hidden">
+                            ผสานเทคโนโลยี ความเชี่ยวชาญ และความเข้าใจธุรกิจ<br class="ipad-pro-hidden">
                             เพื่อเพิ่มประสิทธิภาพ สร้างการเติบโต และยกระดับองค์กรสู่อนาคตอย่างยั่งยืน
                         </span>
                     <?php else: ?>
@@ -577,7 +630,7 @@ if (isset($services) && is_array($services)) {
                     <?php endif; ?>
                 </p>
                 <div class="animate-entrance-up delay-400 flex flex-col sm:flex-row items-start gap-4">
-                    <a href="<?= e(route_url('/contact')) ?>" class="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-primary text-white text-base md:text-lg font-semibold rounded-full hover:bg-blue-700 transition-all shadow-md hover:-translate-y-0.5">
+                    <a href="<?= e(route_url('/contact')) ?>" class="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-primary text-white text-base md:text-lg font-semibold rounded-full hover:bg-blue-700 transition-all shadow-md hover:-translate-y-0.5 ipad-pro-hero-btn">
                         <?= e(getCurrentLang() === 'th' ? 'ปรึกษาผู้เชี่ยวชาญ' : 'Consult an Expert') ?>
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
@@ -589,7 +642,7 @@ if (isset($services) && is_array($services)) {
                                 <path d="M8 5v14l11-7z"/>
                             </svg>
                         </div>
-                        <span class="text-slate-800 text-lg font-semibold group-hover:text-primary transition-colors"><?= e(t('common.cta_watch_intro_video') !== 'common.cta_watch_intro_video' ? t('common.cta_watch_intro_video') : (getCurrentLang() === 'th' ? 'ดูวิดีโอแนะนำ' : 'Watch Video')) ?></span>
+                        <span class="text-slate-800 text-lg font-semibold group-hover:text-primary transition-colors ipad-pro-hero-btn"><?= e(t('common.cta_watch_intro_video') !== 'common.cta_watch_intro_video' ? t('common.cta_watch_intro_video') : (getCurrentLang() === 'th' ? 'ดูวิดีโอแนะนำ' : 'Watch Video')) ?></span>
                     </a>
                 </div>
             </div>
@@ -612,7 +665,7 @@ if (isset($services) && is_array($services)) {
 </section>
 <section id="gsap-services-grid" class="bg-white py-8 lg:py-16 font-sans">
     <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8 desktop-wide-container-services">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 items-start">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 items-start ipad-pro-service-grid">
             <?php foreach ($services as $service):
                 $sTitle  = (string)($service['title'] ?? '');
                 $sSummary= (string)($service['summary'] ?? '');
@@ -654,7 +707,7 @@ if (isset($services) && is_array($services)) {
                                     $itemLabel = (string)($item['label'] ?? '');
                                     $itemHref  = (string)($item['href'] ?? '#');
                                 ?>
-                                <a href="<?= $itemHref ?>" class="group/item flex items-center gap-2 text-sm text-slate-600 hover:text-[#043B94] transition-all duration-300 hover:translate-x-1.5">
+                                <a href="<?= $itemHref ?>" class="group/item flex items-center gap-2 text-sm text-slate-600 hover:text-[#043B94] transition-all duration-300 hover:translate-x-1.5 ipad-pro-dropdown-item">
                                     <span class="w-1.5 h-1.5 rounded-full bg-slate-300 shrink-0 transition-all duration-300 group-hover/item:bg-[#043B94] group-hover/item:scale-125"></span>
                                     <span><?= e($itemLabel) ?></span>
                                 </a>
@@ -709,12 +762,12 @@ if (isset($services) && is_array($services)) {
     <div class="mx-auto max-w-7xl px-6 sm:px-6 lg:px-8 desktop-approach-container">
         <div class="text-left md:text-center mb-10 md:mb-16 flex flex-col items-start md:items-center">
             <div class="flex flex-col items-start mb-4 md:mb-6">
-                <span class="text-3xl md:text-4xl font-bold gsap-fade-up mb-1 block" style="color: #054FC5 !important; -webkit-text-fill-color: #054FC5 !important; background: none !important;">
+                <span class="text-3xl md:text-4xl font-bold gsap-fade-up mb-1 block ipad-pro-approach-title" style="color: #054FC5 !important; -webkit-text-fill-color: #054FC5 !important; background: none !important;">
                     <?= getCurrentLang() === 'th' ? 'แนวคิดในการทำงานของเรา' : 'Our Approach' ?>
                 </span>
                 <div class="mt-1 gsap-fade-up" style="width: 48px; height: 3px; background-color: #0663F6;"></div>
             </div>
-            <p class="text-slate-500 text-lg md:text-xl leading-relaxed max-w-4xl text-left md:text-center mx-0 md:mx-auto desktop-approach-subtitle">
+            <p class="text-slate-500 text-lg md:text-xl leading-relaxed max-w-4xl text-left md:text-center mx-0 md:mx-auto desktop-approach-subtitle ipad-pro-approach-desc">
                 <?= getCurrentLang() === 'th' ? 'กระบวนการทำงานที่เป็นระบบ เพื่อส่งมอบโซลูชันดิจิทัลที่ตอบโจทย์ธุรกิจ <br class="hidden md:block"> และความยั่งยืนของข้อมูลธุรกิจที่องค์กรถือครอง' : 'A systematic work process to deliver digital solutions that meet business needs and ensure the sustainability of business data held by the organization.' ?>
             </p>
         </div>
@@ -757,7 +810,7 @@ if (isset($services) && is_array($services)) {
                          onerror="this.onerror=null;this.style.display='none'">
                 </div>
                 <div class="flex flex-col gap-1 md:gap-1.5 md:pt-1 desktop-approach-content">
-                    <div class="desktop-approach-header flex flex-row items-center gap-2 md:flex-col md:items-start md:gap-0">
+                    <div class="desktop-approach-header flex flex-row items-center gap-2 md:flex-col md:items-start md:gap-0 ipad-pro-services-approach-header">
                         <span class="gsap-approach-number text-2xl md:text-3xl font-extrabold desktop-approach-number ipad-pro-services-approach-number" style="color: #043B94;"><?= e($step['number']) ?></span>
                         <h3 class="text-xl md:text-2xl font-extrabold mb-0 md:mb-1 desktop-approach-title ipad-pro-services-approach-title" style="color: #022862;"><?= e($step['title']) ?></h3>
                     </div>

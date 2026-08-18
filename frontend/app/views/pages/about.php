@@ -83,15 +83,48 @@ $contactAddress = $company['contact']['address'] ?? '525/89 ซอยลาด�
             padding-right: 2rem !important; /* Prevent widows */
         }
         
+        .ipad-pro-about-intro-p {
+            font-size: 1.25rem !important;
+            line-height: 2rem !important;
+        }
+        
         /* Increase font size for Our Approach on iPad Pro */
+        .ipad-pro-about-process-header {
+            flex-direction: row !important;
+            align-items: center !important;
+            gap: 1rem !important;
+            margin-bottom: 0.5rem !important;
+        }
         .ipad-pro-about-process-step {
-            font-size: 1.5rem !important;
+            font-size: 1.75rem !important;
+            margin-bottom: 0 !important;
         }
         .ipad-pro-about-process-title {
-            font-size: 1.25rem !important;
+            font-size: 1.5rem !important;
+            margin-bottom: 0 !important;
         }
         .ipad-pro-about-process-desc {
-            font-size: 1rem !important;
+            font-size: 1.25rem !important;
+            line-height: 2rem !important;
+        }
+        .ipad-pro-concept-p {
+            font-size: 1.375rem !important;
+            line-height: 2.25rem !important;
+            max-width: 100% !important;
+        }
+        .ipad-pro-services-h3 {
+            font-size: 1.5rem !important;
+        }
+        .ipad-pro-services-p {
+            font-size: 1.25rem !important;
+            line-height: 2rem !important;
+        }
+        .ipad-pro-services-section {
+            padding-bottom: 2rem !important;
+        }
+        .ipad-pro-stats-section {
+            padding-top: 1rem !important;
+        }
         /* Hide specific br tags on iPad Pro to fix word wrapping */
         .ipad-pro-hidden-br {
             display: none !important;
@@ -233,7 +266,7 @@ $contactAddress = $company['contact']['address'] ?? '525/89 ซอยลาด�
             <div class="absolute inset-x-0 bottom-0 h-[30%] bg-gradient-to-t from-white to-transparent"></div>
         </div>
         <div class="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-12 lg:gap-20 items-center relative z-10">
-            <div class="max-w-2xl lg:ml-12 xl:ml-24 desktop-about-hero-content-wrapper">
+            <div class="max-w-2xl lg:ml-12 ipad-pro-ml-0 xl:ml-24 desktop-about-hero-content-wrapper">
                 <nav aria-label="Breadcrumb" class="animate-fade-up delay-100 mb-6 hidden sm:block">
                     <ol class="inline-flex items-center text-sm md:text-base font-medium text-slate-500">
                         <li>
@@ -289,10 +322,10 @@ $contactAddress = $company['contact']['address'] ?? '525/89 ซอยลาด�
                 <span class="text-xl xl:text-2xl leading-relaxed mb-8 block" style="color: #043B94;">
                     <?= getCurrentLang() === 'th' ? 'เรา คือ WEBPARK<br>ผู้นำด้านโซลูชันธุรกิจดิจิทัล' : 'We are WEBPARK<br>Leaders in Digital Business Solutions' ?>
                 </span>
-                <p class="text-slate-500 md:text-slate-600 text-lg md:text-lg xl:text-xl leading-relaxed mb-6">
+                <p class="text-slate-500 md:text-slate-600 text-lg md:text-lg xl:text-xl leading-relaxed mb-6 ipad-pro-about-intro-p">
                     <?= getCurrentLang() === 'th' ? 'WEBPARK ก่อตั้งขึ้นด้วยวิสัยทัศน์ที่มุ่งมั่นในการยกระดับศักยภาพธุรกิจไทยผ่านเทคโนโลยีและนวัตกรรมดิจิทัล เราเชี่ยวชาญในการพัฒนาระบบ ERP / ERM แพลตฟอร์มดิจิทัล และโซลูชันที่ตอบโจทย์ทุกความต้องการขององค์กรในทุกอุตสาหกรรม' : 'WEBPARK was founded with a strong vision to elevate the potential of Thai businesses through technology and digital innovation. We specialize in developing ERP / ERM systems, digital platforms, and solutions that meet all organizational needs across industries.' ?>
                 </p>
-                <p class="text-slate-500 md:text-slate-600 text-lg md:text-lg xl:text-xl leading-relaxed mb-10">
+                <p class="text-slate-500 md:text-slate-600 text-lg md:text-lg xl:text-xl leading-relaxed mb-10 ipad-pro-about-intro-p">
                     <?= getCurrentLang() === 'th' ? 'ด้วยทีมงานผู้เชี่ยวชาญ ประสบการณ์ยาวนาน และความเข้าใจธุรกิจอย่างลึกซึ้ง เราพร้อมเป็นพาร์ทเนอร์ที่เชื่อถือได้ เพื่อช่วยให้องค์กรของคุณก้าวสู่อนาคตได้อย่างมั่นคงและยั่งยืน' : 'With our team of experts, extensive experience, and deep business understanding, we are ready to be your trusted partner to help your organization advance into the future steadily and sustainably.' ?>
                 </p>
             </div>
@@ -361,7 +394,7 @@ $contactAddress = $company['contact']['address'] ?? '525/89 ซอยลาด�
                 <h2 class="text-3xl md:text-4xl font-bold leading-tight mb-3 md:mb-6" style="color: #054FC5;">
                     <?= getCurrentLang() === 'th' ? 'แนวคิดในการทำงานของเรา' : 'Our Approach' ?>
                 </h2>
-                <p class="text-left md:text-center xl:text-left text-slate-600 text-lg md:text-lg leading-relaxed max-w-2xl xl:max-w-md mx-0 md:mx-auto xl:mx-0 desktop-concept-p">
+                <p class="text-left md:text-center xl:text-left text-slate-600 text-lg md:text-lg leading-relaxed max-w-2xl xl:max-w-md mx-0 md:mx-auto xl:mx-0 desktop-concept-p ipad-pro-concept-p">
                     <?= getCurrentLang() === 'th' ? 'เราเชื่อว่าการพัฒนาระบบและโซลูชันดิจิทัลที่ดี <br class="md:hidden"> ไม่ได้เริ่มจากเทคโนโลยีเพียงอย่างเดียว <br class="md:hidden"> แต่เริ่มจากความเข้าใจธุรกิจของคุณ <br class="md:hidden"> เราทำงานแบบพาร์ทเนอร์ร่วมคิด ร่วมสร้าง <br class="md:hidden"> เพื่อให้ทุกโซลูชันที่เราส่งมอบ <span class="whitespace-nowrap">สามารถใช้งานได้</span> <br class="md:hidden"> <span class="whitespace-nowrap">สร้างคุณค่า</span> และช่วยให้ธุรกิจของคุณ <br class="md:hidden"> เติบโตได้อย่างยั่งยืน' : 'We believe that developing great digital systems and solutions doesn\'t start with technology alone, but with understanding your business. We work as a partner to co-think and co-create, ensuring every solution we deliver is practical, creates value, and helps your business grow sustainably.' ?>
                 </p>
             </div>
@@ -403,7 +436,7 @@ $contactAddress = $company['contact']['address'] ?? '525/89 ซอยลาด�
                                  onerror="this.onerror=null;this.style.display='none'">
                         </div>
                         <div class="flex flex-col gap-1 desktop-about-process-content">
-                            <div class="flex flex-row items-center gap-2 md:flex-col md:items-start md:gap-0 desktop-about-process-header">
+                            <div class="flex flex-row items-center gap-2 md:flex-col md:items-start md:gap-0 desktop-about-process-header ipad-pro-about-process-header">
                                 <span class="text-xl font-extrabold desktop-about-process-step ipad-pro-about-process-step" style="color: #043B94;"><?= e($item['step']) ?></span>
                                 <h4 class="text-dark font-bold text-lg md:text-base group-hover:text-primary transition-colors desktop-about-process-title ipad-pro-about-process-title"><?= e($item['title']) ?></h4>
                             </div>
@@ -415,7 +448,7 @@ $contactAddress = $company['contact']['address'] ?? '525/89 ซอยลาด�
         </div>
     </div>
 </section>
-<section id="about-services-scroll" class="bg-[#f8fafc] pt-8 pb-8 lg:pt-24 lg:pb-16 font-sans">
+<section id="about-services-scroll" class="bg-[#f8fafc] pt-8 pb-8 lg:pt-24 lg:pb-16 font-sans ipad-pro-services-section">
     <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-6 desktop-wide-container"> 
         <div class="mb-2">
             <h2 class="text-2xl md:text-4xl font-bold text-primary mb-4 desktop-services-title tracking-tight md:tracking-normal whitespace-nowrap">
@@ -441,10 +474,10 @@ $contactAddress = $company['contact']['address'] ?? '525/89 ซอยลาด�
                     <div class="w-12 h-12 mb-6 group-hover:scale-110 transition-transform desktop-services-icon">
                         <img src="<?= e($item['icon']) ?>" alt="<?= e($item['title']) ?>" class="w-full h-full object-contain">
                     </div>
-                    <h3 class="text-dark font-bold text-lg mb-3 group-hover:text-white transition-colors desktop-services-h3">
+                    <h3 class="text-dark font-bold text-lg mb-3 group-hover:text-white transition-colors desktop-services-h3 ipad-pro-services-h3">
                         <?= e($item['title']) ?>
                     </h3>
-                    <p class="text-slate-500 text-md leading-relaxed group-hover:text-white transition-colors desktop-services-p">
+                    <p class="text-slate-500 text-md leading-relaxed group-hover:text-white transition-colors desktop-services-p ipad-pro-services-p">
                         <?= $item['desc'] ?>
                     </p>
                 </div>
@@ -501,7 +534,7 @@ $contactAddress = $company['contact']['address'] ?? '525/89 ซอยลาด�
         </script>
     </div>
 </section>
-<section class="bg-slate-50 pt-8 pb-8 lg:pt-16 lg:pb-20 font-sans mb-4">
+<section class="bg-slate-50 pt-8 pb-8 lg:pt-16 lg:pb-20 font-sans mb-4 ipad-pro-stats-section">
     <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-6 desktop-wide-container"> 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-6">
             <div class="gsap-stat-card bg-white rounded-2xl shadow-sm hover:shadow-md transition-shadow p-6 md:p-8 flex flex-row items-center justify-start gap-6 border border-slate-100 opacity-0 translate-y-10 desktop-stat-card">

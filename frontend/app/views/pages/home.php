@@ -74,7 +74,7 @@ if (!empty($partners) && is_array($partners)) {
         <!-- Mobile Gradient Mask to prevent text overlapping presenter image -->
         <div class="absolute inset-0 bg-gradient-to-r from-white via-white/90 to-white/20 md:hidden z-0 pointer-events-none"></div>
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:pb-12 lg:gap-10 items-center relative z-10">
-            <div class="max-w-3xl relative z-10 text-left mx-0 lg:ml-12 xl:ml-24 flex flex-col items-start w-full">
+            <div class="max-w-3xl relative z-10 text-left mx-0 lg:ml-12 ipad-pro-ml-0 xl:ml-24 flex flex-col items-start w-full">
                 <div class="animate-entrance-up delay-100 inline-flex items-center justify-center gap-2 md:gap-2.5 px-4 py-2 md:px-6 md:py-2.5 rounded-full border border-blue-600 mb-6 shadow-sm bg-white/40">
                     <span class="text-blue-600 font-black text-base md:text-xl leading-none flex items-center shrink-0">•</span>
                     <span class="text-[12px] sm:text-[13px] md:text-base lg:text-lg font-bold text-blue-600 tracking-wide whitespace-nowrap leading-none">
@@ -90,7 +90,7 @@ if (!empty($partners) && is_array($partners)) {
                         <?= getCurrentLang() === 'th' ? 'ผู้ให้บริการพัฒนา Digital Platform<br>และระบบ AI ที่ช่วยให้ธุรกิจไทย<br>ก้าวไปข้างหน้า ด้วยเทคโนโลยี<br>ที่ใช้งานได้จริง' : 'Digital Platform and AI system<br>development provider helping Thai businesses<br>move forward with practical technology.' ?>
                     </span>
                     <span class="hidden md:inline">
-                        <?= getCurrentLang() === 'th' ? 'ผู้ให้บริการพัฒนา Digital Platform และระบบ AI<br>ที่ช่วยให้ธุรกิจไทยก้าวไปข้างหน้าด้วยเทคโนโลยีที่ใช้งานได้จริง' : 'Digital Platform and AI system development provider <br class="ipad-pro-strict-hidden">helping Thai businesses move forward with practical technology.' ?>
+                        <?= getCurrentLang() === 'th' ? 'ผู้ให้บริการพัฒนา Digital Platform และระบบ AI<br>ที่ช่วยให้ธุรกิจไทยก้าวไปข้างหน้า<br class="hidden ipad-pro-strict-inline">ด้วยเทคโนโลยีที่ใช้งานได้จริง' : 'Digital Platform and AI system<br class="hidden ipad-pro-strict-inline"> development provider <br class="ipad-pro-strict-hidden">helping Thai<br class="hidden ipad-pro-strict-inline"> businesses move forward with<br class="hidden ipad-pro-strict-inline"> practical technology.' ?>
                     </span>
                 </p>
                 <div class="animate-entrance-up delay-400 flex flex-col items-start self-start md:self-auto md:flex-row md:justify-start gap-3 md:gap-4">
@@ -161,7 +161,8 @@ if (!empty($partners) && is_array($partners)) {
 /* Strict override for exactly 1024px (iPad Pro portrait) */
 @media (min-width: 1024px) and (max-width: 1024px) {
     .ipad-pro-strict-hidden { display: none !important; }
-    .ipad-pro-hero-desc { font-size: 1.375rem !important; line-height: 2rem !important; width: 600px !important; max-width: 600px !important; }
+    .ipad-pro-strict-inline { display: inline !important; }
+    .ipad-pro-hero-desc { font-size: 1.375rem !important; line-height: 2.25rem !important; width: 520px !important; max-width: 520px !important; padding-right: 0; }
     
     /* iPad Pro (1024px) Font Size Overrides */
     .ipad-pro-font-about-tag { font-size: 1.125rem !important; line-height: 1.75rem !important; }
