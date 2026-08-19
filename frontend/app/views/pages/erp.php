@@ -758,7 +758,7 @@ $erpPortfolios = $mockErpPortfolios;
             ?>
                 <?php if($index === 4): ?>
                     <!-- 5th Block: Horizontal rectangle on mobile, Square on desktop -->
-                    <div class="gsap-erp-benefit-card bg-white rounded-2xl py-10 px-6 sm:p-6 border border-slate-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 mobile-span-2 sm:col-span-1 <?= $lgClass ?> flex flex-row sm:block items-center text-left sm:text-center gap-6 sm:gap-0 opacity-0 translate-y-10 desktop-erp-benefit-card">
+                    <div class="gsap-erp-benefit-card bg-white rounded-2xl py-10 px-6 sm:p-6 border border-slate-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 col-span-2 sm:col-span-1 <?= $lgClass ?> flex flex-row sm:block items-center text-left sm:text-center gap-6 sm:gap-0 opacity-0 translate-y-10 desktop-erp-benefit-card">
                         <div class="w-16 h-16 sm:w-14 sm:h-14 sm:mx-auto shrink-0 bg-blue-50/70 rounded-full flex items-center justify-center sm:mb-4 desktop-erp-benefit-icon-wrap">
                             <img src="<?= e($benefit['icon']) ?>" alt="<?= e($benefit['title']) ?>" class="h-full w-full object-contain desktop-erp-benefit-icon-img">
                         </div>

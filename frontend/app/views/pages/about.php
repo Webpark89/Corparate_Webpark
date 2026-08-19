@@ -69,6 +69,51 @@ $contactAddress = $company['contact']['address'] ?? '525/89 ซอยลาด�
         }
     }
     
+    /* iPad Pro (1024px) Overrides */
+    @media (min-width: 1024px) and (max-width: 1024px) {
+        .ipad-pro-about-process-header {
+            flex-direction: row !important;
+            align-items: baseline !important;
+            gap: 0.75rem !important;
+        }
+        .ipad-pro-about-process-step { font-size: 1.75rem !important; }
+        .ipad-pro-about-process-title { font-size: 1.5rem !important; }
+        .ipad-pro-about-process-desc { font-size: 1.125rem !important; line-height: 1.6 !important; }
+    }
+
+    /* iPad Air (820px) Overrides */
+    @media (min-width: 820px) and (max-width: 820px) {
+        .ipad-air-about-process-header {
+            flex-direction: row !important;
+            align-items: baseline !important;
+            gap: 0.75rem !important;
+        }
+        .ipad-air-about-process-step { font-size: 1.75rem !important; }
+        .ipad-air-about-process-title { font-size: 1.5rem !important; }
+        .ipad-air-about-process-desc { font-size: 1.125rem !important; line-height: 1.6 !important; }
+
+        /* Comprehensive Services section for iPad Air */
+        .ipad-air-services-h3 { font-size: 1.35rem !important; margin-bottom: 0.75rem !important; }
+        .ipad-air-services-p { font-size: 1rem !important; line-height: 1.6 !important; }
+        .ipad-air-services-icon { width: 3.5rem !important; height: 3.5rem !important; }
+        .ipad-air-hidden-br { display: none !important; }
+    }
+    
+    /* Mobile (< 760px) Overrides */
+    @media (max-width: 759px) {
+        .mobile-about-process-title {
+            white-space: nowrap !important;
+            font-size: 1rem !important;
+            letter-spacing: -0.3px !important;
+        }
+    }
+    
+    /* iPad Mini (768px - 819px) Overrides */
+    @media (min-width: 760px) and (max-width: 819px) {
+        .ipad-mini-about-process-desc { font-size: 1.05rem !important; line-height: 1.6 !important; }
+        .ipad-mini-services-desc { font-size: 1.15rem !important; line-height: 1.7 !important; }
+    }
+
     /* Custom Layout for iPad Pro Portrait (1024px - 1279px) */
     @media (min-width: 1024px) and (max-width: 1279px) {
         .ipad-pro-about-hero-h1 {
@@ -325,7 +370,7 @@ $contactAddress = $company['contact']['address'] ?? '525/89 ซอยลาด�
                 <p class="text-slate-500 md:text-slate-600 text-lg md:text-lg xl:text-xl leading-relaxed mb-6 ipad-pro-about-intro-p">
                     <?= getCurrentLang() === 'th' ? 'WEBPARK ก่อตั้งขึ้นด้วยวิสัยทัศน์ที่มุ่งมั่นในการยกระดับศักยภาพธุรกิจไทยผ่านเทคโนโลยีและนวัตกรรมดิจิทัล เราเชี่ยวชาญในการพัฒนาระบบ ERP / ERM แพลตฟอร์มดิจิทัล และโซลูชันที่ตอบโจทย์ทุกความต้องการขององค์กรในทุกอุตสาหกรรม' : 'WEBPARK was founded with a strong vision to elevate the potential of Thai businesses through technology and digital innovation. We specialize in developing ERP / ERM systems, digital platforms, and solutions that meet all organizational needs across industries.' ?>
                 </p>
-                <p class="text-slate-500 md:text-slate-600 text-lg md:text-lg xl:text-xl leading-relaxed mb-10 ipad-pro-about-intro-p">
+                <p class="text-slate-500 md:text-slate-600 text-lg md:text-lg xl:text-xl leading-relaxed mb-4 md:mb-10 ipad-pro-about-intro-p">
                     <?= getCurrentLang() === 'th' ? 'ด้วยทีมงานผู้เชี่ยวชาญ ประสบการณ์ยาวนาน และความเข้าใจธุรกิจอย่างลึกซึ้ง เราพร้อมเป็นพาร์ทเนอร์ที่เชื่อถือได้ เพื่อช่วยให้องค์กรของคุณก้าวสู่อนาคตได้อย่างมั่นคงและยั่งยืน' : 'With our team of experts, extensive experience, and deep business understanding, we are ready to be your trusted partner to help your organization advance into the future steadily and sustainably.' ?>
                 </p>
             </div>
@@ -436,11 +481,11 @@ $contactAddress = $company['contact']['address'] ?? '525/89 ซอยลาด�
                                  onerror="this.onerror=null;this.style.display='none'">
                         </div>
                         <div class="flex flex-col gap-1 desktop-about-process-content">
-                            <div class="flex flex-row items-center gap-2 md:flex-col md:items-start md:gap-0 desktop-about-process-header ipad-pro-about-process-header">
-                                <span class="text-xl font-extrabold desktop-about-process-step ipad-pro-about-process-step" style="color: #043B94;"><?= e($item['step']) ?></span>
-                                <h4 class="text-dark font-bold text-lg md:text-base group-hover:text-primary transition-colors desktop-about-process-title ipad-pro-about-process-title"><?= e($item['title']) ?></h4>
+                            <div class="flex flex-row items-center gap-2 desktop-about-process-header ipad-pro-about-process-header ipad-air-about-process-header">
+                                <span class="text-xl font-extrabold desktop-about-process-step ipad-pro-about-process-step ipad-air-about-process-step" style="color: #043B94;"><?= e($item['step']) ?></span>
+                                <h4 class="text-dark font-bold text-lg md:text-base group-hover:text-primary transition-colors desktop-about-process-title ipad-pro-about-process-title ipad-air-about-process-title mobile-about-process-title"><?= e($item['title']) ?></h4>
                             </div>
-                            <p class="text-slate-500 text-base md:text-sm leading-relaxed desktop-about-process-desc ipad-pro-about-process-desc"><?= $item['desc'] ?></p>
+                            <p class="text-slate-500 text-base md:text-sm leading-relaxed desktop-about-process-desc ipad-pro-about-process-desc ipad-air-about-process-desc ipad-mini-about-process-desc"><?= $item['desc'] ?></p>
                         </div>
                     </div>
                 <?php endforeach; ?>
@@ -455,29 +500,29 @@ $contactAddress = $company['contact']['address'] ?? '525/89 ซอยลาด�
                 <?= getCurrentLang() === 'th' ? 'บริการของเราครอบคลุมทุกด้าน' : 'Comprehensive Services Coverage' ?>
             </h2>
         </div>
-        <p class="mb-3 text-sm md:text-base leading-relaxed text-slate-600 max-w-3xl">
+        <p class="mb-3 text-sm md:text-base leading-relaxed text-slate-600 max-w-3xl ipad-mini-services-desc">
             <?= getCurrentLang() === 'th' ? 'ระบบที่ช่วยพัฒนาโซลูชันดิจิทัลที่ช่วยให้ธุรกิจเติบโตอย่างยั่งยืน' : 'Systems that help develop digital solutions to help your business grow sustainably.' ?>
         </p>
         <div id="service-scroll-container" class="flex overflow-x-auto snap-x snap-mandatory scrollbar-none gap-6 pb-6 -mx-4 px-4 md:mx-0 md:px-0 md:grid md:grid-cols-2 lg:grid-cols-3 md:overflow-visible md:snap-none desktop-services-grid">
             <?php
             $services = [
-                ['title' => getCurrentLang() === 'th' ? 'พัฒนาระบบซอฟต์แวร์' : 'Software Development', 'desc' => getCurrentLang() === 'th' ? 'ออกแบบและพัฒนาระบบที่ตอบโจทย์ความต้องการ <br class="ipad-pro-hidden-br"> เฉพาะขององค์กร' : 'Design and develop systems tailored to <br class="ipad-pro-hidden-br"> your organization\'s specific needs', 'icon' => asset_url('images/about_5.svg')],
-                ['title' => getCurrentLang() === 'th' ? 'ระบบสำหรับองค์กร' : 'Enterprise Systems', 'desc' => getCurrentLang() === 'th' ? 'วางโครงสร้างระบบองค์กรที่แข็งแกร่ง <br class="ipad-pro-hidden-br"> รองรับการทำงานและประสิทธิภาพที่เพิ่มขึ้น' : 'Build strong enterprise system structures <br class="ipad-pro-hidden-br"> supporting increased operations and efficiency', 'icon' => asset_url('images/about_6.svg')],
-                ['title' => getCurrentLang() === 'th' ? 'การตลาดออนไลน์' : 'Online Marketing', 'desc' => getCurrentLang() === 'th' ? 'วางกลยุทธ์การตลาดออนไลน์ครบวงจร <br class="ipad-pro-hidden-br"> เพิ่มการมองเห็นและสร้างโอกาสทางธุรกิจ' : 'Plan comprehensive online marketing strategies <br class="ipad-pro-hidden-br"> increasing visibility and business opportunities', 'icon' => asset_url('images/about_7.svg')],
-                ['title' => getCurrentLang() === 'th' ? 'เว็บไซต์และแอปพลิเคชัน' : 'Websites & Applications', 'desc' => getCurrentLang() === 'th' ? 'พัฒนาเว็บไซต์และแอปพลิเคชันที่สวยงาม <br class="ipad-pro-hidden-br"> ใช้งานง่าย รองรับทุกอุปกรณ์' : 'Develop beautiful, user-friendly websites <br class="ipad-pro-hidden-br"> and applications supporting all devices', 'icon' => asset_url('images/about_8.svg')],
-                ['title' => getCurrentLang() === 'th' ? 'AI Agent และระบบอัตโนมัติ' : 'AI Agent & Automation', 'desc' => getCurrentLang() === 'th' ? 'ผสานพลัง AI และระบบอัตโนมัติ <br class="ipad-pro-hidden-br"> เพื่อเพิ่มประสิทธิภาพและลดต้นทุนการทำงาน' : 'Integrate AI power and automation <br class="ipad-pro-hidden-br"> to increase efficiency and reduce costs', 'icon' => asset_url('images/about_9.svg')],
-                ['title' => getCurrentLang() === 'th' ? 'งานออกแบบดิจิทัล' : 'Digital Design', 'desc' => getCurrentLang() === 'th' ? 'สร้างสรรค์งานออกแบบดิจิทัลคุณภาพสูง <br class="ipad-pro-hidden-br"> สื่อสารแบรนด์อย่างมืออาชีพ' : 'Create high-quality digital designs <br class="ipad-pro-hidden-br"> communicating your brand professionally', 'icon' => asset_url('images/about_10.svg')]
+                ['title' => getCurrentLang() === 'th' ? 'พัฒนาระบบซอฟต์แวร์' : 'Software Development', 'desc' => getCurrentLang() === 'th' ? 'ออกแบบและพัฒนาระบบที่ตอบโจทย์ความต้องการ <br class="ipad-pro-hidden-br ipad-air-hidden-br"> เฉพาะขององค์กร' : 'Design and develop systems tailored to <br class="ipad-pro-hidden-br ipad-air-hidden-br"> your organization\'s specific needs', 'icon' => asset_url('images/about_5.svg')],
+                ['title' => getCurrentLang() === 'th' ? 'ระบบสำหรับองค์กร' : 'Enterprise Systems', 'desc' => getCurrentLang() === 'th' ? 'วางโครงสร้างระบบองค์กรที่แข็งแกร่ง <br class="ipad-pro-hidden-br ipad-air-hidden-br"> รองรับการทำงานและประสิทธิภาพที่เพิ่มขึ้น' : 'Build strong enterprise system structures <br class="ipad-pro-hidden-br ipad-air-hidden-br"> supporting increased operations and efficiency', 'icon' => asset_url('images/about_6.svg')],
+                ['title' => getCurrentLang() === 'th' ? 'การตลาดออนไลน์' : 'Online Marketing', 'desc' => getCurrentLang() === 'th' ? 'วางกลยุทธ์การตลาดออนไลน์ครบวงจร <br class="ipad-pro-hidden-br ipad-air-hidden-br"> เพิ่มการมองเห็นและสร้างโอกาสทางธุรกิจ' : 'Plan comprehensive online marketing strategies <br class="ipad-pro-hidden-br ipad-air-hidden-br"> increasing visibility and business opportunities', 'icon' => asset_url('images/about_7.svg')],
+                ['title' => getCurrentLang() === 'th' ? 'เว็บไซต์และแอปพลิเคชัน' : 'Websites & Applications', 'desc' => getCurrentLang() === 'th' ? 'พัฒนาเว็บไซต์และแอปพลิเคชันที่สวยงาม <br class="ipad-pro-hidden-br ipad-air-hidden-br"> ใช้งานง่าย รองรับทุกอุปกรณ์' : 'Develop beautiful, user-friendly websites <br class="ipad-pro-hidden-br ipad-air-hidden-br"> and applications supporting all devices', 'icon' => asset_url('images/about_8.svg')],
+                ['title' => getCurrentLang() === 'th' ? 'AI Agent และระบบอัตโนมัติ' : 'AI Agent & Automation', 'desc' => getCurrentLang() === 'th' ? 'ผสานพลัง AI และระบบอัตโนมัติ <br class="ipad-pro-hidden-br ipad-air-hidden-br"> เพื่อเพิ่มประสิทธิภาพและลดต้นทุนการทำงาน' : 'Integrate AI power and automation <br class="ipad-pro-hidden-br ipad-air-hidden-br"> to increase efficiency and reduce costs', 'icon' => asset_url('images/about_9.svg')],
+                ['title' => getCurrentLang() === 'th' ? 'งานออกแบบดิจิทัล' : 'Digital Design', 'desc' => getCurrentLang() === 'th' ? 'สร้างสรรค์งานออกแบบดิจิทัลคุณภาพสูง <br class="ipad-pro-hidden-br ipad-air-hidden-br"> สื่อสารแบรนด์อย่างมืออาชีพ' : 'Create high-quality digital designs <br class="ipad-pro-hidden-br ipad-air-hidden-br"> communicating your brand professionally', 'icon' => asset_url('images/about_10.svg')]
             ];
             ?>
             <?php foreach ($services as $item): ?>
                 <div class="gsap-scroll-card w-[85vw] md:w-auto shrink-0 snap-center bg-white rounded-2xl p-8 border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:-translate-y-1 hover:shadow-lg transition-all duration-300 group cursor-pointer hover:bg-primary opacity-0 translate-y-10 desktop-services-card">
-                    <div class="w-12 h-12 mb-6 group-hover:scale-110 transition-transform desktop-services-icon">
+                    <div class="w-12 h-12 mb-6 group-hover:scale-110 transition-transform desktop-services-icon ipad-air-services-icon">
                         <img src="<?= e($item['icon']) ?>" alt="<?= e($item['title']) ?>" class="w-full h-full object-contain">
                     </div>
-                    <h3 class="text-dark font-bold text-lg mb-3 group-hover:text-white transition-colors desktop-services-h3 ipad-pro-services-h3">
+                    <h3 class="text-dark font-bold text-lg mb-3 group-hover:text-white transition-colors desktop-services-h3 ipad-pro-services-h3 ipad-air-services-h3">
                         <?= e($item['title']) ?>
                     </h3>
-                    <p class="text-slate-500 text-md leading-relaxed group-hover:text-white transition-colors desktop-services-p ipad-pro-services-p">
+                    <p class="text-slate-500 text-md leading-relaxed group-hover:text-white transition-colors desktop-services-p ipad-pro-services-p ipad-air-services-p">
                         <?= $item['desc'] ?>
                     </p>
                 </div>

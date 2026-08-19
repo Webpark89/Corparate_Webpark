@@ -1625,6 +1625,10 @@ h1,
   grid-column: span 8 / span 8;
 }
 
+.col-span-2 {
+  grid-column: span 2 / span 2;
+}
+
 .m-0 {
   margin: 0px;
 }

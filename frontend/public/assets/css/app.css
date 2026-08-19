@@ -403,8 +403,3 @@
     mask-image: linear-gradient(to right, transparent, black);
   }
 }
-@media (min-width: 1024px) and (max-width: 1279px) {
-    .ipad-pro-ml-0 {
-        margin-left: 0 !important;
-    }
-}
