@@ -647,7 +647,6 @@ $totalReviews = count($reviews);
                     <?= e(getCurrentLang() === 'th' ? 'เสียงจากลูกค้าของเรา' : 'Testimonials') ?>
                 </h2>
             </div>
-            <?php endif; ?>
             <style>
                 .pause-on-hover:hover {
                     animation-play-state: paused !important;
