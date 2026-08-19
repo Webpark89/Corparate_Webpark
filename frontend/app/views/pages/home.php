@@ -890,5 +890,40 @@ document.addEventListener('DOMContentLoaded', function () {
     revealOnScroll(".gsap-home-portfolio-card", { stagger: 0.1 });
     // 4. Articles Section
     revealOnScroll(".gsap-home-article-card", { stagger: 0.08 });
+    // 5. Mobile Stat Cards + Count-up ตัวเลข (120+ / 15+ / 50+)
+    gsap.utils.toArray(".gsap-home-stat-card").forEach((card) => {
+        const countEl = card.querySelector(".stat-count");
+        const target = countEl ? parseInt(countEl.getAttribute("data-target"), 10) || 0 : 0;
+        if (prefersReducedMotion) {
+            gsap.set(card, { y: 0, opacity: 1 });
+            if (countEl) countEl.textContent = target;
+            return;
+        }
+        const cardTimeline = gsap.timeline({
+            scrollTrigger: {
+                trigger: card,
+                start: "top 85%",
+                toggleActions: "play none none reverse"
+            }
+        });
+        cardTimeline.to(card, {
+            y: 0,
+            opacity: 1,
+            duration: 0.6,
+            ease: "power2.out"
+        });
+        if (countEl) {
+            const counter = { val: 0 };
+            cardTimeline.to(counter, {
+                val: target,
+                duration: 1.4,
+                ease: "power1.out",
+                snap: { val: 1 },
+                onUpdate: () => {
+                    countEl.textContent = Math.round(counter.val);
+                }
+            }, "-=0.3");
+        }
+    });
 });
 </script>
