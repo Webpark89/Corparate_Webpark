@@ -1,12 +1,9 @@
 <?php
-
 declare(strict_types=1);
-
 /**
  * English language translation dictionary.
  * Auto-generated from lang_en.json — keep both in sync.
  */
-
 return [
     'common' => [
         'nav_home' => 'Home',
