@@ -12,12 +12,14 @@ class Database
     public static function conn(): PDO
     {
         if (self::$instance === null) {
+            $port = defined('DB_PORT') ? (string) DB_PORT : '3306';
+            $charset = defined('DB_CHARSET') ? (string) DB_CHARSET : 'utf8mb4';
             $dsn = sprintf(
                 'mysql:host=%s;port=%s;dbname=%s;charset=%s',
-                DB_HOST,
-                DB_PORT,
-                DB_NAME,
-                DB_CHARSET
+                defined('DB_HOST') ? DB_HOST : '127.0.0.1',
+                $port,
+                defined('DB_NAME') ? DB_NAME : 'corparate_webpark',
+                $charset
             );
             try {
                 self::$instance = new PDO($dsn, DB_USER, DB_PASS, [
