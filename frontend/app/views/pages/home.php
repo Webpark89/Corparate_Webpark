@@ -532,28 +532,28 @@ $totalReviews = count($reviews);
             <div class="lg:hidden mb-12">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="bg-white rounded-2xl shadow-sm hover:shadow-md transition-shadow p-5 flex flex-row items-center justify-start gap-5 border border-slate-100">
-                        <img src="/Corparate_Webpark/frontend/public/assets/images/Capa_2.svg" alt="120+ องค์กรชั้นนำ" class="w-20 h-20 object-contain flex-shrink-0" />
+                        <img src="<?= e(asset_url('images/Capa_2.svg')) ?>" alt="120+ องค์กรชั้นนำ" class="w-20 h-20 object-contain flex-shrink-0" />
                         <div class="flex flex-col text-left">
                             <h3 class="text-2xl font-black text-blue-600 mb-1 tracking-tight">120+ <span class="text-xl"><?= e(getCurrentLang() === 'th' ? 'องค์กรชั้นนำ' : 'Top Orgs') ?></span></h3>
                             <p class="text-slate-600 text-sm font-medium"><?= e(getCurrentLang() === 'th' ? 'ที่ไว้วางใจ Webpark' : 'Trust Webpark') ?></p>
                         </div>
                     </div>
                     <div class="bg-white rounded-2xl shadow-sm hover:shadow-md transition-shadow p-5 flex flex-row items-center justify-start gap-5 border border-slate-100">
-                        <img src="/Corparate_Webpark/frontend/public/assets/images/Capa_1.svg" alt="15+ ปี" class="w-20 h-20 object-contain flex-shrink-0" />
+                        <img src="<?= e(asset_url('images/Capa_1.svg')) ?>" alt="15+ ปี" class="w-20 h-20 object-contain flex-shrink-0" />
                         <div class="flex flex-col text-left">
                             <h3 class="text-2xl font-black text-blue-600 mb-1 tracking-tight">15+ <span class="text-xl"><?= e(getCurrentLang() === 'th' ? 'ปี' : 'Years') ?></span></h3>
                             <p class="text-slate-600 text-sm font-medium"><?= e(getCurrentLang() === 'th' ? 'แห่งประสบการณ์ ด้านเทคโนโลยี' : 'Of Technology Experience') ?></p>
                         </div>
                     </div>
                     <div class="bg-white rounded-2xl shadow-sm hover:shadow-md transition-shadow p-5 flex flex-row items-center justify-start gap-5 border border-slate-100">
-                        <img src="/Corparate_Webpark/frontend/public/assets/images/Capa_3.svg" alt="50+" class="w-20 h-20 object-contain flex-shrink-0" />
+                        <img src="<?= e(asset_url('images/Capa_3.svg')) ?>" alt="50+" class="w-20 h-20 object-contain flex-shrink-0" />
                         <div class="flex flex-col text-left">
                             <h3 class="text-2xl font-black text-blue-600 mb-1 tracking-tight decoration-blue-500">50+</h3>
                             <p class="text-slate-600 text-sm font-medium mt-1"><?= e(getCurrentLang() === 'th' ? 'ระบบและโปรเจกต์ ที่ส่งมอบ' : 'Systems & Projects Delivered') ?></p>
                         </div>
                     </div>
                     <div class="bg-white rounded-2xl shadow-sm hover:shadow-md transition-shadow p-5 flex flex-row items-center justify-start gap-5 border border-slate-100">
-                        <img src="/Corparate_Webpark/frontend/public/assets/images/Capa_4.svg" alt="ครบวงจร" class="w-20 h-20 object-contain flex-shrink-0" />
+                        <img src="<?= e(asset_url('images/Capa_4.svg')) ?>" alt="ครบวงจร" class="w-20 h-20 object-contain flex-shrink-0" />
                         <div class="flex flex-col text-left">
                             <h3 class="text-2xl font-black text-blue-600 mb-1 tracking-tight"><?= e(getCurrentLang() === 'th' ? 'ครบวงจร' : 'End-to-End') ?></h3>
                             <p class="text-slate-600 text-sm font-medium"><?= e(getCurrentLang() === 'th' ? 'ตั้งแต่วางแผนพัฒนา ถึงดูแลหลังบ้าน' : 'From Planning to Maintenance') ?></p>
