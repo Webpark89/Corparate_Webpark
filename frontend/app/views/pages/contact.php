@@ -42,7 +42,7 @@ $form = $form ?? [];
     </div>
     <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 pt-12 pb-10 lg:pt-28 lg:pb-32 relative z-10 desktop-wide-container-contact">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-            <div class="max-w-2xl px-4 md:px-0 lg:ml-12 xl:ml-24">
+            <div class="max-w-2xl px-4 md:px-0 lg:ml-12 ipad-pro-ml-0 xl:ml-24">
                 <nav aria-label="Breadcrumb" class="hidden md:block animate-fade-up delay-100 mb-6">
                     <ol class="inline-flex items-center text-sm md:text-base font-medium text-slate-500">
                         <li>

@@ -66,6 +66,123 @@ $contactAddress = $company['contact']['address'] ?? '525/89 ซอยลาด�
         transform: scale(1.15);
         will-change: transform;
     }
+    @media (min-width: 1025px) {
+        .hero-parallax-img {
+            transform: scale(1.6) translate(-2%, -5%) !important;
+        }
+    }
+    @media (min-width: 1536px) {
+        .hero-parallax-img {
+            transform: scale(1.8) translate(-2%, -2%) !important;
+        }
+    }
+    
+    /* iPad Pro (1024px) Overrides */
+    @media (min-width: 1024px) and (max-width: 1024px) {
+        .ipad-pro-about-process-header {
+            flex-direction: row !important;
+            align-items: baseline !important;
+            gap: 0.75rem !important;
+        }
+        .ipad-pro-about-process-step { font-size: 1.75rem !important; }
+        .ipad-pro-about-process-title { font-size: 1.5rem !important; }
+        .ipad-pro-about-process-desc { font-size: 1.125rem !important; line-height: 1.6 !important; }
+    }
+
+    /* iPad Air (820px) Overrides */
+    @media (min-width: 820px) and (max-width: 820px) {
+        .ipad-air-about-process-header {
+            flex-direction: row !important;
+            align-items: baseline !important;
+            gap: 0.75rem !important;
+        }
+        .ipad-air-about-process-step { font-size: 1.75rem !important; }
+        .ipad-air-about-process-title { font-size: 1.5rem !important; }
+        .ipad-air-about-process-desc { font-size: 1.125rem !important; line-height: 1.6 !important; }
+
+        /* Comprehensive Services section for iPad Air */
+        .ipad-air-services-h3 { font-size: 1.35rem !important; margin-bottom: 0.75rem !important; }
+        .ipad-air-services-p { font-size: 1rem !important; line-height: 1.6 !important; }
+        .ipad-air-services-icon { width: 3.5rem !important; height: 3.5rem !important; }
+        .ipad-air-hidden-br { display: none !important; }
+    }
+    
+    /* Mobile (< 760px) Overrides */
+    @media (max-width: 759px) {
+        .mobile-about-process-title {
+            white-space: nowrap !important;
+            font-size: 1rem !important;
+            letter-spacing: -0.3px !important;
+        }
+    }
+    
+    /* iPad Mini (768px - 819px) Overrides */
+    @media (min-width: 760px) and (max-width: 819px) {
+        .ipad-mini-about-process-desc { font-size: 1.05rem !important; line-height: 1.6 !important; }
+        .ipad-mini-services-desc { font-size: 1.15rem !important; line-height: 1.7 !important; }
+    }
+
+    /* Custom Layout for iPad Pro Portrait (1024px - 1279px) */
+    @media (min-width: 1024px) and (max-width: 1279px) {
+        .ipad-pro-about-hero-h1 {
+            font-size: 3.5rem !important; /* Scale down to take less background space */
+            line-height: 1.1 !important;
+        }
+        .ipad-pro-about-hero-span1 {
+            white-space: nowrap !important; /* Force to stay on one line */
+        }
+        .ipad-pro-about-hero-p {
+            max-width: 90% !important; /* Adjust wrapping */
+            padding-right: 2rem !important; /* Prevent widows */
+        }
+        
+        .ipad-pro-about-intro-p {
+            font-size: 1.25rem !important;
+            line-height: 2rem !important;
+        }
+        
+        /* Increase font size for Our Approach on iPad Pro */
+        .ipad-pro-about-process-header {
+            flex-direction: row !important;
+            align-items: center !important;
+            gap: 1rem !important;
+            margin-bottom: 0.5rem !important;
+        }
+        .ipad-pro-about-process-step {
+            font-size: 1.75rem !important;
+            margin-bottom: 0 !important;
+        }
+        .ipad-pro-about-process-title {
+            font-size: 1.5rem !important;
+            margin-bottom: 0 !important;
+        }
+        .ipad-pro-about-process-desc {
+            font-size: 1.25rem !important;
+            line-height: 2rem !important;
+        }
+        .ipad-pro-concept-p {
+            font-size: 1.375rem !important;
+            line-height: 2.25rem !important;
+            max-width: 100% !important;
+        }
+        .ipad-pro-services-h3 {
+            font-size: 1.5rem !important;
+        }
+        .ipad-pro-services-p {
+            font-size: 1.25rem !important;
+            line-height: 2rem !important;
+        }
+        .ipad-pro-services-section {
+            padding-bottom: 2rem !important;
+        }
+        .ipad-pro-stats-section {
+            padding-top: 1rem !important;
+        }
+        /* Hide specific br tags on iPad Pro to fix word wrapping */
+        .ipad-pro-hidden-br {
+            display: none !important;
+        }
+    }
 
     /* Accessibility: เคารพการตั้งค่า Reduce Motion ของผู้ใช้ ลด/ปิด animation แบบ CSS ทั้งหมดในหน้านี้ */
     @media (prefers-reduced-motion: reduce) {
@@ -95,8 +212,7 @@ $contactAddress = $company['contact']['address'] ?? '525/89 ซอยลาด�
         </div>
         
         <div class="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-12 lg:gap-20 items-center relative z-10">
-            
-            <div class="max-w-2xl">
+            <div class="max-w-2xl lg:ml-12 ipad-pro-ml-0 xl:ml-24 desktop-about-hero-content-wrapper">
                 <nav aria-label="Breadcrumb" class="animate-fade-up delay-100 mb-6 hidden sm:block">
                     <ol class="inline-flex items-center text-sm md:text-base font-medium text-slate-500">
                         <li>
@@ -163,10 +279,10 @@ $contactAddress = $company['contact']['address'] ?? '525/89 ซอยลาด�
                 <span class="text-xl leading-relaxed mb-8 block" style="color: #043B94;">
                     <?= getCurrentLang() === 'th' ? 'เรา คือ WEBPARK<br>ผู้นำด้านโซลูชันธุรกิจดิจิทัล' : 'We are WEBPARK<br>Leaders in Digital Business Solutions' ?>
                 </span>
-                <p class="text-slate-600 text-base md:text-lg leading-relaxed mb-6">
+                <p class="text-slate-500 md:text-slate-600 text-lg md:text-lg xl:text-xl leading-relaxed mb-6 ipad-pro-about-intro-p">
                     <?= getCurrentLang() === 'th' ? 'WEBPARK ก่อตั้งขึ้นด้วยวิสัยทัศน์ที่มุ่งมั่นในการยกระดับศักยภาพธุรกิจไทยผ่านเทคโนโลยีและนวัตกรรมดิจิทัล เราเชี่ยวชาญในการพัฒนาระบบ ERP / ERM แพลตฟอร์มดิจิทัล และโซลูชันที่ตอบโจทย์ทุกความต้องการขององค์กรในทุกอุตสาหกรรม' : 'WEBPARK was founded with a strong vision to elevate the potential of Thai businesses through technology and digital innovation. We specialize in developing ERP / ERM systems, digital platforms, and solutions that meet all organizational needs across industries.' ?>
                 </p>
-                <p class="text-slate-600 text-base md:text-lg leading-relaxed mb-10">
+                <p class="text-slate-500 md:text-slate-600 text-lg md:text-lg xl:text-xl leading-relaxed mb-4 md:mb-10 ipad-pro-about-intro-p">
                     <?= getCurrentLang() === 'th' ? 'ด้วยทีมงานผู้เชี่ยวชาญ ประสบการณ์ยาวนาน และความเข้าใจธุรกิจอย่างลึกซึ้ง เราพร้อมเป็นพาร์ทเนอร์ที่เชื่อถือได้ เพื่อช่วยให้องค์กรของคุณก้าวสู่อนาคตได้อย่างมั่นคงและยั่งยืน' : 'With our team of experts, extensive experience, and deep business understanding, we are ready to be your trusted partner to help your organization advance into the future steadily and sustainably.' ?>
                 </p>
                 
@@ -264,8 +380,8 @@ $contactAddress = $company['contact']['address'] ?? '525/89 ซอยลาด�
                 <h2 class="text-3xl md:text-4xl font-bold leading-tight mb-6" style="color: #054FC5;">
                     <?= getCurrentLang() === 'th' ? 'แนวคิดในการทำงานของเรา' : 'Our Approach' ?>
                 </h2>
-                <p class="text-slate-600 text-base md:text-lg leading-relaxed max-w-md">
-                    <?= getCurrentLang() === 'th' ? 'เราเชื่อว่าการพัฒนาระบบและโซลูชันดิจิทัลที่ดี ไม่ได้เริ่มจากเทคโนโลยีเพียงอย่างเดียว แต่เริ่มจากความเข้าใจธุรกิจของคุณ เราทำงานแบบพาร์ทเนอร์ร่วมคิด ร่วมสร้าง เพื่อให้ทุกโซลูชันที่เราส่งมอบ สามารถใช้งานได้ สร้างคุณค่า และช่วยให้ธุรกิจของคุณเติบโตได้อย่างยั่งยืน' : 'We believe that developing great digital systems and solutions doesn\'t start with technology alone, but with understanding your business. We work as a partner to co-think and co-create, ensuring every solution we deliver is practical, creates value, and helps your business grow sustainably.' ?>
+                <p class="text-left md:text-center xl:text-left text-slate-600 text-lg md:text-lg leading-relaxed max-w-2xl xl:max-w-md mx-0 md:mx-auto xl:mx-0 desktop-concept-p ipad-pro-concept-p">
+                    <?= getCurrentLang() === 'th' ? 'เราเชื่อว่าการพัฒนาระบบและโซลูชันดิจิทัลที่ดี <br class="md:hidden"> ไม่ได้เริ่มจากเทคโนโลยีเพียงอย่างเดียว <br class="md:hidden"> แต่เริ่มจากความเข้าใจธุรกิจของคุณ <br class="md:hidden"> เราทำงานแบบพาร์ทเนอร์ร่วมคิด ร่วมสร้าง <br class="md:hidden"> เพื่อให้ทุกโซลูชันที่เราส่งมอบ <span class="whitespace-nowrap">สามารถใช้งานได้</span> <br class="md:hidden"> <span class="whitespace-nowrap">สร้างคุณค่า</span> และช่วยให้ธุรกิจของคุณ <br class="md:hidden"> เติบโตได้อย่างยั่งยืน' : 'We believe that developing great digital systems and solutions doesn\'t start with technology alone, but with understanding your business. We work as a partner to co-think and co-create, ensuring every solution we deliver is practical, creates value, and helps your business grow sustainably.' ?>
                 </p>
             </div>
 
@@ -307,11 +423,12 @@ $contactAddress = $company['contact']['address'] ?? '525/89 ซอยลาด�
                                  class="w-12 h-12 object-contain"
                                  onerror="this.onerror=null;this.style.display='none'">
                         </div>
-                        <div class="flex flex-col gap-1">
-                            <span class="text-xl font-extrabold" style="color: #043B94;"><?= e($item['step']) ?></span>
-                            <h4 class="text-dark font-bold text-base group-hover:text-primary transition-colors"><?= e($item['title']) ?></h4>
-                            
-                            <p class="text-slate-500 text-sm leading-relaxed"><?= $item['desc'] ?></p>
+                        <div class="flex flex-col gap-1 desktop-about-process-content">
+                            <div class="flex flex-row items-center gap-2 desktop-about-process-header ipad-pro-about-process-header ipad-air-about-process-header">
+                                <span class="text-xl font-extrabold desktop-about-process-step ipad-pro-about-process-step ipad-air-about-process-step" style="color: #043B94;"><?= e($item['step']) ?></span>
+                                <h4 class="text-dark font-bold text-lg md:text-base group-hover:text-primary transition-colors desktop-about-process-title ipad-pro-about-process-title ipad-air-about-process-title mobile-about-process-title"><?= e($item['title']) ?></h4>
+                            </div>
+                            <p class="text-slate-500 text-base md:text-sm leading-relaxed desktop-about-process-desc ipad-pro-about-process-desc ipad-air-about-process-desc ipad-mini-about-process-desc"><?= $item['desc'] ?></p>
                         </div>
                     </div>
                 <?php endforeach; ?>
@@ -321,42 +438,38 @@ $contactAddress = $company['contact']['address'] ?? '525/89 ซอยลาด�
     </div>
 </section>
 
-<section id="about-services-scroll" class="bg-[#f8fafc] pt-8 pb-8 lg:pt-24 lg:pb-16 font-sans">
-    <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-6"> 
-        
+<section id="about-services-scroll" class="bg-[#f8fafc] pt-8 pb-8 lg:pt-24 lg:pb-16 font-sans ipad-pro-services-section">
+    <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-6 desktop-wide-container"> 
         <div class="mb-2">
             <h2 class="text-3xl md:text-4xl font-bold text-primary mb-4">
                 <?= getCurrentLang() === 'th' ? 'บริการของเราครอบคลุมทุกด้าน' : 'Comprehensive Services Coverage' ?>
             </h2>
         </div>
-        <p class="mb-3 text-sm md:text-base leading-relaxed text-slate-600 max-w-3xl">
+        <p class="mb-3 text-sm md:text-base leading-relaxed text-slate-600 max-w-3xl ipad-mini-services-desc">
             <?= getCurrentLang() === 'th' ? 'ระบบที่ช่วยพัฒนาโซลูชันดิจิทัลที่ช่วยให้ธุรกิจเติบโตอย่างยั่งยืน' : 'Systems that help develop digital solutions to help your business grow sustainably.' ?>
         </p>
 
         <div id="service-scroll-container" class="flex overflow-x-auto snap-x snap-mandatory scrollbar-none gap-6 pb-6 -mx-4 px-4 md:mx-0 md:px-0 md:grid md:grid-cols-2 lg:grid-cols-3 md:overflow-visible md:snap-none">
             <?php
             $services = [
-                ['title' => getCurrentLang() === 'th' ? 'พัฒนาระบบซอฟต์แวร์' : 'Software Development', 'desc' => getCurrentLang() === 'th' ? 'ออกแบบและพัฒนาระบบที่ตอบโจทย์ความต้องการ<br>เฉพาะขององค์กร' : 'Design and develop systems tailored to<br>your organization\'s specific needs', 'icon' => asset_url('images/about_5.svg')],
-                ['title' => getCurrentLang() === 'th' ? 'ระบบสำหรับองค์กร' : 'Enterprise Systems', 'desc' => getCurrentLang() === 'th' ? 'วางโครงสร้างระบบองค์กรที่แข็งแกร่ง<br>รองรับการทำงานและประสิทธิภาพที่เพิ่มขึ้น' : 'Build strong enterprise system structures<br>supporting increased operations and efficiency', 'icon' => asset_url('images/about_6.svg')],
-                ['title' => getCurrentLang() === 'th' ? 'การตลาดออนไลน์' : 'Online Marketing', 'desc' => getCurrentLang() === 'th' ? 'วางกลยุทธ์การตลาดออนไลน์ครบวงจร<br>เพิ่มการมองเห็นและสร้างโอกาสทางธุรกิจ' : 'Plan comprehensive online marketing strategies<br>increasing visibility and business opportunities', 'icon' => asset_url('images/about_7.svg')],
-                ['title' => getCurrentLang() === 'th' ? 'เว็บไซต์และแอปพลิเคชัน' : 'Websites & Applications', 'desc' => getCurrentLang() === 'th' ? 'พัฒนาเว็บไซต์และแอปพลิเคชันที่สวยงาม<br>ใช้งานง่าย รองรับทุกอุปกรณ์' : 'Develop beautiful, user-friendly websites<br>and applications supporting all devices', 'icon' => asset_url('images/about_8.svg')],
-                ['title' => getCurrentLang() === 'th' ? 'AI Agent และระบบอัตโนมัติ' : 'AI Agent & Automation', 'desc' => getCurrentLang() === 'th' ? 'ผสานพลัง AI และระบบอัตโนมัติ<br>เพื่อเพิ่มประสิทธิภาพและลดต้นทุนการทำงาน' : 'Integrate AI power and automation<br>to increase efficiency and reduce costs', 'icon' => asset_url('images/about_9.svg')],
-                ['title' => getCurrentLang() === 'th' ? 'งานออกแบบดิจิทัล' : 'Digital Design', 'desc' => getCurrentLang() === 'th' ? 'สร้างสรรค์งานออกแบบดิจิทัลคุณภาพสูง<br>สื่อสารแบรนด์อย่างมืออาชีพ' : 'Create high-quality digital designs<br>communicating your brand professionally', 'icon' => asset_url('images/about_10.svg')]
+                ['title' => getCurrentLang() === 'th' ? 'พัฒนาระบบซอฟต์แวร์' : 'Software Development', 'desc' => getCurrentLang() === 'th' ? 'ออกแบบและพัฒนาระบบที่ตอบโจทย์ความต้องการ <br class="ipad-pro-hidden-br ipad-air-hidden-br"> เฉพาะขององค์กร' : 'Design and develop systems tailored to <br class="ipad-pro-hidden-br ipad-air-hidden-br"> your organization\'s specific needs', 'icon' => asset_url('images/about_5.svg')],
+                ['title' => getCurrentLang() === 'th' ? 'ระบบสำหรับองค์กร' : 'Enterprise Systems', 'desc' => getCurrentLang() === 'th' ? 'วางโครงสร้างระบบองค์กรที่แข็งแกร่ง <br class="ipad-pro-hidden-br ipad-air-hidden-br"> รองรับการทำงานและประสิทธิภาพที่เพิ่มขึ้น' : 'Build strong enterprise system structures <br class="ipad-pro-hidden-br ipad-air-hidden-br"> supporting increased operations and efficiency', 'icon' => asset_url('images/about_6.svg')],
+                ['title' => getCurrentLang() === 'th' ? 'การตลาดออนไลน์' : 'Online Marketing', 'desc' => getCurrentLang() === 'th' ? 'วางกลยุทธ์การตลาดออนไลน์ครบวงจร <br class="ipad-pro-hidden-br ipad-air-hidden-br"> เพิ่มการมองเห็นและสร้างโอกาสทางธุรกิจ' : 'Plan comprehensive online marketing strategies <br class="ipad-pro-hidden-br ipad-air-hidden-br"> increasing visibility and business opportunities', 'icon' => asset_url('images/about_7.svg')],
+                ['title' => getCurrentLang() === 'th' ? 'เว็บไซต์และแอปพลิเคชัน' : 'Websites & Applications', 'desc' => getCurrentLang() === 'th' ? 'พัฒนาเว็บไซต์และแอปพลิเคชันที่สวยงาม <br class="ipad-pro-hidden-br ipad-air-hidden-br"> ใช้งานง่าย รองรับทุกอุปกรณ์' : 'Develop beautiful, user-friendly websites <br class="ipad-pro-hidden-br ipad-air-hidden-br"> and applications supporting all devices', 'icon' => asset_url('images/about_8.svg')],
+                ['title' => getCurrentLang() === 'th' ? 'AI Agent และระบบอัตโนมัติ' : 'AI Agent & Automation', 'desc' => getCurrentLang() === 'th' ? 'ผสานพลัง AI และระบบอัตโนมัติ <br class="ipad-pro-hidden-br ipad-air-hidden-br"> เพื่อเพิ่มประสิทธิภาพและลดต้นทุนการทำงาน' : 'Integrate AI power and automation <br class="ipad-pro-hidden-br ipad-air-hidden-br"> to increase efficiency and reduce costs', 'icon' => asset_url('images/about_9.svg')],
+                ['title' => getCurrentLang() === 'th' ? 'งานออกแบบดิจิทัล' : 'Digital Design', 'desc' => getCurrentLang() === 'th' ? 'สร้างสรรค์งานออกแบบดิจิทัลคุณภาพสูง <br class="ipad-pro-hidden-br ipad-air-hidden-br"> สื่อสารแบรนด์อย่างมืออาชีพ' : 'Create high-quality digital designs <br class="ipad-pro-hidden-br ipad-air-hidden-br"> communicating your brand professionally', 'icon' => asset_url('images/about_10.svg')]
             ];
             ?>
             
             <?php foreach ($services as $item): ?>
-                <div class="gsap-scroll-card w-[85vw] md:w-auto shrink-0 snap-center bg-white rounded-2xl p-8 border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:-translate-y-1 hover:shadow-lg transition-all duration-300 group cursor-pointer hover:bg-primary opacity-0 translate-y-10">
-                    
-                    <div class="w-12 h-12 mb-6 group-hover:scale-110 transition-transform">
+                <div class="gsap-scroll-card w-[85vw] md:w-auto shrink-0 snap-center bg-white rounded-2xl p-8 border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:-translate-y-1 hover:shadow-lg transition-all duration-300 group cursor-pointer hover:bg-primary opacity-0 translate-y-10 desktop-services-card">
+                    <div class="w-12 h-12 mb-6 group-hover:scale-110 transition-transform desktop-services-icon ipad-air-services-icon">
                         <img src="<?= e($item['icon']) ?>" alt="<?= e($item['title']) ?>" class="w-full h-full object-contain">
                     </div>
-                    
-                    <h3 class="text-dark font-bold text-lg mb-3 group-hover:text-white transition-colors">
+                    <h3 class="text-dark font-bold text-lg mb-3 group-hover:text-white transition-colors desktop-services-h3 ipad-pro-services-h3 ipad-air-services-h3">
                         <?= e($item['title']) ?>
                     </h3>
-                    
-                    <p class="text-slate-500 text-md leading-relaxed group-hover:text-white transition-colors">
+                    <p class="text-slate-500 text-md leading-relaxed group-hover:text-white transition-colors desktop-services-p ipad-pro-services-p ipad-air-services-p">
                         <?= $item['desc'] ?>
                     </p>
                     
@@ -424,9 +537,8 @@ $contactAddress = $company['contact']['address'] ?? '525/89 ซอยลาด�
 
     </div>
 </section>
-
-<section class="bg-slate-50 pt-8 pb-8 lg:pt-16 lg:pb-20 font-sans mb-4">
-    <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-6"> 
+<section class="bg-slate-50 pt-8 pb-8 lg:pt-16 lg:pb-20 font-sans mb-4 ipad-pro-stats-section">
+    <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-6 desktop-wide-container"> 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-6">
 
             <div class="gsap-stat-card bg-white rounded-2xl shadow-sm hover:shadow-md transition-shadow p-6 md:p-8 flex flex-row items-center justify-start gap-6 border border-slate-100 opacity-0 translate-y-10">

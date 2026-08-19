@@ -74,7 +74,7 @@ if (!empty($partners) && is_array($partners)) {
         <!-- Mobile Gradient Mask to prevent text overlapping presenter image -->
         <div class="absolute inset-0 bg-gradient-to-r from-white via-white/90 to-white/20 md:hidden z-0 pointer-events-none"></div>
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:pb-12 lg:gap-10 items-center relative z-10">
-            <div class="max-w-3xl relative z-10 text-left mx-0 lg:ml-12 xl:ml-24 flex flex-col items-start w-full">
+            <div class="max-w-3xl relative z-10 text-left mx-0 lg:ml-12 ipad-pro-ml-0 xl:ml-24 flex flex-col items-start w-full">
                 <div class="animate-entrance-up delay-100 inline-flex items-center justify-center gap-2 md:gap-2.5 px-4 py-2 md:px-6 md:py-2.5 rounded-full border border-blue-600 mb-6 shadow-sm bg-white/40">
                     <span class="text-blue-600 font-black text-base md:text-xl leading-none flex items-center shrink-0">•</span>
                     <span class="text-[12px] sm:text-[13px] md:text-base lg:text-lg font-bold text-blue-600 tracking-wide whitespace-nowrap leading-none">
@@ -85,15 +85,15 @@ if (!empty($partners) && is_array($partners)) {
                     <span class="bg-gradient-to-r from-[#898F98] to-[#000208] bg-clip-text text-transparent inline-block py-2 md:py-2.5">WEBPARK</span><br>
                     <span class="bg-gradient-to-r from-[#003380] to-[#0055ff] bg-clip-text text-transparent inline-block py-1 md:py-2 -mt-1 md:-mt-2 lg:-mt-2">COMPANY</span>
                 </h1>
-                <p class="animate-entrance-up delay-300 mt-5 md:mt-6 text-blue-900 md:text-[#0b1b42] text-base md:text-lg leading-relaxed max-w-lg mx-0 mb-8 md:mb-10 font-bold md:font-semibold w-11/12 sm:w-3/4 md:w-full text-left relative z-20 ipad-pro-hero-desc">
+                <p class="animate-entrance-up delay-300 mt-5 md:mt-6 text-blue-900 md:text-[#0b1b42] text-base md:text-lg leading-relaxed max-w-lg mx-0 mb-8 md:mb-10 font-bold md:font-semibold w-11/12 sm:w-3/4 md:w-full text-left relative z-20 ipad-pro-hero-desc ipad-mini-hero-desc mobile-hero-desc">
                     <span class="md:hidden">
                         <?= getCurrentLang() === 'th' ? 'ผู้ให้บริการพัฒนา Digital Platform<br>และระบบ AI ที่ช่วยให้ธุรกิจไทย<br>ก้าวไปข้างหน้า ด้วยเทคโนโลยี<br>ที่ใช้งานได้จริง' : 'Digital Platform and AI system<br>development provider helping Thai businesses<br>move forward with practical technology.' ?>
                     </span>
                     <span class="hidden md:inline">
-                        <?= getCurrentLang() === 'th' ? 'ผู้ให้บริการพัฒนา Digital Platform และระบบ AI<br>ที่ช่วยให้ธุรกิจไทยก้าวไปข้างหน้าด้วยเทคโนโลยีที่ใช้งานได้จริง' : 'Digital Platform and AI system development provider <br class="ipad-pro-strict-hidden">helping Thai businesses move forward with practical technology.' ?>
+                        <?= getCurrentLang() === 'th' ? 'ผู้ให้บริการพัฒนา Digital Platform<br class="hidden ipad-air-br"> และระบบ AI <br class="ipad-air-hidden">ที่ช่วยให้ธุรกิจไทยก้าวไปข้างหน้า<br class="hidden ipad-pro-strict-inline ipad-air-br ipad-mini-br">ด้วยเทคโนโลยีที่ใช้งานได้จริง' : 'Digital Platform and AI system<br class="hidden ipad-pro-strict-inline"> development provider <br class="ipad-pro-strict-hidden ipad-mini-hidden">helping Thai businesses<br class="hidden ipad-mini-br"> move forward <br class="hidden ipad-air-br">with<br class="hidden ipad-pro-strict-inline"> practical technology.' ?>
                     </span>
                 </p>
-                <div class="animate-entrance-up delay-400 flex flex-col items-start self-start md:self-auto md:flex-row md:justify-start gap-3 md:gap-4">
+                <div class="animate-entrance-up delay-400 flex flex-col items-start self-start md:self-auto md:flex-row md:justify-start gap-3 md:gap-4 ipad-air-hero-btn-container ipad-mini-hero-btn-container">
                     <a href="<?= e(route_url('/services')) ?>" class="inline-flex items-center justify-center gap-2 px-6 py-2.5 md:px-8 md:py-3.5 bg-primary text-white text-sm md:text-base font-semibold rounded-full hover:bg-blue-700 transition-all shadow-md hover:-translate-y-0.5 whitespace-nowrap">
                         <span class="md:hidden"><?= getCurrentLang() === 'th' ? 'ดูบริการของเรา' : 'Our Services' ?></span>
                         <span class="hidden md:inline"><?= getCurrentLang() === 'th' ? 'ปรึกษาผู้เชี่ยวชาญ' : 'Consult an Expert' ?></span>
@@ -125,6 +125,85 @@ if (!empty($partners) && is_array($partners)) {
             @media (min-width: 1536px) {
                 .desktop-hero-woman { top: auto !important; bottom: 0 !important; }
                 .desktop-hero-woman img { height: 720px !important; }
+            }
+            /* iPad Air specific fix for hero text overlapping hand */
+            @media (min-width: 820px) and (max-width: 820px) {
+                .ipad-air-br {
+                    display: initial !important; 
+                }
+                .ipad-air-hidden {
+                    display: none !important;
+                }
+                .ipad-air-about-desc {
+                    padding-right: 2.5rem !important;
+                }
+                
+                /* Hero Buttons Stack for iPad Air */
+                .ipad-air-hero-btn-container {
+                    flex-direction: column !important;
+                    align-items: flex-start !important;
+                }
+                
+                /* Stats Section Font Sizes for iPad Air */
+                .ipad-air-stat-desc { font-size: 1.125rem !important; line-height: 1.5 !important; margin-top: 0.25rem !important; }
+                
+                /* Articles Section Font Sizes for iPad Air */
+                .ipad-air-article-h2 { font-size: 2.25rem !important; line-height: 1.2 !important; }
+                .ipad-air-article-h3 { font-size: 1.5rem !important; line-height: 1.3 !important; }
+                .ipad-air-article-desc { font-size: 1.125rem !important; line-height: 1.6 !important; }
+                .ipad-air-card-title { font-size: 1.35rem !important; line-height: 1.4 !important; }
+                .ipad-air-card-desc { font-size: 1.125rem !important; line-height: 1.6 !important; }
+                .ipad-air-card-link { font-size: 1rem !important; line-height: 1.5 !important; }
+                .ipad-air-card-badge { font-size: 0.875rem !important; padding: 0.375rem 0.75rem !important; }
+
+                /* Our Approach Section for iPad Air */
+                .ipad-air-about-process-header {
+                    flex-direction: row !important;
+                    align-items: baseline !important;
+                    gap: 0.75rem !important;
+                }
+                .ipad-air-about-process-step { font-size: 1.75rem !important; }
+                .ipad-air-about-process-title { font-size: 1.5rem !important; }
+                .ipad-air-about-process-desc { font-size: 1.125rem !important; line-height: 1.6 !important; }
+            }
+            
+            /* Mobile (< 768px) specific fixes */
+            @media (max-width: 767px) {
+                .mobile-hero-desc {
+                    max-width: 62% !important;
+                    width: 62% !important;
+                    font-size: 0.925rem !important;
+                    letter-spacing: -0.3px !important;
+                }
+                .mobile-hidden { display: none !important; }
+                .mobile-br { display: initial !important; }
+            }
+            
+            /* iPad Mini (768px) specific fixes */
+            @media (min-width: 768px) and (max-width: 768px) {
+                .ipad-mini-br {
+                    display: initial !important;
+                }
+                .ipad-mini-hidden {
+                    display: none !important;
+                }
+                .ipad-mini-hero-btn-container {
+                    flex-direction: column !important;
+                    align-items: flex-start !important;
+                }
+                .ipad-mini-hero-desc {
+                    max-width: 60% !important;
+                    width: 60% !important;
+                }
+                
+                /* Articles Section Font Sizes for iPad Mini (reusing classes) */
+                .ipad-air-article-h2 { font-size: 2.25rem !important; line-height: 1.2 !important; }
+                .ipad-air-article-h3 { font-size: 1.5rem !important; line-height: 1.3 !important; }
+                .ipad-air-article-desc { font-size: 1.125rem !important; line-height: 1.6 !important; }
+                .ipad-air-card-title { font-size: 1.35rem !important; line-height: 1.4 !important; }
+                .ipad-air-card-desc { font-size: 1.125rem !important; line-height: 1.6 !important; }
+                .ipad-air-card-link { font-size: 1rem !important; line-height: 1.5 !important; }
+                .ipad-air-card-badge { font-size: 0.875rem !important; padding: 0.375rem 0.75rem !important; }
             }
         </style>
         <div class="animate-entrance-left delay-500 absolute top-auto bottom-0 lg:top-28 lg:bottom-auto right-0 md:right-4 lg:right-8 z-0 pointer-events-none max-w-full transform md:-translate-y-2 flex justify-end mobile-hero-woman desktop-hero-woman">
@@ -161,7 +240,8 @@ if (!empty($partners) && is_array($partners)) {
 /* Strict override for exactly 1024px (iPad Pro portrait) */
 @media (min-width: 1024px) and (max-width: 1024px) {
     .ipad-pro-strict-hidden { display: none !important; }
-    .ipad-pro-hero-desc { font-size: 1.375rem !important; line-height: 2rem !important; width: 600px !important; max-width: 600px !important; }
+    .ipad-pro-strict-inline { display: inline !important; }
+    .ipad-pro-hero-desc { font-size: 1.375rem !important; line-height: 2.25rem !important; width: 520px !important; max-width: 520px !important; padding-right: 0; }
     
     /* iPad Pro (1024px) Font Size Overrides */
     .ipad-pro-font-about-tag { font-size: 1.125rem !important; line-height: 1.75rem !important; }
@@ -204,16 +284,16 @@ if (!empty($partners) && is_array($partners)) {
                                     <h2 class="text-[#043B94] text-xl xl:text-2xl font-bold leading-tight mb-3 transition-colors duration-300 group-hover:text-blue-700 ipad-pro-font-about-h2">
                                         <?= e(t('common.we_are_partner')) ?><br class="hidden lg:inline"><?= e(t('common.in_technology')) ?>
                                     </h2>
-                                    <p class="text-gray-500 text-[0.8rem] md:text-sm leading-relaxed mb-4 ipad-pro-font-desc">
-                                        <?= e(t('common.partner_description')) ?>
-                                    </p>
-                                </div>
-                                <a href="<?= e(route_url('/about')) ?>" class="inline-flex items-center text-primary text-sm font-semibold transition-colors duration-300 group-hover:text-blue-700 w-max mt-auto ipad-pro-font-link">
-                                    <?= e(t('common.cta_read_more')) ?>
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1.5 transition-transform duration-300 ease-out group-hover:translate-x-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
-                                    </svg>
-                                </a>
+                                <p class="text-gray-500 text-[0.8rem] md:text-sm leading-relaxed mb-4 ipad-pro-font-desc ipad-air-about-desc">
+                                    <?= e(t('common.partner_description')) ?>
+                                </p>
+                            </div>
+                            <a href="<?= e(route_url('/about')) ?>" class="inline-flex items-center text-primary text-sm font-semibold transition-colors duration-300 group-hover:text-blue-700 w-max mt-auto ipad-pro-font-link">
+                                <?= e(t('common.cta_read_more')) ?>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1.5 transition-transform duration-300 ease-out group-hover:translate-x-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                                </svg>
+                            </a>
                             </div>
                         </div>
                     </div>
@@ -535,28 +615,28 @@ $totalReviews = count($reviews);
                         <img src="<?= e(asset_url('images/Capa_2.svg')) ?>" alt="120+ องค์กรชั้นนำ" class="w-20 h-20 object-contain flex-shrink-0" />
                         <div class="flex flex-col text-left">
                             <h3 class="text-2xl font-black text-blue-600 mb-1 tracking-tight">120+ <span class="text-xl"><?= e(getCurrentLang() === 'th' ? 'องค์กรชั้นนำ' : 'Top Orgs') ?></span></h3>
-                            <p class="text-slate-600 text-sm font-medium"><?= e(getCurrentLang() === 'th' ? 'ที่ไว้วางใจ Webpark' : 'Trust Webpark') ?></p>
+                            <p class="text-slate-600 text-sm font-medium ipad-air-stat-desc"><?= e(getCurrentLang() === 'th' ? 'ที่ไว้วางใจ Webpark' : 'Trust Webpark') ?></p>
                         </div>
                     </div>
                     <div class="bg-white rounded-2xl shadow-sm hover:shadow-md transition-shadow p-5 flex flex-row items-center justify-start gap-5 border border-slate-100">
                         <img src="<?= e(asset_url('images/Capa_1.svg')) ?>" alt="15+ ปี" class="w-20 h-20 object-contain flex-shrink-0" />
                         <div class="flex flex-col text-left">
                             <h3 class="text-2xl font-black text-blue-600 mb-1 tracking-tight">15+ <span class="text-xl"><?= e(getCurrentLang() === 'th' ? 'ปี' : 'Years') ?></span></h3>
-                            <p class="text-slate-600 text-sm font-medium"><?= e(getCurrentLang() === 'th' ? 'แห่งประสบการณ์ ด้านเทคโนโลยี' : 'Of Technology Experience') ?></p>
+                            <p class="text-slate-600 text-sm font-medium ipad-air-stat-desc"><?= e(getCurrentLang() === 'th' ? 'แห่งประสบการณ์ ด้านเทคโนโลยี' : 'Of Technology Experience') ?></p>
                         </div>
                     </div>
                     <div class="bg-white rounded-2xl shadow-sm hover:shadow-md transition-shadow p-5 flex flex-row items-center justify-start gap-5 border border-slate-100">
                         <img src="<?= e(asset_url('images/Capa_3.svg')) ?>" alt="50+" class="w-20 h-20 object-contain flex-shrink-0" />
                         <div class="flex flex-col text-left">
                             <h3 class="text-2xl font-black text-blue-600 mb-1 tracking-tight decoration-blue-500">50+</h3>
-                            <p class="text-slate-600 text-sm font-medium mt-1"><?= e(getCurrentLang() === 'th' ? 'ระบบและโปรเจกต์ ที่ส่งมอบ' : 'Systems & Projects Delivered') ?></p>
+                            <p class="text-slate-600 text-sm font-medium mt-1 ipad-air-stat-desc"><?= e(getCurrentLang() === 'th' ? 'ระบบและโปรเจกต์ ที่ส่งมอบ' : 'Systems & Projects Delivered') ?></p>
                         </div>
                     </div>
                     <div class="bg-white rounded-2xl shadow-sm hover:shadow-md transition-shadow p-5 flex flex-row items-center justify-start gap-5 border border-slate-100">
                         <img src="<?= e(asset_url('images/Capa_4.svg')) ?>" alt="ครบวงจร" class="w-20 h-20 object-contain flex-shrink-0" />
                         <div class="flex flex-col text-left">
                             <h3 class="text-2xl font-black text-blue-600 mb-1 tracking-tight"><?= e(getCurrentLang() === 'th' ? 'ครบวงจร' : 'End-to-End') ?></h3>
-                            <p class="text-slate-600 text-sm font-medium"><?= e(getCurrentLang() === 'th' ? 'ตั้งแต่วางแผนพัฒนา ถึงดูแลหลังบ้าน' : 'From Planning to Maintenance') ?></p>
+                            <p class="text-slate-600 text-sm font-medium ipad-air-stat-desc"><?= e(getCurrentLang() === 'th' ? 'ตั้งแต่วางแผนพัฒนา ถึงดูแลหลังบ้าน' : 'From Planning to Maintenance') ?></p>
                         </div>
                     </div>
                 </div>
@@ -567,6 +647,7 @@ $totalReviews = count($reviews);
                     <?= e(getCurrentLang() === 'th' ? 'เสียงจากลูกค้าของเรา' : 'Testimonials') ?>
                 </h2>
             </div>
+            <?php endif; ?>
             <style>
                 .pause-on-hover:hover {
                     animation-play-state: paused !important;
@@ -720,14 +801,14 @@ $totalReviews = count($reviews);
                 </a>
             </div>
             <div class="lg:hidden mb-6 flex flex-col items-start text-left pl-1 ipad-pro-flex-visible">
-                <h2 class="text-primary font-black text-3xl md:text-2xl tracking-normal mb-2 pb-1 inline-block border-b-[3px] border-primary ipad-pro-article-h2">
+                <h2 class="text-primary font-black text-3xl md:text-2xl tracking-normal mb-2 pb-1 inline-block border-b-[3px] border-primary ipad-pro-article-h2 ipad-air-article-h2">
                     <?= getCurrentLang() === 'th' ? 'บทความ' : 'Articles' ?>
                 </h2>
-                <h3 class="text-dark font-black text-2xl md:text-xl mb-3 mt-1 tracking-tight ipad-pro-article-h3">
+                <h3 class="text-dark font-black text-2xl md:text-xl mb-3 mt-1 tracking-tight ipad-pro-article-h3 ipad-air-article-h3">
                     <?= getCurrentLang() === 'th' ? 'สาระน่ารู้จาก WEBPARK' : 'Knowledge from WEBPARK' ?>
                 </h3>
-                <p class="text-slate-600 text-sm md:text-[0.8rem] leading-[1.6] font-medium ipad-pro-article-desc">
-                    <?= getCurrentLang() === 'th' ? 'รวมบทความสาระน่ารู้ ที่จะช่วยต่อยอดแบรนด์<br>และพาธุรกิจสู่ดิจิทัลที่ช่วยให้ธุรกิจเติบโตได้อย่างยั่งยืน' : 'A collection of informative articles to help elevate your brand<br>and guide your business into the digital era for sustainable growth.' ?>
+                <p class="text-slate-600 text-sm md:text-[0.8rem] leading-[1.6] font-medium ipad-pro-article-desc ipad-air-article-desc">
+                    <?= getCurrentLang() === 'th' ? 'รวมบทความสาระน่ารู้ ที่จะช่วยต่อยอดแบรนด์<br>และพาธุรกิจสู่ดิจิทัลที่ช่วยให้ธุรกิจเติบโตได้อย่างยั่งยืน' : 'A collection of informative articles to help elevate your brand <br class="mobile-hidden">and guide your business into the digital era for sustainable growth.' ?>
                 </p>
             </div>
             <?php if (count($displayArticles) > 0): ?>
@@ -757,16 +838,16 @@ $totalReviews = count($reviews);
                                 </span>
                             </div>
                             <div class="flex flex-col flex-1 p-6">
-                                <h3 class="text-[17px] md:text-base font-bold text-slate-900 leading-snug line-clamp-2 group-hover:text-primary transition-colors mb-3 ipad-pro-card-title">
+                                <h3 class="text-[17px] md:text-base font-bold text-slate-900 leading-snug line-clamp-2 group-hover:text-primary transition-colors mb-3 ipad-pro-card-title ipad-air-card-title">
                                     <?= e($artTitle) ?>
                                 </h3>
-                                <p class="text-[14px] md:text-[13px] text-slate-500 leading-relaxed line-clamp-3 mb-5 flex-1 ipad-pro-card-desc">
+                                <p class="text-[14px] md:text-[13px] text-slate-500 leading-relaxed line-clamp-3 mb-5 flex-1 ipad-pro-card-desc ipad-air-card-desc">
                                     <?= e($artSummary) ?>
                                 </p>
-                                <div class="mt-auto pt-4 border-t border-slate-50 flex items-center gap-1 text-[13px] md:text-xs font-bold text-primary ipad-pro-card-link">
+                                <div class="mt-auto pt-4 border-t border-slate-50 flex items-center gap-1 text-[13px] md:text-xs font-bold text-primary ipad-pro-card-link ipad-air-card-link">
                                     <?= e(t('common.cta_read_more')) ?>
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0 transform group-hover:translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7m0 0l-7 7"/>
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
                                     </svg>
                                 </div>
                             </div>

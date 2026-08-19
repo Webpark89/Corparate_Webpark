@@ -17,6 +17,14 @@ $contactButtonUrl = $cbuttonUrl ?? '/contact';
     .ipad-pro-cta-grid-override { grid-template-columns: repeat(1, minmax(0, 1fr)) !important; }
     .ipad-pro-cta-col-override { grid-column: span 1 / span 1 !important; }
 }
+/* Increase font sizes specifically for iPad Pro */
+@media (min-width: 1024px) and (max-width: 1279px) {
+    .ipad-pro-cta-title { font-size: 1.5rem !important; line-height: 2.25rem !important; }
+    .ipad-pro-cta-subtitle { font-size: 1.25rem !important; line-height: 2rem !important; }
+    .ipad-pro-cta-input { font-size: 1.25rem !important; padding: 1rem 1.25rem !important; }
+    .ipad-pro-cta-input::placeholder { font-size: 1.25rem !important; }
+    .ipad-pro-cta-privacy { font-size: 1.125rem !important; }
+}
 </style>
 <section class="bg-white py-10 lg:py-10 font-sans">
     <div class="mx-auto w-full max-w-[1720px] px-4 sm:px-6 lg:px-10 relative z-10">
@@ -32,10 +40,10 @@ $contactButtonUrl = $cbuttonUrl ?? '/contact';
                     </span>
                     <div class="w-12 h-[3px] bg-white mt-3"></div>
                 </div>
-                    <span class="mt-4 text-white text-base md:text-lg leading-relaxed font-medium">
+                    <span class="mt-4 text-white text-base md:text-lg leading-relaxed font-medium ipad-pro-cta-title">
                         <?= e($contactTitle) ?>
                     </span>
-                <p class="mt-1 text-white text-base md:text-lg leading-snug font-medium">
+                <p class="mt-1 text-white text-base md:text-lg leading-snug font-medium ipad-pro-cta-subtitle">
                     <?= $contactSubtitle ?>
                 </p>
             </div>
@@ -59,19 +67,19 @@ $contactButtonUrl = $cbuttonUrl ?? '/contact';
                         <form method="post" class="space-y-4">
                             <div id="desktop-name-wrapper">
                                 <input type="text" id="name_desktop" name="name" placeholder="<?= e(t('common.form_label_fullname')) ?>" value="<?= e($form['name'] ?? '') ?>" required
-                                    class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base text-slate-900 outline-none transition custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary">
+                                    class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base text-slate-900 outline-none transition custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary ipad-pro-cta-input">
                             </div>
                             <div id="mobile-name-wrapper" class="space-y-4 hidden">
                                 <input type="text" id="name_mobile_first" name="firstname" placeholder="<?= e(getCurrentLang() === 'th' ? 'ชื่อ' : 'First Name') ?>" value="<?= e($form['firstname'] ?? '') ?>" required
-                                    class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base text-slate-900 outline-none transition custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary">
+                                    class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base text-slate-900 outline-none transition custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary ipad-pro-cta-input">
                                 <input type="text" id="name_mobile_last" name="lastname" placeholder="<?= e(getCurrentLang() === 'th' ? 'สกุล' : 'Last Name') ?>" value="<?= e($form['lastname'] ?? '') ?>" required
-                                    class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base text-slate-900 outline-none transition custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary">
+                                    class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base text-slate-900 outline-none transition custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary ipad-pro-cta-input">
                             </div>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                                 <input type="text" inputmode="numeric" name="phone" placeholder="<?= e(t('common.form_label_phone')) ?>" value="<?= e($form['phone'] ?? '') ?>" required maxlength="10" pattern="\d{10}" oninput="this.value = this.value.replace(/[^0-9]/g, '');"
-                                    class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base text-slate-900 outline-none transition custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary">
+                                    class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base text-slate-900 outline-none transition custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary ipad-pro-cta-input">
                                 <input type="email" name="email" placeholder="<?= e(t('common.form_label_email')) ?>" value="<?= e($form['email'] ?? '') ?>" required oninvalid="this.setCustomValidity('กรุณาระบุอีเมลที่มี @')" oninput="this.setCustomValidity('')" onblur="if(this.value && !this.value.includes('@')) { this.setCustomValidity('กรุณาระบุอีเมลที่มี @'); this.reportValidity(); }"
-                                    class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base text-slate-900 outline-none transition custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary">
+                                    class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base text-slate-900 outline-none transition custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary ipad-pro-cta-input">
                             </div>
                             <script>
                                 function updateCtaFormLayout() {
@@ -102,14 +110,14 @@ $contactButtonUrl = $cbuttonUrl ?? '/contact';
                             </script>
                             <div>
                                 <textarea name="message" rows="4" placeholder="<?= e(t('common.form_label_details')) ?>" required
-                                    class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base text-slate-900 outline-none transition custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary resize-none"><?= e($form['message'] ?? '') ?></textarea>
+                                    class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base text-slate-900 outline-none transition custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary resize-none ipad-pro-cta-input"><?= e($form['message'] ?? '') ?></textarea>
                             </div>
                             <style>
                                 .privacy-text { color: #022862 !important; }
                             </style>
                             <div class="flex items-start gap-2.5 pt-1">
                                 <input type="checkbox" id="form-privacy" name="privacy_agreed" required class="mt-0.5 w-4 h-4 rounded border-slate-300 text-primary focus:ring-primary cursor-pointer">
-                                <label for="form-privacy" class="text-sm leading-relaxed cursor-pointer select-none">
+                                <label for="form-privacy" class="text-sm leading-relaxed cursor-pointer select-none ipad-pro-cta-privacy">
                                     <span class="privacy-text"><?= e(t('common.form_consent_prefix')) ?></span> <a href="#" class="text-primary hover:underline"><?= e(t('common.form_consent_privacy_policy')) ?> <?= e(t('common.form_consent_terms_suffix')) ?></a>
                                 </label>
                             </div>

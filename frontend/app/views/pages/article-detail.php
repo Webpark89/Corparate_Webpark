@@ -130,6 +130,16 @@ $shareUrl = urlencode(request_origin_url() . ($_SERVER['REQUEST_URI'] ?? ''));
     .delay-200 { animation-delay: 200ms; }
     .delay-300 { animation-delay: 300ms; }
     .delay-400 { animation-delay: 400ms; }
+
+    /* iPad Air (820px) specific text size overrides for article content */
+    @media (min-width: 820px) and (max-width: 820px) {
+        .article-format { font-size: 1.15rem !important; line-height: 1.8 !important; }
+        .article-format p { font-size: 1.15rem !important; line-height: 1.8 !important; }
+        .article-format h2 { font-size: 1.75rem !important; line-height: 1.4 !important; margin-top: 1.5rem !important; margin-bottom: 0.75rem !important; }
+        .article-format h3 { font-size: 1.5rem !important; line-height: 1.4 !important; margin-top: 1.25rem !important; margin-bottom: 0.5rem !important; }
+        .article-format h4 { font-size: 1.25rem !important; line-height: 1.4 !important; }
+        .article-format li { font-size: 1.15rem !important; line-height: 1.8 !important; }
+    }
 </style>
 <div id="reading-progress" class="fixed top-0 left-0 h-1 bg-gradient-to-r from-blue-500 to-indigo-600 z-[9999] transition-all duration-150 ease-out" style="width: 0%;"></div>
 <section class="relative overflow-hidden font-sans bg-[#F4F7FB] pt-12 pb-6 lg:pt-20 lg:pb-8">

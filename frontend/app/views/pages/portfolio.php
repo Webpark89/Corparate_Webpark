@@ -61,7 +61,7 @@ $initialProjects = $portfolioTabs[$activeFilter] ?? $portfolioTabs['All'] ?? [];
 ?>
 <section class="border-b border-slate-200 bg-white">
     <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 pt-20 pb-24 lg:pt-32 lg:pb-32 relative z-10">
-        <div class="lg:ml-12 xl:ml-24">
+        <div class="lg:ml-12 ipad-pro-ml-0 xl:ml-24">
             <p class="text-sm font-semibold uppercase tracking-[0.32em] text-sky-700">Selected Work</p>
             <h1 class="mt-4 text-4xl font-black tracking-tight text-slate-900 sm:text-5xl">ผลงานที่วัดผลได้จริงในทุกอุตสาหกรรม</h1>
             <p class="mt-4 max-w-3xl text-base leading-8 text-slate-600 sm:text-lg">คัดสรรเคสที่สะท้อนแนวทางของเรา ตั้งแต่ปัญหาธุรกิจไปจนถึงผลลัพธ์เชิงตัวเลข</p>
