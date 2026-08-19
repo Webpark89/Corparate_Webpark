@@ -598,173 +598,181 @@ if (isset($services) && is_array($services)) {
 </section>
 <section id="our-services" class="bg-white py-8 lg:py-16 font-sans scroll-mt-6">
     <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8 desktop-wide-container-services">
-        <h1 class="text-4xl md:text-6xl lg:text-7xl font-extrabold leading-tight tracking-tight mb-0 md:mb-1 gsap-fade-up ipad-pro-services-h1-text" style="color: #0663F6 !important;">
-            <?= e(t('common.nav_services') !== 'common.nav_services' ? t('common.nav_services') : (getCurrentLang() === 'th' ? 'บริการของเรา' : 'Our Services')) ?>
-        </h1>
-        <div class="mt-2 mb-4 md:mb-6 gsap-fade-up" style="width: 48px; height: 3px; background-color: #0663F6;"></div>
-        <span class="text-lg sm:text-xl md:text-3xl font-bold gsap-fade-up w-full max-w-none mb-4 block leading-tight tracking-tighter md:tracking-normal whitespace-nowrap ipad-pro-services-subtitle" style="color: #043B94;">
-            <?= getCurrentLang() === 'th' ? 'บริการของเรา ครอบคลุมทุกมิติธุรกิจดิจิทัล' : 'Our services cover every dimension of digital business' ?>
-        </span>
-        <p class="gsap-fade-up text-slate-500 text-lg md:text-[15px] lg:text-base xl:text-[17px] leading-relaxed w-full max-w-none ipad-pro-services-desc">
-            <?= getCurrentLang() === 'th' ? 'Webpark ให้บริการแบบครบวงจร ตั้งแต่การวางแผน ออกแบบ พัฒนา ไปจนถึงการดูแลหลังการใช้งาน เพื่อช่วยให้องค์กรเพิ่มประสิทธิภาพ ลดต้นทุน และเติบโตได้อย่างยั่งยืนในยุคดิจิทัล' : 'Webpark provides end-to-end services, from planning, design, and development to post-deployment support. We help organizations increase efficiency, reduce costs, and grow sustainably in the digital era.' ?>
-        </p>
+        <div class="lg:px-12 xl:px-24">
+            <h1 class="text-4xl md:text-6xl lg:text-7xl font-extrabold leading-tight tracking-tight mb-0 md:mb-1 gsap-fade-up ipad-pro-services-h1-text" style="color: #0663F6 !important;">
+                <?= e(t('common.nav_services') !== 'common.nav_services' ? t('common.nav_services') : (getCurrentLang() === 'th' ? 'บริการของเรา' : 'Our Services')) ?>
+            </h1>
+            <div class="mt-2 mb-4 md:mb-6 gsap-fade-up" style="width: 48px; height: 3px; background-color: #0663F6;"></div>
+            <span class="text-lg sm:text-xl md:text-3xl font-bold gsap-fade-up w-full max-w-none mb-4 block leading-tight tracking-tighter md:tracking-normal whitespace-nowrap ipad-pro-services-subtitle" style="color: #043B94;">
+                <?= getCurrentLang() === 'th' ? 'บริการของเรา ครอบคลุมทุกมิติธุรกิจดิจิทัล' : 'Our services cover every dimension of digital business' ?>
+            </span>
+            <p class="gsap-fade-up text-slate-500 text-lg md:text-[15px] lg:text-base xl:text-[17px] leading-relaxed w-full max-w-none ipad-pro-services-desc">
+                <?= getCurrentLang() === 'th' ? 'Webpark ให้บริการแบบครบวงจร ตั้งแต่การวางแผน ออกแบบ พัฒนา ไปจนถึงการดูแลหลังการใช้งาน เพื่อช่วยให้องค์กรเพิ่มประสิทธิภาพ ลดต้นทุน และเติบโตได้อย่างยั่งยืนในยุคดิจิทัล' : 'Webpark provides end-to-end services, from planning, design, and development to post-deployment support. We help organizations increase efficiency, reduce costs, and grow sustainably in the digital era.' ?>
+            </p>
+        </div>
     </div>
 </section>
 <section id="gsap-services-grid" class="bg-white py-8 lg:py-16 font-sans">
     <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8 desktop-wide-container-services">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 items-start">
-            <?php foreach ($services as $service):
-                $sTitle  = (string)($service['title'] ?? '');
-                $sSummary= (string)($service['summary'] ?? '');
-                $sEmoji  = (string)($service['icon_emoji'] ?? '');
-                $imgSrc  = resolve_article_image_url($service['image_placeholder'] ?? '');
-                $subcats = (array)($service['subcategories'] ?? []);
-                $dropdownText = getCurrentLang() === 'th' ? (string)($service['dropdown_title'] ?? 'ดูหัวข้อย่อย') : (string)($service['dropdown_title'] ?? 'View Subcategories');
-            ?>
-            <div class="gsap-service-card group rounded-2xl border border-slate-100 bg-white overflow-hidden flex flex-col opacity-0 translate-y-10"
-                style="box-shadow: 0 2px 12px 0 rgba(4,59,148,0.07);">
-                <div class="relative w-full overflow-hidden bg-slate-100" style="aspect-ratio: 16/9;">
-                    <img
-                        src="<?= e($imgSrc) ?>"
-                        alt="<?= e($sTitle) ?>"
-                        class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                        loading="lazy"
-                    >
-                </div>
-                <div class="flex flex-col flex-1 p-6 desktop-service-card-inner">
-                    <div class="flex items-center gap-2 mb-2">
-                        <span class="service-icon-emoji text-2xl leading-none desktop-service-emoji"><?= e($sEmoji) ?></span>
-                        <h2 class="text-xl font-extrabold desktop-service-title ipad-pro-service-card-title" style="color: #022862;"><?= e($sTitle) ?></h2>
+        <div class="lg:px-12 xl:px-24">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 items-start">
+                <?php foreach ($services as $service):
+                    $sTitle  = (string)($service['title'] ?? '');
+                    $sSummary= (string)($service['summary'] ?? '');
+                    $sEmoji  = (string)($service['icon_emoji'] ?? '');
+                    $imgSrc  = resolve_article_image_url($service['image_placeholder'] ?? '');
+                    $subcats = (array)($service['subcategories'] ?? []);
+                    $dropdownText = getCurrentLang() === 'th' ? (string)($service['dropdown_title'] ?? 'ดูหัวข้อย่อย') : (string)($service['dropdown_title'] ?? 'View Subcategories');
+                ?>
+                <div class="gsap-service-card group rounded-2xl border border-slate-100 bg-white overflow-hidden flex flex-col opacity-0 translate-y-10"
+                    style="box-shadow: 0 2px 12px 0 rgba(4,59,148,0.07);">
+                    <div class="relative w-full overflow-hidden bg-slate-100" style="aspect-ratio: 16/9;">
+                        <img
+                            src="<?= e($imgSrc) ?>"
+                            alt="<?= e($sTitle) ?>"
+                            class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                            loading="lazy"
+                        >
                     </div>
-                    <p class="text-slate-500 text-sm leading-relaxed mb-4 desktop-service-desc ipad-pro-service-card-desc">
-                        <?= e($sSummary) ?>
-                    </p>
-                    <div class="mt-auto border-t border-slate-100 pt-3 desktop-service-details-wrap">
-                        <details class="group/details">
-                            <summary class="flex items-center justify-between py-2 rounded-lg text-sm font-bold cursor-pointer transition-colors duration-150 hover:text-[#043B94] text-[#022862] list-none desktop-service-summary ipad-pro-service-card-dropdown">
-                                <span class="desktop-service-summary-text"><?= e($dropdownText) ?></span>
-                                <svg class="w-4 h-4 shrink-0 text-slate-400 transition-transform duration-200 group-open/details:rotate-180 desktop-service-arrow"
-                                     fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
-                                </svg>
-                            </summary>
-                            <?php if (!empty($subcats)): ?>
-                            <div class="pl-3 pr-3 py-2 space-y-2 border-l-2 border-slate-100 ml-1 mt-1 mb-2 desktop-service-dropdown-content">
-                                <?php foreach ($subcats as $item):
-                                    $itemLabel = (string)($item['label'] ?? '');
-                                    $itemHref  = (string)($item['href'] ?? '#');
-                                ?>
-                                <a href="<?= $itemHref ?>" class="group/item flex items-center gap-2 text-sm text-slate-600 hover:text-[#043B94] transition-all duration-300 hover:translate-x-1.5">
-                                    <span class="w-1.5 h-1.5 rounded-full bg-slate-300 shrink-0 transition-all duration-300 group-hover/item:bg-[#043B94] group-hover/item:scale-125"></span>
-                                    <span><?= e($itemLabel) ?></span>
-                                </a>
-                                <?php endforeach; ?>
-                            </div>
-                            <?php endif; ?>
-                        </details>
+                    <div class="flex flex-col flex-1 p-6 desktop-service-card-inner">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="service-icon-emoji text-2xl leading-none desktop-service-emoji"><?= e($sEmoji) ?></span>
+                            <h2 class="text-xl font-extrabold desktop-service-title ipad-pro-service-card-title" style="color: #022862;"><?= e($sTitle) ?></h2>
+                        </div>
+                        <p class="text-slate-500 text-sm leading-relaxed mb-4 desktop-service-desc ipad-pro-service-card-desc">
+                            <?= e($sSummary) ?>
+                        </p>
+                        <div class="mt-auto border-t border-slate-100 pt-3 desktop-service-details-wrap">
+                            <details class="group/details">
+                                <summary class="flex items-center justify-between py-2 rounded-lg text-sm font-bold cursor-pointer transition-colors duration-150 hover:text-[#043B94] text-[#022862] list-none desktop-service-summary ipad-pro-service-card-dropdown">
+                                    <span class="desktop-service-summary-text"><?= e($dropdownText) ?></span>
+                                    <svg class="w-4 h-4 shrink-0 text-slate-400 transition-transform duration-200 group-open/details:rotate-180 desktop-service-arrow"
+                                         fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+                                    </svg>
+                                </summary>
+                                <?php if (!empty($subcats)): ?>
+                                <div class="pl-3 pr-3 py-2 space-y-2 border-l-2 border-slate-100 ml-1 mt-1 mb-2 desktop-service-dropdown-content">
+                                    <?php foreach ($subcats as $item):
+                                        $itemLabel = (string)($item['label'] ?? '');
+                                        $itemHref  = (string)($item['href'] ?? '#');
+                                    ?>
+                                    <a href="<?= $itemHref ?>" class="group/item flex items-center gap-2 text-sm text-slate-600 hover:text-[#043B94] transition-all duration-300 hover:translate-x-1.5">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-slate-300 shrink-0 transition-all duration-300 group-hover/item:bg-[#043B94] group-hover/item:scale-125"></span>
+                                        <span><?= e($itemLabel) ?></span>
+                                    </a>
+                                    <?php endforeach; ?>
+                                </div>
+                                <?php endif; ?>
+                            </details>
+                        </div>
                     </div>
                 </div>
+                <?php endforeach; ?>
             </div>
-            <?php endforeach; ?>
         </div>
     </div>
 </section>
 <section class="font-sans pb-12">
-    <div class="mx-auto max-w-7xl px-6 sm:px-6 lg:px-8 desktop-cta-container">
-        <div class="gsap-cta-box relative rounded-3xl overflow-hidden opacity-0 translate-y-10"
-            style="background: linear-gradient(120deg, #011431 0%, #043B94 55%, #1e40af 100%); min-height: 200px;">
-            <div class="absolute inset-0 pointer-events-none overflow-hidden">
-                <div class="absolute right-0 top-0 h-full w-1/2 desktop-cta-bg-img"
-                    style="background: url('<?= e(asset_url('images/bg-cta.jpg')) ?>') center/cover no-repeat; opacity: 0.18;"></div>
-                <div class="absolute inset-0 desktop-cta-gradient-overlay"
-                    style="background: linear-gradient(to right, #011431 40%, transparent 100%);"></div>
-            </div>
-            <div class="relative px-6 py-10 sm:px-8 sm:py-14 md:py-16 text-center" style="z-index: 10;">
-                <h2 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white mb-4 leading-snug desktop-cta-title">
-                    <?= getCurrentLang() === 'th' ? 'พร้อมขับเคลื่อนธุรกิจของคุณไปข้างหน้าหรือยัง?' : 'Ready to drive your business forward?' ?>
-                </h2>
-                <p class="text-sm sm:text-base md:text-lg max-w-2xl mx-auto mb-8 leading-relaxed font-normal desktop-cta-desc" style="color: #bfdbfe;">
-                    <?= getCurrentLang() === 'th' ? 'มาคุยกับทีม Webpark เพื่อค้นหาโซลูชันที่เหมาะกับธุรกิจของคุณ ทั้ง Digital Platform, ระบบ AI และ ERP / ERM ในมุมที่ใช้สำหรับองค์กร' : 'Talk to the Webpark team to find the right solution for your business, including Digital Platforms, AI systems, and ERP / ERM tailored for enterprise use.' ?>
-                </p>
-                <a
-                    href="<?= e(route_url('/contact')) ?>"
-                    class="inline-flex items-center gap-2 font-bold text-sm sm:text-base px-7 py-3 rounded-full transition-all duration-200 hover:scale-105 desktop-cta-btn"
-                    style="background: #ffffff; color: #043B94; box-shadow: 0 4px 14px rgba(0,0,0,0.15);"
-                    onmouseover="this.style.background='#eff6ff';"
-                    onmouseout="this.style.background='#ffffff';"
-                >
-                    <?= getCurrentLang() === 'th' ? 'เริ่มต้นปรึกษากับเรา' : 'Start Consulting with Us' ?>
-                    <svg class="w-4 h-4 chevron-icon" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
-                    </svg>
-                    <svg class="w-5 h-5 hidden arrow-icon" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M12 5l7 7-7 7"/>
-                    </svg>
-                </a>
+    <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8 desktop-wide-container-services">
+        <div class="lg:px-12 xl:px-24">
+            <div class="gsap-cta-box relative rounded-3xl overflow-hidden opacity-0 translate-y-10"
+                style="background: linear-gradient(120deg, #011431 0%, #043B94 55%, #1e40af 100%); min-height: 200px;">
+                <div class="absolute inset-0 pointer-events-none overflow-hidden">
+                    <div class="absolute right-0 top-0 h-full w-1/2 desktop-cta-bg-img"
+                        style="background: url('<?= e(asset_url('images/bg-cta.jpg')) ?>') center/cover no-repeat; opacity: 0.18;"></div>
+                    <div class="absolute inset-0 desktop-cta-gradient-overlay"
+                        style="background: linear-gradient(to right, #011431 40%, transparent 100%);"></div>
+                </div>
+                <div class="relative px-6 py-10 sm:px-8 sm:py-14 md:py-16 text-center" style="z-index: 10;">
+                    <h2 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white mb-4 leading-snug desktop-cta-title">
+                        <?= getCurrentLang() === 'th' ? 'พร้อมขับเคลื่อนธุรกิจของคุณไปข้างหน้าหรือยัง?' : 'Ready to drive your business forward?' ?>
+                    </h2>
+                    <p class="text-sm sm:text-base md:text-lg max-w-2xl mx-auto mb-8 leading-relaxed font-normal desktop-cta-desc" style="color: #bfdbfe;">
+                        <?= getCurrentLang() === 'th' ? 'มาคุยกับทีม Webpark เพื่อค้นหาโซลูชันที่เหมาะกับธุรกิจของคุณ ทั้ง Digital Platform, ระบบ AI และ ERP / ERM ในมุมที่ใช้สำหรับองค์กร' : 'Talk to the Webpark team to find the right solution for your business, including Digital Platforms, AI systems, and ERP / ERM tailored for enterprise use.' ?>
+                    </p>
+                    <a
+                        href="<?= e(route_url('/contact')) ?>"
+                        class="inline-flex items-center gap-2 font-bold text-sm sm:text-base px-7 py-3 rounded-full transition-all duration-200 hover:scale-105 desktop-cta-btn"
+                        style="background: #ffffff; color: #043B94; box-shadow: 0 4px 14px rgba(0,0,0,0.15);"
+                        onmouseover="this.style.background='#eff6ff';"
+                        onmouseout="this.style.background='#ffffff';"
+                    >
+                        <?= getCurrentLang() === 'th' ? 'เริ่มต้นปรึกษากับเรา' : 'Start Consulting with Us' ?>
+                        <svg class="w-4 h-4 chevron-icon" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+                        </svg>
+                        <svg class="w-5 h-5 hidden arrow-icon" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </a>
+                </div>
             </div>
         </div>
     </div>
 </section>
 <section id="our-approach" class="py-16 lg:py-24 ipad-pro-services-approach-section" style="background-color: #f1f5f9;">
-    <div class="mx-auto max-w-7xl px-6 sm:px-6 lg:px-8 desktop-approach-container">
-        <div class="text-left md:text-center mb-10 md:mb-16 flex flex-col items-start md:items-center">
-            <div class="flex flex-col items-start mb-4 md:mb-6">
-                <span class="text-3xl md:text-4xl font-bold gsap-fade-up mb-1 block" style="color: #054FC5 !important; -webkit-text-fill-color: #054FC5 !important; background: none !important;">
-                    <?= getCurrentLang() === 'th' ? 'แนวคิดในการทำงานของเรา' : 'Our Approach' ?>
-                </span>
-                <div class="mt-1 gsap-fade-up" style="width: 48px; height: 3px; background-color: #0663F6;"></div>
-            </div>
-            <p class="text-slate-500 text-lg md:text-xl leading-relaxed max-w-4xl text-left md:text-center mx-0 md:mx-auto desktop-approach-subtitle">
-                <?= getCurrentLang() === 'th' ? 'กระบวนการทำงานที่เป็นระบบ เพื่อส่งมอบโซลูชันดิจิทัลที่ตอบโจทย์ธุรกิจ <br class="hidden md:block"> และความยั่งยืนของข้อมูลธุรกิจที่องค์กรถือครอง' : 'A systematic work process to deliver digital solutions that meet business needs and ensure the sustainability of business data held by the organization.' ?>
-            </p>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 max-w-5xl mx-auto desktop-approach-container">
-            <?php
-            $approachSteps = [
-                [
-                    'number' => '01',
-                    'icon'   => asset_url('images/think_1.svg'),
-                    'title'  => getCurrentLang() === 'th' ? 'เข้าใจธุรกิจของคุณ' : 'Understand Your Business',
-                    'desc'   => getCurrentLang() === 'th' ? 'ศึกษาความต้องการ วิเคราะห์ปัญหา และกำหนดแนวทางที่เหมาะสมกับธุรกิจของท่านอย่างแท้จริง' : 'Study requirements, analyze problems, and determine the approach that truly suits your business.',
-                ],
-                [
-                    'number' => '02',
-                    'icon'   => asset_url('images/think_2.svg'),
-                    'title'  => getCurrentLang() === 'th' ? 'ออกแบบให้ใช้งานได้จริง' : 'Design for Practicality',
-                    'desc'   => getCurrentLang() === 'th' ? 'ออกแบบประสบการณ์ใช้งานที่เน้นความง่าย และประสิทธิภาพ ตอบโจทย์ผู้ใช้งานทุกระดับ' : 'Design user experiences focusing on simplicity and efficiency, meeting the needs of users at all levels.',
-                ],
-                [
-                    'number' => '03',
-                    'icon'   => asset_url('images/think_3.svg'),
-                    'title'  => getCurrentLang() === 'th' ? 'ดูแลอย่างต่อเนื่อง' : 'Continuous Care',
-                    'desc'   => getCurrentLang() === 'th' ? 'ให้บริการหลังการขาย พร้อมทีมซัพพอร์ต และอัปเดตระบบอย่างสม่ำเสมอ' : 'Provide after-sales service with a support team and regular system updates.',
-                ],
-                [
-                    'number' => '04',
-                    'icon'   => asset_url('images/think_4.svg'),
-                    'title'  => getCurrentLang() === 'th' ? 'รองรับการเติบโต' : 'Support Growth',
-                    'desc'   => getCurrentLang() === 'th' ? 'พัฒนาระบบที่ยืดหยุ่น สามารถขยายตัว และปรับตามธุรกิจที่เติบโตในอนาคต' : 'Develop flexible systems capable of scaling and adapting as the business grows in the future.',
-                ],
-            ];
-            foreach ($approachSteps as $step):
-            ?>
-            <div class="gsap-approach-step flex flex-row items-center md:items-start gap-5 md:gap-6 rounded-3xl border border-blue-50/50 bg-white p-6 md:p-8 transition-all duration-300 opacity-0 translate-y-10 desktop-approach-card ipad-pro-services-approach-card"
-                style="box-shadow: 0 8px 30px -10px rgba(4,59,148,0.08);">
-                <div class="gsap-approach-icon w-16 h-16 md:w-20 md:h-20 shrink-0 flex items-center justify-center md:pt-1 desktop-approach-icon-wrap ipad-pro-services-approach-icon-wrap">
-                    <img src="<?= e($step['icon']) ?>"
-                         alt="<?= e($step['title']) ?>"
-                         class="w-14 h-14 md:w-16 md:h-16 object-contain drop-shadow-sm desktop-approach-icon-img ipad-pro-services-approach-icon-img"
-                         onerror="this.onerror=null;this.style.display='none'">
+    <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8 desktop-wide-container-services">
+        <div class="lg:px-12 xl:px-24">
+            <div class="text-left md:text-center mb-10 md:mb-16 flex flex-col items-start md:items-center">
+                <div class="flex flex-col items-start mb-4 md:mb-6">
+                    <span class="text-3xl md:text-4xl font-bold gsap-fade-up mb-1 block" style="color: #054FC5 !important; -webkit-text-fill-color: #054FC5 !important; background: none !important;">
+                        <?= getCurrentLang() === 'th' ? 'แนวคิดในการทำงานของเรา' : 'Our Approach' ?>
+                    </span>
+                    <div class="mt-1 gsap-fade-up" style="width: 48px; height: 3px; background-color: #0663F6;"></div>
                 </div>
-                <div class="flex flex-col gap-1 md:gap-1.5 md:pt-1 desktop-approach-content">
-                    <div class="desktop-approach-header flex flex-row items-center gap-2 md:flex-col md:items-start md:gap-0">
-                        <span class="gsap-approach-number text-2xl md:text-3xl font-extrabold desktop-approach-number ipad-pro-services-approach-number" style="color: #043B94;"><?= e($step['number']) ?></span>
-                        <h3 class="text-xl md:text-2xl font-extrabold mb-0 md:mb-1 desktop-approach-title ipad-pro-services-approach-title" style="color: #022862;"><?= e($step['title']) ?></h3>
+                <p class="text-slate-500 text-lg md:text-xl leading-relaxed max-w-4xl text-left md:text-center mx-0 md:mx-auto desktop-approach-subtitle">
+                    <?= getCurrentLang() === 'th' ? 'กระบวนการทำงานที่เป็นระบบ เพื่อส่งมอบโซลูชันดิจิทัลที่ตอบโจทย์ธุรกิจ <br class="hidden md:block"> และความยั่งยืนของข้อมูลธุรกิจที่องค์กรถือครอง' : 'A systematic work process to deliver digital solutions that meet business needs and ensure the sustainability of business data held by the organization.' ?>
+                </p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 max-w-5xl mx-auto desktop-approach-container">
+                <?php
+                $approachSteps = [
+                    [
+                        'number' => '01',
+                        'icon'   => asset_url('images/think_1.svg'),
+                        'title'  => getCurrentLang() === 'th' ? 'เข้าใจธุรกิจของคุณ' : 'Understand Your Business',
+                        'desc'   => getCurrentLang() === 'th' ? 'ศึกษาความต้องการ วิเคราะห์ปัญหา และกำหนดแนวทางที่เหมาะสมกับธุรกิจของท่านอย่างแท้จริง' : 'Study requirements, analyze problems, and determine the approach that truly suits your business.',
+                    ],
+                    [
+                        'number' => '02',
+                        'icon'   => asset_url('images/think_2.svg'),
+                        'title'  => getCurrentLang() === 'th' ? 'ออกแบบให้ใช้งานได้จริง' : 'Design for Practicality',
+                        'desc'   => getCurrentLang() === 'th' ? 'ออกแบบประสบการณ์ใช้งานที่เน้นความง่าย และประสิทธิภาพ ตอบโจทย์ผู้ใช้งานทุกระดับ' : 'Design user experiences focusing on simplicity and efficiency, meeting the needs of users at all levels.',
+                    ],
+                    [
+                        'number' => '03',
+                        'icon'   => asset_url('images/think_3.svg'),
+                        'title'  => getCurrentLang() === 'th' ? 'ดูแลอย่างต่อเนื่อง' : 'Continuous Care',
+                        'desc'   => getCurrentLang() === 'th' ? 'ให้บริการหลังการขาย พร้อมทีมซัพพอร์ต และอัปเดตระบบอย่างสม่ำเสมอ' : 'Provide after-sales service with a support team and regular system updates.',
+                    ],
+                    [
+                        'number' => '04',
+                        'icon'   => asset_url('images/think_4.svg'),
+                        'title'  => getCurrentLang() === 'th' ? 'รองรับการเติบโต' : 'Support Growth',
+                        'desc'   => getCurrentLang() === 'th' ? 'พัฒนาระบบที่ยืดหยุ่น สามารถขยายตัว และปรับตามธุรกิจที่เติบโตในอนาคต' : 'Develop flexible systems capable of scaling and adapting as the business grows in the future.',
+                    ],
+                ];
+                foreach ($approachSteps as $step):
+                ?>
+                <div class="gsap-approach-step flex flex-row items-center md:items-start gap-5 md:gap-6 rounded-3xl border border-blue-50/50 bg-white p-6 md:p-8 transition-all duration-300 opacity-0 translate-y-10 desktop-approach-card ipad-pro-services-approach-card"
+                    style="box-shadow: 0 8px 30px -10px rgba(4,59,148,0.08);">
+                    <div class="gsap-approach-icon w-16 h-16 md:w-20 md:h-20 shrink-0 flex items-center justify-center md:pt-1 desktop-approach-icon-wrap ipad-pro-services-approach-icon-wrap">
+                        <img src="<?= e($step['icon']) ?>"
+                             alt="<?= e($step['title']) ?>"
+                             class="w-14 h-14 md:w-16 md:h-16 object-contain drop-shadow-sm desktop-approach-icon-img ipad-pro-services-approach-icon-img"
+                             onerror="this.onerror=null;this.style.display='none'">
                     </div>
-                    <p class="text-slate-600 text-base md:text-lg leading-[1.7] desktop-approach-desc ipad-pro-services-approach-desc"><?= e($step['desc']) ?></p>
+                    <div class="flex flex-col gap-1 md:gap-1.5 md:pt-1 desktop-approach-content">
+                        <div class="desktop-approach-header flex flex-row items-center gap-2 md:flex-col md:items-start md:gap-0">
+                            <span class="gsap-approach-number text-2xl md:text-3xl font-extrabold desktop-approach-number ipad-pro-services-approach-number" style="color: #043B94;"><?= e($step['number']) ?></span>
+                            <h3 class="text-xl md:text-2xl font-extrabold mb-0 md:mb-1 desktop-approach-title ipad-pro-services-approach-title" style="color: #022862;"><?= e($step['title']) ?></h3>
+                        </div>
+                        <p class="text-slate-600 text-base md:text-lg leading-[1.7] desktop-approach-desc ipad-pro-services-approach-desc"><?= e($step['desc']) ?></p>
+                    </div>
                 </div>
+                <?php endforeach; ?>
             </div>
-            <?php endforeach; ?>
         </div>
     </div>
 </section>

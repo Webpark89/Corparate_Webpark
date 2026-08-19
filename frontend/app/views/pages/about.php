@@ -55,18 +55,8 @@ $contactAddress = $company['contact']['address'] ?? '525/89 ซอยลาด�
     }
     /* Parallax: ขยายรูปเผื่อไว้ล่วงหน้า เพื่อไม่ให้เห็นขอบโหว่ตอนรูปเลื่อนตาม scroll */
     .hero-parallax-img {
-        transform: scale(1.15, 1.15);
+        transform: scale(1.15);
         will-change: transform;
-    }
-    @media (min-width: 1025px) {
-        .hero-parallax-img {
-            transform: scale(1.6) translate(-2%, -5%) !important;
-        }
-    }
-    @media (min-width: 1536px) {
-        .hero-parallax-img {
-            transform: scale(1.8) translate(-2%, -2%) !important;
-        }
     }
     
     /* Custom Layout for iPad Pro Portrait (1024px - 1279px) */
@@ -92,6 +82,7 @@ $contactAddress = $company['contact']['address'] ?? '525/89 ซอยลาด�
         }
         .ipad-pro-about-process-desc {
             font-size: 1rem !important;
+        }
         /* Hide specific br tags on iPad Pro to fix word wrapping */
         .ipad-pro-hidden-br {
             display: none !important;
@@ -224,7 +215,7 @@ $contactAddress = $company['contact']['address'] ?? '525/89 ซอยลาด�
         <div class="absolute inset-0 bg-gradient-to-r from-white via-white/80 to-white/5"></div>
         <div class="absolute inset-x-0 bottom-0 h-[30%] bg-gradient-to-t from-white to-transparent z-10"></div>
     </div>
-    <div class="mx-auto w-full max-w-[1720px] px-6 sm:px-6 lg:px-10 pt-12 pb-16 lg:pt-28 lg:pb-16 relative z-10">
+    <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8 pt-12 pb-24 lg:pt-28 lg:pb-32 relative z-10 desktop-wide-container">
         <!-- Mobile Background Image (Only covers this Hero container) -->
         <div class="absolute inset-0 z-0 overflow-hidden lg:hidden rounded-2xl">
             <img src="<?= e($heroImage) ?>" alt="WEBPARK Solutions Background" 
@@ -279,8 +270,8 @@ $contactAddress = $company['contact']['address'] ?? '525/89 ซอยลาด�
     </div>
 </section>
 <section class="bg-white pt-10 pb-8 lg:pt-20 lg:pb-24">
-    <div class="mx-auto w-full max-w-[1720px] px-6 sm:px-6 lg:px-10">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+    <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8 desktop-wide-container">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center lg:px-12 xl:px-24">
             <div class="about-intro-text max-w-xl xl:max-w-2xl opacity-0 translate-y-10">
                 <h2 class="text-3xl md:text-4xl lg:text-[2.75rem] xl:text-5xl font-bold leading-normal py-2 mb-0 lg:mb-1" style="color: #0663F6;">
                     <?= e(t('common.nav_about') !== 'common.nav_about' ? t('common.nav_about') : (getCurrentLang() === 'th' ? 'เกี่ยวกับเรา' : 'About Us')) ?>
@@ -330,33 +321,35 @@ $contactAddress = $company['contact']['address'] ?? '525/89 ซอยลาด�
     </div>
 </section>
 <section class="bg-white py-8 font-sans">
-    <div class="mx-auto w-full max-w-[1720px] px-6 sm:px-6 lg:px-10"> 
-        <div class="gsap-dark-cta bg-dark rounded-[2rem] overflow-hidden relative shadow-2xl flex flex-col md:flex-row items-center min-h-[300px] lg:min-h-[400px] opacity-0 translate-y-10">
-            <div class="absolute inset-0 bg-gradient-to-r from-[#0b162c] to-transparent z-10"></div>
-            <div class="relative z-20 p-8 md:p-12 lg:p-16 w-full md:w-1/2">
-                <h2 class="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-white leading-tight mb-0 md:mb-1">
-                    <?= e(t('common.nav_services') !== 'common.nav_services' ? t('common.nav_services') : (getCurrentLang() === 'th' ? 'บริการของเรา' : 'Our Services')) ?>
-                </h2>
-                <div class="mt-2 mb-4" style="width: 48px; height: 3px; background-color: #0663F6;"></div>
-                <p class="text-slate-300 text-base md:text-lg xl:text-xl leading-relaxed mb-8 max-w-sm xl:max-w-md">
-                    <?= getCurrentLang() === 'th' ? 'Webpark ให้บริการด้าน ERP / ERM, Digital Platform, Online Marketing และ Creative / Design แบบครบวงจร เพื่อช่วยให้องค์กรทำงานได้อย่างมีประสิทธิภาพ เติบโตอย่างเป็นระบบและพร้อมแข่งขันในยุคดิจิทัล' : 'Webpark provides comprehensive services in ERP/ERM, Digital Platform, Online Marketing, and Creative/Design to help organizations work efficiently, grow systematically, and be ready to compete in the digital era.' ?>
-                </p>
-                <a href="<?= e(route_url('/services')) ?>" class="inline-flex items-center gap-2 px-6 py-2.5 xl:px-8 xl:py-3 bg-white text-dark text-sm xl:text-base font-bold rounded-full hover:bg-blue-600 hover:text-white transition-all">
-                    <?= e(t('common.cta_view_services') !== 'common.cta_view_services' ? t('common.cta_view_services') : (getCurrentLang() === 'th' ? 'ดูบริการของเรา' : 'View Our Services')) ?>
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 xl:h-5 xl:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                    </svg>
-                </a>
-            </div>
-            <div class="absolute right-0 bottom-0 inset-0 z-0">
-                <img src="<?= e(asset_url('images/contact.png')) ?>" alt="Portfolio" class="w-full h-full object-cover">
+    <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8 desktop-wide-container"> 
+        <div class="lg:px-12 xl:px-24">
+            <div class="gsap-dark-cta bg-dark rounded-[2rem] overflow-hidden relative shadow-2xl flex flex-col md:flex-row items-center min-h-[300px] lg:min-h-[400px] opacity-0 translate-y-10">
+                <div class="absolute inset-0 bg-gradient-to-r from-[#0b162c] to-transparent z-10"></div>
+                <div class="relative z-20 p-8 md:p-12 lg:p-16 w-full md:w-1/2">
+                    <h2 class="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-white leading-tight mb-0 md:mb-1">
+                        <?= e(t('common.nav_services') !== 'common.nav_services' ? t('common.nav_services') : (getCurrentLang() === 'th' ? 'บริการของเรา' : 'Our Services')) ?>
+                    </h2>
+                    <div class="mt-2 mb-4" style="width: 48px; height: 3px; background-color: #0663F6;"></div>
+                    <p class="text-slate-300 text-base md:text-lg xl:text-xl leading-relaxed mb-8 max-w-sm xl:max-w-md">
+                        <?= getCurrentLang() === 'th' ? 'Webpark ให้บริการด้าน ERP / ERM, Digital Platform, Online Marketing และ Creative / Design แบบครบวงจร เพื่อช่วยให้องค์กรทำงานได้อย่างมีประสิทธิภาพ เติบโตอย่างเป็นระบบและพร้อมแข่งขันในยุคดิจิทัล' : 'Webpark provides comprehensive services in ERP/ERM, Digital Platform, Online Marketing, and Creative/Design to help organizations work efficiently, grow systematically, and be ready to compete in the digital era.' ?>
+                    </p>
+                    <a href="<?= e(route_url('/services')) ?>" class="inline-flex items-center gap-2 px-6 py-2.5 xl:px-8 xl:py-3 bg-white text-dark text-sm xl:text-base font-bold rounded-full hover:bg-blue-600 hover:text-white transition-all">
+                        <?= e(t('common.cta_view_services') !== 'common.cta_view_services' ? t('common.cta_view_services') : (getCurrentLang() === 'th' ? 'ดูบริการของเรา' : 'View Our Services')) ?>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 xl:h-5 xl:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                        </svg>
+                    </a>
+                </div>
+                <div class="absolute right-0 bottom-0 inset-0 z-0">
+                    <img src="<?= e(asset_url('images/contact.png')) ?>" alt="Portfolio" class="w-full h-full object-cover">
+                </div>
             </div>
         </div>
     </div>
 </section>
 <section class="bg-white py-8 lg:py-24 font-sans ipad-pro-approach-section">
-    <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-6"> 
-        <div class="grid grid-cols-1 xl:grid-cols-[40%_55%] gap-12 xl:gap-16 justify-between items-start desktop-concept-grid">
+    <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8 desktop-wide-container"> 
+        <div class="grid grid-cols-1 xl:grid-cols-[40%_55%] gap-12 xl:gap-16 justify-between items-start desktop-concept-grid lg:px-12 xl:px-24">
             <div class="xl:top-8 self-start text-left md:text-center xl:text-left mx-0 md:mx-auto xl:mx-0 flex flex-col items-start md:items-center xl:items-start w-full desktop-concept-text">
                 <h2 class="text-3xl md:text-4xl font-bold leading-tight mb-3 md:mb-6" style="color: #054FC5;">
                     <?= getCurrentLang() === 'th' ? 'แนวคิดในการทำงานของเรา' : 'Our Approach' ?>
@@ -416,49 +409,51 @@ $contactAddress = $company['contact']['address'] ?? '525/89 ซอยลาด�
     </div>
 </section>
 <section id="about-services-scroll" class="bg-[#f8fafc] pt-8 pb-8 lg:pt-24 lg:pb-16 font-sans">
-    <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-6 desktop-wide-container"> 
-        <div class="mb-2">
-            <h2 class="text-2xl md:text-4xl font-bold text-primary mb-4 desktop-services-title tracking-tight md:tracking-normal whitespace-nowrap">
-                <?= getCurrentLang() === 'th' ? 'บริการของเราครอบคลุมทุกด้าน' : 'Comprehensive Services Coverage' ?>
-            </h2>
-        </div>
-        <p class="mb-3 text-sm md:text-base leading-relaxed text-slate-600 max-w-3xl">
-            <?= getCurrentLang() === 'th' ? 'ระบบที่ช่วยพัฒนาโซลูชันดิจิทัลที่ช่วยให้ธุรกิจเติบโตอย่างยั่งยืน' : 'Systems that help develop digital solutions to help your business grow sustainably.' ?>
-        </p>
-        <div id="service-scroll-container" class="flex overflow-x-auto snap-x snap-mandatory scrollbar-none gap-6 pb-6 -mx-4 px-4 md:mx-0 md:px-0 md:grid md:grid-cols-2 lg:grid-cols-3 md:overflow-visible md:snap-none desktop-services-grid">
-            <?php
-            $services = [
-                ['title' => getCurrentLang() === 'th' ? 'พัฒนาระบบซอฟต์แวร์' : 'Software Development', 'desc' => getCurrentLang() === 'th' ? 'ออกแบบและพัฒนาระบบที่ตอบโจทย์ความต้องการ <br class="ipad-pro-hidden-br"> เฉพาะขององค์กร' : 'Design and develop systems tailored to <br class="ipad-pro-hidden-br"> your organization\'s specific needs', 'icon' => asset_url('images/about_5.svg')],
-                ['title' => getCurrentLang() === 'th' ? 'ระบบสำหรับองค์กร' : 'Enterprise Systems', 'desc' => getCurrentLang() === 'th' ? 'วางโครงสร้างระบบองค์กรที่แข็งแกร่ง <br class="ipad-pro-hidden-br"> รองรับการทำงานและประสิทธิภาพที่เพิ่มขึ้น' : 'Build strong enterprise system structures <br class="ipad-pro-hidden-br"> supporting increased operations and efficiency', 'icon' => asset_url('images/about_6.svg')],
-                ['title' => getCurrentLang() === 'th' ? 'การตลาดออนไลน์' : 'Online Marketing', 'desc' => getCurrentLang() === 'th' ? 'วางกลยุทธ์การตลาดออนไลน์ครบวงจร <br class="ipad-pro-hidden-br"> เพิ่มการมองเห็นและสร้างโอกาสทางธุรกิจ' : 'Plan comprehensive online marketing strategies <br class="ipad-pro-hidden-br"> increasing visibility and business opportunities', 'icon' => asset_url('images/about_7.svg')],
-                ['title' => getCurrentLang() === 'th' ? 'เว็บไซต์และแอปพลิเคชัน' : 'Websites & Applications', 'desc' => getCurrentLang() === 'th' ? 'พัฒนาเว็บไซต์และแอปพลิเคชันที่สวยงาม <br class="ipad-pro-hidden-br"> ใช้งานง่าย รองรับทุกอุปกรณ์' : 'Develop beautiful, user-friendly websites <br class="ipad-pro-hidden-br"> and applications supporting all devices', 'icon' => asset_url('images/about_8.svg')],
-                ['title' => getCurrentLang() === 'th' ? 'AI Agent และระบบอัตโนมัติ' : 'AI Agent & Automation', 'desc' => getCurrentLang() === 'th' ? 'ผสานพลัง AI และระบบอัตโนมัติ <br class="ipad-pro-hidden-br"> เพื่อเพิ่มประสิทธิภาพและลดต้นทุนการทำงาน' : 'Integrate AI power and automation <br class="ipad-pro-hidden-br"> to increase efficiency and reduce costs', 'icon' => asset_url('images/about_9.svg')],
-                ['title' => getCurrentLang() === 'th' ? 'งานออกแบบดิจิทัล' : 'Digital Design', 'desc' => getCurrentLang() === 'th' ? 'สร้างสรรค์งานออกแบบดิจิทัลคุณภาพสูง <br class="ipad-pro-hidden-br"> สื่อสารแบรนด์อย่างมืออาชีพ' : 'Create high-quality digital designs <br class="ipad-pro-hidden-br"> communicating your brand professionally', 'icon' => asset_url('images/about_10.svg')]
-            ];
-            ?>
-            <?php foreach ($services as $item): ?>
-                <div class="gsap-scroll-card w-[85vw] md:w-auto shrink-0 snap-center bg-white rounded-2xl p-8 border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:-translate-y-1 hover:shadow-lg transition-all duration-300 group cursor-pointer hover:bg-primary opacity-0 translate-y-10 desktop-services-card">
-                    <div class="w-12 h-12 mb-6 group-hover:scale-110 transition-transform desktop-services-icon">
-                        <img src="<?= e($item['icon']) ?>" alt="<?= e($item['title']) ?>" class="w-full h-full object-contain">
+    <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8 desktop-wide-container"> 
+        <div class="lg:px-12 xl:px-24">
+            <div class="mb-2">
+                <h2 class="text-2xl md:text-4xl font-bold text-primary mb-4 desktop-services-title tracking-tight md:tracking-normal whitespace-nowrap">
+                    <?= getCurrentLang() === 'th' ? 'บริการของเราครอบคลุมทุกด้าน' : 'Comprehensive Services Coverage' ?>
+                </h2>
+            </div>
+            <p class="mb-3 text-sm md:text-base leading-relaxed text-slate-600 max-w-3xl">
+                <?= getCurrentLang() === 'th' ? 'ระบบที่ช่วยพัฒนาโซลูชันดิจิทัลที่ช่วยให้ธุรกิจเติบโตอย่างยั่งยืน' : 'Systems that help develop digital solutions to help your business grow sustainably.' ?>
+            </p>
+            <div id="service-scroll-container" class="flex overflow-x-auto snap-x snap-mandatory scrollbar-none gap-6 pb-6 -mx-4 px-4 md:mx-0 md:px-0 md:grid md:grid-cols-2 lg:grid-cols-3 md:overflow-visible md:snap-none desktop-services-grid">
+                <?php
+                $services = [
+                    ['title' => getCurrentLang() === 'th' ? 'พัฒนาระบบซอฟต์แวร์' : 'Software Development', 'desc' => getCurrentLang() === 'th' ? 'ออกแบบและพัฒนาระบบที่ตอบโจทย์ความต้องการ <br class="ipad-pro-hidden-br"> เฉพาะขององค์กร' : 'Design and develop systems tailored to <br class="ipad-pro-hidden-br"> your organization\'s specific needs', 'icon' => asset_url('images/about_5.svg')],
+                    ['title' => getCurrentLang() === 'th' ? 'ระบบสำหรับองค์กร' : 'Enterprise Systems', 'desc' => getCurrentLang() === 'th' ? 'วางโครงสร้างระบบองค์กรที่แข็งแกร่ง <br class="ipad-pro-hidden-br"> รองรับการทำงานและประสิทธิภาพที่เพิ่มขึ้น' : 'Build strong enterprise system structures <br class="ipad-pro-hidden-br"> supporting increased operations and efficiency', 'icon' => asset_url('images/about_6.svg')],
+                    ['title' => getCurrentLang() === 'th' ? 'การตลาดออนไลน์' : 'Online Marketing', 'desc' => getCurrentLang() === 'th' ? 'วางกลยุทธ์การตลาดออนไลน์ครบวงจร <br class="ipad-pro-hidden-br"> เพิ่มการมองเห็นและสร้างโอกาสทางธุรกิจ' : 'Plan comprehensive online marketing strategies <br class="ipad-pro-hidden-br"> increasing visibility and business opportunities', 'icon' => asset_url('images/about_7.svg')],
+                    ['title' => getCurrentLang() === 'th' ? 'เว็บไซต์และแอปพลิเคชัน' : 'Websites & Applications', 'desc' => getCurrentLang() === 'th' ? 'พัฒนาเว็บไซต์และแอปพลิเคชันที่สวยงาม <br class="ipad-pro-hidden-br"> ใช้งานง่าย รองรับทุกอุปกรณ์' : 'Develop beautiful, user-friendly websites <br class="ipad-pro-hidden-br"> and applications supporting all devices', 'icon' => asset_url('images/about_8.svg')],
+                    ['title' => getCurrentLang() === 'th' ? 'AI Agent และระบบอัตโนมัติ' : 'AI Agent & Automation', 'desc' => getCurrentLang() === 'th' ? 'ผสานพลัง AI และระบบอัตโนมัติ <br class="ipad-pro-hidden-br"> เพื่อเพิ่มประสิทธิภาพและลดต้นทุนการทำงาน' : 'Integrate AI power and automation <br class="ipad-pro-hidden-br"> to increase efficiency and reduce costs', 'icon' => asset_url('images/about_9.svg')],
+                    ['title' => getCurrentLang() === 'th' ? 'งานออกแบบดิจิทัล' : 'Digital Design', 'desc' => getCurrentLang() === 'th' ? 'สร้างสรรค์งานออกแบบดิจิทัลคุณภาพสูง <br class="ipad-pro-hidden-br"> สื่อสารแบรนด์อย่างมืออาชีพ' : 'Create high-quality digital designs <br class="ipad-pro-hidden-br"> communicating your brand professionally', 'icon' => asset_url('images/about_10.svg')]
+                ];
+                ?>
+                <?php foreach ($services as $item): ?>
+                    <div class="gsap-scroll-card w-[85vw] md:w-auto shrink-0 snap-center bg-white rounded-2xl p-8 border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:-translate-y-1 hover:shadow-lg transition-all duration-300 group cursor-pointer hover:bg-primary opacity-0 translate-y-10 desktop-services-card">
+                        <div class="w-12 h-12 mb-6 group-hover:scale-110 transition-transform desktop-services-icon">
+                            <img src="<?= e($item['icon']) ?>" alt="<?= e($item['title']) ?>" class="w-full h-full object-contain">
+                        </div>
+                        <h3 class="text-dark font-bold text-lg mb-3 group-hover:text-white transition-colors desktop-services-h3">
+                            <?= e($item['title']) ?>
+                        </h3>
+                        <p class="text-slate-500 text-md leading-relaxed group-hover:text-white transition-colors desktop-services-p">
+                            <?= $item['desc'] ?>
+                        </p>
                     </div>
-                    <h3 class="text-dark font-bold text-lg mb-3 group-hover:text-white transition-colors desktop-services-h3">
-                        <?= e($item['title']) ?>
-                    </h3>
-                    <p class="text-slate-500 text-md leading-relaxed group-hover:text-white transition-colors desktop-services-p">
-                        <?= $item['desc'] ?>
-                    </p>
-                </div>
-            <?php endforeach; ?>
-        </div>
-        <!-- Indicator dots for mobile only -->
-        <div class="flex justify-center gap-2 mt-2 md:hidden" id="service-dots">
-            <?php for ($i = 0; $i < count($services); $i++): ?>
-                <button 
-                    class="w-2.5 h-2.5 rounded-full transition-all duration-300 <?= $i === 0 ? 'bg-primary w-5' : 'bg-slate-300' ?>" 
-                    aria-label="Go to slide <?= $i + 1 ?>"
-                    onclick="scrollToService(<?= $i ?>)"
-                ></button>
-            <?php endfor; ?>
+                <?php endforeach; ?>
+            </div>
+            <!-- Indicator dots for mobile only -->
+            <div class="flex justify-center gap-2 mt-2 md:hidden" id="service-dots">
+                <?php for ($i = 0; $i < count($services); $i++): ?>
+                    <button 
+                        class="w-2.5 h-2.5 rounded-full transition-all duration-300 <?= $i === 0 ? 'bg-primary w-5' : 'bg-slate-300' ?>" 
+                        aria-label="Go to slide <?= $i + 1 ?>"
+                        onclick="scrollToService(<?= $i ?>)"
+                    ></button>
+                <?php endfor; ?>
+            </div>
         </div>
         <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -502,8 +497,8 @@ $contactAddress = $company['contact']['address'] ?? '525/89 ซอยลาด�
     </div>
 </section>
 <section class="bg-slate-50 pt-8 pb-8 lg:pt-16 lg:pb-20 font-sans mb-4">
-    <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-6 desktop-wide-container"> 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-6">
+    <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8 desktop-wide-container"> 
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-6 lg:px-12 xl:px-24">
             <div class="gsap-stat-card bg-white rounded-2xl shadow-sm hover:shadow-md transition-shadow p-6 md:p-8 flex flex-row items-center justify-start gap-6 border border-slate-100 opacity-0 translate-y-10 desktop-stat-card">
                 <img src="/Corparate_Webpark/frontend/public/assets/images/Capa_2.svg" alt="120+ องค์กรชั้นนำ" class="w-20 h-20 md:w-24 md:h-24 object-contain flex-shrink-0 desktop-stat-img" />
                 <div class="flex flex-col text-left">
