@@ -5179,6 +5179,10 @@ h1,
     max-width: none;
   }
 
+  .lg\:max-w-3xl {
+    max-width: 48rem;
+  }
+
   .lg\:shrink {
     flex-shrink: 1;
   }
@@ -5617,6 +5621,10 @@ h1,
 
   .xl\:max-w-md {
     max-width: 28rem;
+  }
+
+  .xl\:max-w-4xl {
+    max-width: 56rem;
   }
 
   .xl\:grid-cols-3 {
