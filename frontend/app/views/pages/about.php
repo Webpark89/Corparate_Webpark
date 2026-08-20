@@ -184,6 +184,16 @@ $contactAddress = $company['contact']['address'] ?? '525/89 ซอยลาด�
         }
     }
 
+    /* สไตล์พิเศษสำหรับหน้าจอ Desktop (ใหญ่กว่า iPad Pro) เพื่อให้ระยะขอบเท่ากับหน้าอื่นๆ */
+    @media (min-width: 1025px) {
+        .desktop-wide-container-about,
+        .desktop-wide-container {
+            max-width: 1720px !important;
+            padding-left: 2.5rem !important;
+            padding-right: 2.5rem !important;
+        }
+    }
+
     /* Accessibility: เคารพการตั้งค่า Reduce Motion ของผู้ใช้ ลด/ปิด animation แบบ CSS ทั้งหมดในหน้านี้ */
     @media (prefers-reduced-motion: reduce) {
         *, *::before, *::after {
@@ -203,7 +213,7 @@ $contactAddress = $company['contact']['address'] ?? '525/89 ซอยลาด�
         <div class="absolute inset-x-0 bottom-0 h-[30%] bg-gradient-to-t from-white to-transparent z-10"></div>
     </div>
 
-    <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8 pt-12 pb-16 lg:pt-28 lg:pb-16 relative z-10">
+    <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8 pt-12 pb-16 lg:pt-28 lg:pb-16 relative z-10 desktop-wide-container-about">
         <div class="absolute inset-0 z-0 overflow-hidden lg:hidden rounded-2xl">
             <img src="<?= e($heroImage) ?>" alt="WEBPARK Solutions Background" 
                 class="hero-parallax-img w-full h-full object-cover object-[75%_center] opacity-100 mix-blend-screen">
@@ -266,7 +276,7 @@ $contactAddress = $company['contact']['address'] ?? '525/89 ซอยลาด�
 </section>
 
 <section class="bg-white pt-10 pb-8 lg:pt-20 lg:pb-24">
-    <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-6">
+    <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-6 desktop-wide-container-about">
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             
@@ -344,7 +354,7 @@ $contactAddress = $company['contact']['address'] ?? '525/89 ซอยลาด�
 </section>
 
 <section class="bg-white py-8 font-sans">
-    <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-6"> 
+    <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-6 desktop-wide-container-about"> 
         <div class="gsap-dark-cta bg-dark rounded-[2rem] overflow-hidden relative shadow-2xl flex flex-col md:flex-row items-center min-h-[300px] lg:min-h-[400px] opacity-0 translate-y-10">
             
             <div class="absolute inset-0 bg-gradient-to-r from-[#0b162c] to-transparent z-10"></div>
@@ -373,7 +383,7 @@ $contactAddress = $company['contact']['address'] ?? '525/89 ซอยลาด�
 </section>
 
 <section class="bg-white py-8 lg:py-24 font-sans">
-    <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-6"> 
+    <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-6 desktop-wide-container-about"> 
         <div class="grid grid-cols-1 lg:grid-cols-[40%_55%] gap-12 lg:gap-16 justify-between items-start">
             
             <div class="lg:top-8 self-start">
@@ -439,7 +449,7 @@ $contactAddress = $company['contact']['address'] ?? '525/89 ซอยลาด�
 </section>
 
 <section id="about-services-scroll" class="bg-[#f8fafc] pt-8 pb-8 lg:pt-24 lg:pb-16 font-sans ipad-pro-services-section">
-    <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-6 desktop-wide-container"> 
+    <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-6 desktop-wide-container-about"> 
         <div class="mb-2">
             <h2 class="text-3xl md:text-4xl font-bold text-primary mb-4">
                 <?= getCurrentLang() === 'th' ? 'บริการของเราครอบคลุมทุกด้าน' : 'Comprehensive Services Coverage' ?>
@@ -538,7 +548,7 @@ $contactAddress = $company['contact']['address'] ?? '525/89 ซอยลาด�
     </div>
 </section>
 <section class="bg-slate-50 pt-8 pb-8 lg:pt-16 lg:pb-20 font-sans mb-4 ipad-pro-stats-section">
-    <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-6 desktop-wide-container"> 
+    <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-6 desktop-wide-container-about"> 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-6">
 
             <div class="gsap-stat-card bg-white rounded-2xl shadow-sm hover:shadow-md transition-shadow p-6 md:p-8 flex flex-row items-center justify-start gap-6 border border-slate-100 opacity-0 translate-y-10">

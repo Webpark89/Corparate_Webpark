@@ -767,56 +767,6 @@ $erpPortfolios = $mockErpPortfolios;
                                 <h4 class="text-lg sm:text-base font-bold text-[#043B94] mb-1 sm:mb-1 desktop-erp-benefit-title"><?= e($benefit['title']) ?></h4>
                                 <p class="text-base sm:text-sm text-slate-500 leading-relaxed desktop-erp-benefit-desc"><?= e($benefit['desc']) ?></p>
                             </div>
-=======
-                .ipad-pro-span-bottom {
-                    grid-column: span 3 / span 3 !important;
-                }
-            }
-        </style>
-        <div class="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-5 gap-6 ipad-pro-benefits-grid">
-            <?php
-            $erpBenefits = [
-                [
-                    'title' => t('erp.benefit_complete_data_title') !== 'erp.benefit_complete_data_title' ? t('erp.benefit_complete_data_title') : (getCurrentLang() === 'th' ? 'ข้อมูลครบถ้วน' : 'Complete Data'),
-                    'desc' => getCurrentLang() === 'th' ? 'เชื่อมต่อทุกแผนกในระบบเดียว' : 'All departments in one system', /* แก้ไขคำอธิบายตามรูป */
-                    'icon' => asset_url('images/ERP_5.svg'),
-                ],
-                [
-                    'title' => t('erp.less_duplication_title') !== 'erp.less_duplication_title' ? t('erp.less_duplication_title') : (getCurrentLang() === 'th' ? 'ลดงานซ้ำซ้อน' : 'Less Duplication'),
-                    'desc' => getCurrentLang() === 'th' ? 'เพิ่มประสิทธิภาพการทำงาน' : 'Increase working efficiency',
-                    'icon' => asset_url('images/ERP_6.svg'),
-                ],
-                [
-                    'title' => t('erp.benefit_realtime_data_title') !== 'erp.benefit_realtime_data_title' ? t('erp.benefit_realtime_data_title') : (getCurrentLang() === 'th' ? 'ข้อมูลเรียลไทม์' : 'Real-Time Data'),
-                    'desc' => t('erp.benefit_realtime_data_desc') !== 'erp.benefit_realtime_data_desc' ? t('erp.benefit_realtime_data_desc') : (getCurrentLang() === 'th' ? 'ตัดสินใจได้แม่นยำและรวดเร็ว' : 'Make decisions accurately and quickly'),
-                    'icon' => asset_url('images/ERP_7.svg'),
-                ],
-                [
-                    'title' => t('erp.benefit_risk_control_title') !== 'erp.benefit_risk_control_title' ? t('erp.benefit_risk_control_title') : (getCurrentLang() === 'th' ? 'ควบคุมความเสี่ยง' : 'Risk Control'),
-                    'desc' => t('erp.benefit_risk_control_desc') !== 'erp.benefit_risk_control_desc' ? t('erp.benefit_risk_control_desc') : (getCurrentLang() === 'th' ? 'ตรวจสอบและติดตามได้ทุกขั้นตอน' : 'Audit and track every step'),
-                    'icon' => asset_url('images/ERP_8.svg'),
-                ],
-                [
-                    'title' => t('erp.benefit_scalable_title') !== 'erp.benefit_scalable_title' ? t('erp.benefit_scalable_title') : (getCurrentLang() === 'th' ? 'ขยายได้ตามธุรกิจ' : 'Scalable'),
-                    'desc' => t('erp.benefit_scalable_desc') !== 'erp.benefit_scalable_desc' ? t('erp.benefit_scalable_desc') : (getCurrentLang() === 'th' ? 'รองรับการเติบโตในอนาคต' : 'Support future growth'),
-                    'icon' => asset_url('images/ERP_9.svg'),
-                ],
-            ];
-            ?>
-            <?php foreach ($erpBenefits as $index => $benefit): 
-                // Set custom class for iPad Pro 6-col grid logic
-                if ($index < 3) {
-                    $lgClass = 'ipad-pro-span-top';
-                } else {
-                    $lgClass = 'ipad-pro-span-bottom';
-                }
-            ?>
-                <?php if($index === 4): ?>
-                    <!-- 5th Block: Horizontal rectangle on mobile, Square on desktop -->
-                    <div class="gsap-erp-benefit-card bg-white rounded-2xl py-10 px-6 sm:p-6 border border-slate-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 col-span-2 sm:col-span-1 <?= $lgClass ?> flex flex-row sm:block items-center text-left sm:text-center gap-6 sm:gap-0 opacity-0 translate-y-10 desktop-erp-benefit-card">
-                        <div class="w-16 h-16 sm:w-14 sm:h-14 sm:mx-auto shrink-0 bg-blue-50/70 rounded-full flex items-center justify-center sm:mb-4 desktop-erp-benefit-icon-wrap">
-                            <img src="<?= e($benefit['icon']) ?>" alt="<?= e($benefit['title']) ?>" class="h-full w-full object-contain desktop-erp-benefit-icon-img">
->>>>>>> origin/tw
                         </div>
                     <?php else: ?>
                         <!-- Blocks 1-4: Square -->
