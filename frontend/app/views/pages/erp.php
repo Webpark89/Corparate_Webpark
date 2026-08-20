@@ -161,6 +161,13 @@ $modulesData = $mockModules;
 $erpPortfolios = $mockErpPortfolios;
 ?>
 <style>
+    @media (max-width: 767px) {
+        .gsap-erp-module-card:active .desktop-erp-module-desc,
+        .gsap-erp-module-card:hover .desktop-erp-module-desc {
+            -webkit-line-clamp: unset !important;
+            line-clamp: none !important;
+        }
+    }
     @keyframes fadeSlideUp {
         0% { opacity: 0; transform: translateY(30px); }
         100% { opacity: 1; transform: translateY(0); }
@@ -587,7 +594,7 @@ $erpPortfolios = $mockErpPortfolios;
             <div class="erp-right-col gsap-erp-about-right flex-[4] grid grid-cols-2 sm:grid-cols-2 xl:grid-cols-4 w-full opacity-0 translate-y-10 desktop-erp-about-right">
                 <?php
                 $serviceCards = [
-                    ['icon' => asset_url('images/ERP_1.svg'), 'title' => getCurrentLang() === 'th' ? 'ข้อมูลเชื่อมต่อครบทุกแผนก' : 'Connected Data Across Departments', 'desc' => getCurrentLang() === 'th' ? 'ข้อมูลเป็นหนึ่งเดียว ไม่ต้องทำงานซ้ำ' : 'Single source of truth, eliminating duplicate work.', 'href' => '#'],
+                    ['icon' => asset_url('images/ERP_1.svg'), 'title' => getCurrentLang() === 'th' ? 'ข้อมูลเชื่อมต่อครบทุกแผนก' : 'Connected Data Across Departments', 'desc' => getCurrentLang() === 'th' ? 'ข้อมูลเป็นหนึ่งเดียว<br class="block sm:hidden"><span class="hidden sm:inline"> </span>ไม่ต้องทำงานซ้ำ' : 'Single source of truth, eliminating duplicate work.', 'href' => '#'],
                     ['icon' => asset_url('images/ERP_2.svg'), 'title' => getCurrentLang() === 'th' ? 'ทำงานอัตโนมัติ ลดความผิดพลาด' : 'Automated Processes & Reduced Errors', 'desc' => getCurrentLang() === 'th' ? 'ลดขั้นตอนงานเอกสาร เพิ่มความแม่นยำ' : 'Minimize paperwork and increase accuracy.', 'href' => '#'],
                     ['icon' => asset_url('images/ERP_3.svg'), 'title' => getCurrentLang() === 'th' ? 'มองเห็นแบบเรียลไทม์ ตัดสินใจได้ไว' : 'Real-time Visibility & Quick Decisions', 'desc' => getCurrentLang() === 'th' ? 'รายงานและ Dashboard อัปเดตตลอดเวลา' : 'Always-updated reports and dashboards.', 'href' => '#'],
                     ['icon' => asset_url('images/ERP_4.svg'), 'title' => getCurrentLang() === 'th' ? 'รองรับการเติบโต ของธุรกิจ' : 'Supports Business Growth', 'desc' => getCurrentLang() === 'th' ? 'ขยายระบบได้ตามความต้องการ พร้อมเติบโตในอนาคต' : 'Scalable system ready to grow with your business in the future.', 'href' => '#'],
@@ -626,7 +633,7 @@ $erpPortfolios = $mockErpPortfolios;
                                 <?= e($card['title']) ?>
                             </h2>
                             <p class="text-gray-500 text-base md:text-lg lg:text-xl leading-relaxed mb-6 text-center transition-colors duration-300 group-hover:text-gray-600 desktop-erp-about-card-desc ipad-pro-erp-about-card-desc">
-                                <?= e($card['desc']) ?>
+                                <?= $card['desc'] ?>
                             </p>
                         </div>
                     </div>

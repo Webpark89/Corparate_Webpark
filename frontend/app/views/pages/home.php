@@ -600,7 +600,7 @@ $totalReviews = count($reviews);
                 REVIEW
             </h2>
             <?php endif; ?>
-            <span class="text-xl md:text-2xl lg:text-[28px] font-bold leading-tight text-dark">
+            <span class="hidden lg:block text-xl md:text-2xl lg:text-[28px] font-bold leading-tight text-dark">
                 <?= getCurrentLang() === 'th' ? 'กว่า <span class="text-primary">120</span> องค์กรชั้นนำ ที่เลือก <span class="text-primary">WEBPARK</span> เป็นพาร์ทเนอร์ด้านดิจิทัล' : 'Over <span class="text-primary">120</span> leading organizations trust <span class="text-primary">WEBPARK</span> as their digital partner' ?>
             </span>
         </div>
@@ -638,9 +638,12 @@ $totalReviews = count($reviews);
         </div>
         <?php if ($totalReviews > 0): ?>
         <div class="lg:hidden text-center mb-6">
-            <h2 class="text-primary font-bold text-2xl tracking-normal mb-2">
-                <?= e(getCurrentLang() === 'th' ? 'เสียงจากลูกค้าของเรา' : 'Testimonials') ?>
+            <h2 class="text-primary font-bold text-xl tracking-normal uppercase mb-2">
+                REVIEW
             </h2>
+            <span class="block text-[17px] sm:text-lg font-bold leading-tight text-dark px-4">
+                <?= getCurrentLang() === 'th' ? 'กว่า <span class="text-primary">120</span> องค์กรชั้นนำ ที่เลือก <span class="text-primary">WEBPARK</span> เป็นพาร์ทเนอร์ด้านดิจิทัล' : 'Over <span class="text-primary">120</span> leading organizations trust <span class="text-primary">WEBPARK</span> as their digital partner' ?>
+            </span>
         </div>
         <style>
             .pause-on-hover:hover {
