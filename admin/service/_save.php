@@ -17,7 +17,7 @@ $detailsJson = json_encode([
 $imagePath = $_POST['old_image'] ?? '';
 try {
     if (!empty($_FILES['image']['name'])) {
-        $imagePath = handle_upload('image', ['jpg', 'png', 'webp']);
+        $imagePath = handle_upload('image', ['jpg', 'jpeg', 'png', 'webp', 'gif', 'svg']);
     }
 } catch (RuntimeException $e) {
     flash('error', 'อัพโหลดรูปภาพไม่สำเร็จ: ' . $e->getMessage());

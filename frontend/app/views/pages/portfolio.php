@@ -124,12 +124,12 @@ $initialProjects = $portfolioTabs[$activeFilter] ?? $portfolioTabs['All'] ?? [];
                             article.tabIndex = 0;
                         }
                         const media = document.createElement('div');
-                        media.className = 'relative aspect-[4/3] w-full overflow-hidden bg-slate-100 shrink-0';
+                        media.className = 'relative aspect-[4/3] w-full overflow-hidden bg-slate-50 flex items-center justify-center p-4 shrink-0';
                         if (item.image) {
                             const img = document.createElement('img');
                             img.src = item.image;
                             img.alt = item.title || '';
-                            img.className = 'h-full w-full object-cover transition duration-500 group-hover:scale-105';
+                            img.className = 'max-h-full max-w-full w-auto h-auto object-contain transition duration-500 group-hover:scale-105';
                             media.appendChild(img);
                         } else {
                             const fallback = document.createElement('div');

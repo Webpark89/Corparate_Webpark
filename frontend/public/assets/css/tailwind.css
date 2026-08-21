@@ -3065,6 +3065,10 @@ h1,
   padding: 2rem;
 }
 
+.p-1 {
+  padding: 0.25rem;
+}
+
 .px-1 {
   padding-left: 0.25rem;
   padding-right: 0.25rem;
@@ -4056,6 +4060,10 @@ h1,
   gap: 0.5rem;
 }
 
+.hover\:gap-3:hover {
+  gap: 0.75rem;
+}
+
 .hover\:rounded-xl:hover {
   border-radius: 0.75rem;
 }
@@ -5038,6 +5046,10 @@ h1,
     top: 7rem;
   }
 
+  .lg\:top-8 {
+    top: 2rem;
+  }
+
   .lg\:col-span-4 {
     grid-column: span 4 / span 4;
   }
@@ -5209,6 +5221,10 @@ h1,
 
   .lg\:grid-cols-\[3fr_2fr\] {
     grid-template-columns: 3fr 2fr;
+  }
+
+  .lg\:grid-cols-\[40\%_55\%\] {
+    grid-template-columns: 40% 55%;
   }
 
   .lg\:flex-row {
@@ -5675,6 +5691,11 @@ h1,
   .xl\:py-3 {
     padding-top: 0.75rem;
     padding-bottom: 0.75rem;
+  }
+
+  .xl\:px-24 {
+    padding-left: 6rem;
+    padding-right: 6rem;
   }
 
   .xl\:text-left {

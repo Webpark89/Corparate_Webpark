@@ -113,45 +113,28 @@ class HomeController
             $reviews = [];
         }
 
-        // Load portfolios for homepage (Mocked data to match design)
-        $displayPortfolios = [
-            [
-                'id' => 1,
-                'title' => 'KPN Click',
-                'description' => 'ระบบ ERP สำหรับบริหารข้อมูลและกระบวนการทำงานภายในองค์กร',
-                'category' => 'ERP System',
-                'image_path' => 'uploads/portfolios/kpn-click.png',
-                'cover_image' => 'uploads/portfolios/kpn-click.png',
-                'logo_path' => 'uploads/portfolios/kpn-logo.png'
-            ],
-            [
-                'id' => 2,
-                'title' => 'Yamaha LEAD',
-                'description' => 'ระบบ ERP สำหรับบริหารข้อมูลและกระบวนการทำงานภายในองค์กร ช่วยลดขั้นตอนซ้ำซ้อนและเพิ่มประสิทธิภาพการจัดการงานอย่างเป็นระบบ',
-                'category' => 'ERP System',
-                'image_path' => 'uploads/portfolios/yamaha-lead.png',
-                'cover_image' => 'uploads/portfolios/yamaha-lead.png',
-                'logo_path' => 'uploads/portfolios/yamaha-logo.png'
-            ],
-            [
-                'id' => 3,
-                'title' => 'Nusasiri',
-                'description' => 'ระบบ ERP สำหรับบริหารโครงการอสังหาริมทรัพย์',
-                'category' => 'ERP System',
-                'image_path' => 'uploads/portfolios/nusasiri.png',
-                'cover_image' => 'uploads/portfolios/nusasiri.png',
-                'logo_path' => 'uploads/portfolios/nusasiri-logo.png'
-            ],
-            [
-                'id' => 4,
-                'title' => 'NS Gas',
-                'description' => 'ระบบ ERP สำหรับบริหารจัดการก๊าซและขนส่ง',
-                'category' => 'ERP System',
-                'image_path' => 'uploads/portfolios/nsgas.png',
-                'cover_image' => 'uploads/portfolios/nsgas.png',
-                'logo_path' => 'uploads/portfolios/nsgas-logo.png'
-            ]
-        ];
+        // Load published portfolios from database for homepage
+        try {
+            $portfolioModel = new Portfolio();
+            $publishedPortfolios = $portfolioModel->getPublished();
+            $displayPortfolios = array_map(static function (array $row): array {
+                return [
+                    'id' => (int) ($row['id'] ?? 0),
+                    'title' => (string) ($row['title'] ?? $row['meta_title'] ?? 'Portfolio'),
+                    'description' => (string) ($row['summary'] ?? $row['meta_description'] ?? $row['description'] ?? ''),
+                    'category' => (string) ($row['category'] ?? 'Creative / Design'),
+                    'client_name' => (string) ($row['client_name'] ?? ''),
+                    'tech_stack' => (string) ($row['tech_stack'] ?? ''),
+                    'slug' => (string) ($row['slug'] ?? ''),
+                    'image_path' => (string) ($row['image_path'] ?? $row['cover_image'] ?? ''),
+                    'cover_image' => (string) ($row['cover_image'] ?? $row['image_path'] ?? ''),
+                    'cover_image_alt' => (string) ($row['cover_image_alt'] ?? ''),
+                    'logo_path' => (string) ($row['cover_image'] ?? $row['image_path'] ?? ''),
+                ];
+            }, $publishedPortfolios);
+        } catch (Throwable $e) {
+            $displayPortfolios = [];
+        }
 
         // Build simplified services for homepage using the full catalog (first 4)
         $serviceModel = $this->getServiceModel();
@@ -806,44 +789,24 @@ class HomeController
 
         $currentModule = $moduleMap[$activeModule] ?? $modules[0];
 
-        $erpPortfolios = [
-            [
-                'id' => 1,
-                'title' => 'KPN Click',
-                'description' => 'ระบบ ERP สำหรับบริหารข้อมูลและกระบวนการทำงานภายในองค์กร',
-                'slug' => 'kpn-click',
-                'image_path' => 'uploads/portfolios/kpn-click.png',
-                'cover_image' => 'uploads/portfolios/kpn-click.png',
-                'logo_path' => 'uploads/portfolios/kpn-logo.png'
-            ],
-            [
-                'id' => 2,
-                'title' => 'Yamaha LEAD',
-                'description' => 'ระบบ ERP สำหรับบริหารข้อมูลและกระบวนการทำงานภายในองค์กร ช่วยลดขั้นตอนซ้ำซ้อนและเพิ่มประสิทธิภาพการจัดการงานอย่างเป็นระบบ',
-                'slug' => 'yamaha-lead',
-                'image_path' => 'uploads/portfolios/yamaha-lead.png',
-                'cover_image' => 'uploads/portfolios/yamaha-lead.png',
-                'logo_path' => 'uploads/portfolios/yamaha-logo.png'
-            ],
-            [
-                'id' => 3,
-                'title' => 'Nusasiri',
-                'description' => 'ระบบ ERP สำหรับบริหารโครงการอสังหาริมทรัพย์',
-                'slug' => 'nusasiri',
-                'image_path' => 'uploads/portfolios/nusasiri.png',
-                'cover_image' => 'uploads/portfolios/nusasiri.png',
-                'logo_path' => 'uploads/portfolios/nusasiri-logo.png'
-            ],
-            [
-                'id' => 4,
-                'title' => 'NS Gas',
-                'description' => 'ระบบ ERP สำหรับบริหารจัดการก๊าซและขนส่ง',
-                'slug' => 'ns-gas',
-                'image_path' => 'uploads/portfolios/nsgas.png',
-                'cover_image' => 'uploads/portfolios/nsgas.png',
-                'logo_path' => 'uploads/portfolios/nsgas-logo.png'
-            ]
-        ];
+        try {
+            $portfolioModel = new Portfolio();
+            $publishedPortfolios = $portfolioModel->getPublished();
+            $erpPortfolios = array_map(static function (array $row): array {
+                return [
+                    'id' => (int) ($row['id'] ?? 0),
+                    'title' => (string) ($row['title'] ?? $row['meta_title'] ?? 'Portfolio'),
+                    'description' => (string) ($row['summary'] ?? $row['meta_description'] ?? $row['description'] ?? ''),
+                    'category' => (string) ($row['category'] ?? 'ERP System'),
+                    'slug' => (string) ($row['slug'] ?? ''),
+                    'image_path' => (string) ($row['image_path'] ?? $row['cover_image'] ?? ''),
+                    'cover_image' => (string) ($row['cover_image'] ?? $row['image_path'] ?? ''),
+                    'logo_path' => (string) ($row['cover_image'] ?? $row['image_path'] ?? ''),
+                ];
+            }, $publishedPortfolios);
+        } catch (Throwable $e) {
+            $erpPortfolios = [];
+        }
 
         $this->view('pages/erp.php', array_merge($this->sharedData('erp', 'ERP System'), [
             'benefits' => $benefits,

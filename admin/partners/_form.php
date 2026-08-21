@@ -52,7 +52,7 @@ $inputClass = 'w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text
                             </label>
                         </div>
                         <input type="hidden" name="image_url" value="<?= e($data['image_url'] ?? '') ?>">
-                        <p class="text-[10px] text-slate-400 text-center mt-1.5">รองรับ JPEG, PNG, WEBP, SVG (ไม่เกิน 5MB)</p>
+                        <p class="text-[10px] text-slate-400 text-center mt-1.5">รองรับ JPEG, PNG, WEBP, SVG (ไม่เกิน 25MB)</p>
                     </div>
                 </div>
                 <div class="md:col-span-8 w-full space-y-5 lg:pl-6">
