@@ -17,6 +17,18 @@ $settings = db()->query("SELECT * FROM settings WHERE `group` = 'contact' ORDER 
             + เพิ่มรายการติดต่อใหม่
         </a>
     </header>
+    <?php if ($msg = flash('success')): ?>
+        <div class="mb-4 rounded-xl bg-emerald-50 border border-emerald-200 p-4 text-xs font-semibold text-emerald-700 flex items-center gap-2">
+            <svg class="w-4 h-4 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+            <?= e($msg) ?>
+        </div>
+    <?php endif; ?>
+    <?php if ($msg = flash('error')): ?>
+        <div class="mb-4 rounded-xl bg-red-50 border border-red-200 p-4 text-xs font-semibold text-red-700 flex items-center gap-2">
+            <svg class="w-4 h-4 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            <?= e($msg) ?>
+        </div>
+    <?php endif; ?>
     <section class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
         <div class="overflow-x-auto">
             <table class="min-w-full divide-y divide-slate-200 text-xs">

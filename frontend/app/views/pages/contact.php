@@ -234,60 +234,79 @@ $form = $form ?? [];
                                 opacity: 1 !important;
                             }
                         </style>
-                        <form method="post" class="flex flex-col flex-grow space-y-4">
-                            <!-- Desktop Name Field (1 field) -->
-                            <div id="contact_desktop-name-wrapper" class="hidden lg:block">
-                                <input type="text" id="contact_name_desktop" name="name" placeholder="<?= e(t('common.form_label_fullname')) ?>" value="<?= e($form['name'] ?? '') ?>" required maxlength="100"
-                                    class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-base text-slate-900 outline-none transition-all duration-300 custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary focus:shadow-inner">
-                            </div>
-                            <!-- Mobile Name Fields (2 fields) -->
-                            <div id="contact_mobile-name-wrapper" class="grid grid-cols-1 gap-4 lg:hidden">
-                                <input type="text" id="contact_name_mobile_first" name="firstname" placeholder="<?= e(getCurrentLang() === 'th' ? 'ชื่อ' : 'First Name') ?>" value="<?= e($form['firstname'] ?? '') ?>" required maxlength="50"
-                                    class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-base text-slate-900 outline-none transition-all duration-300 custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary focus:shadow-inner">
-                                <input type="text" id="contact_name_mobile_last" name="lastname" placeholder="<?= e(getCurrentLang() === 'th' ? 'นามสกุล' : 'Last Name') ?>" value="<?= e($form['lastname'] ?? '') ?>" required maxlength="50"
-                                    class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-base text-slate-900 outline-none transition-all duration-300 custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary focus:shadow-inner">
-                            </div>
-                            <script>
-                                function updateContactFormLayout() {
-                                    const isDesktop = window.innerWidth >= 1024; // lg breakpoint
-                                    const nameDesktop = document.getElementById('contact_name_desktop');
-                                    const nameMobileFirst = document.getElementById('contact_name_mobile_first');
-                                    const nameMobileLast = document.getElementById('contact_name_mobile_last');
-                                    if (isDesktop) {
-                                        if(nameDesktop) nameDesktop.disabled = false;
-                                        if(nameMobileFirst) nameMobileFirst.disabled = true;
-                                        if(nameMobileLast) nameMobileLast.disabled = true;
-                                    } else {
-                                        if(nameDesktop) nameDesktop.disabled = true;
-                                        if(nameMobileFirst) nameMobileFirst.disabled = false;
-                                        if(nameMobileLast) nameMobileLast.disabled = false;
-                                    }
-                                }
-                                window.addEventListener('resize', updateContactFormLayout);
-                                window.addEventListener('DOMContentLoaded', updateContactFormLayout);
-                                updateContactFormLayout();
-                            </script>
+                        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+                        <form id="contactMainForm" method="post" class="flex flex-col flex-grow space-y-4">
+                            <!-- First Name & Last Name (Separated, 2 columns) -->
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                <input type="text" inputmode="numeric" name="phone" placeholder="<?= e(t('common.form_label_phone')) ?>" value="<?= e($form['phone'] ?? '') ?>" required maxlength="10" pattern="\d{10}" oninput="this.value = this.value.replace(/[^0-9]/g, '');"
-                                    class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-base text-slate-900 outline-none transition-all duration-300 custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary focus:shadow-inner">
-                                <input type="email" name="email" placeholder="<?= e(t('common.form_label_email')) ?>" value="<?= e($form['email'] ?? '') ?>" required maxlength="255" oninvalid="this.setCustomValidity('กรุณาระบุอีเมลที่มี @')" oninput="this.setCustomValidity('')" onblur="if(this.value && !this.value.includes('@')) { this.setCustomValidity('กรุณาระบุอีเมลที่มี @'); this.reportValidity(); }"
-                                    class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-base text-slate-900 outline-none transition-all duration-300 custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary focus:shadow-inner">
+                                <div>
+                                    <input type="text" id="contact_first_name" name="first_name" placeholder="<?= e(t('common.form_label_firstname')) ?> *" value="<?= e($form['first_name'] ?? '') ?>" required maxlength="30"
+                                        class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-base text-slate-900 outline-none transition-all duration-300 custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary focus:shadow-inner"
+                                        oninput="this.value = this.value.replace(/\s+/g, '');">
+                                </div>
+                                <div>
+                                    <input type="text" id="contact_last_name" name="last_name" placeholder="<?= e(t('common.form_label_lastname')) ?> *" value="<?= e($form['last_name'] ?? '') ?>" required maxlength="30"
+                                        class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-base text-slate-900 outline-none transition-all duration-300 custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary focus:shadow-inner"
+                                        oninput="this.value = this.value.replace(/\s+/g, '');">
+                                </div>
                             </div>
+
+                            <!-- Company Name (Optional) -->
                             <div>
-                                <textarea name="message" placeholder="<?= e(t('common.form_label_details')) ?>" required maxlength="1000" rows="5"
-                                    class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-base text-slate-900 outline-none transition-all duration-300 custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary resize-none focus:shadow-inner"><?= e($form['message'] ?? '') ?></textarea>
+                                <input type="text" name="company_name" placeholder="<?= e(t('common.form_label_company_optional')) ?>" value="<?= e($form['company_name'] ?? '') ?>" maxlength="100"
+                                    class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-base text-slate-900 outline-none transition-all duration-300 custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary focus:shadow-inner">
                             </div>
-                            <div class="flex items-start gap-3 pt-2">
-                                <input type="checkbox" id="privacy" name="privacy_agreed" required class="mt-1 w-4 h-4 rounded border-slate-300 text-primary focus:ring-primary cursor-pointer transition-all duration-200">
-                                <label for="privacy" class="text-sm md:text-base leading-relaxed cursor-pointer select-none">
+
+                            <!-- Phone & Email -->
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <input type="text" inputmode="numeric" name="phone" placeholder="<?= e(t('common.form_label_phone')) ?> *" value="<?= e($form['phone'] ?? '') ?>" required maxlength="10" pattern="\d{9,10}"
+                                        oninput="this.value = this.value.replace(/[^0-9]/g, '');"
+                                        class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-base text-slate-900 outline-none transition-all duration-300 custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary focus:shadow-inner">
+                                </div>
+                                <div>
+                                    <input type="email" name="email" placeholder="<?= e(t('common.form_label_email')) ?> *" value="<?= e($form['email'] ?? '') ?>" required maxlength="255"
+                                        class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-base text-slate-900 outline-none transition-all duration-300 custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary focus:shadow-inner">
+                                </div>
+                            </div>
+
+                            <!-- Message with Word Counter -->
+                            <div class="space-y-1">
+                                <textarea id="contact_message_area" name="message" placeholder="<?= e(t('common.form_label_details')) ?> *" required rows="4"
+                                    class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-base text-slate-900 outline-none transition-all duration-300 custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary resize-none focus:shadow-inner"><?= e($form['message'] ?? '') ?></textarea>
+                                <div class="flex justify-between items-center px-1 text-xs text-slate-400">
+                                    <span>* ความยาวไม่เกิน 200 คำ</span>
+                                    <span id="contact_word_count_display" class="font-semibold text-slate-500">0 / 200 คำ</span>
+                                </div>
+                            </div>
+
+                            <!-- PDPA Consent Checkbox -->
+                            <div class="flex items-start gap-3 pt-1">
+                                <input type="checkbox" id="privacy_consent_checkbox" name="pdpa_agreed" value="1" <?= !empty($form['pdpa_agreed']) ? 'checked' : '' ?> required class="mt-1 w-4 h-4 rounded border-slate-300 text-primary focus:ring-primary cursor-pointer transition-all duration-200">
+                                <label for="privacy_consent_checkbox" class="text-sm md:text-base leading-relaxed cursor-pointer select-none">
                                     <span style="color: #022862;"><?= e(t('common.form_consent_prefix')) ?></span> <a href="#" style="color: #0663F6;" class="hover:underline transition-colors duration-200"><?= e(t('common.form_consent_privacy_policy')) ?></a> <span style="color: #0663F6;"><?= e(t('common.form_consent_terms_suffix')) ?></span>
                                 </label>
                             </div>
-                            <?php if ($errors !== []): ?>
-                                <p class="text-xs font-bold text-red-500 pt-1"><?= e($errors[0]) ?></p>
+
+                            <!-- Google reCAPTCHA v2 Widget -->
+                            <div class="pt-1 flex justify-center sm:justify-start">
+                                <div class="g-recaptcha" data-sitekey="<?= e($siteKey ?? '6Lcf_pAtAAAAAOVhatPPwrHSYXeb_0J4yXf5BrRO') ?>"></div>
+                            </div>
+
+                            <!-- Error Message Alerts -->
+                            <?php if (!empty($errors)): ?>
+                                <div class="rounded-xl bg-red-50 border border-red-200 p-4 text-xs font-semibold text-red-600 space-y-1.5">
+                                    <?php foreach ($errors as $error): ?>
+                                        <div class="flex items-center gap-2">
+                                            <svg class="w-4 h-4 text-red-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                            <span><?= e($error) ?></span>
+                                        </div>
+                                    <?php endforeach; ?>
+                                </div>
                             <?php endif; ?>
+
+                            <!-- Submit Button (Disabled until PDPA checked) -->
                             <div class="pt-2 mt-auto flex justify-center desktop-contact-btn-wrapper">
-                                <button type="submit" class="px-8 py-3.5 bg-primary hover:bg-blue-700 text-white font-bold text-base rounded-full shadow-md shadow-blue-500/10 transition-all duration-300 cursor-pointer hover:shadow-lg hover:-translate-y-0.5 flex items-center justify-center gap-2 desktop-contact-btn">
+                                <button type="submit" id="contact_submit_btn" disabled class="px-8 py-3.5 bg-primary hover:bg-blue-700 text-white font-bold text-base rounded-full shadow-md shadow-blue-500/10 transition-all duration-300 cursor-pointer hover:shadow-lg hover:-translate-y-0.5 flex items-center justify-center gap-2 desktop-contact-btn disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none disabled:hover:translate-y-0">
                                     <?= e(t('contact.cta_send_message')) ?>
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -295,6 +314,49 @@ $form = $form ?? [];
                                 </button>
                             </div>
                         </form>
+
+                        <script>
+                            document.addEventListener('DOMContentLoaded', function () {
+                                const privacyCb = document.getElementById('privacy_consent_checkbox');
+                                const submitBtn = document.getElementById('contact_submit_btn');
+                                const messageArea = document.getElementById('contact_message_area');
+                                const wordCountDisplay = document.getElementById('contact_word_count_display');
+
+                                // 1. Toggle submit button disabled state according to PDPA checkbox
+                                function updateSubmitBtnState() {
+                                    if (privacyCb && submitBtn) {
+                                        submitBtn.disabled = !privacyCb.checked;
+                                    }
+                                }
+
+                                if (privacyCb) {
+                                    privacyCb.addEventListener('change', updateSubmitBtnState);
+                                    updateSubmitBtnState();
+                                }
+
+                                // 2. Word counter for message
+                                function updateWordCount() {
+                                    if (!messageArea || !wordCountDisplay) return;
+                                    const text = messageArea.value.trim();
+                                    const words = text ? text.split(/\s+/).filter(Boolean) : [];
+                                    const count = words.length;
+
+                                    wordCountDisplay.textContent = count + ' / 200 คำ';
+                                    if (count > 200) {
+                                        wordCountDisplay.classList.add('text-red-500');
+                                        wordCountDisplay.classList.remove('text-slate-500');
+                                    } else {
+                                        wordCountDisplay.classList.remove('text-red-500');
+                                        wordCountDisplay.classList.add('text-slate-500');
+                                    }
+                                }
+
+                                if (messageArea) {
+                                    messageArea.addEventListener('input', updateWordCount);
+                                    updateWordCount();
+                                }
+                            });
+                        </script>
                     <?php endif; ?>
                 </div>
                 <div id="company-info" class="lg:col-span-6 space-y-4">

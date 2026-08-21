@@ -7,6 +7,10 @@ declare(strict_types=1);
  *
  * @todo Align DB credentials with admin/config/config.php via shared env config.
  */
+$vendorAutoload = __DIR__ . '/../../vendor/autoload.php';
+if (file_exists($vendorAutoload)) {
+    require_once $vendorAutoload;
+}
 require_once __DIR__ . '/Autoloader.php';
 
 $config = require __DIR__ . '/../config.php';

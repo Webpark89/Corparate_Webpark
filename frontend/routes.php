@@ -19,4 +19,5 @@ return [
     '/erp' => [HomeController::class, 'erp'],
     '/about' => [HomeController::class, 'about'],
     '/contact' => [HomeController::class, 'contact'],
+    '/contact/submit' => [HomeController::class, 'contactSubmit'],
 ];

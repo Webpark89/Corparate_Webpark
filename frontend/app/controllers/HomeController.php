@@ -859,12 +859,21 @@ class HomeController
 
     public function contact(): void
     {
-        $settings = (new Setting())->getByKeys([
+        $settingModel = new Setting();
+        $settings = $settingModel->getByKeys([
             'company_name',
             'contact_address',
             'contact_phone',
             'contact_email',
             'contact_hours',
+            'recaptcha_site_key',
+            'recaptcha_secret_key',
+            'mail_to',
+            'mail_host',
+            'mail_port',
+            'mail_user',
+            'mail_pass',
+            'mail_from_name',
         ]);
 
         $company = [
@@ -877,47 +886,332 @@ class HomeController
             'hours' => $settings['contact_hours'] ?? '',
         ];
 
+        $siteKey = $settings['recaptcha_site_key'] ?? '6Lcf_pAtAAAAAOVhatPPwrHSYXeb_0J4yXf5BrRO';
+        $secretKey = $settings['recaptcha_secret_key'] ?? '6Lcf_pAtAAAAAHCPdvGcNyEnfTNv6MJ4HIjFnG4d';
+
         $form = [
-            'name' => trim((string) ($_POST['name'] ?? '')),
-            'email' => trim((string) ($_POST['email'] ?? '')),
-            'company' => trim((string) ($_POST['company'] ?? '')),
-            'phone' => trim((string) ($_POST['phone'] ?? '')),
-            'inquiry' => trim((string) ($_POST['inquiry'] ?? 'Sales')),
-            'message' => trim((string) ($_POST['message'] ?? '')),
+            'company_name' => trim((string) ($_POST['company_name'] ?? '')),
+            'first_name'   => trim((string) ($_POST['first_name'] ?? '')),
+            'last_name'    => trim((string) ($_POST['last_name'] ?? '')),
+            'phone'        => trim((string) ($_POST['phone'] ?? '')),
+            'email'        => trim((string) ($_POST['email'] ?? '')),
+            'message'      => trim((string) ($_POST['message'] ?? '')),
+            'pdpa_agreed'  => !empty($_POST['pdpa_agreed']),
         ];
 
         $submitted = false;
         $errors = [];
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            if ($form['name'] === '') {
-                $errors[] = 'กรุณากรอกชื่อ';
+            $errors = $this->validateContactInput($form, $secretKey);
+
+            // If all validation passed, insert into DB and send email
+            if (empty($errors)) {
+                $contactModel = new ContactMessage();
+                $messageData = [
+                    'company_name'    => $form['company_name'] !== '' ? $form['company_name'] : null,
+                    'first_name'      => $form['first_name'],
+                    'last_name'       => $form['last_name'],
+                    'phone'           => $form['phone'],
+                    'email'           => $form['email'],
+                    'message'         => $form['message'],
+                    'pdpa_consent'    => 1,
+                    'pdpa_consent_at' => date('Y-m-d H:i:s'),
+                    'status'          => 'new',
+                    'ip_address'      => $_SERVER['REMOTE_ADDR'] ?? null,
+                    'user_agent'      => $_SERVER['HTTP_USER_AGENT'] ?? null,
+                    'source_page'     => $_SERVER['HTTP_REFERER'] ?? route_url('/contact'),
+                    'email_sent'      => 0,
+                ];
+
+                try {
+                    $messageId = $contactModel->create($messageData);
+
+                    // Send email notification (Failures do not fail DB submission)
+                    $emailSent = Mailer::sendContactNotification($messageData, $settings);
+                    if ($emailSent) {
+                        $contactModel->updateEmailSent($messageId, true);
+                    }
+
+                    $submitted = true;
+                    // Reset form fields after successful submit
+                    $form = [
+                        'company_name' => '',
+                        'first_name'   => '',
+                        'last_name'    => '',
+                        'phone'        => '',
+                        'email'        => '',
+                        'message'      => '',
+                        'pdpa_agreed'  => false,
+                    ];
+                } catch (Exception $e) {
+                    error_log('[Contact Form Error] DB Insert failed: ' . $e->getMessage());
+                    $errors[] = 'เกิดข้อผิดพลาดในการบันทึกข้อมูล กรุณาลองใหม่อีกครั้ง';
+                }
             }
-
-            if (!filter_var($form['email'], FILTER_VALIDATE_EMAIL)) {
-                $errors[] = 'อีเมลไม่ถูกต้อง';
-            }
-
-            $nameLength = function_exists('mb_strlen') ? mb_strlen($form['name']) : strlen($form['name']);
-            $emailLength = function_exists('mb_strlen') ? mb_strlen($form['email']) : strlen($form['email']);
-
-            if ($nameLength > 100) {
-                $errors[] = 'ชื่อยาวเกินไป';
-            }
-
-            if ($emailLength > 255) {
-                $errors[] = 'อีเมลยาวเกินไป';
-            }
-
-            $submitted = $errors === [];
         }
 
         $this->view('pages/contact.php', array_merge($this->sharedData('contact', 'Contact'), [
-            'company' => $company,
-            'form' => $form,
-            'submitted' => $submitted,
-            'errors' => $errors,
+            'company'    => $company,
+            'form'       => $form,
+            'submitted'  => $submitted,
+            'errors'     => $errors,
+            'siteKey'    => $siteKey,
         ]));
+    }
+
+    /**
+     * Endpoint for contact form submissions (AJAX or standard POST from bottom CTA or forms).
+     */
+    public function contactSubmit(): void
+    {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            http_response_code(405);
+            header('Content-Type: application/json');
+            echo json_encode(['success' => false, 'message' => 'Method Not Allowed']);
+            exit;
+        }
+
+        $settingModel = new Setting();
+        $settings = $settingModel->getByKeys([
+            'company_name',
+            'contact_address',
+            'contact_phone',
+            'contact_email',
+            'contact_hours',
+            'recaptcha_site_key',
+            'recaptcha_secret_key',
+            'mail_to',
+            'mail_host',
+            'mail_port',
+            'mail_user',
+            'mail_pass',
+            'mail_from_name',
+        ]);
+
+        $secretKey = $settings['recaptcha_secret_key'] ?? '6Lcf_pAtAAAAAHCPdvGcNyEnfTNv6MJ4HIjFnG4d';
+
+        $form = [
+            'company_name' => trim((string) ($_POST['company_name'] ?? '')),
+            'first_name'   => trim((string) ($_POST['first_name'] ?? '')),
+            'last_name'    => trim((string) ($_POST['last_name'] ?? '')),
+            'phone'        => trim((string) ($_POST['phone'] ?? '')),
+            'email'        => trim((string) ($_POST['email'] ?? '')),
+            'message'      => trim((string) ($_POST['message'] ?? '')),
+            'pdpa_agreed'  => !empty($_POST['pdpa_agreed']),
+            'source_page'  => trim((string) ($_POST['source_page'] ?? ($_SERVER['HTTP_REFERER'] ?? ''))),
+        ];
+
+        $errors = $this->validateContactInput($form, $secretKey);
+
+        $isAjax = !empty($_SERVER['HTTP_X_REQUESTED_WITH'])
+            || (!empty($_SERVER['HTTP_ACCEPT']) && str_contains($_SERVER['HTTP_ACCEPT'], 'application/json'))
+            || !empty($_POST['is_ajax']);
+
+        if (!empty($errors)) {
+            if ($isAjax) {
+                http_response_code(422);
+                header('Content-Type: application/json');
+                echo json_encode(['success' => false, 'errors' => $errors]);
+                exit;
+            }
+            $referer = $_SERVER['HTTP_REFERER'] ?? route_url('/');
+            header('Location: ' . $referer);
+            exit;
+        }
+
+        $contactModel = new ContactMessage();
+        $messageData = [
+            'company_name'    => $form['company_name'] !== '' ? $form['company_name'] : null,
+            'first_name'      => $form['first_name'],
+            'last_name'       => $form['last_name'],
+            'phone'           => $form['phone'],
+            'email'           => $form['email'],
+            'message'         => $form['message'],
+            'pdpa_consent'    => 1,
+            'pdpa_consent_at' => date('Y-m-d H:i:s'),
+            'status'          => 'new',
+            'ip_address'      => $_SERVER['REMOTE_ADDR'] ?? null,
+            'user_agent'      => $_SERVER['HTTP_USER_AGENT'] ?? null,
+            'source_page'     => $form['source_page'] !== '' ? $form['source_page'] : ($_SERVER['HTTP_REFERER'] ?? route_url('/')),
+            'email_sent'      => 0,
+        ];
+
+        try {
+            $messageId = $contactModel->create($messageData);
+
+            $emailSent = Mailer::sendContactNotification($messageData, $settings);
+            if ($emailSent) {
+                $contactModel->updateEmailSent($messageId, true);
+            }
+
+            if ($isAjax) {
+                header('Content-Type: application/json');
+                echo json_encode([
+                    'success' => true,
+                    'message' => getCurrentLang() === 'th' ? 'ส่งข้อมูลสำเร็จ เรียบร้อยแล้ว' : 'Submission Successful',
+                ]);
+                exit;
+            }
+
+            $referer = $_SERVER['HTTP_REFERER'] ?? route_url('/');
+            header('Location: ' . $referer);
+            exit;
+        } catch (Exception $e) {
+            error_log('[Contact Submit Error] DB Insert failed: ' . $e->getMessage());
+            if ($isAjax) {
+                http_response_code(500);
+                header('Content-Type: application/json');
+                echo json_encode(['success' => false, 'errors' => ['เกิดข้อผิดพลาดในการบันทึกข้อมูล กรุณาลองใหม่อีกครั้ง']]);
+                exit;
+            }
+            $referer = $_SERVER['HTTP_REFERER'] ?? route_url('/');
+            header('Location: ' . $referer);
+            exit;
+        }
+    }
+
+    /**
+     * Shared contact validation logic.
+     *
+     * @param array<string, mixed> $form
+     * @return array<int, string> List of error messages.
+     */
+    private function validateContactInput(array $form, string $secretKey): array
+    {
+        $errors = [];
+
+        // 1. Validate First Name
+        if (($form['first_name'] ?? '') === '') {
+            $errors[] = 'กรุณาระบุชื่อจริง';
+        } elseif (preg_match('/\s/u', (string)$form['first_name'])) {
+            $errors[] = 'ชื่อจริงต้องไม่มีช่องว่าง (Space)';
+        } elseif (mb_strlen((string)$form['first_name'], 'UTF-8') > 30) {
+            $errors[] = 'ชื่อจริงต้องไม่เกิน 30 ตัวอักษร';
+        }
+
+        // 2. Validate Last Name
+        if (($form['last_name'] ?? '') === '') {
+            $errors[] = 'กรุณาระบุนามสกุล';
+        } elseif (preg_match('/\s/u', (string)$form['last_name'])) {
+            $errors[] = 'นามสกุลต้องไม่มีช่องว่าง (Space)';
+        } elseif (mb_strlen((string)$form['last_name'], 'UTF-8') > 30) {
+            $errors[] = 'นามสกุลต้องไม่เกิน 30 ตัวอักษร';
+        }
+
+        // 3. Validate Phone Number (numeric only <= 10 digits)
+        if (($form['phone'] ?? '') === '') {
+            $errors[] = 'กรุณาระบุเบอร์โทรศัพท์';
+        } elseif (!preg_match('/^[0-9]+$/', (string)$form['phone'])) {
+            $errors[] = 'เบอร์โทรศัพท์ต้องเป็นตัวเลขล้วนเท่านั้น';
+        } elseif (strlen((string)$form['phone']) < 9 || strlen((string)$form['phone']) > 10) {
+            $errors[] = 'เบอร์โทรศัพท์ต้องมีความยาว 9-10 หลัก';
+        }
+
+        // 4. Validate Email
+        if (($form['email'] ?? '') === '') {
+            $errors[] = 'กรุณาระบุอีเมล';
+        } elseif (!filter_var((string)$form['email'], FILTER_VALIDATE_EMAIL)) {
+            $errors[] = 'รูปแบบอีเมลไม่ถูกต้อง';
+        } elseif (strlen((string)$form['email']) > 255) {
+            $errors[] = 'อีเมลยาวเกินไป (ไม่เกิน 255 ตัวอักษร)';
+        } else {
+            // Check MX record on non-localhost
+            $serverHost = $_SERVER['HTTP_HOST'] ?? ($_SERVER['SERVER_NAME'] ?? '');
+            $isLocal = in_array($serverHost, ['localhost', '127.0.0.1'], true)
+                || str_starts_with($serverHost, 'localhost:')
+                || str_starts_with($serverHost, '127.0.0.1:');
+
+            if (!$isLocal) {
+                $domain = substr(strrchr((string)$form['email'], '@'), 1);
+                if ($domain && function_exists('checkdnsrr')) {
+                    if (!checkdnsrr($domain, 'MX') && !checkdnsrr($domain, 'A')) {
+                        $errors[] = 'ไม่พบ Mail Server สำหรับโดเมนของอีเมลนี้';
+                    }
+                }
+            }
+        }
+
+        // 5. Validate Message & Word count <= 200 words
+        if (($form['message'] ?? '') === '') {
+            $errors[] = 'กรุณาระบุข้อความรายละเอียด';
+        } else {
+            $words = preg_split('/\s+/u', trim((string)$form['message']), -1, PREG_SPLIT_NO_EMPTY);
+            $wordCount = is_array($words) ? count($words) : 0;
+            if ($wordCount > 200) {
+                $errors[] = "ข้อความมีความยาวเกินกำหนด ({$wordCount} คำ / สูงสุด 200 คำ)";
+            }
+        }
+
+        // 6. Validate PDPA Consent
+        if (empty($form['pdpa_agreed'])) {
+            $errors[] = 'กรุณายินยอมตามนโยบายคุ้มครองข้อมูลส่วนบุคคล (PDPA)';
+        }
+
+        // 7. Verify Google reCAPTCHA v2
+        $recaptchaToken = (string) ($_POST['g-recaptcha-response'] ?? '');
+        if ($recaptchaToken === '') {
+            $errors[] = 'กรุณายืนยันว่าคุณไม่ใช่โปรแกรมอัตโนมัติ (reCAPTCHA)';
+        } else {
+            $isRecaptchaValid = $this->verifyRecaptcha($recaptchaToken, $secretKey);
+            if (!$isRecaptchaValid) {
+                $errors[] = 'การตรวจสอบ reCAPTCHA ไม่สำเร็จ กรุณาลองใหม่อีกครั้ง';
+            }
+        }
+
+        return $errors;
+    }
+
+    /**
+     * Verify Google reCAPTCHA v2 token with Google Siteverify API.
+     */
+    private function verifyRecaptcha(string $token, string $secretKey): bool
+    {
+        if ($token === '' || $secretKey === '') {
+            return false;
+        }
+
+        $postData = http_build_query([
+            'secret'   => $secretKey,
+            'response' => $token,
+            'remoteip' => $_SERVER['REMOTE_ADDR'] ?? '',
+        ]);
+
+        $opts = [
+            'http' => [
+                'method'  => 'POST',
+                'header'  => "Content-type: application/x-www-form-urlencoded\r\n" .
+                             "Content-Length: " . strlen($postData) . "\r\n",
+                'content' => $postData,
+                'timeout' => 8,
+            ],
+            'ssl' => [
+                'verify_peer'      => false,
+                'verify_peer_name' => false,
+            ]
+        ];
+
+        $context = stream_context_create($opts);
+        $response = @file_get_contents('https://www.google.com/recaptcha/api/siteverify', false, $context);
+
+        if ($response === false && function_exists('curl_init')) {
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, 'https://www.google.com/recaptcha/api/siteverify');
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_TIMEOUT, 8);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            $response = curl_exec($ch);
+            curl_close($ch);
+        }
+
+        if ($response !== false) {
+            $result = json_decode($response, true);
+            return !empty($result['success']);
+        }
+
+        return false;
     }
 
     public function notFound(): void
@@ -936,11 +1230,14 @@ class HomeController
      */
     private function sharedData(string $currentPage, string $title): array
     {
+        $siteKey = (new Setting())->getByKey('recaptcha_site_key', '6Lcf_pAtAAAAAOVhatPPwrHSYXeb_0J4yXf5BrRO');
+
         return [
             'currentPage' => $currentPage,
             'title' => $title,
             'siteName' => config('app.name', 'WEBPARK'),
             'company' => config('company', []),
+            'siteKey' => $siteKey,
         ];
     }
 

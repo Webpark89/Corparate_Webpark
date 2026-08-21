@@ -14,6 +14,7 @@ $navItems = [
     ['name' => 'การจัดการรีวิว', 'url' => '/review/index.php', 'page' => 'review'],
     ['name' => 'การจัดการลูกค้า', 'url' => '/partners/index.php', 'page' => 'partners'],
     ['name' => 'การจัดการบริการ', 'url' => '/service/index.php', 'page' => 'service'],
+    ['name' => 'ข้อความจากลูกค้า', 'url' => '/contact_inbox/index.php', 'page' => 'contact_inbox'],
     ['name' => 'การตั้งค่าการติดต่อ', 'url' => '/contact/index.php', 'page' => 'contact'],
     ['name' => 'เปลี่ยนรหัสผ่าน', 'url' => '/change_password.php', 'page' => 'change_password'],
 ];
@@ -24,7 +25,7 @@ $navItems = [
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title><?= e($pageTitle ?? 'ผู้ดูแลระบบ') ?> | <?= e(SITE_NAME) ?></title>
-    <link href="<?= ADMIN_URL ?>/assets/css/dist/tailwind.css" rel="stylesheet">
+    <link href="<?= ADMIN_URL ?>/assets/css/dist/tailwind.css?v=<?= file_exists(__DIR__ . '/../assets/css/dist/tailwind.css') ? filemtime(__DIR__ . '/../assets/css/dist/tailwind.css') : '1.0' ?>" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@100..900&display=swap" rel="stylesheet">
