@@ -419,18 +419,19 @@ if (!empty($partners) && is_array($partners)) {
                             }
                         }
                         $catColor     = $categoryColors[$projectCat] ?? '#0066ff';
-                        $projectImage = resolve_article_image_url($project['image_path'] ?? '', asset_url('images/erp.png'));
+                        $projectImage = resolve_article_image_url($project['image_path'] ?? $project['cover_image'] ?? '', asset_url('images/erp.png'));
+                        $logoUrl      = !empty($project['logo_path']) ? resolve_article_image_url($project['logo_path'], '') : '';
                         ?>
-                        <article class="portfolio-card gsap-home-portfolio-card group rounded-[1.2rem] overflow-hidden border border-slate-100 bg-white shadow-sm hover:shadow-xl transition-all duration-500 flex flex-col <?= $isVisible ?> opacity-0 translate-y-10" data-index="<?= $index ?>">
+                        <article class="portfolio-card gsap-home-portfolio-card group rounded-[1.2rem] overflow-hidden border border-slate-100 bg-white shadow-sm hover:shadow-xl transition-all duration-500 flex flex-col <?= $isVisible ?>" data-index="<?= $index ?>">
                             <a href="<?= e($projectId > 0 ? route_url('/portfolio', ['id' => $projectId]) : route_url('/portfolio')) ?>" class="flex flex-col h-full">
-                                <div class="h-[200px] sm:h-[180px] lg:h-[200px] w-full overflow-hidden bg-slate-100 shrink-0">
-                                    <img src="<?= e($projectImage) ?>" alt="<?= e($projectTitle) ?>" class="h-full w-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out">
+                                <div class="h-[200px] sm:h-[180px] lg:h-[200px] w-full overflow-hidden bg-slate-50 flex items-center justify-center p-4 shrink-0">
+                                    <img src="<?= e($projectImage) ?>" alt="<?= e($projectTitle) ?>" class="max-h-full max-w-full w-auto h-auto object-contain transition-transform duration-500 ease-out group-hover:scale-105" onerror="this.src='<?= e(asset_url('images/erp.png')) ?>'">
                                 </div>
                                 <div class="p-5 sm:p-4 lg:p-6 flex flex-col flex-1 bg-white lg:group-hover:bg-[#0663F6] transition-colors duration-500">
                                     <div class="flex items-center gap-3 mb-6 lg:group-hover:mb-3 transition-all duration-500">
-                                        <?php if (!empty($project['logo_path'])): ?>
-                                            <div class="bg-white rounded-full flex items-center justify-center shrink-0 w-10 h-10 overflow-hidden shadow-sm">
-                                                <img src="<?= e(asset_url($project['logo_path'])) ?>" class="h-6 w-6 object-contain" alt="">
+                                        <?php if (!empty($logoUrl)): ?>
+                                            <div class="bg-white rounded-full flex items-center justify-center shrink-0 w-10 h-10 overflow-hidden shadow-sm border border-slate-100 p-1">
+                                                <img src="<?= e($logoUrl) ?>" class="h-full w-full object-contain" alt="" onerror="this.parentElement.style.display='none'">
                                             </div>
                                         <?php endif; ?>
                                         <h3 class="text-lg lg:text-xl font-bold text-[#0b1b42] lg:group-hover:!text-white leading-snug line-clamp-1 transition-colors duration-500"><?= e($projectTitle) ?></h3>
@@ -472,10 +473,31 @@ document.addEventListener('DOMContentLoaded', function () {
     const cards   = document.querySelectorAll('.portfolio-card');
     let cur = 0;
     const getVisibleCount = () => window.innerWidth < 1024 ? 2 : 4;
-    function update() {
+    
+    function update(animate = false) {
         const visible = getVisibleCount();
         const max = Math.max(0, Math.ceil(cards.length / visible) - 1);
-        cards.forEach((c, i) => c.classList.toggle('hidden', !(i >= cur * visible && i < (cur + 1) * visible)));
+        const activeCards = [];
+        cards.forEach((c, i) => {
+            const isShown = (i >= cur * visible && i < (cur + 1) * visible);
+            c.classList.toggle('hidden', !isShown);
+            if (isShown) {
+                activeCards.push(c);
+            }
+        });
+
+        // If switching pages, animate the active cards smoothly
+        if (animate && typeof gsap !== 'undefined') {
+            gsap.fromTo(activeCards, 
+                { opacity: 0, y: 15 },
+                { opacity: 1, y: 0, duration: 0.35, stagger: 0.06, ease: "power2.out", overwrite: "auto" }
+            );
+        }
+
+        if (typeof ScrollTrigger !== 'undefined') {
+            ScrollTrigger.refresh();
+        }
+
         // Update pagination rendering based on viewport
         if (window.innerWidth < 1024) {
             renderMobilePagination();
@@ -485,6 +507,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (prevBtn) prevBtn.disabled = cur === 0;
         if (nextBtn) nextBtn.disabled = cur >= max;
     }
+
     function renderDesktopDots() {
         if (!dotsContainer) return;
         dotsContainer.innerHTML = '';
@@ -497,11 +520,12 @@ document.addEventListener('DOMContentLoaded', function () {
             dot.dataset.index = i;
             dot.addEventListener('click', () => {
                 cur = i;
-                update();
+                update(true);
             });
             dotsContainer.appendChild(dot);
         }
     }
+
     function renderMobilePagination() {
         if (!paginationContainer) return;
         paginationContainer.innerHTML = '';
@@ -525,7 +549,7 @@ document.addEventListener('DOMContentLoaded', function () {
         prevBtnMobile.addEventListener('click', () => {
             if (cur > 0) {
                 cur--;
-                update();
+                update(true);
             }
         });
         wrapper.appendChild(prevBtnMobile);
@@ -551,16 +575,17 @@ document.addEventListener('DOMContentLoaded', function () {
         nextBtnMobile.addEventListener('click', () => {
             if (cur < pageCount - 1) {
                 cur++;
-                update();
+                update(true);
             }
         });
         wrapper.appendChild(nextBtnMobile);
         paginationContainer.appendChild(wrapper);
     }
+
     if (prevBtn) prevBtn.addEventListener('click', () => {
         if (cur > 0) {
             cur--;
-            update();
+            update(true);
         }
     });
     if (nextBtn) {
@@ -569,7 +594,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const max = Math.max(0, Math.ceil(cards.length / visible) - 1);
             if (cur < max) {
                 cur++;
-                update();
+                update(true);
             }
         });
     }
@@ -583,10 +608,10 @@ document.addEventListener('DOMContentLoaded', function () {
             if (cur > max) {
                 cur = max;
             }
-            update();
+            update(false);
         }
     });
-    update();
+    update(false);
 });
 </script>
 <?php
@@ -966,8 +991,31 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         }
     }
-    // 3. Portfolio Cards
-    revealOnScroll(".gsap-home-portfolio-card", { stagger: 0.1 });
+    // 3. Portfolio Cards - Trigger on the slider section early
+    const portfolioSlider = document.getElementById("portfolio-slider");
+    if (portfolioSlider) {
+        if (prefersReducedMotion) {
+            gsap.set(".gsap-home-portfolio-card", { y: 0, opacity: 1 });
+        } else {
+            // Trigger animation on scroll when the section is near the viewport
+            gsap.fromTo("#portfolio-slider .portfolio-card:not(.hidden)", 
+                { opacity: 0, y: 25 },
+                {
+                    scrollTrigger: {
+                        trigger: portfolioSlider,
+                        start: "top 92%",
+                        toggleActions: "play none none none",
+                        once: true
+                    },
+                    y: 0,
+                    opacity: 1,
+                    duration: 0.5,
+                    stagger: 0.08,
+                    ease: "power2.out"
+                }
+            );
+        }
+    }
     // 4. Articles Section
     revealOnScroll(".gsap-home-article-card", { stagger: 0.08 });
     // 5. Mobile Stat Cards + Count-up ตัวเลข (120+ / 15+ / 50+)

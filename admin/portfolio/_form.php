@@ -72,7 +72,7 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-4 text
                                     class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 transition-all cursor-pointer">
                             </div>
                             <p class="text-[11px] text-slate-400 px-1">
-                                * รองรับไฟล์นามสกุล: JPEG, JPG, PNG, WEBP, GIF (ขนาดสูงสุดไม่เกิน 8MB)
+                                * รองรับไฟล์นามสกุล: JPEG, JPG, PNG, WEBP, GIF (ขนาดสูงสุดไม่เกิน 25MB)
                             </p>
                         </div>
                         <div class="space-y-2">
@@ -273,7 +273,7 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-4 text
         </div>
     </form>
 </div>
-<script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/tinymce@6.8.3/tinymce.min.js" referrerpolicy="origin"></script>
 <script src="../assets/js/seo-editor.js"></script>
 <script>
     window.WEBPARKSeoEditor.init({

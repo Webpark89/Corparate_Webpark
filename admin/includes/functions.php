@@ -164,8 +164,8 @@ function handle_upload(string $field, array $allowedExtensions = ['jpg', 'jpeg',
     if ($file['error'] !== UPLOAD_ERR_OK) {
         throw new RuntimeException('Upload error.');
     }
-    if ($file['size'] > 8 * 1024 * 1024) {
-        throw new RuntimeException('File too large (max 8 MB).');
+    if ($file['size'] > 25 * 1024 * 1024) {
+        throw new RuntimeException('File too large (max 25 MB).');
     }
     $extension = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
     if (!in_array($extension, $allowedExtensions, true)) {
@@ -273,66 +273,105 @@ function can_admin(): bool
 {
     $admin = current_admin();
     return ($admin['role'] ?? null) === 'admin';
-}
-/**
- * Exponential Backoff rate limiter stored in session.
+}/**
+ * Rate Limiter Storage (Session + Temp File) to prevent bypassing via cookies/incognito.
  */
-function is_rate_limited(string $key): bool
+function get_rate_limit_file_path(string $key): string
+{
+    $tempDir = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'webpark_ratelimit';
+    if (!is_dir($tempDir)) {
+        @mkdir($tempDir, 0755, true);
+    }
+    return $tempDir . DIRECTORY_SEPARATOR . md5($key) . '.json';
+}
+
+function get_rate_limit_data(string $key): array
 {
     $sessionKey = 'ratelimit_' . $key;
-    if (empty($_SESSION[$sessionKey]) || !is_array($_SESSION[$sessionKey])) {
-        return false;
+    $filePath = get_rate_limit_file_path($key);
+
+    $fileData = [];
+    if (file_exists($filePath)) {
+        $content = @file_get_contents($filePath);
+        if ($content) {
+            $decoded = json_decode($content, true);
+            if (is_array($decoded)) {
+                $fileData = $decoded;
+            }
+        }
     }
-    $lockedUntil = $_SESSION[$sessionKey]['locked_until'] ?? 0;
-    return time() < $lockedUntil;
+
+    $sessionData = $_SESSION[$sessionKey] ?? [];
+
+    $failedCount = max((int)($fileData['failed_count'] ?? 0), (int)($sessionData['failed_count'] ?? 0));
+    $lockedUntil = max((int)($fileData['locked_until'] ?? 0), (int)($sessionData['locked_until'] ?? 0));
+
+    // If lock period has expired, reset
+    if ($lockedUntil > 0 && time() >= $lockedUntil) {
+        $failedCount = 0;
+        $lockedUntil = 0;
+        reset_rate_limit($key);
+    }
+
+    return [
+        'failed_count' => $failedCount,
+        'locked_until' => $lockedUntil,
+    ];
+}
+
+function save_rate_limit_data(string $key, array $data): void
+{
+    $sessionKey = 'ratelimit_' . $key;
+    $_SESSION[$sessionKey] = $data;
+
+    $filePath = get_rate_limit_file_path($key);
+    @file_put_contents($filePath, json_encode($data));
+}
+
+function is_rate_limited(string $key): bool
+{
+    $data = get_rate_limit_data($key);
+    return time() < ($data['locked_until'] ?? 0);
 }
 
 function get_rate_limit_lockout_remaining(string $key): int
 {
-    $sessionKey = 'ratelimit_' . $key;
-    if (empty($_SESSION[$sessionKey]) || !is_array($_SESSION[$sessionKey])) {
-        return 0;
-    }
-    $lockedUntil = $_SESSION[$sessionKey]['locked_until'] ?? 0;
-    return max(0, $lockedUntil - time());
+    $data = get_rate_limit_data($key);
+    return max(0, ($data['locked_until'] ?? 0) - time());
 }
 
 function get_rate_limit_attempts_left(string $key, int $maxAttempts = LOGIN_MAX_ATTEMPTS): int
 {
-    $sessionKey = 'ratelimit_' . $key;
-    if (empty($_SESSION[$sessionKey]) || !is_array($_SESSION[$sessionKey])) {
-        return $maxAttempts;
-    }
-    $failedCount = $_SESSION[$sessionKey]['failed_count'] ?? 0;
-    return max(0, $maxAttempts - $failedCount);
+    $data = get_rate_limit_data($key);
+    return max(0, $maxAttempts - ($data['failed_count'] ?? 0));
 }
 
 function record_failed_attempt(string $key, int $maxAttempts = LOGIN_MAX_ATTEMPTS, int $baseWindowSeconds = LOGIN_ATTEMPT_WINDOW): array
 {
-    $sessionKey = 'ratelimit_' . $key;
-    if (empty($_SESSION[$sessionKey]) || !is_array($_SESSION[$sessionKey])) {
-        $_SESSION[$sessionKey] = [
-            'failed_count' => 0,
-            'locked_until' => 0,
-        ];
-    }
-    
-    $_SESSION[$sessionKey]['failed_count']++;
-    $failedCount = $_SESSION[$sessionKey]['failed_count'];
-    
+    $data = get_rate_limit_data($key);
+    $data['failed_count'] = ($data['failed_count'] ?? 0) + 1;
+    $failedCount = $data['failed_count'];
+
     if ($failedCount >= $maxAttempts) {
         $exceededCount = $failedCount - $maxAttempts; // 0 for attempt 3, 1 for attempt 4, 2 for attempt 5...
         $multiplier = (int) pow(2, $exceededCount);
         $lockoutSeconds = $baseWindowSeconds * $multiplier;
-        $_SESSION[$sessionKey]['locked_until'] = time() + $lockoutSeconds;
+        $data['locked_until'] = time() + $lockoutSeconds;
     }
-    
-    return $_SESSION[$sessionKey];
+
+    save_rate_limit_data($key, $data);
+    return $data;
 }
 
 function reset_rate_limit(string $key): void
 {
-    unset($_SESSION['ratelimit_' . $key]);
+    $sessionKey = 'ratelimit_' . $key;
+    unset($_SESSION[$sessionKey]);
+
+    $filePath = get_rate_limit_file_path($key);
+    if (file_exists($filePath)) {
+        @unlink($filePath);
+    }
 }
 
 /**

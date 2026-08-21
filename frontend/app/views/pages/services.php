@@ -784,18 +784,19 @@ if (isset($services) && is_array($services)) {
                     $sTitle  = (string)($service['title'] ?? '');
                     $sSummary= (string)($service['summary'] ?? '');
                     $sEmoji  = (string)($service['icon_emoji'] ?? '');
-                    $imgSrc  = resolve_article_image_url($service['image_placeholder'] ?? '');
+                    $imgSrc  = resolve_article_image_url($service['image'] ?? $service['image_placeholder'] ?? '', asset_url('images/service-default.png'));
                     $subcats = (array)($service['subcategories'] ?? []);
                     $dropdownText = getCurrentLang() === 'th' ? (string)($service['dropdown_title'] ?? 'ดูหัวข้อย่อย') : (string)($service['dropdown_title'] ?? 'View Subcategories');
                 ?>
                 <div class="gsap-service-card group rounded-2xl border border-slate-100 bg-white overflow-hidden flex flex-col opacity-0 translate-y-10"
                     style="box-shadow: 0 2px 12px 0 rgba(4,59,148,0.07);">
-                    <div class="relative w-full overflow-hidden bg-slate-100" style="aspect-ratio: 16/9;">
+                    <div class="relative w-full overflow-hidden bg-slate-50 flex items-center justify-center p-4" style="aspect-ratio: 16/9;">
                         <img
                             src="<?= e($imgSrc) ?>"
                             alt="<?= e($sTitle) ?>"
-                            class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                            class="max-h-full max-w-full w-auto h-auto object-contain transition-transform duration-500 group-hover:scale-105"
                             loading="lazy"
+                            onerror="this.src='<?= e(asset_url('images/service-default.png')) ?>'"
                         >
                     </div>
                     <div class="flex flex-col flex-1 p-6 desktop-service-card-inner">
@@ -831,6 +832,7 @@ if (isset($services) && is_array($services)) {
                             </details>
                         </div>
                     </div>
+                </div>
                 <?php endforeach; ?>
             </div>
         </div>

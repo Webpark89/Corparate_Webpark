@@ -156,9 +156,9 @@ $mockErpPortfolios = [
         'image_path' => 'images/bg-hand.jpg'
     ]
 ];
-// ใช้ Mock Data แทน Database ชั่วคราว
+// ใช้ Mock Data แทน Database ชั่วคราวถ้าไม่มีข้อมูลส่งมาจาก Controller
 $modulesData = $mockModules;
-$erpPortfolios = $mockErpPortfolios;
+$erpPortfolios = !empty($erpPortfolios) ? $erpPortfolios : $mockErpPortfolios;
 ?>
 <style>
     @keyframes fadeSlideUp {
@@ -830,15 +830,18 @@ $erpPortfolios = $mockErpPortfolios;
                 ?>
                     <a href="<?= e($detailUrl) ?>" class="tablet-slider-card gsap-erp-portfolio-card block w-[85vw] lg:w-auto shrink-0 snap-center opacity-0 translate-y-10 desktop-erp-portfolio-card">
                         <article class="group w-full h-full rounded-2xl overflow-hidden border border-slate-100 bg-white shadow-sm hover:shadow-xl transition-all duration-500 flex flex-col hover:-translate-y-1">
-                        <div class="h-[220px] w-full overflow-hidden bg-slate-100 relative desktop-erp-portfolio-img-container">
-                            <img src="<?= e($imgSrc) ?>" alt="<?= e($port['title']) ?>" class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105">
+                        <?php
+                        $portLogoUrl = !empty($port['logo_path']) ? resolve_article_image_url($port['logo_path'], '') : '';
+                        ?>
+                        <div class="h-[220px] w-full overflow-hidden bg-slate-50 flex items-center justify-center p-4 relative desktop-erp-portfolio-img-container">
+                            <img src="<?= e($imgSrc) ?>" alt="<?= e($port['title']) ?>" class="max-h-full max-w-full w-auto h-auto object-contain transition-transform duration-700 ease-out group-hover:scale-105" onerror="this.src='<?= e(asset_url('images/erp.png')) ?>'">
                             <span class="absolute bottom-3 left-3 bg-primary/95 backdrop-blur text-white text-[10px] font-bold px-2.5 py-1 rounded-md uppercase tracking-wider shadow-sm desktop-erp-portfolio-badge">ERP SYSTEM</span>
                         </div>
                         <div class="p-6 flex flex-col flex-1 desktop-erp-portfolio-text bg-white lg:group-hover:bg-[#0663F6] transition-colors duration-500">
                             <div class="flex items-center gap-3 mb-6 lg:group-hover:mb-3 transition-all duration-500">
-                                <?php if (!empty($port['logo_path'])): ?>
-                                    <div class="bg-white rounded-full flex items-center justify-center shrink-0 w-10 h-10 overflow-hidden shadow-sm">
-                                        <img src="<?= e(asset_url($port['logo_path'])) ?>" class="h-6 w-6 object-contain" alt="">
+                                <?php if (!empty($portLogoUrl)): ?>
+                                    <div class="bg-white rounded-full flex items-center justify-center shrink-0 w-10 h-10 overflow-hidden shadow-sm border border-slate-100 p-1">
+                                        <img src="<?= e($portLogoUrl) ?>" class="h-full w-full object-contain" alt="" onerror="this.parentElement.style.display='none'">
                                     </div>
                                 <?php endif; ?>
                                 <h3 class="text-base lg:text-lg font-bold text-[#0b1b42] lg:group-hover:!text-white leading-snug line-clamp-2 transition-colors duration-500">
