@@ -957,6 +957,27 @@ class HomeController
         ]));
     }
 
+    public function serviceDigitalPlatform(): void
+    {
+        $this->view('pages/service-digital-platform.php', array_merge($this->sharedData('services', 'Digital Platform'), [
+            'currentPage' => 'services',
+        ]));
+    }
+
+    public function serviceOnlineMarketing(): void
+    {
+        $this->view('pages/service-online-marketing.php', array_merge($this->sharedData('services', 'Online Marketing'), [
+            'currentPage' => 'services',
+        ]));
+    }
+
+    public function serviceCreativeDesign(): void
+    {
+        $this->view('pages/service-creative-design.php', array_merge($this->sharedData('services', 'Creative / Design'), [
+            'currentPage' => 'services',
+        ]));
+    }
+
     public function notFound(): void
     {
         http_response_code(404);

@@ -1585,6 +1585,10 @@ h1,
   top: auto;
 }
 
+.top-24 {
+  top: 6rem;
+}
+
 .-z-10 {
   z-index: -10;
 }
@@ -1611,6 +1615,10 @@ h1,
 
 .z-\[9999\] {
   z-index: 9999;
+}
+
+.z-\[2000\] {
+  z-index: 2000;
 }
 
 .col-span-2 {
@@ -2464,6 +2472,12 @@ h1,
   margin-bottom: calc(1rem * var(--tw-space-y-reverse));
 }
 
+.space-y-8 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(2rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(2rem * var(--tw-space-y-reverse));
+}
+
 .self-start {
   align-self: flex-start;
 }
@@ -2930,6 +2944,12 @@ h1,
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
 }
 
+.from-blue-600 {
+  --tw-gradient-from: #2563eb var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(37 99 235 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+
 .via-\[\#2563eb\] {
   --tw-gradient-to: rgb(37 99 235 / 0)  var(--tw-gradient-to-position);
   --tw-gradient-stops: var(--tw-gradient-from), #2563eb var(--tw-gradient-via-position), var(--tw-gradient-to);
@@ -3063,6 +3083,10 @@ h1,
 
 .p-8 {
   padding: 2rem;
+}
+
+.p-1 {
+  padding: 0.25rem;
 }
 
 .px-1 {
@@ -3739,6 +3763,11 @@ h1,
   color: rgb(250 204 21 / var(--tw-text-opacity, 1));
 }
 
+.text-blue-100 {
+  --tw-text-opacity: 1;
+  color: rgb(219 234 254 / var(--tw-text-opacity, 1));
+}
+
 .decoration-blue-500 {
   text-decoration-color: #3b82f6;
 }
@@ -4056,6 +4085,10 @@ h1,
   gap: 0.5rem;
 }
 
+.hover\:gap-3:hover {
+  gap: 0.75rem;
+}
+
 .hover\:rounded-xl:hover {
   border-radius: 0.75rem;
 }
@@ -4124,6 +4157,11 @@ h1,
 
 .hover\:bg-white\/10:hover {
   background-color: rgb(255 255 255 / 0.1);
+}
+
+.hover\:bg-blue-50:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(239 246 255 / var(--tw-bg-opacity, 1));
 }
 
 .hover\:text-\[\#043B94\]:hover {
@@ -5038,6 +5076,10 @@ h1,
     top: 7rem;
   }
 
+  .lg\:top-8 {
+    top: 2rem;
+  }
+
   .lg\:col-span-4 {
     grid-column: span 4 / span 4;
   }
@@ -5209,6 +5251,10 @@ h1,
 
   .lg\:grid-cols-\[3fr_2fr\] {
     grid-template-columns: 3fr 2fr;
+  }
+
+  .lg\:grid-cols-\[40\%_55\%\] {
+    grid-template-columns: 40% 55%;
   }
 
   .lg\:flex-row {
@@ -5595,6 +5641,14 @@ h1,
     display: block;
   }
 
+  .xl\:flex {
+    display: flex;
+  }
+
+  .xl\:hidden {
+    display: none;
+  }
+
   .xl\:h-5 {
     height: 1.25rem;
   }
@@ -5655,6 +5709,10 @@ h1,
     gap: 4rem;
   }
 
+  .xl\:gap-8 {
+    gap: 2rem;
+  }
+
   .xl\:border-b-0 {
     border-bottom-width: 0px;
   }
@@ -5675,6 +5733,11 @@ h1,
   .xl\:py-3 {
     padding-top: 0.75rem;
     padding-bottom: 0.75rem;
+  }
+
+  .xl\:px-24 {
+    padding-left: 6rem;
+    padding-right: 6rem;
   }
 
   .xl\:text-left {

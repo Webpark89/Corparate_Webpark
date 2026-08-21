@@ -301,9 +301,9 @@ if (!empty($partners) && is_array($partners)) {
                 <?php
                 $serviceCards = [
                     ['icon' => 'icon-3.png', 'title' => getCurrentLang() === 'th' ? 'ระบบ ERP / ERM' : 'ERP / ERM',        'desc' => t('common.solution_org_control'), 'href' => route_url('/erp')],
-                    ['icon' => 'icon-2.png', 'title' => getCurrentLang() === 'th' ? 'แพลตฟอร์มดิจิทัล' : 'Digital Platform', 'desc' => t('common.solution_digital_platform'),              'href' => '#'],
-                    ['icon' => 'icon-4.png', 'title' => getCurrentLang() === 'th' ? 'การตลาดออนไลน์' : 'Online Marketing', 'desc' => t('common.solution_online_marketing'),   'href' => '#'],
-                    ['icon' => 'icon-1.png', 'title' => getCurrentLang() === 'th' ? 'ออกแบบสร้างสรรค์' : 'Creative / Design','desc' => t('common.solution_brand_design'),    'href' => '#'],
+                    ['icon' => 'icon-2.png', 'title' => getCurrentLang() === 'th' ? 'แพลตฟอร์มดิจิทัล' : 'Digital Platform', 'desc' => t('common.solution_digital_platform'),              'href' => route_url('/services/digital-platform')],
+                    ['icon' => 'icon-4.png', 'title' => getCurrentLang() === 'th' ? 'การตลาดออนไลน์' : 'Online Marketing', 'desc' => t('common.solution_online_marketing'),   'href' => route_url('/services/online-marketing')],
+                    ['icon' => 'icon-1.png', 'title' => getCurrentLang() === 'th' ? 'ออกแบบสร้างสรรค์' : 'Creative / Design','desc' => t('common.solution_brand_design'),    'href' => route_url('/services/creative-design')],
                 ];
                 foreach ($serviceCards as $i => $card):
                     $borderClass = '';
@@ -594,16 +594,16 @@ $totalReviews = count($reviews);
         <div class="absolute inset-0 bg-white/50"></div>
     </div>
     <div class="relative mx-auto w-full max-w-7xl px-5 sm:px-6 lg:px-8">
+        <?php if ($totalReviews > 0): ?>
         <div class="mb-8 lg:mb-12 text-center max-w-4xl mx-auto">
-            <?php if ($totalReviews > 0): ?>
             <h2 class="hidden lg:block text-primary font-bold text-4xl md:text-3xl tracking-normal uppercase mb-3">
                 REVIEW
             </h2>
-            <?php endif; ?>
             <span class="hidden lg:block text-xl md:text-2xl lg:text-[28px] font-bold leading-tight text-dark">
                 <?= getCurrentLang() === 'th' ? 'กว่า <span class="text-primary">120</span> องค์กรชั้นนำ ที่เลือก <span class="text-primary">WEBPARK</span> เป็นพาร์ทเนอร์ด้านดิจิทัล' : 'Over <span class="text-primary">120</span> leading organizations trust <span class="text-primary">WEBPARK</span> as their digital partner' ?>
             </span>
         </div>
+        <?php endif; ?>
         <div class="lg:hidden mb-12">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div class="bg-white rounded-2xl shadow-sm hover:shadow-md transition-shadow p-5 flex flex-row items-center justify-start gap-5 border border-slate-100">
