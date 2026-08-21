@@ -184,131 +184,135 @@ $ctaImage = asset_url('images/bg-cta.jpg');
     </div>
 </section>
 <section class="bg-white" style="padding-top: 1.5rem; padding-bottom: 2.5rem;">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 desktop-wide-container-article">
-        <div class="flex flex-col gap-4 md:flex-row md:items-center relative w-full">
-            <div class="hidden items-center shrink-0 pr-4">
-                <button id="filter-scroll-left"
-                        type="button"
-                        class="article-filter-arrow flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 text-slate-500 transition-all duration-300 hover:bg-slate-50 opacity-0 pointer-events-none"
-                        aria-label="<?= e(t('article_list.category_scroll_left')) ?>">
-                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M15 19l-7-7 7-7"/>
-                    </svg>
-                </button>
-            </div>
-            <div class="relative flex-1 overflow-hidden">
-                <div id="category-filters" class="article-filter-track flex justify-start md:justify-center gap-3 overflow-x-auto py-1 px-2 md:px-0 hide-scroll scroll-smooth desktop-category-center ipad-pro-category-center" style="-ms-overflow-style: none; scrollbar-width: none;">
-                    <button type="button"
-                            data-filter="all"
-                            class="article-filter-btn whitespace-nowrap rounded-md border px-5 py-2 text-sm font-medium transition-colors desktop-filter-btn-large <?= $activeCategorySlug === 'all' ? 'border-transparent bg-blue-600 text-white' : 'border-blue-200 bg-white text-[#1a2b6d] hover:bg-blue-600 hover:text-white hover:border-transparent' ?>">
-                        <?= e(t('common.cta_view_all')) ?>
+    <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 desktop-wide-container-article">
+        <div class="lg:px-12 xl:px-24">
+            <div class="flex flex-col gap-4 md:flex-row md:items-center relative w-full">
+                <div class="hidden items-center shrink-0 pr-4">
+                    <button id="filter-scroll-left"
+                            type="button"
+                            class="article-filter-arrow flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 text-slate-500 transition-all duration-300 hover:bg-slate-50 opacity-0 pointer-events-none"
+                            aria-label="<?= e(t('article_list.category_scroll_left')) ?>">
+                        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M15 19l-7-7 7-7"/>
+                        </svg>
                     </button>
-                    <?php foreach ($categories as $category):
-                        $slug = trim((string) ($category['slug'] ?? ''));
-                        // You could use translated category names if they are dynamically loaded with current language
-                        $name = $category['name'] ?? '';
-                        if ($slug === '' || $name === '') {
-                            continue;
-                        }
-                        $isActive = $activeCategorySlug === $slug;
-                    ?>
-                        <button type="button"
-                                data-filter="<?= e($slug) ?>"
-                                class="article-filter-btn whitespace-nowrap rounded-md border px-5 py-2 text-sm font-medium transition-colors desktop-filter-btn-large <?= $isActive ? 'border-transparent bg-blue-600 text-white' : 'border-blue-200 bg-white text-[#1a2b6d] hover:border-transparent hover:bg-blue-600 hover:text-white' ?>">
-                            <?= e($name) ?>
-                        </button>
-                    <?php endforeach; ?>
                 </div>
-            </div>
-            <div class="hidden items-center shrink-0 pl-4">
-                <button id="filter-scroll-right"
-                        type="button"
-                        class="article-filter-arrow flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 text-slate-500 transition-all duration-300 hover:bg-slate-50"
-                        aria-label="<?= e(t('article_list.category_scroll_right')) ?>">
-                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M9 5l7 7-7 7"/>
-                    </svg>
-                </button>
+                <div class="relative flex-1 overflow-hidden">
+                    <div id="category-filters" class="article-filter-track flex justify-start md:justify-center gap-3 overflow-x-auto py-1 px-2 md:px-0 hide-scroll scroll-smooth desktop-category-center ipad-pro-category-center" style="-ms-overflow-style: none; scrollbar-width: none;">
+                        <button type="button"
+                                data-filter="all"
+                                class="article-filter-btn whitespace-nowrap rounded-md border px-5 py-2 text-sm font-medium transition-colors desktop-filter-btn-large <?= $activeCategorySlug === 'all' ? 'border-transparent bg-blue-600 text-white' : 'border-blue-200 bg-white text-[#1a2b6d] hover:bg-blue-600 hover:text-white hover:border-transparent' ?>">
+                            <?= e(t('common.cta_view_all')) ?>
+                        </button>
+                        <?php foreach ($categories as $category):
+                            $slug = trim((string) ($category['slug'] ?? ''));
+                            // You could use translated category names if they are dynamically loaded with current language
+                            $name = $category['name'] ?? '';
+                            if ($slug === '' || $name === '') {
+                                continue;
+                            }
+                            $isActive = $activeCategorySlug === $slug;
+                        ?>
+                            <button type="button"
+                                    data-filter="<?= e($slug) ?>"
+                                    class="article-filter-btn whitespace-nowrap rounded-md border px-5 py-2 text-sm font-medium transition-colors desktop-filter-btn-large <?= $isActive ? 'border-transparent bg-blue-600 text-white' : 'border-blue-200 bg-white text-[#1a2b6d] hover:border-transparent hover:bg-blue-600 hover:text-white' ?>">
+                                <?= e($name) ?>
+                            </button>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+                <div class="hidden items-center shrink-0 pl-4">
+                    <button id="filter-scroll-right"
+                            type="button"
+                            class="article-filter-arrow flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 text-slate-500 transition-all duration-300 hover:bg-slate-50"
+                            aria-label="<?= e(t('article_list.category_scroll_right')) ?>">
+                        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 5l7 7-7 7"/>
+                        </svg>
+                    </button>
+                </div>
             </div>
         </div>
     </div>
 </section>
 <section class="bg-white pb-20">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 desktop-wide-container-article">
-        <style>
-            .article-grid-container {
-                display: grid;
-                grid-template-columns: 1fr;
-                gap: 1.5rem;
-            }
-            .article-card-slide {
-                width: 100%;
-            }
-            @media (min-width: 1024px) {
+    <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 desktop-wide-container-article">
+        <div class="lg:px-12 xl:px-24">
+            <style>
                 .article-grid-container {
-                    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+                    display: grid;
+                    grid-template-columns: 1fr;
+                    gap: 1.5rem;
                 }
-            }
-        </style>
-        <div id="article-grid" class="article-grid article-grid-container gap-6 hide-scroll scroll-smooth" style="-ms-overflow-style: none; scrollbar-width: none;">
-            <?php 
-            foreach ($articles as $article):
-                $detailUrl = route_url('/article', ['id' => (int) ($article['id'] ?? 0)]);
-                $categoryName = trim((string) ($article['category_name'] ?? ''));
-                $categorySlug = trim((string) ($article['category_slug'] ?? ''));
-                $itemLang = getCurrentLang();
-                $articleTitle = (string) ($article['title'] ?? t('article_list.page_title'));
-                if ($itemLang === 'en' && !empty($article['meta_title_en'])) {
-                    $articleTitle = $article['meta_title_en'];
+                .article-card-slide {
+                    width: 100%;
                 }
-                $summary = trim(strip_tags((string) ($article['summary'] ?? '')));
-                if ($itemLang === 'en' && !empty($article['meta_description_en'])) {
-                    $summary = trim(strip_tags((string) $article['meta_description_en']));
+                @media (min-width: 1024px) {
+                    .article-grid-container {
+                        grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+                    }
                 }
-                $imageSrc = resolve_article_image_url((string) ($article['image_path'] ?? ''), $fallbackImage);
-                $linkToUse = $detailUrl;
-                ?>
-                <article class="article-card article-card-slide snap-start group h-fit flex flex-col overflow-hidden rounded-[1.5rem] border border-slate-100 bg-white shadow-[0_4px_20px_rgba(0,0,0,0.04)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(0,0,0,0.08)]"
-                         data-category="<?= e($categorySlug !== '' ? $categorySlug : 'all') ?>">
-                    <a href="<?= e($linkToUse) ?>" class="relative block aspect-[16/9] w-full overflow-hidden">
-                        <img src="<?= e($imageSrc) ?>" alt="<?= e($articleTitle) ?>" class="article-card__image h-full w-full object-cover transition-transform duration-500 group-hover:scale-105">
-                        <!-- Badge inside image for Desktop -->
-                        <span class="desktop-badge-inside hidden absolute bottom-3 left-3 bg-blue-600 text-white px-2.5 py-1 text-[10px] sm:text-[11px] font-bold rounded-md uppercase tracking-wider shadow-sm z-10">
-                            <?= e($categoryName !== '' ? $categoryName : (getCurrentLang() === 'th' ? 'หมวดหมู่' : 'Category')) ?>
-                        </span>
-                    </a>
-                    <div class="flex flex-col p-4">
-                        <div class="mb-3 desktop-badge-outside">
-                            <span class="inline-block rounded-full bg-blue-50 px-3 py-1.5 text-xs font-semibold tracking-wide text-blue-700">
+            </style>
+            <div id="article-grid" class="article-grid article-grid-container gap-6 hide-scroll scroll-smooth" style="-ms-overflow-style: none; scrollbar-width: none;">
+                <?php 
+                foreach ($articles as $article):
+                    $detailUrl = route_url('/article', ['id' => (int) ($article['id'] ?? 0)]);
+                    $categoryName = trim((string) ($article['category_name'] ?? ''));
+                    $categorySlug = trim((string) ($article['category_slug'] ?? ''));
+                    $itemLang = getCurrentLang();
+                    $articleTitle = (string) ($article['title'] ?? t('article_list.page_title'));
+                    if ($itemLang === 'en' && !empty($article['meta_title_en'])) {
+                        $articleTitle = $article['meta_title_en'];
+                    }
+                    $summary = trim(strip_tags((string) ($article['summary'] ?? '')));
+                    if ($itemLang === 'en' && !empty($article['meta_description_en'])) {
+                        $summary = trim(strip_tags((string) $article['meta_description_en']));
+                    }
+                    $imageSrc = resolve_article_image_url((string) ($article['image_path'] ?? ''), $fallbackImage);
+                    $linkToUse = $detailUrl;
+                    ?>
+                    <article class="article-card article-card-slide snap-start group h-fit flex flex-col overflow-hidden rounded-[1.5rem] border border-slate-100 bg-white shadow-[0_4px_20px_rgba(0,0,0,0.04)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(0,0,0,0.08)]"
+                             data-category="<?= e($categorySlug !== '' ? $categorySlug : 'all') ?>">
+                        <a href="<?= e($linkToUse) ?>" class="relative block aspect-[16/9] w-full overflow-hidden">
+                            <img src="<?= e($imageSrc) ?>" alt="<?= e($articleTitle) ?>" class="article-card__image h-full w-full object-cover transition-transform duration-500 group-hover:scale-105">
+                            <!-- Badge inside image for Desktop -->
+                            <span class="desktop-badge-inside hidden absolute bottom-3 left-3 bg-blue-600 text-white px-2.5 py-1 text-[10px] sm:text-[11px] font-bold rounded-md uppercase tracking-wider shadow-sm z-10">
                                 <?= e($categoryName !== '' ? $categoryName : (getCurrentLang() === 'th' ? 'หมวดหมู่' : 'Category')) ?>
                             </span>
-                        </div>
-                        <a href="<?= e($linkToUse) ?>" class="block mb-2">
-                            <h3 class="article-card__title text-lg md:text-xl lg:text-2xl font-bold text-[#1a2b6d] leading-snug line-clamp-2 min-h-[2.8rem] desktop-article-card-title">
-                                <?= e($articleTitle) ?>
-                            </h3>
                         </a>
-                        <p class="article-card__description text-slate-600 text-[15px] md:text-base lg:text-lg leading-relaxed line-clamp-2 min-h-[2.5rem] mb-3 desktop-article-card-desc">
-                            <?= e($summary) ?>
-                        </p>
-                        <div class="flex mt-1" style="justify-content: flex-end;">
-                            <a href="<?= e($linkToUse) ?>" class="article-card__cta inline-flex items-center gap-1.5 text-lg lg:text-sm font-semibold text-blue-500 transition-all hover:gap-2 hover:text-blue-700">
-                                <?= e(t('common.cta_read_more')) ?>
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M5 12h14M12 5l7 7-7 7"/>
-                                </svg>
+                        <div class="flex flex-col p-4">
+                            <div class="mb-3 desktop-badge-outside">
+                                <span class="inline-block rounded-full bg-blue-50 px-3 py-1.5 text-xs font-semibold tracking-wide text-blue-700">
+                                    <?= e($categoryName !== '' ? $categoryName : (getCurrentLang() === 'th' ? 'หมวดหมู่' : 'Category')) ?>
+                                </span>
+                            </div>
+                            <a href="<?= e($linkToUse) ?>" class="block mb-2">
+                                <h3 class="article-card__title text-lg md:text-xl lg:text-2xl font-bold text-[#1a2b6d] leading-snug line-clamp-2 min-h-[2.8rem] desktop-article-card-title">
+                                    <?= e($articleTitle) ?>
+                                </h3>
                             </a>
+                            <p class="article-card__description text-slate-600 text-[15px] md:text-base lg:text-lg leading-relaxed line-clamp-2 min-h-[2.5rem] mb-3 desktop-article-card-desc">
+                                <?= e($summary) ?>
+                            </p>
+                            <div class="flex mt-1" style="justify-content: flex-end;">
+                                <a href="<?= e($linkToUse) ?>" class="article-card__cta inline-flex items-center gap-1.5 text-lg lg:text-sm font-semibold text-blue-500 transition-all hover:gap-2 hover:text-blue-700">
+                                    <?= e(t('common.cta_read_more')) ?>
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                                    </svg>
+                                </a>
+                            </div>
                         </div>
-                    </div>
-                </article>
-            <?php endforeach; ?>
+                    </article>
+                <?php endforeach; ?>
+            </div>
+            <div id="no-results" class="article-no-results hidden py-14 text-center text-slate-600 flex flex-col items-center justify-center">
+                <img src="<?= e(asset_url('images/Empty.gif')) ?>" alt="No results" class="w-64 h-auto max-w-full mb-4 object-contain">
+                <h3 class="text-lg font-bold text-[#1a2b6d] mb-2"><?= e(t('article_list.empty_state_title')) ?></h3>
+                <p class="text-sm text-slate-500"><?= e(t('article_list.empty_state_desc')) ?></p>
+            </div>
+            <nav id="pagination" class="article-pagination mt-8 flex items-center justify-center gap-2" aria-label="Article pagination"></nav>
         </div>
-        <div id="no-results" class="article-no-results hidden py-14 text-center text-slate-600 flex flex-col items-center justify-center">
-            <img src="<?= e(asset_url('images/Empty.gif')) ?>" alt="No results" class="w-64 h-auto max-w-full mb-4 object-contain">
-            <h3 class="text-lg font-bold text-[#1a2b6d] mb-2"><?= e(t('article_list.empty_state_title')) ?></h3>
-            <p class="text-sm text-slate-500"><?= e(t('article_list.empty_state_desc')) ?></p>
-        </div>
-        <nav id="pagination" class="article-pagination mt-8 flex items-center justify-center gap-2" aria-label="Article pagination"></nav>
     </div>
 </section>
 <style>
