@@ -419,7 +419,7 @@ if (!empty($partners) && is_array($partners)) {
                     $projectImage = resolve_article_image_url($project['image_path'] ?? '', asset_url('images/erp.png'));
                     ?>
                     <article class="portfolio-card gsap-home-portfolio-card group rounded-[1.2rem] overflow-hidden border border-slate-100 bg-white shadow-sm hover:shadow-xl transition-all duration-500 flex flex-col <?= $isVisible ?> opacity-0 translate-y-10" data-index="<?= $index ?>">
-                        <a href="<?= e($projectId > 0 ? route_url('/portfolio', ['id' => $projectId]) : route_url('/portfolio')) ?>" class="flex flex-col h-full">
+                        <div class="flex flex-col h-full cursor-default">
                             <div class="h-[200px] sm:h-[180px] lg:h-[200px] w-full overflow-hidden bg-slate-100 shrink-0">
                                 <img src="<?= e($projectImage) ?>" alt="<?= e($projectTitle) ?>" class="h-full w-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out">
                             </div>
@@ -441,7 +441,7 @@ if (!empty($partners) && is_array($partners)) {
                                     </span>
                                 </div>
                             </div>
-                        </a>
+                        </div>
                     </article>
                 <?php endforeach; ?>
             </div>

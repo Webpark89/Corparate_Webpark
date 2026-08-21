@@ -48,7 +48,7 @@ $currentLang = getCurrentLang();
         <nav class="nav-desktop-container hidden lg:flex items-center gap-1 lg:gap-1" aria-label="Primary Navigation">
             <?php foreach ($navItems as $index => $item): ?>
                 <a href="<?= e(route_url($item['path'])) ?>"
-                   class="desktop-nav-link relative py-2 px-1 lg:px-1.5 transition-colors <?= $currentPage === $item['page'] ? 'active' : '' ?> text-base lg:text-lg"
+                   class="desktop-nav-link uppercase relative py-2 px-1 lg:px-1.5 transition-colors <?= $currentPage === $item['page'] ? 'active' : '' ?> text-base lg:text-lg"
                    <?= $currentPage === $item['page'] ? 'aria-current="page"' : '' ?>>
                    <?= e($item['label']) ?>
                 </a>
@@ -93,7 +93,7 @@ $currentLang = getCurrentLang();
             </div>
             <?php foreach ($navItems as $item): ?>
                 <a href="<?= e(route_url($item['path'])) ?>"
-                   class="rounded-xl px-4 py-3 transition hover:bg-slate-50 <?= $currentPage === $item['page'] ? 'bg-blue-50 text-primary font-semibold' : 'text-slate-700' ?>">
+                   class="rounded-xl uppercase px-4 py-3 transition hover:bg-slate-50 <?= $currentPage === $item['page'] ? 'bg-blue-50 text-primary font-semibold' : 'text-slate-700' ?>">
                    <?= e($item['label']) ?>
                 </a>
             <?php endforeach; ?>
