@@ -167,19 +167,15 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                     $mobile_desc = "Knowledge articles, tech, and innovation covering ERP systems, digital business, online marketing, AI, and solutions to sustainably grow your organization.";
                 }
                 ?>
-                <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-lg md:text-xl leading-relaxed max-w-lg md:max-w-xl mb-10 font-medium desktop-article-hero-p ipad-pro-article-hero-p">
+                <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-lg md:text-xl leading-relaxed max-w-lg md:max-w-xl lg:max-w-3xl xl:max-w-4xl mb-10 font-medium desktop-article-hero-p ipad-pro-article-hero-p">
                     <span class="block md:hidden leading-[1.75]">
                         <?= $mobile_desc ?>
                     </span>
                     <span class="hidden md:block leading-relaxed">
                         <?php if (getCurrentLang() === 'th'): ?>
-                            <?= e(t('common.articles_knowledge_summary')) ?> <br class="hidden xl:block">
-                            ครอบคลุม ERP ระบบธุรกิจดิจิทัล การตลาดออนไลน์ AI และโซลูชัน <br class="hidden xl:block">
-                            <?= e(t('common.articles_growth_summary')) ?>
+                            <?= e(t('common.articles_knowledge_summary')) ?> ครอบคลุม ERP ระบบธุรกิจดิจิทัล การตลาดออนไลน์ AI และโซลูชัน <?= e(t('common.articles_growth_summary')) ?>
                         <?php else: ?>
-                            A collection of articles on technology, innovation, and business strategy <br class="hidden xl:block">
-                            covering ERP, digital business systems, online marketing, AI, and solutions <br class="hidden xl:block">
-                            that help organizations grow sustainably.
+                            A collection of articles on technology, innovation, and business strategy covering ERP, digital business systems, online marketing, AI, and solutions that help organizations grow sustainably.
                         <?php endif; ?>
                     </span>
                 </p>

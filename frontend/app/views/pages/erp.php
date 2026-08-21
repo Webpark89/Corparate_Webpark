@@ -533,14 +533,10 @@ $erpPortfolios = !empty($erpPortfolios) ? $erpPortfolios : $mockErpPortfolios;
                             ให้เติบโตได้อย่างยั่งยืน
                         </span>
                         <span class="hidden sm:block">
-                            รวบรวมบทความรู้ เทคโนโลยี นวัตกรรม และแนวทางการทำธุรกิจ<br class="hidden xl:block">
-                            ครอบคลุม ERP ระบบธุรกิจดิจิทัล การตลาดออนไลน์ AI<br class="hidden xl:block">
-                            และโซลูชัน ที่ช่วยพัฒนาองค์กรให้เติบโตได้อย่างยั่งยืน
+                            รวบรวมบทความรู้ เทคโนโลยี นวัตกรรม และแนวทางการทำธุรกิจ ครอบคลุม ERP ระบบธุรกิจดิจิทัล การตลาดออนไลน์ AI และโซลูชัน ที่ช่วยพัฒนาองค์กรให้เติบโตได้อย่างยั่งยืน
                         </span>
                     <?php else: ?>
-                        <?= e(t('common.articles_knowledge_summary')) ?> <br class="hidden xl:block">
-                        <?= e(t('common.articles_coverage_summary')) ?><br class="hidden xl:block">
-                        <?= e(t('common.articles_growth_summary')) ?>
+                        <?= e(t('common.articles_knowledge_summary')) ?> <?= e(t('common.articles_coverage_summary')) ?> <?= e(t('common.articles_growth_summary')) ?>
                     <?php endif; ?>
                 </p>
                 <div class="animate-entrance-up delay-400 flex flex-col sm:flex-row items-start gap-4">
