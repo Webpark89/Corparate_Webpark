@@ -1,14 +1,38 @@
 /* global CKEDITOR */
 (function () {
     function syncSeoCounters(elements) {
-        const titleLen = elements.titleInput.value.length;
-        const descLen = elements.descInput.value.length;
+        try {
+            if (!elements.titleInput || !elements.titleCounter || !elements.descInput || !elements.descCounter) {
+                console.warn("SEO elements missing, skipping sync.");
+                return;
+            }
+            const titleLen = elements.titleInput.value ? elements.titleInput.value.length : 0;
+            const descLen = elements.descInput.value ? elements.descInput.value.length : 0;
 
-        elements.titleCounter.textContent = `${titleLen} / 150`;
-        elements.titleCounter.className = `text-xs font-medium ${titleLen > 150 ? 'text-rose-600' : 'text-slate-500'}`;
+            elements.titleCounter.textContent = `${titleLen} / 120`;
+            elements.titleCounter.className = `text-xs font-medium ${titleLen > 120 ? 'text-rose-600' : 'text-slate-500'}`;
 
-        elements.descCounter.textContent = `${descLen} / 500`;
-        elements.descCounter.className = `text-xs font-medium ${descLen > 500 ? 'text-rose-600' : 'text-slate-500'}`;
+            if (titleLen > 120) {
+                elements.titleInput.classList.add('border-rose-500', 'focus:border-rose-500', 'focus:ring-rose-500/10');
+                elements.titleInput.classList.remove('border-slate-300', 'focus:border-blue-500', 'focus:ring-blue-500/10');
+            } else {
+                elements.titleInput.classList.remove('border-rose-500', 'focus:border-rose-500', 'focus:ring-rose-500/10');
+                elements.titleInput.classList.add('border-slate-300', 'focus:border-blue-500', 'focus:ring-blue-500/10');
+            }
+
+            elements.descCounter.textContent = `${descLen} / 200`;
+            elements.descCounter.className = `text-xs font-medium ${descLen > 200 ? 'text-rose-600' : 'text-slate-500'}`;
+
+            if (descLen > 200) {
+                elements.descInput.classList.add('border-rose-500', 'focus:border-rose-500', 'focus:ring-rose-500/10');
+                elements.descInput.classList.remove('border-slate-300', 'focus:border-blue-500', 'focus:ring-blue-500/10');
+            } else {
+                elements.descInput.classList.remove('border-rose-500', 'focus:border-rose-500', 'focus:ring-rose-500/10');
+                elements.descInput.classList.add('border-slate-300', 'focus:border-blue-500', 'focus:ring-blue-500/10');
+            }
+        } catch (e) {
+            console.error("Error syncing SEO counters:", e);
+        }
     }
 
     function slugify(value) {
@@ -19,122 +43,104 @@
     }
 
     async function initSeoEditor(options) {
-        const editorEl = document.querySelector(options.editorSelector);
-        const tinymce = window.tinymce;
-        if (!editorEl || !tinymce) {
-            return null;
-        }
+        try {
+            console.log("Initializing SEO Editor with options:", options);
+            const elements = {
+                titleInput: document.querySelector(options.titleSelector),
+                descInput: document.querySelector(options.descSelector),
+                slugInput: document.querySelector(options.slugSelector),
+                titleCounter: document.querySelector(options.titleCounterSelector),
+                descCounter: document.querySelector(options.descCounterSelector),
+                contentInput: document.querySelector(options.contentSelector),
+                keywordsInput: document.querySelector('input[name="meta_keywords"]'),
+                form: document.querySelector(options.formSelector),
+            };
 
-        const elements = {
-            titleInput: document.querySelector(options.titleSelector),
-            descInput: document.querySelector(options.descSelector),
-            slugInput: document.querySelector(options.slugSelector),
-            titleCounter: document.querySelector(options.titleCounterSelector),
-            descCounter: document.querySelector(options.descCounterSelector),
-            contentInput: document.querySelector(options.contentSelector),
-            keywordsInput: document.querySelector('input[name="meta_keywords"]'),
-            form: document.querySelector(options.formSelector),
-        };
+            console.log("Found DOM elements:", elements);
 
-        if (!elements.titleInput || !elements.descInput || !elements.slugInput || !elements.form || !elements.contentInput) {
-            return null;
-        }
+            if (elements.titleInput && elements.descInput) {
+                const updateSeoState = () => {
+                    syncSeoCounters(elements);
+                };
 
-        if (editorEl.innerHTML.trim() === '' && elements.contentInput.value) {
-            editorEl.innerHTML = elements.contentInput.value;
-        }
-
-        tinymce.init({
-            target: editorEl,
-            plugins: 'autoresize lists link image code table wordcount',
-            toolbar: 'blocks | bold italic forecolor backcolor | bullist numlist | alignleft aligncenter alignright alignjustify | link image | removeformat',
-            menubar: false,
-            color_map: [
-                '0663F6', 'Primary Blue',
-                '022862', 'Dark Blue',
-                '475569', 'Slate',
-                '000000', 'Black',
-                'FFFFFF', 'White',
-                'FF0000', 'Red',
-                '00FF00', 'Green',
-                '0000FF', 'Blue',
-                'FFFF00', 'Yellow',
-                'FF9900', 'Orange'
-            ],
-            custom_colors: true,
-            min_height: 300,
-            max_height: 800,
-            autoresize_bottom_margin: 20,
-            content_style: 'body { font-family: "Noto Sans Thai", Inter, ui-sans-serif, system-ui, sans-serif; font-size: 16px; line-height: 1.75; color: #475569; } p, span, li, div { font-size: 16px !important; line-height: 1.75 !important; }',
-            images_upload_handler: function (blobInfo, progress) {
-                return new Promise((resolve, reject) => {
-                    const xhr = new XMLHttpRequest();
-                    xhr.open('POST', 'upload_image.php');
-                    xhr.upload.onprogress = (e) => {
-                        progress(e.loaded / e.total * 100);
-                    };
-                    xhr.onload = () => {
-                        if (xhr.status === 403) {
-                            reject({ message: 'HTTP Error: ' + xhr.status, remove: true });
-                            return;
-                        }
-                        if (xhr.status < 200 || xhr.status >= 300) {
-                            reject('HTTP Error: ' + xhr.status);
-                            return;
-                        }
-                        const json = JSON.parse(xhr.responseText);
-                        if (!json || typeof json.url != 'string') {
-                            reject('Invalid JSON: ' + xhr.responseText);
-                            return;
-                        }
-                        resolve(json.url);
-                    };
-                    xhr.onerror = () => {
-                        reject('Image upload failed due to a XHR Transport error. Code: ' + xhr.status);
-                    };
-                    const formData = new FormData();
-                    formData.append('upload', blobInfo.blob(), blobInfo.filename());
-                    xhr.send(formData);
-                });
-            },
-            setup: function(editor) {
-                editor.addShortcut('ctrl+q', 'Apply Primary Color', function () {
-                    editor.execCommand('ForeColor', false, '#0663F6');
-                });
-                editor.on('change keyup paste', function(e) {
-                    elements.contentInput.value = editor.getContent();
+                elements.titleInput.addEventListener('input', () => {
+                    if (elements.slugInput && !elements.slugInput.dataset.edited) {
+                        elements.slugInput.value = slugify(elements.titleInput.value);
+                    }
                     updateSeoState();
                 });
-                
-                elements.form.addEventListener('submit', () => {
-                    elements.contentInput.value = editor.getContent();
+
+                elements.descInput.addEventListener('input', updateSeoState);
+
+                if (elements.keywordsInput) {
+                    elements.keywordsInput.addEventListener('input', updateSeoState);
+                }
+
+                if (elements.slugInput) {
+                    elements.slugInput.addEventListener('input', () => {
+                        elements.slugInput.dataset.edited = 'true';
+                        updateSeoState();
+                    });
+                }
+
+                syncSeoCounters(elements);
+                console.log("SEO Counters initialized successfully.");
+            } else {
+                console.error("Missing titleInput or descInput. Counters not bound.");
+            }
+
+            const editorEl = document.querySelector(options.editorSelector);
+            const ClassicEditor = window.ClassicEditor || (window.CKEDITOR && window.CKEDITOR.ClassicEditor);
+            if (!editorEl || !ClassicEditor) {
+                console.log("ClassicEditor or editor element not found. Skipping CKEditor setup.");
+                return null;
+            }
+
+            if (editorEl.innerHTML.trim() === '' && elements.contentInput && elements.contentInput.value) {
+                editorEl.innerHTML = elements.contentInput.value;
+            }
+
+            const editor = await ClassicEditor.create(editorEl, {
+                licenseKey: 'GPL',
+                placeholder: options.placeholder || 'เริ่มเขียนบทความที่น่าสนใจของคุณที่นี่...',
+                toolbar: {
+                    items: [ 'heading', '|', 'bold', 'italic', 'link', '|', 'bulletedList', 'numberedList', 'blockQuote', '|', 'undo', 'redo' ],
+                    shouldNotGroupWhenFull: true
+                },
+                heading: {
+                    options: [
+                        { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
+                        { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
+                        { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' },
+                        { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3' },
+                        { model: 'heading4', view: 'h4', title: 'Heading 4', class: 'ck-heading_heading4' },
+                        { model: 'heading5', view: 'h5', title: 'Heading 5', class: 'ck-heading_heading5' },
+                        { model: 'heading6', view: 'h6', title: 'Heading 6', class: 'ck-heading_heading6' },
+                    ]
+                },
+                link: {
+                    addTargetToExternalLinks: true,
+                    defaultProtocol: 'https://'
+                }
+            });
+
+            if (elements.contentInput) {
+                editor.model.document.on('change:data', () => {
+                    if (elements.titleInput && elements.descInput) syncSeoCounters(elements);
+                    elements.contentInput.value = editor.getData();
                 });
+                if (elements.form) {
+                    elements.form.addEventListener('submit', () => {
+                        elements.contentInput.value = editor.getData();
+                    });
+                }
+                elements.contentInput.value = editor.getData();
             }
-        });
 
-        const updateSeoState = () => {
-            syncSeoCounters(elements);
-        };
-
-        elements.titleInput.addEventListener('input', () => {
-            if (!elements.slugInput.dataset.edited) {
-                elements.slugInput.value = slugify(elements.titleInput.value);
-            }
-            updateSeoState();
-        });
-
-        elements.descInput.addEventListener('input', updateSeoState);
-        if (elements.keywordsInput) {
-            elements.keywordsInput.addEventListener('input', updateSeoState);
+            return editor;
+        } catch (e) {
+            console.error("Error in initSeoEditor:", e);
         }
-        elements.slugInput.addEventListener('input', () => {
-            elements.slugInput.dataset.edited = 'true';
-            updateSeoState();
-        });
-
-        syncSeoCounters(elements);
-        // The setup function inside tinymce.init handles content syncing
-        return editor;
     }
 
     window.WEBPARKSeoEditor = {

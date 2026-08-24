@@ -70,6 +70,15 @@ $contactAddress = $company['contact']['address'] ?? '525/89 ซอยลาด�
         .hero-parallax-img {
             transform: scale(1.6) translate(-2%, -5%) !important;
         }
+        .desktop-about-hero-h1 {
+            font-size: 5.5rem !important;
+            line-height: 1.1 !important;
+        }
+        .desktop-about-hero-p {
+            font-size: 1.25rem !important;
+            line-height: 1.75 !important;
+            max-width: 34rem !important;
+        }
     }
     @media (min-width: 1536px) {
         .hero-parallax-img {
@@ -241,11 +250,11 @@ $contactAddress = $company['contact']['address'] ?? '525/89 ซอยลาด�
                 </nav>
                     
                 <h1 class="animate-fade-up delay-200 text-5xl sm:text-4xl md:text-6xl lg:text-8xl font-lg leading-[1.1] mb-2 tracking-tighter">
-                    <span class="bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block py-3"><?= e(getCurrentLang() === 'th' ? 'ผู้ให้บริการด้าน' : 'Service Provider for') ?></span><br class="hidden sm:inline">
-                    <span class="bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block" style="animation-delay: -3s;">ERP / ERM</span>
+                    <span class="bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block py-3 desktop-about-hero-h1"><?= e(getCurrentLang() === 'th' ? 'ผู้ให้บริการด้าน' : 'Service Provider for') ?></span><br class="hidden sm:inline">
+                    <span class="bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block desktop-about-hero-h1" style="animation-delay: -3s;">ERP / ERM</span>
                 </h1>
 
-                <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-lg md:text-xl leading-relaxed max-w-lg mb-10 font-medium">
+                <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-lg md:text-xl leading-relaxed max-w-lg mb-10 font-medium desktop-about-hero-p">
                     <?= getCurrentLang() === 'th' ? 'WEBPARK ผู้เชี่ยวชาญด้าน ERP/ERM และระบบดิจิทัล<br class="hidden sm:inline">ครบวงจร เราช่วยให้องค์กรของคุณทำงานอย่างชาญฉลาด<br class="hidden sm:inline">ด้วยเทคโนโลยีล้ำสมัยแพลตฟอร์มดจิทัลและ AI <br class="hidden sm:inline">เพื่อการเติบโตที่ยั่งยืนในยุคดิจิทัล' : 'WEBPARK, expert in ERP/ERM and comprehensive<br class="hidden sm:inline">digital systems. We help your organization work smartly<br class="hidden sm:inline">with cutting-edge digital platforms and AI<br class="hidden sm:inline">for sustainable growth in the digital era.' ?>
                 </p>
 
@@ -294,13 +303,7 @@ $contactAddress = $company['contact']['address'] ?? '525/89 ซอยลาด�
                     <p class="text-slate-500 md:text-slate-600 text-lg md:text-lg xl:text-xl leading-relaxed mb-4 md:mb-10 ipad-pro-about-intro-p">
                         <?= getCurrentLang() === 'th' ? 'ด้วยทีมงานผู้เชี่ยวชาญ ประสบการณ์ยาวนาน และความเข้าใจธุรกิจอย่างลึกซึ้ง เราพร้อมเป็นพาร์ทเนอร์ที่เชื่อถือได้ เพื่อช่วยให้องค์กรของคุณก้าวสู่อนาคตได้อย่างมั่นคงและยั่งยืน' : 'With our team of experts, extensive experience, and deep business understanding, we are ready to be your trusted partner to help your organization advance into the future steadily and sustainably.' ?>
                     </p>
-                    
-                    <a href="<?= e(route_url('/about')) ?>" class="inline-flex items-center gap-2 text-primary font-semibold hover:gap-3 transition-all duration-300">
-                        <?= e(t('common.cta_read_more') !== 'common.cta_read_more' ? t('common.cta_read_more') : (getCurrentLang() === 'th' ? 'อ่านเพิ่มเติม' : 'Read More')) ?>
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                        </svg>
-                    </a>
+
                 </div>
 
                 <div class="about-intro-grid bg-white rounded-[2rem] p-6 sm:p-10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 opacity-0 translate-y-10">

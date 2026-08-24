@@ -59,12 +59,25 @@ $portfolioTabs['All'] = array_map(static function ($item) use ($temporaryImage, 
 $portfolioTabsJson = json_encode($portfolioTabs, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) ?: '{}';
 $initialProjects = $portfolioTabs[$activeFilter] ?? $portfolioTabs['All'] ?? [];
 ?>
+<style>
+    @media (min-width: 1025px) {
+        .desktop-portfolio-hero-h1 {
+            font-size: 5.5rem !important;
+            line-height: 1.1 !important;
+        }
+        .desktop-portfolio-hero-p {
+            font-size: 1.25rem !important;
+            line-height: 1.75 !important;
+            max-width: 34rem !important;
+        }
+    }
+</style>
 <section class="border-b border-slate-200 bg-white">
     <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 pt-20 pb-24 lg:pt-32 lg:pb-32 relative z-10">
         <div class="lg:ml-12 ipad-pro-ml-0 xl:ml-24">
             <p class="text-sm font-semibold uppercase tracking-[0.32em] text-sky-700">Selected Work</p>
-            <h1 class="mt-4 text-4xl font-black tracking-tight text-slate-900 sm:text-5xl">ผลงานที่วัดผลได้จริงในทุกอุตสาหกรรม</h1>
-            <p class="mt-4 max-w-3xl text-base leading-8 text-slate-600 sm:text-lg">คัดสรรเคสที่สะท้อนแนวทางของเรา ตั้งแต่ปัญหาธุรกิจไปจนถึงผลลัพธ์เชิงตัวเลข</p>
+            <h1 class="mt-4 text-4xl font-black tracking-tight text-slate-900 sm:text-5xl desktop-portfolio-hero-h1">ผลงานที่วัดผลได้จริงในทุกอุตสาหกรรม</h1>
+            <p class="mt-4 max-w-3xl text-base leading-8 text-slate-600 sm:text-lg desktop-portfolio-hero-p">คัดสรรเคสที่สะท้อนแนวทางของเรา ตั้งแต่ปัญหาธุรกิจไปจนถึงผลลัพธ์เชิงตัวเลข</p>
         </div>
     </div>
 </section>

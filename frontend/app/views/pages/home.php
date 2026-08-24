@@ -61,12 +61,15 @@ if (!empty($partners) && is_array($partners)) {
             will-change: transform;
         }
 
-        @media (prefers-reduced-motion: reduce) {
-            *, *::before, *::after {
-                animation-duration: 0.001ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.001ms !important;
-                scroll-behavior: auto !important;
+        @media (min-width: 1025px) {
+            .desktop-home-hero-h1 {
+                font-size: 5.5rem !important;
+                line-height: 1.1 !important;
+            }
+            .desktop-home-hero-p {
+                font-size: 1.25rem !important;
+                line-height: 1.75 !important;
+                max-width: 34rem !important;
             }
         }
     </style>
@@ -82,10 +85,10 @@ if (!empty($partners) && is_array($partners)) {
                     </span>
                 </div>
                 <h1 class="animate-entrance-up delay-200 text-5xl md:text-7xl lg:text-8xl font-black leading-[1.1] mb-4 tracking-tighter text-left">
-                    <span class="bg-gradient-to-r from-[#898F98] to-[#000208] bg-clip-text text-transparent inline-block py-2 md:py-2.5">WEBPARK</span><br>
-                    <span class="bg-gradient-to-r from-[#003380] to-[#0055ff] bg-clip-text text-transparent inline-block py-1 md:py-2 -mt-1 md:-mt-2 lg:-mt-2">COMPANY</span>
+                    <span class="bg-gradient-to-r from-[#898F98] to-[#000208] bg-clip-text text-transparent inline-block py-2 md:py-2.5 desktop-home-hero-h1">WEBPARK</span><br>
+                    <span class="bg-gradient-to-r from-[#003380] to-[#0055ff] bg-clip-text text-transparent inline-block py-1 md:py-2 -mt-1 md:-mt-2 lg:-mt-2 desktop-home-hero-h1">COMPANY</span>
                 </h1>
-                <p class="animate-entrance-up delay-300 mt-5 md:mt-6 text-blue-900 md:text-[#0b1b42] text-base md:text-lg leading-relaxed max-w-lg mx-0 mb-8 md:mb-10 font-bold md:font-semibold w-11/12 sm:w-3/4 md:w-full text-left relative z-20 ipad-pro-hero-desc ipad-mini-hero-desc mobile-hero-desc">
+                <p class="animate-entrance-up delay-300 mt-5 md:mt-6 text-blue-900 md:text-[#0b1b42] text-base md:text-lg leading-relaxed max-w-lg mx-0 mb-8 md:mb-10 font-bold md:font-semibold w-11/12 sm:w-3/4 md:w-full text-left relative z-20 ipad-pro-hero-desc ipad-mini-hero-desc mobile-hero-desc desktop-home-hero-p">
                     <span class="md:hidden">
                         <?= getCurrentLang() === 'th' ? 'ผู้ให้บริการพัฒนา Digital Platform<br>และระบบ AI ที่ช่วยให้ธุรกิจไทย<br>ก้าวไปข้างหน้า ด้วยเทคโนโลยี<br>ที่ใช้งานได้จริง' : 'Digital Platform and AI system<br>development provider helping Thai businesses<br>move forward with practical technology.' ?>
                     </span>
@@ -287,12 +290,7 @@ if (!empty($partners) && is_array($partners)) {
                                     <?= e(t('common.partner_description')) ?>
                                 </p>
                             </div>
-                            <a href="<?= e(route_url('/about')) ?>" class="inline-flex items-center text-primary text-sm font-semibold transition-colors duration-300 group-hover:text-blue-700 w-max mt-auto ipad-pro-font-link">
-                                <?= e(t('common.cta_read_more')) ?>
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1.5 transition-transform duration-300 ease-out group-hover:translate-x-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
-                                </svg>
-                            </a>
+
                         </div>
                     </div>
                 </div>

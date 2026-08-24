@@ -190,6 +190,17 @@ $erpPortfolios = $mockErpPortfolios;
             scroll-behavior: auto !important;
         }
     }
+    @media (min-width: 1025px) {
+        .desktop-erp-hero-h1 {
+            font-size: 5.5rem !important;
+            line-height: 1.1 !important;
+        }
+        .desktop-erp-hero-p {
+            font-size: 1.25rem !important;
+            line-height: 1.75 !important;
+            max-width: 34rem !important;
+        }
+    }
 </style>
 
 
@@ -225,7 +236,7 @@ $erpPortfolios = $mockErpPortfolios;
         .animate-scroll:hover { animation-play-state: paused; }
     </style>
 
-    <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8 pt-12 pb-24 lg:pt-28 lg:pb-32 relative z-10">
+    <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8 pt-12 pb-24 lg:pt-40 lg:pb-32 relative z-10">
         <!-- Mobile Background Image (Only covers this Hero container) -->
         <div class="absolute inset-0 z-0 overflow-hidden lg:hidden rounded-2xl">
             <img src="<?= e($heroImage) ?>" alt="WEBPARK Solutions Background" 
@@ -305,20 +316,9 @@ $erpPortfolios = $mockErpPortfolios;
 
                 <!-- Desktop Only Hero Content -->
                 <div class="hidden md:block">
-                    <h1 class="animate-fade-up delay-200 leading-[1.1] mb-2 tracking-tighter">
-                        <span class="text-4xl md:text-6xl lg:text-8xl font-bold bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block pb-0 pt-2">
-                            <?= getCurrentLang() === 'th' ? 'ระบบ' : 'ERP' ?>
-                        </span>
-                        <span class="text-4xl md:text-6xl lg:text-8xl font-bold bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block pb-0 pt-2 ml-1 lg:ml-2">
-                            <?= getCurrentLang() === 'th' ? 'ERP' : 'Systems' ?>
-                        </span><br>
+                    <h1 class="animate-fade-up delay-200 leading-[1.1] mb-2 tracking-tighter"><span class="text-4xl md:text-6xl lg:text-8xl font-bold bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block pb-0 pt-2 desktop-erp-hero-h1"><?= getCurrentLang() === 'th' ? 'ระบบ' : 'ERP' ?></span><span class="text-4xl md:text-6xl lg:text-8xl font-bold bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block pb-0 pt-2 ml-1 lg:ml-2 desktop-erp-hero-h1"><?= getCurrentLang() === 'th' ? 'ERP' : 'Systems' ?></span><br><span class="text-xl md:text-2xl lg:text-4xl font-medium leading-snug bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block mt-0 pb-3 pt-1" style="animation-delay: -3s;"><?= getCurrentLang() === 'th' ? 'เชื่อมต่อทุกกระบวนการธุรกิจ<br>แบบครบวงจรในแพลตฟอร์มเดียว' : 'Connecting every business process<br>end-to-end on a single platform' ?></span></h1>
 
-                        <span class="text-xl md:text-2xl lg:text-4xl font-medium leading-snug bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block mt-0 pb-3 pt-1" style="animation-delay: -3s;">
-                            <?= getCurrentLang() === 'th' ? 'เชื่อมต่อทุกกระบวนการธุรกิจ<br>แบบครบวงจรในแพลตฟอร์มเดียว' : 'Connecting every business process<br>end-to-end on a single platform' ?>
-                        </span>
-                    </h1>
-
-                    <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-lg md:text-xl leading-relaxed max-w-lg mb-10 font-medium">
+                    <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-lg md:text-xl leading-relaxed max-w-lg mb-10 font-medium desktop-erp-hero-p">
                         <?php if (getCurrentLang() === 'th'): ?>
                             รวบรวมบทความรู้ เทคโนโลยี นวัตกรรม และแนวทางการทำธุรกิจ<br>ครอบคลุม ERP ระบบธุรกิจดิจิทัล การตลาดออนไลน์ AI<br>และโซลูชัน ที่ช่วยพัฒนาองค์กรให้เติบโตได้อย่างยั่งยืน
                         <?php else: ?>
@@ -358,16 +358,11 @@ $erpPortfolios = $mockErpPortfolios;
         .erp-right-col { flex: 1 !important; width: auto !important; }
     }
     @media (min-width: 1280px) {
-        .erp-left-col { width: 540px !important; max-width: 540px !important; }
-        .erp-bleed-wrapper {
-            max-width: 100% !important;
-            padding-left: calc(50% - 640px + 2rem) !important;
-            padding-right: 2rem !important;
-        }
+        .erp-left-col { width: 400px !important; max-width: 400px !important; }
     }
 </style>
 <section class="bg-white pt-8 pb-4 lg:pt-24 lg:pb-8">
-    <div class="erp-bleed-wrapper mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8 relative z-20 -mt-10 lg:-mt-18 pb-6 lg:pb-16 overflow-hidden">
+    <div class="mx-auto w-full max-w-[1720px] px-4 sm:px-6 lg:px-10 relative z-20 -mt-10 lg:-mt-18 pb-6 lg:pb-16 overflow-hidden">
         <div class="w-full rounded-[1rem] bg-white flex flex-col lg:flex-row items-stretch shadow-[0_4px_25px_rgba(0,0,0,0.06)] border border-gray-100 overflow-hidden">
 
             <div class="erp-left-col gsap-erp-about-left group flex-1 flex flex-col justify-center p-6 lg:p-8 border-b lg:border-b-0 lg:border-r border-gray-100 shrink-0 bg-white transition-all duration-300 hover:bg-slate-50/50 cursor-pointer opacity-0 translate-y-10">
@@ -393,7 +388,7 @@ $erpPortfolios = $mockErpPortfolios;
                     ['icon' => asset_url('images/ERP_1.svg'), 'title' => getCurrentLang() === 'th' ? 'ข้อมูลเชื่อมต่อครบทุกแผนก' : 'Connected Data Across Departments', 'desc' => getCurrentLang() === 'th' ? 'ข้อมูลเป็นหนึ่งเดียว ไม่ต้องทำงานซ้ำ' : 'Single source of truth, eliminating duplicate work.', 'href' => '#'],
                     ['icon' => asset_url('images/ERP_2.svg'), 'title' => getCurrentLang() === 'th' ? 'ทำงานอัตโนมัติ ลดความผิดพลาด' : 'Automated Processes & Reduced Errors', 'desc' => getCurrentLang() === 'th' ? 'ลดขั้นตอนงานเอกสาร เพิ่มความแม่นยำ' : 'Minimize paperwork and increase accuracy.', 'href' => '#'],
                     ['icon' => asset_url('images/ERP_3.svg'), 'title' => getCurrentLang() === 'th' ? 'มองเห็นแบบเรียลไทม์ ตัดสินใจได้ไว' : 'Real-time Visibility & Quick Decisions', 'desc' => getCurrentLang() === 'th' ? 'รายงานและ Dashboard อัปเดตตลอดเวลา' : 'Always-updated reports and dashboards.', 'href' => '#'],
-                    ['icon' => asset_url('images/ERP_4.svg'), 'title' => getCurrentLang() === 'th' ? 'รองรับการเติบโต ของธุรกิจ' : 'Supports Business Growth', 'desc' => getCurrentLang() === 'th' ? 'ขยายระบบได้ตามความต้องการ พร้อมเติบโตในอนาคต' : 'Scalable system ready to grow with your business in the future.', 'href' => '#'],
+                    ['icon' => asset_url('images/ERP_4.svg'), 'title' => getCurrentLang() === 'th' ? '<span class="whitespace-nowrap">รองรับการเจริญเติบโต</span><br class="lg:hidden"><span class="whitespace-nowrap">ของธุรกิจ</span>' : 'Supports Business Growth', 'desc' => getCurrentLang() === 'th' ? 'ขยายระบบได้ตามความต้องการ พร้อมเติบโตในอนาคต' : 'Scalable system ready to grow with your business in the future.', 'href' => '#'],
                 ];
                 $lastIdx = count($serviceCards) - 1;
                 foreach ($serviceCards as $i => $card):
@@ -421,10 +416,10 @@ $erpPortfolios = $mockErpPortfolios;
                     <div class="gsap-erp-about-card relative group cursor-pointer flex flex-col justify-center p-6 lg:p-8 <?= $borderClass ?> border-gray-100 bg-white transition-all duration-300 ease-out hover:shadow-[0_0_30px_rgba(0,0,0,0.08)] hover:-translate-y-1 hover:z-10 hover:rounded-xl opacity-0 translate-y-10">
                         <div>
                             <div class="h-14 w-14 mx-auto mb-5 flex items-center justify-center transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:-translate-y-2 group-hover:scale-110">
-                                <img src="<?= e($card['icon']) ?>" alt="<?= e($card['title']) ?>" class="h-full w-full object-contain">
+                                <img src="<?= e($card['icon']) ?>" alt="<?= e(strip_tags($card['title'])) ?>" class="h-full w-full object-contain">
                             </div>
                             <h2 class="text-[#043B94] font-bold text-lg md:text-xl xl:text-2xl text-center mb-3 whitespace-normal tracking-tight transition-colors duration-300 group-hover:text-blue-600">
-                                <?= e($card['title']) ?>
+                                <?= $card['title'] ?>
                             </h2>
                             <p class="text-gray-500 text-base md:text-lg leading-relaxed mb-6 text-center transition-colors duration-300 group-hover:text-gray-600">
                                 <?= e($card['desc']) ?>
@@ -481,7 +476,7 @@ $erpPortfolios = $mockErpPortfolios;
 
 <section class="bg-slate-50 py-10 lg:py-10 font-sans border-t border-slate-100">
     <div class="mx-auto max-w-7xl px-6 sm:px-6 lg:px-8">
-        <h2 class="text-2xl md:text-3xl font-extrabold text-center text-[#022862] tracking-tight py-10">
+        <h2 class="text-2xl md:text-3xl font-extrabold text-center text-[#022862] tracking-tight pt-2 pb-6 md:py-10">
             <?= e(t('erp.cta_banner_title') !== 'erp.cta_banner_title' ? t('erp.cta_banner_title') : (getCurrentLang() === 'th' ? 'ERP ที่ช่วยยกระดับธุรกิจของคุณ' : 'ERP That Elevates Your Business')) ?>
         </h2>
 

@@ -1815,6 +1815,10 @@ h1,
   margin-top: auto;
 }
 
+.-mt-2 {
+  margin-top: -0.5rem;
+}
+
 .line-clamp-1 {
   overflow: hidden;
   display: -webkit-box;
@@ -2974,6 +2978,12 @@ h1,
 
 .from-white\/90 {
   --tw-gradient-from: rgb(255 255 255 / 0.9) var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(255 255 255 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+
+.from-white\/50 {
+  --tw-gradient-from: rgb(255 255 255 / 0.5) var(--tw-gradient-from-position);
   --tw-gradient-to: rgb(255 255 255 / 0) var(--tw-gradient-to-position);
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
 }
@@ -4775,6 +4785,10 @@ h1,
     margin-top: 1.5rem;
   }
 
+  .md\:-mt-8 {
+    margin-top: -2rem;
+  }
+
   .md\:line-clamp-none {
     overflow: visible;
     display: block;
@@ -4788,6 +4802,10 @@ h1,
 
   .md\:inline {
     display: inline;
+  }
+
+  .md\:flex {
+    display: flex;
   }
 
   .md\:grid {
@@ -4949,6 +4967,11 @@ h1,
     border-bottom-width: 0px;
   }
 
+  .md\:object-contain {
+    -o-object-fit: contain;
+       object-fit: contain;
+  }
+
   .md\:p-10 {
     padding: 2.5rem;
   }
@@ -4996,6 +5019,11 @@ h1,
     padding-bottom: 0.875rem;
   }
 
+  .md\:py-10 {
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
+  }
+
   .md\:pb-24 {
     padding-bottom: 6rem;
   }
@@ -5006,6 +5034,10 @@ h1,
 
   .md\:pt-12 {
     padding-top: 3rem;
+  }
+
+  .md\:pb-2 {
+    padding-bottom: 0.5rem;
   }
 
   .md\:text-center {
@@ -5570,6 +5602,10 @@ h1,
 
   .lg\:pt-8 {
     padding-top: 2rem;
+  }
+
+  .lg\:pt-40 {
+    padding-top: 10rem;
   }
 
   .lg\:text-2xl {

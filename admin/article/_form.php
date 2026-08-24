@@ -172,7 +172,7 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
                                 <label class="text-sm font-medium text-slate-700">
                                     หัวข้อบทความ (Article Title) <span class="text-red-500 ml-0.5">*</span>
                                 </label>
-                                <span id="titleCount" class="text-xs text-slate-500">0 / 150</span>
+                                <span id="titleCount" class="text-xs text-slate-500">0 / 120</span>
                             </div>
                             <input id="mainTitle"
                                 name="meta_title"
@@ -186,7 +186,7 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
                                 <label class="text-sm font-medium text-slate-700">
                                     คำอธิบายสรุปบทความ (Article Summary) <span class="text-red-500 ml-0.5">*</span>
                                 </label>
-                                <span id="descCount" class="text-xs text-slate-500">0 / 500</span>
+                                <span id="descCount" class="text-xs text-slate-500">0 / 200</span>
                             </div>
                             <textarea id="metaDesc"
                                 name="meta_description"
@@ -213,7 +213,7 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
                                 <label class="text-sm font-medium text-slate-700">
                                     หัวข้อบทความ (EN) <span class="text-red-500 ml-0.5">*</span>
                                 </label>
-                                <span id="titleCountEn" class="text-xs text-slate-500">0 / 150</span>
+                                <span id="titleCountEn" class="text-xs text-slate-500">0 / 120</span>
                             </div>
                             <input id="mainTitleEn"
                                 name="meta_title_en"
@@ -226,7 +226,7 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
                                 <label class="text-sm font-medium text-slate-700">
                                     SEO Description (English) <span class="text-red-500 ml-0.5">*</span>
                                 </label>
-                                <span id="descCountEn" class="text-xs text-slate-500">0 / 500</span>
+                                <span id="descCountEn" class="text-xs text-slate-500">0 / 200</span>
                             </div>
                             <textarea id="metaDescEn"
                                 name="meta_description_en"
@@ -252,7 +252,7 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
                     <p class="text-xs text-slate-500 mt-0.5">จัดการเขียนบทความหลักและกำหนดสถานะการเปิดเผยข้อมูลบนเว็บไซต์</p>
                 </div>
                 <div class="p-6 space-y-6">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-end">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-end">
                         <div class="w-full">
                             <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 block">
                                 หมวดหมู่บทความ <span class="text-red-500 ml-0.5">*</span>
@@ -266,6 +266,14 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
                                     </option>
                                 <?php endforeach; ?>
                             </select>
+                        </div>
+                        <div class="w-full">
+                            <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 block">
+                                วันที่เผยแพร่บทความ <span class="text-red-500 ml-0.5">*</span>
+                            </label>
+                            <input type="datetime-local" name="created_at"
+                                value="<?= isset($data['created_at']) ? date('Y-m-d\TH:i', strtotime($data['created_at'])) : date('Y-m-d\TH:i') ?>"
+                                class="<?= $inputClass ?> bg-white h-[46px]" required>
                         </div>
                         <div class="w-full">
                             <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 block">
@@ -390,7 +398,7 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
     </form>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/tinymce@6.8.3/tinymce.min.js" referrerpolicy="origin"></script>
-<script src="../assets/js/seo-editor.js"></script>
+<script src="../assets/js/seo-editor.js?v=1.0.3"></script>
 <script>
     window.WEBPARKSeoEditor.init({
         formSelector: '#unifiedForm',
@@ -412,18 +420,93 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
         function updateEnCounters() {
             if (titleEn && titleCountEn) {
                 const len = titleEn.value.length;
-                titleCountEn.textContent = `${len} / 150`;
-                titleCountEn.className = `text-xs font-medium ${len > 150 ? 'text-rose-600' : 'text-slate-500'}`;
+                titleCountEn.textContent = `${len} / 120`;
+                titleCountEn.className = `text-xs font-medium ${len > 120 ? 'text-rose-600' : 'text-slate-500'}`;
+                if (len > 120) {
+                    titleEn.classList.add('border-rose-500', 'focus:border-rose-500', 'focus:ring-rose-500/10');
+                    titleEn.classList.remove('border-slate-300', 'focus:border-blue-500', 'focus:ring-blue-500/10');
+                } else {
+                    titleEn.classList.remove('border-rose-500', 'focus:border-rose-500', 'focus:ring-rose-500/10');
+                    titleEn.classList.add('border-slate-300', 'focus:border-blue-500', 'focus:ring-blue-500/10');
+                }
             }
             if (descEn && descCountEn) {
                 const len = descEn.value.length;
-                descCountEn.textContent = `${len} / 500`;
-                descCountEn.className = `text-xs font-medium ${len > 500 ? 'text-rose-600' : 'text-slate-500'}`;
+                descCountEn.textContent = `${len} / 200`;
+                descCountEn.className = `text-xs font-medium ${len > 200 ? 'text-rose-600' : 'text-slate-500'}`;
+                if (len > 200) {
+                    descEn.classList.add('border-rose-500', 'focus:border-rose-500', 'focus:ring-rose-500/10');
+                    descEn.classList.remove('border-slate-300', 'focus:border-blue-500', 'focus:ring-blue-500/10');
+                } else {
+                    descEn.classList.remove('border-rose-500', 'focus:border-rose-500', 'focus:ring-rose-500/10');
+                    descEn.classList.add('border-slate-300', 'focus:border-blue-500', 'focus:ring-blue-500/10');
+                }
             }
         }
         if (titleEn) titleEn.addEventListener('input', updateEnCounters);
         if (descEn) descEn.addEventListener('input', updateEnCounters);
         updateEnCounters();
+
+        // Prevent Form Submission if over limits
+        const form = document.getElementById('unifiedForm');
+        if (form) {
+            form.addEventListener('submit', (e) => {
+                const titleTh = document.getElementById('mainTitle');
+                const descTh = document.getElementById('metaDesc');
+
+                let hasError = false;
+                let firstErrorElement = null;
+
+                if (titleTh && titleTh.value.length > 120) {
+                    hasError = true;
+                    if (!firstErrorElement) firstErrorElement = titleTh;
+                }
+                if (descTh && descTh.value.length > 200) {
+                    hasError = true;
+                    if (!firstErrorElement) firstErrorElement = descTh;
+                }
+                if (titleEn && titleEn.value.length > 120) {
+                    hasError = true;
+                    if (!firstErrorElement) firstErrorElement = titleEn;
+                }
+                if (descEn && descEn.value.length > 200) {
+                    hasError = true;
+                    if (!firstErrorElement) firstErrorElement = descEn;
+                }
+
+                if (hasError) {
+                    e.preventDefault();
+                    // Reset the loading spinner on submit button if form submission is blocked
+                    const submitBtn = document.getElementById('submit-btn');
+                    const btnText = document.getElementById('btn-text');
+                    const btnSpinner = document.getElementById('btn-spinner');
+                    const robotBodies = document.querySelectorAll('.robot-body-track');
+                    if (btnText && btnSpinner && submitBtn) {
+                        btnText.style.display = 'inline-block';
+                        btnSpinner.style.display = 'none';
+                        submitBtn.disabled = false;
+                        submitBtn.style.opacity = '1';
+                        submitBtn.style.cursor = 'pointer';
+                    }
+                    if (robotBodies) {
+                        robotBodies.forEach(b => b.classList.remove('jump-animation'));
+                    }
+
+                    alert('ไม่สามารถบันทึกได้: เนื่องจากความยาวตัวอักษรของหัวข้อบทความเกิน 120 ตัวอักษร หรือคำอธิบายสรุปบทความเกิน 200 ตัวอักษร กรุณาแก้ไขข้อความให้ไม่เกินกำหนดก่อนกดบันทึกครับ');
+                    
+                    if (firstErrorElement) {
+                        const isEnField = firstErrorElement.id.endsWith('En');
+                        if (isEnField) {
+                            switchGlobalLanguage('en');
+                        } else {
+                            switchGlobalLanguage('th');
+                        }
+                        firstErrorElement.focus();
+                        firstErrorElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                }
+            });
+        }
     });
 </script>
 <script>

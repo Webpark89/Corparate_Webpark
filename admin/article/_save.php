@@ -1,10 +1,12 @@
 <?php
+
 /**
  * Shared article save logic used by create.php and edit.php.
  */
 require_once __DIR__ . '/../includes/functions.php';
 require_login();
 csrf_verify();
+
 $id = (int) ($_POST['id'] ?? 0);
 $metaTitle = trim($_POST['meta_title'] ?? '');
 if ($metaTitle === '') {
@@ -12,8 +14,10 @@ if ($metaTitle === '') {
     header('Location: ' . ($id ? 'edit.php?id=' . $id : 'create.php'));
     exit;
 }
+
 $sectionsInput = $_POST['sections'] ?? [];
 $finalSections = [];
+
 foreach (['th', 'en'] as $lang) {
     if (isset($sectionsInput[$lang]) && is_array($sectionsInput[$lang])) {
         foreach ($sectionsInput[$lang] as $item) {
@@ -29,12 +33,14 @@ foreach (['th', 'en'] as $lang) {
         }
     }
 }
-$serializedContent = json_encode($finalSections, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+$serializedContent = json_encode($finalSections, JSON_UNESCAPED_UNICODE);
+
 $metaTitleEn = trim($_POST['meta_title_en'] ?? '');
 $slugEn = trim($_POST['slug_en'] ?? '');
 if ($slugEn === '' && $metaTitleEn !== '') {
     $slugEn = slugify($metaTitleEn);
 }
+
 $data = [
     'slug' => trim($_POST['slug'] ?? '') ?: slugify($metaTitle),
     'slug_en' => $slugEn !== '' ? $slugEn : null,
@@ -51,7 +57,9 @@ $data = [
     'content' => $serializedContent,
     'author_id' => (int) ($_POST['author_id'] ?? 0) ?: null,
     'status' => in_array($_POST['status'] ?? 'draft', ['published', 'draft', 'hidden'], true) ? ($_POST['status'] ?? 'draft') : 'draft',
+    'created_at' => (isset($_POST['created_at']) && trim($_POST['created_at']) !== '') ? date('Y-m-d H:i:s', strtotime($_POST['created_at'])) : date('Y-m-d H:i:s'),
 ];
+
 $imagePath = trim($_POST['cover_image'] ?? '');
 try {
     $uploadedImage = handle_upload('image_file', ['jpg', 'jpeg', 'png', 'webp', 'gif']);
@@ -65,6 +73,7 @@ try {
     header('Location: ' . ($id ? 'edit.php?id=' . $id : 'create.php'));
     exit;
 }
+
 try {
     if ($id) {
         $sets = [];
@@ -91,5 +100,6 @@ try {
     header('Location: ' . ($id ? 'edit.php?id=' . $id : 'create.php'));
     exit;
 }
+
 header('Location: index.php');
 exit;

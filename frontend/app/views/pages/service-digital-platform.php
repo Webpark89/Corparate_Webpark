@@ -50,6 +50,17 @@ declare(strict_types=1);
     .delay-100 { animation-delay: 100ms; }
     .delay-200 { animation-delay: 200ms; }
     .delay-300 { animation-delay: 300ms; }
+    @media (min-width: 1025px) {
+        .desktop-subpage-hero-h1 {
+            font-size: 5.5rem !important;
+            line-height: 1.1 !important;
+        }
+        .desktop-subpage-hero-p {
+            font-size: 1.25rem !important;
+            line-height: 1.75 !important;
+            max-width: 34rem !important;
+        }
+    }
 </style>
 <!-- Top Reading Progress Bar -->
 <div id="reading-progress" class="fixed top-0 left-0 h-1 bg-gradient-to-r from-blue-500 to-indigo-600 z-[9999] transition-all duration-150 ease-out" style="width: 0%;"></div>
@@ -74,10 +85,10 @@ declare(strict_types=1);
                     </ol>
                 </nav>
                 <h1 class="animate-fade-up delay-200 leading-snug mb-6 tracking-tight">
-                    <span class="block text-3xl md:text-4xl lg:text-[44px] font-bold text-slate-500 mb-2">
+                    <span class="block text-3xl md:text-4xl lg:text-[44px] font-bold text-slate-500 mb-2 desktop-subpage-hero-h1">
                         <?= e(getCurrentLang() === 'th' ? 'แพลตฟอร์มดิจิทัล' : 'Digital Platform') ?>
                     </span>
-                    <span class="block text-3xl md:text-4xl lg:text-[44px] font-bold text-[#022862]">
+                    <span class="block text-3xl md:text-4xl lg:text-[44px] font-bold text-[#022862] desktop-subpage-hero-h1">
                         <?= e(getCurrentLang() === 'th' ? 'ขับเคลื่อนธุรกิจสู่อนาคต' : 'Drive Business to the Future') ?>
                     </span>
                 </h1>
@@ -91,7 +102,7 @@ declare(strict_types=1);
                         Webpark Team
                     </span>
                 </div>
-                <p class="animate-fade-up delay-400 mt-6 text-[#022862] text-lg md:text-xl leading-relaxed max-w-lg mb-10 font-medium">
+                <p class="animate-fade-up delay-400 mt-6 text-[#022862] text-lg md:text-xl leading-relaxed max-w-lg mb-10 font-medium desktop-subpage-hero-p">
                     <?= e(getCurrentLang() === 'th' ? 'พัฒนาซอฟต์แวร์และแพลตฟอร์มดิจิทัลที่ตอบโจทย์ธุรกิจแบบครบวงจร ตั้งแต่ Web Application, Mobile App ไปจนถึง Custom SaaS เพื่อเพิ่มขีดความสามารถในการแข่งขัน' : 'Develop software and digital platforms that meet end-to-end business needs, from Web Applications and Mobile Apps to Custom SaaS to increase competitiveness.') ?>
                 </p>
             </div>

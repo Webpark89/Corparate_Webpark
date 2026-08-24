@@ -74,7 +74,11 @@ function get_article_summary_text(string $content, string $lang = 'th'): string
         return '';
     }
 
-    $decoded = json_decode($clean, true);
+    $decoded = json_decode(htmlspecialchars_decode($clean, ENT_QUOTES), true);
+    if (!is_array($decoded)) {
+        $decoded = json_decode($clean, true);
+    }
+
     if (is_array($decoded)) {
         $texts = [];
         foreach ($decoded as $section) {
@@ -92,7 +96,18 @@ function get_article_summary_text(string $content, string $lang = 'th'): string
         return normalize_text($combined);
     }
 
-    return normalize_text($clean);
+    // Bulletproof Fallback: extract topic/body text using regex if json_decode fails
+    preg_match_all('/"(body|topic)"\s*:\s*"((?>[^"\\\\]++|\\\\.)*)"/s', $clean, $matches);
+    if (!empty($matches[2])) {
+        $texts = [];
+        foreach ($matches[2] as $val) {
+            $texts[] = stripslashes($val);
+        }
+        $combined = implode(' ', $texts);
+        return normalize_text(strip_tags($combined));
+    }
+
+    return normalize_text(strip_tags($clean));
 }
 
 /**

@@ -87,12 +87,12 @@ $form = $form ?? [];
                         }
                         .desktop-contact-hero-h1 {
                             font-size: 5.5rem !important;
-                            line-height: 1.25 !important;
+                            line-height: 1.1 !important;
                         }
                         .desktop-contact-hero-p {
-                            font-size: 1.375rem !important;
-                            line-height: 1.8 !important;
-                            max-width: 48rem !important;
+                            font-size: 1.25rem !important;
+                            line-height: 1.75 !important;
+                            max-width: 34rem !important;
                         }
                     }
 

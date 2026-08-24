@@ -525,7 +525,7 @@ if (isset($services) && is_array($services)) {
                 opacity: 1 !important;
             }
             .desktop-services-hero-h1 {
-                font-size: 7rem !important;
+                font-size: 5.5rem !important;
                 line-height: 1.1 !important;
                 white-space: nowrap !important; /* บังคับไม่ให้ข้อความตกร่องกลางคำ */
             }
@@ -540,9 +540,9 @@ if (isset($services) && is_array($services)) {
                 color: #2563eb !important;
             }
             .desktop-services-hero-p {
-                font-size: 1.375rem !important;
-                line-height: 1.8 !important;
-                max-width: 38rem !important; /* ขยายความกว้างข้อความอธิบายให้สมดุล */
+                font-size: 1.25rem !important;
+                line-height: 1.75 !important;
+                max-width: 34rem !important; /* ขยายความกว้างข้อความอธิบายให้สมดุล */
             }
             /* ปรับรูปแบบการ์ดบริการ (Services Grid) ให้เหมือนรูปตัวอย่างบน Desktop */
             .desktop-service-card-inner {
