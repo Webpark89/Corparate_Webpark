@@ -66,74 +66,105 @@ $siteKey = $siteKey ?? '6Lcf_pAtAAAAAOVhatPPwrHSYXeb_0J4yXf5BrRO';
                             }
                             .privacy-text { color: #022862 !important; }
                             @media (min-width: 768px) { .desktop-btn-left { justify-content: flex-start !important; } }
+                            .input-error {
+                                border-color: #f87171 !important;
+                                box-shadow: 0 0 0 3px rgba(248, 113, 113, 0.2) !important;
+                            }
+                            .input-error:focus {
+                                border-color: #ef4444 !important;
+                                box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.25) !important;
+                            }
+                            .cta-field-error-msg {
+                                color: #e05263;
+                                font-size: 0.8125rem;
+                                line-height: 1.25rem;
+                                margin-top: 0.375rem;
+                                font-weight: 400;
+                                display: block;
+                            }
+                            .cta-field-error-msg.hidden {
+                                display: none !important;
+                            }
                         </style>
                         <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-                        <form id="ctaContactForm" method="post" action="<?= e(route_url('/contact/submit')) ?>" class="space-y-4">
+                        <form id="ctaContactForm" method="post" action="<?= e(route_url('/contact/submit')) ?>" class="space-y-4" novalidate>
                             <input type="hidden" name="source_page" value="<?= e($_SERVER['REQUEST_URI'] ?? '') ?>">
                             <input type="hidden" name="is_ajax" value="1">
 
                             <!-- First Name & Last Name (2 columns) -->
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div>
-                                    <input type="text" id="cta_first_name" name="first_name" placeholder="<?= e(t('common.form_label_firstname')) ?> *" value="<?= e($form['first_name'] ?? '') ?>" required maxlength="30"
+                                    <input type="text" id="cta_first_name" name="first_name" placeholder="<?= e(t('common.form_label_firstname')) ?> *" value="<?= e($form['first_name'] ?? '') ?>" maxlength="30"
                                         class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base text-slate-900 outline-none transition custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary ipad-pro-cta-input"
                                         oninput="this.value = this.value.replace(/\s+/g, '');">
+                                    <p id="error_cta_first_name" class="cta-field-error-msg hidden"></p>
                                 </div>
                                 <div>
-                                    <input type="text" id="cta_last_name" name="last_name" placeholder="<?= e(t('common.form_label_lastname')) ?> *" value="<?= e($form['last_name'] ?? '') ?>" required maxlength="30"
+                                    <input type="text" id="cta_last_name" name="last_name" placeholder="<?= e(t('common.form_label_lastname')) ?> *" value="<?= e($form['last_name'] ?? '') ?>" maxlength="30"
                                         class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base text-slate-900 outline-none transition custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary ipad-pro-cta-input"
                                         oninput="this.value = this.value.replace(/\s+/g, '');">
+                                    <p id="error_cta_last_name" class="cta-field-error-msg hidden"></p>
                                 </div>
                             </div>
 
                             <!-- Company Name (Optional) -->
                             <div>
-                                <input type="text" name="company_name" placeholder="<?= e(t('common.form_label_company_optional')) ?>" value="<?= e($form['company_name'] ?? '') ?>" maxlength="100"
+                                <input type="text" id="cta_company_name" name="company_name" placeholder="<?= e(t('common.form_label_company_optional')) ?>" value="<?= e($form['company_name'] ?? '') ?>" maxlength="100"
                                     class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base text-slate-900 outline-none transition custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary ipad-pro-cta-input">
+                                <p id="error_cta_company_name" class="cta-field-error-msg hidden"></p>
                             </div>
 
                             <!-- Phone & Email -->
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div>
-                                    <input type="text" inputmode="numeric" name="phone" placeholder="<?= e(t('common.form_label_phone')) ?> *" value="<?= e($form['phone'] ?? '') ?>" required maxlength="10" pattern="\d{9,10}"
+                                    <input type="text" inputmode="numeric" id="cta_phone" name="phone" placeholder="<?= e(t('common.form_label_phone')) ?> *" value="<?= e($form['phone'] ?? '') ?>" maxlength="10"
                                         oninput="this.value = this.value.replace(/[^0-9]/g, '');"
                                         class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base text-slate-900 outline-none transition custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary ipad-pro-cta-input">
+                                    <p id="error_cta_phone" class="cta-field-error-msg hidden"></p>
                                 </div>
                                 <div>
-                                    <input type="email" name="email" placeholder="<?= e(t('common.form_label_email')) ?> *" value="<?= e($form['email'] ?? '') ?>" required maxlength="255"
+                                    <input type="email" id="cta_email" name="email" placeholder="<?= e(t('common.form_label_email')) ?> *" value="<?= e($form['email'] ?? '') ?>" maxlength="255"
                                         class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base text-slate-900 outline-none transition custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary ipad-pro-cta-input">
+                                    <p id="error_cta_email" class="cta-field-error-msg hidden"></p>
                                 </div>
                             </div>
 
                             <!-- Message with Character Counter -->
                             <div class="space-y-1">
-                                <textarea id="cta_message_area" name="message" rows="3" placeholder="<?= e(t('common.form_label_details')) ?> *" required maxlength="500"
+                                <textarea id="cta_message_area" name="message" rows="3" placeholder="<?= e(t('common.form_label_details')) ?> *" maxlength="500"
                                     class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base text-slate-900 outline-none transition custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary resize-none ipad-pro-cta-input"><?= e($form['message'] ?? '') ?></textarea>
                                 <div class="flex justify-between items-center px-1 text-xs text-slate-400">
                                     <span>* ความยาวไม่เกิน 500 ตัวอักษร</span>
                                     <span id="cta_word_count_display" class="font-semibold text-slate-500">0/500</span>
                                 </div>
+                                <p id="error_cta_message_area" class="cta-field-error-msg hidden"></p>
                             </div>
 
                             <!-- PDPA Consent Checkbox -->
-                            <div class="flex items-start gap-2.5 pt-1">
-                                <input type="checkbox" id="cta_privacy_consent" name="pdpa_agreed" value="1" required class="mt-0.5 w-4 h-4 rounded border-slate-300 text-primary focus:ring-primary cursor-pointer transition">
-                                <label for="cta_privacy_consent" class="text-sm leading-relaxed cursor-pointer select-none ipad-pro-cta-privacy">
-                                    <span class="privacy-text"><?= e(t('common.form_consent_prefix')) ?></span> <a href="<?= e(route_url('/privacy-policy')) ?>" target="_blank" rel="noopener noreferrer" class="text-primary hover:underline"><?= e(t('common.form_consent_privacy_policy')) ?> <?= e(t('common.form_consent_terms_suffix')) ?></a>
-                                </label>
+                            <div>
+                                <div class="flex items-start gap-2.5 pt-1">
+                                    <input type="checkbox" id="cta_privacy_consent" name="pdpa_agreed" value="1" class="mt-0.5 w-4 h-4 rounded border-slate-300 text-primary focus:ring-primary cursor-pointer transition">
+                                    <label for="cta_privacy_consent" class="text-sm leading-relaxed cursor-pointer select-none ipad-pro-cta-privacy">
+                                        <span class="privacy-text"><?= e(t('common.form_consent_prefix')) ?></span> <a href="<?= e(route_url('/privacy-policy')) ?>" target="_blank" rel="noopener noreferrer" class="text-primary hover:underline"><?= e(t('common.form_consent_privacy_policy')) ?> <?= e(t('common.form_consent_terms_suffix')) ?></a>
+                                    </label>
+                                </div>
+                                <p id="error_cta_privacy_consent" class="cta-field-error-msg hidden"></p>
                             </div>
 
                             <!-- Google reCAPTCHA v2 Widget -->
-                            <div class="pt-1 flex justify-center sm:justify-start">
-                                <div class="g-recaptcha" data-sitekey="<?= e($siteKey) ?>"></div>
+                            <div>
+                                <div class="pt-1 flex justify-center sm:justify-start">
+                                    <div id="cta_recaptcha_container" class="g-recaptcha" data-sitekey="<?= e($siteKey) ?>"></div>
+                                </div>
+                                <p id="error_cta_recaptcha" class="cta-field-error-msg hidden"></p>
                             </div>
 
                             <!-- Error Message Alerts Container -->
                             <div id="cta-error-box" class="hidden rounded-xl bg-red-50 border border-red-200 p-4 text-xs font-semibold text-red-600 space-y-1"></div>
 
-                            <!-- Submit Button (Disabled until PDPA checked) -->
+                            <!-- Submit Button -->
                             <div class="pt-2 flex justify-center desktop-btn-left">
-                                <button type="submit" id="cta_submit_btn" disabled class="px-8 py-3.5 bg-primary hover:bg-blue-600 text-white font-bold text-base rounded-full flex items-center justify-center gap-2 shadow-lg shadow-blue-500/10 transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none">
+                                <button type="submit" id="cta_submit_btn" class="px-8 py-3.5 bg-primary hover:bg-blue-600 text-white font-bold text-base rounded-full flex items-center justify-center gap-2 shadow-lg shadow-blue-500/10 transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none">
                                     <span id="cta_btn_text"><?= e(t('erp.cta_submit') !== 'erp.cta_submit' ? t('erp.cta_submit') : (getCurrentLang() === 'th' ? 'ส่งข้อมูล' : 'Submit')) ?></span>
                                     <svg id="cta_btn_icon" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -155,34 +186,197 @@ $siteKey = $siteKey ?? '6Lcf_pAtAAAAAOVhatPPwrHSYXeb_0J4yXf5BrRO';
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('ctaContactForm');
+    const firstNameInput = document.getElementById('cta_first_name');
+    const lastNameInput = document.getElementById('cta_last_name');
+    const companyInput = document.getElementById('cta_company_name');
+    const phoneInput = document.getElementById('cta_phone');
+    const emailInput = document.getElementById('cta_email');
+    const messageArea = document.getElementById('cta_message_area');
     const privacyCb = document.getElementById('cta_privacy_consent');
+    
+    const errorFirstName = document.getElementById('error_cta_first_name');
+    const errorLastName = document.getElementById('error_cta_last_name');
+    const errorCompany = document.getElementById('error_cta_company_name');
+    const errorPhone = document.getElementById('error_cta_phone');
+    const errorEmail = document.getElementById('error_cta_email');
+    const errorMessage = document.getElementById('error_cta_message_area');
+    const errorPrivacy = document.getElementById('error_cta_privacy_consent');
+    const errorRecaptcha = document.getElementById('error_cta_recaptcha');
+
     const submitBtn = document.getElementById('cta_submit_btn');
     const btnText = document.getElementById('cta_btn_text');
     const btnIcon = document.getElementById('cta_btn_icon');
     const btnSpinner = document.getElementById('cta_btn_spinner');
-    const messageArea = document.getElementById('cta_message_area');
     const wordCountDisplay = document.getElementById('cta_word_count_display');
     const errorBox = document.getElementById('cta-error-box');
     const formBox = document.getElementById('cta-form-box');
     const successBox = document.getElementById('cta-success-box');
 
-    // 1. Toggle submit button disabled state according to PDPA checkbox
-    function updateCtaSubmitBtnState() {
-        if (privacyCb && submitBtn) {
-            submitBtn.disabled = !privacyCb.checked;
+    const isTh = '<?= getCurrentLang() ?>' === 'th';
+    const letterOnlyRegex = /^[a-zA-Z\u0E00-\u0E7F]+$/;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    function setError(inputEl, errorEl, message) {
+        if (inputEl) {
+            inputEl.classList.add('input-error');
+        }
+        if (errorEl) {
+            errorEl.textContent = message;
+            errorEl.classList.remove('hidden');
         }
     }
 
-    if (privacyCb) {
-        privacyCb.addEventListener('change', updateCtaSubmitBtnState);
-        updateCtaSubmitBtnState();
+    function clearError(inputEl, errorEl) {
+        if (inputEl) {
+            inputEl.classList.remove('input-error');
+        }
+        if (errorEl) {
+            errorEl.textContent = '';
+            errorEl.classList.add('hidden');
+        }
     }
 
-    // 2. Character counter for message (max 500 characters)
+    function validateFirstName() {
+        const val = (firstNameInput.value || '').trim();
+        if (!val) {
+            setError(firstNameInput, errorFirstName, isTh ? 'กรุณากรอกชื่อจริง' : 'Please enter your first name');
+            return false;
+        }
+        if (!letterOnlyRegex.test(val)) {
+            setError(firstNameInput, errorFirstName, isTh ? 'กรุณากรอกชื่อเป็นตัวอักษรเท่านั้น' : 'Please enter a valid name using letters only');
+            return false;
+        }
+        if (val.length > 30) {
+            setError(firstNameInput, errorFirstName, isTh ? 'ชื่อจริงต้องไม่เกิน 30 ตัวอักษร' : 'First name must not exceed 30 characters');
+            return false;
+        }
+        clearError(firstNameInput, errorFirstName);
+        return true;
+    }
+
+    function validateLastName() {
+        const val = (lastNameInput.value || '').trim();
+        if (!val) {
+            setError(lastNameInput, errorLastName, isTh ? 'กรุณากรอกนามสกุล' : 'Please enter your last name');
+            return false;
+        }
+        if (!letterOnlyRegex.test(val)) {
+            setError(lastNameInput, errorLastName, isTh ? 'กรุณากรอกนามสกุลเป็นตัวอักษรเท่านั้น' : 'Please enter a valid last name using letters only');
+            return false;
+        }
+        if (val.length > 30) {
+            setError(lastNameInput, errorLastName, isTh ? 'นามสกุลต้องไม่เกิน 30 ตัวอักษร' : 'Last name must not exceed 30 characters');
+            return false;
+        }
+        clearError(lastNameInput, errorLastName);
+        return true;
+    }
+
+    function validateCompany() {
+        const val = (companyInput.value || '').trim();
+        if (val && val.length > 100) {
+            setError(companyInput, errorCompany, isTh ? 'ชื่อบริษัทต้องไม่เกิน 100 ตัวอักษร' : 'Company name must not exceed 100 characters');
+            return false;
+        }
+        clearError(companyInput, errorCompany);
+        return true;
+    }
+
+    function validatePhone() {
+        const val = (phoneInput.value || '').trim();
+        if (!val) {
+            setError(phoneInput, errorPhone, isTh ? 'กรุณากรอกเบอร์โทรศัพท์' : 'Please enter your phone number');
+            return false;
+        }
+        if (!/^[0-9]{9,10}$/.test(val)) {
+            setError(phoneInput, errorPhone, isTh ? 'กรุณากรอกเบอร์โทรศัพท์ 9-10 หลักให้ถูกต้อง' : 'Please enter a valid 9-10 digit phone number');
+            return false;
+        }
+        clearError(phoneInput, errorPhone);
+        return true;
+    }
+
+    function validateEmail() {
+        const val = (emailInput.value || '').trim();
+        if (!val) {
+            setError(emailInput, errorEmail, isTh ? 'กรุณากรอกอีเมล' : 'Please enter your email');
+            return false;
+        }
+        if (!emailRegex.test(val)) {
+            setError(emailInput, errorEmail, isTh ? 'กรุณากรอกรูปแบบอีเมลให้ถูกต้อง' : 'Please enter a valid email address');
+            return false;
+        }
+        if (val.length > 255) {
+            setError(emailInput, errorEmail, isTh ? 'อีเมลยาวเกินกำหนด' : 'Email is too long');
+            return false;
+        }
+        clearError(emailInput, errorEmail);
+        return true;
+    }
+
+    function validateMessage() {
+        const val = (messageArea.value || '').trim();
+        if (!val) {
+            setError(messageArea, errorMessage, isTh ? 'กรุณากรอกรายละเอียด' : 'Please enter your message');
+            return false;
+        }
+        if (val.length > 500) {
+            setError(messageArea, errorMessage, isTh ? 'ข้อความต้องไม่เกิน 500 ตัวอักษร' : 'Message must not exceed 500 characters');
+            return false;
+        }
+        clearError(messageArea, errorMessage);
+        return true;
+    }
+
+    function validatePrivacy() {
+        if (!privacyCb.checked) {
+            setError(null, errorPrivacy, isTh ? 'กรุณายินยอมตามนโยบายความเป็นส่วนตัว' : 'Please accept the Privacy Policy');
+            return false;
+        }
+        clearError(null, errorPrivacy);
+        return true;
+    }
+
+    function validateRecaptcha() {
+        if (typeof grecaptcha !== 'undefined') {
+            const resp = grecaptcha.getResponse();
+            if (!resp || resp.length === 0) {
+                setError(null, errorRecaptcha, isTh ? 'กรุณายืนยันตัวตน reCAPTCHA' : 'Please complete the reCAPTCHA verification');
+                return false;
+            }
+        }
+        clearError(null, errorRecaptcha);
+        return true;
+    }
+
+    // Real-time events
+    firstNameInput.addEventListener('input', () => { if (errorFirstName.textContent) validateFirstName(); });
+    firstNameInput.addEventListener('blur', validateFirstName);
+
+    lastNameInput.addEventListener('input', () => { if (errorLastName.textContent) validateLastName(); });
+    lastNameInput.addEventListener('blur', validateLastName);
+
+    companyInput.addEventListener('input', () => { if (errorCompany.textContent) validateCompany(); });
+    companyInput.addEventListener('blur', validateCompany);
+
+    phoneInput.addEventListener('input', () => { if (errorPhone.textContent) validatePhone(); });
+    phoneInput.addEventListener('blur', validatePhone);
+
+    emailInput.addEventListener('input', () => { if (errorEmail.textContent) validateEmail(); });
+    emailInput.addEventListener('blur', validateEmail);
+
+    messageArea.addEventListener('input', () => {
+        updateCtaWordCount();
+        if (errorMessage.textContent) validateMessage();
+    });
+    messageArea.addEventListener('blur', validateMessage);
+
+    privacyCb.addEventListener('change', validatePrivacy);
+
+    // Character counter for message (max 500 characters)
     function updateCtaWordCount() {
         if (!messageArea || !wordCountDisplay) return;
         const count = messageArea.value.length;
-
         wordCountDisplay.textContent = count + '/500';
         if (count > 500) {
             wordCountDisplay.classList.add('text-red-500');
@@ -192,16 +386,38 @@ document.addEventListener('DOMContentLoaded', function () {
             wordCountDisplay.classList.add('text-slate-500');
         }
     }
+    updateCtaWordCount();
 
-    if (messageArea) {
-        messageArea.addEventListener('input', updateCtaWordCount);
-        updateCtaWordCount();
+    function validateAll() {
+        const validFirst = validateFirstName();
+        const validLast = validateLastName();
+        const validCompany = validateCompany();
+        const validPhone = validatePhone();
+        const validEmail = validateEmail();
+        const validMsg = validateMessage();
+        const validPrivacy = validatePrivacy();
+        const validRecaptcha = validateRecaptcha();
+
+        if (!validFirst) { firstNameInput.focus(); return false; }
+        if (!validLast) { lastNameInput.focus(); return false; }
+        if (!validCompany) { companyInput.focus(); return false; }
+        if (!validPhone) { phoneInput.focus(); return false; }
+        if (!validEmail) { emailInput.focus(); return false; }
+        if (!validMsg) { messageArea.focus(); return false; }
+        if (!validPrivacy) { privacyCb.focus(); return false; }
+        if (!validRecaptcha) { return false; }
+
+        return true;
     }
 
-    // 3. AJAX Submission handler
+    // AJAX Submission handler
     if (form) {
         form.addEventListener('submit', function (e) {
             e.preventDefault();
+
+            if (!validateAll()) {
+                return;
+            }
 
             // Clear previous errors
             errorBox.classList.add('hidden');
@@ -215,7 +431,6 @@ document.addEventListener('DOMContentLoaded', function () {
             btnText.textContent = '<?= getCurrentLang() === 'th' ? 'กำลังส่งข้อมูล...' : 'Submitting...' ?>';
 
             const formData = new FormData(form);
-            // Ensure source_page is current URL
             formData.set('source_page', window.location.href);
 
             fetch(form.action, {
@@ -244,7 +459,7 @@ document.addEventListener('DOMContentLoaded', function () {
             })
             .catch(err => {
                 // Reset loading state
-                updateCtaSubmitBtnState();
+                submitBtn.disabled = false;
                 btnSpinner.classList.add('hidden');
                 btnIcon.classList.remove('hidden');
                 btnText.textContent = originalBtnText;

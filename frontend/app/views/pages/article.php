@@ -194,7 +194,7 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                 </div>
 
                 <div class="relative flex-1 overflow-hidden">
-                    <div id="category-filters" class="article-filter-track flex gap-3 overflow-x-auto py-1 hide-scroll scroll-smooth" style="-ms-overflow-style: none; scrollbar-width: none;">
+                    <div id="category-filters" class="article-filter-track flex gap-3 overflow-x-auto py-1 hide-scroll scroll-smooth justify-start md:justify-center" style="-ms-overflow-style: none; scrollbar-width: none;">
                         
                         <!-- ปุ่ม: ทั้งหมด -->
                         <button type="button"
@@ -227,7 +227,7 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                 <div class="hidden items-center md:flex shrink-0 pl-4">
                     <button id="filter-scroll-right"
                             type="button"
-                            class="article-filter-arrow flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 text-slate-500 transition-all duration-300 hover:bg-slate-50"
+                            class="article-filter-arrow flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 text-slate-500 transition-all duration-300 hover:bg-slate-50 opacity-0 pointer-events-none"
                             aria-label="<?= e(t('article_list.category_scroll_right')) ?>">
                         <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M9 5l7 7-7 7"/>
@@ -645,6 +645,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const scrollWidth = filterTrack.scrollWidth;
             const clientWidth = filterTrack.clientWidth;
             
+            // If content fits completely without overflow, hide both buttons
+            if (scrollWidth <= clientWidth + 2) {
+                scrollLeftBtn.classList.add('opacity-0', 'pointer-events-none');
+                scrollRightBtn.classList.add('opacity-0', 'pointer-events-none');
+                return;
+            }
+
             // At the leftmost edge (or if not scrolled at all)
             if (scrollLeft <= 5) {
                 scrollLeftBtn.classList.add('opacity-0', 'pointer-events-none');
