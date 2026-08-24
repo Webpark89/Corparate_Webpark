@@ -190,7 +190,18 @@ $erpPortfolios = $mockErpPortfolios;
             scroll-behavior: auto !important;
         }
     }
+
+    @media (min-width: 1024px) and (max-width: 1279px) {
+        .ipad-pro-erp-hero-content {
+            margin-left: 0 !important;
+        }
+    }
     @media (min-width: 1025px) {
+        .desktop-wide-container-erp {
+            max-width: 1720px !important;
+            padding-left: 2.5rem !important;
+            padding-right: 2.5rem !important;
+        }
         .desktop-erp-hero-h1 {
             font-size: 5.5rem !important;
             line-height: 1.1 !important;
@@ -203,14 +214,10 @@ $erpPortfolios = $mockErpPortfolios;
     }
 </style>
 
-
-
-
-
 <section id="erp-hero" class="relative font-sans bg-[#f7faff] overflow-hidden mt-0 mx-4 mb-4 sm:mt-0 sm:mx-6 sm:mb-6 rounded-t-none rounded-b-[2rem] lg:m-0 lg:rounded-none">
     <div class="hidden lg:block absolute inset-0 z-0 overflow-hidden">
         <img src="<?= e($heroImage) ?>" alt="WEBPARK Solutions Background" 
-            class="hero-parallax-img w-full h-full object-cover object-center opacity-100 mix-blend-screen">
+            class="hero-parallax-img w-full h-full object-cover object-[75%_center] opacity-100 mix-blend-screen">
             
         <div class="absolute inset-0 bg-gradient-to-r from-white via-white/70 to-white/5"></div>
         <div class="absolute inset-x-0 bottom-0 h-[30%] bg-gradient-to-t from-white to-transparent z-10"></div>
@@ -236,7 +243,7 @@ $erpPortfolios = $mockErpPortfolios;
         .animate-scroll:hover { animation-play-state: paused; }
     </style>
 
-    <div class="mx-auto w-full max-w-7xl lg:max-w-[1720px] px-6 sm:px-6 lg:px-10 pt-12 pb-24 lg:pt-40 lg:pb-32 relative z-10">
+    <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8 pt-12 pb-24 lg:pt-28 lg:pb-32 relative z-10 desktop-wide-container-erp">
         <!-- Mobile Background Image (Only covers this Hero container) -->
         <div class="absolute inset-0 z-0 overflow-hidden lg:hidden rounded-2xl">
             <img src="<?= e($heroImage) ?>" alt="WEBPARK Solutions Background" 
@@ -247,7 +254,7 @@ $erpPortfolios = $mockErpPortfolios;
 
         <div class="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-12 lg:gap-20 items-center relative z-10">
             
-            <div class="max-w-2xl lg:ml-12 xl:ml-24">
+            <div class="max-w-2xl lg:ml-12 xl:ml-24 ipad-pro-erp-hero-content">
                 <nav aria-label="Breadcrumb" class="animate-fade-up delay-100 mb-6 hidden sm:block">
                         <ol class="inline-flex items-center text-sm md:text-base font-medium text-slate-500">
                             <li>
@@ -261,7 +268,7 @@ $erpPortfolios = $mockErpPortfolios;
                             </li>
                             
                             <li aria-current="page">
-                                <span class="text-slate-400">ERP System</span>
+                                <span class="text-slate-400"><?= e(t('common.nav_erp')) ?></span>
                             </li>
                         </ol>
                     </nav>
