@@ -252,7 +252,7 @@ return [
         'cta_project_consult' => 'ปรึกษาโปรเจกต์',
         'cta_view_contact_info' => 'ดูข้อมูลติดต่อ',
         'form_title' => 'ส่งข้อความถึงเรา',
-        'form_success_title' => 'ขอบคุณสำหรับข้อความ',
+        'form_success_title' => 'ขอบคุณสำหรับข้อมูล',
         'form_success_desc' => 'ทีมของเราได้รับข้อมูลเรียบร้อยแล้ว และจะติดต่อกลับภายใน 24 ชั่วโมง',
         'cta_send_message' => 'ส่งข้อความ',
         'company_info_title' => 'ข้อมูลบริษัท',
