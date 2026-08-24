@@ -43,6 +43,29 @@ $data = [
     'cover_image_alt' => $coverImageAlt,
 ];
 try {
+    // Validate image dimension & 16:9 aspect ratio using getimagesize()
+    if (!empty($_FILES['image_file']['tmp_name']) && is_uploaded_file($_FILES['image_file']['tmp_name'])) {
+        $imageInfo = @getimagesize($_FILES['image_file']['tmp_name']);
+        if ($imageInfo === false) {
+            flash('error', 'ไฟล์ที่อัปโหลดไม่ใช่ไฟล์รูปภาพที่ถูกต้อง');
+            header('Location: ' . ($id ? 'edit.php?id=' . $id : 'create.php'));
+            exit;
+        }
+        [$width, $height] = $imageInfo;
+        if ($width <= 0 || $height <= 0) {
+            flash('error', 'ไม่สามารถอ่านขนาดของรูปภาพได้');
+            header('Location: ' . ($id ? 'edit.php?id=' . $id : 'create.php'));
+            exit;
+        }
+        $ratio = $width / $height;
+        // Verify 16:9 aspect ratio (~1.778) with reasonable tolerance (1.70 - 1.85)
+        if ($ratio < 1.70 || $ratio > 1.85) {
+            flash('error', "รูปภาพหน้าปกต้องเป็นสัดส่วน 16:9 (ขนาดที่อัปโหลดคือ {$width} × {$height} px - สัดส่วน " . round($ratio, 2) . ":1) ขนาดแนะนำคือ 1200 × 675 px");
+            header('Location: ' . ($id ? 'edit.php?id=' . $id : 'create.php'));
+            exit;
+        }
+    }
+
     $uploadedCover = handle_upload('image_file');
     if ($uploadedCover) {
         $data['cover_image'] = $uploadedCover;

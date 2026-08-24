@@ -1081,6 +1081,19 @@ class HomeController
     {
         $errors = [];
 
+        // 0. Rate Limiting / Anti-Flood (Max 5 submissions per 5 minutes per IP)
+        $ip = $_SERVER['REMOTE_ADDR'] ?? '';
+        if ($ip !== '') {
+            $contactModel = new ContactMessage();
+            $recentCount = $contactModel->countRecentByIp($ip, 5);
+            if ($recentCount >= 5) {
+                $errors[] = getCurrentLang() === 'th'
+                    ? 'คุณส่งข้อความถี่เกินไป กรุณารอประมาณ 5 นาทีแล้วลองใหม่อีกครั้ง'
+                    : 'Too many requests. Please wait about 5 minutes before submitting again.';
+                return $errors;
+            }
+        }
+
         // 1. Validate First Name
         if (($form['first_name'] ?? '') === '') {
             $errors[] = 'กรุณาระบุชื่อจริง';
@@ -1132,14 +1145,13 @@ class HomeController
             }
         }
 
-        // 5. Validate Message & Word count <= 200 words
+        // 5. Validate Message & Character count <= 500 characters
         if (($form['message'] ?? '') === '') {
             $errors[] = 'กรุณาระบุข้อความรายละเอียด';
         } else {
-            $words = preg_split('/\s+/u', trim((string)$form['message']), -1, PREG_SPLIT_NO_EMPTY);
-            $wordCount = is_array($words) ? count($words) : 0;
-            if ($wordCount > 200) {
-                $errors[] = "ข้อความมีความยาวเกินกำหนด ({$wordCount} คำ / สูงสุด 200 คำ)";
+            $charCount = mb_strlen(trim((string)$form['message']), 'UTF-8');
+            if ($charCount > 500) {
+                $errors[] = "ข้อความมีความยาวเกินกำหนด ({$charCount} ตัวอักษร / สูงสุด 500 ตัวอักษร)";
             }
         }
 
@@ -1212,6 +1224,13 @@ class HomeController
         }
 
         return false;
+    }
+
+    public function privacyPolicy(): void
+    {
+        $this->view('pages/privacy-policy.php', array_merge($this->sharedData('privacy-policy', 'นโยบายความเป็นส่วนตัว (Privacy Policy)'), [
+            'metaDescription' => 'นโยบายความเป็นส่วนตัว (Privacy Policy) ของ บริษัท เว็บพาร์ค จำกัด (WEBPARK) ตาม พ.ร.บ. คุ้มครองข้อมูลส่วนบุคคล พ.ศ. 2562 (PDPA)',
+        ]));
     }
 
     public function notFound(): void

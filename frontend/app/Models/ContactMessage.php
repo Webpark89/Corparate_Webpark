@@ -99,6 +99,27 @@ class ContactMessage
     }
 
     /**
+     * Count messages from a specific IP within the last N minutes (for rate limiting / anti-flood).
+     */
+    public function countRecentByIp(string $ip, int $minutes = 5): int
+    {
+        if ($ip === '') {
+            return 0;
+        }
+
+        $stmt = $this->pdo->prepare('
+            SELECT COUNT(*) FROM contact_messages 
+            WHERE ip_address = :ip 
+              AND created_at >= DATE_SUB(NOW(), INTERVAL :minutes MINUTE)
+        ');
+        $stmt->bindValue(':ip', $ip, PDO::PARAM_STR);
+        $stmt->bindValue(':minutes', $minutes, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return (int) $stmt->fetchColumn();
+    }
+
+    /**
      * Update the status of a message (new, read, replied, archived).
      */
     public function updateStatus(int $id, string $status): bool

@@ -223,9 +223,23 @@ $erpPortfolios = $mockErpPortfolios;
         @keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
         .animate-scroll { animation: scroll 20s linear infinite; }
         .animate-scroll:hover { animation-play-state: paused; }
+
+        @media (min-width: 1024px) and (max-width: 1279px) {
+            .ipad-pro-erp-hero-content {
+                margin-left: 0 !important;
+            }
+        }
+
+        @media (min-width: 1025px) {
+            .desktop-wide-container-erp {
+                max-width: 1720px !important;
+                padding-left: 2.5rem !important;
+                padding-right: 2.5rem !important;
+            }
+        }
     </style>
 
-    <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8 pt-12 pb-24 lg:pt-28 lg:pb-32 relative z-10">
+    <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8 pt-12 pb-24 lg:pt-28 lg:pb-32 relative z-10 desktop-wide-container-erp">
         <!-- Mobile Background Image (Only covers this Hero container) -->
         <div class="absolute inset-0 z-0 overflow-hidden lg:hidden rounded-2xl">
             <img src="<?= e($heroImage) ?>" alt="WEBPARK Solutions Background" 
@@ -236,7 +250,7 @@ $erpPortfolios = $mockErpPortfolios;
 
         <div class="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-12 lg:gap-20 items-center relative z-10">
             
-            <div class="max-w-2xl">
+            <div class="max-w-2xl lg:ml-12 xl:ml-24 ipad-pro-erp-hero-content">
                 <nav aria-label="Breadcrumb" class="animate-fade-up delay-100 mb-6 hidden sm:block">
                         <ol class="inline-flex items-center text-sm md:text-base font-medium text-slate-500">
                             <li>
@@ -354,21 +368,17 @@ $erpPortfolios = $mockErpPortfolios;
 
 <style>
     @media (min-width: 1024px) {
-        .erp-left-col { flex: none !important; width: 480px !important; max-width: 480px !important; }
+        .erp-left-col { flex: none !important; width: 420px !important; max-width: 420px !important; }
         .erp-right-col { flex: 1 !important; width: auto !important; }
     }
     @media (min-width: 1280px) {
-        .erp-left-col { width: 540px !important; max-width: 540px !important; }
-        .erp-bleed-wrapper {
-            max-width: 100% !important;
-            padding-left: calc(50% - 640px + 2rem) !important;
-            padding-right: 2rem !important;
-        }
+        .erp-left-col { width: 480px !important; max-width: 480px !important; }
     }
 </style>
 <section class="bg-white pt-8 pb-4 lg:pt-24 lg:pb-8">
-    <div class="erp-bleed-wrapper mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8 relative z-20 -mt-10 lg:-mt-18 pb-6 lg:pb-16 overflow-hidden">
-        <div class="w-full rounded-[1rem] bg-white flex flex-col lg:flex-row items-stretch shadow-[0_4px_25px_rgba(0,0,0,0.06)] border border-gray-100 overflow-hidden">
+    <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8 relative z-20 -mt-10 lg:-mt-18 pb-6 lg:pb-16 desktop-wide-container-erp">
+        <div class="lg:px-12 xl:px-24">
+            <div class="w-full rounded-[1rem] bg-white flex flex-col lg:flex-row items-stretch shadow-[0_4px_25px_rgba(0,0,0,0.06)] border border-gray-100 overflow-hidden">
 
             <div class="erp-left-col gsap-erp-about-left group flex-1 flex flex-col justify-center p-6 lg:p-8 border-b lg:border-b-0 lg:border-r border-gray-100 shrink-0 bg-white transition-all duration-300 hover:bg-slate-50/50 cursor-pointer opacity-0 translate-y-10">
                 <div>
@@ -434,180 +444,183 @@ $erpPortfolios = $mockErpPortfolios;
                 <?php endforeach; ?>
             </div>
         </div>
+        </div>
     </div>
 </section>
 
 
 
 <section id="modules" class="bg-slate-50 py-10 lg:py-12 font-sans border-t border-slate-100">
-    <div class="mx-auto max-w-7xl px-6 sm:px-6 lg:px-8">
-        
-        <div class="text-center max-w-3xl mx-auto mb-10 lg:mb-16">
-            <h2 class="text-3xl md:text-4xl font-extrabold text-blue-600 tracking-tight mb-4">
-                <span class="lg:hidden">ERP modules</span>
-                <span class="hidden lg:inline uppercase">ERP MODULE</span>
-            </h2>
-            <span class="text-blue-400 lg:text-[#043B94] font-bold text-lg md:text-xl uppercase lg:normal-case mb-3 block">
-                <span class="lg:hidden"><?= e(t('erp.process_coverage_title') !== 'erp.process_coverage_title' ? t('erp.process_coverage_title') : (getCurrentLang() === 'th' ? 'ระบบครอบคลุมทุกกระบวนการทำงาน' : 'A System That Covers Every Process')) ?></span>
-                <span class="hidden lg:inline"><?= e(getCurrentLang() === 'th' ? 'ครบทุกโมดูล ตอบโจทย์ทุกการทำงานขององค์กร' : 'Complete modules for all enterprise operations') ?></span>
-            </span>
-        </div>
+    <div class="mx-auto max-w-7xl px-6 sm:px-6 lg:px-8 desktop-wide-container-erp">
+        <div class="lg:px-12 xl:px-24">
+            <div class="text-center max-w-3xl mx-auto mb-10 lg:mb-16">
+                <h2 class="text-3xl md:text-4xl font-extrabold text-blue-600 tracking-tight mb-4">
+                    <span class="lg:hidden">ERP modules</span>
+                    <span class="hidden lg:inline uppercase">ERP MODULE</span>
+                </h2>
+                <span class="text-blue-400 lg:text-[#043B94] font-bold text-lg md:text-xl uppercase lg:normal-case mb-3 block">
+                    <span class="lg:hidden"><?= e(t('erp.process_coverage_title') !== 'erp.process_coverage_title' ? t('erp.process_coverage_title') : (getCurrentLang() === 'th' ? 'ระบบครอบคลุมทุกกระบวนการทำงาน' : 'A System That Covers Every Process')) ?></span>
+                    <span class="hidden lg:inline"><?= e(getCurrentLang() === 'th' ? 'ครบทุกโมดูล ตอบโจทย์ทุกการทำงานขององค์กร' : 'Complete modules for all enterprise operations') ?></span>
+                </span>
+            </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-2 lg:gap-6">
-            <?php foreach ($modulesData as $module): ?>
-                <div class="gsap-erp-module-card bg-white rounded-2xl p-6 border border-slate-100 shadow-sm hover:shadow-xl hover:bg-primary hover:border-primary transition-all duration-300 group hover:-translate-y-1 relative overflow-hidden opacity-0 translate-y-10">
-                    
-                    <div class="relative z-10 flex flex-row items-center gap-5">
-                        <div class="shrink-0 w-16 h-16 bg-blue-50/60 group-hover:bg-white/20 rounded-full flex items-center justify-center transition-colors duration-300">
-                            <img src="<?= e(asset_url('images/' . $module['icon'])) ?>" alt="<?= e($module['name_en']) ?>" class="w-10 h-10 object-contain group-hover:scale-110 transition-all duration-300" />
-                        </div>
-                        <div class="text-left flex-1">
-                            <h3 class="text-xl font-bold text-[#043B94] mb-2 group-hover:text-white transition-colors">
-                                <?= e(getCurrentLang() === 'th' ? $module['name_th'] : $module['name_en']) ?> 
-                            </h3>
-                            <p class="text-base text-slate-500 group-hover:text-white/90 leading-relaxed transition-colors line-clamp-2 md:line-clamp-none">
-                                <?= e(getCurrentLang() === 'th' ? $module['description_th'] : $module['description_en']) ?>
-                            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-2 lg:gap-6">
+                <?php foreach ($modulesData as $module): ?>
+                    <div class="gsap-erp-module-card bg-white rounded-2xl p-6 border border-slate-100 shadow-sm hover:shadow-xl hover:bg-primary hover:border-primary transition-all duration-300 group hover:-translate-y-1 relative overflow-hidden opacity-0 translate-y-10">
+                        
+                        <div class="relative z-10 flex flex-row items-center gap-5">
+                            <div class="shrink-0 w-16 h-16 bg-blue-50/60 group-hover:bg-white/20 rounded-full flex items-center justify-center transition-colors duration-300">
+                                <img src="<?= e(asset_url('images/' . $module['icon'])) ?>" alt="<?= e($module['name_en']) ?>" class="w-10 h-10 object-contain group-hover:scale-110 transition-all duration-300" />
+                            </div>
+                            <div class="text-left flex-1">
+                                <h3 class="text-xl font-bold text-[#043B94] mb-2 group-hover:text-white transition-colors">
+                                    <?= e(getCurrentLang() === 'th' ? $module['name_th'] : $module['name_en']) ?> 
+                                </h3>
+                                <p class="text-base text-slate-500 group-hover:text-white/90 leading-relaxed transition-colors line-clamp-2 md:line-clamp-none">
+                                    <?= e(getCurrentLang() === 'th' ? $module['description_th'] : $module['description_en']) ?>
+                                </p>
+                            </div>
                         </div>
                     </div>
-                </div>
-            <?php endforeach; ?>
+                <?php endforeach; ?>
+            </div>
         </div>
-
     </div>
 </section>
 
 
 
 <section class="bg-slate-50 py-10 lg:py-10 font-sans border-t border-slate-100">
-    <div class="mx-auto max-w-7xl px-6 sm:px-6 lg:px-8">
-        <h2 class="text-2xl md:text-3xl font-extrabold text-center text-[#022862] tracking-tight py-10">
-            <?= e(t('erp.cta_banner_title') !== 'erp.cta_banner_title' ? t('erp.cta_banner_title') : (getCurrentLang() === 'th' ? 'ERP ที่ช่วยยกระดับธุรกิจของคุณ' : 'ERP That Elevates Your Business')) ?>
-        </h2>
+    <div class="mx-auto max-w-7xl px-6 sm:px-6 lg:px-8 desktop-wide-container-erp">
+        <div class="lg:px-12 xl:px-24">
+            <h2 class="text-2xl md:text-3xl font-extrabold text-center text-[#022862] tracking-tight py-10">
+                <?= e(t('erp.cta_banner_title') !== 'erp.cta_banner_title' ? t('erp.cta_banner_title') : (getCurrentLang() === 'th' ? 'ERP ที่ช่วยยกระดับธุรกิจของคุณ' : 'ERP That Elevates Your Business')) ?>
+            </h2>
 
-        <style>
-            @media (max-width: 639px) {
-                .mobile-span-2 {
-                    grid-column: span 2 / span 2 !important;
+            <style>
+                @media (max-width: 639px) {
+                    .mobile-span-2 {
+                        grid-column: span 2 / span 2 !important;
+                    }
                 }
-            }
-        </style>
-        <div class="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-5 gap-6">
-            <?php
-            $erpBenefits = [
-                [
-                    'title' => t('erp.benefit_complete_data_title') !== 'erp.benefit_complete_data_title' ? t('erp.benefit_complete_data_title') : (getCurrentLang() === 'th' ? 'ข้อมูลครบถ้วน' : 'Complete Data'),
-                    'desc' => getCurrentLang() === 'th' ? 'รวมทุกแผนกไว้ในระบบเดียว' : 'All departments in one system',
-                    'icon' => asset_url('images/ERP_5.svg'),
-                ],
-                [
-                    'title' => t('erp.less_duplication_title') !== 'erp.less_duplication_title' ? t('erp.less_duplication_title') : (getCurrentLang() === 'th' ? 'ลดงานซ้ำซ้อน' : 'Less Duplication'),
-                    'desc' => getCurrentLang() === 'th' ? 'เพิ่มประสิทธิภาพการทำงาน' : 'Increase working efficiency',
-                    'icon' => asset_url('images/ERP_6.svg'),
-                ],
-                [
-                    'title' => t('erp.benefit_realtime_data_title') !== 'erp.benefit_realtime_data_title' ? t('erp.benefit_realtime_data_title') : (getCurrentLang() === 'th' ? 'ข้อมูลเรียลไทม์' : 'Real-Time Data'),
-                    'desc' => t('erp.benefit_realtime_data_desc') !== 'erp.benefit_realtime_data_desc' ? t('erp.benefit_realtime_data_desc') : (getCurrentLang() === 'th' ? 'ตัดสินใจได้แม่นยำและรวดเร็ว' : 'Make decisions accurately and quickly'),
-                    'icon' => asset_url('images/ERP_7.svg'),
-                ],
-                [
-                    'title' => t('erp.benefit_risk_control_title') !== 'erp.benefit_risk_control_title' ? t('erp.benefit_risk_control_title') : (getCurrentLang() === 'th' ? 'ควบคุมความเสี่ยง' : 'Risk Control'),
-                    'desc' => t('erp.benefit_risk_control_desc') !== 'erp.benefit_risk_control_desc' ? t('erp.benefit_risk_control_desc') : (getCurrentLang() === 'th' ? 'ตรวจสอบและติดตามได้ทุกขั้นตอน' : 'Audit and track every step'),
-                    'icon' => asset_url('images/ERP_8.svg'),
-                ],
-                [
-                    'title' => t('erp.benefit_scalable_title') !== 'erp.benefit_scalable_title' ? t('erp.benefit_scalable_title') : (getCurrentLang() === 'th' ? 'ขยายได้ตามธุรกิจ' : 'Scalable'),
-                    'desc' => t('erp.benefit_scalable_desc') !== 'erp.benefit_scalable_desc' ? t('erp.benefit_scalable_desc') : (getCurrentLang() === 'th' ? 'รองรับการเติบโตในอนาคต' : 'Support future growth'),
-                    'icon' => asset_url('images/ERP_9.svg'),
-                ],
-            ];
-            ?>
-            <?php foreach ($erpBenefits as $index => $benefit): ?>
-                <?php if($index === 4): ?>
-                    <!-- 5th Block: Horizontal rectangle on mobile, Square on desktop -->
-                    <div class="gsap-erp-benefit-card bg-white rounded-2xl py-10 px-6 sm:p-6 border border-slate-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 mobile-span-2 sm:col-span-1 flex flex-row sm:block items-center text-left sm:text-center gap-6 sm:gap-0 opacity-0 translate-y-10">
-                        <div class="w-16 h-16 sm:w-14 sm:h-14 sm:mx-auto shrink-0 bg-blue-50/70 rounded-full flex items-center justify-center sm:mb-4">
-                            <img src="<?= e($benefit['icon']) ?>" alt="<?= e($benefit['title']) ?>" class="h-full w-full object-contain">
+            </style>
+            <div class="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-5 gap-6">
+                <?php
+                $erpBenefits = [
+                    [
+                        'title' => t('erp.benefit_complete_data_title') !== 'erp.benefit_complete_data_title' ? t('erp.benefit_complete_data_title') : (getCurrentLang() === 'th' ? 'ข้อมูลครบถ้วน' : 'Complete Data'),
+                        'desc' => getCurrentLang() === 'th' ? 'รวมทุกแผนกไว้ในระบบเดียว' : 'All departments in one system',
+                        'icon' => asset_url('images/ERP_5.svg'),
+                    ],
+                    [
+                        'title' => t('erp.less_duplication_title') !== 'erp.less_duplication_title' ? t('erp.less_duplication_title') : (getCurrentLang() === 'th' ? 'ลดงานซ้ำซ้อน' : 'Less Duplication'),
+                        'desc' => getCurrentLang() === 'th' ? 'เพิ่มประสิทธิภาพการทำงาน' : 'Increase working efficiency',
+                        'icon' => asset_url('images/ERP_6.svg'),
+                    ],
+                    [
+                        'title' => t('erp.benefit_realtime_data_title') !== 'erp.benefit_realtime_data_title' ? t('erp.benefit_realtime_data_title') : (getCurrentLang() === 'th' ? 'ข้อมูลเรียลไทม์' : 'Real-Time Data'),
+                        'desc' => t('erp.benefit_realtime_data_desc') !== 'erp.benefit_realtime_data_desc' ? t('erp.benefit_realtime_data_desc') : (getCurrentLang() === 'th' ? 'ตัดสินใจได้แม่นยำและรวดเร็ว' : 'Make decisions accurately and quickly'),
+                        'icon' => asset_url('images/ERP_7.svg'),
+                    ],
+                    [
+                        'title' => t('erp.benefit_risk_control_title') !== 'erp.benefit_risk_control_title' ? t('erp.benefit_risk_control_title') : (getCurrentLang() === 'th' ? 'ควบคุมความเสี่ยง' : 'Risk Control'),
+                        'desc' => t('erp.benefit_risk_control_desc') !== 'erp.benefit_risk_control_desc' ? t('erp.benefit_risk_control_desc') : (getCurrentLang() === 'th' ? 'ตรวจสอบและติดตามได้ทุกขั้นตอน' : 'Audit and track every step'),
+                        'icon' => asset_url('images/ERP_8.svg'),
+                    ],
+                    [
+                        'title' => t('erp.benefit_scalable_title') !== 'erp.benefit_scalable_title' ? t('erp.benefit_scalable_title') : (getCurrentLang() === 'th' ? 'ขยายได้ตามธุรกิจ' : 'Scalable'),
+                        'desc' => t('erp.benefit_scalable_desc') !== 'erp.benefit_scalable_desc' ? t('erp.benefit_scalable_desc') : (getCurrentLang() === 'th' ? 'รองรับการเติบโตในอนาคต' : 'Support future growth'),
+                        'icon' => asset_url('images/ERP_9.svg'),
+                    ],
+                ];
+                ?>
+                <?php foreach ($erpBenefits as $index => $benefit): ?>
+                    <?php if($index === 4): ?>
+                        <!-- 5th Block: Horizontal rectangle on mobile, Square on desktop -->
+                        <div class="gsap-erp-benefit-card bg-white rounded-2xl py-10 px-6 sm:p-6 border border-slate-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 mobile-span-2 sm:col-span-1 flex flex-row sm:block items-center text-left sm:text-center gap-6 sm:gap-0 opacity-0 translate-y-10">
+                            <div class="w-16 h-16 sm:w-14 sm:h-14 sm:mx-auto shrink-0 bg-blue-50/70 rounded-full flex items-center justify-center sm:mb-4">
+                                <img src="<?= e($benefit['icon']) ?>" alt="<?= e($benefit['title']) ?>" class="h-full w-full object-contain">
+                            </div>
+                            <div>
+                                <h4 class="text-lg sm:text-base font-bold text-[#043B94] mb-1 sm:mb-1"><?= e($benefit['title']) ?></h4>
+                                <p class="text-base sm:text-sm text-slate-500 leading-relaxed"><?= e($benefit['desc']) ?></p>
+                            </div>
                         </div>
-                        <div>
-                            <h4 class="text-lg sm:text-base font-bold text-[#043B94] mb-1 sm:mb-1"><?= e($benefit['title']) ?></h4>
-                            <p class="text-base sm:text-sm text-slate-500 leading-relaxed"><?= e($benefit['desc']) ?></p>
+                    <?php else: ?>
+                        <!-- Blocks 1-4: Square -->
+                        <div class="gsap-erp-benefit-card bg-white rounded-2xl p-6 text-center border border-slate-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 opacity-0 translate-y-10">
+                            <div class="w-14 h-14 mx-auto bg-blue-50/70 rounded-full flex items-center justify-center mb-4 shrink-0">
+                                <img src="<?= e($benefit['icon']) ?>" alt="<?= e($benefit['title']) ?>" class="h-full w-full object-contain">
+                            </div>
+                            <div>
+                                <h4 class="text-base font-bold text-[#043B94] mb-1"><?= e($benefit['title']) ?></h4>
+                                <p class="text-sm text-slate-500 leading-relaxed"><?= e($benefit['desc']) ?></p>
+                            </div>
                         </div>
-                    </div>
-                <?php else: ?>
-                    <!-- Blocks 1-4: Square -->
-                    <div class="gsap-erp-benefit-card bg-white rounded-2xl p-6 text-center border border-slate-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 opacity-0 translate-y-10">
-                        <div class="w-14 h-14 mx-auto bg-blue-50/70 rounded-full flex items-center justify-center mb-4 shrink-0">
-                            <img src="<?= e($benefit['icon']) ?>" alt="<?= e($benefit['title']) ?>" class="h-full w-full object-contain">
-                        </div>
-                        <div>
-                            <h4 class="text-base font-bold text-[#043B94] mb-1"><?= e($benefit['title']) ?></h4>
-                            <p class="text-sm text-slate-500 leading-relaxed"><?= e($benefit['desc']) ?></p>
-                        </div>
-                    </div>
-                <?php endif; ?>
-            <?php endforeach; ?>
+                    <?php endif; ?>
+                <?php endforeach; ?>
+            </div>
         </div>
     </div>
 </section>
 
 <?php if (!empty($erpPortfolios)): ?>
 <section class="bg-white py-10 lg:py-20 font-sans">
-    <div class="mx-auto max-w-7xl px-6 sm:px-6 lg:px-8">
-        
-        <div class="flex flex-col md:flex-row md:items-end justify-between border-b border-slate-200 pb-5 mb-10 gap-4">
-            <div>
-                <h2 class="text-2xl md:text-3xl font-extrabold leading-none tracking-tight text-[#022862] m-0">
-                    <?= e(t('erp.portfolio_section_title') !== 'erp.portfolio_section_title' ? t('erp.portfolio_section_title') : (getCurrentLang() === 'th' ? 'ผลงานพัฒนาระบบ ERP' : 'ERP System Development Portfolio')) ?>
-                </h2>
+    <div class="mx-auto max-w-7xl px-6 sm:px-6 lg:px-8 desktop-wide-container-erp">
+        <div class="lg:px-12 xl:px-24">
+            <div class="flex flex-col md:flex-row md:items-end justify-between border-b border-slate-200 pb-5 mb-10 gap-4">
+                <div>
+                    <h2 class="text-2xl md:text-3xl font-extrabold leading-none tracking-tight text-[#022862] m-0">
+                        <?= e(t('erp.portfolio_section_title') !== 'erp.portfolio_section_title' ? t('erp.portfolio_section_title') : (getCurrentLang() === 'th' ? 'ผลงานพัฒนาระบบ ERP' : 'ERP System Development Portfolio')) ?>
+                    </h2>
+                </div>
+            </div>
+
+            <div id="erp-portfolio-scroll-container" class="flex overflow-x-auto snap-x snap-mandatory scrollbar-none gap-8 pb-6 -mx-4 px-4 md:mx-0 md:px-0 md:grid md:grid-cols-4 lg:grid-cols-4 md:overflow-visible md:snap-none">
+                <?php foreach ($erpPortfolios as $port): 
+                    $imgSrc = resolve_article_image_url($port['image_path'] ?? '', asset_url('images/erp.png'));
+                    $detailUrl = isset($port['slug']) ? route_url('/portfolio/' . $port['slug']) : route_url('/portfolio');
+                ?>
+                    <a href="<?= e($detailUrl) ?>" class="gsap-erp-portfolio-card block w-[85vw] md:w-auto shrink-0 snap-center opacity-0 translate-y-10">
+                        <article class="group w-full h-full rounded-2xl overflow-hidden border border-slate-100 bg-white shadow-sm hover:shadow-xl transition-all duration-500 flex flex-col hover:-translate-y-1">
+                        <div class="h-[220px] w-full overflow-hidden bg-slate-100 relative">
+                            <img src="<?= e($imgSrc) ?>" alt="<?= e($port['title']) ?>" class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105">
+                            <span class="absolute bottom-3 left-3 bg-primary/95 backdrop-blur text-white text-[10px] font-bold px-2.5 py-1 rounded-md uppercase tracking-wider shadow-sm">ERP SYSTEM</span>
+                        </div>
+                        <div class="p-6 flex flex-col flex-1">
+                            <h3 class="text-base font-bold text-[#0b1b42] leading-snug line-clamp-2 group-hover:text-primary transition-colors mb-3">
+                                <?= e($port['title']) ?>
+                            </h3>
+                            <p class="text-[13px] text-slate-500 leading-relaxed line-clamp-3 mb-5 flex-1">
+                                <?= e($port['description']) ?>
+                            </p>
+                            <div class="mt-auto pt-4 border-t border-slate-50"> 
+                                <span class="inline-flex items-center gap-1.5 text-xs font-semibold text-primary group-hover:text-blue-700 transition-colors">
+                                    <?= e(t('common.view_details')) ?>
+                                    <svg class="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                                    </svg>
+                                </span>
+                            </div>
+                        </div>
+                        </article>
+                    </a>
+                <?php endforeach; ?>
+            </div>
+
+            <div class="flex justify-center gap-2 mt-2 md:hidden" id="erp-portfolio-dots">
+                <?php for ($i = 0; $i < count($erpPortfolios); $i++): ?>
+                    <button 
+                        class="w-2.5 h-2.5 rounded-full transition-all duration-300 <?= $i === 0 ? 'bg-primary w-5' : 'bg-slate-300' ?>" 
+                        aria-label="Go to slide <?= $i + 1 ?>"
+                        onclick="scrollToErpPortfolio(<?= $i ?>)"
+                    ></button>
+                <?php endfor; ?>
             </div>
         </div>
-
-        <div id="erp-portfolio-scroll-container" class="flex overflow-x-auto snap-x snap-mandatory scrollbar-none gap-8 pb-6 -mx-4 px-4 md:mx-0 md:px-0 md:grid md:grid-cols-4 lg:grid-cols-4 md:overflow-visible md:snap-none">
-            <?php foreach ($erpPortfolios as $port): 
-                $imgSrc = resolve_article_image_url($port['image_path'] ?? '', asset_url('images/erp.png'));
-                $detailUrl = isset($port['slug']) ? route_url('/portfolio/' . $port['slug']) : route_url('/portfolio');
-            ?>
-                <a href="<?= e($detailUrl) ?>" class="gsap-erp-portfolio-card block w-[85vw] md:w-auto shrink-0 snap-center opacity-0 translate-y-10">
-                    <article class="group w-full h-full rounded-2xl overflow-hidden border border-slate-100 bg-white shadow-sm hover:shadow-xl transition-all duration-500 flex flex-col hover:-translate-y-1">
-                    <div class="h-[220px] w-full overflow-hidden bg-slate-100 relative">
-                        <img src="<?= e($imgSrc) ?>" alt="<?= e($port['title']) ?>" class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105">
-                        <span class="absolute bottom-3 left-3 bg-primary/95 backdrop-blur text-white text-[10px] font-bold px-2.5 py-1 rounded-md uppercase tracking-wider shadow-sm">ERP SYSTEM</span>
-                    </div>
-                    <div class="p-6 flex flex-col flex-1">
-                        <h3 class="text-base font-bold text-[#0b1b42] leading-snug line-clamp-2 group-hover:text-primary transition-colors mb-3">
-                            <?= e($port['title']) ?>
-                        </h3>
-                        <p class="text-[13px] text-slate-500 leading-relaxed line-clamp-3 mb-5 flex-1">
-                            <?= e($port['description']) ?>
-                        </p>
-                        <div class="mt-auto pt-4 border-t border-slate-50"> 
-                            <span
-                                class="inline-flex items-center justify-center
-                                    rounded-full border-2 border-primary
-                                    px-3 py-1
-                                    text-sm font-medium
-                                    text-primary
-                                    hover:bg-primary hover:text-white
-                                    transition-colors">
-                                ERP System
-                            </span>
-                        </div>
-                    </div>
-                </article>
-                </a>
-            <?php endforeach; ?>
-        </div>
-
-        <div class="flex justify-center gap-2 mt-2 md:hidden" id="erp-portfolio-dots">
-            <?php for ($i = 0; $i < count($erpPortfolios); $i++): ?>
-                <button 
-                    class="w-2.5 h-2.5 rounded-full transition-all duration-300 <?= $i === 0 ? 'bg-primary w-5' : 'bg-slate-300' ?>" 
-                    aria-label="Go to slide <?= $i + 1 ?>"
-                    onclick="scrollToErpPortfolio(<?= $i ?>)"
-                ></button>
-            <?php endfor; ?>
-        </div>
+    </div>
+</section>
+<?php endif; ?>
 
         <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -655,12 +668,6 @@ $erpPortfolios = $mockErpPortfolios;
             }
         }
         </script>
-
-    </div>
-</section>
-<?php endif; ?>
-
-
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
