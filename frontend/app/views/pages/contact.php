@@ -219,15 +219,18 @@ $form = $form ?? [];
                     <h2 class="text-2xl md:text-3xl font-bold text-dark mb-6 desktop-contact-section-title">
                         <?= e(t('contact.form_title')) ?>
                     </h2>
-                    <?php if ($submitted): ?>
-                        <div class="text-center py-16 flex flex-col items-center justify-center flex-grow">
-                            <div class="w-16 h-16 bg-blue-50 text-primary rounded-full flex items-center justify-center mx-auto mb-4">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
-                            </div>
-                            <h3 class="text-xl font-bold text-dark mb-2"><?= e(t('contact.form_success_title')) ?></h3>
-                            <p class="text-slate-500 text-sm font-medium"><?= e(t('contact.form_success_desc')) ?></p>
+
+                    <!-- Success Box (Visible upon successful submission) -->
+                    <div id="contact-success-box" class="<?= $submitted ? '' : 'hidden' ?> text-center py-16 flex flex-col items-center justify-center flex-grow">
+                        <div class="w-16 h-16 bg-blue-50 text-primary rounded-full flex items-center justify-center mx-auto mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
                         </div>
-                    <?php else: ?>
+                        <h3 class="text-xl font-bold text-dark mb-2"><?= e(t('contact.form_success_title')) ?></h3>
+                        <p class="text-slate-500 text-sm font-medium"><?= e(t('contact.form_success_desc')) ?></p>
+                    </div>
+
+                    <!-- Form Container -->
+                    <div id="contact-form-box" class="<?= $submitted ? 'hidden' : '' ?> flex flex-col flex-grow">
                         <style>
                             .custom-placeholder::placeholder {
                                 color: #022862 !important;
@@ -235,7 +238,10 @@ $form = $form ?? [];
                             }
                         </style>
                         <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-                        <form id="contactMainForm" method="post" class="flex flex-col flex-grow space-y-4">
+                        <form id="contactMainForm" method="post" action="<?= e(route_url('/contact/submit')) ?>" class="flex flex-col flex-grow space-y-4">
+                            <input type="hidden" name="source_page" value="<?= e($_SERVER['REQUEST_URI'] ?? '') ?>">
+                            <input type="hidden" name="is_ajax" value="1">
+
                             <!-- First Name & Last Name (Separated, 2 columns) -->
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div>
@@ -269,13 +275,13 @@ $form = $form ?? [];
                                 </div>
                             </div>
 
-                            <!-- Message with Word Counter -->
+                            <!-- Message with Character Counter -->
                             <div class="space-y-1">
-                                <textarea id="contact_message_area" name="message" placeholder="<?= e(t('common.form_label_details')) ?> *" required rows="4"
+                                <textarea id="contact_message_area" name="message" placeholder="<?= e(t('common.form_label_details')) ?> *" required rows="4" maxlength="500"
                                     class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-base text-slate-900 outline-none transition-all duration-300 custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary resize-none focus:shadow-inner"><?= e($form['message'] ?? '') ?></textarea>
                                 <div class="flex justify-between items-center px-1 text-xs text-slate-400">
-                                    <span>* ความยาวไม่เกิน 200 คำ</span>
-                                    <span id="contact_word_count_display" class="font-semibold text-slate-500">0 / 200 คำ</span>
+                                    <span>* ความยาวไม่เกิน 500 ตัวอักษร</span>
+                                    <span id="contact_word_count_display" class="font-semibold text-slate-500">0/500</span>
                                 </div>
                             </div>
 
@@ -283,7 +289,7 @@ $form = $form ?? [];
                             <div class="flex items-start gap-3 pt-1">
                                 <input type="checkbox" id="privacy_consent_checkbox" name="pdpa_agreed" value="1" <?= !empty($form['pdpa_agreed']) ? 'checked' : '' ?> required class="mt-1 w-4 h-4 rounded border-slate-300 text-primary focus:ring-primary cursor-pointer transition-all duration-200">
                                 <label for="privacy_consent_checkbox" class="text-sm md:text-base leading-relaxed cursor-pointer select-none">
-                                    <span style="color: #022862;"><?= e(t('common.form_consent_prefix')) ?></span> <a href="#" style="color: #0663F6;" class="hover:underline transition-colors duration-200"><?= e(t('common.form_consent_privacy_policy')) ?></a> <span style="color: #0663F6;"><?= e(t('common.form_consent_terms_suffix')) ?></span>
+                                    <span style="color: #022862;"><?= e(t('common.form_consent_prefix')) ?></span> <a href="<?= e(route_url('/privacy-policy')) ?>" target="_blank" rel="noopener noreferrer" style="color: #0663F6;" class="hover:underline transition-colors duration-200"><?= e(t('common.form_consent_privacy_policy')) ?></a> <span style="color: #0663F6;"><?= e(t('common.form_consent_terms_suffix')) ?></span>
                                 </label>
                             </div>
 
@@ -292,72 +298,159 @@ $form = $form ?? [];
                                 <div class="g-recaptcha" data-sitekey="<?= e($siteKey ?? '6Lcf_pAtAAAAAOVhatPPwrHSYXeb_0J4yXf5BrRO') ?>"></div>
                             </div>
 
-                            <!-- Error Message Alerts -->
-                            <?php if (!empty($errors)): ?>
-                                <div class="rounded-xl bg-red-50 border border-red-200 p-4 text-xs font-semibold text-red-600 space-y-1.5">
+                            <!-- Dynamic Error Message Box (AJAX / Static) -->
+                            <div id="contact-error-box" class="<?= empty($errors) ? 'hidden' : '' ?> rounded-xl bg-red-50 border border-red-200 p-4 text-xs font-semibold text-red-600 space-y-1.5">
+                                <?php if (!empty($errors)): ?>
                                     <?php foreach ($errors as $error): ?>
                                         <div class="flex items-center gap-2">
                                             <svg class="w-4 h-4 text-red-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                                             <span><?= e($error) ?></span>
                                         </div>
                                     <?php endforeach; ?>
-                                </div>
-                            <?php endif; ?>
+                                <?php endif; ?>
+                            </div>
 
                             <!-- Submit Button (Disabled until PDPA checked) -->
                             <div class="pt-2 mt-auto flex justify-center desktop-contact-btn-wrapper">
                                 <button type="submit" id="contact_submit_btn" disabled class="px-8 py-3.5 bg-primary hover:bg-blue-700 text-white font-bold text-base rounded-full shadow-md shadow-blue-500/10 transition-all duration-300 cursor-pointer hover:shadow-lg hover:-translate-y-0.5 flex items-center justify-center gap-2 desktop-contact-btn disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none disabled:hover:translate-y-0">
-                                    <?= e(t('contact.cta_send_message')) ?>
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                    <span id="contact_btn_text"><?= e(t('contact.cta_send_message')) ?></span>
+                                    <svg id="contact_btn_icon" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                                    </svg>
+                                    <svg id="contact_btn_spinner" class="hidden animate-spin h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
+                                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                                     </svg>
                                 </button>
                             </div>
                         </form>
+                    </div>
 
-                        <script>
-                            document.addEventListener('DOMContentLoaded', function () {
-                                const privacyCb = document.getElementById('privacy_consent_checkbox');
-                                const submitBtn = document.getElementById('contact_submit_btn');
-                                const messageArea = document.getElementById('contact_message_area');
-                                const wordCountDisplay = document.getElementById('contact_word_count_display');
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function () {
+                            const form = document.getElementById('contactMainForm');
+                            const privacyCb = document.getElementById('privacy_consent_checkbox');
+                            const submitBtn = document.getElementById('contact_submit_btn');
+                            const btnText = document.getElementById('contact_btn_text');
+                            const btnIcon = document.getElementById('contact_btn_icon');
+                            const btnSpinner = document.getElementById('contact_btn_spinner');
+                            const messageArea = document.getElementById('contact_message_area');
+                            const wordCountDisplay = document.getElementById('contact_word_count_display');
+                            const errorBox = document.getElementById('contact-error-box');
+                            const formBox = document.getElementById('contact-form-box');
+                            const successBox = document.getElementById('contact-success-box');
 
-                                // 1. Toggle submit button disabled state according to PDPA checkbox
-                                function updateSubmitBtnState() {
-                                    if (privacyCb && submitBtn) {
-                                        submitBtn.disabled = !privacyCb.checked;
+                            // 1. Toggle submit button disabled state according to PDPA checkbox
+                            function updateSubmitBtnState() {
+                                if (privacyCb && submitBtn) {
+                                    submitBtn.disabled = !privacyCb.checked;
+                                }
+                            }
+
+                            if (privacyCb) {
+                                privacyCb.addEventListener('change', updateSubmitBtnState);
+                                updateSubmitBtnState();
+                            }
+
+                            // 2. Character counter for message (max 500 characters)
+                            function updateWordCount() {
+                                if (!messageArea || !wordCountDisplay) return;
+                                const count = messageArea.value.length;
+
+                                wordCountDisplay.textContent = count + '/500';
+                                if (count > 500) {
+                                    wordCountDisplay.classList.add('text-red-500');
+                                    wordCountDisplay.classList.remove('text-slate-500');
+                                } else {
+                                    wordCountDisplay.classList.remove('text-red-500');
+                                    wordCountDisplay.classList.add('text-slate-500');
+                                }
+                            }
+
+                            if (messageArea) {
+                                messageArea.addEventListener('input', updateWordCount);
+                                updateWordCount();
+                            }
+
+                            // 3. AJAX Submission
+                            if (form) {
+                                form.addEventListener('submit', function (e) {
+                                    e.preventDefault();
+
+                                    // Clear previous errors
+                                    if (errorBox) {
+                                        errorBox.classList.add('hidden');
+                                        errorBox.innerHTML = '';
                                     }
-                                }
 
-                                if (privacyCb) {
-                                    privacyCb.addEventListener('change', updateSubmitBtnState);
-                                    updateSubmitBtnState();
-                                }
-
-                                // 2. Word counter for message
-                                function updateWordCount() {
-                                    if (!messageArea || !wordCountDisplay) return;
-                                    const text = messageArea.value.trim();
-                                    const words = text ? text.split(/\s+/).filter(Boolean) : [];
-                                    const count = words.length;
-
-                                    wordCountDisplay.textContent = count + ' / 200 คำ';
-                                    if (count > 200) {
-                                        wordCountDisplay.classList.add('text-red-500');
-                                        wordCountDisplay.classList.remove('text-slate-500');
-                                    } else {
-                                        wordCountDisplay.classList.remove('text-red-500');
-                                        wordCountDisplay.classList.add('text-slate-500');
+                                    // Set loading state
+                                    submitBtn.disabled = true;
+                                    if (btnSpinner) btnSpinner.classList.remove('hidden');
+                                    if (btnIcon) btnIcon.classList.add('hidden');
+                                    const originalBtnText = btnText ? btnText.textContent : '';
+                                    if (btnText) {
+                                        btnText.textContent = '<?= getCurrentLang() === 'th' ? 'กำลังส่งข้อมูล...' : 'Sending...' ?>';
                                     }
-                                }
 
-                                if (messageArea) {
-                                    messageArea.addEventListener('input', updateWordCount);
-                                    updateWordCount();
-                                }
-                            });
-                        </script>
-                    <?php endif; ?>
+                                    const formData = new FormData(form);
+                                    formData.set('source_page', window.location.href);
+
+                                    fetch(form.action, {
+                                        method: 'POST',
+                                        headers: {
+                                            'X-Requested-With': 'XMLHttpRequest',
+                                            'Accept': 'application/json'
+                                        },
+                                        body: formData
+                                    })
+                                    .then(async response => {
+                                        const data = await response.json().catch(() => ({}));
+                                        if (!response.ok) {
+                                            throw data;
+                                        }
+                                        return data;
+                                    })
+                                    .then(data => {
+                                        if (data.success) {
+                                            if (formBox) formBox.classList.add('hidden');
+                                            if (successBox) {
+                                                successBox.classList.remove('hidden');
+                                                successBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                                            }
+                                            form.reset();
+                                        } else {
+                                            throw data;
+                                        }
+                                    })
+                                    .catch(err => {
+                                        // Reset loading state
+                                        updateSubmitBtnState();
+                                        if (btnSpinner) btnSpinner.classList.add('hidden');
+                                        if (btnIcon) btnIcon.classList.remove('hidden');
+                                        if (btnText) btnText.textContent = originalBtnText;
+
+                                        // Reset reCAPTCHA on error
+                                        if (typeof grecaptcha !== 'undefined') {
+                                            try { grecaptcha.reset(); } catch (e) {}
+                                        }
+
+                                        // Render error messages
+                                        if (errorBox) {
+                                            const errorList = err.errors || [err.message || '<?= getCurrentLang() === 'th' ? 'เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง' : 'An error occurred, please try again.' ?>'];
+                                            errorBox.innerHTML = errorList.map(msg => `
+                                                <div class="flex items-center gap-2">
+                                                    <svg class="w-4 h-4 text-red-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                                    <span>${msg}</span>
+                                                </div>
+                                            `).join('');
+                                            errorBox.classList.remove('hidden');
+                                            errorBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                                        }
+                                    });
+                                });
+                            }
+                        });
+                    </script>
                 </div>
                 <div id="company-info" class="lg:col-span-6 space-y-4">
                     <h2 class="text-xl md:text-2xl font-bold text-dark mb-6 desktop-contact-section-title"><?= e(t('contact.company_info_title')) ?></h2>
@@ -521,14 +614,6 @@ $form = $form ?? [];
             
             <div class="w-full h-[260px] md:h-[320px] rounded-2xl overflow-hidden relative border border-slate-200 shadow-sm group desktop-map-container">
                 
-                <!-- Desktop Info Card Overlay -->
-                <div class="hidden lg:block absolute top-8 left-8 bg-white p-6 rounded-[1.25rem] shadow-xl z-30 max-w-sm border border-slate-100">
-                    <h3 class="text-[#043B94] font-bold text-xl mb-2"><?= e(t('contact.company_name')) ?></h3>
-                    <p class="text-[#022862] text-sm leading-relaxed">
-                        <?= e(t('contact.company_address')) ?>
-                    </p>
-                </div>
-
                 <!-- Full Overlay Link (Hidden on Desktop) -->
                 <a href="https://www.google.com/maps/search/?api=1&query=บริษัท+เวบปาค+จำกัด+525/89+ซอยลาดพร้าว+126" 
                    target="_blank" 

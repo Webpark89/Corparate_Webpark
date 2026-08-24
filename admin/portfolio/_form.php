@@ -67,13 +67,24 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-4 text
                             </label>
                             <div class="relative group border border-slate-200 rounded-xl bg-slate-50/50 p-3 hover:bg-slate-50 transition-colors">
                                 <input type="file"
+                                    id="portfolioImageInput"
                                     name="image_file"
+                                    accept="image/jpeg,image/png,image/webp,image/gif"
                                     <?php if ($action === 'create'): ?>required<?php endif; ?>
                                     class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 transition-all cursor-pointer">
                             </div>
-                            <p class="text-[11px] text-slate-400 px-1">
-                                * รองรับไฟล์นามสกุล: JPEG, JPG, PNG, WEBP, GIF (ขนาดสูงสุดไม่เกิน 25MB)
-                            </p>
+                            <div class="space-y-1 px-1">
+                                <div class="flex flex-wrap items-center gap-2 text-[11px]">
+                                    <span class="inline-flex items-center rounded-md bg-blue-50 px-2 py-0.5 font-bold text-blue-700 border border-blue-200">
+                                        บังคับสัดส่วน 16:9
+                                    </span>
+                                    <span class="text-slate-600 font-medium">ขนาดที่แนะนำ <strong>1200 × 675 px</strong></span>
+                                </div>
+                                <p class="text-[11px] text-slate-400">
+                                    * รองรับไฟล์นามสกุล: JPEG, JPG, PNG, WEBP (ขนาดสูงสุดไม่เกิน 25MB)
+                                </p>
+                            </div>
+                            <div id="imageDimensionFeedback" class="hidden"></div>
                         </div>
                         <div class="space-y-2">
                             <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider block">
@@ -290,22 +301,78 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-4 text
 </script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const fileInput = document.querySelector('input[name="image_file"]');
+        const fileInput = document.getElementById('portfolioImageInput') || document.querySelector('input[name="image_file"]');
         const previewContainer = document.querySelector('.w-full.h-64.rounded-xl.border');
+        const feedbackContainer = document.getElementById('imageDimensionFeedback');
+        const originalPreviewHtml = previewContainer ? previewContainer.innerHTML : '';
+
         if (fileInput && previewContainer) {
             fileInput.addEventListener('change', function(event) {
                 const file = event.target.files[0];
-                if (file && file.type.startsWith('image/')) {
-                    const reader = new FileReader();
-                    reader.onload = function(loadEvent) {
-                        previewContainer.innerHTML = '';
-                        const img = document.createElement('img');
-                        img.src = loadEvent.target.result;
-                        img.className = 'w-full h-full object-contain rounded-lg';
-                        previewContainer.appendChild(img);
+                if (!file) {
+                    if (feedbackContainer) {
+                        feedbackContainer.className = 'hidden';
+                        feedbackContainer.innerHTML = '';
                     }
-                    reader.readAsDataURL(file);
+                    return;
                 }
+
+                if (!file.type.startsWith('image/')) {
+                    alert('กรุณาเลือกไฟล์รูปภาพเท่านั้น (JPEG, PNG, WEBP)');
+                    fileInput.value = '';
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = function(loadEvent) {
+                    const img = new Image();
+                    img.onload = function() {
+                        const width = this.naturalWidth;
+                        const height = this.naturalHeight;
+                        const ratio = width / height;
+
+                        // Allow tolerance between 1.70 and 1.85 (16:9 is ~1.778)
+                        const is16by9 = ratio >= 1.70 && ratio <= 1.85;
+
+                        if (!is16by9) {
+                            const ratioStr = ratio.toFixed(2);
+                            const errorMsg = `❌ สัดส่วนรูปภาพไม่ถูกต้อง!\n\nภาพที่คุณเลือกมีขนาด: ${width} × ${height} px (สัดส่วน ${ratioStr}:1)\n\nกรุณาเลือกรูปภาพที่มีสัดส่วน 16:9 (ขนาดที่แนะนำคือ 1200 × 675 px)`;
+                            
+                            if (feedbackContainer) {
+                                feedbackContainer.className = 'mt-2 rounded-xl bg-red-50 border border-red-200 p-3 text-xs text-red-700 flex flex-col gap-1';
+                                feedbackContainer.innerHTML = `
+                                    <div class="font-bold flex items-center gap-1.5">
+                                        <svg class="w-4 h-4 text-red-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                                        สัดส่วนภาพไม่ถูกต้อง: ${width} × ${height} px (${ratioStr}:1)
+                                    </div>
+                                    <div class="text-[11px] text-red-600">กรุณาเลือกรูปภาพที่มีสัดส่วน <strong>16:9</strong> (ขนาดแนะนำคือ <strong>1200 × 675 px</strong>)</div>
+                                `;
+                            }
+                            
+                            alert(errorMsg);
+                            fileInput.value = '';
+                            previewContainer.innerHTML = originalPreviewHtml;
+                            return;
+                        }
+
+                        // Success validation
+                        if (feedbackContainer) {
+                            feedbackContainer.className = 'mt-2 rounded-xl bg-emerald-50 border border-emerald-200 p-2.5 text-xs text-emerald-700 flex items-center gap-2';
+                            feedbackContainer.innerHTML = `
+                                <svg class="w-4 h-4 text-emerald-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                <div>ขนาดรูปภาพผ่านเกณฑ์: <strong>${width} × ${height} px</strong> (สัดส่วน 16:9 เหมาะสม)</div>
+                            `;
+                        }
+
+                        previewContainer.innerHTML = '';
+                        const previewImg = document.createElement('img');
+                        previewImg.src = loadEvent.target.result;
+                        previewImg.className = 'w-full h-full object-contain rounded-lg shadow-sm';
+                        previewContainer.appendChild(previewImg);
+                    };
+                    img.src = loadEvent.target.result;
+                };
+                reader.readAsDataURL(file);
             });
         }
     });

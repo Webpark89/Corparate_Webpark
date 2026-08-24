@@ -215,13 +215,14 @@ $contactAddress = $company['contact']['address'] ?? '525/89 ซอยลาด�
 </style>
 
 <section id="about-hero" class="relative font-sans bg-[#f7faff] overflow-hidden mt-0 mx-4 mb-4 sm:mt-0 sm:mx-6 sm:mb-6 rounded-t-none rounded-b-[2rem] lg:m-0 lg:rounded-none">
-    <div class="absolute inset-0 z-0">
-        <img src="<?= e($heroImage) ?>" alt="WEBPARK Solutions Background" class="hero-parallax-img w-full h-full object-cover object-center opacity-70 mix-blend-screen">
-        <div class="absolute inset-0 bg-gradient-to-r from-white to-white/5"></div>
+    <!-- Desktop Background Image -->
+    <div class="absolute inset-0 z-0 hidden lg:block">
+        <img src="<?= e($heroImage) ?>" alt="WEBPARK Solutions Background" class="hero-parallax-img w-full h-full object-cover object-[75%_center] opacity-100 mix-blend-screen">
+        <div class="absolute inset-0 bg-gradient-to-r from-white via-white/80 to-white/5"></div>
         <div class="absolute inset-x-0 bottom-0 h-[30%] bg-gradient-to-t from-white to-transparent z-10"></div>
     </div>
 
-    <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8 pt-12 pb-16 lg:pt-28 lg:pb-16 relative z-10 desktop-wide-container-about">
+    <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8 pt-12 pb-24 lg:pt-28 lg:pb-32 relative z-10 desktop-wide-container-about">
         <div class="absolute inset-0 z-0 overflow-hidden lg:hidden rounded-2xl">
             <img src="<?= e($heroImage) ?>" alt="WEBPARK Solutions Background" 
                 class="hero-parallax-img w-full h-full object-cover object-[75%_center] opacity-100 mix-blend-screen">

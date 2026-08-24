@@ -183,5 +183,6 @@ $content = $content ?? '';
         });
     </script>
     <script src="<?= e(asset_url('assets/js/main.js')) ?>"></script>
+    <?php require __DIR__ . '/../components/cookie-banner.php'; ?>
 </body>
 </html>

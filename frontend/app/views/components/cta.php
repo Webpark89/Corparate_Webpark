@@ -105,13 +105,13 @@ $siteKey = $siteKey ?? '6Lcf_pAtAAAAAOVhatPPwrHSYXeb_0J4yXf5BrRO';
                                 </div>
                             </div>
 
-                            <!-- Message with Word Counter -->
+                            <!-- Message with Character Counter -->
                             <div class="space-y-1">
-                                <textarea id="cta_message_area" name="message" rows="3" placeholder="<?= e(t('common.form_label_details')) ?> *" required
+                                <textarea id="cta_message_area" name="message" rows="3" placeholder="<?= e(t('common.form_label_details')) ?> *" required maxlength="500"
                                     class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base text-slate-900 outline-none transition custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary resize-none ipad-pro-cta-input"><?= e($form['message'] ?? '') ?></textarea>
                                 <div class="flex justify-between items-center px-1 text-xs text-slate-400">
-                                    <span>* ความยาวไม่เกิน 200 คำ</span>
-                                    <span id="cta_word_count_display" class="font-semibold text-slate-500">0 / 200 คำ</span>
+                                    <span>* ความยาวไม่เกิน 500 ตัวอักษร</span>
+                                    <span id="cta_word_count_display" class="font-semibold text-slate-500">0/500</span>
                                 </div>
                             </div>
 
@@ -119,7 +119,7 @@ $siteKey = $siteKey ?? '6Lcf_pAtAAAAAOVhatPPwrHSYXeb_0J4yXf5BrRO';
                             <div class="flex items-start gap-2.5 pt-1">
                                 <input type="checkbox" id="cta_privacy_consent" name="pdpa_agreed" value="1" required class="mt-0.5 w-4 h-4 rounded border-slate-300 text-primary focus:ring-primary cursor-pointer transition">
                                 <label for="cta_privacy_consent" class="text-sm leading-relaxed cursor-pointer select-none ipad-pro-cta-privacy">
-                                    <span class="privacy-text"><?= e(t('common.form_consent_prefix')) ?></span> <a href="#" class="text-primary hover:underline"><?= e(t('common.form_consent_privacy_policy')) ?> <?= e(t('common.form_consent_terms_suffix')) ?></a>
+                                    <span class="privacy-text"><?= e(t('common.form_consent_prefix')) ?></span> <a href="<?= e(route_url('/privacy-policy')) ?>" target="_blank" rel="noopener noreferrer" class="text-primary hover:underline"><?= e(t('common.form_consent_privacy_policy')) ?> <?= e(t('common.form_consent_terms_suffix')) ?></a>
                                 </label>
                             </div>
 
@@ -178,15 +178,13 @@ document.addEventListener('DOMContentLoaded', function () {
         updateCtaSubmitBtnState();
     }
 
-    // 2. Word counter for message
+    // 2. Character counter for message (max 500 characters)
     function updateCtaWordCount() {
         if (!messageArea || !wordCountDisplay) return;
-        const text = messageArea.value.trim();
-        const words = text ? text.split(/\s+/).filter(Boolean) : [];
-        const count = words.length;
+        const count = messageArea.value.length;
 
-        wordCountDisplay.textContent = count + ' / 200 คำ';
-        if (count > 200) {
+        wordCountDisplay.textContent = count + '/500';
+        if (count > 500) {
             wordCountDisplay.classList.add('text-red-500');
             wordCountDisplay.classList.remove('text-slate-500');
         } else {

@@ -31,6 +31,7 @@ $structuredSitemap = [
                     ['label' => t('common.nav_erp'), 'href' => route_url('/erp')],
                     ['label' => getCurrentLang() === 'th' ? 'ผลงาน' : 'Portfolio', 'href' => route_url('/portfolio')],
                     ['label' => t('common.nav_contact'), 'href' => route_url('/contact')],
+                    ['label' => getCurrentLang() === 'th' ? 'นโยบายความเป็นส่วนตัว' : 'Privacy Policy', 'href' => route_url('/privacy-policy')],
                 ],
             ],
         ],

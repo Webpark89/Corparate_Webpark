@@ -23,4 +23,6 @@ return [
     '/about' => [HomeController::class, 'about'],
     '/contact' => [HomeController::class, 'contact'],
     '/contact/submit' => [HomeController::class, 'contactSubmit'],
+    '/privacy-policy' => [HomeController::class, 'privacyPolicy'],
+    '/privacy-policy.php' => [HomeController::class, 'privacyPolicy'],
 ];
