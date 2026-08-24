@@ -127,10 +127,10 @@ $isEdit = ($action === 'edit');
 
             <!-- Form Actions -->
             <div class="flex items-center justify-end gap-3 pt-4 border-t border-slate-100">
-                <a href="index.php" class="rounded-xl border border-slate-200 bg-white px-5 py-2.5 text-xs font-bold text-slate-600 transition hover:bg-slate-50 hover:text-slate-900 shadow-xs">
+                <a href="index.php" class="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-6 py-2.5 text-xs font-bold text-slate-600 transition hover:bg-slate-50 hover:text-slate-900 shadow-sm whitespace-nowrap">
                     ยกเลิก
                 </a>
-                <button type="submit" class="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-6 py-2.5 text-xs font-bold text-white transition hover:bg-blue-700 shadow-md shadow-blue-500/10 hover:shadow-lg hover:-translate-y-0.5">
+                <button type="submit" class="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-6 py-2.5 text-xs font-bold text-white transition hover:bg-blue-700 shadow-md shadow-blue-500/10 hover:shadow-lg hover:-translate-y-0.5 whitespace-nowrap">
                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                     บันทึกการตั้งค่า
                 </button>
