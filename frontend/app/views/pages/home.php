@@ -298,6 +298,37 @@ if (!empty($partners) && is_array($partners)) {
                         </div>
                     </div>
                 </div>
+<<<<<<< HEAD
+            </div>
+            <div class="flex-[4] grid grid-cols-2 lg:grid-cols-4 w-full bg-white rounded-[2rem] lg:rounded-none shadow-sm lg:shadow-none border border-gray-100 lg:border-none overflow-hidden ipad-pro-grid-2-override">
+                <?php
+                $serviceCards = [
+                    ['icon' => 'icon-3.png', 'title' => getCurrentLang() === 'th' ? 'ระบบ ERP / ERM' : 'ERP / ERM',        'desc' => t('common.solution_org_control'), 'href' => route_url('/erp')],
+                    ['icon' => 'icon-2.png', 'title' => getCurrentLang() === 'th' ? 'แพลตฟอร์มดิจิทัล' : 'Digital Platform', 'desc' => t('common.solution_digital_platform'),              'href' => route_url('/services/digital-platform')],
+                    ['icon' => 'icon-4.png', 'title' => getCurrentLang() === 'th' ? 'การตลาดออนไลน์' : 'Online Marketing', 'desc' => t('common.solution_online_marketing'),   'href' => route_url('/services/online-marketing')],
+                    ['icon' => 'icon-1.png', 'title' => getCurrentLang() === 'th' ? 'ออกแบบสร้างสรรค์' : 'Creative / Design','desc' => t('common.solution_brand_design'),    'href' => route_url('/services/creative-design')],
+                ];
+                foreach ($serviceCards as $i => $card):
+                    $borderClass = '';
+                    $ipadProBorderClass = '';
+                    if ($i === 0) {
+                        $borderClass = 'border-r border-b lg:border-b-0';
+                        $ipadProBorderClass = 'ipad-pro-border-br';
+                    } elseif ($i === 1) {
+                        $borderClass = 'border-b lg:border-r lg:border-b-0';
+                        $ipadProBorderClass = 'ipad-pro-border-b';
+                    } elseif ($i === 2) {
+                        $borderClass = 'border-r';
+                        $ipadProBorderClass = 'ipad-pro-border-r';
+                    } elseif ($i === 3) {
+                        $ipadProBorderClass = 'ipad-pro-border-none';
+                    }
+                ?>
+                    <div class="gsap-home-service-card relative group cursor-pointer flex flex-col justify-between p-6 lg:p-8 <?= $borderClass ?> <?= $ipadProBorderClass ?> border-gray-100 bg-white transition-all duration-300 ease-out hover:shadow-[0_0_30px_rgba(0,0,0,0.08)] hover:-translate-y-1 hover:z-10 hover:rounded-xl opacity-0 translate-y-10 ipad-pro-p-6">
+                    <div>
+                        <div class="h-14 w-14 mx-auto mb-5 flex items-center justify-center transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:-translate-y-2 group-hover:scale-110">
+                            <img src="<?= e(asset_url('images/' . $card['icon'])) ?>" alt="<?= e($card['title']) ?>" class="h-full w-full object-contain">
+=======
                 <div class="flex-[4] grid grid-cols-2 lg:grid-cols-4 w-full bg-white rounded-[2rem] lg:rounded-none shadow-sm lg:shadow-none border border-gray-100 lg:border-none overflow-hidden ipad-pro-grid-2-override">
                     <?php
                     $serviceCards = [
@@ -333,6 +364,7 @@ if (!empty($partners) && is_array($partners)) {
                             <p class="text-gray-500 text-sm md:text-base leading-relaxed mb-6 text-left transition-colors duration-300 group-hover:text-gray-600 ipad-pro-font-desc">
                                 <?= e($card['desc']) ?>
                             </p>
+>>>>>>> 02fe7559906a4ab35a0b378cc6dab003df6795b4
                         </div>
                         <a href="<?= e($card['href']) ?>" class="inline-flex items-center text-primary text-sm font-medium transition-colors duration-300 group-hover:text-blue-700 w-max mt-auto ipad-pro-font-link">
                             <?= e(t('common.cta_read_more')) ?>
@@ -418,6 +450,23 @@ if (!empty($partners) && is_array($partners)) {
                                 $projectDesc = 'Develop an online store system with integrated credit card payment...';
                             }
                         }
+                    }
+                    $catColor     = $categoryColors[$projectCat] ?? '#0066ff';
+                    $projectImage = resolve_article_image_url($project['image_path'] ?? '', asset_url('images/erp.png'));
+                    ?>
+                    <article class="portfolio-card gsap-home-portfolio-card group rounded-[1.2rem] overflow-hidden border border-slate-100 bg-white shadow-sm hover:shadow-xl transition-all duration-500 flex flex-col <?= $isVisible ?> opacity-0 translate-y-10" data-index="<?= $index ?>">
+                        <div class="flex flex-col h-full cursor-default">
+                            <div class="h-[200px] sm:h-[180px] lg:h-[200px] w-full overflow-hidden bg-slate-100 shrink-0">
+                                <img src="<?= e($projectImage) ?>" alt="<?= e($projectTitle) ?>" class="h-full w-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out">
+                            </div>
+                            <div class="p-5 sm:p-4 lg:p-6 flex flex-col flex-1 bg-white lg:group-hover:bg-[#0663F6] transition-colors duration-500">
+                                <div class="flex items-center gap-3 mb-6 lg:group-hover:mb-3 transition-all duration-500">
+                                    <?php if (!empty($project['logo_path'])): ?>
+                                        <div class="bg-white rounded-full flex items-center justify-center shrink-0 w-10 h-10 overflow-hidden shadow-sm">
+                                            <img src="<?= e(asset_url($project['logo_path'])) ?>" class="h-6 w-6 object-contain" alt="">
+                                        </div>
+                                    <?php endif; ?>
+                                    <h3 class="text-lg lg:text-xl font-bold text-[#0b1b42] lg:group-hover:!text-white leading-snug line-clamp-1 transition-colors duration-500"><?= e($projectTitle) ?></h3>
                         $catColor     = $categoryColors[$projectCat] ?? '#0066ff';
                         $projectImage = resolve_article_image_url($project['image_path'] ?? $project['cover_image'] ?? '', asset_url('images/erp.png'));
                         $logoUrl      = !empty($project['logo_path']) ? resolve_article_image_url($project['logo_path'], '') : '';
@@ -445,6 +494,15 @@ if (!empty($partners) && is_array($partners)) {
                                         </span>
                                     </div>
                                 </div>
+                                <div class="mt-auto">
+                                    <span class="inline-block text-sm font-semibold px-5 py-1.5 rounded-full border lg:group-hover:!border-white lg:group-hover:!text-white transition-all duration-500" style="color:<?= e($catColor) ?>;border-color:<?= e($catColor) ?>;">
+                                        <?= e($projectCat) ?>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                <?php endforeach; ?>
                             </a>
                         </article>
                     <?php endforeach; ?>
@@ -622,6 +680,49 @@ $totalReviews = count($reviews);
         <img src="<?= e(asset_url('images/bg-hand.jpg')) ?>" alt="bg" class="w-full h-full object-cover object-center opacity-20 mix-blend-screen">
         <div class="absolute inset-0 bg-white/50"></div>
     </div>
+<<<<<<< HEAD
+    <div class="relative mx-auto w-full max-w-7xl px-5 sm:px-6 lg:px-8">
+        <?php if ($totalReviews > 0): ?>
+        <div class="mb-8 lg:mb-12 text-center max-w-4xl mx-auto">
+            <h2 class="hidden lg:block text-primary font-bold text-4xl md:text-3xl tracking-normal uppercase mb-3">
+                REVIEW
+            </h2>
+            <span class="hidden lg:block text-xl md:text-2xl lg:text-[28px] font-bold leading-tight text-dark">
+                <?= getCurrentLang() === 'th' ? 'กว่า <span class="text-primary">120</span> องค์กรชั้นนำ ที่เลือก <span class="text-primary">WEBPARK</span> เป็นพาร์ทเนอร์ด้านดิจิทัล' : 'Over <span class="text-primary">120</span> leading organizations trust <span class="text-primary">WEBPARK</span> as their digital partner' ?>
+            </span>
+        </div>
+        <?php endif; ?>
+        <div class="lg:hidden mb-12">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="bg-white rounded-2xl shadow-sm hover:shadow-md transition-shadow p-5 flex flex-row items-center justify-start gap-5 border border-slate-100">
+                    <img src="/Corparate_Webpark/frontend/public/assets/images/Capa_2.svg" alt="120+ องค์กรชั้นนำ" class="w-20 h-20 object-contain flex-shrink-0" />
+                    <div class="flex flex-col text-left">
+                        <h3 class="text-2xl font-black text-blue-600 mb-1 tracking-tight">120+ <span class="text-xl"><?= e(getCurrentLang() === 'th' ? 'องค์กรชั้นนำ' : 'Top Orgs') ?></span></h3>
+                        <p class="text-slate-600 text-sm font-medium ipad-air-stat-desc"><?= e(getCurrentLang() === 'th' ? 'ที่ไว้วางใจ Webpark' : 'Trust Webpark') ?></p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-2xl shadow-sm hover:shadow-md transition-shadow p-5 flex flex-row items-center justify-start gap-5 border border-slate-100">
+                    <img src="/Corparate_Webpark/frontend/public/assets/images/Capa_1.svg" alt="15+ ปี" class="w-20 h-20 object-contain flex-shrink-0" />
+                    <div class="flex flex-col text-left">
+                        <h3 class="text-2xl font-black text-blue-600 mb-1 tracking-tight">15+ <span class="text-xl"><?= e(getCurrentLang() === 'th' ? 'ปี' : 'Years') ?></span></h3>
+                        <p class="text-slate-600 text-sm font-medium ipad-air-stat-desc"><?= e(getCurrentLang() === 'th' ? 'แห่งประสบการณ์ ด้านเทคโนโลยี' : 'Of Technology Experience') ?></p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-2xl shadow-sm hover:shadow-md transition-shadow p-5 flex flex-row items-center justify-start gap-5 border border-slate-100">
+                    <img src="/Corparate_Webpark/frontend/public/assets/images/Capa_3.svg" alt="50+" class="w-20 h-20 object-contain flex-shrink-0" />
+                    <div class="flex flex-col text-left">
+                        <h3 class="text-2xl font-black text-blue-600 mb-1 tracking-tight decoration-blue-500">50+</h3>
+                        <p class="text-slate-600 text-sm font-medium mt-1 ipad-air-stat-desc"><?= e(getCurrentLang() === 'th' ? 'ระบบและโปรเจกต์ ที่ส่งมอบ' : 'Systems & Projects Delivered') ?></p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-2xl shadow-sm hover:shadow-md transition-shadow p-5 flex flex-row items-center justify-start gap-5 border border-slate-100">
+                    <img src="/Corparate_Webpark/frontend/public/assets/images/Capa_4.svg" alt="ครบวงจร" class="w-20 h-20 object-contain flex-shrink-0" />
+                    <div class="flex flex-col text-left">
+                        <h3 class="text-2xl font-black text-blue-600 mb-1 tracking-tight"><?= e(getCurrentLang() === 'th' ? 'ครบวงจร' : 'End-to-End') ?></h3>
+                        <p class="text-slate-600 text-sm font-medium ipad-air-stat-desc"><?= e(getCurrentLang() === 'th' ? 'ตั้งแต่วางแผนพัฒนา ถึงดูแลหลังบ้าน' : 'From Planning to Maintenance') ?></p>
+                    </div>
+                </div>
+=======
     <div class="relative mx-auto w-full max-w-[1720px] px-4 sm:px-6 lg:px-10">
         <div class="lg:px-12 xl:px-24">
             <div class="mb-8 lg:mb-12 text-center max-w-4xl mx-auto">
@@ -671,6 +772,7 @@ $totalReviews = count($reviews);
                 <h2 class="text-primary font-bold text-2xl tracking-normal mb-2">
                     <?= e(getCurrentLang() === 'th' ? 'เสียงจากลูกค้าของเรา' : 'Testimonials') ?>
                 </h2>
+>>>>>>> 02fe7559906a4ab35a0b378cc6dab003df6795b4
             </div>
             <style>
                 .pause-on-hover:hover {

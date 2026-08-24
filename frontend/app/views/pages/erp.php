@@ -1,4 +1,3 @@
-<?php
 declare(strict_types=1);
 $categories = is_array($categories ?? null) ? $categories : [];
 $activeCategorySlug = (string) ($activeCategorySlug ?? 'all');
@@ -161,6 +160,13 @@ $modulesData = $mockModules;
 $erpPortfolios = !empty($erpPortfolios) ? $erpPortfolios : $mockErpPortfolios;
 ?>
 <style>
+    @media (max-width: 767px) {
+        .gsap-erp-module-card:active .desktop-erp-module-desc,
+        .gsap-erp-module-card:hover .desktop-erp-module-desc {
+            -webkit-line-clamp: unset !important;
+            line-clamp: none !important;
+        }
+    }
     @keyframes fadeSlideUp {
         0% { opacity: 0; transform: translateY(30px); }
         100% { opacity: 1; transform: translateY(0); }
@@ -634,6 +640,50 @@ $erpPortfolios = !empty($erpPortfolios) ? $erpPortfolios : $mockErpPortfolios;
                     <?php endforeach; ?>
                 </div>
             </div>
+            <div class="erp-right-col gsap-erp-about-right flex-[4] grid grid-cols-2 sm:grid-cols-2 xl:grid-cols-4 w-full opacity-0 translate-y-10 desktop-erp-about-right">
+                <?php
+                $serviceCards = [
+                    ['icon' => asset_url('images/ERP_1.svg'), 'title' => getCurrentLang() === 'th' ? 'ข้อมูลเชื่อมต่อครบทุกแผนก' : 'Connected Data Across Departments', 'desc' => getCurrentLang() === 'th' ? 'ข้อมูลเป็นหนึ่งเดียว<br class="block sm:hidden"><span class="hidden sm:inline"> </span>ไม่ต้องทำงานซ้ำ' : 'Single source of truth, eliminating duplicate work.', 'href' => '#'],
+                    ['icon' => asset_url('images/ERP_2.svg'), 'title' => getCurrentLang() === 'th' ? 'ทำงานอัตโนมัติ ลดความผิดพลาด' : 'Automated Processes & Reduced Errors', 'desc' => getCurrentLang() === 'th' ? 'ลดขั้นตอนงานเอกสาร เพิ่มความแม่นยำ' : 'Minimize paperwork and increase accuracy.', 'href' => '#'],
+                    ['icon' => asset_url('images/ERP_3.svg'), 'title' => getCurrentLang() === 'th' ? 'มองเห็นแบบเรียลไทม์ ตัดสินใจได้ไว' : 'Real-time Visibility & Quick Decisions', 'desc' => getCurrentLang() === 'th' ? 'รายงานและ Dashboard อัปเดตตลอดเวลา' : 'Always-updated reports and dashboards.', 'href' => '#'],
+                    ['icon' => asset_url('images/ERP_4.svg'), 'title' => getCurrentLang() === 'th' ? 'รองรับการเติบโต ของธุรกิจ' : 'Supports Business Growth', 'desc' => getCurrentLang() === 'th' ? 'ขยายระบบได้ตามความต้องการ พร้อมเติบโตในอนาคต' : 'Scalable system ready to grow with your business in the future.', 'href' => '#'],
+                ];
+                $lastIdx = count($serviceCards) - 1;
+                foreach ($serviceCards as $i => $card):
+                    $borderClass = '';
+                    if ($i < $lastIdx) {
+                        $borderClass .= ' border-b';
+                    }
+                    if ($i < 2) {
+                        $borderClass .= ' sm:border-b';
+                    } else {
+                        $borderClass .= ' sm:border-b-0';
+                    }
+                    if ($i % 2 === 0) {
+                        $borderClass .= ' sm:border-r';
+                    } else {
+                        $borderClass .= ' sm:border-r-0';
+                    }
+                    $borderClass .= ' xl:border-b-0';
+                    if ($i < 3) {
+                        $borderClass .= ' xl:border-r';
+                    } else {
+                        $borderClass .= ' xl:border-r-0';
+                    }
+                    
+                    $desktopLastClass = ($i === $lastIdx) ? ' desktop-erp-about-card-last' : '';
+                ?>
+                    <div class="gsap-erp-about-card relative group cursor-pointer flex flex-col justify-center p-6 lg:p-8 <?= $borderClass ?> border-gray-100 bg-white transition-all duration-300 ease-out hover:shadow-[0_0_30px_rgba(0,0,0,0.08)] hover:-translate-y-1 hover:z-10 hover:rounded-xl opacity-0 translate-y-10 desktop-erp-about-card<?= $desktopLastClass ?>">
+                        <div>
+                            <div class="h-14 w-14 mx-auto mb-5 flex items-center justify-center transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:-translate-y-2 group-hover:scale-110 desktop-erp-about-icon">
+                                <img src="<?= e($card['icon']) ?>" alt="<?= e($card['title']) ?>" class="h-full w-full object-contain">
+                            </div>
+                            <h2 class="text-[#043B94] font-bold text-lg md:text-xl lg:text-2xl xl:text-3xl text-center mb-3 whitespace-normal tracking-tight transition-colors duration-300 group-hover:text-blue-600 desktop-erp-about-card-title">
+                                <?= e($card['title']) ?>
+                            </h2>
+                            <p class="text-gray-500 text-base md:text-lg lg:text-xl leading-relaxed mb-6 text-center transition-colors duration-300 group-hover:text-gray-600 desktop-erp-about-card-desc ipad-pro-erp-about-card-desc">
+                                <?= $card['desc'] ?>
+                            </p>
         </div>
     </div>
 </section>

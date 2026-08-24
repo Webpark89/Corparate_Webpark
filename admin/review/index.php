@@ -35,10 +35,26 @@ $reviews = $statement->fetchAll();
             <h2 class="text-lg font-bold text-slate-900">การจัดการรีวิว (Reviews)</h2>
             <p class="mt-1 text-xs text-slate-500">จัดการคำนิยมและรีวิวจากลูกค้าทั้งหมด</p>
         </div>
-        <a href="create.php"
-            class="inline-flex h-9 items-center rounded-xl bg-blue-600 px-4 text-sm font-semibold text-white transition hover:bg-blue-700 shadow-sm shadow-blue-500/10">
-            + เพิ่มรีวิวใหม่
-        </a>
+        <div class="flex items-center gap-2">
+            <form action="show_all.php" method="post" onsubmit="return confirm('ยืนยันที่จะแสดงรีวิวทั้งหมด?');" class="inline-block">
+                <?= csrf_field() ?>
+                <button type="submit"
+                    class="inline-flex h-9 items-center rounded-xl bg-emerald-50 hover:bg-emerald-100 px-4 text-sm font-semibold text-emerald-700 transition shadow-sm cursor-pointer">
+                    👁️ แสดงทั้งหมด
+                </button>
+            </form>
+            <form action="hide_all.php" method="post" onsubmit="return confirm('ยืนยันที่จะซ่อนรีวิวทั้งหมด?');" class="inline-block">
+                <?= csrf_field() ?>
+                <button type="submit"
+                    class="inline-flex h-9 items-center rounded-xl bg-slate-100 hover:bg-slate-200 px-4 text-sm font-semibold text-slate-700 transition shadow-sm cursor-pointer">
+                    👁️‍🗨️ ซ่อนทั้งหมด
+                </button>
+            </form>
+            <a href="create.php"
+                class="inline-flex h-9 items-center rounded-xl bg-blue-600 px-4 text-sm font-semibold text-white transition hover:bg-blue-700 shadow-sm shadow-blue-500/10">
+                + เพิ่มรีวิวใหม่
+            </a>
+        </div>
     </header>
     <section class="mb-5 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
         <div class="p-4">
