@@ -59,7 +59,6 @@ function normalize_text(mixed $value): string
     }
 
     $text = html_entity_decode(strip_tags($text), ENT_QUOTES, 'UTF-8');
-    $text = str_replace(['\r\n', '\n', '\r', '\t'], ' ', $text);
     $text = preg_replace('/\s+/u', ' ', $text) ?? '';
 
     return trim($text);
@@ -75,10 +74,7 @@ function get_article_summary_text(string $content, string $lang = 'th'): string
         return '';
     }
 
-    // Decode HTML entities first in case the JSON was saved with encoded quotes (&quot;)
-    $decodedEntities = html_entity_decode($clean, ENT_QUOTES, 'UTF-8');
-    $decoded = json_decode($decodedEntities, true);
-    
+    $decoded = json_decode($clean, true);
     if (is_array($decoded)) {
         $texts = [];
         foreach ($decoded as $section) {
@@ -94,35 +90,6 @@ function get_article_summary_text(string $content, string $lang = 'th'): string
         }
         $combined = implode(' ', $texts);
         return normalize_text($combined);
-    }
-    
-    // Fallback: If json_decode fails (e.g. truncated string) but it looks like our JSON format
-    if (strpos($decodedEntities, '"lang":') !== false) {
-        $pattern = '/"lang"\s*:\s*"' . preg_quote($lang, '/') . '"(.*?(?="lang"\s*:|$))/is';
-        if (preg_match_all($pattern, $decodedEntities, $matches)) {
-            $text = implode(' ', $matches[1]);
-            $text = preg_replace('/"topic"\s*:\s*/i', '', $text);
-            $text = preg_replace('/"body"\s*:\s*/i', '', $text);
-            $text = str_replace(['[', ']', '{', '}', '"', ','], ' ', $text);
-            $text = preg_replace('/\s+/', ' ', $text);
-            $text = normalize_text(trim($text));
-            if (!empty($text)) {
-                return $text;
-            }
-        }
-        
-        // If the requested language block wasn't found in malformed JSON, avoid showing the wrong language (except for TH default)
-        if ($lang !== 'th') {
-            return '';
-        }
-
-        $text = $decodedEntities;
-        $text = preg_replace('/"lang"\s*:\s*"[^"]*"/i', '', $text);
-        $text = preg_replace('/"topic"\s*:\s*/i', '', $text);
-        $text = preg_replace('/"body"\s*:\s*/i', '', $text);
-        $text = str_replace(['[', ']', '{', '}', '"', ','], ' ', $text);
-        $text = preg_replace('/\s+/', ' ', $text);
-        return normalize_text(trim($text));
     }
 
     return normalize_text($clean);
@@ -272,22 +239,74 @@ function app_url(string $path = ''): string
  *
  * @param array<string, scalar|null> $query
  */
+/**
+ * Maps English route paths to Thai route paths and vice versa.
+ */
+function translate_route_path(string $path, string $toLang): string
+{
+    $map = [
+        'about' => 'เกี่ยวกับเรา',
+        'services' => 'บริการของเรา',
+        'erp' => 'ระบบ-erp',
+        'article' => 'บทความ',
+        'articles' => 'บทความ',
+        'contact' => 'ติดต่อเรา',
+    ];
+
+    $parts = explode('/', trim($path, '/'));
+    $translatedParts = [];
+
+    foreach ($parts as $part) {
+        $decodedPart = urldecode($part);
+        if ($toLang === 'th') {
+            $translatedParts[] = isset($map[$decodedPart]) ? $map[$decodedPart] : $part;
+        } else {
+            $flipped = array_flip($map);
+            $flipped['บทความ'] = 'article';
+            $translatedParts[] = isset($flipped[$decodedPart]) ? $flipped[$decodedPart] : $part;
+        }
+    }
+
+    return implode('/', $translatedParts);
+}
+
 function route_url(string $path, array $query = []): string
 {
-    $normalizedPath = trim($path, '/');
-    $baseUrl = app_url('');
-
-    if ($normalizedPath === '' || $normalizedPath === 'index') {
-        return rtrim($baseUrl, '/') . '/';
+    $hash = '';
+    $hashPos = strpos($path, '#');
+    if ($hashPos !== false) {
+        $hash = substr($path, $hashPos);
+        $path = substr($path, 0, $hashPos);
     }
 
-    $url = rtrim($baseUrl, '/') . '/?url=' . rawurlencode($normalizedPath);
+    $normalizedPath = trim($path, '/');
+    $baseUrl = rtrim(app_url(''), '/');
+    
+    $lang = function_exists('getCurrentLang') ? getCurrentLang() : 'th';
+
+    if ($lang === 'en') {
+        // Enforce English path names and append /en when language is English
+        $translatedPath = translate_route_path($normalizedPath, 'en');
+        if ($translatedPath === '' || $translatedPath === 'index') {
+            $url = $baseUrl . '/en';
+        } else {
+            $url = $baseUrl . '/' . $translatedPath . '/en';
+        }
+    } else {
+        // Enforce Thai path names when language is Thai
+        $translatedPath = translate_route_path($normalizedPath, 'th');
+        if ($translatedPath === '' || $translatedPath === 'index') {
+            $url = $baseUrl . '/';
+        } else {
+            $url = $baseUrl . '/' . rawurldecode($translatedPath);
+        }
+    }
 
     if ($query !== []) {
-        $url .= '&' . http_build_query($query);
+        $url .= '?' . http_build_query($query);
     }
 
-    return $url;
+    return $url . $hash;
 }
 
 /**

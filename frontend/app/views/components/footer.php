@@ -1,32 +1,36 @@
 <?php
+
 declare(strict_types=1);
+
 /**
  * Site footer component with expandable sitemap and company contact info.
  */
+
 require_once __DIR__ . '/../../Models/Service.php';
+
 $company = config('company', []) ?: ($company ?? []);
 $companyName = $company['name'] ?? '';
+
 $email = $company['contact']['email'] ?? '';
 $phone = $company['contact']['phone'] ?? '';
 $phone = str_replace(' ', '-', $phone);
 $address = $company['contact']['address'] ?? '';
-$officeLabel = t('footer.office_headquarters_label');
-$officeValue = t('footer.office_address');
-$emailLabel = t('footer.email_label');
-$phoneLabel = t('footer.phone_label');
+$officeLabel = 'สำนักงานใหญ่ :';
+$officeValue = $company['contact']['address'] ?? '525/89 ซอยลาดพร้าว126 แขวงพลับพลา เขตวังทองหลาง กรุงเทพมหานคร 10310';
 $phoneHref = preg_replace('/[^0-9+]/', '', $phone) ?? '';
+
 $structuredSitemap = [
     'PAGE' => [
         'groups' => [
             [
                 'title' => 'Page',
                 'items' => [
-                    ['label' => t('common.nav_home'), 'href' => '/Corparate_Webpark'],
-                    ['label' => t('common.nav_about'), 'href' => '/Corparate_Webpark/about'],
-                    ['label' => t('common.nav_services'), 'href' => '/Corparate_Webpark/services'],
-                    ['label' => t('common.nav_erp'), 'href' => '/Corparate_Webpark/erp'],
-                    ['label' => getCurrentLang() === 'th' ? 'ผลงาน' : 'Portfolio', 'href' => '/Corparate_Webpark/portfolio'],
-                    ['label' => t('common.nav_contact'), 'href' => '/Corparate_Webpark/contact'],
+                    ['label' => t('common.nav_home'), 'href' => route_url('/')],
+                    ['label' => t('common.nav_about'), 'href' => route_url('/about')],
+                    ['label' => t('common.nav_services'), 'href' => route_url('/services')],
+                    ['label' => t('common.nav_erp'), 'href' => route_url('/erp')],
+                    ['label' => getCurrentLang() === 'th' ? 'ผลงาน' : 'Portfolio', 'href' => route_url('/portfolio')],
+                    ['label' => t('common.nav_contact'), 'href' => route_url('/contact')],
                 ],
             ],
         ],
@@ -36,7 +40,7 @@ $structuredSitemap = [
             [
                 'title' => 'ERP & Business Management',
                 'items' => [
-                    ['label' => 'ERP System', 'href' => '/Corparate_Webpark/erp#erp-system'],
+                    ['label' => 'ERP System', 'href' => route_url('/erp#erp-system')],
                     ['label' => 'Accounting & Finance', 'href' => route_url('/article', ['id' => 39])],
                     ['label' => 'Sales / Purchase', 'href' => route_url('/article', ['id' => 40])],
                     ['label' => 'Inventory / Warehouse', 'href' => route_url('/article', ['id' => 41])],
@@ -46,7 +50,7 @@ $structuredSitemap = [
                 'title' => 'ERM & CRM Systems',
                 'items' => [
                     ['label' => 'Customer Management', 'href' => route_url('/article', ['id' => 42])],
-                    ['label' => 'Lead Management', 'href' => '/Corparate_Webpark/erp#lead-management'],
+                    ['label' => 'Lead Management', 'href' => route_url('/erp#lead-management')],
                     ['label' => 'Customer Service', 'href' => route_url('/article', ['id' => 29])],
                     ['label' => 'Partner / Supplier Management', 'href' => route_url('/article', ['id' => 30])],
                 ],
@@ -70,26 +74,26 @@ $structuredSitemap = [
                     ['label' => 'Website / Responsive / CMS', 'href' => route_url('/article', ['id' => 35])],
                     ['label' => 'Mobile App / Mobile Site', 'href' => route_url('/article', ['id' => 36])],
                     ['label' => 'E-commerce', 'href' => route_url('/article', ['id' => 37])],
-                    ['label' => 'Custom Web Application', 'href' => '/Corparate_Webpark/services/digital-platform#custom-web'],
-                    ['label' => 'Membership / Portal System', 'href' => '/Corparate_Webpark/services/digital-platform#membership'],
+                    ['label' => 'Custom Web Application', 'href' => route_url('/services/digital-platform#custom-web')],
+                    ['label' => 'Membership / Portal System', 'href' => route_url('/services/digital-platform#membership')],
                 ],
             ],
             [
                 'title' => 'Communication & Engagement',
                 'items' => [
-                    ['label' => 'SMS Service', 'href' => '/Corparate_Webpark/services/digital-platform#sms'],
-                    ['label' => 'Email Marketing', 'href' => '/Corparate_Webpark/services/digital-platform#email'],
-                    ['label' => 'Chatbot / Live Chat', 'href' => '/Corparate_Webpark/services/digital-platform#chatbot'],
-                    ['label' => 'Game / Interactive Campaign', 'href' => '/Corparate_Webpark/services/digital-platform#game'],
+                    ['label' => 'SMS Service', 'href' => route_url('/services/digital-platform#sms')],
+                    ['label' => 'Email Marketing', 'href' => route_url('/services/digital-platform#email')],
+                    ['label' => 'Chatbot / Live Chat', 'href' => route_url('/services/digital-platform#chatbot')],
+                    ['label' => 'Game / Interactive Campaign', 'href' => route_url('/services/digital-platform#game')],
                 ],
             ],
             [
                 'title' => 'Data & Learning Systems',
                 'items' => [
-                    ['label' => 'Big Data', 'href' => '/Corparate_Webpark/services/digital-platform#bigdata'],
-                    ['label' => 'E-learning', 'href' => '/Corparate_Webpark/services/digital-platform#elearning'],
-                    ['label' => 'Dashboard', 'href' => '/Corparate_Webpark/services/digital-platform#dashboard'],
-                    ['label' => 'Data Management', 'href' => '/Corparate_Webpark/services/digital-platform#data-management'],
+                    ['label' => 'Big Data', 'href' => route_url('/services/digital-platform#bigdata')],
+                    ['label' => 'E-learning', 'href' => route_url('/services/digital-platform#elearning')],
+                    ['label' => 'Dashboard', 'href' => route_url('/services/digital-platform#dashboard')],
+                    ['label' => 'Data Management', 'href' => route_url('/services/digital-platform#data-management')],
                 ],
             ],
         ],
@@ -99,29 +103,29 @@ $structuredSitemap = [
             [
                 'title' => 'Strategy & Growth',
                 'items' => [
-                    ['label' => 'Digital Marketing Consultant', 'href' => '/Corparate_Webpark/services/online-marketing#consultant'],
-                    ['label' => 'Media Planner / PR & Media Strategy', 'href' => '/Corparate_Webpark/services/online-marketing#media-planner'],
+                    ['label' => 'Digital Marketing Consultant', 'href' => route_url('/services/online-marketing#consultant')],
+                    ['label' => 'Media Planner / PR & Media Strategy', 'href' => route_url('/services/online-marketing#media-planner')],
                     ['label' => 'SEO', 'href' => route_url('/article-detail-mockup')],
-                    ['label' => 'Social Network', 'href' => '/Corparate_Webpark/services/online-marketing#social'],
-                    ['label' => 'Online Campaign', 'href' => '/Corparate_Webpark/services/online-marketing#campaign'],
+                    ['label' => 'Social Network', 'href' => route_url('/services/online-marketing#social')],
+                    ['label' => 'Online Campaign', 'href' => route_url('/services/online-marketing#campaign')],
                 ],
             ],
             [
                 'title' => 'Performance & Analytics',
                 'items' => [
-                    ['label' => 'Monitoring & Analysis', 'href' => '/Corparate_Webpark/services/online-marketing#monitoring'],
-                    ['label' => 'Campaign Performance Report', 'href' => '/Corparate_Webpark/services/online-marketing#report'],
-                    ['label' => 'Return on Investment (ROI)', 'href' => '/Corparate_Webpark/services/online-marketing#roi'],
-                    ['label' => 'Productivity Analysis', 'href' => '/Corparate_Webpark/services/online-marketing#productivity'],
+                    ['label' => 'Monitoring & Analysis', 'href' => route_url('/services/online-marketing#monitoring')],
+                    ['label' => 'Campaign Performance Report', 'href' => route_url('/services/online-marketing#report')],
+                    ['label' => 'Return on Investment (ROI)', 'href' => route_url('/services/online-marketing#roi')],
+                    ['label' => 'Productivity Analysis', 'href' => route_url('/services/online-marketing#productivity')],
                 ],
             ],
             [
                 'title' => 'Content & Advertising',
                 'items' => [
-                    ['label' => 'Content Strategy', 'href' => '/Corparate_Webpark/services/online-marketing#content-strategy'],
-                    ['label' => 'Ads Management', 'href' => '/Corparate_Webpark/services/online-marketing#ads'],
-                    ['label' => 'Social Media Content', 'href' => '/Corparate_Webpark/services/online-marketing#social-content'],
-                    ['label' => 'Search Engine Marketing', 'href' => '/Corparate_Webpark/services/online-marketing#sem'],
+                    ['label' => 'Content Strategy', 'href' => route_url('/services/online-marketing#content-strategy')],
+                    ['label' => 'Ads Management', 'href' => route_url('/services/online-marketing#ads')],
+                    ['label' => 'Social Media Content', 'href' => route_url('/services/online-marketing#social-content')],
+                    ['label' => 'Search Engine Marketing', 'href' => route_url('/services/online-marketing#sem')],
                 ],
             ],
         ],
@@ -131,33 +135,34 @@ $structuredSitemap = [
             [
                 'title' => 'Design & Digital Experience',
                 'items' => [
-                    ['label' => 'Web Design', 'href' => '/Corparate_Webpark/services/creative-design#web-design'],
-                    ['label' => 'UX/UI Design', 'href' => '/Corparate_Webpark/services/creative-design#ux-ui'],
-                    ['label' => 'Cartoon & Character Design', 'href' => '/Corparate_Webpark/services/creative-design#cartoon'],
-                    ['label' => 'Infographic', 'href' => '/Corparate_Webpark/services/creative-design#infographic'],
+                    ['label' => 'Web Design', 'href' => route_url('/services/creative-design#web-design')],
+                    ['label' => 'UX/UI Design', 'href' => route_url('/services/creative-design#ux-ui')],
+                    ['label' => 'Cartoon & Character Design', 'href' => route_url('/services/creative-design#cartoon')],
+                    ['label' => 'Infographic', 'href' => route_url('/services/creative-design#infographic')],
                 ],
             ],
             [
                 'title' => 'Motion & Video Production',
                 'items' => [
-                    ['label' => 'Animation TV & YouTube Online', 'href' => '/Corparate_Webpark/services/creative-design#animation'],
+                    ['label' => 'Animation TV & YouTube Online', 'href' => route_url('/services/creative-design#animation')],
                     ['label' => 'Motion VDO', 'href' => route_url('/article', ['id' => 14])],
-                    ['label' => 'Video Editing', 'href' => '/Corparate_Webpark/services/creative-design#video-editing'],
-                    ['label' => 'Presentation Video', 'href' => '/Corparate_Webpark/services/creative-design#presentation'],
+                    ['label' => 'Video Editing', 'href' => route_url('/services/creative-design#video-editing')],
+                    ['label' => 'Presentation Video', 'href' => route_url('/services/creative-design#presentation')],
                 ],
             ],
             [
                 'title' => 'Media & Publishing',
                 'items' => [
-                    ['label' => 'E-Magazine', 'href' => '/Corparate_Webpark/services/creative-design#emagazine'],
-                    ['label' => 'Print Ads', 'href' => '/Corparate_Webpark/services/creative-design#print-ads'],
-                    ['label' => 'Online Banner', 'href' => '/Corparate_Webpark/services/creative-design#online-banner'],
-                    ['label' => 'Key Visual Design', 'href' => '/Corparate_Webpark/services/creative-design#key-visual'],
+                    ['label' => 'E-Magazine', 'href' => route_url('/services/creative-design#emagazine')],
+                    ['label' => 'Print Ads', 'href' => route_url('/services/creative-design#print-ads')],
+                    ['label' => 'Online Banner', 'href' => route_url('/services/creative-design#online-banner')],
+                    ['label' => 'Key Visual Design', 'href' => route_url('/services/creative-design#key-visual')],
                 ],
             ],
         ],
     ],
 ];
+
 $socialLinks = [
     ['label' => 'Facebook', 'href' => 'https://www.facebook.com/'],
     ['label' => 'Instagram', 'href' => 'https://www.instagram.com/'],
@@ -165,10 +170,14 @@ $socialLinks = [
     ['label' => 'X', 'href' => 'https://x.com/'],
 ];
 ?>
+
 <footer class="overflow-hidden">
+
     <div id="footerSitemapSection" style="background-color: #ffffff; transition: background-color 0.3s ease;">
-        <div class="mx-auto w-full max-w-[1720px] px-4 sm:px-4 lg:px-10">
+        <div class="mx-auto w-full max-w-7xl px-4 sm:px-4 lg:px-6">
+
             <div class="js-scroll-animate opacity-0 translate-y-5 transition-all duration-700 ease-out" style="transition-delay: 100ms;">
+
                 <button
                     type="button"
                     id="footerSitemapToggle"
@@ -177,6 +186,7 @@ $socialLinks = [
                     aria-controls="footerSitemapPanel"
                 >
                     <span id="footerSitemapLabel" class="mb-2 tracking-[2px]" style="color: #043B94; font-size: 25px; font-weight: 700;">SITEMAP</span>
+
                     <span
                         id="footerSitemapArrow"
                         class="inline-flex items-center justify-center transition-transform duration-300"
@@ -189,6 +199,7 @@ $socialLinks = [
                         </svg>
                     </span>
                 </button>
+
                 <div id="footerSitemapPanel" class="overflow-hidden" style="height: 0px;">
                     <div class="px-4 sm:px-4 lg:px-0 pt-5 pb-6" id="footerSitemapPanelInner">
                         <div class="grid gap-5 sm:grid-cols-2 xl:grid-cols-5 dt-sitemap-grid" data-footer-content>
@@ -200,6 +211,7 @@ $socialLinks = [
                                 'ONLINE MARKETING',
                                 'CREATIVE / DESIGN',
                             ];
+
                             $renderColumn = function($title, $column) {
                                 $groups = $column['groups'] ?? [];
                                 ?>
@@ -224,6 +236,7 @@ $socialLinks = [
                                 </section>
                                 <?php
                             };
+
                             foreach ($targetTitles as $tTitle) {
                                 $col = $structuredSitemap[$tTitle] ?? null;
                                 if ($col) {
@@ -236,19 +249,18 @@ $socialLinks = [
                         </div>
                     </div>
                 </div>
+
             </div></div></div>    <style>
         #footerInfoSection { background-color: #022862 !important; }
         #footerSitemapToggle:hover #footerSitemapLabel,
         #footerSitemapToggle:hover #footerSitemapArrowSvg { color: #0663F6 !important; transition: color 0.3s ease; }
-        #footerInfoGrid { display: grid; gap: 2rem; align-items: center; grid-template-columns: 1fr; text-align: center; }
-        .footer-logo-container { display: flex; justify-content: center; }
-        .footer-bottom-bar { margin-top: 1.5rem; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; }
+        #footerInfoGrid { display: grid; gap: 2rem; align-items: center; grid-template-columns: 1fr; }
+        .footer-bottom-bar { margin-top: 3rem; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; }
         .dt-sitemap-list { border-left: 2px solid #94a3b8; }
         @media (min-width: 768px) { 
-            #footerInfoGrid { grid-template-columns: 1.5fr 3.5fr 2fr; gap: 2rem; align-items: start; text-align: left; } 
-            .footer-logo-container { justify-content: flex-start; }
-            .footer-bottom-bar { padding: 0 5%; }
-            .address-text { white-space: normal !important; padding-right: 1.5rem; }
+            #footerInfoGrid { grid-template-columns: 1fr 2fr 1.5fr; } 
+            .footer-bottom-bar { padding: 0; }
+            .address-text { white-space: nowrap !important; }
         }
         @media (min-width: 1024px) {
             .dt-sitemap-grid { grid-template-columns: repeat(5, minmax(0, 1fr)) !important; gap: 1rem !important; }
@@ -259,36 +271,43 @@ $socialLinks = [
             .dt-sitemap-link { font-size: 12.5px !important; font-weight: 500 !important; color: #043B94 !important; line-height: 1.3 !important; }
             .dt-sitemap-link:hover { color: #0663F6 !important; }
             .dt-sitemap-bullet { font-size: 16px !important; color: #043B94 !important; }
-            .footer-contact-block { margin-left: 0 !important; }
+            .footer-contact-block { margin-left: auto !important; }
         }
     </style>
     <div id="footerInfoSection" style="background-color: #FFFFFFE5 !important; color: #e2e8f0;">
-        <div style="max-width: 1720px; margin: 0 auto; padding: 2.5rem 1.5rem;">
+        <div style="max-width: 80rem; margin: 0 auto; padding: 2.5rem 1.5rem;">
             <hr style="border: 0; border-top: 1px solid #cbd5e1; margin-bottom: 2rem;">
+            <div style="display: grid; gap: 2rem; grid-template-columns: 1fr; align-items: center;">
             <div id="footerInfoGrid">
-                    <div class="footer-logo-container">
-                        <div style="height: 100px; width: 140px; overflow: hidden; display: flex;">
+
+                    <div style="display: flex; justify-content: center; margin-bottom: 1rem;">
+                        <div style="height: 120px; width: 160px; overflow: hidden; display: flex; justify-content: center;">
                             <img src="<?= e(asset_url('images/logo.png')) ?>" alt="WEBPARK Logo" style="height: 100%; width: 100%; object-fit: contain;">
                         </div>
                     </div>
-                    <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.5rem; text-align: left; align-items: flex-start;">
+
+                    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
                         <span style="font-weight: 700; color: #0663F6; font-size: 1.125rem;"><?= e($officeLabel) ?></span>
-                        <span class="address-text" style="font-size: 1.125rem; color: #054FC5; line-height: 1.6; text-align: left;"><?= e($officeValue) ?></span>
+                        <span class="address-text" style="font-size: 0.9rem; color: #054FC5; line-height: 1.5;"><?= e($officeValue) ?></span>
                     </div>
-                    <div class="footer-contact-block" style="display: flex; flex-direction: column; gap: 0.75rem; margin-top: 0.5rem; text-align: left; align-items: flex-start;">
-                        <div style="display: flex; align-items: baseline; gap: 0.5rem; flex-wrap: wrap;">
-                            <span style="font-weight: 700; color: #0663F6; font-size: 1.125rem; min-width: 60px; text-align: left;"><?= e($emailLabel) ?></span>
-                            <a style="font-size: 1.125rem; color: #054FC5; text-decoration: none; text-align: left;" href="mailto:<?= e($email) ?>"><?= e($email) ?></a>
+
+                    <div class="footer-contact-block" style="display: flex; flex-direction: column; gap: 0.75rem;">
+                        <div style="display: flex; flex-wrap: wrap; gap: 0.25rem; align-items: baseline;">
+                            <span style="font-weight: 700; color: #0663F6; font-size: 1.125rem;">อีเมล :</span>
+                            <a style="font-size: 0.9rem; color: #054FC5; text-decoration: none;" href="mailto:<?= e($email) ?>"><?= e($email) ?></a>
                         </div>
-                        <div style="display: flex; align-items: baseline; gap: 0.5rem; flex-wrap: wrap;">
-                            <span style="font-weight: 700; color: #0663F6; font-size: 1.125rem; min-width: 60px; text-align: left;"><?= e($phoneLabel) ?></span>
-                            <a style="font-size: 1.125rem; color: #054FC5; text-decoration: none; text-align: left;" href="tel:<?= e(preg_replace('/[^0-9]/', '', $phone)) ?>"><?= e($phone) ?></a>
+                        <div style="display: flex; flex-wrap: wrap; gap: 0.25rem; align-items: baseline;">
+                            <span style="font-weight: 700; color: #0663F6; font-size: 1.125rem;">เบอร์โทร :</span>
+                            <a style="font-size: 0.9rem; color: #054FC5; text-decoration: none;" href="tel:<?= e($phoneHref) ?>"><?= e($phone) ?></a>
                         </div>
                     </div>
+
                 </div>
+            </div>
+
             <div class="footer-bottom-bar">
                 <style>
-                    .footer-bottom-link { font-size: 1rem; color: #043B94 !important; text-decoration: none; transition: color 0.3s ease; font-weight: 500; }
+                    .footer-bottom-link { font-size: 0.75rem; color: #043B94 !important; text-decoration: none; transition: color 0.3s ease; }
                     .footer-bottom-link:hover { color: #0663F6 !important; }
                 </style>
                 <a class="footer-bottom-link" href="#privacy-policy">Privacy Policy</a>
@@ -298,12 +317,14 @@ $socialLinks = [
                     <?php endforeach; ?>
                 </nav>
             </div>
+
         </div>
-        </div>
+        
         <div style="background-color: #022862; padding: 1rem 0; text-align: center; width: 100%;">
             <p style="margin: 0; font-size: 0.75rem; color: #ffffff;">Copyright © <?= date('Y') ?> WEBPARK All rights reserved.</p>
         </div>
     </div></footer>
+
 <script>
     (() => {
         const footerSitemapToggle   = document.getElementById('footerSitemapToggle');
@@ -313,38 +334,47 @@ $socialLinks = [
         const footerSitemapSection  = document.getElementById('footerSitemapSection');
         const footerSitemapLabel    = document.getElementById('footerSitemapLabel');
         const footerSitemapArrowSvg = document.getElementById('footerSitemapArrowSvg');
+
         const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         const durationMs = reduceMotion ? 0 : 350;
+
         const setPanelHeight = () => {
             if (!footerSitemapPanelInner) return;
             footerSitemapPanel.style.height = footerSitemapPanelInner.scrollHeight + 'px';
         };
+
         const setSitemapState = (isExpanded) => {
             if (footerSitemapToggle) footerSitemapToggle.setAttribute('aria-expanded', isExpanded ? 'true' : 'false');
             if (footerSitemapArrow) footerSitemapArrow.style.transform = isExpanded ? 'rotate(180deg)' : 'rotate(0deg)';
+            
             if (footerSitemapSection) footerSitemapSection.style.backgroundColor = '#ffffff';
             if (footerSitemapLabel) footerSitemapLabel.style.color = '#043B94';
             if (footerSitemapArrowSvg) footerSitemapArrowSvg.style.color = '#043B94';
         };
+
         const collapsePanel = () => {
             if (!footerSitemapPanel) return;
             footerSitemapPanel.style.transition = `height ${durationMs}ms ease`;
             footerSitemapPanel.style.height = '0px';
             setSitemapState(false);
         };
+
         const expandPanel = () => {
             if (!footerSitemapPanel) return;
             footerSitemapPanel.style.transition = `height ${durationMs}ms ease`;
             setPanelHeight();
             setSitemapState(true);
         };
+
         const initPanel = () => {
             if (!footerSitemapToggle || !footerSitemapPanel) return;
             collapsePanel();
+
             footerSitemapToggle.addEventListener('click', () => {
                 const isExpanded = footerSitemapToggle.getAttribute('aria-expanded') === 'true';
                 isExpanded ? collapsePanel() : expandPanel();
             });
+
             window.addEventListener('resize', () => {
                 const isExpanded = footerSitemapToggle.getAttribute('aria-expanded') === 'true';
                 if (isExpanded) {
@@ -355,7 +385,9 @@ $socialLinks = [
                 }
             });
         };
+
         initPanel();
+
         const observer = new IntersectionObserver((entries, obs) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -365,6 +397,7 @@ $socialLinks = [
                 }
             });
         }, { root: null, rootMargin: '0px', threshold: 0.05 });
+
         document.querySelectorAll('.js-scroll-animate').forEach(el => observer.observe(el));
     })();
 </script>
