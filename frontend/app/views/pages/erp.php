@@ -194,9 +194,20 @@ $erpPortfolios = $mockErpPortfolios;
     @media (min-width: 1024px) and (max-width: 1279px) {
         .ipad-pro-erp-hero-content {
             margin-left: 0 !important;
+            padding-top: 0.5rem !important;
+        }
+        .desktop-erp-hero-h1 {
+            font-size: 3.75rem !important;
+            line-height: 1.15 !important;
+            font-weight: 700 !important;
+        }
+        .desktop-erp-hero-p {
+            font-size: 1.125rem !important;
+            line-height: 1.65 !important;
+            max-width: 28rem !important;
         }
     }
-    @media (min-width: 1025px) {
+    @media (min-width: 1280px) {
         .desktop-wide-container-erp {
             max-width: 1720px !important;
             padding-left: 2.5rem !important;
@@ -205,6 +216,7 @@ $erpPortfolios = $mockErpPortfolios;
         .desktop-erp-hero-h1 {
             font-size: 5.5rem !important;
             line-height: 1.1 !important;
+            font-weight: 700 !important;
         }
         .desktop-erp-hero-p {
             font-size: 1.25rem !important;
@@ -360,12 +372,23 @@ $erpPortfolios = $mockErpPortfolios;
 </section>
 
 <style>
-    @media (min-width: 1024px) {
-        .erp-left-col { flex: none !important; width: 480px !important; max-width: 480px !important; }
-        .erp-right-col { flex: 1 !important; width: auto !important; }
+    @media (min-width: 1024px) and (max-width: 1279px) {
+        .erp-left-col {
+            flex: none !important;
+            width: 340px !important;
+            max-width: 340px !important;
+        }
     }
     @media (min-width: 1280px) {
-        .erp-left-col { width: 400px !important; max-width: 400px !important; }
+        .erp-left-col {
+            flex: none !important;
+            width: 380px !important;
+            max-width: 380px !important;
+        }
+        .erp-right-col {
+            flex: 1 !important;
+            width: auto !important;
+        }
     }
 </style>
 <section class="bg-white pt-8 pb-4 lg:pt-24 lg:pb-8">
@@ -390,7 +413,7 @@ $erpPortfolios = $mockErpPortfolios;
                 </div>
             </div>
 
-            <div class="erp-right-col gsap-erp-about-right flex-[4] grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 w-full opacity-0 translate-y-10">
+            <div class="erp-right-col gsap-erp-about-right flex-[4] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 w-full opacity-0 translate-y-10">
                 <?php
                 $serviceCards = [
                     ['icon' => asset_url('images/ERP_1.svg'), 'title' => getCurrentLang() === 'th' ? 'ข้อมูลเชื่อมต่อครบทุกแผนก' : 'Connected Data Across Departments', 'desc' => getCurrentLang() === 'th' ? 'ข้อมูลเป็นหนึ่งเดียว ไม่ต้องทำงานซ้ำ' : 'Single source of truth, eliminating duplicate work.', 'href' => '#'],
