@@ -385,6 +385,24 @@ class HomeController
                 $popularCategories = [];
             }
 
+            // Track article view with anti-refresh throttle (1 view per article per session/hour)
+            $articleId = (int) ($row['id'] ?? 0);
+            if ($articleId > 0) {
+                if (session_status() === PHP_SESSION_NONE) {
+                    @session_start();
+                }
+                $viewedKey = 'viewed_article_' . $articleId;
+                $lastViewed = $_SESSION[$viewedKey] ?? 0;
+                if (time() - (int) $lastViewed > 3600) {
+                    $_SESSION[$viewedKey] = time();
+                    try {
+                        $articleModel->incrementViews($articleId);
+                    } catch (Throwable $e) {
+                        // Ignore view increment errors
+                    }
+                }
+            }
+
             $articleUrl = route_url('/article/' . $slugValue);
             $articleImageUrl = resolve_article_image_url($article['image_path'] ?? '', asset_url('images/story.png'));
             $publishedIso = !empty($article['created_at']) ? date('c', strtotime($article['created_at'])) : date('c');
@@ -1287,10 +1305,53 @@ class HomeController
     }
 
     /**
+     * Track daily site pageviews and unique visitors.
+     */
+    private function trackDailyTraffic(): void
+    {
+        try {
+            if (session_status() === PHP_SESSION_NONE) {
+                @session_start();
+            }
+
+            // Exclude common search bots and web crawlers
+            $userAgent = strtolower($_SERVER['HTTP_USER_AGENT'] ?? '');
+            if ($userAgent !== '' && preg_match('/bot|crawl|slurp|spider|mediapartners/i', $userAgent)) {
+                return;
+            }
+
+            $today = date('Y-m-d');
+            $pdo = Database::getInstance();
+
+            $isUniqueToday = false;
+            $uniqueKey = 'visited_date_' . $today;
+            if (empty($_SESSION[$uniqueKey])) {
+                $_SESSION[$uniqueKey] = 1;
+                $isUniqueToday = true;
+            }
+
+            $sql = "INSERT INTO daily_traffic (`date`, `pageviews`, `unique_visitors`) 
+                    VALUES (:date, 1, :unique)
+                    ON DUPLICATE KEY UPDATE 
+                        pageviews = pageviews + 1,
+                        unique_visitors = unique_visitors + :unique_inc";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([
+                ':date' => $today,
+                ':unique' => $isUniqueToday ? 1 : 0,
+                ':unique_inc' => $isUniqueToday ? 1 : 0,
+            ]);
+        } catch (Throwable $e) {
+            // Silently catch errors so page rendering never breaks
+        }
+    }
+
+    /**
      * @param array<string, mixed> $data
      */
     private function view(string $path, array $data = []): void
     {
+        $this->trackDailyTraffic();
         $this->renderer->view($path, $data);
     }
 }

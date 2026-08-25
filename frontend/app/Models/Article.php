@@ -33,6 +33,7 @@ class Article
         a.author_id,
         COALESCE(au.display_name, \'\') AS author,
         a.status,
+        a.views,
         a.created_at,
         a.updated_at';
 
@@ -249,6 +250,13 @@ class Article
     public function delete(int $id): bool
     {
         $stmt = $this->pdo->prepare('DELETE FROM article WHERE id = ?');
+
+        return $stmt->execute([$id]);
+    }
+
+    public function incrementViews(int $id): bool
+    {
+        $stmt = $this->pdo->prepare('UPDATE article SET views = views + 1 WHERE id = ?');
 
         return $stmt->execute([$id]);
     }

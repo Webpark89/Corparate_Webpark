@@ -68,6 +68,9 @@ $content = $content ?? '';
     <meta name="twitter:description" content="<?= e($metaDescription) ?>">
     <meta name="twitter:image" content="<?= e($imageUrl) ?>">
     <meta name="twitter:image:alt" content="<?= e($imageAlt) ?>">
+    <?php if (($currentPage ?? '') === 'home' || empty($currentPage)): ?>
+        <link rel="preload" as="image" href="<?= e(asset_url('images/Pkatty.webp')) ?>" fetchpriority="high" type="image/webp">
+    <?php endif; ?>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+Thai:wght@100..900&display=swap" rel="stylesheet">

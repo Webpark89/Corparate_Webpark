@@ -67,9 +67,6 @@ $contactAddress = $company['contact']['address'] ?? '525/89 ซอยลาด�
         will-change: transform;
     }
     @media (min-width: 1025px) {
-        .hero-parallax-img {
-            transform: scale(1.6) translate(-2%, -5%) !important;
-        }
         .desktop-about-hero-h1 {
             font-size: 5.5rem !important;
             line-height: 1.1 !important;
@@ -79,11 +76,6 @@ $contactAddress = $company['contact']['address'] ?? '525/89 ซอยลาด�
             font-size: 1.25rem !important;
             line-height: 1.75 !important;
             max-width: 34rem !important;
-        }
-    }
-    @media (min-width: 1536px) {
-        .hero-parallax-img {
-            transform: scale(1.8) translate(-2%, -2%) !important;
         }
     }
     
