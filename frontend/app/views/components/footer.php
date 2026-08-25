@@ -31,7 +31,6 @@ $structuredSitemap = [
                     ['label' => t('common.nav_erp'), 'href' => route_url('/erp')],
                     ['label' => getCurrentLang() === 'th' ? 'ผลงาน' : 'Portfolio', 'href' => route_url('/portfolio')],
                     ['label' => t('common.nav_contact'), 'href' => route_url('/contact')],
-                    ['label' => getCurrentLang() === 'th' ? 'นโยบายความเป็นส่วนตัว' : 'Privacy Policy', 'href' => route_url('/privacy-policy')],
                 ],
             ],
         ],
@@ -272,6 +271,11 @@ $socialLinks = [
             .dt-sitemap-link { font-size: 12.5px !important; font-weight: 500 !important; color: #043B94 !important; line-height: 1.3 !important; }
             .dt-sitemap-link:hover { color: #0663F6 !important; }
             .dt-sitemap-bullet { font-size: 16px !important; color: #043B94 !important; }
+        }
+        /* Responsiveness for iPad Mini / Tablets (768px - 1023px) */
+        @media (min-width: 768px) and (max-width: 1023px) {
+            #footerInfoGrid { grid-template-columns: 1fr 1.8fr 1.5fr !important; gap: 1rem !important; }
+            .address-text { white-space: normal !important; }
             .footer-contact-block { margin-left: auto !important; }
         }
     </style>

@@ -1,5 +1,7 @@
 <?php
+
 declare(strict_types=1);
+
 /**
  * Main HTML layout — SEO meta, Open Graph, JSON-LD, and page shell.
  *
@@ -20,29 +22,34 @@ $jsonLd = isset($jsonLd) && is_array($jsonLd) ? $jsonLd : [];
 $jsonGraph = [];
 $tailwindCssFile = realpath(__DIR__ . '/../../../public/assets/css/tailwind.css');
 $tailwindCssVersion = $tailwindCssFile !== false ? filemtime($tailwindCssFile) : time();
+
 if (!headers_sent()) {
     header('Content-Type: text/html; charset=UTF-8');
 }
+
 if ($jsonLd !== []) {
     if (isset($jsonLd['@graph']) && is_array($jsonLd['@graph'])) {
         $jsonGraph = $jsonLd;
     } else {
         $isList = array_keys($jsonLd) === range(0, count($jsonLd) - 1);
+
         $jsonGraph = [
             '@context' => 'https://schema.org',
             '@graph' => $isList ? $jsonLd : [$jsonLd],
         ];
     }
 }
+
 $currentPage = $currentPage ?? '';
 $content = $content ?? '';
 ?>
 <!DOCTYPE html>
-<html lang="<?= e(function_exists('getCurrentLang') ? getCurrentLang() : 'th') ?>" translate="no">
+<html lang="<?= e(function_exists('getCurrentLang') ? getCurrentLang() : 'th') ?>">
+
 <head>
-    <meta name="google" content="notranslate">
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <title><?= e($title) ?></title>
     <meta name="description" content="<?= e($metaDescription) ?>">
     <meta name="robots" content="<?= e($robots) ?>">
@@ -72,11 +79,11 @@ $content = $content ?? '';
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+Thai:wght@100..900&display=swap" rel="stylesheet">
     <style>
-        /* Set Noto Sans Thai as default system font */
+        /* Prioritize Inter for English characters to fix spacing and improve aesthetics */
         body, .font-sans {
-            font-family: 'Noto Sans Thai', 'Inter', ui-sans-serif, system-ui, sans-serif !important;
-            line-height: 1.6;
+            font-family: 'Inter', 'Noto Sans Thai', ui-sans-serif, system-ui, sans-serif !important;
         }
+
         /* Global Article Format Styling for Tables */
         .article-format table {
             width: 100%;
@@ -105,35 +112,27 @@ $content = $content ?? '';
             <?= json_encode($jsonGraph, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>
         </script>
     <?php endif; ?>
-    <style>
-        html, body {
-            width: 100% !important;
-            max-width: 100% !important;
-            position: relative;
-            margin: 0;
-            padding: 0;
-        }
-        main, section, header, footer {
-            max-width: 100% !important;
-        }
-    </style>
 </head>
-<body class="bg-slate-50 text-slate-900 antialiased relative w-full max-w-full">
-    <div class="site-wrapper relative w-full max-w-full min-h-screen">
-        <?php require __DIR__ . '/../components/navbar.php'; ?>
-        <main class="min-h-screen w-full max-w-full">
-            <?= $content ?>
-        </main>
-        <?php if ($currentPage !== 'contact'): ?>
-            <?php require __DIR__ . '/../components/cta.php'; ?>
-        <?php endif; ?>
-        <?php require __DIR__ . '/../components/footer.php'; ?>
-    </div>
+
+<body class="bg-slate-50 text-slate-900 antialiased">
+    <?php require __DIR__ . '/../components/navbar.php'; ?>
+
+    <main class="min-h-screen">
+        <?= $content ?>
+    </main>
+
+    <?php if ($currentPage !== 'contact'): ?>
+        <?php require __DIR__ . '/../components/cta.php'; ?>
+    <?php endif; ?>
+    
+    <?php require __DIR__ . '/../components/footer.php'; ?>
+
+    <!-- Scroll to Top Button (Pure CSS to avoid Tailwind JIT issues) -->
     <style>
         #scrollToTopBtn {
             position: fixed;
-            bottom: 40px;
-            right: 40px;
+            bottom: 40px; /* Positioned at bottom right, outside the hero image */
+            right: 40px; /* Fully to the right */
             z-index: 99999;
             width: 50px;
             height: 50px;
@@ -147,6 +146,7 @@ $content = $content ?? '';
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             cursor: pointer;
             transition: all 0.3s ease-in-out;
+            /* Always visible */
             opacity: 1;
             visibility: visible;
         }
@@ -164,11 +164,13 @@ $content = $content ?? '';
             transform: translateY(-3px);
         }
     </style>
+
     <button id="scrollToTopBtn" aria-label="Scroll to top">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
             <path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
         </svg>
     </button>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const scrollBtn = document.getElementById('scrollToTopBtn');
@@ -182,7 +184,8 @@ $content = $content ?? '';
             }
         });
     </script>
+
     <script src="<?= e(asset_url('assets/js/main.js')) ?>"></script>
-    <?php require __DIR__ . '/../components/cookie-banner.php'; ?>
 </body>
+
 </html>

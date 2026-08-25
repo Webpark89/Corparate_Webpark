@@ -14,21 +14,14 @@ $coverImage = resolve_article_image_url(
     $fallbackImage
 );
 
+$months = [
+    1 => 'ม.ค.', 2 => 'ก.พ.', 3 => 'มี.ค.', 4 => 'เม.ย.', 5 => 'พ.ค.', 6 => 'มิ.ย.',
+    7 => 'ก.ค.', 8 => 'ส.ค.', 9 => 'ก.ย.', 10 => 'ต.ค.', 11 => 'พ.ย.', 12 => 'ธ.ค.',
+];
+
 $title = normalize_text($article['title'] ?? 'ระบบ ERP คืออะไร? สรุปครบ จบที่เดียว!');
 $author = normalize_text($article['author'] ?? 'Webpark Team');
 $content = (string) ($article['content'] ?? $article['summary'] ?? '');
-
-$date = $article['created_at'] ?? '';
-$ts = !empty($date) ? strtotime($date) : false;
-if (getCurrentLang() === 'th') {
-    $months = [
-        1 => 'มกราคม', 2 => 'กุมภาพันธ์', 3 => 'มีนาคม', 4 => 'เมษายน', 5 => 'พฤษภาคม', 6 => 'มิถุนายน',
-        7 => 'กรกฎาคม', 8 => 'สิงหาคม', 9 => 'กันยายน', 10 => 'ตุลาคม', 11 => 'พฤศจิกายน', 12 => 'ธันวาคม',
-    ];
-    $formattedDate = $ts ? sprintf('%d %s %d', (int) date('j', $ts), $months[(int) date('n', $ts)] ?? '', (int) date('Y', $ts) + 543) : '';
-} else {
-    $formattedDate = $ts ? date('F j, Y', $ts) : '';
-}
 
 $decodedSections = json_decode(htmlspecialchars_decode($content, ENT_QUOTES), true);
 if (!is_array($decodedSections)) {
@@ -77,6 +70,10 @@ if (is_array($decodedSections)) {
 $summary = normalize_text($article['summary'] ?? '');
 $category = normalize_text($article['category'] ?? 'ERP System');
 $relatedArticles = $relatedArticles ?? [];
+
+$date = $article['created_at'] ?? '';
+$ts = !empty($date) ? strtotime($date) : false;
+$formattedDate = $ts ? sprintf('%d %s %d', date('j', $ts), $months[(int) date('n', $ts)] ?? '', date('Y', $ts) + 543) : '24 พฤษภาคม 2567';
 
 // Reading time estimate
 $wordCount = mb_strlen(strip_tags($content));
@@ -204,23 +201,10 @@ $shareUrl = urlencode(request_origin_url() . ($_SERVER['REQUEST_URI'] ?? ''));
                 </h1>
                 
                 <div class="animate-fade-up delay-300 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-[#0663F6] font-medium mb-6">
-                    <?php if ($author !== ''): ?>
-                        <span class="inline-flex items-center gap-2">
-                            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
-                            <?= e($author) ?>
-                        </span>
-                    <?php endif; ?>
-                    <?php if (!empty($formattedDate)): ?>
-                        <span class="inline-flex items-center gap-2 text-slate-500 font-normal">
-                            <svg class="w-4 h-4 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                                <line x1="16" y1="2" x2="16" y2="6"></line>
-                                <line x1="8" y1="2" x2="8" y2="6"></line>
-                                <line x1="3" y1="10" x2="21" y2="10"></line>
-                            </svg>
-                            <?= e($formattedDate) ?>
-                        </span>
-                    <?php endif; ?>
+                    <span class="inline-flex items-center gap-2">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                        <?= e($formattedDate) ?>
+                    </span>
                 </div>
                 
                 <p class="animate-fade-up delay-400 mt-6 text-[#022862] text-lg md:text-xl leading-relaxed max-w-lg mb-10 font-medium">
@@ -230,7 +214,7 @@ $shareUrl = urlencode(request_origin_url() . ($_SERVER['REQUEST_URI'] ?? ''));
             
             <!-- Right Column: Image -->
             <div class="animate-fade-up delay-300 relative w-full rounded-[2rem] overflow-hidden shadow-2xl">
-                <img src="<?= e($coverImage) ?>" alt="<?= e(!empty($article['cover_image_alt']) ? $article['cover_image_alt'] : $title) ?>" 
+                <img src="<?= e($coverImage) ?>" alt="<?= e($title) ?>" 
                     class="w-full h-auto object-cover aspect-[4/3] hover:scale-105 transition-transform duration-700" onerror="this.src='<?= e($fallbackImage) ?>'">
             </div>
             
@@ -335,18 +319,15 @@ $shareUrl = urlencode(request_origin_url() . ($_SERVER['REQUEST_URI'] ?? ''));
                     </h4>
                     <div class="space-y-4">
                         <?php foreach($relatedArticles as $item): ?>
-                            <?php 
-                            $relLang = getCurrentLang();
-                            $relSlug = ($relLang === 'en' && !empty($item['slug_en'])) ? $item['slug_en'] : (!empty($item['slug']) ? $item['slug'] : (string)$item['id']);
-                            ?>
-                            <a href="<?= route_url('/article/' . $relSlug) ?>" class="block group bg-white border border-slate-100 rounded-[1.25rem] overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                            <a href="<?= route_url('/article', ['id' => (int)$item['id']]) ?>" class="block group bg-white border border-slate-100 rounded-[1.25rem] overflow-hidden shadow-sm hover:shadow-md transition-shadow">
                                 <div class="relative w-full overflow-hidden" style="height: 160px;">
                                     <img src="<?= resolve_article_image_url($item['image_path'] ?? '') ?>" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" style="object-position: center 25%;" alt="<?= e($item['title']) ?>">
                                 </div>
                                 <div class="p-4 flex flex-col justify-between">
                                     <?php 
-                                    $itemTitle = $relLang === 'en' && !empty($item['meta_title_en']) ? $item['meta_title_en'] : ($item['title'] ?? '');
-                                    $itemDesc = $relLang === 'en' && !empty($item['meta_description_en']) ? $item['meta_description_en'] : ($item['description'] ?? '');
+                                    $itemLang = getCurrentLang();
+                                    $itemTitle = $itemLang === 'en' && !empty($item['meta_title_en']) ? $item['meta_title_en'] : ($item['title'] ?? '');
+                                    $itemDesc = $itemLang === 'en' && !empty($item['meta_description_en']) ? $item['meta_description_en'] : ($item['description'] ?? '');
                                     ?>
                                     <h5 class="text-[14px] font-bold text-[#0663F6] mb-1.5 line-clamp-2 leading-snug group-hover:underline"><?= e($itemTitle) ?></h5>
                                     <p class="text-[11.5px] text-slate-500 mb-3 line-clamp-2 leading-relaxed"><?= e($itemDesc) ?></p>

@@ -129,6 +129,8 @@ $contactAddress = $company['contact']['address'] ?? '525/89 ซอยลาด�
     @media (min-width: 760px) and (max-width: 819px) {
         .ipad-mini-about-process-desc { font-size: 1.05rem !important; line-height: 1.6 !important; }
         .ipad-mini-services-desc { font-size: 1.15rem !important; line-height: 1.7 !important; }
+        .ipad-mini-concept-title { text-align: center !important; }
+        .ipad-mini-concept-desc { text-align: center !important; margin-left: auto !important; margin-right: auto !important; }
     }
 
     /* Custom Layout for iPad Pro Portrait (1024px - 1279px) */
@@ -215,14 +217,13 @@ $contactAddress = $company['contact']['address'] ?? '525/89 ซอยลาด�
 </style>
 
 <section id="about-hero" class="relative font-sans bg-[#f7faff] overflow-hidden mt-0 mx-4 mb-4 sm:mt-0 sm:mx-6 sm:mb-6 rounded-t-none rounded-b-[2rem] lg:m-0 lg:rounded-none">
-    <!-- Desktop Background Image -->
-    <div class="absolute inset-0 z-0 hidden lg:block">
-        <img src="<?= e($heroImage) ?>" alt="WEBPARK Solutions Background" class="hero-parallax-img w-full h-full object-cover object-[75%_center] opacity-100 mix-blend-screen">
-        <div class="absolute inset-0 bg-gradient-to-r from-white via-white/80 to-white/5"></div>
+    <div class="absolute inset-0 z-0">
+        <img src="<?= e($heroImage) ?>" alt="WEBPARK Solutions Background" class="hero-parallax-img w-full h-full object-cover object-center opacity-70 mix-blend-screen">
+        <div class="absolute inset-0 bg-gradient-to-r from-white to-white/5"></div>
         <div class="absolute inset-x-0 bottom-0 h-[30%] bg-gradient-to-t from-white to-transparent z-10"></div>
     </div>
 
-    <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8 pt-12 pb-24 lg:pt-28 lg:pb-32 relative z-10 desktop-wide-container-about">
+    <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8 pt-12 pb-16 lg:pt-28 lg:pb-16 relative z-10 desktop-wide-container-about">
         <div class="absolute inset-0 z-0 overflow-hidden lg:hidden rounded-2xl">
             <img src="<?= e($heroImage) ?>" alt="WEBPARK Solutions Background" 
                 class="hero-parallax-img w-full h-full object-cover object-[75%_center] opacity-100 mix-blend-screen">
@@ -394,10 +395,10 @@ $contactAddress = $company['contact']['address'] ?? '525/89 ซอยลาด�
             <div class="grid grid-cols-1 lg:grid-cols-[40%_55%] gap-12 lg:gap-16 justify-between items-start">
                 
                 <div class="lg:top-8 self-start">
-                    <h2 class="text-3xl md:text-4xl font-bold leading-tight mb-6" style="color: #054FC5;">
+                    <h2 class="text-3xl md:text-4xl font-bold leading-tight mb-6 ipad-mini-concept-title" style="color: #054FC5;">
                         <?= getCurrentLang() === 'th' ? 'แนวคิดในการทำงานของเรา' : 'Our Approach' ?>
                     </h2>
-                    <p class="text-left md:text-center xl:text-left text-slate-600 text-lg md:text-lg leading-relaxed max-w-2xl xl:max-w-md mx-0 md:mx-auto xl:mx-0 desktop-concept-p ipad-pro-concept-p">
+                    <p class="text-left md:text-center xl:text-left text-slate-600 text-lg md:text-lg leading-relaxed max-w-2xl xl:max-w-md mx-0 md:mx-auto xl:mx-0 desktop-concept-p ipad-pro-concept-p ipad-mini-concept-desc">
                         <?= getCurrentLang() === 'th' ? 'เราเชื่อว่าการพัฒนาระบบและโซลูชันดิจิทัลที่ดี <br class="md:hidden"> ไม่ได้เริ่มจากเทคโนโลยีเพียงอย่างเดียว <br class="md:hidden"> แต่เริ่มจากความเข้าใจธุรกิจของคุณ <br class="md:hidden"> เราทำงานแบบพาร์ทเนอร์ร่วมคิด ร่วมสร้าง <br class="md:hidden"> เพื่อให้ทุกโซลูชันที่เราส่งมอบ <span class="whitespace-nowrap">สามารถใช้งานได้</span> <br class="md:hidden"> <span class="whitespace-nowrap">สร้างคุณค่า</span> และช่วยให้ธุรกิจของคุณ <br class="md:hidden"> เติบโตได้อย่างยั่งยืน' : 'We believe that developing great digital systems and solutions doesn\'t start with technology alone, but with understanding your business. We work as a partner to co-think and co-create, ensuring every solution we deliver is practical, creates value, and helps your business grow sustainably.' ?>
                     </p>
                 </div>
