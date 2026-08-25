@@ -369,8 +369,9 @@ $erpPortfolios = $mockErpPortfolios;
     }
 </style>
 <section class="bg-white pt-8 pb-4 lg:pt-24 lg:pb-8">
-    <div class="mx-auto w-full max-w-[1720px] px-4 sm:px-6 lg:px-10 relative z-20 -mt-10 lg:-mt-18 pb-6 lg:pb-16 overflow-hidden">
-        <div class="w-full rounded-[1rem] bg-white flex flex-col lg:flex-row items-stretch shadow-[0_4px_25px_rgba(0,0,0,0.06)] border border-gray-100 overflow-hidden">
+    <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8 desktop-wide-container-erp relative z-20 -mt-10 lg:-mt-18 pb-6 lg:pb-16 overflow-hidden">
+        <div class="lg:px-12 xl:px-24">
+            <div class="w-full rounded-[1rem] bg-white flex flex-col lg:flex-row items-stretch shadow-[0_4px_25px_rgba(0,0,0,0.06)] border border-gray-100 overflow-hidden">
 
             <div class="erp-left-col gsap-erp-about-left group flex-1 flex flex-col justify-center p-6 lg:p-8 border-b lg:border-b-0 lg:border-r border-gray-100 shrink-0 bg-white transition-all duration-300 hover:bg-slate-50/50 cursor-pointer opacity-0 translate-y-10">
                 <div>
@@ -444,6 +445,7 @@ $erpPortfolios = $mockErpPortfolios;
                     </div>
                 <?php endforeach; ?>
             </div>
+        </div>
         </div>
     </div>
 </section>
