@@ -45,6 +45,8 @@ class HomeController
 
                 $latestArticles[] = [
                     'id' => (int) ($row['id'] ?? 0),
+                    'slug' => (string) ($row['slug'] ?? ''),
+                    'slug_en' => (string) ($row['slug_en'] ?? ''),
                     'title' => (string) ($row['title'] ?? ''),
                     'summary' => $summary,
                     'description' => $summary,
@@ -66,6 +68,8 @@ class HomeController
 
                 $insights[$cat][] = [
                     'id' => (int) ($row['id'] ?? 0),
+                    'slug' => (string) ($row['slug'] ?? ''),
+                    'slug_en' => (string) ($row['slug_en'] ?? ''),
                     'tag' => $cat,
                     'title' => (string) ($row['title'] ?? ''),
                     'description' => $summary,
@@ -307,16 +311,16 @@ class HomeController
         ));
     }
 
-    public function article(): void
+    public function article(?string $slug = null): void
     {
-        $id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
+        $identifier = $slug !== null && trim($slug) !== '' ? trim($slug) : (isset($_GET['id']) ? trim((string)$_GET['id']) : '');
         $articleModel = new Article();
 
-        if ($id > 0) {
-            $row = $articleModel->getById($id);
+        if ($identifier !== '') {
+            $row = $articleModel->getBySlugOrId($identifier);
             $status = strtolower(trim((string) ($row['status'] ?? '')));
 
-            if ($row === false || $status === 'draft') {
+            if ($row === false || $status === 'draft' || $status === 'hidden') {
                 $this->notFound();
                 return;
             }
@@ -341,14 +345,19 @@ class HomeController
                 }
             }
 
+            $slugValue = ($lang === 'en' && !empty($row['slug_en'])) ? $row['slug_en'] : (!empty($row['slug']) ? $row['slug'] : (string)$row['id']);
+
             $article = [
                 'id' => (int) ($row['id'] ?? 0),
+                'slug' => (string) ($row['slug'] ?? ''),
+                'slug_en' => (string) ($row['slug_en'] ?? ''),
                 'title' => $metaTitle,
                 'meta_title' => $metaTitle,
                 'meta_description' => $descText,
                 'summary' => $descText !== '' ? mb_strimwidth($descText, 0, 140, '...') : '',
                 'meta_keywords' => $metaKeywords,
                 'category' => (string) ($row['category'] ?? 'General'),
+                'category_slug' => (string) ($row['category_slug'] ?? ''),
                 'image_path' => (string) ($row['image_path'] ?? ''),
                 'cover_image' => (string) ($row['image_path'] ?? ''),
                 'cover_image_alt' => (string) ($row['cover_image_alt'] ?? ''),
@@ -376,10 +385,90 @@ class HomeController
                 $popularCategories = [];
             }
 
+            $articleUrl = route_url('/article/' . $slugValue);
+            $articleImageUrl = resolve_article_image_url($article['image_path'] ?? '', asset_url('images/story.png'));
+            $publishedIso = !empty($article['created_at']) ? date('c', strtotime($article['created_at'])) : date('c');
+            $modifiedIso = !empty($row['updated_at']) ? date('c', strtotime($row['updated_at'])) : $publishedIso;
+
+            $jsonLd = [
+                '@context' => 'https://schema.org',
+                '@graph' => [
+                    [
+                        '@type' => 'BreadcrumbList',
+                        'itemListElement' => [
+                            [
+                                '@type' => 'ListItem',
+                                'position' => 1,
+                                'name' => t('article_detail.breadcrumb_home', ['default' => 'หน้าแรก']),
+                                'item' => route_url('/'),
+                            ],
+                            [
+                                '@type' => 'ListItem',
+                                'position' => 2,
+                                'name' => t('article_detail.breadcrumb_articles', ['default' => 'บทความ']),
+                                'item' => route_url('/article'),
+                            ],
+                            [
+                                '@type' => 'ListItem',
+                                'position' => 3,
+                                'name' => $article['category'],
+                                'item' => route_url('/article', ['category' => $article['category_slug'] ?? 'all']),
+                            ],
+                            [
+                                '@type' => 'ListItem',
+                                'position' => 4,
+                                'name' => $article['title'],
+                                'item' => $articleUrl,
+                            ]
+                        ]
+                    ],
+                    [
+                        '@type' => 'Article',
+                        '@id' => $articleUrl . '#article',
+                        'isPartOf' => [
+                            '@type' => 'WebPage',
+                            '@id' => $articleUrl
+                        ],
+                        'headline' => $article['title'],
+                        'description' => $article['meta_description'] ?: $article['summary'],
+                        'image' => [
+                            $articleImageUrl
+                        ],
+                        'datePublished' => $publishedIso,
+                        'dateModified' => $modifiedIso,
+                        'mainEntityOfPage' => [
+                            '@type' => 'WebPage',
+                            '@id' => $articleUrl
+                        ],
+                        'author' => [
+                            '@type' => 'Organization',
+                            'name' => $article['author'] ?: 'Webpark Team'
+                        ],
+                        'publisher' => [
+                            '@type' => 'Organization',
+                            'name' => config('app.name', 'WEBPARK'),
+                            'logo' => [
+                                '@type' => 'ImageObject',
+                                'url' => asset_url('images/logo.png')
+                            ]
+                        ]
+                    ]
+                ]
+            ];
+
             $this->view('pages/article-detail.php', array_merge($this->sharedData('article', $article['title'] ?: 'Article'), [
                 'article' => $article,
                 'relatedArticles' => $relatedArticles,
                 'popularCategories' => $popularCategories,
+                'metaTitle' => $article['meta_title'] ?: $article['title'],
+                'metaDescription' => $article['meta_description'] ?: $article['summary'],
+                'imageUrl' => $articleImageUrl,
+                'imageAlt' => $article['cover_image_alt'] ?: $article['title'],
+                'publishedTime' => $publishedIso,
+                'modifiedTime' => $modifiedIso,
+                'authorName' => $article['author'] ?: 'Webpark Team',
+                'canonicalUrl' => $articleUrl,
+                'jsonLd' => $jsonLd,
             ]));
 
             return;
@@ -410,6 +499,8 @@ class HomeController
 
                 return [
                     'id' => (int) ($row['id'] ?? 0),
+                    'slug' => (string) ($row['slug'] ?? ''),
+                    'slug_en' => (string) ($row['slug_en'] ?? ''),
                     'title' => $metaTitle,
                     'category_name' => (string) ($row['category'] ?? 'General'),
                     'category_slug' => (string) ($row['category_slug'] ?? ''),
@@ -502,6 +593,27 @@ class HomeController
     {
         $this->view('pages/article-detail-mockup.php', array_merge($this->sharedData('article', 'Article Detail Mockup'), [
             'currentPage' => 'article'
+        ]));
+    }
+
+    public function serviceDigitalPlatform(): void
+    {
+        $this->view('pages/service-digital-platform.php', array_merge($this->sharedData('services', 'Digital Platform'), [
+            'currentPage' => 'services'
+        ]));
+    }
+
+    public function serviceOnlineMarketing(): void
+    {
+        $this->view('pages/service-online-marketing.php', array_merge($this->sharedData('services', 'Online Marketing'), [
+            'currentPage' => 'services'
+        ]));
+    }
+
+    public function serviceCreativeDesign(): void
+    {
+        $this->view('pages/service-creative-design.php', array_merge($this->sharedData('services', 'Creative Design'), [
+            'currentPage' => 'services'
         ]));
     }
 

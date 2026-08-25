@@ -821,9 +821,10 @@ $totalReviews = count($reviews);
                 $artSummary  = mb_strimwidth(strip_tags($summaryContent), 0, 110, '...');
                 $artCat      = (string)($art['category'] ?? 'Knowledge');
                 $artImage    = resolve_article_image_url($art['image_path'] ?? '', asset_url('images/erp.png'));
+                $artSlug     = ($itemLang === 'en' && !empty($art['slug_en'])) ? $art['slug_en'] : (!empty($art['slug']) ? $art['slug'] : (string)$artId);
                 ?>
                 <article class="gsap-home-article-card flex flex-col overflow-hidden rounded-2xl bg-white shadow-sm border border-slate-100 transition-all duration-300 hover:-translate-y-1 hover:shadow-md group w-full lg:w-auto shrink-0 lg:shrink snap-center lg:snap-align-none opacity-0 translate-y-10 ipad-pro-articles-card">
-                    <a href="<?= e($artId > 0 ? route_url('/article', ['id' => $artId]) : route_url('/article')) ?>" class="flex flex-col h-full">
+                    <a href="<?= e($artId > 0 ? route_url('/article/' . $artSlug) : route_url('/article')) ?>" class="flex flex-col h-full">
                         <div class="relative aspect-[16/9] w-full bg-slate-900 overflow-hidden shrink-0">
                             <img src="<?= e($artImage) ?>" alt="<?= e($artTitle) ?>" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105">
                             <span class="absolute bottom-3 left-3 rounded-md bg-primary/95 backdrop-blur-sm px-2.5 py-1 text-[10px] font-bold tracking-wider text-white uppercase shadow-sm ipad-pro-card-badge">

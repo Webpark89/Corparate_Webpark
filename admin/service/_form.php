@@ -115,6 +115,7 @@ if (empty($features) && !empty($data['details_json'])) {
                             <?php if (!empty($data['image'])): ?>
                                 <input type="hidden" name="old_image" value="<?= e($data['image']) ?>">
                             <?php endif; ?>
+                            <div id="image-validation-status" class="mt-2 hidden"></div>
                         </div>
 
                         <!-- Right: File Selection & Requirements Card -->
@@ -124,39 +125,42 @@ if (empty($features) && !empty($data['details_json'])) {
                                     เลือกไฟล์รูปภาพใหม่
                                 </label>
                                 <div class="border border-slate-200 rounded-xl bg-slate-50 transition-colors" style="padding: 0.75rem;">
-                                    <input type="file" id="service-image-input" name="image" accept="image/jpeg,image/png,image/webp,image/gif,image/svg+xml" class="w-full text-sm text-slate-600 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 transition-all cursor-pointer">
+                                    <input type="file" id="service-image-input" name="image" accept=".webp,.png,.jpg,.jpeg,image/webp,image/png,image/jpeg" class="w-full text-sm text-slate-600 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 transition-all cursor-pointer">
                                 </div>
                             </div>
 
-                            <div class="rounded-xl border border-slate-200 bg-slate-50" style="padding: 1.25rem;">
-                                <div class="flex items-center font-bold text-slate-800 text-xs uppercase tracking-wider" style="gap: 0.5rem; margin-bottom: 1rem;">
+                            <div class="rounded-xl border border-blue-100 bg-blue-50/40" style="padding: 1.25rem;">
+                                <div class="flex items-center font-bold text-blue-900 text-xs uppercase tracking-wider" style="gap: 0.5rem; margin-bottom: 1rem;">
                                     <svg class="w-4 h-4 text-blue-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                                    <span>ข้อมูลและข้อกำหนดไฟล์ภาพ</span>
+                                    <span>ข้อกำหนดและขนาดภาพที่แนะนำ</span>
                                 </div>
 
                                 <div class="flex flex-col" style="gap: 0.85rem; font-size: 0.8125rem;">
                                     <div>
-                                        <span class="text-slate-600 block font-semibold" style="margin-bottom: 0.4rem;">นามสกุลไฟล์ที่รองรับ:</span>
+                                        <span class="text-slate-700 block font-semibold" style="margin-bottom: 0.4rem;">นามสกุลไฟล์ที่รองรับ:</span>
                                         <div class="flex flex-wrap" style="gap: 0.4rem;">
+                                            <span class="rounded-lg bg-blue-600 text-white font-bold" style="padding: 0.2rem 0.6rem; font-size: 0.75rem;">⭐ WEBP (แนะนำ)</span>
+                                            <span class="rounded-lg bg-white border border-slate-200 text-slate-700 font-bold" style="padding: 0.2rem 0.6rem; font-size: 0.75rem;">PNG</span>
                                             <span class="rounded-lg bg-white border border-slate-200 text-slate-700 font-bold" style="padding: 0.2rem 0.6rem; font-size: 0.75rem;">JPG</span>
                                             <span class="rounded-lg bg-white border border-slate-200 text-slate-700 font-bold" style="padding: 0.2rem 0.6rem; font-size: 0.75rem;">JPEG</span>
-                                            <span class="rounded-lg bg-white border border-slate-200 text-slate-700 font-bold" style="padding: 0.2rem 0.6rem; font-size: 0.75rem;">PNG</span>
-                                            <span class="rounded-lg bg-white border border-slate-200 text-slate-700 font-bold" style="padding: 0.2rem 0.6rem; font-size: 0.75rem;">WEBP</span>
-                                            <span class="rounded-lg bg-white border border-slate-200 text-slate-700 font-bold" style="padding: 0.2rem 0.6rem; font-size: 0.75rem;">GIF</span>
-                                            <span class="rounded-lg bg-white border border-slate-200 text-slate-700 font-bold" style="padding: 0.2rem 0.6rem; font-size: 0.75rem;">SVG</span>
                                         </div>
                                     </div>
 
-                                    <div class="flex items-center justify-between border-t border-slate-200" style="padding-top: 0.6rem;">
-                                        <span class="text-slate-600 font-semibold">ขนาดไฟล์สูงสุด:</span>
-                                        <span class="rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 font-bold" style="padding: 0.2rem 0.75rem; font-size: 0.75rem;">ไม่เกิน 25 MB</span>
+                                    <div class="flex items-center justify-between border-t border-blue-100" style="padding-top: 0.6rem;">
+                                        <span class="text-slate-700 font-semibold">ขนาดไฟล์สูงสุด:</span>
+                                        <span class="rounded-full bg-emerald-100 border border-emerald-300 text-emerald-800 font-bold" style="padding: 0.2rem 0.75rem; font-size: 0.75rem;">ไม่เกิน 500 KB</span>
+                                    </div>
+                                    <div class="text-slate-500 text-[11px]" style="margin-top: -0.4rem;">
+                                        (แนะนำขนาด 100 – 300 KB เพื่อความเร็วสูงสุดในการโหลดหน้าเว็บ)
                                     </div>
 
-                                    <div class="border-t border-slate-200" style="padding-top: 0.6rem;">
-                                        <span class="text-slate-600 font-semibold block" style="margin-bottom: 0.25rem;">สัดส่วนและขนาดภาพ:</span>
-                                        <p class="text-slate-500" style="font-size: 0.75rem; line-height: 1.45; margin: 0;">
-                                            รองรับได้ทุกสัดส่วน (แนวนอน 16:9, จัตุรัส 1:1, แนวตั้ง หรือไอคอนโลโก้) ระบบจะปรับสัดส่วนภาพให้อยู่กึ่งกลางพอดีกรอบอัตโนมัติ ไม่ตัดขอบภาพ
-                                        </p>
+                                    <div class="border-t border-blue-100" style="padding-top: 0.6rem;">
+                                        <span class="text-slate-700 font-semibold block" style="margin-bottom: 0.25rem;">สัดส่วนและขนาดภาพที่แนะนำ:</span>
+                                        <ul class="text-slate-600 list-disc list-inside space-y-1" style="font-size: 0.75rem; line-height: 1.5; margin: 0;">
+                                            <li><strong class="text-slate-800">แนะนำ: 1280 × 720 px</strong> หรือ 1920 × 1080 px (สัดส่วน 16:9 แนวนอน)</li>
+                                            <li>ขนาดขั้นต่ำ: 800 × 450 px</li>
+                                            <li>กรณีเป็นไอคอน / กราฟิกจัตุรัส: 800 × 800 px (สัดส่วน 1:1)</li>
+                                        </ul>
                                     </div>
                                 </div>
                             </div>
@@ -178,7 +182,6 @@ if (empty($features) && !empty($data['details_json'])) {
         const container = document.getElementById('features-container');
         const hiddenInput = document.getElementById('features-hidden');
         function updateHidden() {
-            // ดึง text จากทุก span.bg-blue-100
             const features = Array.from(container.querySelectorAll('span.bg-blue-100')).map(span => {
                 const textSpan = span.querySelector('span');
                 return textSpan ? textSpan.textContent.trim() : '';
@@ -186,9 +189,7 @@ if (empty($features) && !empty($data['details_json'])) {
             hiddenInput.value = features.join(',');
         }
         function attachDeleteHandlers() {
-            // Attach event listener ให้กับปุ่มลบทั้งหมด (existing + new)
             container.querySelectorAll('button[type="button"]').forEach(btn => {
-                // Remove old listeners ถ้ามี
                 btn.replaceWith(btn.cloneNode(true));
             });
             container.querySelectorAll('button[type="button"]').forEach(btn => {
@@ -216,7 +217,6 @@ if (empty($features) && !empty($data['details_json'])) {
             attachDeleteHandlers();
             updateHidden();
         }
-        // Attach handlers ตอน page load (สำหรับ existing features)
         attachDeleteHandlers();
         addBtn.addEventListener('click', (e) => {
             e.preventDefault();
@@ -229,14 +229,63 @@ if (empty($features) && !empty($data['details_json'])) {
             }
         });
 
-        // Instant Image Preview on Select
+        // Instant Image Preview & Validation on Select
         const serviceImageInput = document.getElementById('service-image-input');
+        const statusBox = document.getElementById('image-validation-status');
+        const maxSizeBytes = 500 * 1024; // 500 KB
+
         if (serviceImageInput) {
             serviceImageInput.addEventListener('change', function(event) {
                 const file = event.target.files[0];
-                if (file && file.type.startsWith('image/')) {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
+                if (!file) {
+                    if (statusBox) statusBox.classList.add('hidden');
+                    return;
+                }
+
+                // 1. Validate File Size (Max 500 KB)
+                if (file.size > maxSizeBytes) {
+                    const fileSizeKb = Math.round(file.size / 1024);
+                    statusBox.className = 'mt-2 p-3 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs font-medium flex items-center gap-2';
+                    statusBox.innerHTML = `<span>❌ <strong>ขนาดไฟล์เกิน 500 KB</strong> (ไฟล์ของคุณมีขนาด ${fileSizeKb} KB) กรุณาบีบอัดรูปภาพให้ไม่เกิน 500 KB ก่อนอัปโหลด</span>`;
+                    statusBox.classList.remove('hidden');
+                    serviceImageInput.value = ''; // Reset input
+                    return;
+                }
+
+                // 2. Validate Extension
+                const allowedExts = ['image/webp', 'image/png', 'image/jpeg', 'image/jpg'];
+                const fileExt = file.name.split('.').pop().toLowerCase();
+                const isAllowedExt = ['webp', 'png', 'jpg', 'jpeg'].includes(fileExt);
+
+                if (!isAllowedExt) {
+                    statusBox.className = 'mt-2 p-3 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs font-medium flex items-center gap-2';
+                    statusBox.innerHTML = `<span>❌ <strong>นามสกุลไฟล์ไม่ถูกต้อง</strong> รองรับเฉพาะ .webp, .png, .jpg, .jpeg</span>`;
+                    statusBox.classList.remove('hidden');
+                    serviceImageInput.value = ''; // Reset input
+                    return;
+                }
+
+                // 3. Load Image & Read Dimensions
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = new Image();
+                    img.onload = function() {
+                        const width = img.naturalWidth;
+                        const height = img.naturalHeight;
+                        const ratio = (width / height).toFixed(2);
+                        const fileSizeKb = Math.round(file.size / 1024);
+
+                        let ratioText = 'สัดส่วนอื่น ๆ';
+                        if (Math.abs(ratio - (16/9).toFixed(2)) < 0.05) {
+                            ratioText = 'สัดส่วน 16:9 แนวนอน (ดีเยี่ยม ⭐)';
+                        } else if (Math.abs(ratio - 1.0) < 0.05) {
+                            ratioText = 'สัดส่วน 1:1 จัตุรัส';
+                        } else if (width > height) {
+                            ratioText = 'แนวนอน';
+                        } else {
+                            ratioText = 'แนวตั้ง';
+                        }
+
                         const previewImg = document.getElementById('service-img-preview');
                         const placeholder = document.getElementById('service-img-placeholder');
                         if (previewImg) {
@@ -247,9 +296,23 @@ if (empty($features) && !empty($data['details_json'])) {
                         if (placeholder) {
                             placeholder.style.display = 'none';
                         }
+
+                        // Display Success Status Badge
+                        statusBox.className = 'mt-2 p-2.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs flex flex-col gap-0.5';
+                        statusBox.innerHTML = `
+                            <div class="font-bold flex items-center gap-1">
+                                <span>✅ ไฟล์ผ่านเกณฑ์ข้อกำหนด:</span>
+                                <span>${fileSizeKb} KB</span>
+                            </div>
+                            <div class="text-[11px] text-emerald-700">
+                                ขนาดรูป: <strong>${width} × ${height} px</strong> (${ratioText})
+                            </div>
+                        `;
+                        statusBox.classList.remove('hidden');
                     };
-                    reader.readAsDataURL(file);
-                }
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
             });
         }
     });

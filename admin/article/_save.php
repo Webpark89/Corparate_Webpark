@@ -62,14 +62,21 @@ $data = [
 
 $imagePath = trim($_POST['cover_image'] ?? '');
 try {
-    $uploadedImage = handle_upload('image_file', ['jpg', 'jpeg', 'png', 'webp', 'gif']);
-    if ($uploadedImage) {
-        $data['cover_image'] = $uploadedImage;
+    if (!empty($_FILES['image_file']['name'])) {
+        $maxSizeBytes = 1024 * 1024; // 1 MB limit
+        if ($_FILES['image_file']['size'] > $maxSizeBytes) {
+            $sizeKb = round($_FILES['image_file']['size'] / 1024, 1);
+            throw new RuntimeException("ขนาดไฟล์รูปภาพเกินกำหนด ({$sizeKb} KB) กรุณาใช้รูปภาพขนาดไม่เกิน 1 MB (แนะนำ 150 – 350 KB)");
+        }
+        $uploadedImage = handle_upload('image_file', ['webp', 'png', 'jpg', 'jpeg']);
+        if ($uploadedImage) {
+            $data['cover_image'] = $uploadedImage;
+        }
     } elseif ($imagePath !== '') {
         $data['cover_image'] = $imagePath;
     }
 } catch (RuntimeException $exception) {
-    flash('error', $exception->getMessage());
+    flash('error', 'อัปโหลดรูปภาพไม่สำเร็จ: ' . $exception->getMessage());
     header('Location: ' . ($id ? 'edit.php?id=' . $id : 'create.php'));
     exit;
 }

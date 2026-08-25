@@ -4,8 +4,8 @@
  */
 require_once __DIR__ . '/../includes/functions.php';
 require_login();
-$pageTitle = 'การจัดการบริการ';
-$page = 'services';
+$pageTitle = 'Services Management';
+$page = 'service';
 $services = db()->query('SELECT * FROM service ORDER BY created_at DESC')->fetchAll();
 require_once __DIR__ . '/../includes/header.php';
 ?>

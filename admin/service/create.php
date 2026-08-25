@@ -9,6 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     exit;
 }
 $pageTitle = 'Add Service';
+$page = 'service';
 require_once __DIR__ . '/../includes/header.php';
 require __DIR__ . '/_form.php';
 require_once __DIR__ . '/../includes/footer.php';
