@@ -236,66 +236,97 @@ $form = $form ?? [];
                                 color: #022862 !important;
                                 opacity: 1 !important;
                             }
+                            .input-error {
+                                border-color: #f87171 !important;
+                                box-shadow: 0 0 0 3px rgba(248, 113, 113, 0.2) !important;
+                            }
+                            .input-error:focus {
+                                border-color: #ef4444 !important;
+                                box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.25) !important;
+                            }
+                            .field-error-msg {
+                                color: #e05263;
+                                font-size: 0.8125rem;
+                                line-height: 1.25rem;
+                                margin-top: 0.375rem;
+                                font-weight: 400;
+                                display: block;
+                            }
+                            .field-error-msg.hidden {
+                                display: none !important;
+                            }
                         </style>
                         <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-                        <form id="contactMainForm" method="post" action="<?= e(route_url('/contact/submit')) ?>" class="flex flex-col flex-grow space-y-4">
+                        <form id="contactMainForm" method="post" action="<?= e(route_url('/contact/submit')) ?>" class="flex flex-col flex-grow space-y-4" novalidate>
                             <input type="hidden" name="source_page" value="<?= e($_SERVER['REQUEST_URI'] ?? '') ?>">
                             <input type="hidden" name="is_ajax" value="1">
 
                             <!-- First Name & Last Name (Separated, 2 columns) -->
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div>
-                                    <input type="text" id="contact_first_name" name="first_name" placeholder="<?= e(t('common.form_label_firstname')) ?> *" value="<?= e($form['first_name'] ?? '') ?>" required maxlength="30"
+                                    <input type="text" id="contact_first_name" name="first_name" placeholder="<?= e(t('common.form_label_firstname')) ?> *" value="<?= e($form['first_name'] ?? '') ?>" maxlength="30"
                                         class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-base text-slate-900 outline-none transition-all duration-300 custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary focus:shadow-inner"
                                         oninput="this.value = this.value.replace(/\s+/g, '');">
+                                    <p id="error_contact_first_name" class="field-error-msg hidden"></p>
                                 </div>
                                 <div>
-                                    <input type="text" id="contact_last_name" name="last_name" placeholder="<?= e(t('common.form_label_lastname')) ?> *" value="<?= e($form['last_name'] ?? '') ?>" required maxlength="30"
+                                    <input type="text" id="contact_last_name" name="last_name" placeholder="<?= e(t('common.form_label_lastname')) ?> *" value="<?= e($form['last_name'] ?? '') ?>" maxlength="30"
                                         class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-base text-slate-900 outline-none transition-all duration-300 custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary focus:shadow-inner"
                                         oninput="this.value = this.value.replace(/\s+/g, '');">
+                                    <p id="error_contact_last_name" class="field-error-msg hidden"></p>
                                 </div>
                             </div>
 
                             <!-- Company Name (Optional) -->
                             <div>
-                                <input type="text" name="company_name" placeholder="<?= e(t('common.form_label_company_optional')) ?>" value="<?= e($form['company_name'] ?? '') ?>" maxlength="100"
+                                <input type="text" id="contact_company_name" name="company_name" placeholder="<?= e(t('common.form_label_company_optional')) ?>" value="<?= e($form['company_name'] ?? '') ?>" maxlength="100"
                                     class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-base text-slate-900 outline-none transition-all duration-300 custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary focus:shadow-inner">
+                                <p id="error_contact_company_name" class="field-error-msg hidden"></p>
                             </div>
 
                             <!-- Phone & Email -->
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div>
-                                    <input type="text" inputmode="numeric" name="phone" placeholder="<?= e(t('common.form_label_phone')) ?> *" value="<?= e($form['phone'] ?? '') ?>" required maxlength="10" pattern="\d{9,10}"
+                                    <input type="text" inputmode="numeric" id="contact_phone" name="phone" placeholder="<?= e(t('common.form_label_phone')) ?> *" value="<?= e($form['phone'] ?? '') ?>" maxlength="10"
                                         oninput="this.value = this.value.replace(/[^0-9]/g, '');"
                                         class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-base text-slate-900 outline-none transition-all duration-300 custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary focus:shadow-inner">
+                                    <p id="error_contact_phone" class="field-error-msg hidden"></p>
                                 </div>
                                 <div>
-                                    <input type="email" name="email" placeholder="<?= e(t('common.form_label_email')) ?> *" value="<?= e($form['email'] ?? '') ?>" required maxlength="255"
+                                    <input type="email" id="contact_email" name="email" placeholder="<?= e(t('common.form_label_email')) ?> *" value="<?= e($form['email'] ?? '') ?>" maxlength="255"
                                         class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-base text-slate-900 outline-none transition-all duration-300 custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary focus:shadow-inner">
+                                    <p id="error_contact_email" class="field-error-msg hidden"></p>
                                 </div>
                             </div>
 
                             <!-- Message with Character Counter -->
                             <div class="space-y-1">
-                                <textarea id="contact_message_area" name="message" placeholder="<?= e(t('common.form_label_details')) ?> *" required rows="4" maxlength="500"
+                                <textarea id="contact_message_area" name="message" placeholder="<?= e(t('common.form_label_details')) ?> *" rows="4" maxlength="500"
                                     class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-base text-slate-900 outline-none transition-all duration-300 custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary resize-none focus:shadow-inner"><?= e($form['message'] ?? '') ?></textarea>
                                 <div class="flex justify-between items-center px-1 text-xs text-slate-400">
                                     <span>* ความยาวไม่เกิน 500 ตัวอักษร</span>
                                     <span id="contact_word_count_display" class="font-semibold text-slate-500">0/500</span>
                                 </div>
+                                <p id="error_contact_message_area" class="field-error-msg hidden"></p>
                             </div>
 
                             <!-- PDPA Consent Checkbox -->
-                            <div class="flex items-start gap-3 pt-1">
-                                <input type="checkbox" id="privacy_consent_checkbox" name="pdpa_agreed" value="1" <?= !empty($form['pdpa_agreed']) ? 'checked' : '' ?> required class="mt-1 w-4 h-4 rounded border-slate-300 text-primary focus:ring-primary cursor-pointer transition-all duration-200">
-                                <label for="privacy_consent_checkbox" class="text-sm md:text-base leading-relaxed cursor-pointer select-none">
-                                    <span style="color: #022862;"><?= e(t('common.form_consent_prefix')) ?></span> <a href="<?= e(route_url('/privacy-policy')) ?>" target="_blank" rel="noopener noreferrer" style="color: #0663F6;" class="hover:underline transition-colors duration-200"><?= e(t('common.form_consent_privacy_policy')) ?></a> <span style="color: #0663F6;"><?= e(t('common.form_consent_terms_suffix')) ?></span>
-                                </label>
+                            <div>
+                                <div class="flex items-start gap-3 pt-1">
+                                    <input type="checkbox" id="privacy_consent_checkbox" name="pdpa_agreed" value="1" <?= !empty($form['pdpa_agreed']) ? 'checked' : '' ?> class="mt-1 w-4 h-4 rounded border-slate-300 text-primary focus:ring-primary cursor-pointer transition-all duration-200">
+                                    <label for="privacy_consent_checkbox" class="text-sm md:text-base leading-relaxed cursor-pointer select-none">
+                                        <span style="color: #022862;"><?= e(t('common.form_consent_prefix')) ?></span> <a href="<?= e(route_url('/privacy-policy')) ?>" target="_blank" rel="noopener noreferrer" style="color: #0663F6;" class="hover:underline transition-colors duration-200"><?= e(t('common.form_consent_privacy_policy')) ?></a> <span style="color: #0663F6;"><?= e(t('common.form_consent_terms_suffix')) ?></span>
+                                    </label>
+                                </div>
+                                <p id="error_privacy_consent_checkbox" class="field-error-msg hidden"></p>
                             </div>
 
                             <!-- Google reCAPTCHA v2 Widget -->
-                            <div class="pt-1 flex justify-center sm:justify-start">
-                                <div class="g-recaptcha" data-sitekey="<?= e($siteKey ?? '6Lcf_pAtAAAAAOVhatPPwrHSYXeb_0J4yXf5BrRO') ?>"></div>
+                            <div>
+                                <div class="pt-1 flex justify-center sm:justify-start">
+                                    <div id="contact_recaptcha_container" class="g-recaptcha" data-sitekey="<?= e($siteKey ?? '6Lcf_pAtAAAAAOVhatPPwrHSYXeb_0J4yXf5BrRO') ?>"></div>
+                                </div>
+                                <p id="error_contact_recaptcha" class="field-error-msg hidden"></p>
                             </div>
 
                             <!-- Dynamic Error Message Box (AJAX / Static) -->
@@ -310,9 +341,9 @@ $form = $form ?? [];
                                 <?php endif; ?>
                             </div>
 
-                            <!-- Submit Button (Disabled until PDPA checked) -->
+                            <!-- Submit Button -->
                             <div class="pt-2 mt-auto flex justify-center desktop-contact-btn-wrapper">
-                                <button type="submit" id="contact_submit_btn" disabled class="px-8 py-3.5 bg-primary hover:bg-blue-700 text-white font-bold text-base rounded-full shadow-md shadow-blue-500/10 transition-all duration-300 cursor-pointer hover:shadow-lg hover:-translate-y-0.5 flex items-center justify-center gap-2 desktop-contact-btn disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none disabled:hover:translate-y-0">
+                                <button type="submit" id="contact_submit_btn" class="px-8 py-3.5 bg-primary hover:bg-blue-700 text-white font-bold text-base rounded-full shadow-md shadow-blue-500/10 transition-all duration-300 cursor-pointer hover:shadow-lg hover:-translate-y-0.5 flex items-center justify-center gap-2 desktop-contact-btn disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none disabled:hover:translate-y-0">
                                     <span id="contact_btn_text"><?= e(t('contact.cta_send_message')) ?></span>
                                     <svg id="contact_btn_icon" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -329,34 +360,202 @@ $form = $form ?? [];
                     <script>
                         document.addEventListener('DOMContentLoaded', function () {
                             const form = document.getElementById('contactMainForm');
+                            const firstNameInput = document.getElementById('contact_first_name');
+                            const lastNameInput = document.getElementById('contact_last_name');
+                            const companyInput = document.getElementById('contact_company_name');
+                            const phoneInput = document.getElementById('contact_phone');
+                            const emailInput = document.getElementById('contact_email');
+                            const messageArea = document.getElementById('contact_message_area');
                             const privacyCb = document.getElementById('privacy_consent_checkbox');
+                            const recaptchaContainer = document.getElementById('contact_recaptcha_container');
+                            
+                            const errorFirstName = document.getElementById('error_contact_first_name');
+                            const errorLastName = document.getElementById('error_contact_last_name');
+                            const errorCompany = document.getElementById('error_contact_company_name');
+                            const errorPhone = document.getElementById('error_contact_phone');
+                            const errorEmail = document.getElementById('error_contact_email');
+                            const errorMessage = document.getElementById('error_contact_message_area');
+                            const errorPrivacy = document.getElementById('error_privacy_consent_checkbox');
+                            const errorRecaptcha = document.getElementById('error_contact_recaptcha');
+
                             const submitBtn = document.getElementById('contact_submit_btn');
                             const btnText = document.getElementById('contact_btn_text');
                             const btnIcon = document.getElementById('contact_btn_icon');
                             const btnSpinner = document.getElementById('contact_btn_spinner');
-                            const messageArea = document.getElementById('contact_message_area');
                             const wordCountDisplay = document.getElementById('contact_word_count_display');
                             const errorBox = document.getElementById('contact-error-box');
                             const formBox = document.getElementById('contact-form-box');
                             const successBox = document.getElementById('contact-success-box');
 
-                            // 1. Toggle submit button disabled state according to PDPA checkbox
-                            function updateSubmitBtnState() {
-                                if (privacyCb && submitBtn) {
-                                    submitBtn.disabled = !privacyCb.checked;
+                            const isTh = '<?= getCurrentLang() ?>' === 'th';
+
+                            // Letter only regex (Thai letters + English letters)
+                            const letterOnlyRegex = /^[a-zA-Z\u0E00-\u0E7F]+$/;
+                            // Email regex
+                            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+                            function setError(inputEl, errorEl, message) {
+                                if (inputEl) {
+                                    inputEl.classList.add('input-error');
+                                }
+                                if (errorEl) {
+                                    errorEl.textContent = message;
+                                    errorEl.classList.remove('hidden');
                                 }
                             }
 
-                            if (privacyCb) {
-                                privacyCb.addEventListener('change', updateSubmitBtnState);
-                                updateSubmitBtnState();
+                            function clearError(inputEl, errorEl) {
+                                if (inputEl) {
+                                    inputEl.classList.remove('input-error');
+                                }
+                                if (errorEl) {
+                                    errorEl.textContent = '';
+                                    errorEl.classList.add('hidden');
+                                }
                             }
 
-                            // 2. Character counter for message (max 500 characters)
+                            // Individual field validators
+                            function validateFirstName() {
+                                const val = (firstNameInput.value || '').trim();
+                                if (!val) {
+                                    setError(firstNameInput, errorFirstName, isTh ? 'กรุณากรอกชื่อจริง' : 'Please enter your first name');
+                                    return false;
+                                }
+                                if (!letterOnlyRegex.test(val)) {
+                                    setError(firstNameInput, errorFirstName, isTh ? 'กรุณากรอกชื่อเป็นตัวอักษรเท่านั้น' : 'Please enter a valid name using letters only');
+                                    return false;
+                                }
+                                if (val.length > 30) {
+                                    setError(firstNameInput, errorFirstName, isTh ? 'ชื่อจริงต้องไม่เกิน 30 ตัวอักษร' : 'First name must not exceed 30 characters');
+                                    return false;
+                                }
+                                clearError(firstNameInput, errorFirstName);
+                                return true;
+                            }
+
+                            function validateLastName() {
+                                const val = (lastNameInput.value || '').trim();
+                                if (!val) {
+                                    setError(lastNameInput, errorLastName, isTh ? 'กรุณากรอกนามสกุล' : 'Please enter your last name');
+                                    return false;
+                                }
+                                if (!letterOnlyRegex.test(val)) {
+                                    setError(lastNameInput, errorLastName, isTh ? 'กรุณากรอกนามสกุลเป็นตัวอักษรเท่านั้น' : 'Please enter a valid last name using letters only');
+                                    return false;
+                                }
+                                if (val.length > 30) {
+                                    setError(lastNameInput, errorLastName, isTh ? 'นามสกุลต้องไม่เกิน 30 ตัวอักษร' : 'Last name must not exceed 30 characters');
+                                    return false;
+                                }
+                                clearError(lastNameInput, errorLastName);
+                                return true;
+                            }
+
+                            function validateCompany() {
+                                const val = (companyInput.value || '').trim();
+                                if (val && val.length > 100) {
+                                    setError(companyInput, errorCompany, isTh ? 'ชื่อบริษัทต้องไม่เกิน 100 ตัวอักษร' : 'Company name must not exceed 100 characters');
+                                    return false;
+                                }
+                                clearError(companyInput, errorCompany);
+                                return true;
+                            }
+
+                            function validatePhone() {
+                                const val = (phoneInput.value || '').trim();
+                                if (!val) {
+                                    setError(phoneInput, errorPhone, isTh ? 'กรุณากรอกเบอร์โทรศัพท์' : 'Please enter your phone number');
+                                    return false;
+                                }
+                                if (!/^[0-9]{9,10}$/.test(val)) {
+                                    setError(phoneInput, errorPhone, isTh ? 'กรุณากรอกเบอร์โทรศัพท์ 9-10 หลักให้ถูกต้อง' : 'Please enter a valid 9-10 digit phone number');
+                                    return false;
+                                }
+                                clearError(phoneInput, errorPhone);
+                                return true;
+                            }
+
+                            function validateEmail() {
+                                const val = (emailInput.value || '').trim();
+                                if (!val) {
+                                    setError(emailInput, errorEmail, isTh ? 'กรุณากรอกอีเมล' : 'Please enter your email');
+                                    return false;
+                                }
+                                if (!emailRegex.test(val)) {
+                                    setError(emailInput, errorEmail, isTh ? 'กรุณากรอกรูปแบบอีเมลให้ถูกต้อง' : 'Please enter a valid email address');
+                                    return false;
+                                }
+                                if (val.length > 255) {
+                                    setError(emailInput, errorEmail, isTh ? 'อีเมลยาวเกินกำหนด' : 'Email is too long');
+                                    return false;
+                                }
+                                clearError(emailInput, errorEmail);
+                                return true;
+                            }
+
+                            function validateMessage() {
+                                const val = (messageArea.value || '').trim();
+                                if (!val) {
+                                    setError(messageArea, errorMessage, isTh ? 'กรุณากรอกรายละเอียด' : 'Please enter your message');
+                                    return false;
+                                }
+                                if (val.length > 500) {
+                                    setError(messageArea, errorMessage, isTh ? 'ข้อความต้องไม่เกิน 500 ตัวอักษร' : 'Message must not exceed 500 characters');
+                                    return false;
+                                }
+                                clearError(messageArea, errorMessage);
+                                return true;
+                            }
+
+                            function validatePrivacy() {
+                                if (!privacyCb.checked) {
+                                    setError(null, errorPrivacy, isTh ? 'กรุณายินยอมตามนโยบายความเป็นส่วนตัว' : 'Please accept the Privacy Policy');
+                                    return false;
+                                }
+                                clearError(null, errorPrivacy);
+                                return true;
+                            }
+
+                            function validateRecaptcha() {
+                                if (typeof grecaptcha !== 'undefined') {
+                                    const resp = grecaptcha.getResponse();
+                                    if (!resp || resp.length === 0) {
+                                        setError(null, errorRecaptcha, isTh ? 'กรุณายืนยันตัวตน reCAPTCHA' : 'Please complete the reCAPTCHA verification');
+                                        return false;
+                                    }
+                                }
+                                clearError(null, errorRecaptcha);
+                                return true;
+                            }
+
+                            // Real-time live validation events
+                            firstNameInput.addEventListener('input', () => { if (errorFirstName.textContent) validateFirstName(); });
+                            firstNameInput.addEventListener('blur', validateFirstName);
+
+                            lastNameInput.addEventListener('input', () => { if (errorLastName.textContent) validateLastName(); });
+                            lastNameInput.addEventListener('blur', validateLastName);
+
+                            companyInput.addEventListener('input', () => { if (errorCompany.textContent) validateCompany(); });
+                            companyInput.addEventListener('blur', validateCompany);
+
+                            phoneInput.addEventListener('input', () => { if (errorPhone.textContent) validatePhone(); });
+                            phoneInput.addEventListener('blur', validatePhone);
+
+                            emailInput.addEventListener('input', () => { if (errorEmail.textContent) validateEmail(); });
+                            emailInput.addEventListener('blur', validateEmail);
+
+                            messageArea.addEventListener('input', () => {
+                                updateWordCount();
+                                if (errorMessage.textContent) validateMessage();
+                            });
+                            messageArea.addEventListener('blur', validateMessage);
+
+                            privacyCb.addEventListener('change', validatePrivacy);
+
+                            // Character counter for message (max 500 characters)
                             function updateWordCount() {
                                 if (!messageArea || !wordCountDisplay) return;
                                 const count = messageArea.value.length;
-
                                 wordCountDisplay.textContent = count + '/500';
                                 if (count > 500) {
                                     wordCountDisplay.classList.add('text-red-500');
@@ -366,16 +565,40 @@ $form = $form ?? [];
                                     wordCountDisplay.classList.add('text-slate-500');
                                 }
                             }
+                            updateWordCount();
 
-                            if (messageArea) {
-                                messageArea.addEventListener('input', updateWordCount);
-                                updateWordCount();
+                            // Validate all fields on submit
+                            function validateAll() {
+                                const validFirst = validateFirstName();
+                                const validLast = validateLastName();
+                                const validCompany = validateCompany();
+                                const validPhone = validatePhone();
+                                const validEmail = validateEmail();
+                                const validMsg = validateMessage();
+                                const validPrivacy = validatePrivacy();
+                                const validRecaptcha = validateRecaptcha();
+
+                                if (!validFirst) { firstNameInput.focus(); return false; }
+                                if (!validLast) { lastNameInput.focus(); return false; }
+                                if (!validCompany) { companyInput.focus(); return false; }
+                                if (!validPhone) { phoneInput.focus(); return false; }
+                                if (!validEmail) { emailInput.focus(); return false; }
+                                if (!validMsg) { messageArea.focus(); return false; }
+                                if (!validPrivacy) { privacyCb.focus(); return false; }
+                                if (!validRecaptcha) { return false; }
+
+                                return true;
                             }
 
-                            // 3. AJAX Submission
+                            // AJAX Submission
                             if (form) {
                                 form.addEventListener('submit', function (e) {
                                     e.preventDefault();
+
+                                    // Run all client-side validation checks
+                                    if (!validateAll()) {
+                                        return;
+                                    }
 
                                     // Clear previous errors
                                     if (errorBox) {
@@ -389,7 +612,7 @@ $form = $form ?? [];
                                     if (btnIcon) btnIcon.classList.add('hidden');
                                     const originalBtnText = btnText ? btnText.textContent : '';
                                     if (btnText) {
-                                        btnText.textContent = '<?= getCurrentLang() === 'th' ? 'กำลังส่งข้อมูล...' : 'Sending...' ?>';
+                                        btnText.textContent = isTh ? 'กำลังส่งข้อมูล...' : 'Sending...';
                                     }
 
                                     const formData = new FormData(form);
@@ -424,7 +647,7 @@ $form = $form ?? [];
                                     })
                                     .catch(err => {
                                         // Reset loading state
-                                        updateSubmitBtnState();
+                                        submitBtn.disabled = false;
                                         if (btnSpinner) btnSpinner.classList.add('hidden');
                                         if (btnIcon) btnIcon.classList.remove('hidden');
                                         if (btnText) btnText.textContent = originalBtnText;
@@ -434,9 +657,9 @@ $form = $form ?? [];
                                             try { grecaptcha.reset(); } catch (e) {}
                                         }
 
-                                        // Render error messages
+                                        // Render server error messages
                                         if (errorBox) {
-                                            const errorList = err.errors || [err.message || '<?= getCurrentLang() === 'th' ? 'เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง' : 'An error occurred, please try again.' ?>'];
+                                            const errorList = err.errors || [err.message || (isTh ? 'เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง' : 'An error occurred, please try again.')];
                                             errorBox.innerHTML = errorList.map(msg => `
                                                 <div class="flex items-center gap-2">
                                                     <svg class="w-4 h-4 text-red-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>

@@ -18,6 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     exit;
 }
 $pageTitle = 'Edit Service';
+$page = 'service';
 $action = 'edit';
 $formAction = 'edit.php?id=' . $id;
 require_once __DIR__ . '/../includes/header.php';

@@ -66,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>เปลี่ยนรหัสผ่าน | <?= e(SITE_NAME) ?></title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+Thai:wght@400;600;700&display=swap" rel="stylesheet">
-    <link href="/Corparate_Webpark/admin/assets/css/dist/tailwind.css" rel="stylesheet">
+    <link href="<?= ADMIN_URL ?>/assets/css/dist/tailwind.css" rel="stylesheet">
     <style>
         .password-toggle {
             position: absolute;
@@ -91,7 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="rounded-3xl bg-white border border-slate-200 shadow-2xl p-8">
                 <div class="text-center mb-8">
                     <div class="flex justify-center mb-5">
-                        <img src="/Corparate_Webpark/admin/assets/images/logo.png" alt="Logo" class="h-12 w-auto">
+                        <img src="<?= ADMIN_URL ?>/assets/images/logo.png" alt="Logo" class="h-12 w-auto">
                     </div>
                     <h1 class="text-2xl font-bold text-slate-800 tracking-tight">
                         เปลี่ยนรหัสผ่าน

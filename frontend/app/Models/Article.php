@@ -81,6 +81,32 @@ class Article
     }
 
     /**
+     * Fetch published article by either ID or slug (supports both slug and slug_en).
+     *
+     * @return array<string, mixed>|false
+     */
+    public function getBySlugOrId(string|int $identifier): array|false
+    {
+        $identifier = trim((string) $identifier);
+        if ($identifier === '') {
+            return false;
+        }
+
+        $decoded = rawurldecode($identifier);
+
+        if (ctype_digit($identifier) || ctype_digit($decoded)) {
+            return $this->getById((int) ($identifier ?: $decoded));
+        }
+
+        $stmt = $this->pdo->prepare(
+            'SELECT ' . self::SELECT_COLUMNS . self::FROM_JOIN . ' WHERE (a.slug = ? OR a.slug_en = ? OR a.slug = ? OR a.slug_en = ?) AND a.status = \'published\' AND a.deleted_at IS NULL LIMIT 1'
+        );
+        $stmt->execute([$identifier, $identifier, $decoded, $decoded]);
+
+        return $stmt->fetch();
+    }
+
+    /**
      * @return array<int, array<string, mixed>>
      */
     public function getCategoryList(): array

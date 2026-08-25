@@ -8,32 +8,46 @@ require_once __DIR__ . '/../includes/header.php';
 $search = trim($_GET['search'] ?? '');
 $categoryFilter = $_GET['category_id'] ?? '';
 $statusFilter = $_GET['status'] ?? '';
+$currentPage = max(1, (int)($_GET['p'] ?? 1));
+$perPage = 10;
+
 // Auto-migrate priority column
 try {
     db()->exec('ALTER TABLE article ADD COLUMN priority INT DEFAULT 999 AFTER category_id');
 } catch (Exception $e) {
     // Column already exists or other error
 }
-$sql = 'SELECT a.*, c.name AS category_name, aut.display_name AS author_name
-        FROM article a
-        LEFT JOIN categories c ON a.category_id = c.id
-        LEFT JOIN authors aut ON a.author_id = aut.id
-        WHERE 1=1';
+
+$whereSql = '';
 $params = [];
 if ($search !== '') {
-    $sql .= ' AND (a.meta_title LIKE ? OR a.meta_description LIKE ?)';
+    $whereSql .= ' AND (a.meta_title LIKE ? OR a.meta_description LIKE ?)';
     $params[] = "%$search%";
     $params[] = "%$search%";
 }
 if ($categoryFilter !== '') {
-    $sql .= ' AND a.category_id = ?';
+    $whereSql .= ' AND a.category_id = ?';
     $params[] = (int) $categoryFilter;
 }
 if (in_array($statusFilter, ['draft', 'published', 'hidden'], true)) {
-    $sql .= ' AND a.status = ?';
+    $whereSql .= ' AND a.status = ?';
     $params[] = $statusFilter;
 }
-$sql .= ' ORDER BY a.priority ASC, a.created_at DESC';
+
+// Total count
+$countStmt = db()->prepare('SELECT COUNT(*) FROM article a LEFT JOIN categories c ON a.category_id = c.id LEFT JOIN authors aut ON a.author_id = aut.id WHERE 1=1' . $whereSql);
+$countStmt->execute($params);
+$totalRows = (int) $countStmt->fetchColumn();
+
+$pagination = paginate($totalRows, $perPage, $currentPage);
+
+$sql = 'SELECT a.*, c.name AS category_name, aut.display_name AS author_name
+        FROM article a
+        LEFT JOIN categories c ON a.category_id = c.id
+        LEFT JOIN authors aut ON a.author_id = aut.id
+        WHERE 1=1' . $whereSql . '
+        ORDER BY a.priority ASC, a.created_at DESC
+        LIMIT ' . (int)$pagination['perPage'] . ' OFFSET ' . (int)$pagination['offset'];
 $statement = db()->prepare($sql);
 $statement->execute($params);
 $articles = $statement->fetchAll();
@@ -214,6 +228,87 @@ if (count($categories) !== 4 || $categories[0]['name'] !== 'ERP / ERM') {
                 </tbody>
             </table>
         </div>
+        <!-- Pagination -->
+        <?php if ($totalRows > 0): 
+            $totalPages = (int)$pagination['pages'];
+            $currPage = (int)$pagination['current'];
+            if ($totalPages <= 7) {
+                $pageRange = range(1, $totalPages);
+            } elseif ($currPage <= 4) {
+                $pageRange = [1, 2, 3, 4, 5, '...', $totalPages];
+            } elseif ($currPage >= $totalPages - 3) {
+                $pageRange = [1, '...', $totalPages - 4, $totalPages - 3, $totalPages - 2, $totalPages - 1, $totalPages];
+            } else {
+                $pageRange = [1, '...', $currPage - 1, $currPage, $currPage + 1, '...', $totalPages];
+            }
+
+            $buildPageUrl = function($pageNum) use ($categoryFilter, $statusFilter, $search) {
+                $q = ['p' => $pageNum];
+                if ($categoryFilter !== '') $q['category_id'] = $categoryFilter;
+                if ($statusFilter !== '') $q['status'] = $statusFilter;
+                if ($search !== '') $q['search'] = $search;
+                return '?' . http_build_query($q);
+            };
+        ?>
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-slate-100 bg-white px-6 py-4 text-sm text-slate-700 select-none">
+                <!-- Pagination Controls -->
+                <div class="flex flex-wrap items-center gap-1 sm:gap-1.5">
+                    <!-- Previous Button -->
+                    <?php if ($currPage > 1): ?>
+                        <a href="<?= $buildPageUrl($currPage - 1) ?>" class="inline-flex items-center text-sm font-medium text-slate-700 hover:text-indigo-600 transition px-2 py-1 mr-1">
+                            <svg class="w-4 h-4 mr-1 text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                            </svg>
+                            Previous
+                        </a>
+                    <?php else: ?>
+                        <span class="inline-flex items-center text-sm font-medium text-slate-300 pointer-events-none px-2 py-1 mr-1">
+                            <svg class="w-4 h-4 mr-1 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                            </svg>
+                            Previous
+                        </span>
+                    <?php endif; ?>
+
+                    <!-- Page Numbers -->
+                    <?php foreach ($pageRange as $pItem): ?>
+                        <?php if ($pItem === '...'): ?>
+                            <span class="inline-flex items-center justify-center w-8 h-8 text-sm text-slate-400 font-medium">...</span>
+                        <?php elseif ($pItem === $currPage): ?>
+                            <span class="inline-flex items-center justify-center w-8 h-8 rounded-full text-white text-sm font-semibold shadow-sm" style="background-color: #5046e5; box-shadow: 0 0 0 4px #e0e7ff;">
+                                <?= $pItem ?>
+                            </span>
+                        <?php else: ?>
+                            <a href="<?= $buildPageUrl($pItem) ?>" class="inline-flex items-center justify-center w-8 h-8 rounded-full text-slate-700 hover:bg-slate-100 hover:text-slate-900 text-sm font-medium transition">
+                                <?= $pItem ?>
+                            </a>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+
+                    <!-- Next Button -->
+                    <?php if ($currPage < $totalPages): ?>
+                        <a href="<?= $buildPageUrl($currPage + 1) ?>" class="inline-flex items-center text-sm font-medium text-slate-700 hover:text-indigo-600 transition px-2 py-1 ml-1">
+                            Next
+                            <svg class="w-4 h-4 ml-1 text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                            </svg>
+                        </a>
+                    <?php else: ?>
+                        <span class="inline-flex items-center text-sm font-medium text-slate-300 pointer-events-none px-2 py-1 ml-1">
+                            Next
+                            <svg class="w-4 h-4 ml-1 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                            </svg>
+                        </span>
+                    <?php endif; ?>
+                </div>
+
+                <!-- Right Summary -->
+                <div class="text-sm text-slate-600 font-normal">
+                    Showing <?= count($articles) ?> of <?= number_format($totalRows) ?> results
+                </div>
+            </div>
+        <?php endif; ?>
     </section>
 </div>
 <script>

@@ -17,7 +17,12 @@ $detailsJson = json_encode([
 $imagePath = $_POST['old_image'] ?? '';
 try {
     if (!empty($_FILES['image']['name'])) {
-        $imagePath = handle_upload('image', ['jpg', 'jpeg', 'png', 'webp', 'gif', 'svg']);
+        $maxSizeBytes = 500 * 1024; // 500 KB limit
+        if ($_FILES['image']['size'] > $maxSizeBytes) {
+            $sizeKb = round($_FILES['image']['size'] / 1024, 1);
+            throw new RuntimeException("ขนาดไฟล์รูปภาพเกินกำหนด ({$sizeKb} KB) กรุณาใช้รูปภาพขนาดไม่เกิน 500 KB ตามคำแนะนำ");
+        }
+        $imagePath = handle_upload('image', ['webp', 'png', 'jpg', 'jpeg']);
     }
 } catch (RuntimeException $e) {
     flash('error', 'อัพโหลดรูปภาพไม่สำเร็จ: ' . $e->getMessage());

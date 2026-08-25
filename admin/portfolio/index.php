@@ -204,27 +204,88 @@ $categories = db()->query('SELECT id, name FROM categories ORDER BY name')->fetc
                 </tbody>
             </table>
         </div>
-    </section>
-    <?php if ($pagination['pages'] > 1): ?>
-        <nav class="mt-4 flex justify-center" aria-label="Pagination">
-            <ul class="inline-flex items-center gap-1">
-                <?php for ($pageNumber = 1; $pageNumber <= $pagination['pages']; $pageNumber++):
-                    $queryString = http_build_query(array_filter([
-                        'search' => $search,
-                        'category_id' => $categoryFilter,
-                        'status' => $statusFilter,
-                        'p' => $pageNumber,
-                    ], static fn($value) => $value !== null && $value !== '')); ?>
-                    <li>
-                        <a href="?<?= e($queryString) ?>"
-                            class="inline-flex h-8 w-8 items-center justify-center rounded-lg text-xs font-semibold transition-colors <?= $pageNumber === $pagination['current'] ? 'bg-slate-900 text-white shadow-sm' : 'border border-slate-200 bg-white text-slate-600 hover:bg-slate-50' ?>">
-                            <?= $pageNumber ?>
+        <!-- Pagination -->
+        <?php if ($total > 0): 
+            $totalPages = (int)$pagination['pages'];
+            $currPage = (int)$pagination['current'];
+            if ($totalPages <= 7) {
+                $pageRange = range(1, $totalPages);
+            } elseif ($currPage <= 4) {
+                $pageRange = [1, 2, 3, 4, 5, '...', $totalPages];
+            } elseif ($currPage >= $totalPages - 3) {
+                $pageRange = [1, '...', $totalPages - 4, $totalPages - 3, $totalPages - 2, $totalPages - 1, $totalPages];
+            } else {
+                $pageRange = [1, '...', $currPage - 1, $currPage, $currPage + 1, '...', $totalPages];
+            }
+
+            $buildPageUrl = function($pageNum) use ($categoryFilter, $statusFilter, $search) {
+                $q = ['p' => $pageNum];
+                if ($categoryFilter !== '') $q['category_id'] = $categoryFilter;
+                if ($statusFilter !== '') $q['status'] = $statusFilter;
+                if ($search !== '') $q['search'] = $search;
+                return '?' . http_build_query($q);
+            };
+        ?>
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-slate-100 bg-white px-6 py-4 text-sm text-slate-700 select-none">
+                <!-- Pagination Controls -->
+                <div class="flex flex-wrap items-center gap-1 sm:gap-1.5">
+                    <!-- Previous Button -->
+                    <?php if ($currPage > 1): ?>
+                        <a href="<?= $buildPageUrl($currPage - 1) ?>" class="inline-flex items-center text-sm font-medium text-slate-700 hover:text-indigo-600 transition px-2 py-1 mr-1">
+                            <svg class="w-4 h-4 mr-1 text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                            </svg>
+                            Previous
                         </a>
-                    </li>
-                <?php endfor; ?>
-            </ul>
-        </nav>
-    <?php endif; ?>
+                    <?php else: ?>
+                        <span class="inline-flex items-center text-sm font-medium text-slate-300 pointer-events-none px-2 py-1 mr-1">
+                            <svg class="w-4 h-4 mr-1 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                            </svg>
+                            Previous
+                        </span>
+                    <?php endif; ?>
+
+                    <!-- Page Numbers -->
+                    <?php foreach ($pageRange as $pItem): ?>
+                        <?php if ($pItem === '...'): ?>
+                            <span class="inline-flex items-center justify-center w-8 h-8 text-sm text-slate-400 font-medium">...</span>
+                        <?php elseif ($pItem === $currPage): ?>
+                            <span class="inline-flex items-center justify-center w-8 h-8 rounded-full text-white text-sm font-semibold shadow-sm" style="background-color: #5046e5; box-shadow: 0 0 0 4px #e0e7ff;">
+                                <?= $pItem ?>
+                            </span>
+                        <?php else: ?>
+                            <a href="<?= $buildPageUrl($pItem) ?>" class="inline-flex items-center justify-center w-8 h-8 rounded-full text-slate-700 hover:bg-slate-100 hover:text-slate-900 text-sm font-medium transition">
+                                <?= $pItem ?>
+                            </a>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+
+                    <!-- Next Button -->
+                    <?php if ($currPage < $totalPages): ?>
+                        <a href="<?= $buildPageUrl($currPage + 1) ?>" class="inline-flex items-center text-sm font-medium text-slate-700 hover:text-indigo-600 transition px-2 py-1 ml-1">
+                            Next
+                            <svg class="w-4 h-4 ml-1 text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                            </svg>
+                        </a>
+                    <?php else: ?>
+                        <span class="inline-flex items-center text-sm font-medium text-slate-300 pointer-events-none px-2 py-1 ml-1">
+                            Next
+                            <svg class="w-4 h-4 ml-1 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                            </svg>
+                        </span>
+                    <?php endif; ?>
+                </div>
+
+                <!-- Right Summary -->
+                <div class="text-sm text-slate-600 font-normal">
+                    Showing <?= count($portfolios) ?> of <?= number_format($total) ?> results
+                </div>
+            </div>
+        <?php endif; ?>
+    </section>
 </div>
 <script>
     document.addEventListener('DOMContentLoaded', function() {

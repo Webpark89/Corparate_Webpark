@@ -11,6 +11,7 @@ return [
     '/' => [HomeController::class, 'index'],
     '/article' => [HomeController::class, 'article'],
     '/articles' => [HomeController::class, 'article'],
+    '/article/{slug}' => [HomeController::class, 'article'],
     '/article-detail-mockup' => [HomeController::class, 'articleDetailMockup'],
     '/portfolio' => [HomeController::class, 'portfolio'],
     '/services' => [HomeController::class, 'services'],

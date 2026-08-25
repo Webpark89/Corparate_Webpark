@@ -18,8 +18,10 @@ define('ADMIN_USERNAME', 'admin');
 define('ADMIN_PASSWORD_HASH', '$2y$12$hDzP3bxYxaNrutNUb7qEq.HhRaltcuXAO8KnaZkONMBEq4qPDoY7.');
 
 // ---- Site ----
+$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+$host = $_SERVER['HTTP_HOST'] ?? 'localhost';
 define('SITE_NAME', 'WEBPARK');
-define('SITE_URL', 'http://localhost:8080/Corparate_Webpark');           // no trailing slash
+define('SITE_URL', $protocol . '://' . $host . '/Corparate_Webpark');           // no trailing slash
 define('ADMIN_URL', SITE_URL . '/admin');
 define('UPLOAD_DIR', __DIR__ . '/../uploads');
 define('UPLOAD_URL', ADMIN_URL . '/uploads');
