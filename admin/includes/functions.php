@@ -119,18 +119,108 @@ function csrf_verify(): void
     }
 }
 /**
- * Redirect unauthenticated users to login; enforce session timeout.
+ * Set secure HMAC remember-me cookie (7 days default).
+ */
+function set_remember_me_cookie(string $username): void
+{
+    $duration = defined('REMEMBER_ME_DURATION') ? REMEMBER_ME_DURATION : (7 * 86400);
+    $expiry = time() + $duration;
+    $signature = hash_hmac('sha256', $username . '|' . $expiry, ADMIN_PASSWORD_HASH);
+    $token = base64_encode($username . '|' . $expiry . '|' . $signature);
+
+    setcookie('admin_remember', $token, [
+        'expires'  => $expiry,
+        'path'     => '/',
+        'httponly' => true,
+        'secure'   => !empty($_SERVER['HTTPS']),
+        'samesite' => 'Strict',
+    ]);
+}
+
+/**
+ * Clear and invalidate remember-me cookie.
+ */
+function clear_remember_me_cookie(): void
+{
+    if (isset($_COOKIE['admin_remember'])) {
+        setcookie('admin_remember', '', [
+            'expires'  => time() - 3600,
+            'path'     => '/',
+            'httponly' => true,
+            'secure'   => !empty($_SERVER['HTTPS']),
+            'samesite' => 'Strict',
+        ]);
+        unset($_COOKIE['admin_remember']);
+    }
+}
+
+/**
+ * Verify remember-me cookie and restore session if valid.
+ */
+function check_remember_me_cookie(): bool
+{
+    if (empty($_COOKIE['admin_remember'])) {
+        return false;
+    }
+
+    $raw = base64_decode((string) $_COOKIE['admin_remember'], true);
+    if ($raw === false) {
+        clear_remember_me_cookie();
+        return false;
+    }
+
+    $parts = explode('|', $raw);
+    if (count($parts) !== 3) {
+        clear_remember_me_cookie();
+        return false;
+    }
+
+    [$username, $expiry, $signature] = $parts;
+
+    if ($username !== ADMIN_USERNAME || (int) $expiry <= time()) {
+        clear_remember_me_cookie();
+        return false;
+    }
+
+    $expectedSignature = hash_hmac('sha256', $username . '|' . $expiry, ADMIN_PASSWORD_HASH);
+    if (!hash_equals($expectedSignature, $signature)) {
+        clear_remember_me_cookie();
+        return false;
+    }
+
+    // Valid token! Restore session
+    session_regenerate_id(true);
+    $_SESSION['admin_logged_in'] = true;
+    $_SESSION['admin_username'] = ADMIN_USERNAME;
+    $_SESSION['admin_full_name'] = 'Administrator';
+    $_SESSION['admin_role'] = 'admin';
+    $_SESSION['last_activity'] = time();
+    $_SESSION['is_remembered'] = true;
+
+    return true;
+}
+
+/**
+ * Redirect unauthenticated users to login; enforce session timeout or restore from remember cookie.
  */
 function require_login(): void
 {
     if (empty($_SESSION['admin_logged_in'])) {
+        if (check_remember_me_cookie()) {
+            return;
+        }
         header('Location: ' . ADMIN_URL . '/login.php');
         exit;
     }
+
     if (
         isset($_SESSION['last_activity'])
         && time() - $_SESSION['last_activity'] > SESSION_TIMEOUT
     ) {
+        if (check_remember_me_cookie()) {
+            $_SESSION['last_activity'] = time();
+            return;
+        }
         session_unset();
         session_destroy();
         header('Location: ' . ADMIN_URL . '/login.php?timeout=1');
