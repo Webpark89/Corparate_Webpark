@@ -135,21 +135,33 @@ $contactAddress = $company['contact']['address'] ?? '525/89 ซอยลาด�
 
     /* Custom Layout for iPad Pro Portrait (1024px - 1279px) */
     @media (min-width: 1024px) and (max-width: 1279px) {
-        .ipad-pro-about-hero-h1 {
-            font-size: 3.5rem !important; /* Scale down to take less background space */
-            line-height: 1.1 !important;
-        }
+        .ipad-pro-strict-hidden { display: none !important; }
+        .ipad-pro-strict-inline { display: inline !important; }
         .ipad-pro-about-hero-span1 {
             white-space: nowrap !important; /* Force to stay on one line */
+            font-size: 4rem !important; /* Make Service Provider for larger */
+            padding-bottom: 0 !important;
+            margin-bottom: -1rem !important; /* Pull the next line closer */
+            display: inline-block !important;
+        }
+        .ipad-pro-about-hero-span2 {
+            font-size: 3.5rem !important; /* Keep ERP/ERM at its previous size */
+            display: inline-block !important;
+            line-height: 0.9 !important;
         }
         .ipad-pro-about-hero-p {
-            max-width: 90% !important; /* Adjust wrapping */
-            padding-right: 2rem !important; /* Prevent widows */
+            max-width: 580px !important; /* Adjust wrapping */
+            padding-right: 0 !important;
+            margin-top: 0.75rem !important; /* Reduce vertical gap below header */
         }
         
         .ipad-pro-about-intro-p {
             font-size: 1.25rem !important;
             line-height: 2rem !important;
+        }
+        
+        .ipad-pro-approach-left-col {
+            margin-left: 2.5rem !important; /* Shift Our Approach to the right slightly */
         }
         
         /* Increase font size for Our Approach on iPad Pro */
@@ -252,17 +264,17 @@ $contactAddress = $company['contact']['address'] ?? '525/89 ซอยลาด�
                 </nav>
                     
                 <h1 class="animate-fade-up delay-200 text-5xl sm:text-4xl md:text-6xl lg:text-8xl font-lg leading-[1.1] mb-2 tracking-tighter">
-                    <span class="bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block py-3 desktop-about-hero-h1"><?= e(getCurrentLang() === 'th' ? 'ผู้ให้บริการด้าน' : 'Service Provider for') ?></span><br class="hidden sm:inline">
-                    <span class="bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block desktop-about-hero-h1" style="animation-delay: -3s;">ERP / ERM</span>
+                    <span class="bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block py-3 desktop-about-hero-h1 ipad-pro-about-hero-span1"><?= e(getCurrentLang() === 'th' ? 'ผู้ให้บริการด้าน' : 'Service Provider for') ?></span><br class="hidden sm:inline">
+                    <span class="bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block desktop-about-hero-h1 ipad-pro-about-hero-span2" style="animation-delay: -3s;">ERP / ERM</span>
                 </h1>
 
-                <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-lg md:text-xl leading-relaxed max-w-lg mb-10 font-medium desktop-about-hero-p">
-                    <?= getCurrentLang() === 'th' ? 'WEBPARK ผู้เชี่ยวชาญด้าน ERP/ERM และระบบดิจิทัล<br class="hidden sm:inline">ครบวงจร เราช่วยให้องค์กรของคุณทำงานอย่างชาญฉลาด<br class="hidden sm:inline">ด้วยเทคโนโลยีล้ำสมัยแพลตฟอร์มดจิทัลและ AI <br class="hidden sm:inline">เพื่อการเติบโตที่ยั่งยืนในยุคดิจิทัล' : 'WEBPARK, expert in ERP/ERM and comprehensive<br class="hidden sm:inline">digital systems. We help your organization work smartly<br class="hidden sm:inline">with cutting-edge digital platforms and AI<br class="hidden sm:inline">for sustainable growth in the digital era.' ?>
+                <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-lg md:text-xl leading-relaxed max-w-lg mb-10 font-medium desktop-about-hero-p ipad-pro-about-hero-p">
+                    <?= getCurrentLang() === 'th' ? 'WEBPARK ผู้เชี่ยวชาญด้าน ERP/ERM และระบบดิจิทัล<br class="hidden sm:inline ipad-air-hidden-br">ครบวงจร เราช่วยให้องค์กรของคุณทำงานอย่างชาญฉลาด<br class="hidden sm:inline ipad-air-hidden-br">ด้วยเทคโนโลยีล้ำสมัยแพลตฟอร์มดจิทัลและ AI <br class="hidden sm:inline ipad-air-hidden-br">เพื่อการเติบโตที่ยั่งยืนในยุคดิจิทัล' : 'WEBPARK, expert in ERP/ERM<br class="hidden ipad-pro-strict-inline"> and comprehensive<br class="hidden sm:inline ipad-pro-strict-hidden ipad-air-hidden-br"> digital systems.<br class="hidden ipad-pro-strict-inline"> We help your organization work smartly<br class="hidden sm:inline ipad-pro-strict-hidden ipad-air-hidden-br"> with<br class="hidden ipad-pro-strict-hidden ipad-air-hidden-br"> cutting-edge digital platforms and AI<br class="hidden sm:inline ipad-pro-strict-hidden ipad-air-hidden-br"><br class="hidden ipad-pro-strict-inline"> for sustainable growth in the digital era.' ?>
                 </p>
 
                 <div class="animate-entrance-up delay-400 flex flex-col sm:flex-row items-start gap-4">
-                    <a href="<?= e(route_url('/services')) ?>" class="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-primary text-white text-base md:text-lg font-semibold rounded-full hover:bg-blue-700 transition-all shadow-md hover:-translate-y-0.5">
-                        <?= e(t('common.cta_view_services') !== 'common.cta_view_services' ? t('common.cta_view_services') : (getCurrentLang() === 'th' ? 'ดูบริการของเรา' : 'View Our Services')) ?>
+                    <a href="<?= e(route_url('/contact')) ?>" class="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-primary text-white text-base md:text-lg font-semibold rounded-full hover:bg-blue-700 transition-all shadow-md hover:-translate-y-0.5 whitespace-nowrap">
+                        <?= e(getCurrentLang() === 'th' ? 'ปรึกษาผู้เชี่ยวชาญ' : 'Consult an Expert') ?>
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                         </svg>
@@ -274,7 +286,7 @@ $contactAddress = $company['contact']['address'] ?? '525/89 ซอยลาด�
                                 <path d="M8 5v14l11-7z" />
                             </svg>
                         </div>
-                        <span class="text-slate-800 text-lg sm:text font-semibold transition-colors duration-300 group-hover:text-primary">
+                        <span class="text-slate-800 text-lg sm:text font-semibold transition-colors duration-300 group-hover:text-primary whitespace-nowrap">
                             <?= e(t('common.cta_watch_intro_video') !== 'common.cta_watch_intro_video' ? t('common.cta_watch_intro_video') : (getCurrentLang() === 'th' ? 'ดูวิดีโอแนะนำ' : 'Watch Video')) ?>
                         </span>
                     </a>
@@ -394,12 +406,12 @@ $contactAddress = $company['contact']['address'] ?? '525/89 ซอยลาด�
         <div class="lg:px-12 xl:px-24">
             <div class="grid grid-cols-1 lg:grid-cols-[40%_55%] gap-12 lg:gap-16 justify-between items-start">
                 
-                <div class="lg:top-8 self-start">
-                    <h2 class="text-3xl md:text-4xl font-bold leading-tight mb-6 ipad-mini-concept-title" style="color: #054FC5;">
+                <div class="lg:top-8 self-start ipad-pro-approach-left-col">
+                    <h2 class="text-3xl md:text-4xl md:text-center lg:text-left font-bold leading-tight mb-6 ipad-mini-concept-title" style="color: #054FC5;">
                         <?= getCurrentLang() === 'th' ? 'แนวคิดในการทำงานของเรา' : 'Our Approach' ?>
                     </h2>
-                    <p class="text-left md:text-center xl:text-left text-slate-600 text-lg md:text-lg leading-relaxed max-w-2xl xl:max-w-md mx-0 md:mx-auto xl:mx-0 desktop-concept-p ipad-pro-concept-p ipad-mini-concept-desc">
-                        <?= getCurrentLang() === 'th' ? 'เราเชื่อว่าการพัฒนาระบบและโซลูชันดิจิทัลที่ดี <br class="md:hidden"> ไม่ได้เริ่มจากเทคโนโลยีเพียงอย่างเดียว <br class="md:hidden"> แต่เริ่มจากความเข้าใจธุรกิจของคุณ <br class="md:hidden"> เราทำงานแบบพาร์ทเนอร์ร่วมคิด ร่วมสร้าง <br class="md:hidden"> เพื่อให้ทุกโซลูชันที่เราส่งมอบ <span class="whitespace-nowrap">สามารถใช้งานได้</span> <br class="md:hidden"> <span class="whitespace-nowrap">สร้างคุณค่า</span> และช่วยให้ธุรกิจของคุณ <br class="md:hidden"> เติบโตได้อย่างยั่งยืน' : 'We believe that developing great digital systems and solutions doesn\'t start with technology alone, but with understanding your business. We work as a partner to co-think and co-create, ensuring every solution we deliver is practical, creates value, and helps your business grow sustainably.' ?>
+                    <p class="text-left md:text-center lg:text-left text-slate-600 text-lg md:text-lg leading-relaxed max-w-2xl lg:max-w-md mx-0 md:mx-auto lg:mx-0 desktop-concept-p ipad-pro-concept-p ipad-mini-concept-desc">
+                        <?= getCurrentLang() === 'th' ? 'เราเชื่อว่าการพัฒนาระบบและโซลูชันดิจิทัลที่ดี <br class="md:hidden"> ไม่ได้เริ่มจากเทคโนโลยีเพียงอย่างเดียว <br class="md:hidden"> แต่เริ่มจากความเข้าใจธุรกิจของคุณ <br class="md:hidden"> เราทำงานแบบพาร์ทเนอร์ร่วมคิด ร่วมสร้าง <br class="md:hidden"> เพื่อให้ทุกโซลูชันที่เราส่งมอบ <span class="whitespace-nowrap">สามารถใช้งานได้</span> <br class="md:hidden"> <span class="whitespace-nowrap">สร้างคุณค่า</span> และช่วยให้ธุรกิจของคุณ <br class="md:hidden"> เติบโตได้อย่างยั่งยืน' : 'We believe that developing great digital systems and solutions doesn\'t start with technology alone, but with understanding your business.<br class="hidden ipad-pro-strict-inline"><br class="hidden ipad-pro-strict-inline"> We work as a partner to co-think and co-create, ensuring every solution we deliver is practical, creates value, and helps your business grow sustainably.' ?>
                     </p>
                 </div>
 

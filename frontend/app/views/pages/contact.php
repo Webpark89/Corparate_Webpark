@@ -96,6 +96,13 @@ $form = $form ?? [];
                         }
                     }
 
+                    @media (min-width: 1024px) and (max-width: 1279px) {
+                        .ipad-pro-strict-nowrap {
+                            white-space: nowrap !important;
+                            font-size: 1.15rem !important;
+                        }
+                    }
+
                     @keyframes text-gradient-pan {
                         0% { background-position: 0% center; }
                         50% { background-position: 100% center; }
@@ -121,7 +128,7 @@ $form = $form ?? [];
                     <span class="block md:hidden leading-[1.75]">
                         <?= $mobile_desc ?>
                     </span>
-                    <span class="hidden md:block leading-relaxed">
+                    <span class="hidden md:block leading-relaxed ipad-pro-strict-nowrap">
                         <?= e(getCurrentLang() === 'th' ? 'พูดคุยและปรึกษาเกี่ยวกับโปรเจกต์ ระบบ เว็บไซต์' : 'Let\'s talk about your project, system, website,') ?><br>
                         <?= e(getCurrentLang() === 'th' ? 'ERP / ERM และโซลูชันดิจิทัลเพื่อธุรกิจของคุณ' : 'or ERP/ERM and digital solutions for your business.') ?>
                     </span>

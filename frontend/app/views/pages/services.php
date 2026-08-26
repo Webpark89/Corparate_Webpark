@@ -270,11 +270,17 @@ if (isset($services) && is_array($services)) {
                 gap: 0.5rem !important;
             }
             .ipad-air-services-approach-number { font-size: 1.5rem !important; }
-            .ipad-air-services-approach-title { font-size: 1.15rem !important; line-height: 1.4 !important; }
+            .ipad-air-services-approach-title { 
+                font-size: 1.05rem !important; 
+                line-height: 1.4 !important; 
+                white-space: nowrap !important;
+                letter-spacing: -0.3px !important;
+            }
             .ipad-air-services-approach-desc { font-size: 1.05rem !important; line-height: 1.6 !important; }
             
             /* New grey font size overrides */
             .ipad-air-services-desc { font-size: 1.125rem !important; line-height: 1.7 !important; }
+            .ipad-air-services-subtitle { white-space: normal !important; font-size: 1.5rem !important; }
             .ipad-air-service-card-desc { 
                 font-size: 1.05rem !important; 
                 line-height: 1.6 !important;
@@ -407,7 +413,12 @@ if (isset($services) && is_array($services)) {
                 font-size: 5.5rem !important; /* Larger than 4.5rem/3.75rem */
             }
             .ipad-pro-services-subtitle {
-                font-size: 2.25rem !important; /* Larger than 1.875rem */
+                font-size: 2.05rem !important; /* Slightly reduced to prevent cutoff */
+                letter-spacing: -0.5px !important; /* Tighter letter spacing to fit 'business' */
+            }
+            .ipad-pro-services-header-container {
+                padding-left: 0.5rem !important; /* Shift to the left */
+                padding-right: 0.5rem !important;
             }
             
             .ipad-pro-hero-btn {
@@ -762,12 +773,12 @@ if (isset($services) && is_array($services)) {
 </section>
 <section id="our-services" class="bg-white py-8 lg:py-16 font-sans scroll-mt-6">
     <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8 desktop-wide-container-services">
-        <div class="lg:px-12 xl:px-24">
+        <div class="lg:px-12 xl:px-24 ipad-pro-services-header-container">
             <h1 class="text-4xl md:text-6xl lg:text-7xl font-extrabold leading-tight tracking-tight mb-0 md:mb-1 gsap-fade-up ipad-pro-services-h1-text" style="color: #0663F6 !important;">
                 <?= e(t('common.nav_services') !== 'common.nav_services' ? t('common.nav_services') : (getCurrentLang() === 'th' ? 'บริการของเรา' : 'Our Services')) ?>
             </h1>
             <div class="mt-2 mb-4 md:mb-6 gsap-fade-up" style="width: 48px; height: 3px; background-color: #0663F6;"></div>
-            <span class="text-lg sm:text-xl md:text-3xl font-bold gsap-fade-up w-full max-w-none mb-4 block leading-tight tracking-tighter md:tracking-normal whitespace-nowrap ipad-pro-services-subtitle" style="color: #043B94;">
+            <span class="text-lg sm:text-xl md:text-3xl font-bold gsap-fade-up w-full max-w-none mb-4 block leading-tight tracking-tighter md:tracking-normal whitespace-nowrap ipad-pro-services-subtitle ipad-air-services-subtitle" style="color: #043B94;">
                 <?= getCurrentLang() === 'th' ? 'บริการของเรา ครอบคลุมทุกมิติธุรกิจดิจิทัล' : 'Our services cover every dimension of digital business' ?>
             </span>
             <p class="gsap-fade-up text-slate-500 text-lg md:text-[15px] lg:text-base xl:text-[17px] leading-relaxed w-full max-w-none ipad-pro-services-desc ipad-air-services-desc ipad-mini-services-desc">

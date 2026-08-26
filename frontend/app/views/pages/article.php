@@ -73,7 +73,7 @@ $ctaImage = asset_url('images/bg-cta.jpg');
             scroll-behavior: auto !important;
         }
     }
-    @media (min-width: 768px) and (max-width: 1024px) {
+    @media (min-width: 768px) and (max-width: 1023px) {
         .article-filter-btn {
             padding-left: 0.85rem !important;
             padding-right: 0.85rem !important;
@@ -81,6 +81,19 @@ $ctaImage = asset_url('images/bg-cta.jpg');
         }
         .article-filter-track {
             gap: 0.5rem !important;
+        }
+    }
+    @media (min-width: 1024px) and (max-width: 1279px) {
+        .article-filter-track {
+            justify-content: center !important;
+            gap: 1rem !important;
+        }
+        .article-filter-btn {
+            font-size: 1rem !important;
+            padding-left: 1.5rem !important;
+            padding-right: 1.5rem !important;
+            padding-top: 0.6rem !important;
+            padding-bottom: 0.6rem !important;
         }
     }
 </style>
@@ -130,6 +143,9 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                         .hero-title-text { font-size: 3.5rem; line-height: 1.2; }
                         .hero-desc-text { font-size: 24px !important; line-height: 1.7; }
                     }
+                    @media (min-width: 768px) and (max-width: 1023px) {
+                        .ipad-mini-hero-desc { max-width: 450px !important; }
+                    }
                     @media (min-width: 1024px) {
                         .hero-title-text { font-size: 4.5rem; line-height: 1.2; }
                     }
@@ -141,7 +157,7 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                     <span class="hero-title-text font-bold bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block pb-1 md:pb-2 whitespace-nowrap">
                         <?= e(getCurrentLang() === 'th' ? 'บทความความรู้' : 'Knowledge Articles') ?>
                     </span><br>
-                    <span class="hero-title-text font-bold bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block -mt-2 md:-mt-8 whitespace-nowrap" style="animation-delay: -3s;">
+                    <span class="hero-title-text font-bold bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block -mt-2 md:-mt-2 lg:-mt-2 xl:-mt-8 whitespace-nowrap" style="animation-delay: -3s;">
                         <?= e(getCurrentLang() === 'th' ? 'และอัพเดต' : '& Updates') ?>
                     </span>
                 </h1>
@@ -153,7 +169,7 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                     $mobile_desc = "Knowledge articles, tech, and innovation covering ERP systems, digital business, online marketing, AI, and solutions to sustainably grow your organization.";
                 }
                 ?>
-                <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-lg md:text-xl leading-relaxed max-w-2xl mb-10 font-medium">
+                <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-lg md:text-xl leading-relaxed max-w-2xl mb-10 font-medium ipad-mini-hero-desc">
                     <span class="block md:hidden leading-[1.75]">
                         <?= $mobile_desc ?>
                     </span>
@@ -163,8 +179,8 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                             ครอบคลุม ERP ระบบธุรกิจดิจิทัล การตลาดออนไลน์ AI และโซลูชัน<br>
                             <?= e(t('common.articles_growth_summary')) ?>
                         <?php else: ?>
-                            A collection of articles on technology, innovation, and business<br>
-                            strategy covering ERP systems, digital business, online marketing,<br>
+                            A collection of articles on technology, innovation, and business<br class="hidden lg:block">
+                            strategy covering ERP systems, digital business, online marketing,<br class="hidden lg:block">
                             AI, and solutions that help organizations grow sustainably.
                         <?php endif; ?>
                     </span>

@@ -93,7 +93,7 @@ if (!empty($partners) && is_array($partners)) {
                         <?= getCurrentLang() === 'th' ? 'ผู้ให้บริการพัฒนา Digital Platform<br>และระบบ AI ที่ช่วยให้ธุรกิจไทย<br>ก้าวไปข้างหน้า ด้วยเทคโนโลยี<br>ที่ใช้งานได้จริง' : 'Digital Platform and AI system<br>development provider helping Thai businesses<br>move forward with practical technology.' ?>
                     </span>
                     <span class="hidden md:inline">
-                        <?= getCurrentLang() === 'th' ? 'ผู้ให้บริการพัฒนา Digital Platform<br class="hidden ipad-air-br"> และระบบ AI <br class="ipad-air-hidden">ที่ช่วยให้ธุรกิจไทยก้าวไปข้างหน้า<br class="hidden ipad-pro-strict-inline ipad-air-br ipad-mini-br">ด้วยเทคโนโลยีที่ใช้งานได้จริง' : 'Digital Platform and AI system<br class="hidden ipad-pro-strict-inline"> development provider <br class="ipad-pro-strict-hidden ipad-mini-hidden">helping Thai businesses<br class="hidden ipad-mini-br"> move forward <br class="hidden ipad-air-br">with<br class="hidden ipad-pro-strict-inline"> practical technology.' ?>
+                        <?= getCurrentLang() === 'th' ? 'ผู้ให้บริการพัฒนา Digital Platform<br class="hidden ipad-air-br"> และระบบ AI <br class="ipad-air-hidden">ที่ช่วยให้ธุรกิจไทยก้าวไปข้างหน้า<br class="hidden ipad-pro-strict-inline ipad-air-br ipad-mini-br">ด้วยเทคโนโลยีที่ใช้งานได้จริง' : 'Digital Platform and AI system<br class="hidden ipad-pro-strict-inline"> development provider helping<br class="hidden ipad-pro-strict-inline"> Thai businesses move forward<br class="hidden ipad-pro-strict-inline"> with practical technology.' ?>
                     </span>
                 </p>
                 <div class="animate-entrance-up delay-400 flex flex-col items-start self-start md:self-auto md:flex-row md:justify-start gap-3 md:gap-4 ipad-air-hero-btn-container ipad-mini-hero-btn-container">
@@ -158,6 +158,13 @@ if (!empty($partners) && is_array($partners)) {
                 .ipad-air-card-desc { font-size: 1.125rem !important; line-height: 1.6 !important; }
                 .ipad-air-card-link { font-size: 1rem !important; line-height: 1.5 !important; }
                 .ipad-air-card-badge { font-size: 0.875rem !important; padding: 0.375rem 0.75rem !important; }
+
+                /* About Us & Services Cards Font Sizes for iPad Air */
+                .ipad-air-font-about-tag { font-size: 1rem !important; }
+                .ipad-air-font-about-h2 { font-size: 1.625rem !important; line-height: 2rem !important; }
+                .ipad-air-font-title { font-size: 1.35rem !important; line-height: 1.75rem !important; }
+                .ipad-air-font-desc { font-size: 1.125rem !important; line-height: 1.65rem !important; }
+                .ipad-air-font-link { font-size: 1rem !important; line-height: 1.5rem !important; }
 
                 /* Our Approach Section for iPad Air */
                 .ipad-air-about-process-header {
@@ -246,6 +253,13 @@ if (!empty($partners) && is_array($partners)) {
     .ipad-pro-strict-inline { display: inline !important; }
     .ipad-pro-hero-desc { font-size: 1.375rem !important; line-height: 2.25rem !important; width: 520px !important; max-width: 520px !important; padding-right: 0; }
     
+    .desktop-hero-woman {
+        right: -80px !important;
+    }
+    .desktop-hero-woman img {
+        height: 590px !important;
+    }
+    
     /* iPad Pro (1024px) Font Size Overrides */
     .ipad-pro-font-about-tag { font-size: 1.125rem !important; line-height: 1.75rem !important; }
     .ipad-pro-font-about-h2 { font-size: 1.875rem !important; line-height: 2.25rem !important; }
@@ -280,13 +294,13 @@ if (!empty($partners) && is_array($partners)) {
                         <div class="flex flex-col justify-between h-full lg:h-auto lg:contents ipad-pro-display-flex">
                             <div>
                                 <div class="text-left w-full mb-3">
-                                    <span class="text-primary font-bold text-lg md:text-sm tracking-wide inline-block mx-0 ipad-pro-font-about-tag"><?= e(t('common.about_us_heading')) ?></span>
+                                    <span class="text-primary font-bold text-lg md:text-sm tracking-wide inline-block mx-0 ipad-pro-font-about-tag ipad-air-font-about-tag"><?= e(t('common.about_us_heading')) ?></span>
                                     <div class="w-8 h-[3px] bg-primary mt-1"></div>
                                 </div>
-                                <h2 class="text-[#043B94] text-xl xl:text-2xl font-bold leading-tight mb-3 transition-colors duration-300 group-hover:text-blue-700 ipad-pro-font-about-h2">
+                                <h2 class="text-[#043B94] text-xl xl:text-2xl font-bold leading-tight mb-3 transition-colors duration-300 group-hover:text-blue-700 ipad-pro-font-about-h2 ipad-air-font-about-h2">
                                     <?= e(t('common.we_are_partner')) ?><br class="hidden lg:inline"><?= e(t('common.in_technology')) ?>
                                 </h2>
-                                <p class="text-gray-500 text-[0.8rem] md:text-sm leading-relaxed mb-4 ipad-pro-font-desc ipad-air-about-desc">
+                                <p class="text-gray-500 text-[0.8rem] md:text-sm leading-relaxed mb-4 ipad-pro-font-desc ipad-air-font-desc">
                                     <?= e(t('common.partner_description')) ?>
                                 </p>
                             </div>
@@ -324,14 +338,14 @@ if (!empty($partners) && is_array($partners)) {
                         <div class="h-14 w-14 mx-auto mb-5 flex items-center justify-center transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:-translate-y-2 group-hover:scale-110">
                             <img src="<?= e(asset_url('images/' . $card['icon'])) ?>" alt="<?= e($card['title']) ?>" class="h-full w-full object-contain">
                         </div>
-                        <h2 class="text-[#043B94] font-bold text-base md:text-lg xl:text-xl text-center mb-3 whitespace-normal lg:whitespace-nowrap tracking-tight transition-colors duration-300 group-hover:text-blue-600 ipad-pro-font-title">
+                        <h2 class="text-[#043B94] font-bold text-base md:text-lg xl:text-xl text-center mb-3 whitespace-normal lg:whitespace-nowrap tracking-tight transition-colors duration-300 group-hover:text-blue-600 ipad-pro-font-title ipad-air-font-title">
                             <?= e($card['title']) ?>
                         </h2>
-                        <p class="text-gray-500 text-sm md:text-base leading-relaxed mb-6 text-left transition-colors duration-300 group-hover:text-gray-600 ipad-pro-font-desc">
+                        <p class="text-gray-500 text-sm md:text-base leading-relaxed mb-6 text-left transition-colors duration-300 group-hover:text-gray-600 ipad-pro-font-desc ipad-air-font-desc">
                             <?= e($card['desc']) ?>
                         </p>
                     </div>
-                    <a href="<?= e($card['href']) ?>" class="inline-flex items-center text-primary text-sm font-medium transition-colors duration-300 group-hover:text-blue-700 w-max mt-auto ipad-pro-font-link">
+                    <a href="<?= e($card['href']) ?>" class="inline-flex items-center text-primary text-sm font-medium transition-colors duration-300 group-hover:text-blue-700 w-max mt-auto ipad-pro-font-link ipad-air-font-link">
                         <?= e(t('common.cta_read_more')) ?>
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1.5 transition-transform duration-300 ease-out group-hover:translate-x-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
@@ -821,10 +835,9 @@ $totalReviews = count($reviews);
                 $artSummary  = mb_strimwidth(strip_tags($summaryContent), 0, 110, '...');
                 $artCat      = (string)($art['category'] ?? 'Knowledge');
                 $artImage    = resolve_article_image_url($art['image_path'] ?? '', asset_url('images/erp.png'));
-                $artSlug     = ($itemLang === 'en' && !empty($art['slug_en'])) ? $art['slug_en'] : (!empty($art['slug']) ? $art['slug'] : (string)$artId);
                 ?>
                 <article class="gsap-home-article-card flex flex-col overflow-hidden rounded-2xl bg-white shadow-sm border border-slate-100 transition-all duration-300 hover:-translate-y-1 hover:shadow-md group w-full lg:w-auto shrink-0 lg:shrink snap-center lg:snap-align-none opacity-0 translate-y-10 ipad-pro-articles-card">
-                    <a href="<?= e($artId > 0 ? route_url('/article/' . $artSlug) : route_url('/article')) ?>" class="flex flex-col h-full">
+                    <a href="<?= e($artId > 0 ? route_url('/article', ['id' => $artId]) : route_url('/article')) ?>" class="flex flex-col h-full">
                         <div class="relative aspect-[16/9] w-full bg-slate-900 overflow-hidden shrink-0">
                             <img src="<?= e($artImage) ?>" alt="<?= e($artTitle) ?>" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105">
                             <span class="absolute bottom-3 left-3 rounded-md bg-primary/95 backdrop-blur-sm px-2.5 py-1 text-[10px] font-bold tracking-wider text-white uppercase shadow-sm ipad-pro-card-badge">
