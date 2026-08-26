@@ -1,12 +1,9 @@
 <?php
-
 declare(strict_types=1);
-
 /**
  * Thai language translation dictionary.
  * Auto-generated from lang_th.json — keep both in sync.
  */
-
 return [
     'common' => [
         'nav_home' => 'หน้าแรก',
@@ -25,9 +22,12 @@ return [
         'cta_back' => 'ย้อนกลับ',
         'breadcrumb_nav_label' => 'ระบบนำทางแบบเศษขนมปัง',
         'form_label_fullname' => 'ชื่อ - นามสกุล',
+        'form_label_firstname' => 'ชื่อจริง',
+        'form_label_lastname' => 'นามสกุล',
         'form_label_phone' => 'เบอร์โทรศัพท์',
         'form_label_email' => 'อีเมล',
         'form_label_company' => 'บริษัท',
+        'form_label_company_optional' => 'ชื่อบริษัท (ไม่บังคับ)',
         'form_label_subject' => 'หัวข้อ',
         'form_label_details' => 'รายละเอียด',
         'form_consent_prefix' => 'ฉันยินยอมตาม',
@@ -161,7 +161,7 @@ return [
         'cta_banner_desc' => 'มาคุยกับทีม Webpark เพื่อค้นหาโซลูชันที่เหมาะกับธุรกิจของคุณ ทั้ง Digital Platform, ระบบ AI และ ERP / ERM ในมุมที่ใช้สำหรับองค์กร',
         'cta_start_consult' => 'เริ่มต้นปรึกษากับเรา',
         'approach_section_title' => 'แนวคิดในการทำงานของเรา',
-        'approach_section_desc' => 'กระบวนการทำงานที่เป็นระบบ เพื่อส่งมอบโซลูชันดิจิทัลที่ตอบโจทย์ธุรกิจ และความยั่งยืนของข้อมูลธุรกิจที่องค์กรถือครอง',
+        'approach_section_desc' => 'กระบวนการทำงานที่เป็นระบบ เพื่อส่งมอบโซลูชันดิจิทัลที่ตอบโจทย์ธุรกิจ <br> และความยั่งยืนของข้อมูลธุรกิจที่องค์กรถือครอง',
         'cta_view_subtopics' => 'ดูหัวข้อย่อย',
         'step_understand_business_title' => 'เข้าใจธุรกิจของคุณ',
         'step_understand_business_desc' => 'ศึกษาความต้องการ วิเคราะห์ปัญหา และกำหนดแนวทางที่เหมาะสมกับธุรกิจของท่านอย่างแท้จริง',
@@ -252,7 +252,7 @@ return [
         'cta_project_consult' => 'ปรึกษาโปรเจกต์',
         'cta_view_contact_info' => 'ดูข้อมูลติดต่อ',
         'form_title' => 'ส่งข้อความถึงเรา',
-        'form_success_title' => 'ขอบคุณสำหรับข้อความ',
+        'form_success_title' => 'ขอบคุณสำหรับข้อมูล',
         'form_success_desc' => 'ทีมของเราได้รับข้อมูลเรียบร้อยแล้ว และจะติดต่อกลับภายใน 24 ชั่วโมง',
         'cta_send_message' => 'ส่งข้อความ',
         'company_info_title' => 'ข้อมูลบริษัท',

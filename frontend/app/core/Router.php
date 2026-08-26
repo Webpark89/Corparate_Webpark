@@ -45,17 +45,31 @@ class Router
         $queryRoute = trim((string) ($_GET['url'] ?? ''), '/');
 
         if ($queryRoute !== '') {
-            return '/' . $queryRoute;
-        }
+            $requestPath = '/' . $queryRoute;
+        } else {
+            $requestPath = parse_url($requestUri ?? ($_SERVER['REQUEST_URI'] ?? '/'), PHP_URL_PATH) ?: '/';
+            $basePath = app_base_url();
 
-        $requestPath = parse_url($requestUri ?? ($_SERVER['REQUEST_URI'] ?? '/'), PHP_URL_PATH) ?: '/';
-        $basePath = app_base_url();
-
-        if ($basePath !== '' && str_starts_with($requestPath, $basePath)) {
-            $requestPath = substr($requestPath, strlen($basePath)) ?: '/';
+            if ($basePath !== '' && str_starts_with($requestPath, $basePath)) {
+                $requestPath = substr($requestPath, strlen($basePath)) ?: '/';
+            }
         }
 
         $requestPath = '/' . trim($requestPath, '/');
+        
+        $parts = explode('/', trim($requestPath, '/'));
+        $lastPart = end($parts);
+        if ($lastPart === 'en') {
+            $_GET['lang'] = 'en';
+            array_pop($parts);
+        } else {
+            $_GET['lang'] = 'th';
+        }
+        
+        // Translate the path back to English so matching against routes.php works
+        $rawPath = implode('/', $parts);
+        $translatedPath = function_exists('translate_route_path') ? translate_route_path($rawPath, 'en') : $rawPath;
+        $requestPath = '/' . $translatedPath;
 
         return $requestPath === '/' ? '/' : rtrim($requestPath, '/');
     }
@@ -103,7 +117,7 @@ class Router
             $params = [];
             foreach ($matches as $key => $value) {
                 if (is_string($key)) {
-                    $params[$key] = $value;
+                    $params[$key] = rawurldecode($value);
                 }
             }
 

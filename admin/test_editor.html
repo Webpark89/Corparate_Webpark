@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test Editor v42</title>
+    <link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/42.0.0/ckeditor5.css" />
+</head>
+<body>
+    <textarea id="editor"></textarea>
+    <script src="https://cdn.ckeditor.com/ckeditor5/42.0.0/ckeditor5.umd.js"></script>
+    <script>
+        const {
+            ClassicEditor, Essentials, Bold, Italic, Font, Link, Image, ImageUpload, ImageInsert, List, BlockQuote, Undo, Paragraph, FileRepository
+        } = CKEDITOR;
+
+        ClassicEditor.create(document.querySelector('#editor'), {
+            plugins: [
+                Essentials, Bold, Italic, Font, Link, Image, ImageUpload, ImageInsert, List, BlockQuote, Undo, Paragraph, FileRepository
+            ],
+            toolbar: [
+                'heading', '|', 'bold', 'italic', 'fontColor', 'link', 'uploadImage', 'insertImage', '|', 'bulletedList', 'numberedList', 'blockQuote', '|', 'undo', 'redo'
+            ],
+            fontColor: {
+                colors: [
+                    { color: 'hsl(240, 75%, 60%)', label: 'Blue' },
+                    { color: 'hsl(0, 0%, 0%)', label: 'Black' }
+                ]
+            }
+        }).then(editor => {
+            console.log("Editor initialized successfully!");
+            document.body.innerHTML += '<div id="success">SUCCESS v42</div>';
+        }).catch(err => {
+            console.error(err);
+            document.body.innerHTML += '<div id="error">' + err.toString() + '</div>';
+        });
+    </script>
+</body>
+</html>

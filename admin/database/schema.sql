@@ -114,18 +114,25 @@ CREATE TABLE `settings` (
 CREATE TABLE `article` (
     `id` INT AUTO_INCREMENT PRIMARY KEY,
     `slug` VARCHAR(255) UNIQUE NOT NULL COMMENT 'URL ของบทความ',
+    `slug_en` VARCHAR(255) UNIQUE COMMENT 'URL ภาษาอังกฤษ',
     `meta_title` VARCHAR(255) COMMENT 'SEO Title',
+    `meta_title_en` VARCHAR(255) COMMENT 'SEO Title EN',
     `meta_keywords` VARCHAR(255) COMMENT 'SEO Keywords',
+    `meta_keywords_en` VARCHAR(255) COMMENT 'SEO Keywords EN',
     `meta_description` TEXT COMMENT 'SEO Description',
+    `meta_description_en` TEXT COMMENT 'SEO Description EN',
+    `source_url` VARCHAR(255) COMMENT 'ที่มาของบทความ',
     `category_id` INT COMMENT 'อ้างอิงหมวดหมู่บทความ',
     `cover_image` VARCHAR(255) COMMENT 'รูปภาพหน้าปกบทความ',
     `cover_image_alt` VARCHAR(255) COMMENT 'Alt Text ของรูปหน้าปก (เพื่อ SEO)',
     `content` LONGTEXT COMMENT 'เนื้อหาบทความแบบเต็ม (HTML/Rich Text)',
     `author_id` INT COMMENT 'อ้างอิงผู้เขียน',
     `status` VARCHAR(50) DEFAULT 'draft' COMMENT 'สถานะ: draft (ร่าง), published (เผยแพร่)',
+    `views` INT UNSIGNED NOT NULL DEFAULT 0 COMMENT 'จำนวนการเปิดอ่านบทความ',
     `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT 'วันที่สร้างบทความ',
     `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'วันที่แก้ไขล่าสุด',
     `deleted_at` TIMESTAMP NULL DEFAULT NULL COMMENT 'Soft Delete: เก็บเวลาที่ลบบทความ',
+    INDEX `idx_article_views` (`views`),
     FOREIGN KEY (`category_id`) REFERENCES `categories`(`id`) ON DELETE SET NULL,
     FOREIGN KEY (`author_id`) REFERENCES `authors`(`id`) ON DELETE SET NULL
 ) COMMENT = 'ตารางเก็บข้อมูลบทความ / บล็อก';
@@ -178,3 +185,33 @@ CREATE TABLE `service_features` (
     `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (`service_id`) REFERENCES `service`(`id`) ON DELETE CASCADE
 ) COMMENT = 'ตารางเก็บฟีเจอร์หรือบริการย่อยที่อิงกับบริการหลัก (ลบบริการหลัก ฟีเจอร์หายตาม)';
+
+CREATE TABLE `contact_messages` (
+    `id`               INT AUTO_INCREMENT PRIMARY KEY COMMENT 'รหัสข้อความติดต่อ (Primary Key)',
+    `company_name`     VARCHAR(255)  NULL     COMMENT 'ชื่อบริษัท (ไม่บังคับ)',
+    `first_name`       VARCHAR(50)   NOT NULL COMMENT 'ชื่อจริง',
+    `last_name`        VARCHAR(50)   NOT NULL COMMENT 'นามสกุล',
+    `phone`            VARCHAR(20)   NOT NULL COMMENT 'เบอร์โทรศัพท์ (ตัวเลขล้วน ≤10 หลัก)',
+    `email`            VARCHAR(255)  NOT NULL COMMENT 'อีเมลติดต่อ',
+    `message`          TEXT          NOT NULL COMMENT 'ข้อความจากลูกค้า',
+    `pdpa_consent`     TINYINT(1)    NOT NULL DEFAULT 0 COMMENT '1 = ยอมรับ PDPA',
+    `pdpa_consent_at`  TIMESTAMP     NULL     COMMENT 'เวลาที่กดยอมรับ PDPA',
+    `status`           ENUM('new','read','replied','archived') NOT NULL DEFAULT 'new' COMMENT 'สถานะข้อความ',
+    `ip_address`       VARCHAR(45)   NULL     COMMENT 'IP Address ผู้ส่ง',
+    `user_agent`       TEXT          NULL     COMMENT 'User Agent ของ Browser',
+    `source_page`      VARCHAR(255)  NULL     COMMENT 'หน้าที่ส่งฟอร์ม',
+    `email_sent`       TINYINT(1)    NOT NULL DEFAULT 0 COMMENT '1 = ส่งอีเมลแจ้งเตือนสำเร็จ',
+    `created_at`       TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'วันที่และเวลาที่ส่งข้อความ',
+    INDEX `idx_contact_status` (`status`),
+    INDEX `idx_contact_created` (`created_at` DESC)
+) COMMENT = 'ตารางเก็บข้อมูลข้อความติดต่อจากลูกค้า';
+
+CREATE TABLE IF NOT EXISTS `daily_traffic` (
+    `id` INT AUTO_INCREMENT PRIMARY KEY,
+    `date` DATE NOT NULL UNIQUE COMMENT 'วันที่บันทึกสถิติ',
+    `pageviews` INT UNSIGNED NOT NULL DEFAULT 0 COMMENT 'จำนวนเปิดหน้าเพจรวม',
+    `unique_visitors` INT UNSIGNED NOT NULL DEFAULT 0 COMMENT 'จำนวนผู้เข้าชมไม่ซ้ำในแต่ละวัน',
+    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    INDEX `idx_traffic_date` (`date`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='ตารางเก็บสถิติการเข้าชมเว็บไซต์รายวัน';

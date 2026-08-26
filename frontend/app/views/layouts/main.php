@@ -1,7 +1,5 @@
 <?php
-
 declare(strict_types=1);
-
 /**
  * Main HTML layout — SEO meta, Open Graph, JSON-LD, and page shell.
  *
@@ -22,33 +20,29 @@ $jsonLd = isset($jsonLd) && is_array($jsonLd) ? $jsonLd : [];
 $jsonGraph = [];
 $tailwindCssFile = realpath(__DIR__ . '/../../../public/assets/css/tailwind.css');
 $tailwindCssVersion = $tailwindCssFile !== false ? filemtime($tailwindCssFile) : time();
-
 if (!headers_sent()) {
     header('Content-Type: text/html; charset=UTF-8');
 }
-
 if ($jsonLd !== []) {
     if (isset($jsonLd['@graph']) && is_array($jsonLd['@graph'])) {
         $jsonGraph = $jsonLd;
     } else {
         $isList = array_keys($jsonLd) === range(0, count($jsonLd) - 1);
-
         $jsonGraph = [
             '@context' => 'https://schema.org',
             '@graph' => $isList ? $jsonLd : [$jsonLd],
         ];
     }
 }
-
 $currentPage = $currentPage ?? '';
 $content = $content ?? '';
 ?>
 <!DOCTYPE html>
-<html lang="th">
-
+<html lang="<?= e(function_exists('getCurrentLang') ? getCurrentLang() : 'th') ?>" translate="no">
 <head>
+    <meta name="google" content="notranslate">
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title><?= e($title) ?></title>
     <meta name="description" content="<?= e($metaDescription) ?>">
     <meta name="robots" content="<?= e($robots) ?>">
@@ -74,28 +68,124 @@ $content = $content ?? '';
     <meta name="twitter:description" content="<?= e($metaDescription) ?>">
     <meta name="twitter:image" content="<?= e($imageUrl) ?>">
     <meta name="twitter:image:alt" content="<?= e($imageAlt) ?>">
+    <?php if (($currentPage ?? '') === 'home' || empty($currentPage)): ?>
+        <link rel="preload" as="image" href="<?= e(asset_url('images/Pkatty.webp')) ?>" fetchpriority="high" type="image/webp">
+    <?php endif; ?>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+Thai:wght@100..900&display=swap" rel="stylesheet">
+    <style>
+        /* Set Noto Sans Thai as default system font */
+        body, .font-sans {
+            font-family: 'Noto Sans Thai', 'Inter', ui-sans-serif, system-ui, sans-serif !important;
+            line-height: 1.6;
+        }
+        /* Global Article Format Styling for Tables */
+        .article-format table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1.5rem;
+            display: block;
+            overflow-x: auto;
+        }
+        .article-format th, 
+        .article-format td {
+            border: 1px solid #cbd5e1; /* slate-300 */
+            padding: 0.75rem 1rem;
+            text-align: left;
+            vertical-align: top;
+            min-width: 120px;
+        }
+        .article-format th {
+            background-color: #f8fafc; /* slate-50 */
+            font-weight: 700;
+            color: #022862;
+        }
+    </style>
     <link rel="stylesheet" href="<?= e(asset_url('assets/css/tailwind.css')) ?>?v=<?= e($tailwindCssVersion) ?>">
     <?php if ($jsonGraph !== []): ?>
         <script type="application/ld+json">
             <?= json_encode($jsonGraph, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>
         </script>
     <?php endif; ?>
+    <style>
+        html, body {
+            width: 100% !important;
+            max-width: 100% !important;
+            position: relative;
+            margin: 0;
+            padding: 0;
+        }
+        main, section, header, footer {
+            max-width: 100% !important;
+        }
+    </style>
 </head>
-
-<body class="bg-slate-50 text-slate-900 antialiased">
-    <?php require __DIR__ . '/../components/navbar.php'; ?>
-
-    <main class="min-h-screen">
-        <?= $content ?>
-    </main>
-
-    <?php require __DIR__ . '/../components/cta.php'; ?>
-    <?php require __DIR__ . '/../components/footer.php'; ?>
-
+<body class="bg-slate-50 text-slate-900 antialiased relative w-full max-w-full">
+    <div class="site-wrapper relative w-full max-w-full min-h-screen">
+        <?php require __DIR__ . '/../components/navbar.php'; ?>
+        <main class="min-h-screen w-full max-w-full">
+            <?= $content ?>
+        </main>
+        <?php if ($currentPage !== 'contact'): ?>
+            <?php require __DIR__ . '/../components/cta.php'; ?>
+        <?php endif; ?>
+        <?php require __DIR__ . '/../components/footer.php'; ?>
+    </div>
+    <style>
+        #scrollToTopBtn {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            z-index: 99999;
+            width: 50px;
+            height: 50px;
+            background-color: #ffffff;
+            border: 1px solid #f1f5f9;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #2563eb;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+            opacity: 1;
+            visibility: visible;
+        }
+        #scrollToTopBtn:hover {
+            color: #1d4ed8;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            transform: translateY(-3px);
+        }
+        #scrollToTopBtn svg {
+            width: 22px;
+            height: 22px;
+            transition: transform 0.3s ease;
+        }
+        #scrollToTopBtn:hover svg {
+            transform: translateY(-3px);
+        }
+    </style>
+    <button id="scrollToTopBtn" aria-label="Scroll to top">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+        </svg>
+    </button>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const scrollBtn = document.getElementById('scrollToTopBtn');
+            if (scrollBtn) {
+                scrollBtn.addEventListener('click', function() {
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                });
+            }
+        });
+    </script>
     <script src="<?= e(asset_url('assets/js/main.js')) ?>"></script>
+    <?php require __DIR__ . '/../components/cookie-banner.php'; ?>
 </body>
-
 </html>

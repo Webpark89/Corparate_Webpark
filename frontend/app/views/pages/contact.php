@@ -1,11 +1,8 @@
 <?php
-
 declare(strict_types=1);
-
 /**
  * Contact page view — hero, inquiry form, company info, and map embed.
  */
-
 $errors = $errors ?? [];
 $submitted = $submitted ?? false;
 $form = $form ?? [];
@@ -20,78 +17,132 @@ $form = $form ?? [];
         opacity: 0;
         animation: fadeSlideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
-
     .delay-100 { animation-delay: 100ms; }
     .delay-200 { animation-delay: 200ms; }
     .delay-300 { animation-delay: 300ms; }
     .delay-400 { animation-delay: 400ms; }
+    .hero-parallax-img {
+        transform: scale(1.12);
+        will-change: transform;
+    }
+    @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after {
+            animation-duration: 0.001ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.001ms !important;
+            scroll-behavior: auto !important;
+        }
+    }
 </style>
-
-<section class="relative overflow-hidden font-sans bg-[#f7faff]">
+<section id="contact-hero" class="relative overflow-hidden font-sans bg-white border-none">
     <div class="absolute inset-0 z-0">
-        <img src="<?= e(asset_url('images/bg-5.png')) ?>" alt="WEBPARK Solutions Background" class="w-full h-full object-cover object-center opacity-70 mix-blend-screen">
+        <img src="<?= e(asset_url('images/bg-5.png')) ?>" alt="WEBPARK Solutions Background" class="hero-parallax-img w-full h-full object-cover object-center opacity-70 mix-blend-screen">
         <div class="absolute inset-0 bg-gradient-to-r from-white via-white/70 to-white/5"></div>
         <div class="absolute inset-x-0 bottom-0 h-[30%] bg-gradient-to-t from-white to-transparent z-10"></div>
     </div>
-
-    <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 pt-12 pb-24 lg:pt-28 lg:pb-32 relative z-10">
+    <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 pt-12 pb-10 lg:pt-28 lg:pb-32 relative z-10 desktop-wide-container-contact">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-            
-            <div class="max-w-2xl">
-                <div class="animate-fade-up delay-100 inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary mb-6 shadow-sm">
-                    <span class="text-blue-500 font-bold">+</span>
-                    <span class="text-xs md:text-sm font-semibold text-primary uppercase tracking-wide">OUR CONTACT</span>
-                </div>
+            <div class="max-w-2xl px-4 md:px-0 lg:ml-12 ipad-pro-ml-0 xl:ml-24">
+                <nav aria-label="Breadcrumb" class="hidden md:block animate-fade-up delay-100 mb-6">
+                    <ol class="inline-flex items-center text-sm md:text-base font-medium text-slate-500">
+                        <li>
+                            <a href="<?= e(route_url('/')) ?>" class="hover:text-primary transition-colors duration-200">
+                                <?= e(t('common.nav_home')) ?>
+                            </a>
+                        </li>
+                        <li>
+                            <span class="text-slate-400" style="margin: 0 4px;">/</span>
+                        </li>
+                        <li aria-current="page">
+                            <span class="text-slate-400"><?= e(t('contact.hero_title')) ?></span>
+                        </li>
+                    </ol>
+                </nav>
+                <style>
+                    .hero-title-text {
+                        font-size: 2.25rem;
+                        line-height: 1.25;
+                    }
+                    .hero-desc-text {
+                        font-size: 17px;
+                        line-height: 1.65;
+                    }
+                    @media (min-width: 768px) {
+                        .hero-title-text { font-size: 3.5rem; line-height: 1.2; }
+                        .hero-desc-text { font-size: 21px; line-height: 1.7; }
+                    }
+                    @media (min-width: 1024px) {
+                        .hero-title-text { font-size: 5.5rem; line-height: 1.2; }
+                    }
+                    @media (min-width: 1280px) {
+                        .hero-title-text { font-size: 7rem; line-height: 1.2; }
+                    }
+                    
+                    /* สไตล์พิเศษสำหรับหน้าจอ Desktop (ใหญ่กว่า iPad Pro) */
+                    @media (min-width: 1025px) {
+                        .desktop-wide-container-contact {
+                            max-width: 1720px !important;
+                            padding-left: 2.5rem !important;
+                            padding-right: 2.5rem !important;
+                        }
+                        .desktop-contact-hero-h1 {
+                            font-size: 5.5rem !important;
+                            line-height: 1.1 !important;
+                        }
+                        .desktop-contact-hero-p {
+                            font-size: 1.25rem !important;
+                            line-height: 1.75 !important;
+                            max-width: 34rem !important;
+                        }
+                    }
 
-                <h1 class="animate-fade-up delay-200 text-5xl md:text-6xl lg:text-8xl font-lg leading-[1.1] mb-2 tracking-tighter">
-                    <span class="bg-gradient-to-r from-[#898F98] to-[#000208] bg-clip-text text-transparent inline-block py-1">ติดต่อเรา</span><br>
-                    <span class="bg-gradient-to-r from-[#003380] to-[#0055ff] bg-clip-text text-transparent inline-block py-1">WEBPARK</span>
+                    @keyframes text-gradient-pan {
+                        0% { background-position: 0% center; }
+                        50% { background-position: 100% center; }
+                        100% { background-position: 0% center; }
+                    }
+                    .animate-text-gradient {
+                        background-size: 200% auto;
+                        animation: text-gradient-pan 6s linear infinite;
+                    }
+                </style>
+                <h1 class="animate-fade-up delay-200 tracking-tight mb-2 leading-[1.1]">
+                    <span class="hero-title-text font-bold bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block py-2 md:py-2.5 whitespace-nowrap desktop-contact-hero-h1"><?= e(t('contact.hero_title')) ?></span><br>
+                    <span class="hero-title-text font-bold bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block py-1 md:py-2 -mt-1 md:-mt-2 lg:-mt-2 whitespace-nowrap desktop-contact-hero-h1" style="animation-delay: -3s;">WEBPARK</span>
                 </h1>
-
-                <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-base md:text-lg leading-relaxed max-w-lg mb-10 font-medium">
-                    <!-- Mobile Text -->
-                    <span class="block md:hidden">
-                        พูดคุยและปรึกษาเกี่ยวกับโปรเจกต์ ระบบ เว็บไซต์<br>
-                        ERP / ERM และโซลูชันดิจิทัลเพื่อธุรกิจของคุณ
+                <?php
+                if (getCurrentLang() === 'th') {
+                    $mobile_desc = "มาพูดคุยเกี่ยวกับโปรเจกต์ ระบบ เว็บไซต์<br>หรือ ERP/ERM และดิจิทัลโซลูชัน<br>สำหรับธุรกิจคุณ";
+                } else {
+                    $mobile_desc = "Let's talk about your project, system,<br>website, or ERP/ERM and digital<br>solutions for your business";
+                }
+                ?>
+                <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-lg md:text-xl leading-relaxed max-w-lg mb-10 font-medium desktop-contact-hero-p">
+                    <span class="block md:hidden leading-[1.75]">
+                        <?= $mobile_desc ?>
                     </span>
-                    <!-- Desktop Text -->
-                    <span class="hidden md:block">
-                        พูดคุยและปรึกษาเกี่ยวกับโปรเจกต์ ระบบ เว็บไซต์ ERP / ERM <br>และโซลูชันดิจิทัลเพื่อธุรกิจของคุณ
+                    <span class="hidden md:block leading-relaxed">
+                        <?= e(getCurrentLang() === 'th' ? 'พูดคุยและปรึกษาเกี่ยวกับโปรเจกต์ ระบบ เว็บไซต์' : 'Let\'s talk about your project, system, website,') ?><br>
+                        <?= e(getCurrentLang() === 'th' ? 'ERP / ERM และโซลูชันดิจิทัลเพื่อธุรกิจของคุณ' : 'or ERP/ERM and digital solutions for your business.') ?>
                     </span>
                 </p>
-
-                <div class="animate-fade-up delay-400 flex flex-col sm:flex-row items-start sm:items-center gap-4">
-                    <!-- Mobile Buttons -->
-                    <a href="<?= e(route_url('/services')) ?>" class="md:hidden inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-primary text-white text-sm font-semibold rounded-full hover:bg-blue-700 transition-all shadow-md hover:-translate-y-0.5">
-                        ดูบริการของเรา
+                <div class="animate-fade-up delay-400 flex flex-col sm:flex-row items-start sm:items-center gap-2 md:gap-4">
+                    <a href="<?= e(route_url('/services')) ?>" class="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-primary text-white text-sm font-semibold rounded-full hover:bg-blue-700 transition-all shadow-md hover:-translate-y-0.5">
+                        <?= e(t('common.cta_view_services')) ?>
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                         </svg>
                     </a>
-                    
-                    <a href="#" class="md:hidden inline-flex items-center gap-4 transition-all hover:-translate-y-0.5 group">
-                        <div class="h-14 w-14 bg-white flex items-center justify-center rounded-full shadow-lg border border-slate-200 transition-all group-hover:bg-slate-50 group-hover:shadow-xl group-hover:scale-105">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600 fill-current" viewBox="0 0 24 24">
+                    <a href="#" class="inline-flex items-center gap-3 transition-all hover:-translate-y-0.5 group">
+                        <div class="h-12 w-12 bg-white flex items-center justify-center rounded-full shadow-sm border border-slate-200 transition-all group-hover:bg-slate-50 group-hover:shadow-md group-hover:scale-105">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-primary fill-current" viewBox="0 0 24 24">
                                 <path d="M8 5v14l11-7z"/>
                             </svg>
                         </div>
-                        <span class="text-slate-800 text-lg font-semibold group-hover:text-primary transition-colors">ดูวิดีโอแนะนำ</span>
-                    </a>
-
-                    <!-- Desktop Buttons -->
-                    <a href="#contact-section" class="hidden md:inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-primary text-white text-sm font-semibold rounded-full hover:bg-blue-700 transition-all shadow-md hover:-translate-y-0.5">
-                        ปรึกษาโปรเจกต์
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                        </svg>
-                    </a>
-                    
-                    <a href="#company-info" class="hidden md:inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-white text-slate-700 text-sm font-semibold rounded-full hover:bg-slate-50 transition-all shadow-sm border border-slate-200 hover:-translate-y-0.5">
-                        ดูข้อมูลติดต่อ
+                        <span class="text-slate-400 text-sm font-medium group-hover:text-primary transition-colors"><?= e(t('common.cta_watch_intro_video')) ?></span>
                     </a>
                 </div>
             </div>
-            
         </div>
     </div>
 </section>
@@ -106,244 +157,750 @@ $form = $form ?? [];
             transform: translate3d(0, 0, 0);
         }
     }
-
     .animate-fade-in-up {
         animation: fadeInUp 0.6s ease-out forwards;
     }
-
     /* Animation Delay Utilities */
     .animation-delay-200 { animation-delay: 0.2s; }
     .animation-delay-400 { animation-delay: 0.4s; }
 </style>
-
-<section id="contact-section" class="bg-white py-16 lg:py-24 font-sans">
-    <div class="mx-auto w-full max-w-7xl px-4 sm:px-4 lg:px-6"> 
-        <style>
-            @media (min-width: 1024px) {
-                .align-with-right-cards { margin-top: 56px !important; }
-            }
-        </style>
-        <style>
-            @media (max-width: 1023px) {
-                .mobile-swap-container {
-                    display: flex !important;
-                    flex-direction: column-reverse !important;
+<section id="contact-section" class="bg-white pt-6 pb-16 lg:py-24 font-sans border-none">
+    <div class="mx-auto w-full max-w-7xl px-4 sm:px-4 lg:px-6 desktop-wide-container-contact"> 
+        <div class="lg:px-12 xl:px-24">
+            <style>
+                @media (min-width: 1024px) {
+                    .align-with-right-cards { margin-top: 56px !important; }
                 }
-            }
-        </style>
-        <div class="mobile-swap-container grid grid-cols-1 lg:grid-cols-12 gap-10 xl:gap-14 items-start">
-            <div class="lg:col-span-6 bg-white border border-slate-100 shadow-[0_4px_30px_rgba(0,0,0,0.02)] rounded-[2.5rem] p-6 md:p-10 animate-fade-in-up flex flex-col align-with-right-cards">
-                <h2 class="text-xl md:text-2xl font-bold text-dark mb-6">
-                    ส่งข้อความถึงเรา
-                </h2>
+                @media (min-width: 1025px) {
+                    .desktop-contact-section-title {
+                        font-size: 2rem !important;
+                        color: #0663F6 !important;
+                        margin-bottom: 2rem !important;
+                    }
+                    .desktop-contact-card {
+                        padding: 2rem !important;
+                    }
+                    .desktop-contact-icon {
+                        width: 3.5rem !important;
+                        height: 3.5rem !important;
+                    }
+                    .desktop-contact-icon svg {
+                        width: 1.75rem !important;
+                        height: 1.75rem !important;
+                    }
+                    .desktop-contact-btn-wrapper {
+                        justify-content: flex-start !important;
+                    }
+                }
+            </style>
+            <style>
+                @media (max-width: 1023px) {
+                    .mobile-swap-container {
+                        display: flex !important;
+                        flex-direction: column-reverse !important;
+                    }
+                }
+                @media (min-width: 768px) and (max-width: 1023px) {
+                    .mobile-swap-container {
+                        width: 100% !important;
+                    }
+                    .gsap-contact-form,
+                    #company-info {
+                        width: 100% !important;
+                        max-width: 100% !important;
+                    }
+                    #contact_mobile-name-wrapper {
+                        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+                    }
+                }
+            </style>
+            <div class="mobile-swap-container grid grid-cols-1 lg:grid-cols-12 gap-10 xl:gap-14 items-start">
+                <div class="gsap-contact-form lg:col-span-6 bg-white border border-slate-100 shadow-[0_4px_30px_rgba(0,0,0,0.02)] rounded-[2.5rem] p-6 md:p-10 flex flex-col align-with-right-cards opacity-0 translate-y-10">
+                    <h2 class="text-2xl md:text-3xl font-bold text-dark mb-6 desktop-contact-section-title">
+                        <?= e(t('contact.form_title')) ?>
+                    </h2>
 
-                <?php if ($submitted): ?>
-                    <div class="text-center py-16 flex flex-col items-center justify-center flex-grow">
+                    <!-- Success Box (Visible upon successful submission) -->
+                    <div id="contact-success-box" class="<?= $submitted ? '' : 'hidden' ?> text-center py-16 flex flex-col items-center justify-center flex-grow">
                         <div class="w-16 h-16 bg-blue-50 text-primary rounded-full flex items-center justify-center mx-auto mb-4">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
                         </div>
-                        <h3 class="text-xl font-bold text-dark mb-2">ขอบคุณสำหรับข้อความ</h3>
-                        <p class="text-slate-500 text-sm font-medium">ทีมของเราได้รับข้อมูลเรียบร้อยแล้ว และจะติดต่อกลับภายใน 24 ชั่วโมง</p>
+                        <h3 class="text-xl font-bold text-dark mb-2"><?= e(t('contact.form_success_title')) ?></h3>
+                        <p class="text-slate-500 text-sm font-medium"><?= e(t('contact.form_success_desc')) ?></p>
                     </div>
-                <?php else: ?>
-                    <style>
-                        .custom-placeholder::placeholder {
-                            color: #022862 !important;
-                            opacity: 0.9;
-                        }
-                    </style>
-                    <form method="post" class="flex flex-col flex-grow space-y-4">
-                        <!-- Desktop Name Field -->
-                        <div id="contact_desktop-name-wrapper" class="hidden lg:block">
-                            <input type="text" id="contact_name_desktop" name="name" placeholder="ชื่อ - นามสกุล" value="<?= e($form['name'] ?? '') ?>" required maxlength="100"
-                                class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-sm text-slate-900 outline-none transition-all duration-300 custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary focus:shadow-inner">
-                        </div>
 
-                        <!-- Mobile Name Fields -->
-                        <div id="contact_mobile-name-wrapper" class="grid grid-cols-1 gap-4 lg:hidden">
-                            <input type="text" id="contact_name_mobile_first" name="firstname" placeholder="ชื่อ" value="<?= e($form['firstname'] ?? '') ?>" required maxlength="50"
-                                class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-sm text-slate-900 outline-none transition-all duration-300 custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary focus:shadow-inner">
-                            <input type="text" id="contact_name_mobile_last" name="lastname" placeholder="นามสกุล" value="<?= e($form['lastname'] ?? '') ?>" required maxlength="50"
-                                class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-sm text-slate-900 outline-none transition-all duration-300 custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary focus:shadow-inner">
-                        </div>
+                    <!-- Form Container -->
+                    <div id="contact-form-box" class="<?= $submitted ? 'hidden' : '' ?> flex flex-col flex-grow">
+                        <style>
+                            .custom-placeholder::placeholder {
+                                color: #022862 !important;
+                                opacity: 1 !important;
+                            }
+                            .input-error {
+                                border-color: #f87171 !important;
+                                box-shadow: 0 0 0 3px rgba(248, 113, 113, 0.2) !important;
+                            }
+                            .input-error:focus {
+                                border-color: #ef4444 !important;
+                                box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.25) !important;
+                            }
+                            .field-error-msg {
+                                color: #e05263;
+                                font-size: 0.8125rem;
+                                line-height: 1.25rem;
+                                margin-top: 0.375rem;
+                                font-weight: 400;
+                                display: block;
+                            }
+                            .field-error-msg.hidden {
+                                display: none !important;
+                            }
+                        </style>
+                        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+                        <form id="contactMainForm" method="post" action="<?= e(route_url('/contact/submit')) ?>" class="flex flex-col flex-grow space-y-4" novalidate>
+                            <input type="hidden" name="source_page" value="<?= e($_SERVER['REQUEST_URI'] ?? '') ?>">
+                            <input type="hidden" name="is_ajax" value="1">
 
-                        <script>
-                            function updateContactFormLayout() {
-                                const isDesktop = window.innerWidth >= 1024; // lg breakpoint
-                                const nameDesktop = document.getElementById('contact_name_desktop');
-                                const nameMobileFirst = document.getElementById('contact_name_mobile_first');
-                                const nameMobileLast = document.getElementById('contact_name_mobile_last');
-                                
-                                if (isDesktop) {
-                                    if(nameDesktop) nameDesktop.disabled = false;
-                                    if(nameMobileFirst) nameMobileFirst.disabled = true;
-                                    if(nameMobileLast) nameMobileLast.disabled = true;
-                                } else {
-                                    if(nameDesktop) nameDesktop.disabled = true;
-                                    if(nameMobileFirst) nameMobileFirst.disabled = false;
-                                    if(nameMobileLast) nameMobileLast.disabled = false;
+                            <!-- First Name & Last Name (Separated, 2 columns) -->
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <input type="text" id="contact_first_name" name="first_name" placeholder="<?= e(t('common.form_label_firstname')) ?> *" value="<?= e($form['first_name'] ?? '') ?>" maxlength="30"
+                                        class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-base text-slate-900 outline-none transition-all duration-300 custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary focus:shadow-inner"
+                                        oninput="this.value = this.value.replace(/\s+/g, '');">
+                                    <p id="error_contact_first_name" class="field-error-msg hidden"></p>
+                                </div>
+                                <div>
+                                    <input type="text" id="contact_last_name" name="last_name" placeholder="<?= e(t('common.form_label_lastname')) ?> *" value="<?= e($form['last_name'] ?? '') ?>" maxlength="30"
+                                        class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-base text-slate-900 outline-none transition-all duration-300 custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary focus:shadow-inner"
+                                        oninput="this.value = this.value.replace(/\s+/g, '');">
+                                    <p id="error_contact_last_name" class="field-error-msg hidden"></p>
+                                </div>
+                            </div>
+
+                            <!-- Company Name (Optional) -->
+                            <div>
+                                <input type="text" id="contact_company_name" name="company_name" placeholder="<?= e(t('common.form_label_company_optional')) ?>" value="<?= e($form['company_name'] ?? '') ?>" maxlength="100"
+                                    class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-base text-slate-900 outline-none transition-all duration-300 custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary focus:shadow-inner">
+                                <p id="error_contact_company_name" class="field-error-msg hidden"></p>
+                            </div>
+
+                            <!-- Phone & Email -->
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <input type="text" inputmode="numeric" id="contact_phone" name="phone" placeholder="<?= e(t('common.form_label_phone')) ?> *" value="<?= e($form['phone'] ?? '') ?>" maxlength="10"
+                                        oninput="this.value = this.value.replace(/[^0-9]/g, '');"
+                                        class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-base text-slate-900 outline-none transition-all duration-300 custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary focus:shadow-inner">
+                                    <p id="error_contact_phone" class="field-error-msg hidden"></p>
+                                </div>
+                                <div>
+                                    <input type="email" id="contact_email" name="email" placeholder="<?= e(t('common.form_label_email')) ?> *" value="<?= e($form['email'] ?? '') ?>" maxlength="255"
+                                        class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-base text-slate-900 outline-none transition-all duration-300 custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary focus:shadow-inner">
+                                    <p id="error_contact_email" class="field-error-msg hidden"></p>
+                                </div>
+                            </div>
+
+                            <!-- Message with Character Counter -->
+                            <div class="space-y-1">
+                                <textarea id="contact_message_area" name="message" placeholder="<?= e(t('common.form_label_details')) ?> *" rows="4" maxlength="500"
+                                    class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-base text-slate-900 outline-none transition-all duration-300 custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary resize-none focus:shadow-inner"><?= e($form['message'] ?? '') ?></textarea>
+                                <div class="flex justify-between items-center px-1 text-xs text-slate-400">
+                                    <span>* ความยาวไม่เกิน 500 ตัวอักษร</span>
+                                    <span id="contact_word_count_display" class="font-semibold text-slate-500">0/500</span>
+                                </div>
+                                <p id="error_contact_message_area" class="field-error-msg hidden"></p>
+                            </div>
+
+                            <!-- PDPA Consent Checkbox -->
+                            <div>
+                                <div class="flex items-start gap-3 pt-1">
+                                    <input type="checkbox" id="privacy_consent_checkbox" name="pdpa_agreed" value="1" <?= !empty($form['pdpa_agreed']) ? 'checked' : '' ?> class="mt-1 w-4 h-4 rounded border-slate-300 text-primary focus:ring-primary cursor-pointer transition-all duration-200">
+                                    <label for="privacy_consent_checkbox" class="text-sm md:text-base leading-relaxed cursor-pointer select-none">
+                                        <span style="color: #022862;"><?= e(t('common.form_consent_prefix')) ?></span> <a href="<?= e(route_url('/privacy-policy')) ?>" target="_blank" rel="noopener noreferrer" style="color: #0663F6;" class="hover:underline transition-colors duration-200"><?= e(t('common.form_consent_privacy_policy')) ?></a> <span style="color: #0663F6;"><?= e(t('common.form_consent_terms_suffix')) ?></span>
+                                    </label>
+                                </div>
+                                <p id="error_privacy_consent_checkbox" class="field-error-msg hidden"></p>
+                            </div>
+
+                            <!-- Google reCAPTCHA v2 Widget -->
+                            <div>
+                                <div class="pt-1 flex justify-center sm:justify-start">
+                                    <div id="contact_recaptcha_container" class="g-recaptcha" data-sitekey="<?= e($siteKey ?? '6Lcf_pAtAAAAAOVhatPPwrHSYXeb_0J4yXf5BrRO') ?>"></div>
+                                </div>
+                                <p id="error_contact_recaptcha" class="field-error-msg hidden"></p>
+                            </div>
+
+                            <!-- Dynamic Error Message Box (AJAX / Static) -->
+                            <div id="contact-error-box" class="<?= empty($errors) ? 'hidden' : '' ?> rounded-xl bg-red-50 border border-red-200 p-4 text-xs font-semibold text-red-600 space-y-1.5">
+                                <?php if (!empty($errors)): ?>
+                                    <?php foreach ($errors as $error): ?>
+                                        <div class="flex items-center gap-2">
+                                            <svg class="w-4 h-4 text-red-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                            <span><?= e($error) ?></span>
+                                        </div>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
+                            </div>
+
+                            <!-- Submit Button -->
+                            <div class="pt-2 mt-auto flex justify-center desktop-contact-btn-wrapper">
+                                <button type="submit" id="contact_submit_btn" class="px-8 py-3.5 bg-primary hover:bg-blue-700 text-white font-bold text-base rounded-full shadow-md shadow-blue-500/10 transition-all duration-300 cursor-pointer hover:shadow-lg hover:-translate-y-0.5 flex items-center justify-center gap-2 desktop-contact-btn disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none disabled:hover:translate-y-0">
+                                    <span id="contact_btn_text"><?= e(t('contact.cta_send_message')) ?></span>
+                                    <svg id="contact_btn_icon" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                                    </svg>
+                                    <svg id="contact_btn_spinner" class="hidden animate-spin h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
+                                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function () {
+                            const form = document.getElementById('contactMainForm');
+                            const firstNameInput = document.getElementById('contact_first_name');
+                            const lastNameInput = document.getElementById('contact_last_name');
+                            const companyInput = document.getElementById('contact_company_name');
+                            const phoneInput = document.getElementById('contact_phone');
+                            const emailInput = document.getElementById('contact_email');
+                            const messageArea = document.getElementById('contact_message_area');
+                            const privacyCb = document.getElementById('privacy_consent_checkbox');
+                            const recaptchaContainer = document.getElementById('contact_recaptcha_container');
+                            
+                            const errorFirstName = document.getElementById('error_contact_first_name');
+                            const errorLastName = document.getElementById('error_contact_last_name');
+                            const errorCompany = document.getElementById('error_contact_company_name');
+                            const errorPhone = document.getElementById('error_contact_phone');
+                            const errorEmail = document.getElementById('error_contact_email');
+                            const errorMessage = document.getElementById('error_contact_message_area');
+                            const errorPrivacy = document.getElementById('error_privacy_consent_checkbox');
+                            const errorRecaptcha = document.getElementById('error_contact_recaptcha');
+
+                            const submitBtn = document.getElementById('contact_submit_btn');
+                            const btnText = document.getElementById('contact_btn_text');
+                            const btnIcon = document.getElementById('contact_btn_icon');
+                            const btnSpinner = document.getElementById('contact_btn_spinner');
+                            const wordCountDisplay = document.getElementById('contact_word_count_display');
+                            const errorBox = document.getElementById('contact-error-box');
+                            const formBox = document.getElementById('contact-form-box');
+                            const successBox = document.getElementById('contact-success-box');
+
+                            const isTh = '<?= getCurrentLang() ?>' === 'th';
+
+                            // Letter only regex (Thai letters + English letters)
+                            const letterOnlyRegex = /^[a-zA-Z\u0E00-\u0E7F]+$/;
+                            // Email regex
+                            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+                            function setError(inputEl, errorEl, message) {
+                                if (inputEl) {
+                                    inputEl.classList.add('input-error');
+                                }
+                                if (errorEl) {
+                                    errorEl.textContent = message;
+                                    errorEl.classList.remove('hidden');
                                 }
                             }
-                            window.addEventListener('resize', updateContactFormLayout);
-                            window.addEventListener('DOMContentLoaded', updateContactFormLayout);
-                            updateContactFormLayout();
-                        </script>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <input type="text" name="phone" placeholder="เบอร์โทรศัพท์" value="<?= e($form['phone'] ?? '') ?>" required maxlength="40"
-                                class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-sm text-slate-900 outline-none transition-all duration-300 custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary focus:shadow-inner">
 
-                            <input type="email" name="email" placeholder="อีเมล" value="<?= e($form['email'] ?? '') ?>" required maxlength="255"
-                                class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-sm text-slate-900 outline-none transition-all duration-300 custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary focus:shadow-inner">
+                            function clearError(inputEl, errorEl) {
+                                if (inputEl) {
+                                    inputEl.classList.remove('input-error');
+                                }
+                                if (errorEl) {
+                                    errorEl.textContent = '';
+                                    errorEl.classList.add('hidden');
+                                }
+                            }
+
+                            // Individual field validators
+                            function validateFirstName() {
+                                const val = (firstNameInput.value || '').trim();
+                                if (!val) {
+                                    setError(firstNameInput, errorFirstName, isTh ? 'กรุณากรอกชื่อจริง' : 'Please enter your first name');
+                                    return false;
+                                }
+                                if (!letterOnlyRegex.test(val)) {
+                                    setError(firstNameInput, errorFirstName, isTh ? 'กรุณากรอกชื่อเป็นตัวอักษรเท่านั้น' : 'Please enter a valid name using letters only');
+                                    return false;
+                                }
+                                if (val.length > 30) {
+                                    setError(firstNameInput, errorFirstName, isTh ? 'ชื่อจริงต้องไม่เกิน 30 ตัวอักษร' : 'First name must not exceed 30 characters');
+                                    return false;
+                                }
+                                clearError(firstNameInput, errorFirstName);
+                                return true;
+                            }
+
+                            function validateLastName() {
+                                const val = (lastNameInput.value || '').trim();
+                                if (!val) {
+                                    setError(lastNameInput, errorLastName, isTh ? 'กรุณากรอกนามสกุล' : 'Please enter your last name');
+                                    return false;
+                                }
+                                if (!letterOnlyRegex.test(val)) {
+                                    setError(lastNameInput, errorLastName, isTh ? 'กรุณากรอกนามสกุลเป็นตัวอักษรเท่านั้น' : 'Please enter a valid last name using letters only');
+                                    return false;
+                                }
+                                if (val.length > 30) {
+                                    setError(lastNameInput, errorLastName, isTh ? 'นามสกุลต้องไม่เกิน 30 ตัวอักษร' : 'Last name must not exceed 30 characters');
+                                    return false;
+                                }
+                                clearError(lastNameInput, errorLastName);
+                                return true;
+                            }
+
+                            function validateCompany() {
+                                const val = (companyInput.value || '').trim();
+                                if (val && val.length > 100) {
+                                    setError(companyInput, errorCompany, isTh ? 'ชื่อบริษัทต้องไม่เกิน 100 ตัวอักษร' : 'Company name must not exceed 100 characters');
+                                    return false;
+                                }
+                                clearError(companyInput, errorCompany);
+                                return true;
+                            }
+
+                            function validatePhone() {
+                                const val = (phoneInput.value || '').trim();
+                                if (!val) {
+                                    setError(phoneInput, errorPhone, isTh ? 'กรุณากรอกเบอร์โทรศัพท์' : 'Please enter your phone number');
+                                    return false;
+                                }
+                                if (!/^[0-9]{9,10}$/.test(val)) {
+                                    setError(phoneInput, errorPhone, isTh ? 'กรุณากรอกเบอร์โทรศัพท์ 9-10 หลักให้ถูกต้อง' : 'Please enter a valid 9-10 digit phone number');
+                                    return false;
+                                }
+                                clearError(phoneInput, errorPhone);
+                                return true;
+                            }
+
+                            function validateEmail() {
+                                const val = (emailInput.value || '').trim();
+                                if (!val) {
+                                    setError(emailInput, errorEmail, isTh ? 'กรุณากรอกอีเมล' : 'Please enter your email');
+                                    return false;
+                                }
+                                if (!emailRegex.test(val)) {
+                                    setError(emailInput, errorEmail, isTh ? 'กรุณากรอกรูปแบบอีเมลให้ถูกต้อง' : 'Please enter a valid email address');
+                                    return false;
+                                }
+                                if (val.length > 255) {
+                                    setError(emailInput, errorEmail, isTh ? 'อีเมลยาวเกินกำหนด' : 'Email is too long');
+                                    return false;
+                                }
+                                clearError(emailInput, errorEmail);
+                                return true;
+                            }
+
+                            function validateMessage() {
+                                const val = (messageArea.value || '').trim();
+                                if (!val) {
+                                    setError(messageArea, errorMessage, isTh ? 'กรุณากรอกรายละเอียด' : 'Please enter your message');
+                                    return false;
+                                }
+                                if (val.length > 500) {
+                                    setError(messageArea, errorMessage, isTh ? 'ข้อความต้องไม่เกิน 500 ตัวอักษร' : 'Message must not exceed 500 characters');
+                                    return false;
+                                }
+                                clearError(messageArea, errorMessage);
+                                return true;
+                            }
+
+                            function validatePrivacy() {
+                                if (!privacyCb.checked) {
+                                    setError(null, errorPrivacy, isTh ? 'กรุณายินยอมตามนโยบายความเป็นส่วนตัว' : 'Please accept the Privacy Policy');
+                                    return false;
+                                }
+                                clearError(null, errorPrivacy);
+                                return true;
+                            }
+
+                            function validateRecaptcha() {
+                                if (typeof grecaptcha !== 'undefined') {
+                                    const resp = grecaptcha.getResponse();
+                                    if (!resp || resp.length === 0) {
+                                        setError(null, errorRecaptcha, isTh ? 'กรุณายืนยันตัวตน reCAPTCHA' : 'Please complete the reCAPTCHA verification');
+                                        return false;
+                                    }
+                                }
+                                clearError(null, errorRecaptcha);
+                                return true;
+                            }
+
+                            // Real-time live validation events
+                            firstNameInput.addEventListener('input', () => { if (errorFirstName.textContent) validateFirstName(); });
+                            firstNameInput.addEventListener('blur', validateFirstName);
+
+                            lastNameInput.addEventListener('input', () => { if (errorLastName.textContent) validateLastName(); });
+                            lastNameInput.addEventListener('blur', validateLastName);
+
+                            companyInput.addEventListener('input', () => { if (errorCompany.textContent) validateCompany(); });
+                            companyInput.addEventListener('blur', validateCompany);
+
+                            phoneInput.addEventListener('input', () => { if (errorPhone.textContent) validatePhone(); });
+                            phoneInput.addEventListener('blur', validatePhone);
+
+                            emailInput.addEventListener('input', () => { if (errorEmail.textContent) validateEmail(); });
+                            emailInput.addEventListener('blur', validateEmail);
+
+                            messageArea.addEventListener('input', () => {
+                                updateWordCount();
+                                if (errorMessage.textContent) validateMessage();
+                            });
+                            messageArea.addEventListener('blur', validateMessage);
+
+                            privacyCb.addEventListener('change', validatePrivacy);
+
+                            // Character counter for message (max 500 characters)
+                            function updateWordCount() {
+                                if (!messageArea || !wordCountDisplay) return;
+                                const count = messageArea.value.length;
+                                wordCountDisplay.textContent = count + '/500';
+                                if (count > 500) {
+                                    wordCountDisplay.classList.add('text-red-500');
+                                    wordCountDisplay.classList.remove('text-slate-500');
+                                } else {
+                                    wordCountDisplay.classList.remove('text-red-500');
+                                    wordCountDisplay.classList.add('text-slate-500');
+                                }
+                            }
+                            updateWordCount();
+
+                            // Validate all fields on submit
+                            function validateAll() {
+                                const validFirst = validateFirstName();
+                                const validLast = validateLastName();
+                                const validCompany = validateCompany();
+                                const validPhone = validatePhone();
+                                const validEmail = validateEmail();
+                                const validMsg = validateMessage();
+                                const validPrivacy = validatePrivacy();
+                                const validRecaptcha = validateRecaptcha();
+
+                                if (!validFirst) { firstNameInput.focus(); return false; }
+                                if (!validLast) { lastNameInput.focus(); return false; }
+                                if (!validCompany) { companyInput.focus(); return false; }
+                                if (!validPhone) { phoneInput.focus(); return false; }
+                                if (!validEmail) { emailInput.focus(); return false; }
+                                if (!validMsg) { messageArea.focus(); return false; }
+                                if (!validPrivacy) { privacyCb.focus(); return false; }
+                                if (!validRecaptcha) { return false; }
+
+                                return true;
+                            }
+
+                            // AJAX Submission
+                            if (form) {
+                                form.addEventListener('submit', function (e) {
+                                    e.preventDefault();
+
+                                    // Run all client-side validation checks
+                                    if (!validateAll()) {
+                                        return;
+                                    }
+
+                                    // Clear previous errors
+                                    if (errorBox) {
+                                        errorBox.classList.add('hidden');
+                                        errorBox.innerHTML = '';
+                                    }
+
+                                    // Set loading state
+                                    submitBtn.disabled = true;
+                                    if (btnSpinner) btnSpinner.classList.remove('hidden');
+                                    if (btnIcon) btnIcon.classList.add('hidden');
+                                    const originalBtnText = btnText ? btnText.textContent : '';
+                                    if (btnText) {
+                                        btnText.textContent = isTh ? 'กำลังส่งข้อมูล...' : 'Sending...';
+                                    }
+
+                                    const formData = new FormData(form);
+                                    formData.set('source_page', window.location.href);
+
+                                    fetch(form.action, {
+                                        method: 'POST',
+                                        headers: {
+                                            'X-Requested-With': 'XMLHttpRequest',
+                                            'Accept': 'application/json'
+                                        },
+                                        body: formData
+                                    })
+                                    .then(async response => {
+                                        const data = await response.json().catch(() => ({}));
+                                        if (!response.ok) {
+                                            throw data;
+                                        }
+                                        return data;
+                                    })
+                                    .then(data => {
+                                        if (data.success) {
+                                            if (formBox) formBox.classList.add('hidden');
+                                            if (successBox) {
+                                                successBox.classList.remove('hidden');
+                                                successBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                                            }
+                                            form.reset();
+                                        } else {
+                                            throw data;
+                                        }
+                                    })
+                                    .catch(err => {
+                                        // Reset loading state
+                                        submitBtn.disabled = false;
+                                        if (btnSpinner) btnSpinner.classList.add('hidden');
+                                        if (btnIcon) btnIcon.classList.remove('hidden');
+                                        if (btnText) btnText.textContent = originalBtnText;
+
+                                        // Reset reCAPTCHA on error
+                                        if (typeof grecaptcha !== 'undefined') {
+                                            try { grecaptcha.reset(); } catch (e) {}
+                                        }
+
+                                        // Render server error messages
+                                        if (errorBox) {
+                                            const errorList = err.errors || [err.message || (isTh ? 'เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง' : 'An error occurred, please try again.')];
+                                            errorBox.innerHTML = errorList.map(msg => `
+                                                <div class="flex items-center gap-2">
+                                                    <svg class="w-4 h-4 text-red-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                                    <span>${msg}</span>
+                                                </div>
+                                            `).join('');
+                                            errorBox.classList.remove('hidden');
+                                            errorBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                                        }
+                                    });
+                                });
+                            }
+                        });
+                    </script>
+                </div>
+                <div id="company-info" class="lg:col-span-6 space-y-4">
+                    <h2 class="text-xl md:text-2xl font-bold text-dark mb-6 desktop-contact-section-title"><?= e(t('contact.company_info_title')) ?></h2>
+                    <div class="gsap-contact-info-card bg-white border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.01)] rounded-2xl p-5 flex items-center gap-4 transition-all duration-300 hover:shadow-md hover:-translate-y-1 hover:border-blue-50 opacity-0 translate-y-10 desktop-contact-card">
+                        <div class="w-12 h-12 bg-blue-50 text-primary rounded-xl flex items-center justify-center shrink-0 desktop-contact-icon">
+                            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
                         </div>
-
+                        <div><h4 style="color: #054FC5;" class="font-bold text-[17px] md:text-lg"><?= e(t('contact.company_name')) ?></h4></div>
+                    </div>
+                    <div class="gsap-contact-info-card bg-white border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.01)] rounded-2xl p-5 flex items-start gap-4 transition-all duration-300 hover:shadow-md hover:-translate-y-1 hover:border-blue-50 opacity-0 translate-y-10 desktop-contact-card">
+                        <div class="w-12 h-12 bg-blue-50 text-primary rounded-xl flex items-center justify-center shrink-0 mt-0.5 desktop-contact-icon">
+                            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                        </div>
                         <div>
-                            <textarea name="message" placeholder="รายละเอียด" required maxlength="1000" rows="5"
-                                class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-sm text-slate-900 outline-none transition-all duration-300 custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary resize-none focus:shadow-inner"><?= e($form['message'] ?? '') ?></textarea>
+                            <h4 style="color: #021E4A;" class="font-bold text-sm uppercase mb-0.5"><?= e(t('contact.address_label')) ?></h4>
+                            <p style="color: #054FC5;" class="text-base font-medium leading-relaxed"><?= e(t('contact.company_address')) ?></p>
                         </div>
-
-                        <div class="flex items-start gap-3 pt-2">
-                            <input type="checkbox" id="privacy" name="privacy_agreed" required class="mt-1 w-4 h-4 rounded border-slate-300 text-primary focus:ring-primary cursor-pointer transition-all duration-200">
-                            <label for="privacy" class="text-xs md:text-[13px] text-slate-500 leading-relaxed cursor-pointer select-none">
-                                ฉันยินยอมตาม <a href="#" class="text-primary hover:underline transition-colors duration-200">นโยบายความเป็นส่วนตัว</a> และข้อกำหนดและเงื่อนไขของเว็บไซต์
-                            </label>
+                    </div>
+                    <div class="gsap-contact-info-card bg-white border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.01)] rounded-2xl p-5 flex items-start gap-4 transition-all duration-300 hover:shadow-md hover:-translate-y-1 hover:border-blue-50 opacity-0 translate-y-10 desktop-contact-card">
+                        <div class="w-12 h-12 bg-blue-50 text-primary rounded-xl flex items-center justify-center shrink-0 mt-0.5 desktop-contact-icon">
+                            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.94.725l.548 2.2a1 1 0 01-.321.988l-1.305.98a10.582 10.582 0 004.872 4.872l.98-1.305a1 1 0 01.988-.321l2.2.548a1 1 0 01.725.94V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
                         </div>
-
-                        <?php if ($errors !== []): ?>
-                            <p class="text-xs font-bold text-red-500 pt-1"><?= e($errors[0]) ?></p>
-                        <?php endif; ?>
-
-                        <div class="pt-2 mt-auto flex justify-start">
-                            <button type="submit" class="px-8 py-3.5 bg-primary hover:bg-blue-700 text-white font-bold text-sm rounded-full shadow-md shadow-blue-500/10 transition-all duration-300 cursor-pointer hover:shadow-lg hover:-translate-y-0.5 flex items-center justify-center gap-2">
-                                ส่งข้อความ
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                                </svg>
-                            </button>
+                        <div>
+                            <h4 style="color: #021E4A;" class="font-bold text-sm uppercase mb-0.5"><?= e(t('common.form_label_phone')) ?></h4>
+                            <p style="color: #054FC5;" class="text-base font-semibold tracking-wide">095-539-2666</p>
                         </div>
-                    </form>
-                <?php endif; ?>
-            </div>
-
-            <div id="company-info" class="lg:col-span-6 space-y-4 animate-fade-in-up animation-delay-200">
-                <h2 class="text-xl md:text-2xl font-bold text-dark mb-6">ข้อมูลบริษัท</h2>
-                
-                <div class="bg-white border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.01)] rounded-2xl p-5 flex items-center gap-4 transition-all duration-300 hover:shadow-md hover:-translate-y-1 hover:border-blue-50">
-                    <div class="w-11 h-11 bg-blue-50 text-primary rounded-xl flex items-center justify-center shrink-0">
-                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
                     </div>
-                    <div><h4 class="font-bold text-dark text-[15px]">บริษัท เวบปาค จำกัด</h4></div>
-                </div>
-
-                <div class="bg-white border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.01)] rounded-2xl p-5 flex items-start gap-4 transition-all duration-300 hover:shadow-md hover:-translate-y-1 hover:border-blue-50">
-                    <div class="w-11 h-11 bg-blue-50 text-primary rounded-xl flex items-center justify-center shrink-0 mt-0.5">
-                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                    <div class="gsap-contact-info-card bg-white border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.01)] rounded-2xl p-5 flex items-start gap-4 transition-all duration-300 hover:shadow-md hover:-translate-y-1 hover:border-blue-50 opacity-0 translate-y-10 desktop-contact-card">
+                        <div class="w-12 h-12 bg-blue-50 text-primary rounded-xl flex items-center justify-center shrink-0 mt-0.5 desktop-contact-icon">
+                            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                        </div>
+                        <div>
+                            <h4 style="color: #021E4A;" class="font-bold text-sm uppercase mb-0.5"><?= e(t('common.form_label_email')) ?></h4>
+                            <p style="color: #054FC5;" class="text-base font-semibold">oraphan@webpark.co.th</p>
+                        </div>
                     </div>
-                    <div>
-                        <h4 class="font-bold text-slate-400 text-xs uppercase mb-0.5">ที่อยู่</h4>
-                        <p class="text-dark text-[13px] md:text-sm font-medium leading-relaxed">525/89 ซอยลาดพร้าว 126 (กรัณฑ์พร) แขวงพลับพลา เขตวังทองหลาง กรุงเทพมหานคร 10310</p>
-                    </div>
-                </div>
-
-                <div class="bg-white border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.01)] rounded-2xl p-5 flex items-start gap-4 transition-all duration-300 hover:shadow-md hover:-translate-y-1 hover:border-blue-50">
-                    <div class="w-11 h-11 bg-blue-50 text-primary rounded-xl flex items-center justify-center shrink-0 mt-0.5">
-                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.94.725l.548 2.2a1 1 0 01-.321.988l-1.305.98a10.582 10.582 0 004.872 4.872l.98-1.305a1 1 0 01.988-.321l2.2.548a1 1 0 01.725.94V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
-                    </div>
-                    <div>
-                        <h4 class="font-bold text-slate-400 text-xs uppercase mb-0.5">เบอร์โทรศัพท์</h4>
-                        <p class="text-dark text-[13px] md:text-sm font-semibold tracking-wide">095-539-2666</p>
-                    </div>
-                </div>
-
-                <div class="bg-white border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.01)] rounded-2xl p-5 flex items-start gap-4 transition-all duration-300 hover:shadow-md hover:-translate-y-1 hover:border-blue-50">
-                    <div class="w-11 h-11 bg-blue-50 text-primary rounded-xl flex items-center justify-center shrink-0 mt-0.5">
-                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-                    </div>
-                    <div>
-                        <h4 class="font-bold text-slate-400 text-xs uppercase mb-0.5">อีเมล</h4>
-                        <p class="text-dark text-[13px] md:text-sm font-semibold">oraphan@webpark.co.th</p>
-                    </div>
-                </div>
-
-                <div class="bg-white border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.01)] rounded-2xl p-5 flex items-start gap-4 transition-all duration-300 hover:shadow-md hover:-translate-y-1 hover:border-blue-50">
-                    <div class="w-11 h-11 bg-blue-50 text-primary rounded-xl flex items-center justify-center shrink-0 mt-0.5">
-                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                    </div>
-                    <div>
-                        <h4 class="font-bold text-slate-400 text-xs uppercase mb-0.5">เวลาทำการ</h4>
-                        <p class="text-dark text-[13px] md:text-sm font-medium">วันจันทร์ - วันศุกร์ เวลา 09.00 น. - 18.00 น.</p>
+                    <div class="gsap-contact-info-card bg-white border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.01)] rounded-2xl p-5 flex items-start gap-4 transition-all duration-300 hover:shadow-md hover:-translate-y-1 hover:border-blue-50 opacity-0 translate-y-10 desktop-contact-card">
+                        <div class="w-12 h-12 bg-blue-50 text-primary rounded-xl flex items-center justify-center shrink-0 mt-0.5 desktop-contact-icon">
+                            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        </div>
+                        <div>
+                            <h4 style="color: #021E4A;" class="font-bold text-sm uppercase mb-0.5"><?= e(t('contact.office_hours_label')) ?></h4>
+                            <p style="color: #054FC5;" class="text-base font-medium"><?= e(t('contact.office_hours_value')) ?></p>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-
-        <div class="mt-10 bg-[#f0f4fa] border border-blue-100 rounded-2xl py-6 px-4 md:px-8 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 text-center sm:text-left transition-all duration-300">
-            <div class="text-primary shrink-0">
-                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" class="w-10 h-10">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M18.364 5.636a9 9 0 010 12.728m0 0l-2.829-2.829m2.829 2.829L21 21M5.636 5.636a9 9 0 000 12.728m0 0l2.829-2.829m-2.829 2.829L3 21M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-            </div>
-            <div>
-                <h4 class="font-bold text-primary text-[16px] mb-1">ตอบกลับภายใน 24 ชม. (ในเวลาทำการ)</h4>
-                <p class="text-slate-500 text-[13px] md:text-[14px]">ทีมงานของเราพร้อมให้คำปรึกษาและดูแลธุรกิจของคุณอย่างเต็มที่</p>
+            <div class="mt-10 bg-[#eef4fc] border border-blue-100 rounded-xl py-6 px-6 flex flex-row items-center justify-center gap-6 transition-all duration-300 desktop-banner-center">
+                <style>
+                    @media (min-width: 1025px) {
+                        .desktop-banner-center {
+                            justify-content: center !important;
+                        }
+                        .desktop-features-container {
+                            background-color: #ffffff !important;
+                            border: 1px solid #f1f5f9 !important;
+                            box-shadow: 0 4px 20px rgba(0,0,0,0.02) !important;
+                            padding: 3rem !important;
+                            gap: 2rem !important;
+                            border-radius: 1rem !important;
+                        }
+                        .desktop-feature-icon-wrapper {
+                            background-color: #eef4fc !important;
+                            color: #0663F6 !important;
+                            border-radius: 1rem !important;
+                            width: 4rem !important;
+                            height: 4rem !important;
+                        }
+                        .desktop-feature-icon-wrapper svg {
+                            width: 2rem !important;
+                            height: 2rem !important;
+                            color: #0663F6 !important;
+                        }
+                        .desktop-feature-title {
+                            font-size: 1.25rem !important;
+                            color: #0663F6 !important;
+                        }
+                        .desktop-feature-desc {
+                            font-size: 1rem !important;
+                            color: #64748b !important;
+                        }
+                        .desktop-border-none {
+                            border: none !important;
+                        }
+                    }
+                </style>
+                <div class="text-[#043B94] shrink-0">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-12 h-12">
+                        <path d="M3 16v-5a9 9 0 0 1 18 0v5"></path>
+                        <rect x="3" y="14" width="4" height="6" rx="1"></rect>
+                        <rect x="17" y="14" width="4" height="6" rx="1"></rect>
+                        <path d="M19 18v2a3 3 0 0 1-3 3h-5"></path>
+                        <path d="M12 21a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"></path>
+                    </svg>
+                </div>
+                <div class="text-left">
+                    <h4 class="font-bold text-[#043B94] text-lg md:text-xl leading-relaxed mb-1">
+                        <?= e(t('contact.response_time_badge')) ?>
+                    </h4>
+                    <p class="text-[#043B94] text-sm md:text-base leading-relaxed opacity-80">
+                        <?= e(t('contact.team_support_desc')) ?>
+                    </p>
+                </div>
             </div>
         </div>
     </div>
 </section>
-
 <section class="bg-white pb-20 font-sans">
-    <div class="mx-auto w-full max-w-7xl px-4 sm:px-4 lg:px-6"> 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 bg-[#f4f9ff] border border-blue-50/50 rounded-[2rem] p-6 md:p-8">
+    <div class="mx-auto w-full max-w-7xl px-4 sm:px-4 lg:px-6 desktop-wide-container-contact"> 
+        <div class="lg:px-12 xl:px-24">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 bg-[#f4f9ff] border border-blue-50/50 rounded-[2rem] p-6 md:p-8 desktop-features-container">
+                <div class="flex items-start gap-4 p-4">
+                    <div class="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center shrink-0 shadow-sm desktop-feature-icon-wrapper"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg></div>
+                    <div>
+                        <h4 style="color: #0663F6;" class="font-bold text-[17px] md:text-lg mb-1 desktop-feature-title"><?= e(t('contact.fast_response_title')) ?></h4>
+                        <p style="color: #022862;" class="text-base leading-relaxed desktop-feature-desc"><?= e(t('contact.fast_response_desc')) ?></p>
+                    </div>
+                </div>
+                <div class="flex items-start gap-4 p-4 border-y md:border-y-0 md:border-x border-blue-100/50 desktop-border-none">
+                    <div class="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center shrink-0 shadow-sm desktop-feature-icon-wrapper"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg></div>
+                    <div>
+                        <h4 style="color: #0663F6;" class="font-bold text-[17px] md:text-lg mb-1 desktop-feature-title"><?= e(t('contact.expert_advice_title')) ?></h4>
+                        <p style="color: #022862;" class="text-base leading-relaxed desktop-feature-desc"><?= e(t('contact.expert_advice_desc')) ?></p>
+                    </div>
+                </div>
+                <div class="flex items-start gap-4 p-4">
+                    <div class="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center shrink-0 shadow-sm desktop-feature-icon-wrapper"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg></div>
+                    <div>
+                        <h4 style="color: #0663F6;" class="font-bold text-[17px] md:text-lg mb-1 desktop-feature-title"><?= e(t('contact.full_system_support_title')) ?></h4>
+                        <p style="color: #022862;" class="text-base leading-relaxed desktop-feature-desc"><?= e(t('contact.full_system_support_desc')) ?></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="bg-white pb-16 font-sans">
+    <div class="mx-auto w-full max-w-7xl px-4 sm:px-4 lg:px-6 desktop-wide-container-contact"> 
+        <div class="lg:px-12 xl:px-24">
+            <style>
+                @media (min-width: 1025px) {
+                    .desktop-map-container {
+                        height: 650px !important;
+                        border-radius: 2rem !important;
+                    }
+                    .desktop-map-iframe {
+                        pointer-events: auto !important;
+                    }
+                    .desktop-map-overlay-hide {
+                        display: none !important;
+                    }
+                    .desktop-location-title-hide {
+                        display: none !important;
+                    }
+                }
+            </style>
+            <h2 class="text-xl md:text-2xl font-bold text-dark mb-6 relative inline-block desktop-location-title-hide">
+                <?= e(t('contact.location_title')) ?>
+                <span class="absolute left-0 bottom-[-8px] w-10 h-1 bg-primary rounded-full"></span>
+            </h2>
             
-            <div class="flex items-start gap-4 p-4">
-                <div class="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center shrink-0 shadow-sm"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg></div>
-                <div>
-                    <h4 class="font-bold text-dark text-[15px] mb-1">ตอบกลับรวดเร็ว</h4>
-                    <p class="text-slate-500 text-sm leading-relaxed">เราตอบกลับทุกข้อความและพร้อมดูแล<br>ช่วยเหลือปัญหาภายใน 24 ชั่วโมง</p>
-                </div>
-            </div>
-
-            <div class="flex items-start gap-4 p-4 border-y md:border-y-0 md:border-x border-blue-100/50">
-                <div class="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center shrink-0 shadow-sm"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg></div>
-                <div>
-                    <h4 class="font-bold text-dark text-[15px] mb-1">ให้คำปรึกษาโดยผู้เชี่ยวชาญ</h4>
-                    <p class="text-slate-500 text-sm leading-relaxed">ทีมงานมืออาชีพที่มีประสบการณ์ตรง<br>พร้อมวิเคราะห์และวางแผนให้ธุรกิจคุณ</p>
-                </div>
-            </div>
-
-            <div class="flex items-start gap-4 p-4">
-                <div class="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center shrink-0 shadow-sm"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg></div>
-                <div>
-                    <h4 class="font-bold text-dark text-[15px] mb-1">ดูแลครบทั้งระบบและเว็บไซต์</h4>
-                    <p class="text-slate-500 text-sm leading-relaxed">บริการครอบคลุมครบวงจร ตั้งแต่ระบบ ERP/ERM เว็บไซต์และโซลูชันดิจิทัล</p>
-                </div>
-            </div>
-
-        </div>
-    </div>
-</section>
-
-<section class="bg-white pb-20 font-sans">
-    <div class="mx-auto w-full max-w-7xl px-4 sm:px-4 lg:px-6"> 
-        <h2 class="text-xl md:text-2xl font-bold text-dark mb-8 relative inline-block">
-            ที่ตั้งของเรา
-            <span class="absolute left-0 bottom-[-8px] w-10 h-1 bg-primary rounded-full"></span>
-        </h2>
-
-        <div class="w-full h-[400px] md:h-[500px] rounded-[2.5rem] overflow-hidden relative border border-slate-100 shadow-sm">
-            <iframe class="w-full h-full border-0" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3875.311743152067!2d100.6172557!3d13.7901399!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x311d62445b2b2b11%3A0x67ee1c03c2a9bb4c!2sWEBPARK!5e0!3m2!1sth!2sth!4v1700000000000!5m2!1sth!2sth" allowfullscreen="" loading="lazy"></iframe>
-
-            <div class="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 bg-white rounded-3xl p-6 shadow-xl border border-slate-100 max-w-sm z-10 hidden sm:block">
-                <div class="flex items-center gap-2 text-primary font-bold text-sm mb-3">
-                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/></svg>
-                    บริษัท เวบปาค จำกัด
-                </div>
-                <p class="text-slate-500 text-xs md:text-[13px] leading-relaxed font-medium mb-4">
-                    525/89 ซอยลาดพร้าว 126 (กรัณฑ์พร) แขวงพลับพลา เขตวังทองหลาง กรุงเทพมหานคร 10310
-                </p>
-                <a href="https://maps.google.com" target="_blank" class="inline-flex items-center gap-1.5 text-xs font-bold text-primary hover:underline">
-                    ดูเส้นทาง <span>→</span>
+            <div class="w-full h-[260px] md:h-[320px] rounded-2xl overflow-hidden relative border border-slate-200 shadow-sm group desktop-map-container">
+                
+                <!-- Full Overlay Link (Hidden on Desktop) -->
+                <a href="https://www.google.com/maps/search/?api=1&query=บริษัท+เวบปาค+จำกัด+525/89+ซอยลาดพร้าว+126" 
+                   target="_blank" 
+                   rel="noopener noreferrer"
+                   title="เปิดใน Google Maps"
+                   class="absolute inset-0 z-20 flex items-center justify-center bg-black/5 hover:bg-black/15 transition-all duration-300 desktop-map-overlay-hide">
+                    <span class="bg-white/95 text-slate-800 text-xs md:text-sm font-bold px-4 py-2.5 rounded-full shadow-lg border border-slate-200 flex items-center gap-2 backdrop-blur-sm group-hover:scale-105 transition-transform">
+                        <svg class="w-4 h-4 text-red-500 shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                        <?= e(getCurrentLang() === 'th' ? 'แตะเพื่อเปิดปักหมุดบน Google Maps ↗' : 'Tap to Open Google Maps Pin ↗') ?>
+                    </span>
                 </a>
+
+                <!-- Embedded Background Map Preview -->
+                <iframe style="pointer-events: none;" class="w-full h-full border-0 relative z-0 desktop-map-iframe" src="https://maps.google.com/maps?q=บริษัท%20เวบปาค%20จำกัด%20525/89%20ซอยลาดพร้าว%20126&t=&z=16&ie=UTF8&iwloc=&output=embed" loading="lazy"></iframe>
             </div>
         </div>
     </div>
 </section>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    gsap.registerPlugin(ScrollTrigger);
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    // Helper function for reveal on scroll
+    function revealOnScroll(selector, options = {}) {
+        const els = gsap.utils.toArray(selector);
+        if (!els.length) return;
+        if (prefersReducedMotion) {
+            gsap.set(els, { y: 0, opacity: 1 });
+            return;
+        }
+        els.forEach((el) => {
+            gsap.to(el, {
+                scrollTrigger: {
+                    trigger: el,
+                    start: "top 85%",
+                    toggleActions: "play none none reverse"
+                },
+                y: 0,
+                opacity: 1,
+                duration: 0.6,
+                ease: "power2.out",
+                stagger: options.stagger || 0
+            });
+        });
+    }
+    // 1. Hero Parallax
+    if (!prefersReducedMotion) {
+        gsap.utils.toArray(".hero-parallax-img").forEach((img) => {
+            gsap.to(img, {
+                yPercent: 12,
+                ease: "none",
+                scrollTrigger: {
+                    trigger: "#contact-hero",
+                    start: "top top",
+                    end: "bottom top",
+                    scrub: true
+                }
+            });
+        });
+    }
+    // 2. Form & Info Cards Stagger
+    revealOnScroll(".gsap-contact-form");
+    revealOnScroll(".gsap-contact-info-card", { stagger: 0.1 });
+});
+</script>

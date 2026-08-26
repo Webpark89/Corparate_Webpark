@@ -1,12 +1,9 @@
 <?php
-
 declare(strict_types=1);
-
 /**
  * English language translation dictionary.
  * Auto-generated from lang_en.json — keep both in sync.
  */
-
 return [
     'common' => [
         'nav_home' => 'Home',
@@ -25,9 +22,12 @@ return [
         'cta_back' => 'Back',
         'breadcrumb_nav_label' => 'Breadcrumb Navigation',
         'form_label_fullname' => 'Full Name',
+        'form_label_firstname' => 'First Name',
+        'form_label_lastname' => 'Last Name',
         'form_label_phone' => 'Phone Number',
         'form_label_email' => 'Email',
         'form_label_company' => 'Company',
+        'form_label_company_optional' => 'Company Name (Optional)',
         'form_label_subject' => 'Subject',
         'form_label_details' => 'Details',
         'form_consent_prefix' => 'I agree to the',

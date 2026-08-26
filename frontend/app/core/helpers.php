@@ -65,6 +65,52 @@ function normalize_text(mixed $value): string
 }
 
 /**
+ * Extract clean plain text summary from article content (which can be HTML or JSON).
+ */
+function get_article_summary_text(string $content, string $lang = 'th'): string
+{
+    $clean = trim($content);
+    if ($clean === '') {
+        return '';
+    }
+
+    $decoded = json_decode(htmlspecialchars_decode($clean, ENT_QUOTES), true);
+    if (!is_array($decoded)) {
+        $decoded = json_decode($clean, true);
+    }
+
+    if (is_array($decoded)) {
+        $texts = [];
+        foreach ($decoded as $section) {
+            $secLang = $section['lang'] ?? 'th';
+            if ($secLang === $lang) {
+                if (!empty($section['topic'])) {
+                    $texts[] = $section['topic'];
+                }
+                if (!empty($section['body'])) {
+                    $texts[] = $section['body'];
+                }
+            }
+        }
+        $combined = implode(' ', $texts);
+        return normalize_text($combined);
+    }
+
+    // Bulletproof Fallback: extract topic/body text using regex if json_decode fails
+    preg_match_all('/"(body|topic)"\s*:\s*"((?>[^"\\\\]++|\\\\.)*)"/s', $clean, $matches);
+    if (!empty($matches[2])) {
+        $texts = [];
+        foreach ($matches[2] as $val) {
+            $texts[] = stripslashes($val);
+        }
+        $combined = implode(' ', $texts);
+        return normalize_text(strip_tags($combined));
+    }
+
+    return normalize_text(strip_tags($clean));
+}
+
+/**
  * Return the first non-empty normalized candidate, or the default.
  *
  * @param array<int, mixed> $candidates
@@ -208,22 +254,74 @@ function app_url(string $path = ''): string
  *
  * @param array<string, scalar|null> $query
  */
+/**
+ * Maps English route paths to Thai route paths and vice versa.
+ */
+function translate_route_path(string $path, string $toLang): string
+{
+    $map = [
+        'about' => 'เกี่ยวกับเรา',
+        'services' => 'บริการของเรา',
+        'erp' => 'ระบบ-erp',
+        'article' => 'บทความ',
+        'articles' => 'บทความ',
+        'contact' => 'ติดต่อเรา',
+    ];
+
+    $parts = explode('/', trim($path, '/'));
+    $translatedParts = [];
+
+    foreach ($parts as $part) {
+        $decodedPart = urldecode($part);
+        if ($toLang === 'th') {
+            $translatedParts[] = isset($map[$decodedPart]) ? $map[$decodedPart] : $part;
+        } else {
+            $flipped = array_flip($map);
+            $flipped['บทความ'] = 'article';
+            $translatedParts[] = isset($flipped[$decodedPart]) ? $flipped[$decodedPart] : $part;
+        }
+    }
+
+    return implode('/', $translatedParts);
+}
+
 function route_url(string $path, array $query = []): string
 {
-    $normalizedPath = trim($path, '/');
-    $baseUrl = app_url('');
-
-    if ($normalizedPath === '' || $normalizedPath === 'index') {
-        return rtrim($baseUrl, '/') . '/';
+    $hash = '';
+    $hashPos = strpos($path, '#');
+    if ($hashPos !== false) {
+        $hash = substr($path, $hashPos);
+        $path = substr($path, 0, $hashPos);
     }
 
-    $url = rtrim($baseUrl, '/') . '/?url=' . rawurlencode($normalizedPath);
+    $normalizedPath = trim($path, '/');
+    $baseUrl = rtrim(app_url(''), '/');
+    
+    $lang = function_exists('getCurrentLang') ? getCurrentLang() : 'th';
+
+    if ($lang === 'en') {
+        // Enforce English path names and append /en when language is English
+        $translatedPath = translate_route_path($normalizedPath, 'en');
+        if ($translatedPath === '' || $translatedPath === 'index') {
+            $url = $baseUrl . '/en';
+        } else {
+            $url = $baseUrl . '/' . $translatedPath . '/en';
+        }
+    } else {
+        // Enforce Thai path names when language is Thai
+        $translatedPath = translate_route_path($normalizedPath, 'th');
+        if ($translatedPath === '' || $translatedPath === 'index') {
+            $url = $baseUrl . '/';
+        } else {
+            $url = $baseUrl . '/' . rawurldecode($translatedPath);
+        }
+    }
 
     if ($query !== []) {
-        $url .= '&' . http_build_query($query);
+        $url .= '?' . http_build_query($query);
     }
 
-    return $url;
+    return $url . $hash;
 }
 
 /**
@@ -260,9 +358,13 @@ function asset_url(string $path): string
  * @param string      $fallback   Already-resolved fallback URL (typically from asset_url()).
  * @return string
  */
-function resolve_article_image_url(?string $imagePath, string $fallback): string
+function resolve_article_image_url(?string $imagePath, string $fallback = ''): string
 {
     $candidate = trim((string) $imagePath);
+
+    if ($fallback === '') {
+        $fallback = asset_url('images/story.png');
+    }
 
     if ($candidate === '') {
         return $fallback;
@@ -272,18 +374,71 @@ function resolve_article_image_url(?string $imagePath, string $fallback): string
         return $candidate;
     }
 
-    $candidateUrl = asset_url(ltrim($candidate, '/'));
-    $parsedPath = parse_url($candidateUrl, PHP_URL_PATH);
-    $documentRoot = (string) ($_SERVER['DOCUMENT_ROOT'] ?? '');
+    $cleanPath = ltrim($candidate, '/');
 
-    if (
-        $documentRoot !== ''
-        && $parsedPath !== null
-        && $parsedPath !== ''
-        && is_file($documentRoot . $parsedPath)
-    ) {
-        return $candidateUrl;
+    // Determine project root directory path
+    $projectRoot = dirname(__DIR__, 3);
+
+    $relativeDiskPath = '';
+    $webPath = '';
+
+    if (str_starts_with($cleanPath, 'admin/uploads/')) {
+        $relativeDiskPath = $cleanPath;
+        $webPath = '/' . $cleanPath;
+    } elseif (str_starts_with($cleanPath, 'uploads/')) {
+        $relativeDiskPath = 'admin/' . $cleanPath;
+        $webPath = '/admin/' . $cleanPath;
+    } else {
+        $relativeDiskPath = 'admin/uploads/' . $cleanPath;
+        $webPath = '/admin/uploads/' . $cleanPath;
+    }
+
+    $fullDiskPath = $projectRoot . '/' . $relativeDiskPath;
+
+    if (is_file($fullDiskPath)) {
+        return app_base_url() . $webPath;
+    }
+
+    if (str_starts_with($cleanPath, 'uploads/')) {
+        return app_base_url() . '/admin/' . $cleanPath;
+    }
+
+    // Check in public/assets/
+    $assetDiskPath = $projectRoot . '/frontend/public/assets/' . $cleanPath;
+    if (is_file($assetDiskPath)) {
+        return asset_url($cleanPath);
+    }
+
+    // Check in public/assets/images/
+    $imageAssetDiskPath = $projectRoot . '/frontend/public/assets/images/' . $cleanPath;
+    if (is_file($imageAssetDiskPath)) {
+        return asset_url('images/' . $cleanPath);
     }
 
     return $fallback;
 }
+
+/**
+ * Resolve partner logo image path to a public URL.
+ *
+ * @param string|null $path
+ * @return string
+ */
+function partner_logo_url(?string $path): string
+{
+    $path = trim((string) $path);
+    if ($path === '') {
+        return '';
+    }
+
+    if (preg_match('#^https?://#i', $path) === 1 || str_starts_with($path, '//')) {
+        return $path;
+    }
+
+    if (str_contains($path, '/')) {
+        return app_base_url() . '/admin/' . ltrim($path, '/');
+    }
+
+    return app_base_url() . '/admin/uploads/' . $path;
+}
+

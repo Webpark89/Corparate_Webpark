@@ -1,57 +1,74 @@
 <?php
-
 /**
  * Admin review list — search, filter, and manage customer reviews.
  */
 $pageTitle = 'Reviews Management';
 $page = 'review';
 require_once __DIR__ . '/../includes/header.php';
-
 $search = trim($_GET['search'] ?? '');
 $ratingFilter = $_GET['rating'] ?? '';
 $statusFilter = $_GET['status'] ?? '';
+$currentPage = max(1, (int)($_GET['p'] ?? 1));
+$perPage = 10;
 
-$sql = 'SELECT * FROM review WHERE 1=1';
+$whereSql = '';
 $params = [];
-
 if ($search !== '') {
-    $sql .= ' AND (reviewer_name LIKE ? OR reviewer_company LIKE ? OR content LIKE ?)';
+    $whereSql .= ' AND (reviewer_name LIKE ? OR reviewer_company LIKE ? OR content LIKE ?)';
     $params[] = "%$search%";
     $params[] = "%$search%";
     $params[] = "%$search%";
 }
-
 if ($ratingFilter !== '') {
-    $sql .= ' AND rating = ?';
+    $whereSql .= ' AND rating = ?';
     $params[] = (int) $ratingFilter;
 }
-
 if ($statusFilter !== '') {
-    $sql .= ' AND is_active = ?';
+    $whereSql .= ' AND is_active = ?';
     $params[] = (int) $statusFilter;
 }
 
-$sql .= ' ORDER BY sort_order ASC, created_at DESC';
+// Total count
+$countStmt = db()->prepare('SELECT COUNT(*) FROM review WHERE 1=1' . $whereSql);
+$countStmt->execute($params);
+$totalRows = (int) $countStmt->fetchColumn();
+
+$pagination = paginate($totalRows, $perPage, $currentPage);
+
+$sql = 'SELECT * FROM review WHERE 1=1' . $whereSql . '
+        ORDER BY sort_order ASC, created_at DESC
+        LIMIT ' . (int)$pagination['perPage'] . ' OFFSET ' . (int)$pagination['offset'];
 $statement = db()->prepare($sql);
 $statement->execute($params);
-
 $reviews = $statement->fetchAll();
 ?>
-
 <div class="mx-auto w-full max-w-none px-2 pb-8 pt-1 text-sm md:px-4 lg:px-8">
-
     <header class="mb-5 flex flex-col gap-3 border-l-4 border-blue-500 pl-4 md:flex-row md:items-center md:justify-between">
         <div>
             <h2 class="text-lg font-bold text-slate-900">การจัดการรีวิว (Reviews)</h2>
             <p class="mt-1 text-xs text-slate-500">จัดการคำนิยมและรีวิวจากลูกค้าทั้งหมด</p>
         </div>
-
-        <a href="create.php"
-            class="inline-flex h-9 items-center rounded-xl bg-blue-600 px-4 text-sm font-semibold text-white transition hover:bg-blue-700 shadow-sm shadow-blue-500/10">
-            + เพิ่มรีวิวใหม่
-        </a>
+        <div class="flex items-center gap-2">
+            <form action="show_all.php" method="post" onsubmit="return confirm('ยืนยันที่จะแสดงรีวิวทั้งหมด?');" class="inline-block">
+                <?= csrf_field() ?>
+                <button type="submit"
+                    class="inline-flex h-9 items-center rounded-xl bg-emerald-50 hover:bg-emerald-100 px-4 text-sm font-semibold text-emerald-700 transition shadow-sm cursor-pointer">
+                    👁️ แสดงทั้งหมด
+                </button>
+            </form>
+            <form action="hide_all.php" method="post" onsubmit="return confirm('ยืนยันที่จะซ่อนรีวิวทั้งหมด?');" class="inline-block">
+                <?= csrf_field() ?>
+                <button type="submit"
+                    class="inline-flex h-9 items-center rounded-xl bg-slate-100 hover:bg-slate-200 px-4 text-sm font-semibold text-slate-700 transition shadow-sm cursor-pointer">
+                    👁️‍🗨️ ซ่อนทั้งหมด
+                </button>
+            </form>
+            <a href="create.php"
+                class="inline-flex h-9 items-center rounded-xl bg-blue-600 px-4 text-sm font-semibold text-white transition hover:bg-blue-700 shadow-sm shadow-blue-500/10">
+                + เพิ่มรีวิวใหม่
+            </a>
+        </div>
     </header>
-
     <section class="mb-5 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
         <div class="p-4">
             <form method="get" class="grid grid-cols-1 gap-4 md:grid-cols-12 items-center">
@@ -62,9 +79,8 @@ $reviews = $statement->fetchAll();
                             class="w-full border-0 bg-transparent px-3 py-2 text-sm text-slate-700 placeholder:text-slate-400 focus:outline-none focus:ring-0">
                     </div>
                 </div>
-
                 <div class="md:col-span-3">
-                    <select name="rating" onchange="this.form.submit()"
+                    <select name="rating"
                         class="w-full rounded-xl border border-slate-200 bg-slate-50/50 px-3 py-2 text-sm text-slate-700 focus:bg-white focus:border-blue-500 focus:outline-none transition-all">
                         <option value="">ทุกคะแนนรีวิว</option>
                         <option value="5" <?= $ratingFilter === '5' ? 'selected' : '' ?>>5 ดาว</option>
@@ -74,16 +90,14 @@ $reviews = $statement->fetchAll();
                         <option value="1" <?= $ratingFilter === '1' ? 'selected' : '' ?>>1 ดาว</option>
                     </select>
                 </div>
-
                 <div class="md:col-span-3">
-                    <select name="status" onchange="this.form.submit()"
+                    <select name="status"
                         class="w-full rounded-xl border border-slate-200 bg-slate-50/50 px-3 py-2 text-sm text-slate-700 focus:bg-white focus:border-blue-500 focus:outline-none transition-all">
                         <option value="">ทุกสถานะ</option>
                         <option value="1" <?= $statusFilter === '1' ? 'selected' : '' ?>>เผยแพร่ (Published)</option>
                         <option value="0" <?= $statusFilter === '0' ? 'selected' : '' ?>>ไม่เผยแพร่ (Hidden)</option>
                     </select>
                 </div>
-
                 <div class="flex gap-2 md:col-span-2">
                     <button type="submit" class="flex-1 h-8 rounded-xl bg-slate-900 text-xs font-semibold text-white transition hover:bg-slate-800">กรอง</button>
                     <a href="index.php" class="inline-flex flex-1 items-center justify-center h-8 rounded-xl border border-slate-200 bg-white text-xs font-medium text-slate-600 transition hover:bg-slate-50">ล้าง</a>
@@ -91,7 +105,6 @@ $reviews = $statement->fetchAll();
             </form>
         </div>
     </section>
-
     <section class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
         <div class="overflow-x-auto">
             <table class="min-w-full divide-y divide-slate-200 text-sm text-left">
@@ -106,19 +119,16 @@ $reviews = $statement->fetchAll();
                         <th class="px-4 py-4 text-right whitespace-nowrap">การจัดการ</th>
                     </tr>
                 </thead>
-
                 <tbody class="divide-y divide-slate-100 bg-white">
                     <?php foreach ($reviews as $row): ?>
                         <tr class="hover:bg-slate-50/60 transition-colors cursor-pointer js-clickable-row group"
                             data-href="edit.php?id=<?= (int) $row['id'] ?>">
-
                             <td class="px-4 py-3 text-center">
-                                <?php $avatarUrl = !empty($row['reviewer_image_url']) ? $row['reviewer_image_url'] : 'https://ui-avatars.com/api/?name=' . urlencode($row['reviewer_name']) . '&background=random'; ?>
+                                <?php $avatarUrl = !empty($row['reviewer_image_url']) ? resolve_admin_image_url($row['reviewer_image_url']) : 'https://ui-avatars.com/api/?name=' . urlencode($row['reviewer_name']) . '&background=random'; ?>
                                 <img src="<?= e($avatarUrl) ?>"
                                     class="h-10 w-10 rounded-full border border-slate-200 object-cover shadow-sm ring-2 ring-transparent group-hover:ring-blue-100 transition-all mx-auto"
                                     alt="<?= e($row['reviewer_name']) ?>">
                             </td>
-
                             <td class="px-4 py-3">
                                 <div class="font-semibold text-slate-900 text-sm">
                                     <?= e($row['reviewer_name']) ?>
@@ -127,7 +137,6 @@ $reviews = $statement->fetchAll();
                                     <?= e($row['reviewer_position'] ?: 'ไม่มีตำแหน่ง') ?> • <?= e($row['reviewer_company'] ?: 'ไม่ระบุบริษัท') ?>
                                 </div>
                             </td>
-
                             <td class="px-4 py-3 whitespace-nowrap">
                                 <div class="flex items-center gap-0.5 text-amber-400 text-sm">
                                     <?= str_repeat('★', (int) $row['rating']) ?><?= str_repeat('☆', 5 - (int) $row['rating']) ?>
@@ -136,7 +145,6 @@ $reviews = $statement->fetchAll();
                                     ลำดับแสดงผล: <?= (int) $row['sort_order'] ?>
                                 </div>
                             </td>
-
                             <td class="px-4 py-3 whitespace-nowrap">
                                 <?php if ((int) $row['is_active'] === 1): ?>
                                     <span class="inline-flex items-center rounded-lg border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-700">
@@ -144,27 +152,42 @@ $reviews = $statement->fetchAll();
                                         เผยแพร่
                                     </span>
                                 <?php else: ?>
-                                    <span class="inline-flex items-center rounded-lg border border-slate-200 bg-slate-50 px-2.5 py-1 text-xs font-semibold text-slate-500">
-                                        <span class="w-1.5 h-1.5 rounded-full bg-slate-400 mr-1.5"></span>
-                                        ไม่เผยแพร่
+                                    <span class="inline-flex items-center gap-1 rounded-lg border border-slate-300 bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-600">
+                                        <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                                        ซ่อนอยู่
                                     </span>
                                 <?php endif; ?>
                             </td>
-
                             <td class="px-4 py-3 text-xs text-slate-500 font-mono whitespace-nowrap">
                                 <?= date('d/m/Y', strtotime($row['created_at'])) ?>
                             </td>
-
                             <td class="px-4 py-3 text-xs text-slate-500 font-mono whitespace-nowrap">
                                 <?= date('d/m/Y H:i', strtotime($row['updated_at'])) ?>
                             </td>
-
                             <td class="px-4 py-3 text-right whitespace-nowrap" onclick="event.stopPropagation();">
                                 <div class="inline-flex overflow-hidden rounded-xl border border-slate-200 shadow-sm">
                                     <a href="edit.php?id=<?= (int) $row['id'] ?>"
                                         class="bg-white px-3 py-1.5 text-xs font-semibold text-slate-600 transition hover:bg-slate-50 hover:text-blue-600">
                                         แก้ไข
                                     </a>
+                                    <form action="toggle_status.php" method="post" class="js-toggle-form">
+                                        <input type="hidden" name="id" value="<?= (int) $row['id'] ?>">
+                                        <input type="hidden" name="status" value="<?= (int) $row['is_active'] ?>">
+                                        <?= csrf_field() ?>
+                                        <?php if ((int) $row['is_active'] === 0): ?>
+                                        <button type="submit"
+                                            class="border-l border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-emerald-600 transition hover:bg-emerald-50 cursor-pointer"
+                                            title="แสดงรีวิวนี้บนหน้าเว็บ">
+                                            แสดง
+                                        </button>
+                                        <?php else: ?>
+                                        <button type="submit"
+                                            class="border-l border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-500 transition hover:bg-slate-100 cursor-pointer"
+                                            title="ซ่อนรีวิวนี้จากหน้าเว็บ">
+                                            ซ่อน
+                                        </button>
+                                        <?php endif; ?>
+                                    </form>
                                     <button type="button"
                                         onclick="if(confirm('ยืนยันการลบรีวิวนี้?')) window.location.href='delete.php?id=<?= (int) $row['id'] ?>'"
                                         class="border-l border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-rose-600 transition hover:bg-rose-50 cursor-pointer">
@@ -172,10 +195,8 @@ $reviews = $statement->fetchAll();
                                     </button>
                                 </div>
                             </td>
-
                         </tr>
                     <?php endforeach; ?>
-
                     <?php if (!$reviews): ?>
                         <tr>
                             <td colspan="7" class="px-4 py-16 text-center text-sm text-slate-500 border-dashed">
@@ -189,16 +210,95 @@ $reviews = $statement->fetchAll();
                 </tbody>
             </table>
         </div>
+        <!-- Pagination -->
+        <?php if ($totalRows > 0): 
+            $totalPages = (int)$pagination['pages'];
+            $currPage = (int)$pagination['current'];
+            if ($totalPages <= 7) {
+                $pageRange = range(1, $totalPages);
+            } elseif ($currPage <= 4) {
+                $pageRange = [1, 2, 3, 4, 5, '...', $totalPages];
+            } elseif ($currPage >= $totalPages - 3) {
+                $pageRange = [1, '...', $totalPages - 4, $totalPages - 3, $totalPages - 2, $totalPages - 1, $totalPages];
+            } else {
+                $pageRange = [1, '...', $currPage - 1, $currPage, $currPage + 1, '...', $totalPages];
+            }
+
+            $buildPageUrl = function($pageNum) use ($ratingFilter, $statusFilter, $search) {
+                $q = ['p' => $pageNum];
+                if ($ratingFilter !== '') $q['rating'] = $ratingFilter;
+                if ($statusFilter !== '') $q['status'] = $statusFilter;
+                if ($search !== '') $q['search'] = $search;
+                return '?' . http_build_query($q);
+            };
+        ?>
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-slate-100 bg-white px-6 py-4 text-sm text-slate-700 select-none">
+                <!-- Pagination Controls -->
+                <div class="flex flex-wrap items-center gap-1 sm:gap-1.5">
+                    <!-- Previous Button -->
+                    <?php if ($currPage > 1): ?>
+                        <a href="<?= $buildPageUrl($currPage - 1) ?>" class="inline-flex items-center text-sm font-medium text-slate-700 hover:text-indigo-600 transition px-2 py-1 mr-1">
+                            <svg class="w-4 h-4 mr-1 text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                            </svg>
+                            Previous
+                        </a>
+                    <?php else: ?>
+                        <span class="inline-flex items-center text-sm font-medium text-slate-300 pointer-events-none px-2 py-1 mr-1">
+                            <svg class="w-4 h-4 mr-1 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                            </svg>
+                            Previous
+                        </span>
+                    <?php endif; ?>
+
+                    <!-- Page Numbers -->
+                    <?php foreach ($pageRange as $pItem): ?>
+                        <?php if ($pItem === '...'): ?>
+                            <span class="inline-flex items-center justify-center w-8 h-8 text-sm text-slate-400 font-medium">...</span>
+                        <?php elseif ($pItem === $currPage): ?>
+                            <span class="inline-flex items-center justify-center w-8 h-8 rounded-full text-white text-sm font-semibold shadow-sm" style="background-color: #5046e5; box-shadow: 0 0 0 4px #e0e7ff;">
+                                <?= $pItem ?>
+                            </span>
+                        <?php else: ?>
+                            <a href="<?= $buildPageUrl($pItem) ?>" class="inline-flex items-center justify-center w-8 h-8 rounded-full text-slate-700 hover:bg-slate-100 hover:text-slate-900 text-sm font-medium transition">
+                                <?= $pItem ?>
+                            </a>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+
+                    <!-- Next Button -->
+                    <?php if ($currPage < $totalPages): ?>
+                        <a href="<?= $buildPageUrl($currPage + 1) ?>" class="inline-flex items-center text-sm font-medium text-slate-700 hover:text-indigo-600 transition px-2 py-1 ml-1">
+                            Next
+                            <svg class="w-4 h-4 ml-1 text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                            </svg>
+                        </a>
+                    <?php else: ?>
+                        <span class="inline-flex items-center text-sm font-medium text-slate-300 pointer-events-none px-2 py-1 ml-1">
+                            Next
+                            <svg class="w-4 h-4 ml-1 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                            </svg>
+                        </span>
+                    <?php endif; ?>
+                </div>
+
+                <!-- Right Summary -->
+                <div class="text-sm text-slate-600 font-normal">
+                    Showing <?= count($reviews) ?> of <?= number_format($totalRows) ?> results
+                </div>
+            </div>
+        <?php endif; ?>
     </section>
-
 </div>
-
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const rows = document.querySelectorAll('.js-clickable-row');
         rows.forEach(row => {
             row.addEventListener('click', function(event) {
-                if (!event.target.closest('a') && !event.target.closest('button')) {
+                if (!event.target.closest('a') && !event.target.closest('button') && !event.target.closest('form')) {
                     const url = this.getAttribute('data-href');
                     if (url) {
                         window.location.href = url;
@@ -206,7 +306,16 @@ $reviews = $statement->fetchAll();
                 }
             });
         });
+        const toggleForms = document.querySelectorAll('.js-toggle-form');
+        toggleForms.forEach(form => {
+            form.addEventListener('submit', function(event) {
+                const currentStatus = parseInt(form.querySelector('input[name="status"]').value);
+                const action = currentStatus === 0 ? 'แสดงรีวิวนี้บนหน้าเว็บ' : 'ซ่อนรีวิวนี้จากหน้าเว็บ';
+                if (!confirm(action + '?')) {
+                    event.preventDefault();
+                }
+            });
+        });
     });
 </script>
-
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>

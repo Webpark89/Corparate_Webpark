@@ -6,7 +6,7 @@ $articles = is_array($articles ?? null) ? $articles : [];
 $categories = is_array($categories ?? null) ? $categories : [];
 $activeCategorySlug = (string) ($activeCategorySlug ?? 'all');
 $fallbackImage = asset_url('images/story.png');
-$heroImage = asset_url('images/bg-6.png');
+$heroImage = asset_url('images/bg-7.png');
 $ctaImage = asset_url('images/bg-cta.jpg');
 ?>
 
@@ -37,85 +37,140 @@ $ctaImage = asset_url('images/bg-cta.jpg');
     .delay-200 { animation-delay: 200ms; }
     .delay-300 { animation-delay: 300ms; }
     .delay-400 { animation-delay: 400ms; }
+    /* บังคับตำแหน่งรูปภาพและ Overlay ด้วย CSS โดยตรง เพื่อเลี่ยงปัญหา Tailwind ไม่คอมไพล์ */
+    .hero-bg-img {
+        /* ปรับ object-position เป็น 85% เพื่อดึงโน้ตบุ๊กกลับเข้ามาในจอ และ 0% คือชิดขอบบน */
+        object-position: 85% 0% !important;
+    }
+    .hero-overlay-mobile {
+        /* เฉดสีขาวเฉพาะฝั่งซ้ายและด้านบนที่ตัวหนังสืออยู่ ปล่อยฝั่งขวาให้โปร่งใสเพื่อให้เห็นรูปภาพ */
+        background: linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.9) 45%, rgba(255, 255, 255, 0) 80%) !important;
+    }
+    .hero-overlay-gradient {
+        background: transparent !important; /* ยกเลิก gradient ซ้ำซ้อนบนมือถือ */
+    }
+    @media (min-width: 768px) {
+        .hero-bg-img {
+            object-position: right center !important;
+        }
+        .hero-overlay-mobile {
+            background: transparent !important;
+        }
+        .hero-overlay-gradient {
+            background: linear-gradient(to right, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.9) 60%, rgba(255, 255, 255, 0.1) 100%) !important;
+        }
+    }
+
+    .hero-parallax-img {
+        transform: scale(1.12);
+        will-change: transform;
+    }
+    @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after {
+            animation-duration: 0.001ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.001ms !important;
+            scroll-behavior: auto !important;
+        }
+    }
+
+    @media (min-width: 1024px) and (max-width: 1279px) {
+        .ipad-pro-article-hero-content {
+            margin-left: 0 !important;
+        }
+    }
+
+    @media (min-width: 1025px) {
+        .desktop-wide-container-article {
+            max-width: 1720px !important;
+            padding-left: 2.5rem !important;
+            padding-right: 2.5rem !important;
+        }
+    }
 </style>
 
-<section class="relative overflow-hidden font-sans">
-    <div class="absolute inset-0 z-0 overflow-hidden">
+<!-- นำขอบโค้งและ margin ออก เพื่อให้ชิดขอบจอด้านบนและด้านข้างแบบ Edge-to-Edge -->
+<section id="article-hero" class="relative overflow-hidden font-sans bg-white border-none">
+    <div class="absolute inset-0 z-0">
         <img src="<?= e($heroImage) ?>" alt="WEBPARK Solutions Background" 
-            class="w-full h-full object-cover object-[100%_center] md:object-center opacity-100 mix-blend-screen">
+            class="hero-parallax-img w-full h-full object-cover md:object-contain hero-bg-img opacity-100">
             
-        <!-- ปรับ Gradient สีขาวให้จางลง เพื่อให้เห็นพื้นหลังจอโน้ตบุ๊กบนมือถือชัดเจนตามความต้องการ -->
-        <div class="absolute inset-0 bg-gradient-to-r from-white/90 via-white/50 to-transparent md:from-white md:via-white/70 md:to-white/5"></div>
+        <div class="absolute inset-0 hero-overlay-mobile"></div>
+        <div class="absolute inset-0 hero-overlay-gradient"></div>
         <div class="absolute inset-x-0 bottom-0 h-[30%] bg-gradient-to-t from-white/50 to-transparent z-10"></div>
     </div>
 
-    <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 pt-12 pb-24 lg:pt-28 lg:pb-32 relative z-10">
+    <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8 pt-12 pb-24 lg:pt-28 lg:pb-32 relative z-10 desktop-wide-container-article">
         <div class="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-12 lg:gap-20 items-center">
             
-            <div class="max-w-3xl lg:max-w-none">
+            <div class="max-w-2xl lg:ml-12 xl:ml-24 ipad-pro-article-hero-content">
                 <nav aria-label="Breadcrumb" class="hidden md:block animate-fade-up delay-100 mb-6">
-                    <ol class="inline-flex items-center space-x-2 text-sm md:text-base font-medium text-slate-500">
+                    <ol class="inline-flex items-center text-sm md:text-base font-medium text-slate-500">
                         <li>
                             <a href="<?= e(route_url('/')) ?>" class="hover:text-primary transition-colors duration-200">
-                                หน้าแรก
+                                <?= e(t('common.nav_home')) ?>
                             </a>
                         </li>
-                        
                         <li>
-<<<<<<< Updated upstream
                             <span class="text-slate-400" style="margin: 0 4px;">/</span>
-=======
-                            <span class="text-slate-400 mx-2 md:mx-4">/</span>
->>>>>>> Stashed changes
                         </li>
                         
                         <li aria-current="page">
-                            <span class="text-slate-400">บทความ</span>
+                            <span class="text-slate-400"><?= e(t('article_list.page_title')) ?></span>
                         </li>
                     </ol>
                 </nav>
                 
                 <style>
                     .hero-title-text {
-                        font-size: 2.75rem;
+                        font-size: 2.25rem;
                         line-height: 1.25;
                     }
                     .hero-desc-text {
-                        font-size: 17px;
+                        font-size: 22px !important;
+                        line-height: 1.65;
                     }
                     @media (min-width: 768px) {
-                        .hero-title-text { font-size: 4.5rem; line-height: 1.2; }
-                        .hero-desc-text { font-size: 26px; }
+                        .hero-title-text { font-size: 3.5rem; line-height: 1.2; }
+                        .hero-desc-text { font-size: 24px !important; line-height: 1.7; }
                     }
                     @media (min-width: 1024px) {
-                        .hero-title-text { font-size: 5.5rem; line-height: 1.2; }
+                        .hero-title-text { font-size: 4.5rem; line-height: 1.2; }
                     }
                     @media (min-width: 1280px) {
-                        .hero-title-text { font-size: 6.5rem; line-height: 1.2; }
+                        .hero-title-text { font-size: 5rem; line-height: 1.2; }
                     }
                 </style>
                 <h1 class="animate-fade-up delay-200 tracking-tight mb-2">
-                    <span class="hero-title-text font-black bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block pb-2 whitespace-nowrap">
-                        บทความความรู้
+                    <span class="hero-title-text font-bold bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block pb-1 md:pb-2 whitespace-nowrap">
+                        <?= e(getCurrentLang() === 'th' ? 'บทความความรู้' : 'Knowledge Articles') ?>
                     </span><br>
-                    <span class="hero-title-text font-black bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block -mt-4 md:-mt-8 whitespace-nowrap" style="animation-delay: -3s;">
-                        และอัพเดต
+                    <span class="hero-title-text font-bold bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block -mt-2 md:-mt-8 whitespace-nowrap" style="animation-delay: -3s;">
+                        <?= e(getCurrentLang() === 'th' ? 'และอัพเดต' : '& Updates') ?>
                     </span>
                 </h1>
 
-                <p class="hero-desc-text animate-fade-up delay-300 mt-4 md:mt-8 leading-relaxed w-full mb-10 font-medium" style="color: #054FC5;">
-                    <!-- Mobile View (Exactly matching the reference image) -->
-                    <span class="block md:hidden">
-                        รวบรวมบทความความรู้ เทคโนโลยี นวัตกรรม<br>
-                        และแนวทางการทำธุรกิจ ครอบคลุม ERP<br>
-                        ระบบธุรกิจดิจิทัล การตลาดออนไลน์ AI และโซลูชัน<br>
-                        ที่ช่วยพัฒนาองค์กรให้เติบโตอย่างยั่งยืน
+                <?php
+                if (getCurrentLang() === 'th') {
+                    $mobile_desc = "รวบรวมบทความรู้ เทคโนโลยี นวัตกรรม และแนวทาง<br>การทำธุรกิจ ครอบคลุม ERP ระบบธุรกิจดิจิทัล การ<br>ตลาดออนไลน์ AI และโซลูชัน ที่ช่วยพัฒนาองค์กรให้<br>เติบโตได้อย่างยั่งยืน";
+                } else {
+                    $mobile_desc = "Knowledge articles, tech, and innovation covering ERP systems, digital business, online marketing, AI, and solutions to sustainably grow your organization.";
+                }
+                ?>
+                <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-lg md:text-xl leading-relaxed max-w-2xl mb-10 font-medium">
+                    <span class="block md:hidden leading-[1.75]">
+                        <?= $mobile_desc ?>
                     </span>
-                    <!-- Desktop View (Exactly 3 lines) -->
-                    <span class="hidden md:block whitespace-nowrap">
-                        รวบรวมบทความความรู้ เทคโนโลยี นวัตกรรม และแนวทางการทำธุรกิจ <br>
-                        ครอบคลุม ERP ระบบธุรกิจดิจิทัล การตลาดออนไลน์ AI และโซลูชัน<br>
-                        ที่ช่วยพัฒนาองค์กรให้เติบโตอย่างยั่งยืน
+                    <span class="hidden md:block leading-relaxed">
+                        <?php if (getCurrentLang() === 'th'): ?>
+                            <?= e(t('common.articles_knowledge_summary')) ?> <br>
+                            ครอบคลุม ERP ระบบธุรกิจดิจิทัล การตลาดออนไลน์ AI และโซลูชัน<br>
+                            <?= e(t('common.articles_growth_summary')) ?>
+                        <?php else: ?>
+                            A collection of articles on technology, innovation, and business<br>
+                            strategy covering ERP systems, digital business, online marketing,<br>
+                            AI, and solutions that help organizations grow sustainably.
+                        <?php endif; ?>
                     </span>
                 </p>
             </div>
@@ -124,120 +179,153 @@ $ctaImage = asset_url('images/bg-cta.jpg');
 </section>
 
 <section class="bg-white" style="padding-top: 1.5rem; padding-bottom: 2.5rem;">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-            <div class="relative flex-1">
-                <div id="category-filters" class="article-filter-track flex gap-3 overflow-x-auto py-1 pr-4">
-                    
-                    <!-- ปุ่ม: ทั้งหมด -->
-                    <button type="button"
-                            data-filter="all"
-                            class="article-filter-btn whitespace-nowrap rounded-md border px-5 py-2 text-sm font-medium transition-colors <?= $activeCategorySlug === 'all' ? 'border-transparent bg-blue-600 text-white' : 'border-blue-200 bg-white text-[#1a2b6d] hover:bg-blue-600 hover:text-white hover:border-transparent' ?>">
-                        ทั้งหมด
+    <div class="mx-auto max-w-7xl px-6 sm:px-6 lg:px-8 desktop-wide-container-article">
+        <div class="lg:px-12 xl:px-24">
+            <div class="flex flex-col gap-4 md:flex-row md:items-center relative w-full">
+                <div class="hidden items-center md:flex shrink-0 pr-4">
+                    <button id="filter-scroll-left"
+                            type="button"
+                            class="article-filter-arrow flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 text-slate-500 transition-all duration-300 hover:bg-slate-50 opacity-0 pointer-events-none"
+                            aria-label="<?= e(t('article_list.category_scroll_left')) ?>">
+                        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M15 19l-7-7 7-7"/>
+                        </svg>
                     </button>
-
-                    <!-- ปุ่ม: หมวดหมู่ตาม Loop -->
-                    <?php foreach ($categories as $category):
-                        $slug = trim((string) ($category['slug'] ?? ''));
-                        $name = $category['name'] ?? '';
-                        if ($slug === '' || $name === '') {
-                            continue;
-                        }
-                        $isActive = $activeCategorySlug === $slug;
-                    ?>
-                        <button type="button"
-                                data-filter="<?= e($slug) ?>"
-                                class="article-filter-btn whitespace-nowrap rounded-md border px-5 py-2 text-sm font-medium transition-colors <?= $isActive ? 'border-transparent bg-blue-600 text-white' : 'border-blue-200 bg-white text-[#1a2b6d] hover:border-transparent hover:bg-blue-600 hover:text-white' ?>">
-                            <?= e($name) ?>
-                        </button>
-                    <?php endforeach; ?>
-
                 </div>
-            </div>
 
-            <div class="hidden items-center gap-2 md:flex">
-                <button id="filter-scroll-left"
-                        type="button"
-                        class="article-filter-arrow flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 text-slate-500 transition-colors hover:bg-slate-50"
-                        aria-label="เลื่อนหมวดหมู่ไปทางซ้าย">
-                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M15 19l-7-7 7-7"/>
-                    </svg>
-                </button>
-                <button id="filter-scroll-right"
-                        type="button"
-                        class="article-filter-arrow flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 text-slate-500 transition-colors hover:bg-slate-50"
-                        aria-label="เลื่อนหมวดหมู่ไปทางขวา">
-                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M9 5l7 7-7 7"/>
-                    </svg>
-                </button>
+                <div class="relative flex-1 overflow-hidden">
+                    <div id="category-filters" class="article-filter-track flex gap-3 overflow-x-auto py-1 hide-scroll scroll-smooth justify-start md:justify-center" style="-ms-overflow-style: none; scrollbar-width: none;">
+                        
+                        <!-- ปุ่ม: ทั้งหมด -->
+                        <?php 
+                            $allBtnClass = $activeCategorySlug === 'all' 
+                                ? 'border-transparent bg-blue-600 text-white' 
+                                : 'border-blue-200 bg-white text-[#1a2b6d] hover:bg-blue-600 hover:text-white hover:border-transparent';
+                        ?>
+                        <button type="button"
+                                data-filter="all"
+                                class="article-filter-btn whitespace-nowrap rounded-md border px-5 py-2 text-sm font-medium transition-colors <?= $allBtnClass ?>">
+                            <?= e(t('common.cta_view_all')) ?>
+                        </button>
+
+                        <!-- ปุ่ม: หมวดหมู่ตาม Loop -->
+                        <?php foreach ($categories as $category):
+                            $slug = trim((string) ($category['slug'] ?? ''));
+                            $name = $category['name'] ?? '';
+                            if ($slug === '' || $name === '') {
+                                continue;
+                            }
+                            $isActive = $activeCategorySlug === $slug;
+                            $catBtnClass = $isActive 
+                                ? 'border-transparent bg-blue-600 text-white' 
+                                : 'border-blue-200 bg-white text-[#1a2b6d] hover:border-transparent hover:bg-blue-600 hover:text-white';
+                        ?>
+                            <button type="button"
+                                    data-filter="<?= e($slug) ?>"
+                                    class="article-filter-btn whitespace-nowrap rounded-md border px-5 py-2 text-sm font-medium transition-colors <?= $catBtnClass ?>">
+                                <?= e($name) ?>
+                            </button>
+                        <?php endforeach; ?>
+                        
+
+                    </div>
+                </div>
+
+                <div class="hidden items-center md:flex shrink-0 pl-4">
+                    <button id="filter-scroll-right"
+                            type="button"
+                            class="article-filter-arrow flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 text-slate-500 transition-all duration-300 hover:bg-slate-50 opacity-0 pointer-events-none"
+                            aria-label="<?= e(t('article_list.category_scroll_right')) ?>">
+                        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 5l7 7-7 7"/>
+                        </svg>
+                    </button>
+                </div>
             </div>
         </div>
     </div>
 </section>
 
 <section class="bg-white pb-20">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <style>
-            .article-grid-container {
-                display: grid;
-                grid-template-columns: 1fr;
-                gap: 1.5rem;
-            }
-            .article-card-slide {
-                width: 100%;
-            }
-            @media (min-width: 1024px) {
+    <div class="mx-auto max-w-7xl px-6 sm:px-6 lg:px-8 desktop-wide-container-article">
+        <div class="lg:px-12 xl:px-24">
+            <style>
                 .article-grid-container {
-                    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+                    display: grid;
+                    grid-template-columns: 1fr;
+                    gap: 1.5rem;
                 }
-            }
-        </style>
-        <div id="article-grid" class="article-grid article-grid-container gap-6 hide-scroll scroll-smooth" style="-ms-overflow-style: none; scrollbar-width: none;">
-            <?php foreach ($articles as $article):
-                $detailUrl = route_url('/article', ['id' => (int) ($article['id'] ?? 0)]);
+                .article-card-slide {
+                    width: 100%;
+                }
+                @media (min-width: 1024px) {
+                    .article-grid-container {
+                        grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+                    }
+                }
+            </style>
+            <div id="article-grid" class="article-grid article-grid-container gap-6 hide-scroll scroll-smooth" style="-ms-overflow-style: none; scrollbar-width: none;">
+            <?php 
+            foreach ($articles as $article):
+                $itemLang = getCurrentLang();
+                $articleSlug = ($itemLang === 'en' && !empty($article['slug_en'])) ? $article['slug_en'] : (!empty($article['slug']) ? $article['slug'] : (string) ($article['id'] ?? 0));
+                $detailUrl = route_url('/article/' . $articleSlug);
                 $categoryName = trim((string) ($article['category_name'] ?? ''));
                 $categorySlug = trim((string) ($article['category_slug'] ?? ''));
+                $articleTitle = (string) ($article['title'] ?? t('article_list.page_title'));
+                if ($itemLang === 'en' && !empty($article['meta_title_en'])) {
+                    $articleTitle = $article['meta_title_en'];
+                }
+                
                 $summary = trim(strip_tags((string) ($article['summary'] ?? '')));
+                if ($itemLang === 'en' && !empty($article['meta_description_en'])) {
+                    $summary = trim(strip_tags((string) $article['meta_description_en']));
+                }
                 $imageSrc = resolve_article_image_url((string) ($article['image_path'] ?? ''), $fallbackImage);
+                $linkToUse = (trim($articleTitle) === 'ทำไม SEO ถึงสำคัญสำหรับธุรกิจในปีนี้') 
+                             ? '/Corparate_Webpark/article-detail-mockup' 
+                             : $detailUrl;
                 ?>
-                <article class="article-card article-card-slide snap-start group flex flex-col overflow-hidden rounded-[1.5rem] border border-slate-100 bg-white shadow-[0_4px_20px_rgba(0,0,0,0.04)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(0,0,0,0.08)]"
+                <article class="article-card article-card-slide snap-start group h-fit flex flex-col overflow-hidden rounded-[1.5rem] border border-slate-100 bg-white shadow-[0_4px_20px_rgba(0,0,0,0.04)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(0,0,0,0.08)]"
                          data-category="<?= e($categorySlug !== '' ? $categorySlug : 'all') ?>">
                     
-                    <!-- ส่วนรูปภาพ ปรับเป็น 4/3 ให้รูปดูเต็มขึ้น -->
-                    <a href="<?= e($detailUrl) ?>" class="relative block aspect-[4/3] w-full overflow-hidden">
-                        <img src="<?= e($imageSrc) ?>" alt="<?= e($article['title'] ?? '') ?>" class="article-card__image h-full w-full object-cover transition-transform duration-500 group-hover:scale-105">
+                    <!-- ส่วนรูปภาพ ปรับสัดส่วนให้สมดุลกับส่วนเนื้อหาที่เล็กลง -->
+                    <a href="<?= e($linkToUse) ?>" class="relative block aspect-[16/9] w-full overflow-hidden">
+                        <img src="<?= e($imageSrc) ?>" alt="<?= e($articleTitle) ?>" class="article-card__image h-full w-full object-cover transition-transform duration-500 group-hover:scale-105">
                     </a>
                     
                     <!-- ส่วนเนื้อหา -->
-                    <div class="flex h-full flex-col p-6">
+                    <div class="flex flex-col p-4">
                         
-                        <!-- Badge หมวดหมู่ (พื้นหลังฟ้า ขอบมนแคปซูล) -->
-                        <div class="mb-4">
-                            <span class="inline-block rounded-full bg-blue-50 px-4 py-2 lg:px-3 lg:py-1.5 text-sm lg:text-xs font-semibold tracking-wide text-blue-700">
-                                <?= e($categoryName !== '' ? $categoryName : 'หมวดหมู่') ?>
+                        <!-- Badge หมวดหมู่ (พื้นหลังฟ้า ขอบมนแคปซูล) + Pinned Badge -->
+                        <div class="mb-3 flex items-center justify-between gap-2">
+                            <span class="inline-block rounded-full bg-blue-50 px-3 py-1.5 text-xs font-semibold tracking-wide text-blue-700">
+                                <?= e($categoryName !== '' ? $categoryName : (getCurrentLang() === 'th' ? 'หมวดหมู่' : 'Category')) ?>
                             </span>
+                            <?php if (!empty($article['is_pinned'])): ?>
+                                <span class="inline-flex items-center gap-1 rounded-full bg-amber-50 border border-amber-200/80 px-2.5 py-1 text-[11px] font-bold text-amber-700 shadow-sm">
+                                    <span>📌</span>
+                                    <span><?= getCurrentLang() === 'th' ? 'บทความแนะนำ' : 'Pinned' ?></span>
+                                </span>
+                            <?php endif; ?>
                         </div>
                         
                         <!-- หัวข้อบทความ -->
-                        <a href="<?= e($detailUrl) ?>" class="block mb-3">
-                            <h3 class="article-card__title text-2xl lg:text-lg font-bold text-[#1a2b6d] leading-snug line-clamp-2">
-                                <?= e($article['title'] ?? 'บทความ') ?>
+                        <a href="<?= e($linkToUse) ?>" class="block mb-2">
+                            <h3 class="article-card__title text-xl lg:text-lg font-bold text-[#1a2b6d] leading-snug" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 3.25rem;">
+                                <?= e($articleTitle) ?>
                             </h3>
                         </a>
                         
                         <!-- สรุปเนื้อหา (แสดง 3 บรรทัด) -->
-                        <?php if ($summary !== ''): ?>
-                            <p class="article-card__description text-lg lg:text-sm leading-relaxed text-slate-500 line-clamp-3">
-                                <?= e($summary) ?>
-                            </p>
-                        <?php endif; ?>
+                        <p class="article-card__description text-slate-500" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; font-size: 0.875rem; line-height: 1.5rem; height: 3rem; white-space: normal; word-break: break-word;">
+                            <?= e($summary) ?>
+                        </p>
                         
                         <!-- ปุ่มอ่านเพิ่มเติม (ดันลงล่างสุด และชิดขวา) -->
-                        <div class="mt-auto pt-6 flex" style="justify-content: flex-end;">
-                            <a href="<?= e($detailUrl) ?>" class="article-card__cta inline-flex items-center gap-1.5 text-lg lg:text-sm font-semibold text-blue-500 transition-all hover:gap-2 hover:text-blue-700">
-                                อ่านเพิ่มเติม
+                        <div class="flex mt-1" style="justify-content: flex-end;">
+                            <a href="<?= e($linkToUse) ?>" class="article-card__cta inline-flex items-center gap-1.5 text-lg lg:text-sm font-semibold text-blue-500 transition-all hover:gap-2 hover:text-blue-700">
+                                <?= e(t('common.cta_read_more')) ?>
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                                     <path d="M5 12h14M12 5l7 7-7 7"/>
                                 </svg>
@@ -249,83 +337,16 @@ $ctaImage = asset_url('images/bg-cta.jpg');
             <?php endforeach; ?>
         </div>
 
-        <div id="no-results" class="article-no-results hidden py-14 text-center text-slate-600">
-            <div class="mx-auto mb-4 h-16 w-16 rounded-full border border-slate-200 bg-slate-50 flex items-center justify-center">
-                <svg class="h-8 w-8 text-slate-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9.5L18.5 6M15 10a4 4 0 11-8 0 4 4 0 018 0z"/>
-                </svg>
-            </div>
-            <h3 class="text-lg font-bold text-[#1a2b6d] mb-2">ไม่พบบทความในหมวดหมู่นี้</h3>
-            <p class="text-sm text-slate-500">ลองเลือกหมวดหมู่อื่นหรือลิงก์ "ทั้งหมด" เพื่อดูบทความทั้งหมด</p>
+        <div id="no-results" class="article-no-results hidden py-14 text-center text-slate-600 flex-col items-center justify-center">
+            <img src="<?= e(asset_url('images/Empty.gif')) ?>" alt="No results" class="w-64 h-auto max-w-full mb-4 object-contain">
+            <h3 class="text-lg font-bold text-[#1a2b6d] mb-2"><?= e(t('article_list.empty_state_title')) ?></h3>
+            <p class="text-sm text-slate-500"><?= e(t('article_list.empty_state_desc')) ?></p>
         </div>
 
         <nav id="pagination" class="article-pagination mt-8 flex items-center justify-center gap-2" aria-label="Article pagination"></nav>
+        </div>
     </div>
 </section>
-
-<!-- อันเก่าโค้ดสำหรับดูเป็นแนวทาง -->
-
-<!-- 
-<section class="bg-white px-4 py-16">
-    
-    <div class="mx-auto max-w-7xl overflow-hidden rounded-[2rem] p-8 lg:p-12 text-white shadow-[0_25px_70px_rgba(15,23,42,0.35)] relative"
-         style="background-image: url('<?= e($ctaImage) ?>'); background-size: cover; background-position: center;">
-        
-        
-        <div class="absolute inset-0 bg-[#0b1b42]/80 z-0"></div>
-
-        
-        <div class="relative z-10 grid gap-6 lg:grid-cols-2 lg:items-center">
-            <div class="space-y-4">
-                <p class="text-xs uppercase tracking-[0.4em] text-blue-200">พร้อมดูแลองค์กรของคุณ</p>
-                <h2 class="text-3xl font-extrabold leading-tight lg:text-4xl">
-                    พร้อมช่วยองค์กรของคุณ<br>
-                    ก้าวสู่ดิจิทัลอย่างเต็มรูปแบบ
-                </h2>
-                <p class="text-sm leading-7 text-white/80">ทีมวิศวกร Webpark พร้อมให้คำปรึกษา วิเคราะห์ และออกแบบโซลูชันที่เหมาะกับธุรกิจของคุณในทุกมิติ</p>
-                <a href="<?= e(route_url('/contact')) ?>" class="inline-flex w-fit items-center justify-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-bold text-[#0b1b42] transition hover:bg-slate-100">
-                    ติดต่อปรึกษาฟรี
-                    <span class="text-base leading-none">→</span>
-                </a>
-            </div>
-        </div>
-    </div>
-</section> 
--->
-
-<!-- โค้ดใหม่สำหรับปรับปรุงแล้ว -->
-
-<!-- <section class="bg-white px-4 py-16">
-    <div class="mx-auto overflow-hidden rounded-[2rem] px-8 py-10 lg:px-12 lg:py-8 text-white shadow-[0_25px_70px_rgba(15,23,42,0.35)] relative flex items-center min-h-[400px]"
-         style="max-width: 1216px; width: 100%; background-image: url('<?= e($ctaImage) ?>'); background-size: cover; background-position: right center;">
-        
-        <div class="absolute inset-0 z-0" style="background: linear-gradient(to right, #002868 0%, rgba(0, 51, 128, 0.95) 45%, rgba(0, 51, 128, 0) 100%);"></div>
-
-        <div class="relative z-10 grid gap-6 lg:grid-cols-2 lg:items-center w-full">
-            <div class="space-y-5">
-                <p class="text-sm font-medium text-blue-200 lg:text-base">
-                    ปรึกษาผู้เชี่ยวชาญ Webpark
-                </p>
-                
-                <h2 class="text-3xl font-bold leading-[1.4] lg:text-5xl lg:leading-[1.3]">
-                    พร้อมช่วยองค์กรของคุณ<br>
-                    ก้าวสู่ดิจิทัลอย่างเต็มรูปแบบ
-                </h2>
-                
-                <p class="text-base leading-relaxed text-white/90 lg:text-lg">
-                    เราพร้อมให้คำปรึกษาและออกแบบโซลูชันที่เหมาะสมกับธุรกิจของคุณ
-                </p>
-                
-                <div class="pt-2">
-                    <a href="<?= e(route_url('/contact')) ?>" class="inline-flex w-fit items-center justify-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-bold text-[#0b1b42] transition hover:bg-slate-100">
-                        ติดต่อปรึกษาฟรี
-                        <span class="text-base leading-none">→</span>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-</section> -->
 
 <style>
 .article-pagination__btn {
@@ -425,6 +446,17 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentPage = 1;
     let isDesktopMode = window.innerWidth >= 1024;
 
+    const scrollToGridTop = () => {
+        const categoryFilters = document.getElementById('category-filters');
+        if (categoryFilters) {
+            const yOffset = -90; // Offset to clear the sticky header (height 64px) and add spacing
+            const y = categoryFilters.getBoundingClientRect().top + (window.scrollY || window.pageYOffset) + yOffset;
+            window.scrollTo({ top: y, behavior: 'smooth' });
+        } else {
+            articleGrid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    };
+
     const ACTIVE_CLASSES = ['border-transparent', 'bg-blue-600', 'text-white'];
     const INACTIVE_CLASSES = ['border-blue-200', 'bg-white', 'text-[#1a2b6d]'];
 
@@ -479,41 +511,100 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (disabled) return;
                 currentPage = target;
                 render();
-                articleGrid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                scrollToGridTop();
             });
             return btn;
         };
 
         const paginationContainer = document.createElement('div');
         paginationContainer.className = 'flex items-center overflow-hidden bg-white shadow-sm mx-auto';
-        paginationContainer.style.borderRadius = '14px';
+        paginationContainer.style.borderRadius = '8px';
         paginationContainer.style.border = '1px solid #cbd5e1';
         
         const prevBtn = createBtn('', currentPage - 1, false, currentPage === 1);
-        prevBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" style="height: 24px; width: 24px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>`;
+        prevBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" style="height: 18px; width: 18px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>`;
         prevBtn.className = 'flex items-center justify-center transition-colors hover:bg-slate-50';
-        prevBtn.style.height = '68px';
-        prevBtn.style.width = '72px';
+        prevBtn.style.height = '44px';
+        prevBtn.style.width = '48px';
         prevBtn.style.color = '#1e40af';
         prevBtn.style.borderRight = '1px solid #cbd5e1';
         if (currentPage === 1) prevBtn.style.opacity = '0.3';
         paginationContainer.appendChild(prevBtn);
 
         const infoText = document.createElement('span');
-        infoText.className = 'flex items-center justify-center font-medium tracking-wide';
-        infoText.style.height = '68px';
-        infoText.style.padding = '0 40px';
-        infoText.style.minWidth = '160px';
+        infoText.className = 'flex items-center justify-center font-medium tracking-wide cursor-pointer hover:bg-slate-50 transition-colors select-none';
+        infoText.style.height = '44px';
+        infoText.style.padding = '0 20px';
+        infoText.style.minWidth = '100px';
         infoText.style.color = '#1e40af';
-        infoText.style.fontSize = '26px';
+        infoText.style.fontSize = '16px';
+        infoText.title = 'คลิกเพื่อเลือกหน้า / Click to input page';
         infoText.textContent = `${currentPage} of ${totalPages}`;
+
+        infoText.addEventListener('click', (e) => {
+            if (e.target.tagName === 'INPUT') return;
+            
+            infoText.innerHTML = '';
+            
+            const input = document.createElement('input');
+            input.type = 'number';
+            input.min = '1';
+            input.max = totalPages;
+            input.value = currentPage;
+            input.className = 'w-12 h-7 text-center font-bold text-[#1e40af] border border-blue-200 rounded focus:outline-none focus:border-blue-500 bg-slate-50 p-0 text-sm';
+            input.addEventListener('click', (evt) => evt.stopPropagation());
+            
+            const label = document.createElement('span');
+            label.className = 'ml-1.5 text-slate-500 font-medium text-sm';
+            label.textContent = `of ${totalPages}`;
+            
+            infoText.appendChild(input);
+            infoText.appendChild(label);
+            
+            input.focus();
+            input.select();
+            
+            let submitted = false;
+            const finish = () => {
+                if (submitted) return;
+                submitted = true;
+                const val = parseInt(input.value, 10);
+                if (!isNaN(val) && val >= 1 && val <= totalPages) {
+                    if (val !== currentPage) {
+                        currentPage = val;
+                        render();
+                        scrollToGridTop();
+                    } else {
+                        infoText.textContent = `${currentPage} of ${totalPages}`;
+                    }
+                } else {
+                    infoText.textContent = `${currentPage} of ${totalPages}`;
+                }
+            };
+            
+            input.addEventListener('keydown', (evt) => {
+                if (evt.key === 'Enter') {
+                    evt.preventDefault();
+                    finish();
+                } else if (evt.key === 'Escape') {
+                    evt.preventDefault();
+                    submitted = true;
+                    infoText.textContent = `${currentPage} of ${totalPages}`;
+                }
+            });
+            
+            input.addEventListener('blur', () => {
+                setTimeout(finish, 100);
+            });
+        });
+
         paginationContainer.appendChild(infoText);
 
         const nextBtn = createBtn('', currentPage + 1, false, currentPage === totalPages);
-        nextBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" style="height: 24px; width: 24px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>`;
+        nextBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" style="height: 18px; width: 18px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>`;
         nextBtn.className = 'flex items-center justify-center transition-colors hover:bg-slate-50';
-        nextBtn.style.height = '68px';
-        nextBtn.style.width = '72px';
+        nextBtn.style.height = '44px';
+        nextBtn.style.width = '48px';
         nextBtn.style.color = '#1e40af';
         nextBtn.style.borderLeft = '1px solid #cbd5e1';
         if (currentPage === totalPages) nextBtn.style.opacity = '0.3';
@@ -533,7 +624,19 @@ document.addEventListener('DOMContentLoaded', () => {
         const visible = filteredCards.slice(start, start + PAGE_SIZE);
         visible.forEach(card => card.classList.remove('hidden'));
 
+        // เล่น GSAP animation สลับการ์ดบทความเมื่อเปลี่ยนหน้า/หมวดหมู่
+        if (typeof gsap !== 'undefined') {
+            const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+            if (!prefersReducedMotion) {
+                gsap.fromTo(visible, 
+                    { opacity: 0, y: 20 },
+                    { opacity: 1, y: 0, duration: 0.45, stagger: 0.08, ease: "power2.out" }
+                );
+            }
+        }
+
         noResults.classList.toggle('hidden', filteredCards.length > 0);
+        noResults.classList.toggle('flex', filteredCards.length === 0);
         setTimeout(renderPagination, 100); 
     };
 
@@ -552,8 +655,49 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     if (scrollLeftBtn && scrollRightBtn && filterTrack) {
-        scrollLeftBtn.addEventListener('click', () => filterTrack.scrollBy({ left: -200, behavior: 'smooth' }));
-        scrollRightBtn.addEventListener('click', () => filterTrack.scrollBy({ left: 200, behavior: 'smooth' }));
+        const updateScrollButtons = () => {
+            const scrollLeft = filterTrack.scrollLeft;
+            const scrollWidth = filterTrack.scrollWidth;
+            const clientWidth = filterTrack.clientWidth;
+            
+            // If content fits completely without overflow, hide both buttons
+            if (scrollWidth <= clientWidth + 2) {
+                scrollLeftBtn.classList.add('opacity-0', 'pointer-events-none');
+                scrollRightBtn.classList.add('opacity-0', 'pointer-events-none');
+                return;
+            }
+
+            // At the leftmost edge (or if not scrolled at all)
+            if (scrollLeft <= 5) {
+                scrollLeftBtn.classList.add('opacity-0', 'pointer-events-none');
+                scrollRightBtn.classList.remove('opacity-0', 'pointer-events-none');
+            } 
+            // At the rightmost edge
+            else if (Math.ceil(scrollLeft + clientWidth) >= scrollWidth - 5) {
+                scrollLeftBtn.classList.remove('opacity-0', 'pointer-events-none');
+                scrollRightBtn.classList.add('opacity-0', 'pointer-events-none');
+            } 
+            // In the middle
+            else {
+                scrollLeftBtn.classList.remove('opacity-0', 'pointer-events-none');
+                scrollRightBtn.classList.remove('opacity-0', 'pointer-events-none');
+            }
+        };
+
+        filterTrack.addEventListener('scroll', updateScrollButtons);
+        updateScrollButtons();
+        setTimeout(updateScrollButtons, 150);
+        setTimeout(updateScrollButtons, 500);
+        window.addEventListener('resize', updateScrollButtons);
+
+        scrollLeftBtn.addEventListener('click', () => {
+            filterTrack.scrollLeft -= 300;
+            setTimeout(updateScrollButtons, 350);
+        });
+        scrollRightBtn.addEventListener('click', () => {
+            filterTrack.scrollLeft += 300;
+            setTimeout(updateScrollButtons, 350);
+        });
     }
     
     window.addEventListener('resize', () => {
@@ -570,5 +714,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
     setActiveButton(currentFilter);
     render();
+});
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    gsap.registerPlugin(ScrollTrigger);
+
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    // Hero Parallax Background
+    if (!prefersReducedMotion) {
+        gsap.utils.toArray(".hero-parallax-img").forEach((img) => {
+            gsap.to(img, {
+                yPercent: 12,
+                ease: "none",
+                scrollTrigger: {
+                    trigger: "#article-hero",
+                    start: "top top",
+                    end: "bottom top",
+                    scrub: true
+                }
+            });
+        });
+    }
 });
 </script>

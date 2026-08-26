@@ -1,55 +1,132 @@
 <?php
-
 /**
  * Shared article create/edit form partial.
  */
 $data = $article ?? [];
 $action = $action ?? 'create';
 $formAction = $formAction ?? 'create.php';
-$status = isset($_POST['status']) && $_POST['status'] === 'published' ? 'published' : 'draft';
-
+$status = isset($_POST['status']) && in_array($_POST['status'], ['published', 'draft', 'hidden'], true)
+    ? $_POST['status']
+    : ($data['status'] ?? 'draft');
 $categories = db()->query('SELECT id, name FROM categories ORDER BY name')->fetchAll();
 $authors = db()->query('SELECT id, display_name FROM authors ORDER BY display_name')->fetchAll();
-
+$currentArticleId = (int)($data['id'] ?? 0);
+$pinnedArticle = null;
+try {
+    $stmt = db()->prepare('SELECT id, meta_title FROM article WHERE is_pinned = 1 AND id != ? LIMIT 1');
+    $stmt->execute([$currentArticleId]);
+    $pinnedArticle = $stmt->fetch();
+} catch (Exception $e) {
+    $pinnedArticle = null;
+}
+$isPinned = !empty($data['is_pinned']);
+$sections = [];
+if (!empty($data['content'])) {
+    $rawContent = (string)$data['content'];
+    $decoded = json_decode($rawContent, true);
+    if (!is_array($decoded)) {
+        $decoded = json_decode(stripslashes($rawContent), true);
+    }
+    if (!is_array($decoded)) {
+        // Regex fallback for malformed JSON strings in database
+        $decoded = [];
+        preg_match_all('/\{\s*"lang"\s*:\s*"(th|en)"\s*,\s*"topic"\s*:\s*"(.*?)"\s*,\s*"body"\s*:\s*"(.*?)"\s*\}/s', $rawContent, $matches, PREG_SET_ORDER);
+        if (!empty($matches)) {
+            foreach ($matches as $m) {
+                $decoded[] = [
+                    'lang' => $m[1],
+                    'topic' => str_replace(['\\"', '\\/'], ['"', '/'], $m[2]),
+                    'body' => str_replace(['\\"', '\\/'], ['"', '/'], $m[3]),
+                ];
+            }
+        }
+    }
+    if (is_array($decoded) && !empty($decoded)) {
+        foreach ($decoded as &$sec) {
+            if (isset($sec['body'])) {
+                $sec['body'] = str_replace(['\r\n', '\n', '\r', '\t', '<\/', '\"', '\/', '<\span>', '<\p>', '<\strong>', '<\h2>', '<\h3>', '<\div>', '§', '&sect;'], [' ', ' ', ' ', ' ', '</', '"', '/', '</span>', '</p>', '</strong>', '</h2>', '</h3>', '</div>', '', ''], $sec['body']);
+            }
+            if (isset($sec['topic'])) {
+                $sec['topic'] = str_replace(['\r\n', '\n', '\r', '\t', '<\/', '\"', '\/', '§', '&sect;'], [' ', ' ', ' ', ' ', '</', '"', '/', '', ''], $sec['topic']);
+            }
+        }
+        unset($sec);
+        $sections = $decoded;
+    } else {
+        $cleanBody = str_replace(['\r\n', '\n', '\r', '\t', '<\/', '\"', '\/', '<\span>', '<\p>', '<\strong>', '<\h2>', '<\h3>', '<\div>', '§', '&sect;'], [' ', ' ', ' ', ' ', '</', '"', '/', '</span>', '</p>', '</strong>', '</h2>', '</h3>', '</div>', '', ''], $rawContent);
+        $sections = [
+            ['lang' => 'th', 'topic' => 'เนื้อหาบทความ', 'body' => $cleanBody]
+        ];
+    }
+}
 $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition';
 ?>
-
+<style>
+    /* Make CKEditor sit flush inside our own rounded/bordered frame */
+    .editor-frame .ck.ck-toolbar {
+        border: none !important;
+        border-bottom: 1px solid #e2e8f0 !important;
+        border-radius: 0 !important;
+        background: #f8fafc !important;
+    }
+    .editor-frame .ck.ck-content {
+        border: none !important;
+        border-radius: 0 !important;
+        min-height: 150px;
+    }
+    .editor-frame .ck.ck-content:focus,
+    .editor-frame .ck.ck-focused {
+        box-shadow: none !important;
+    }
+</style>
 <div class="mx-auto max-w-7xl px-4 py-6 lg:px-8">
-
     <form method="post"
         action="<?= e($formAction) ?>"
         enctype="multipart/form-data"
         id="unifiedForm"
         class="grid grid-cols-1 gap-6 lg:grid-cols-12">
-
         <?= csrf_field() ?>
-
         <?php if ($action === 'edit'): ?>
             <input type="hidden" name="id" value="<?= (int)($data['id'] ?? 0) ?>">
         <?php endif; ?>
-
         <div class="lg:col-span-12 space-y-6">
-
+            <!-- Language Toggle Tabs (Global for Form) -->
+            <div class="inline-flex items-center gap-2 mb-2">
+                <button type="button" id="global-tab-th" onclick="switchGlobalLanguage('th')"
+                    style="padding-left:1.25rem;padding-right:1.25rem;"
+                    class="py-2 text-sm font-semibold rounded-lg bg-blue-50 text-blue-600 border border-blue-200 hover:bg-blue-100 focus:outline-none transition-all">
+                    ภาษาไทย (0/5)
+                </button>
+                <button type="button" id="global-tab-en" onclick="switchGlobalLanguage('en')"
+                    style="padding-left:1.25rem;padding-right:1.25rem;"
+                    class="py-2 text-sm font-semibold rounded-lg bg-transparent text-slate-500 border border-slate-200 hover:bg-slate-50 hover:text-slate-800 focus:outline-none transition-all">
+                    English (0/5)
+                </button>
+            </div>
             <section class="rounded-2xl border border-slate-200/80 bg-white shadow-sm overflow-hidden">
-
-                <div class="border-b border-slate-100 px-6 py-4">
-                    <h3 class="text-sm font-semibold text-slate-900">ตั้งค่ารูปภาพหน้าปก</h3>
-                    <p class="text-xs text-slate-500 mt-0.5">อัปโหลดและจัดการรูปภาพหลักสำหรับใช้แสดงผลในบทความนี้</p>
+                <div class="border-b border-slate-100 px-6 py-4 flex items-center justify-between">
+                    <div>
+                        <h3 class="text-sm font-semibold text-slate-900">ตั้งค่ารูปภาพหน้าปกบทความ</h3>
+                        <p class="text-xs text-slate-500 mt-0.5">อัปโหลดและจัดการรูปภาพหลัก (Hero Image) สำหรับบทความและแชร์ลงโซเชียลมีเดีย</p>
+                    </div>
+                    <span class="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700 border border-emerald-200">
+                        ⚡ Core Web Vitals Optimized
+                    </span>
                 </div>
-
-                <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
-
-                    <div class="flex flex-col">
-                        <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 block">
-                            ตัวอย่างรูปภาพ
-                        </label>
-
-                        <div class="w-full h-64 rounded-xl border border-slate-200 bg-slate-50 p-2 flex items-center justify-center overflow-hidden">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; padding: 1.5rem; width: 100%;">
+                    <!-- Left: Preview -->
+                    <div class="flex flex-col" style="width: 100%; min-width: 0; gap: 0.75rem;">
+                        <div class="flex items-center justify-between">
+                            <label class="text-xs font-semibold text-slate-700 uppercase tracking-wider block">
+                                ตัวอย่างรูปภาพ
+                            </label>
+                            <span class="text-xs text-slate-400">Live Preview</span>
+                        </div>
+                        <div id="article-img-preview-box" class="w-full rounded-xl border border-slate-200 bg-slate-50 flex items-center justify-center overflow-hidden relative" style="height: 260px; padding: 0.75rem;">
                             <?php if (!empty($data['cover_image'])): ?>
-                                <img src="<?= e(upload_url($data['cover_image'])) ?>"
+                                <img id="article-img-preview" src="<?= e(resolve_admin_image_url($data['cover_image'])) ?>"
                                     onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
-                                    class="w-full h-full object-contain rounded-lg shadow-sm transition-transform duration-200 hover:scale-[1.01]">
-
+                                    class="max-h-full max-w-full w-auto h-auto object-contain rounded-lg shadow-sm transition-transform duration-200 hover:scale-[1.01]">
                                 <div class="hidden text-center p-6 space-y-2">
                                     <div class="mx-auto w-12 h-12 rounded-full bg-red-50 flex items-center justify-center text-red-400">
                                         <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
@@ -60,7 +137,8 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
                                     <p class="text-[10px] text-slate-400">กรุณาตรวจสอบที่อยู่ไฟล์: <?= e($data['cover_image']) ?></p>
                                 </div>
                             <?php else: ?>
-                                <div class="text-center p-6 space-y-2">
+                                <img id="article-img-preview" src="" alt="Preview" class="max-h-full max-w-full w-auto h-auto object-contain rounded-lg hidden">
+                                <div id="article-img-placeholder" class="text-center p-6 space-y-2">
                                     <div class="mx-auto w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center text-slate-400">
                                         <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375 0 11-.75 0 .375 0 01.75 0z" />
@@ -70,111 +148,187 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
                                 </div>
                             <?php endif; ?>
                         </div>
+                        <?php if (!empty($data['cover_image'])): ?>
+                            <input type="hidden" name="cover_image" value="<?= e($data['cover_image']) ?>">
+                        <?php endif; ?>
+                        <div id="articleImageValidationStatus" class="mt-2 hidden"></div>
                     </div>
 
-                    <div class="flex flex-col justify-center space-y-5">
-
-                        <div class="space-y-2">
-                            <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider block">
-                                อัปโหลดไฟล์ใหม่
-                                <?php if ($action === 'create'): ?>
+                    <!-- Right: Upload and Guidelines -->
+                    <div class="flex flex-col" style="width: 100%; min-width: 0; gap: 1.25rem;">
+                        <div>
+                            <label class="text-xs font-semibold text-slate-700 uppercase tracking-wider block" style="margin-bottom: 0.5rem;">
+                                เลือกไฟล์รูปภาพใหม่
+                                <?php if ($action === 'create' && empty($data['cover_image'])): ?>
                                     <span class="text-red-500 ml-0.5">*</span>
                                 <?php endif; ?>
                             </label>
-                            <div class="relative group border border-slate-200 rounded-xl bg-slate-50/50 p-3 hover:bg-slate-50 transition-colors">
+                            <div class="border border-slate-200 rounded-xl bg-slate-50 transition-colors" style="padding: 0.75rem;">
                                 <input type="file"
+                                    id="article-image-input"
                                     name="image_file"
-                                    <?php if ($action === 'create'): ?>required<?php endif; ?>
-                                    class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 transition-all cursor-pointer">
+                                    accept=".webp,image/webp"
+                                    class="w-full text-sm text-slate-600 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 transition-all cursor-pointer">
                             </div>
-                            <p class="text-[11px] text-slate-400 px-1">
-                                * รองรับไฟล์นามสกุล: JPEG, PNG, WEBP (ขนาดสูงสุดไม่เกิน 5MB)
+                        </div>
+
+                        <!-- Requirements Guide Card -->
+                        <div class="rounded-xl border border-blue-100 bg-blue-50/40" style="padding: 1.25rem;">
+                            <div class="flex items-center font-bold text-blue-900 text-xs uppercase tracking-wider" style="gap: 0.5rem; margin-bottom: 0.75rem;">
+                                <svg class="w-4 h-4 text-blue-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                <span>ข้อกำหนดและขนาดภาพหน้าปกที่แนะนำ (SEO & Speed)</span>
+                            </div>
+
+                            <div class="flex flex-col" style="gap: 0.75rem; font-size: 0.8125rem;">
+                                <div>
+                                    <span class="text-slate-700 font-semibold block" style="margin-bottom: 0.25rem;">นามสกุลไฟล์ที่รองรับ:</span>
+                                    <p class="text-xs text-slate-700">
+                                        รองรับเฉพาะไฟล์ <strong class="text-blue-700 font-bold">.webp</strong> เท่านั้น
+                                    </p>
+                                </div>
+
+                                <div class="flex items-center justify-between border-t border-blue-100" style="padding-top: 0.5rem;">
+                                    <span class="text-slate-700 font-semibold">ขนาดไฟล์:</span>
+                                    <span class="rounded-full bg-emerald-100 border border-emerald-300 text-emerald-800 font-bold px-2.5 py-0.5 text-xs">ไม่เกิน 1 MB (แนะนำ 150 – 350 KB)</span>
+                                </div>
+
+                                <div class="border-t border-blue-100" style="padding-top: 0.5rem;">
+                                    <span class="text-slate-700 font-semibold block" style="margin-bottom: 0.25rem;">สัดส่วนและขนาดภาพที่เหมาะสม:</span>
+                                    <ul class="text-slate-600 list-disc list-inside space-y-1 text-xs leading-relaxed">
+                                        <li><strong class="text-slate-800">แนะนำ: 1280 × 720 px</strong> (สัดส่วน 16:9)</li>
+                                        <li>ขนาดขั้นต่ำ: 800 × 450 px</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Alt text input -->
+                        <div class="flex flex-col" style="gap: 0.5rem;">
+                            <div class="flex justify-between items-center">
+                                <label class="text-xs font-semibold text-slate-700 uppercase tracking-wider block">
+                                    ข้อความอธิบายรูปภาพ (SEO Alt Text) <span class="text-red-500 ml-0.5">*</span>
+                                </label>
+                                <span id="altTextBadge" class="text-xs font-medium text-slate-400"></span>
+                            </div>
+                            <input id="coverImageAlt"
+                                name="cover_image_alt"
+                                value="<?= e($data['cover_image_alt'] ?? '') ?>"
+                                placeholder="ตัวอย่าง: 'หน้าจอระบบบริหารจัดการ ERP บัญชีสำหรับองค์กรธุรกิจและโรงงาน'"
+                                class="w-full rounded-xl border border-slate-200 bg-slate-50/50 px-4 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/5 outline-none transition-all duration-200"
+                                required>
+                            <p class="text-[11px] text-slate-500" style="margin-top: 0.15rem;">
+                                💡 <strong>คำแนะนำ SEO:</strong> อธิบายสิ่งที่อยู่ในภาพ + ใส่คำค้นหา เพื่อให้ติดอันดับ <strong>Google Image Search</strong> (⚠️ <em>หลีกเลี่ยงการใส่ตัวเลขสั้นๆ เช่น 01 หรือ image1</em>)
+                            </p>
+                            <div id="altTextWarning" class="text-xs font-medium text-rose-600 hidden p-2 rounded-lg bg-rose-50 border border-rose-200"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden">
+                <div class="border-b px-6 py-4 flex items-center justify-between">
+                    <div>
+                        <h3 class="text-sm font-semibold">การปรับแต่งประสิทธิภาพ SEO</h3>
+                        <p class="text-xs text-slate-500 mt-0.5">เพิ่มโอกาสในการติดอันดับการค้นหาที่ดีบน Google Search</p>
+                    </div>
+                    <span class="inline-flex items-center gap-1 rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700 border border-blue-200">
+                        ⚡ Google SEO Checklist
+                    </span>
+                </div>
+                <div class="p-6 space-y-5">
+                    <!-- Thai SEO Fields -->
+                    <div class="lang-group lang-th-group space-y-5">
+                        <div>
+                            <div class="flex justify-between items-center mb-2">
+                                <label class="text-sm font-medium text-slate-700">
+                                    หัวข้อบทความ (Article Title) <span class="text-red-500 ml-0.5">*</span>
+                                </label>
+                                <span id="titleCount" class="text-xs font-medium text-slate-500">0 / 120 (แนะนำ 50-60 ตัวอักษร)</span>
+                            </div>
+                            <input id="mainTitle"
+                                name="meta_title"
+                                value="<?= e($data['meta_title'] ?? '') ?>"
+                                placeholder="ระบุหัวข้อบทความหลัก..."
+                                class="<?= $inputClass ?>"
+                                required>
+                            <p id="titleSeoHint" class="text-[11px] text-slate-500 mt-1">
+                                💡 <strong>เคล็ดลับ Title:</strong> วางคำค้นหาสำคัญ (Keyword) ไว้ <strong>50–60 ตัวอักษรแรก</strong> เพื่อให้แสดงผลครบถ้วนบนหน้าค้นหา Google
                             </p>
                         </div>
-
-                        <div class="space-y-2">
-                            <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider block">
-                                ข้อความอธิบายรูปภาพ (SEO Alt Text) <span class="text-red-500 ml-0.5">*</span>
+                        <div>
+                            <div class="flex justify-between items-center mb-2">
+                                <label class="text-sm font-medium text-slate-700">
+                                    คำอธิบายสรุปบทความ (Article Summary) <span class="text-red-500 ml-0.5">*</span>
+                                </label>
+                                <span id="descCount" class="text-xs font-medium text-slate-500">0 / 200 (แนะนำ 120-160 ตัวอักษร)</span>
+                            </div>
+                            <textarea id="metaDesc"
+                                name="meta_description"
+                                rows="4"
+                                placeholder="เขียนคำอธิบายสั้น ๆ สรุปเนื้อหาบทความ..."
+                                class="<?= $inputClass ?>"
+                                required><?= e($data['meta_description'] ?? '') ?></textarea>
+                            <p id="descSeoHint" class="text-[11px] text-slate-500 mt-1">
+                                💡 <strong>เคล็ดลับ Meta Description:</strong> ความยาวที่เหมาะสมที่สุดคือ <strong>120–160 ตัวอักษร</strong> สรุปเนื้อหาและมีคำกระตุ้นให้คลิก
+                            </p>
+                        </div>
+                        <div>
+                            <label class="text-sm font-medium mb-2 block text-slate-700">
+                                คำค้นหาสำคัญ (Keywords) <span class="text-red-500 ml-0.5">*</span>
                             </label>
-                            <input name="cover_image_alt"
-                                value="<?= e($data['cover_image_alt'] ?? '') ?>"
-                                placeholder="ตัวอย่างเช่น 'โต๊ะทำงานดีไซน์มินิมอล' - ข้อความนี้ช่วยให้ Google Images ค้นพบเซกชันนี้ได้ง่ายขึ้น"
-                                class="w-full rounded-xl border border-slate-200 bg-slate-50/50 px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/5 outline-none transition-all duration-200"
+                            <input name="meta_keywords"
+                                value="<?= e($data['meta_keywords'] ?? '') ?>"
+                                placeholder="ระบุคำค้นหา เช่น บริการพัฒนาระบบ ERP บัญชี, ERP สำหรับธุรกิจ (คั่นด้วยเครื่องหมายจุลภาค , )"
+                                class="<?= $inputClass ?>"
                                 required>
                         </div>
-
                     </div>
-
+                    <!-- English SEO Fields -->
+                    <div class="lang-group lang-en-group space-y-5 hidden">
+                        <div>
+                            <div class="flex justify-between items-center mb-2">
+                                <label class="text-sm font-medium text-slate-700">
+                                    หัวข้อบทความ (EN) <span class="text-red-500 ml-0.5">*</span>
+                                </label>
+                                <span id="titleCountEn" class="text-xs font-medium text-slate-500">0 / 120</span>
+                            </div>
+                            <input id="mainTitleEn"
+                                name="meta_title_en"
+                                value="<?= e($data['meta_title_en'] ?? '') ?>"
+                                placeholder="Enter English SEO Title..."
+                                class="<?= $inputClass ?>">
+                        </div>
+                        <div>
+                            <div class="flex justify-between items-center mb-2">
+                                <label class="text-sm font-medium text-slate-700">
+                                    SEO Description (English) <span class="text-red-500 ml-0.5">*</span>
+                                </label>
+                                <span id="descCountEn" class="text-xs font-medium text-slate-500">0 / 200</span>
+                            </div>
+                            <textarea id="metaDescEn"
+                                name="meta_description_en"
+                                rows="4"
+                                placeholder="Enter English SEO Description..."
+                                class="<?= $inputClass ?>"><?= e($data['meta_description_en'] ?? '') ?></textarea>
+                        </div>
+                        <div>
+                            <label class="text-sm font-medium mb-2 block text-slate-700">
+                                SEO Keywords (English) <span class="text-red-500 ml-0.5">*</span>
+                            </label>
+                            <input name="meta_keywords_en"
+                                value="<?= e($data['meta_keywords_en'] ?? '') ?>"
+                                placeholder="Enter keywords separated by commas..."
+                                class="<?= $inputClass ?>">
+                        </div>
+                    </div>
                 </div>
             </section>
-
             <section class="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden">
-
-                <div class="border-b px-6 py-4">
-                    <h3 class="text-sm font-semibold">การปรับแต่งประสิทธิภาพ SEO</h3>
-                    <p class="text-xs text-slate-500 mt-1">เพิ่มโอกาสในการติดอันดับการค้นหาที่ดีบน Google</p>
-                </div>
-
-                <div class="p-6 space-y-5">
-
-                    <div>
-                        <div class="flex justify-between mb-2">
-                            <label class="text-sm font-medium text-slate-700">
-                                หัวข้อสำหรับ SEO (Meta Title) <span class="text-red-500 ml-0.5">*</span>
-                            </label>
-                            <span id="titleCount" class="text-xs text-slate-500">0 / 60</span>
-                        </div>
-
-                        <input id="mainTitle"
-                            name="meta_title"
-                            value="<?= e($data['meta_title'] ?? '') ?>"
-                            placeholder="ระบุหัวข้อที่ต้องการให้แสดงบนหน้าค้นหาของ Google..."
-                            class="<?= $inputClass ?>"
-                            required>
-                    </div>
-
-                    <div>
-                        <div class="flex justify-between mb-2">
-                            <label class="text-sm font-medium text-slate-700">
-                                คำอธิบายสรุปบทความ (Meta Description) <span class="text-red-500 ml-0.5">*</span>
-                            </label>
-                            <span id="descCount" class="text-xs text-slate-500">0 / 155</span>
-                        </div>
-
-                        <textarea id="metaDesc"
-                            name="meta_description"
-                            rows="4"
-                            placeholder="เขียนคำอธิบายสั้น ๆ เพื่อดึงดูดใจผู้ใช้งานเมื่อแสดงเป็นสเนปเป็ตบนหน้า Google..."
-                            class="<?= $inputClass ?>"
-                            required><?= e($data['meta_description'] ?? '') ?></textarea>
-                    </div>
-
-                    <div>
-                        <label class="text-sm font-medium mb-2 block text-slate-700">
-                            คำค้นหาสำคัญ (Keywords) <span class="text-red-500 ml-0.5">*</span>
-                        </label>
-
-                        <input name="meta_keywords"
-                            value="<?= e($data['meta_keywords'] ?? '') ?>"
-                            placeholder="ระบุคำค้นหา เช่น เว็บดีไซน์, ความรู้คู่ระบบ, เทคโนโลยี (คั่นด้วยเครื่องหมายจุลภาค , )"
-                            class="<?= $inputClass ?>"
-                            required>
-                    </div>
-
-                </div>
-            </section>
-
-            <section class="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden">
-
                 <div class="border-b border-slate-100 px-6 py-4">
                     <h3 class="text-sm font-semibold text-slate-900">เนื้อหาบทความและการตั้งค่า</h3>
                     <p class="text-xs text-slate-500 mt-0.5">จัดการเขียนบทความหลักและกำหนดสถานะการเปิดเผยข้อมูลบนเว็บไซต์</p>
                 </div>
-
                 <div class="p-6 space-y-6">
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-end">
-                        
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-end">
                         <div class="w-full">
                             <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 block">
                                 หมวดหมู่บทความ <span class="text-red-500 ml-0.5">*</span>
@@ -189,73 +343,150 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
                                 <?php endforeach; ?>
                             </select>
                         </div>
-
-                    </div>
-
-                    <div>
-                        <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 block">
-                            ลิงก์บทความ (URL Slug) <span class="text-red-500 ml-0.5">*</span>
-                        </label>
-                        <div class="flex overflow-hidden rounded-xl border border-slate-200 bg-slate-50 focus-within:border-blue-500 focus-within:ring-4 focus-within:ring-blue-500/5 transition-all">
-                            <span class="flex items-center px-4 bg-slate-100 text-sm text-slate-500 border-r border-slate-200 select-none">
-                                /article/
-                            </span>
-                            <input id="slug"
-                                name="slug"
-                                value="<?= e($data['slug'] ?? '') ?>"
-                                placeholder="ชื่อเนื้อหาภาษาอังกฤษสำหรับเป็นลิงก์ถาวร"
-                                class="flex-1 bg-transparent px-4 py-3 text-sm outline-none"
-                                required>
+                        <div class="w-full">
+                            <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 block">
+                                วันที่เผยแพร่บทความ <span class="text-red-500 ml-0.5">*</span>
+                            </label>
+                            <input type="date" name="created_at"
+                                value="<?= isset($data['created_at']) ? date('Y-m-d', strtotime($data['created_at'])) : date('Y-m-d') ?>"
+                                class="<?= $inputClass ?> bg-white h-[46px]" required>
+                        </div>
+                        <div class="w-full">
+                            <div class="flex items-center justify-between mb-2">
+                                <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider block">
+                                    การปักหมุดบทความ
+                                </label>
+                                <span class="text-[11px] text-amber-600 font-medium">จำกัด 1 บทความ</span>
+                            </div>
+                            <label class="flex items-center gap-3 px-4 rounded-xl border border-slate-300 bg-slate-50 hover:bg-slate-100/80 cursor-pointer h-[46px] transition select-none">
+                                <input type="hidden" name="is_pinned" value="0">
+                                <input type="checkbox" id="is_pinned_input" name="is_pinned" value="1"
+                                    <?= $isPinned ? 'checked' : '' ?>
+                                    class="w-4 h-4 text-blue-600 rounded border-slate-300 focus:ring-blue-500 cursor-pointer">
+                                <span class="text-xs font-semibold text-slate-700 flex items-center gap-1.5">
+                                    <span>📌</span>
+                                    <span>ปักหมุดแสดงเป็นบทความแรกสุด</span>
+                                </span>
+                            </label>
                         </div>
                     </div>
-
-                    <div class="space-y-2">
-                        <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider block">
-                            เนื้อหาหลักของบทความ <span class="text-red-500 ml-0.5">*</span>
-                        </label>
-                        <div class="rounded-2xl border border-slate-200 overflow-hidden bg-slate-50/30 focus-within:border-blue-500 transition-all">
-                            <div id="mainEditor" class="min-h-[420px] p-4 bg-white text-slate-800">
-                                <?= $data['content'] ?? '' ?>
+                    <div class="lang-group lang-th-group space-y-6">
+                        <div>
+                            <div class="flex justify-between items-center mb-2">
+                                <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider block">
+                                    ลิงก์บทความ (URL Slug) <span class="text-red-500 ml-0.5">*</span>
+                                </label>
+                                <span class="text-[11px] text-slate-400">ภาษาอังกฤษตัวพิมพ์เล็ก คั่นด้วยขีดกลาง (-)</span>
+                            </div>
+                            <div class="flex overflow-hidden rounded-xl border border-slate-200 bg-slate-50 focus-within:border-blue-500 focus-within:ring-4 focus-within:ring-blue-500/5 transition-all">
+                                <span class="flex items-center px-4 bg-slate-100 text-sm text-slate-500 border-r border-slate-200 select-none">
+                                    /article/
+                                </span>
+                                <input id="slug"
+                                    name="slug"
+                                    value="<?= e($data['slug'] ?? '') ?>"
+                                    placeholder="เช่น erp-accounting-guide-2026"
+                                    class="flex-1 bg-transparent px-4 py-3 text-sm outline-none"
+                                    required>
                             </div>
                         </div>
-                        <textarea id="mainEditorData" name="content" hidden><?= e($data['content'] ?? '') ?></textarea>
                     </div>
-
+                    <div class="lang-group lang-en-group space-y-6 hidden">
+                        <div>
+                            <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 block">
+                                URL Slug (English)
+                            </label>
+                            <div class="flex overflow-hidden rounded-xl border border-slate-200 bg-slate-50 focus-within:border-blue-500 focus-within:ring-4 focus-within:ring-blue-500/5 transition-all">
+                                <span class="flex items-center px-4 bg-slate-100 text-sm text-slate-500 border-r border-slate-200 select-none">
+                                    /en/article/
+                                </span>
+                                <input id="slug_en"
+                                    name="slug_en"
+                                    value="<?= e($data['slug_en'] ?? '') ?>"
+                                    placeholder="English URL slug e.g. erp-accounting-guide-2026"
+                                    class="flex-1 bg-transparent px-4 py-3 text-sm outline-none">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Source URL Field (Not language specific, but shown for both) -->
+                    <div>
+                        <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 block">
+                            ที่มาของบทความ (Source / Reference URL)
+                        </label>
+                        <input name="source_url"
+                            value="<?= e($data['source_url'] ?? '') ?>"
+                            placeholder="เช่น https://www.example.com/original-post หรือ ชื่อผู้แต่ง/หนังสืออ้างอิง"
+                            class="<?= $inputClass ?>">
+                    </div>
+                    <div class="space-y-4">
+                        <!-- Dummy fields to keep WEBPARKSeoEditor happy without modifying shared assets -->
+                        <div id="mainEditor" class="hidden"></div>
+                        <textarea id="mainEditorData" name="dummy_content" class="hidden"></textarea>
+                        <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider block">
+                            เนื้อหาหลักของบทความ (แบ่งแท็บตามภาษา)
+                        </label>
+                        <!-- Tab Content: Thai (TH) -->
+                        <div class="lang-group lang-th-group pt-2">
+                            <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 md:p-5 space-y-5">
+                                <div id="th-sections-container" class="space-y-5">
+                                    <!-- Dynamic Thai sections will go here -->
+                                </div>
+                                <button type="button" id="add-btn-th" onclick="addSection('th')"
+                                    class="w-full inline-flex items-center justify-center gap-2 px-4 py-3 bg-white border border-dashed border-blue-300 text-blue-700 hover:bg-blue-50 hover:border-blue-400 rounded-xl text-sm font-semibold transition">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                                    </svg>
+                                    เพิ่มช่องเนื้อหาภาษาไทย
+                                </button>
+                            </div>
+                        </div>
+                        <!-- Tab Content: English (EN) -->
+                        <div class="lang-group lang-en-group pt-2 hidden">
+                            <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 md:p-5 space-y-5">
+                                <div id="en-sections-container" class="space-y-5">
+                                    <!-- Dynamic English sections will go here -->
+                                </div>
+                                <button type="button" id="add-btn-en" onclick="addSection('en')"
+                                    class="w-full inline-flex items-center justify-center gap-2 px-4 py-3 bg-white border border-dashed border-blue-300 text-blue-700 hover:bg-blue-50 hover:border-blue-400 rounded-xl text-sm font-semibold transition">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                                    </svg>
+                                    เพิ่มช่องเนื้อหาภาษาอังกฤษ
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </section>
         </div>
-
         <div class="lg:col-span-12 pt-4">
             <section class="sticky bottom-0 bg-white/90 backdrop-blur-sm p-4 -m-4 rounded-2xl border border-slate-200 shadow-sm">
              <div class="flex items-center justify-between">
-            
             <a href="index.php" class="px-6 h-11 flex items-center justify-center rounded-xl border border-slate-200 text-slate-700 hover:bg-slate-50 transition">
                 ยกเลิก
             </a>
-
             <div class="flex items-center gap-3">
-                
                 <button type="submit" name="status" value="draft" 
                     class="px-6 h-11 rounded-xl border bg-amber-50 border-amber-300 text-amber-700 font-semibold hover:bg-amber-50 transition">
                     บันทึกเป็นฉบับร่าง
                 </button>
-
+                <button type="submit" name="status" value="hidden" 
+                    class="px-6 h-11 rounded-xl border bg-slate-100 border-slate-300 text-slate-600 font-semibold hover:bg-slate-200 transition inline-flex items-center gap-2">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                    บันทึกและซ่อน
+                </button>
                 <button type="submit" name="status" value="published" 
                     class="px-6 h-11 rounded-xl border bg-emerald-50 border-emerald-300 text-emerald-700 font-semibold hover:bg-emerald-50 transition">
                     บันทึกและเผยแพร่
                 </button>
-
                  </div>
                     </div>
                 </section>
         </div>
-
     </form>
 </div>
-
-<script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
-<script src="../assets/js/seo-editor.js"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/tinymce@6.8.3/tinymce.min.js" referrerpolicy="origin"></script>
+<script src="../assets/js/seo-editor.js?v=1.0.3"></script>
 <script>
     window.WEBPARKSeoEditor.init({
         formSelector: '#unifiedForm',
@@ -268,28 +499,415 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
         descCounterSelector: '#descCount',
         placeholder: 'เริ่มต้นเขียนเนื้อหาที่น่าสนใจของคุณตรงนี้ได้เลย...'
     });
-</script>
+    // English SEO Counters (Standalone)
+    document.addEventListener('DOMContentLoaded', () => {
+        const titleEn = document.getElementById('mainTitleEn');
+        const descEn = document.getElementById('metaDescEn');
+        const titleCountEn = document.getElementById('titleCountEn');
+        const descCountEn = document.getElementById('descCountEn');
+        function updateEnCounters() {
+            if (titleEn && titleCountEn) {
+                const len = titleEn.value.length;
+                titleCountEn.textContent = `${len} / 120`;
+                titleCountEn.className = `text-xs font-medium ${len > 120 ? 'text-rose-600' : 'text-slate-500'}`;
+                if (len > 120) {
+                    titleEn.classList.add('border-rose-500', 'focus:border-rose-500', 'focus:ring-rose-500/10');
+                    titleEn.classList.remove('border-slate-300', 'focus:border-blue-500', 'focus:ring-blue-500/10');
+                } else {
+                    titleEn.classList.remove('border-rose-500', 'focus:border-rose-500', 'focus:ring-rose-500/10');
+                    titleEn.classList.add('border-slate-300', 'focus:border-blue-500', 'focus:ring-blue-500/10');
+                }
+            }
+            if (descEn && descCountEn) {
+                const len = descEn.value.length;
+                descCountEn.textContent = `${len} / 200`;
+                descCountEn.className = `text-xs font-medium ${len > 200 ? 'text-rose-600' : 'text-slate-500'}`;
+                if (len > 200) {
+                    descEn.classList.add('border-rose-500', 'focus:border-rose-500', 'focus:ring-rose-500/10');
+                    descEn.classList.remove('border-slate-300', 'focus:border-blue-500', 'focus:ring-blue-500/10');
+                } else {
+                    descEn.classList.remove('border-rose-500', 'focus:border-rose-500', 'focus:ring-rose-500/10');
+                    descEn.classList.add('border-slate-300', 'focus:border-blue-500', 'focus:ring-blue-500/10');
+                }
+            }
+        }
+        if (titleEn) titleEn.addEventListener('input', updateEnCounters);
+        if (descEn) descEn.addEventListener('input', updateEnCounters);
+        updateEnCounters();
 
+        // Prevent Form Submission if over limits
+        const form = document.getElementById('unifiedForm');
+        if (form) {
+            form.addEventListener('submit', (e) => {
+                const titleTh = document.getElementById('mainTitle');
+                const descTh = document.getElementById('metaDesc');
+
+                let hasError = false;
+                let firstErrorElement = null;
+
+                if (titleTh && titleTh.value.length > 120) {
+                    hasError = true;
+                    if (!firstErrorElement) firstErrorElement = titleTh;
+                }
+                if (descTh && descTh.value.length > 200) {
+                    hasError = true;
+                    if (!firstErrorElement) firstErrorElement = descTh;
+                }
+                if (titleEn && titleEn.value.length > 120) {
+                    hasError = true;
+                    if (!firstErrorElement) firstErrorElement = titleEn;
+                }
+                if (descEn && descEn.value.length > 200) {
+                    hasError = true;
+                    if (!firstErrorElement) firstErrorElement = descEn;
+                }
+
+                if (hasError) {
+                    e.preventDefault();
+                    // Reset the loading spinner on submit button if form submission is blocked
+                    const submitBtn = document.getElementById('submit-btn');
+                    const btnText = document.getElementById('btn-text');
+                    const btnSpinner = document.getElementById('btn-spinner');
+                    const robotBodies = document.querySelectorAll('.robot-body-track');
+                    if (btnText && btnSpinner && submitBtn) {
+                        btnText.style.display = 'inline-block';
+                        btnSpinner.style.display = 'none';
+                        submitBtn.disabled = false;
+                        submitBtn.style.opacity = '1';
+                        submitBtn.style.cursor = 'pointer';
+                    }
+                    if (robotBodies) {
+                        robotBodies.forEach(b => b.classList.remove('jump-animation'));
+                    }
+
+                    alert('ไม่สามารถบันทึกได้: เนื่องจากความยาวตัวอักษรของหัวข้อบทความเกิน 120 ตัวอักษร หรือคำอธิบายสรุปบทความเกิน 200 ตัวอักษร กรุณาแก้ไขข้อความให้ไม่เกินกำหนดก่อนกดบันทึกครับ');
+                    
+                    if (firstErrorElement) {
+                        const isEnField = firstErrorElement.id.endsWith('En');
+                        if (isEnField) {
+                            switchGlobalLanguage('en');
+                        } else {
+                            switchGlobalLanguage('th');
+                        }
+                        firstErrorElement.focus();
+                        firstErrorElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                }
+            });
+        }
+    });
+</script>
+<script>
+    const preloadedSections = <?= json_encode($sections, JSON_UNESCAPED_UNICODE) ?>;
+    const editors = {};
+    let thCount = 0;
+    let enCount = 0;
+    function escapeHtml(string) {
+        return String(string)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
+    }
+    function tinymceImageUploadHandler(blobInfo, progress) {
+        return new Promise((resolve, reject) => {
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', 'upload_image.php');
+            xhr.upload.onprogress = (e) => {
+                progress(e.loaded / e.total * 100);
+            };
+            xhr.onload = () => {
+                if (xhr.status === 403) {
+                    reject({ message: 'HTTP Error: ' + xhr.status, remove: true });
+                    return;
+                }
+                if (xhr.status < 200 || xhr.status >= 300) {
+                    reject('HTTP Error: ' + xhr.status);
+                    return;
+                }
+                const json = JSON.parse(xhr.responseText);
+                if (!json || typeof json.url != 'string') {
+                    reject('Invalid JSON: ' + xhr.responseText);
+                    return;
+                }
+                resolve(json.url);
+            };
+            xhr.onerror = () => {
+                reject('Image upload failed due to a XHR Transport error. Code: ' + xhr.status);
+            };
+            const formData = new FormData();
+            formData.append('upload', blobInfo.blob(), blobInfo.filename());
+            xhr.send(formData);
+        });
+    }
+    function createSectionElement(lang, index, topicVal = '', bodyVal = '') {
+        const container = document.getElementById(lang + '-sections-container');
+        const id = `editor-${lang}-${index}`;
+        const div = document.createElement('div');
+        div.className = 'section-item bg-white border border-slate-300 rounded-2xl shadow-sm overflow-hidden';
+        div.dataset.lang = lang;
+        div.dataset.index = index;
+        div.innerHTML = `
+            <div class="flex items-center justify-between gap-3 px-6 py-4 bg-slate-50 border-b border-slate-200">
+                <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider">หัวข้อย่อยบทความ (${lang.toUpperCase()}) <span class="text-red-500">*</span></label>
+                <button type="button" class="shrink-0 text-xs font-semibold text-rose-600 bg-rose-50 border border-rose-200 px-3 py-1.5 rounded-lg transition" style="transition:background-color .15s;" onmouseover="this.style.backgroundColor='#fecdd3'" onmouseout="this.style.backgroundColor='#fff1f2'" onclick="removeSection(this, '${lang}')">ลบช่องนี้</button>
+            </div>
+            <div class="p-6 space-y-4">
+                <div>
+                    <input type="text" name="sections[${lang}][${index}][topic]" value="${escapeHtml(topicVal)}" class="w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm text-slate-900 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition" required>
+                </div>
+                <div>
+                    <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider block mb-1.5">เนื้อหาหลักของบทความ (${lang.toUpperCase()}) <span class="text-red-500">*</span></label>
+                    <div class="editor-frame rounded-xl border border-slate-300 overflow-hidden">
+                        <textarea id="${id}" name="sections[${lang}][${index}][body]" class="w-full min-h-[150px]">${escapeHtml(bodyVal)}</textarea>
+                    </div>
+                </div>
+            </div>
+        `;
+        container.appendChild(div);
+        tinymce.init({
+            selector: `#${id}`,
+            plugins: 'autoresize lists link image code table wordcount',
+            toolbar: 'blocks | bold italic forecolor backcolor | bullist numlist | alignleft aligncenter alignright alignjustify | link image | removeformat',
+            menubar: false,
+            color_map: [
+                '0663F6', 'Primary Blue',
+                '022862', 'Dark Blue',
+                '475569', 'Slate',
+                '000000', 'Black',
+                'FFFFFF', 'White',
+                'FF0000', 'Red',
+                '00FF00', 'Green',
+                '0000FF', 'Blue',
+                'FFFF00', 'Yellow',
+                'FF9900', 'Orange'
+            ],
+            custom_colors: true,
+            min_height: 250,
+            max_height: 800,
+            autoresize_bottom_margin: 20,
+            content_style: 'body { font-family: "Noto Sans Thai", Inter, ui-sans-serif, system-ui, sans-serif; font-size: 16px; line-height: 1.75; color: #475569; } p, span, li, div { font-size: 16px !important; line-height: 1.75 !important; }',
+            images_upload_handler: tinymceImageUploadHandler,
+            setup: function (editor) {
+                editors[id] = editor;
+                editor.addShortcut('ctrl+q', 'Apply Primary Color', function () {
+                    editor.execCommand('ForeColor', false, '#0663F6');
+                });
+            }
+        });
+        if (lang === 'th') {
+            thCount++;
+        } else {
+            enCount++;
+        }
+        updateCounterDisplay(lang);
+    }
+    function addSection(lang) {
+        const count = lang === 'th' ? thCount : enCount;
+        if (lang === 'th' && count >= 5) {
+            alert('เพิ่มหัวข้อภาษาไทยได้สูงสุด 5 ช่อง');
+            return;
+        }
+        if (lang === 'en' && count >= 5) {
+            alert('เพิ่มหัวข้อภาษาอังกฤษได้สูงสุด 5 ช่อง');
+            return;
+        }
+        createSectionElement(lang, count, '', '');
+    }
+    function removeSection(button, lang) {
+        const item = button.closest('.section-item');
+        const textarea = item.querySelector('textarea');
+        if (textarea && editors[textarea.id]) {
+            editors[textarea.id].remove();
+            delete editors[textarea.id];
+        }
+        item.remove();
+        reindexSections(lang);
+    }
+    function reindexSections(lang) {
+        const container = document.getElementById(lang + '-sections-container');
+        const items = container.querySelectorAll('.section-item');
+        let count = 0;
+        items.forEach((item, index) => {
+            item.dataset.index = index;
+            const input = item.querySelector('input[type="text"]');
+            if (input) {
+                input.name = `sections[${lang}][${index}][topic]`;
+            }
+            const textarea = item.querySelector('textarea');
+            if (textarea) {
+                textarea.name = `sections[${lang}][${index}][body]`;
+            }
+            count++;
+        });
+        if (lang === 'th') {
+            thCount = count;
+        } else {
+            enCount = count;
+        }
+        updateCounterDisplay(lang);
+    }
+    function updateCounterDisplay(lang) {
+        const count = lang === 'th' ? thCount : enCount;
+        const btn = document.getElementById(`global-tab-${lang}`);
+        if (btn) {
+            const label = lang === 'th' ? 'ภาษาไทย' : 'English';
+            btn.textContent = `${label} (${count}/5)`;
+        }
+        const addBtn = document.getElementById(`add-btn-${lang}`);
+        if (addBtn) {
+            if (count >= 5) {
+                addBtn.disabled = true;
+                addBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                addBtn.classList.remove('hover:bg-blue-100');
+            } else {
+                addBtn.disabled = false;
+                addBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                addBtn.classList.add('hover:bg-blue-100');
+            }
+        }
+    }
+    function switchGlobalLanguage(lang) {
+        const thGroups = document.querySelectorAll('.lang-th-group');
+        const enGroups = document.querySelectorAll('.lang-en-group');
+        const btnTh = document.getElementById('global-tab-th');
+        const btnEn = document.getElementById('global-tab-en');
+        if (lang === 'th') {
+            thGroups.forEach(el => el.classList.remove('hidden'));
+            enGroups.forEach(el => el.classList.add('hidden'));
+            btnTh.classList.add('bg-blue-50', 'text-blue-600', 'border-blue-200', 'hover:bg-blue-100');
+            btnTh.classList.remove('bg-transparent', 'text-slate-500', 'border-slate-200', 'hover:bg-slate-50', 'hover:text-slate-800');
+            btnEn.classList.add('bg-transparent', 'text-slate-500', 'border-slate-200', 'hover:bg-slate-50', 'hover:text-slate-800');
+            btnEn.classList.remove('bg-blue-50', 'text-blue-600', 'border-blue-200', 'hover:bg-blue-100');
+        } else {
+            thGroups.forEach(el => el.classList.add('hidden'));
+            enGroups.forEach(el => el.classList.remove('hidden'));
+            btnEn.classList.add('bg-blue-50', 'text-blue-600', 'border-blue-200', 'hover:bg-blue-100');
+            btnEn.classList.remove('bg-transparent', 'text-slate-500', 'border-slate-200', 'hover:bg-slate-50', 'hover:text-slate-800');
+            btnTh.classList.add('bg-transparent', 'text-slate-500', 'border-slate-200', 'hover:bg-slate-50', 'hover:text-slate-800');
+            btnTh.classList.remove('bg-blue-50', 'text-blue-600', 'border-blue-200', 'hover:bg-blue-100');
+        }
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+        const thSections = preloadedSections.filter(s => (s.lang || 'th') === 'th');
+        const enSections = preloadedSections.filter(s => s.lang === 'en');
+        thSections.forEach((s, idx) => createSectionElement('th', idx, s.topic || '', s.body || ''));
+        enSections.forEach((s, idx) => createSectionElement('en', idx, s.topic || '', s.body || ''));
+        const form = document.querySelector('#unifiedForm');
+        if (form) {
+            form.addEventListener('submit', () => {
+                for (const id in editors) {
+                    if (editors.hasOwnProperty(id)) {
+                        const textarea = document.getElementById(id);
+                        if (textarea && editors[id] && typeof editors[id].getContent === 'function') {
+                            textarea.value = editors[id].getContent();
+                        }
+                    }
+                }
+            });
+        }
+    });
+</script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const fileInput = document.querySelector('input[name="image_file"]');
-        const previewContainer = document.querySelector('.w-full.h-64.rounded-xl.border');
+        const fileInput = document.getElementById('article-image-input');
+        const statusBox = document.getElementById('articleImageValidationStatus');
+        const maxSizeBytes = 1024 * 1024; // 1 MB limit
 
-        if (fileInput && previewContainer) {
+        if (fileInput) {
             fileInput.addEventListener('change', function(event) {
                 const file = event.target.files[0];
-                if (file && file.type.startsWith('image/')) {
-                    const reader = new FileReader();
+                if (!file) {
+                    if (statusBox) statusBox.classList.add('hidden');
+                    return;
+                }
 
-                    reader.onload = function(loadEvent) {
-                        previewContainer.innerHTML = '';
-                        const img = document.createElement('img');
-                        img.src = loadEvent.target.result;
-                        img.className = 'w-full h-full object-contain rounded-lg';
-                        previewContainer.appendChild(img);
+                // 1. Validate File Size (Max 1 MB)
+                if (file.size > maxSizeBytes) {
+                    const fileSizeKb = Math.round(file.size / 1024);
+                    statusBox.className = 'mt-2 p-3 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs font-medium flex items-center gap-2';
+                    statusBox.innerHTML = `<span>❌ <strong>ขนาดไฟล์เกิน 1 MB</strong> (ไฟล์ของคุณมีขนาด ${fileSizeKb} KB) กรุณาบีบอัดรูปภาพให้ไม่เกิน 1 MB (แนะนำ 150 - 350 KB)</span>`;
+                    statusBox.classList.remove('hidden');
+                    fileInput.value = ''; // Reset input
+                    return;
+                }
+
+                // 2. Validate Extension
+                const fileExt = file.name.split('.').pop().toLowerCase();
+                const isAllowedExt = ['webp'].includes(fileExt);
+
+                if (!isAllowedExt) {
+                    statusBox.className = 'mt-2 p-3 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs font-medium flex items-center gap-2';
+                    statusBox.innerHTML = `<span>❌ <strong>นามสกุลไฟล์ไม่ถูกต้อง</strong> รองรับเฉพาะไฟล์รูปภาพ .webp เท่านั้น</span>`;
+                    statusBox.classList.remove('hidden');
+                    fileInput.value = ''; // Reset input
+                    return;
+                }
+
+                // 3. Load Image & Read Dimensions
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = new Image();
+                    img.onload = function() {
+                        const width = img.naturalWidth;
+                        const height = img.naturalHeight;
+                        const ratio = (width / height).toFixed(2);
+                        const fileSizeKb = Math.round(file.size / 1024);
+
+                        let ratioText = 'สัดส่วนอื่น ๆ';
+                        if (Math.abs(ratio - (16/9).toFixed(2)) < 0.05) {
+                            ratioText = 'สัดส่วน 16:9 แนวนอน (เหมาะสมที่สุด ⭐)';
+                        } else if (width > height) {
+                            ratioText = 'แนวนอน';
+                        } else {
+                            ratioText = 'แนวตั้ง';
+                        }
+
+                        const previewImg = document.getElementById('article-img-preview');
+                        const placeholder = document.getElementById('article-img-placeholder');
+                        if (previewImg) {
+                            previewImg.src = e.target.result;
+                            previewImg.style.display = 'block';
+                            previewImg.classList.remove('hidden');
+                        }
+                        if (placeholder) {
+                            placeholder.style.display = 'none';
+                        }
+
+                        // Display Success Status Badge
+                        statusBox.className = 'mt-2 p-2.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs flex flex-col gap-0.5';
+                        statusBox.innerHTML = `
+                            <div class="font-bold flex items-center gap-1">
+                                <span>✅ ไฟล์ผ่านเกณฑ์:</span>
+                                <span>${fileSizeKb} KB</span>
+                                ${fileSizeKb <= 350 ? '<span class="text-[10px] bg-emerald-100 text-emerald-800 px-1 rounded">PageSpeed เร็วมาก ⚡</span>' : ''}
+                            </div>
+                            <div class="text-[11px] text-emerald-700">
+                                ขนาดรูป: <strong>${width} × ${height} px</strong> (${ratioText})
+                            </div>
+                        `;
+                        statusBox.classList.remove('hidden');
                     };
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            });
+        }
 
-                    reader.readAsDataURL(file);
+        // Pin Article Single-Constraint Confirmation
+        const isPinnedInput = document.getElementById('is_pinned_input');
+        const currentlyPinnedTitle = <?= json_encode($pinnedArticle['meta_title'] ?? '', JSON_UNESCAPED_UNICODE) ?>;
+        const hasOtherPinned = <?= !empty($pinnedArticle) ? 'true' : 'false' ?>;
+
+        if (isPinnedInput) {
+            isPinnedInput.addEventListener('change', function() {
+                if (this.checked && hasOtherPinned) {
+                    const articleName = currentlyPinnedTitle ? `"${currentlyPinnedTitle}"` : 'บทความอื่น';
+                    const confirmReplace = confirm(`ขณะนี้มีบทความ ${articleName} กำลังถูกปักหมุดอยู่แล้ว\n\nคุณต้องการเปลี่ยนการปักหมุดมาเป็นบทความนี้แทนหรือไม่?`);
+                    if (!confirmReplace) {
+                        this.checked = false;
+                    }
                 }
             });
         }

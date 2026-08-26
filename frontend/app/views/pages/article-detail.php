@@ -14,21 +14,69 @@ $coverImage = resolve_article_image_url(
     $fallbackImage
 );
 
-$months = [
-    1 => 'ม.ค.', 2 => 'ก.พ.', 3 => 'มี.ค.', 4 => 'เม.ย.', 5 => 'พ.ค.', 6 => 'มิ.ย.',
-    7 => 'ก.ค.', 8 => 'ส.ค.', 9 => 'ก.ย.', 10 => 'ต.ค.', 11 => 'พ.ย.', 12 => 'ธ.ค.',
-];
-
 $title = normalize_text($article['title'] ?? 'ระบบ ERP คืออะไร? สรุปครบ จบที่เดียว!');
 $author = normalize_text($article['author'] ?? 'Webpark Team');
 $content = (string) ($article['content'] ?? $article['summary'] ?? '');
-$summary = normalize_text($article['summary'] ?? '');
-$category = normalize_text($article['category'] ?? 'ERP System');
-$relatedArticles = $relatedArticles ?? [];
 
 $date = $article['created_at'] ?? '';
 $ts = !empty($date) ? strtotime($date) : false;
-$formattedDate = $ts ? sprintf('%d %s %d', date('j', $ts), $months[(int) date('n', $ts)] ?? '', date('Y', $ts) + 543) : '24 พฤษภาคม 2567';
+if (getCurrentLang() === 'th') {
+    $months = [
+        1 => 'มกราคม', 2 => 'กุมภาพันธ์', 3 => 'มีนาคม', 4 => 'เมษายน', 5 => 'พฤษภาคม', 6 => 'มิถุนายน',
+        7 => 'กรกฎาคม', 8 => 'สิงหาคม', 9 => 'กันยายน', 10 => 'ตุลาคม', 11 => 'พฤศจิกายน', 12 => 'ธันวาคม',
+    ];
+    $formattedDate = $ts ? sprintf('%d %s %d', (int) date('j', $ts), $months[(int) date('n', $ts)] ?? '', (int) date('Y', $ts) + 543) : '';
+} else {
+    $formattedDate = $ts ? date('F j, Y', $ts) : '';
+}
+
+$decodedSections = json_decode(htmlspecialchars_decode($content, ENT_QUOTES), true);
+if (!is_array($decodedSections)) {
+    $decodedSections = json_decode($content, true);
+}
+if (!is_array($decodedSections)) {
+    preg_match_all('/\{[^}]+\}/s', $content, $sectionMatches);
+    if (!empty($sectionMatches[0])) {
+        $decodedSections = [];
+        foreach ($sectionMatches[0] as $secStr) {
+            preg_match('/"lang"\s*:\s*"([^"]+)"/', $secStr, $mLang);
+            preg_match('/"topic"\s*:\s*"((?>[^"\\\\]++|\\\\.)*)"/', $secStr, $mTopic);
+            preg_match('/"body"\s*:\s*"((?>[^"\\\\]++|\\\\.)*)"/', $secStr, $mBody);
+            
+            $decodedSections[] = [
+                'lang' => $mLang[1] ?? 'th',
+                'topic' => isset($mTopic[1]) ? stripslashes($mTopic[1]) : '',
+                'body' => isset($mBody[1]) ? stripslashes($mBody[1]) : '',
+            ];
+        }
+    }
+}
+
+if (is_array($decodedSections)) {
+    $currentLang = getCurrentLang();
+    $filteredSections = array_filter($decodedSections, function($sec) use ($currentLang) {
+        return ($sec['lang'] ?? 'th') === $currentLang;
+    });
+    if (empty($filteredSections)) {
+        $filteredSections = array_filter($decodedSections, function($sec) {
+            return ($sec['lang'] ?? 'th') === 'th';
+        });
+    }
+    $htmlParts = [];
+    foreach ($filteredSections as $sec) {
+        if (!empty($sec['topic'])) {
+            $htmlParts[] = '<h2>' . e($sec['topic']) . '</h2>';
+        }
+        if (!empty($sec['body'])) {
+            $htmlParts[] = '<div>' . $sec['body'] . '</div>';
+        }
+    }
+    $content = implode("\n", $htmlParts);
+}
+
+$summary = normalize_text($article['summary'] ?? '');
+$category = normalize_text($article['category'] ?? 'ERP System');
+$relatedArticles = $relatedArticles ?? [];
 
 // Reading time estimate
 $wordCount = mb_strlen(strip_tags($content));
@@ -114,74 +162,78 @@ $shareUrl = urlencode(request_origin_url() . ($_SERVER['REQUEST_URI'] ?? ''));
     .delay-300 { animation-delay: 300ms; }
     .delay-400 { animation-delay: 400ms; }
 </style>
+<!-- Top Reading Progress Bar -->
+<div id="reading-progress" class="fixed top-0 left-0 h-1 bg-gradient-to-r from-blue-500 to-indigo-600 z-[9999] transition-all duration-150 ease-out" style="width: 0%;"></div>
 
-<section class="relative overflow-hidden font-sans">
-    <div class="absolute inset-0 z-0 overflow-hidden">
-        <img src="<?= e($coverImage) ?>" alt="WEBPARK Solutions Background" 
-            class="w-full h-full object-cover object-center opacity-100 mix-blend-screen">
+<section class="relative overflow-hidden font-sans bg-[#F4F7FB] pt-12 pb-6 lg:pt-20 lg:pb-8">
+    <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             
-        <div class="absolute inset-0 bg-gradient-to-r from-white via-white/70 to-white/5"></div>
-        <div class="absolute inset-x-0 bottom-0 h-[30%] bg-gradient-to-t from-white to-transparent z-10"></div>
-    </div>
-
-    <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 pt-12 pb-24 lg:pt-28 lg:pb-32 relative z-10">
-        <div class="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-12 lg:gap-20 items-center">
-            
-            <div class="max-w-2xl">
-                <nav aria-label="Breadcrumb" class="animate-fade-up delay-100 mb-6">
-                    <ol class="inline-flex flex-wrap items-center space-x-2 text-sm md:text-base font-medium text-slate-500">
+            <!-- Left Column: Text & Meta -->
+            <div class="max-w-xl">
+                <nav aria-label="Breadcrumb" class="animate-fade-up delay-100 mb-8">
+                    <ol class="inline-flex flex-wrap items-center text-sm md:text-base font-medium text-slate-400">
                         <li>
                             <a href="<?= e(route_url('/')) ?>" class="hover:text-primary transition-colors duration-200">
-                                หน้าแรก
+                                <?= e(t('article_detail.breadcrumb_home', ['default' => 'หน้าแรก'])) ?>
                             </a>
                         </li>
-
-                        <li>
-                            <span class="text-slate-400" style="margin: 0 4px;">/</span>
-                        </li>
-
+                        <li><span class="mx-4">/</span></li>
                         <li>
                             <a href="<?= e(route_url('/article')) ?>" class="hover:text-primary transition-colors duration-200">
-                                บทความ
+                                <?= e(t('article_detail.breadcrumb_articles', ['default' => 'บทความ'])) ?>
                             </a>
                         </li>
-
-                        <li>
-                            <span class="text-slate-400" style="margin: 0 4px;">/</span>
-                        </li>
-
+                        <li><span class="mx-4">/</span></li>
                         <li aria-current="page">
-                            <span class="text-slate-400 line-clamp-1"><?= e($title) ?></span>
+                            <span class="text-slate-400 line-clamp-1"><?= e($category) ?></span>
                         </li>
                     </ol>
                 </nav>
                 
-                <h1 class="animate-fade-up delay-200 leading-[1.1] mb-2 tracking-tighter">
-                    <span class="text-3xl md:text-4xl lg:text-6xl font-bold bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block py-3">
+                <?php 
+                    $isLongTitle = mb_strlen($title) > 50;
+                    $titleClass = $isLongTitle 
+                        ? 'text-2xl md:text-3xl lg:text-[28px] leading-[1.5] tracking-normal' 
+                        : 'text-3xl md:text-4xl lg:text-[44px] leading-snug tracking-tight'; 
+                ?>
+                <h1 class="animate-fade-up delay-200 mb-6">
+                    <span class="block <?= $titleClass ?> font-bold text-[#022862]">
                         <?= e($title) ?>
                     </span>
                 </h1>
-                <div class="animate-fade-up delay-300 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-slate-500">
-                    <span class="inline-flex items-center gap-1.5">
-                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
-                        <?= e($formattedDate) ?>
-                    </span>
-                    <span class="inline-flex items-center gap-1.5">
-                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
-                        <?= e($readingMinutes) ?> นาทีในการอ่าน
-                    </span>
+                
+                <div class="animate-fade-up delay-300 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-[#0663F6] font-medium mb-6">
                     <?php if ($author !== ''): ?>
-                        <span class="inline-flex items-center gap-1.5">
+                        <span class="inline-flex items-center gap-2">
                             <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
                             <?= e($author) ?>
                         </span>
                     <?php endif; ?>
+                    <?php if (!empty($formattedDate)): ?>
+                        <span class="inline-flex items-center gap-2 text-slate-500 font-normal">
+                            <svg class="w-4 h-4 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                <line x1="16" y1="2" x2="16" y2="6"></line>
+                                <line x1="8" y1="2" x2="8" y2="6"></line>
+                                <line x1="3" y1="10" x2="21" y2="10"></line>
+                            </svg>
+                            <?= e($formattedDate) ?>
+                        </span>
+                    <?php endif; ?>
                 </div>
-
-                <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-base md:text-lg leading-relaxed max-w-lg mb-10 font-medium">
-                    
+                
+                <p class="animate-fade-up delay-400 mt-6 text-[#022862] text-lg md:text-xl leading-relaxed max-w-lg mb-10 font-medium">
+                    <?= e($summary) ?>
                 </p>
             </div>
+            
+            <!-- Right Column: Image -->
+            <div class="animate-fade-up delay-300 relative w-full rounded-[2rem] overflow-hidden shadow-2xl">
+                <img src="<?= e($coverImage) ?>" alt="<?= e(!empty($article['cover_image_alt']) ? $article['cover_image_alt'] : $title) ?>" 
+                    class="w-full h-auto object-cover aspect-[4/3] hover:scale-105 transition-transform duration-700" onerror="this.src='<?= e($fallbackImage) ?>'">
+            </div>
+            
         </div>
     </div>
 </section>
@@ -192,19 +244,21 @@ $shareUrl = urlencode(request_origin_url() . ($_SERVER['REQUEST_URI'] ?? ''));
         font-size: 1rem;
         line-height: 1.8;
     }
-    .article-format h2, 
-    .article-format h3 {
-        color: #0d6efd; /* สีน้ำเงินตามภาพ (ปรับเป็นสี Primary ของคุณได้) */
+    .article-format h2 {
+        color: #0663F6; /* Primary Blue */
         font-weight: 700;
         margin-top: 2.5rem;
         margin-bottom: 1rem;
         line-height: 1.4;
-    }
-    .article-format h2 {
         font-size: 1.5rem;
     }
     .article-format h3 {
-        font-size: 1.25rem;
+        color: #022862; /* Dark Navy */
+        font-weight: 700;
+        margin-top: 1.5rem;
+        margin-bottom: 0;
+        line-height: 1.4;
+        font-size: 1.125rem;
     }
     .article-format p {
         margin-bottom: 1.25rem;
@@ -234,6 +288,26 @@ $shareUrl = urlencode(request_origin_url() . ($_SERVER['REQUEST_URI'] ?? ''));
         display: block;
         margin-top: 0.25rem;
     }
+    .article-format table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 1.5rem;
+        display: block;
+        overflow-x: auto;
+    }
+    .article-format th, 
+    .article-format td {
+        border: 1px solid #cbd5e1; /* slate-300 */
+        padding: 0.75rem 1rem;
+        text-align: left;
+        vertical-align: top;
+        min-width: 120px;
+    }
+    .article-format th {
+        background-color: #f8fafc; /* slate-50 */
+        font-weight: 700;
+        color: #022862;
+    }
 </style>
 
 <section class="py-12 bg-[#F7F9FC]">
@@ -249,103 +323,78 @@ $shareUrl = urlencode(request_origin_url() . ($_SERVER['REQUEST_URI'] ?? ''));
 
                     </div>
 
-                    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                        <h2 class="text-2xl md:text-3xl font-extrabold text-center text-[#022862] tracking-tight py-10">
-                            ERP ที่ช่วยยกระดับธุรกิจของคุณ
-                        </h2>
 
-                        <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 1.5rem;">
-                            <?php
-                            $erpBenefits = [
-                                [
-                                    'title' => 'ข้อมูลครบถ้วน',
-                                    'desc' => 'รวมทุกแผนกไว้ในระบบเดียว',
-                                    'icon' => asset_url('images/ERP_5.svg'),
-                                ],
-                                [
-                                    'title' => 'ลดงานซ้ำซ้อน',
-                                    'desc' => 'เพิ่มประสิทธิภาพการทำงาน',
-                                    'icon' => asset_url('images/ERP_6.svg'),
-                                ],
-                                [
-                                    'title' => 'ข้อมูลเรียลไทม์',
-                                    'desc' => 'ตัดสินใจได้แม่นยำและรวดเร็ว',
-                                    'icon' => asset_url('images/ERP_7.svg'),
-                                ],
-                                [
-                                    'title' => 'ควบคุมความเสี่ยง',
-                                    'desc' => 'ตรวจสอบและติดตามได้ทุกขั้นตอน',
-                                    'icon' => asset_url('images/ERP_8.svg'),
-                                ],
-                                [
-                                    'title' => 'ขยายได้ตามธุรกิจ',
-                                    'desc' => 'รองรับการเติบโตในอนาคต',
-                                    'icon' => asset_url('images/ERP_9.svg'),
-                                ],
-                            ];
-                            ?>
-                            <?php foreach ($erpBenefits as $benefit): ?>
-                                <div class="bg-white rounded-2xl p-6 text-center border border-slate-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
-                                    <div class="w-14 h-14 mx-auto bg-blue-50/70 rounded-full flex items-center justify-center mb-4">
-                                        <img src="<?= e($benefit['icon']) ?>" alt="<?= e($benefit['title']) ?>" class="h-full w-full object-contain">
-                                    </div>
-                                    <h4 class="text-sm font-bold text-[#043B94] mb-1"><?= e($benefit['title']) ?></h4>
-                                    <p class="text-xs text-slate-500 leading-relaxed"><?= e($benefit['desc']) ?></p>
-                                </div>
-                            <?php endforeach; ?>
-                        </div>
-                    </div>
 
             </article>
 
-            <aside class="lg:col-span-4">
-
-                <div class="sticky top-24 bg-white rounded-[2rem] p-6 shadow-sm border border-slate-100">
-
-                    <h3 class="text-xl font-bold text-[#0d6efd] mb-6 px-1">
-                        บทความที่เกี่ยวข้อง
-                    </h3>
-
-                    <div class="flex flex-col gap-6">
+            <!-- Sidebar Right: Related Articles -->
+            <div class="lg:col-span-4 relative h-full">
+                <div class="bg-white rounded-[2rem] p-5 lg:p-6 border border-slate-100 shadow-sm sticky top-[100px] h-max z-20 max-h-[calc(100vh-140px)] overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]" style="position: sticky; top: 100px;">
+                    <h4 class="text-[19px] font-bold text-[#0663F6] mb-4">
+                        <?= e(getCurrentLang() === 'th' ? 'บทความที่เกี่ยวข้อง' : 'Related Articles') ?>
+                    </h4>
+                    <div class="space-y-4">
                         <?php foreach($relatedArticles as $item): ?>
-
-                        <a href="<?= route_url('/article/'.$item['slug']) ?>"
-                           class="group block overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-md">
-
-                            <img
-                                src="<?= resolve_article_image_url($item['image_path']) ?>"
-                                class="h-48 w-full object-cover transition duration-300 group-hover:scale-105"
-                                alt="<?= e($item['title']) ?>"
-                            >
-
-                            <div class="p-5 relative bg-white">
-
-                                <h4 class="line-clamp-2 font-bold text-[#022862] group-hover:text-[#0d6efd] transition-colors text-lg leading-snug">
-                                    <?= e($item['title']) ?>
-                                </h4>
-
-                                <p class="mt-3 line-clamp-2 text-sm text-slate-500 leading-relaxed">
-                                    <?= e($item['summary']) ?>
-                                </p>
-
-                                <div class="mt-4 flex items-center text-[#0d6efd] font-semibold text-sm group-hover:gap-2 transition-all">
-                                    อ่านเพิ่มเติม 
-                                    <svg class="w-4 h-4 ml-1 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                                    </svg>
+                            <?php 
+                            $relLang = getCurrentLang();
+                            $relSlug = ($relLang === 'en' && !empty($item['slug_en'])) ? $item['slug_en'] : (!empty($item['slug']) ? $item['slug'] : (string)$item['id']);
+                            ?>
+                            <a href="<?= route_url('/article/' . $relSlug) ?>" class="block group bg-white border border-slate-100 rounded-[1.25rem] overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                                <div class="relative w-full overflow-hidden" style="height: 160px;">
+                                    <img src="<?= resolve_article_image_url($item['image_path'] ?? '') ?>" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" style="object-position: center 25%;" alt="<?= e($item['title']) ?>">
                                 </div>
-
-                            </div>
-
-                        </a>
-
+                                <div class="p-4 flex flex-col justify-between">
+                                    <?php 
+                                    $itemTitle = $relLang === 'en' && !empty($item['meta_title_en']) ? $item['meta_title_en'] : ($item['title'] ?? '');
+                                    $itemDesc = $relLang === 'en' && !empty($item['meta_description_en']) ? $item['meta_description_en'] : ($item['description'] ?? '');
+                                    ?>
+                                    <h5 class="text-[14px] font-bold text-[#0663F6] mb-1.5 line-clamp-2 leading-snug group-hover:underline"><?= e($itemTitle) ?></h5>
+                                    <p class="text-[11.5px] text-slate-500 mb-3 line-clamp-2 leading-relaxed"><?= e($itemDesc) ?></p>
+                                    <div class="text-right">
+                                        <span class="text-[#0663F6] text-[12px] font-bold"><?= e(getCurrentLang() === 'th' ? 'อ่านเพิ่มเติม' : 'Read more') ?> &rarr;</span>
+                                    </div>
+                                </div>
+                            </a>
                         <?php endforeach; ?>
                     </div>
-
                 </div>
-
-            </aside>
+            </div>
         </div>
 
     </div>
 </section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Reading Progress Bar
+    const progressBar = document.getElementById('reading-progress');
+    window.addEventListener('scroll', () => {
+        const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+        if (totalHeight > 0 && progressBar) {
+            const progress = (window.scrollY / totalHeight) * 100;
+            progressBar.style.width = Math.min(100, Math.max(0, progress)) + '%';
+        }
+    }, { passive: true });
+
+    // GSAP Related Articles Reveal
+    gsap.registerPlugin(ScrollTrigger);
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (!prefersReducedMotion) {
+        gsap.from(".lg\\:col-span-4 a", {
+            scrollTrigger: {
+                trigger: ".lg\\:col-span-4",
+                start: "top 85%",
+                toggleActions: "play none none reverse"
+            },
+            y: 20,
+            opacity: 0,
+            duration: 0.5,
+            stagger: 0.1,
+            ease: "power2.out"
+        });
+    }
+});
+</script>

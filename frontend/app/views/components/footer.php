@@ -20,17 +20,18 @@ $officeValue = $company['contact']['address'] ?? '525/89 ซอยลาดพ�
 $phoneHref = preg_replace('/[^0-9+]/', '', $phone) ?? '';
 
 $structuredSitemap = [
-    'SITEMAP' => [
+    'PAGE' => [
         'groups' => [
             [
                 'title' => 'Page',
                 'items' => [
-                    ['label' => 'Home', 'href' => '/Corparate_Webpark'],
-                    ['label' => 'About Us', 'href' => '/Corparate_Webpark/about'],
-                    ['label' => 'Our Services', 'href' => '/Corparate_Webpark/services'],
-                    ['label' => 'ERP', 'href' => '/Corparate_Webpark/erp'],
-                    ['label' => 'Portfolio', 'href' => '/Corparate_Webpark/portfolio'],
-                    ['label' => 'Contact Us', 'href' => '/Corparate_Webpark/contact'],
+                    ['label' => t('common.nav_home'), 'href' => route_url('/')],
+                    ['label' => t('common.nav_about'), 'href' => route_url('/about')],
+                    ['label' => t('common.nav_services'), 'href' => route_url('/services')],
+                    ['label' => t('common.nav_erp'), 'href' => route_url('/erp')],
+                    ['label' => getCurrentLang() === 'th' ? 'ผลงาน' : 'Portfolio', 'href' => route_url('/portfolio')],
+                    ['label' => t('common.nav_contact'), 'href' => route_url('/contact')],
+                    ['label' => getCurrentLang() === 'th' ? 'นโยบายความเป็นส่วนตัว' : 'Privacy Policy', 'href' => route_url('/privacy-policy')],
                 ],
             ],
         ],
@@ -40,28 +41,28 @@ $structuredSitemap = [
             [
                 'title' => 'ERP & Business Management',
                 'items' => [
-                    ['label' => 'ERP System', 'href' => '/Corparate_Webpark/erp#erp-system'],
-                    ['label' => 'Accounting & Finance', 'href' => '/Corparate_Webpark/erp#accounting'],
-                    ['label' => 'Sales / Purchase', 'href' => '/Corparate_Webpark/erp#sales'],
-                    ['label' => 'Inventory / Warehouse', 'href' => '/Corparate_Webpark/erp#inventory'],
+                    ['label' => 'ERP System', 'href' => route_url('/erp#erp-system')],
+                    ['label' => 'Accounting & Finance', 'href' => route_url('/article', ['id' => 39])],
+                    ['label' => 'Sales / Purchase', 'href' => route_url('/article', ['id' => 40])],
+                    ['label' => 'Inventory / Warehouse', 'href' => route_url('/article', ['id' => 41])],
                 ],
             ],
             [
                 'title' => 'ERM & CRM Systems',
                 'items' => [
-                    ['label' => 'Customer Management', 'href' => '/Corparate_Webpark/erp#crm'],
-                    ['label' => 'Lead Management', 'href' => '/Corparate_Webpark/erp#lead-management'],
-                    ['label' => 'Customer Service', 'href' => '/Corparate_Webpark/erp#customer-service'],
-                    ['label' => 'Partner / Supplier Management', 'href' => '/Corparate_Webpark/erp#partner'],
+                    ['label' => 'Customer Management', 'href' => route_url('/article', ['id' => 42])],
+                    ['label' => 'Lead Management', 'href' => route_url('/erp#lead-management')],
+                    ['label' => 'Customer Service', 'href' => route_url('/article', ['id' => 29])],
+                    ['label' => 'Partner / Supplier Management', 'href' => route_url('/article', ['id' => 30])],
                 ],
             ],
             [
                 'title' => 'HR & Workflow Systems',
                 'items' => [
-                    ['label' => 'HRM System', 'href' => '/Corparate_Webpark/erp#hrm'],
-                    ['label' => 'Attendance / Leave', 'href' => '/Corparate_Webpark/erp#attendance'],
-                    ['label' => 'Payroll', 'href' => '/Corparate_Webpark/erp#payroll'],
-                    ['label' => 'Workflow Approval', 'href' => '/Corparate_Webpark/erp#workflow'],
+                    ['label' => 'HRM System', 'href' => route_url('/article', ['id' => 31])],
+                    ['label' => 'Attendance / Leave', 'href' => route_url('/article', ['id' => 32])],
+                    ['label' => 'Payroll', 'href' => route_url('/article', ['id' => 14])],
+                    ['label' => 'Workflow Approval', 'href' => route_url('/article', ['id' => 34])],
                 ],
             ],
         ],
@@ -71,29 +72,29 @@ $structuredSitemap = [
             [
                 'title' => 'Digital Platforms & Business Systems',
                 'items' => [
-                    ['label' => 'Website / Responsive / CMS', 'href' => '/Corparate_Webpark/services/digital-platform#website'],
-                    ['label' => 'Mobile App / Mobile Site', 'href' => '/Corparate_Webpark/services/digital-platform#mobile'],
-                    ['label' => 'E-commerce', 'href' => '/Corparate_Webpark/services/digital-platform#ecommerce'],
-                    ['label' => 'Custom Web Application', 'href' => '/Corparate_Webpark/services/digital-platform#custom-web'],
-                    ['label' => 'Membership / Portal System', 'href' => '/Corparate_Webpark/services/digital-platform#membership'],
+                    ['label' => 'Website / Responsive / CMS', 'href' => route_url('/article', ['id' => 35])],
+                    ['label' => 'Mobile App / Mobile Site', 'href' => route_url('/article', ['id' => 36])],
+                    ['label' => 'E-commerce', 'href' => route_url('/article', ['id' => 37])],
+                    ['label' => 'Custom Web Application', 'href' => route_url('/services/digital-platform#custom-web')],
+                    ['label' => 'Membership / Portal System', 'href' => route_url('/services/digital-platform#membership')],
                 ],
             ],
             [
                 'title' => 'Communication & Engagement',
                 'items' => [
-                    ['label' => 'SMS Service', 'href' => '/Corparate_Webpark/services/digital-platform#sms'],
-                    ['label' => 'Email Marketing', 'href' => '/Corparate_Webpark/services/digital-platform#email'],
-                    ['label' => 'Chatbot / Live Chat', 'href' => '/Corparate_Webpark/services/digital-platform#chatbot'],
-                    ['label' => 'Game / Interactive Campaign', 'href' => '/Corparate_Webpark/services/digital-platform#game'],
+                    ['label' => 'SMS Service', 'href' => route_url('/services/digital-platform#sms')],
+                    ['label' => 'Email Marketing', 'href' => route_url('/services/digital-platform#email')],
+                    ['label' => 'Chatbot / Live Chat', 'href' => route_url('/services/digital-platform#chatbot')],
+                    ['label' => 'Game / Interactive Campaign', 'href' => route_url('/services/digital-platform#game')],
                 ],
             ],
             [
                 'title' => 'Data & Learning Systems',
                 'items' => [
-                    ['label' => 'Big Data', 'href' => '/Corparate_Webpark/services/digital-platform#bigdata'],
-                    ['label' => 'E-learning', 'href' => '/Corparate_Webpark/services/digital-platform#elearning'],
-                    ['label' => 'Dashboard', 'href' => '/Corparate_Webpark/services/digital-platform#dashboard'],
-                    ['label' => 'Data Management', 'href' => '/Corparate_Webpark/services/digital-platform#data-management'],
+                    ['label' => 'Big Data', 'href' => route_url('/services/digital-platform#bigdata')],
+                    ['label' => 'E-learning', 'href' => route_url('/services/digital-platform#elearning')],
+                    ['label' => 'Dashboard', 'href' => route_url('/services/digital-platform#dashboard')],
+                    ['label' => 'Data Management', 'href' => route_url('/services/digital-platform#data-management')],
                 ],
             ],
         ],
@@ -103,29 +104,29 @@ $structuredSitemap = [
             [
                 'title' => 'Strategy & Growth',
                 'items' => [
-                    ['label' => 'Digital Marketing Consultant', 'href' => '/Corparate_Webpark/services/online-marketing#consultant'],
-                    ['label' => 'Media Planner / PR & Media Strategy', 'href' => '/Corparate_Webpark/services/online-marketing#media-planner'],
-                    ['label' => 'SEO', 'href' => '/Corparate_Webpark/services/online-marketing#seo'],
-                    ['label' => 'Social Network', 'href' => '/Corparate_Webpark/services/online-marketing#social'],
-                    ['label' => 'Online Campaign', 'href' => '/Corparate_Webpark/services/online-marketing#campaign'],
+                    ['label' => 'Digital Marketing Consultant', 'href' => route_url('/services/online-marketing#consultant')],
+                    ['label' => 'Media Planner / PR & Media Strategy', 'href' => route_url('/services/online-marketing#media-planner')],
+                    ['label' => 'SEO', 'href' => route_url('/article-detail-mockup')],
+                    ['label' => 'Social Network', 'href' => route_url('/services/online-marketing#social')],
+                    ['label' => 'Online Campaign', 'href' => route_url('/services/online-marketing#campaign')],
                 ],
             ],
             [
                 'title' => 'Performance & Analytics',
                 'items' => [
-                    ['label' => 'Monitoring & Analysis', 'href' => '/Corparate_Webpark/services/online-marketing#monitoring'],
-                    ['label' => 'Campaign Performance Report', 'href' => '/Corparate_Webpark/services/online-marketing#report'],
-                    ['label' => 'Return on Investment (ROI)', 'href' => '/Corparate_Webpark/services/online-marketing#roi'],
-                    ['label' => 'Productivity Analysis', 'href' => '/Corparate_Webpark/services/online-marketing#productivity'],
+                    ['label' => 'Monitoring & Analysis', 'href' => route_url('/services/online-marketing#monitoring')],
+                    ['label' => 'Campaign Performance Report', 'href' => route_url('/services/online-marketing#report')],
+                    ['label' => 'Return on Investment (ROI)', 'href' => route_url('/services/online-marketing#roi')],
+                    ['label' => 'Productivity Analysis', 'href' => route_url('/services/online-marketing#productivity')],
                 ],
             ],
             [
                 'title' => 'Content & Advertising',
                 'items' => [
-                    ['label' => 'Content Strategy', 'href' => '/Corparate_Webpark/services/online-marketing#content-strategy'],
-                    ['label' => 'Ads Management', 'href' => '/Corparate_Webpark/services/online-marketing#ads'],
-                    ['label' => 'Social Media Content', 'href' => '/Corparate_Webpark/services/online-marketing#social-content'],
-                    ['label' => 'Search Engine Marketing', 'href' => '/Corparate_Webpark/services/online-marketing#sem'],
+                    ['label' => 'Content Strategy', 'href' => route_url('/services/online-marketing#content-strategy')],
+                    ['label' => 'Ads Management', 'href' => route_url('/services/online-marketing#ads')],
+                    ['label' => 'Social Media Content', 'href' => route_url('/services/online-marketing#social-content')],
+                    ['label' => 'Search Engine Marketing', 'href' => route_url('/services/online-marketing#sem')],
                 ],
             ],
         ],
@@ -135,28 +136,28 @@ $structuredSitemap = [
             [
                 'title' => 'Design & Digital Experience',
                 'items' => [
-                    ['label' => 'Web Design', 'href' => '/Corparate_Webpark/services/creative-design#web-design'],
-                    ['label' => 'UX/UI Design', 'href' => '/Corparate_Webpark/services/creative-design#ux-ui'],
-                    ['label' => 'Cartoon & Character Design', 'href' => '/Corparate_Webpark/services/creative-design#cartoon'],
-                    ['label' => 'Infographic', 'href' => '/Corparate_Webpark/services/creative-design#infographic'],
+                    ['label' => 'Web Design', 'href' => route_url('/services/creative-design#web-design')],
+                    ['label' => 'UX/UI Design', 'href' => route_url('/services/creative-design#ux-ui')],
+                    ['label' => 'Cartoon & Character Design', 'href' => route_url('/services/creative-design#cartoon')],
+                    ['label' => 'Infographic', 'href' => route_url('/services/creative-design#infographic')],
                 ],
             ],
             [
                 'title' => 'Motion & Video Production',
                 'items' => [
-                    ['label' => 'Animation TV & YouTube Online', 'href' => '/Corparate_Webpark/services/creative-design#animation'],
-                    ['label' => 'Motion VDO', 'href' => '/Corparate_Webpark/services/creative-design#motion-vdo'],
-                    ['label' => 'Video Editing', 'href' => '/Corparate_Webpark/services/creative-design#video-editing'],
-                    ['label' => 'Presentation Video', 'href' => '/Corparate_Webpark/services/creative-design#presentation'],
+                    ['label' => 'Animation TV & YouTube Online', 'href' => route_url('/services/creative-design#animation')],
+                    ['label' => 'Motion VDO', 'href' => route_url('/article', ['id' => 14])],
+                    ['label' => 'Video Editing', 'href' => route_url('/services/creative-design#video-editing')],
+                    ['label' => 'Presentation Video', 'href' => route_url('/services/creative-design#presentation')],
                 ],
             ],
             [
                 'title' => 'Media & Publishing',
                 'items' => [
-                    ['label' => 'E-Magazine', 'href' => '/Corparate_Webpark/services/creative-design#emagazine'],
-                    ['label' => 'Print Ads', 'href' => '/Corparate_Webpark/services/creative-design#print-ads'],
-                    ['label' => 'Online Banner', 'href' => '/Corparate_Webpark/services/creative-design#online-banner'],
-                    ['label' => 'Key Visual Design', 'href' => '/Corparate_Webpark/services/creative-design#key-visual'],
+                    ['label' => 'E-Magazine', 'href' => route_url('/services/creative-design#emagazine')],
+                    ['label' => 'Print Ads', 'href' => route_url('/services/creative-design#print-ads')],
+                    ['label' => 'Online Banner', 'href' => route_url('/services/creative-design#online-banner')],
+                    ['label' => 'Key Visual Design', 'href' => route_url('/services/creative-design#key-visual')],
                 ],
             ],
         ],
@@ -205,7 +206,7 @@ $socialLinks = [
                         <div class="grid gap-5 sm:grid-cols-2 xl:grid-cols-5 dt-sitemap-grid" data-footer-content>
                             <?php
                             $targetTitles = [
-                                'SITEMAP',
+                                'PAGE',
                                 'ERP / ERM',
                                 'DIGITAL PLATFORM',
                                 'ONLINE MARKETING',
@@ -224,7 +225,7 @@ $socialLinks = [
                                                     <?php foreach (($group['items'] ?? []) as $item): ?>
                                                         <li class="flex items-center gap-2">
                                                             <span class="text-[#043B94] shrink-0 text-sm dt-sitemap-bullet">&bull;</span>
-                                                            <a class="inline-block py-0.5 text-[#043B94] transition-all duration-300 hover:text-[#0663F6] hover:translate-x-1 text-[17px] dt-sitemap-link" href="<?= e($item['href'] ?? '#') ?>">
+                                                            <a class="inline-block py-0.5 text-[#043B94] transition-all duration-300 hover:text-[#0663F6] hover:translate-x-1 text-[17px] dt-sitemap-link" href="<?= $item['href'] ?? '#' ?>">
                                                                 <?= e($item['label'] ?? '') ?>
                                                             </a>
                                                         </li>
