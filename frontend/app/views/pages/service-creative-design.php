@@ -256,46 +256,63 @@ $designProcess = [
     </div>
 </section>
 
-<!-- About Section & 4 Key Pillars -->
-<section class="bg-white pt-8 pb-4 lg:pt-20 lg:pb-8">
-    <div class="mx-auto w-full max-w-[1720px] px-4 sm:px-6 lg:px-10 relative z-20 -mt-10 lg:-mt-16 pb-6 lg:pb-16 overflow-hidden">
-        <div class="w-full rounded-[1.5rem] bg-white flex flex-col lg:flex-row items-stretch shadow-[0_4px_25px_rgba(0,0,0,0.06)] border border-gray-100 overflow-hidden">
-            
-            <div class="erp-left-col gsap-reveal group flex-1 flex flex-col justify-center p-6 lg:p-10 border-b lg:border-b-0 lg:border-r border-gray-100 shrink-0 bg-white transition-all duration-300 hover:bg-slate-50/50">
-                <div>
-                    <span class="text-primary font-bold text-lg md:text-base tracking-wide inline-block mb-3 uppercase">
-                        <span class="border-b-[3px] border-primary pb-0.5">CREATIVE</span> DESIGN
-                    </span>
-                    <h2 class="text-[#043B94] text-3xl xl:text-4xl font-bold leading-tight mb-4 transition-colors duration-300 group-hover:text-blue-700">
-                        <?= $lang === 'th' ? 'ดีไซน์ที่ดี ไม่ใช่แค่ความสวยงาม' : 'Design Beyond Mere Aesthetics' ?>
-                    </h2>
-                    <p class="text-gray-500 text-lg leading-relaxed mb-6">
-                        <?= $lang === 'th' 
-                            ? 'เราผสานความสวยงาม ศิลปะ และหลักจิตวิทยาของผู้ใช้งานเข้าด้วยกัน เพื่อให้ทุกงานดีไซน์ไม่เพียงแค่ดูโดดเด่น แต่ยังช่วยแก้ปัญหา เพิ่มความน่าเชื่อถือ และนำพาธุรกิจไปสู่ความสำเร็จ' 
-                            : 'We merge artistry, functional UX, and behavioral psychology to create designs that not only captivate the eye but solve real user problems and compound brand equity.'
-                        ?>
-                    </p>
-                </div>
-            </div>
+<!-- About Section & Key Pillars (Modern Bento Grid Style) -->
+<section class="bg-white py-12 lg:py-20 font-sans">
+    <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8 desktop-wide-container relative z-20 overflow-hidden">
+        <div class="lg:px-12 xl:px-24">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-stretch">
+                
+                <!-- Left Column (5 cols): Navy Gradient Bento Card -->
+                <div class="lg:col-span-5 gsap-reveal rounded-[2rem] bg-[#022862] p-8 lg:p-10 text-white shadow-xl shadow-blue-950/10 flex flex-col justify-between relative overflow-hidden group hover:shadow-2xl transition-all duration-500" style="background: linear-gradient(135deg, #043B94 0%, #022862 50%, #011438 100%); color: #ffffff;">
+                    <div class="absolute -right-16 -top-16 w-56 h-56 bg-blue-500/20 rounded-full blur-3xl pointer-events-none group-hover:bg-blue-400/30 transition-all duration-700"></div>
+                    <div class="absolute -left-16 -bottom-16 w-56 h-56 bg-indigo-500/20 rounded-full blur-3xl pointer-events-none"></div>
 
-            <div class="erp-right-col gsap-reveal flex-[4] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 w-full">
-                <?php foreach ($designPillars as $i => $pillar): 
-                    $borderClass = $i < 3 ? 'lg:border-r border-b sm:border-b-0 border-gray-100' : 'border-gray-100';
-                ?>
-                    <div class="relative group flex flex-col justify-center p-6 lg:p-8 <?= $borderClass ?> bg-white transition-all duration-300 ease-out hover:shadow-[0_0_30px_rgba(0,0,0,0.08)] hover:-translate-y-1 hover:z-10 hover:rounded-xl">
-                        <div>
-                            <div class="h-14 w-14 mx-auto mb-5 flex items-center justify-center transition-all duration-500 group-hover:-translate-y-2 group-hover:scale-110">
-                                <img src="<?= e($pillar['icon']) ?>" alt="<?= e($pillar['title']) ?>" class="h-full w-full object-contain">
-                            </div>
-                            <h3 class="text-[#043B94] font-bold text-lg md:text-xl text-center mb-3 tracking-tight transition-colors duration-300 group-hover:text-blue-600">
-                                <?= e($pillar['title']) ?>
-                            </h3>
-                            <p class="text-gray-500 text-base leading-relaxed text-center group-hover:text-gray-600">
-                                <?= e($pillar['desc']) ?>
-                            </p>
+                    <div class="relative z-10">
+                        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/15 backdrop-blur-md border border-white/20 text-blue-100 text-xs font-bold uppercase tracking-wider mb-6">
+                            <span class="w-2 h-2 rounded-full bg-blue-400 animate-pulse"></span>
+                            <?= $lang === 'th' ? 'ปรัชญาการออกแบบ' : 'DESIGN PHILOSOPHY' ?>
                         </div>
+                        <h2 class="text-2xl sm:text-3xl lg:text-[30px] font-extrabold text-white leading-snug mb-5 tracking-tight" style="color: #ffffff;">
+                            <?= $lang === 'th' ? 'ดีไซน์ที่ดี ไม่ใช่แค่ความสวยงาม' : 'Design Beyond Mere Aesthetics' ?>
+                        </h2>
+                        <p class="text-blue-100/80 text-base lg:text-[15px] leading-relaxed font-normal">
+                            <?= $lang === 'th' 
+                                ? 'เราผสานความสวยงาม ศิลปะ และหลักจิตวิทยาของผู้ใช้งานเข้าด้วยกัน เพื่อให้ทุกงานดีไซน์ไม่เพียงแค่ดูโดดเด่น แต่ยังช่วยแก้ปัญหา เพิ่มความน่าเชื่อถือ และนำพาธุรกิจไปสู่ความสำเร็จ' 
+                                : 'We merge artistry, functional UX, and behavioral psychology to create designs that not only captivate the eye but solve real user problems and compound brand equity.'
+                            ?>
+                        </p>
                     </div>
-                <?php endforeach; ?>
+
+                    <div class="relative z-10 pt-8 mt-6 border-t border-white/10 flex items-center justify-between">
+                        <span class="text-xs text-blue-200/70 font-medium">Creative & UI/UX Studio</span>
+                        <a href="<?= e(route_url('/contact')) ?>" class="inline-flex items-center gap-1.5 text-xs font-bold text-white hover:text-blue-300 transition-colors group-hover:translate-x-1 duration-300">
+                            <?= $lang === 'th' ? 'ปรึกษาเรา' : 'Consult Us' ?> &rarr;
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Right Column (7 cols): 2x2 Bento Cards Grid -->
+                <div class="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-6">
+                    <?php foreach ($designPillars as $i => $pillar): ?>
+                        <div class="gsap-reveal rounded-[1.75rem] bg-white p-6 lg:p-7 border border-slate-100 shadow-[0_4px_25px_rgba(0,0,0,0.04)] hover:shadow-[0_12px_35px_rgba(4,59,148,0.08)] hover:-translate-y-1 hover:border-blue-200 transition-all duration-300 group flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center justify-between mb-5">
+                                    <div class="w-13 h-13 bg-slate-50 border border-slate-100 rounded-2xl flex items-center justify-center p-2.5 group-hover:bg-blue-50 group-hover:border-blue-200 group-hover:-translate-y-1 group-hover:scale-110 transition-all duration-300 shadow-sm">
+                                        <img src="<?= e($pillar['icon']) ?>" alt="<?= e($pillar['title']) ?>" class="w-7 h-7 object-contain transition-transform duration-300">
+                                    </div>
+                                    <span class="text-xs font-bold text-slate-300 group-hover:text-blue-500 transition-colors">0<?= $i + 1 ?></span>
+                                </div>
+                                <h3 class="text-base lg:text-lg font-bold text-[#043B94] mb-2 leading-snug group-hover:text-primary transition-colors">
+                                    <?= e($pillar['title']) ?>
+                                </h3>
+                                <p class="text-slate-500 text-xs lg:text-[13.5px] leading-relaxed">
+                                    <?= e($pillar['desc']) ?>
+                                </p>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+
             </div>
         </div>
     </div>
@@ -388,17 +405,22 @@ $designProcess = [
     document.addEventListener("DOMContentLoaded", () => {
         if (typeof gsap !== "undefined" && typeof ScrollTrigger !== "undefined") {
             gsap.registerPlugin(ScrollTrigger);
+            
+            window.addEventListener("load", () => {
+                ScrollTrigger.refresh();
+            });
+
             gsap.utils.toArray(".gsap-reveal").forEach((el) => {
                 gsap.fromTo(el, 
-                    { opacity: 0, y: 30 },
+                    { opacity: 0, y: 35 },
                     {
                         opacity: 1, 
                         y: 0, 
-                        duration: 0.8, 
+                        duration: 0.7, 
                         ease: "power2.out",
                         scrollTrigger: {
                             trigger: el,
-                            start: "top 88%",
+                            start: "top 85%",
                             toggleActions: "play none none reverse"
                         }
                     }

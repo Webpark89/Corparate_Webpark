@@ -31,29 +31,28 @@ if (!empty($partners) && is_array($partners)) {
         ];
     }
 }
-?>
-<section class="relative font-sans bg-[#f7faff] overflow-hidden mt-0 mx-4 mb-4 sm:mt-0 sm:mx-6 sm:mb-6 rounded-t-none rounded-b-[2rem] lg:m-0 lg:rounded-none">
+?><section class="relative font-sans bg-[#f7faff] overflow-hidden mt-0 mx-4 mb-4 sm:mt-0 sm:mx-6 sm:mb-6 rounded-t-none rounded-b-[2rem] lg:m-0 lg:rounded-none">
     <div class="absolute inset-0 z-0">
-        <img src="<?= e(asset_url('images/bg-5.png')) ?>" alt="bg" class="hero-parallax-img w-full h-full object-cover object-center opacity-70 mix-blend-screen">
+        <img src="<?= e(asset_url('images/bg-5.jpg')) ?>" alt="bg" class="hero-parallax-img w-full h-full object-cover object-center opacity-70 mix-blend-screen" fetchpriority="low" decoding="async">
         <div class="absolute inset-0 bg-gradient-to-r from-white via-white/80 to-white/5"></div>
         <div class="absolute inset-x-0 bottom-0 h-[30%] bg-gradient-to-t from-white to-transparent z-10"></div>
     </div>
     <style>
         @keyframes fadeSlideUp {
-            0% { opacity: 0; transform: translateY(40px); }
+            0% { opacity: 0; transform: translateY(30px); }
             100% { opacity: 1; transform: translateY(0); }
         }
-        @keyframes fadeSlideLeft {
-            0% { opacity: 0; transform: translateX(50px); }
-            100% { opacity: 1; transform: translateX(0); }
+        @keyframes smoothSlideIn {
+            0% { transform: translateX(20px); }
+            100% { transform: translateX(0); }
         }
-        .animate-entrance-up { opacity: 0; animation: fadeSlideUp 0.8s cubic-bezier(0.16,1,0.3,1) forwards; }
-        .animate-entrance-left { opacity: 0; animation: fadeSlideLeft 1s cubic-bezier(0.16,1,0.3,1) forwards; }
-        .delay-100 { animation-delay: 100ms; }
-        .delay-200 { animation-delay: 200ms; }
-        .delay-300 { animation-delay: 300ms; }
-        .delay-400 { animation-delay: 400ms; }
-        .delay-500 { animation-delay: 500ms; }
+        .animate-entrance-up { opacity: 0; animation: fadeSlideUp 0.6s cubic-bezier(0.16,1,0.3,1) forwards; }
+        .animate-hero-presenter { animation: smoothSlideIn 0.7s cubic-bezier(0.16,1,0.3,1) forwards; }
+        .delay-100 { animation-delay: 50ms; }
+        .delay-200 { animation-delay: 100ms; }
+        .delay-300 { animation-delay: 150ms; }
+        .delay-400 { animation-delay: 200ms; }
+        .delay-500 { animation-delay: 250ms; }
         .mobile-hero-woman { width: 62%; bottom: 0px; right: -2%; opacity: 1; z-index: 5; }
         @media (min-width: 768px) { .mobile-hero-woman { width: auto; bottom: 0; right: 0; opacity: 1; } }
         .hero-parallax-img {
@@ -216,9 +215,9 @@ if (!empty($partners) && is_array($partners)) {
                 .ipad-air-card-badge { font-size: 0.875rem !important; padding: 0.375rem 0.75rem !important; }
             }
         </style>
-        <div class="animate-entrance-left delay-500 absolute top-auto bottom-0 lg:top-28 lg:bottom-auto right-0 md:right-4 lg:right-8 z-0 pointer-events-none max-w-full transform md:-translate-y-2 flex justify-end mobile-hero-woman desktop-hero-woman">
+        <div class="animate-hero-presenter absolute top-auto bottom-0 lg:top-28 lg:bottom-auto right-0 md:right-4 lg:right-8 z-0 pointer-events-none max-w-full transform md:-translate-y-2 flex justify-end mobile-hero-woman desktop-hero-woman">
             <picture class="w-full md:w-auto flex justify-end">
-                <img src="<?= e($heroImage) ?>" alt="WEBPARK Presenter" class="w-full md:w-auto object-contain object-right-bottom h-auto md:h-[400px] lg:h-[600px] opacity-100">
+                <img src="<?= e($heroImage) ?>" alt="WEBPARK Presenter" class="w-full md:w-auto object-contain object-right-bottom h-auto md:h-[400px] lg:h-[600px] opacity-100" fetchpriority="high" loading="eager" decoding="async" width="600" height="600">
             </picture>
         </div>
     </div>

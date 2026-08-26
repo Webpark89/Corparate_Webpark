@@ -67,22 +67,15 @@ $contactAddress = $company['contact']['address'] ?? '525/89 ซอยลาด�
         will-change: transform;
     }
     @media (min-width: 1025px) {
-        .hero-parallax-img {
-            transform: scale(1.6) translate(-2%, -5%) !important;
-        }
         .desktop-about-hero-h1 {
             font-size: 5.5rem !important;
             line-height: 1.1 !important;
+            font-weight: 700 !important;
         }
         .desktop-about-hero-p {
             font-size: 1.25rem !important;
             line-height: 1.75 !important;
             max-width: 34rem !important;
-        }
-    }
-    @media (min-width: 1536px) {
-        .hero-parallax-img {
-            transform: scale(1.8) translate(-2%, -2%) !important;
         }
     }
     
@@ -263,9 +256,9 @@ $contactAddress = $company['contact']['address'] ?? '525/89 ซอยลาด�
                     </ol>
                 </nav>
                     
-                <h1 class="animate-fade-up delay-200 text-5xl sm:text-4xl md:text-6xl lg:text-8xl font-lg leading-[1.1] mb-2 tracking-tighter">
-                    <span class="bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block py-3 desktop-about-hero-h1 ipad-pro-about-hero-span1"><?= e(getCurrentLang() === 'th' ? 'ผู้ให้บริการด้าน' : 'Service Provider for') ?></span><br class="hidden sm:inline">
-                    <span class="bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block desktop-about-hero-h1 ipad-pro-about-hero-span2" style="animation-delay: -3s;">ERP / ERM</span>
+                <h1 class="animate-fade-up delay-200 leading-[1.1] mb-2 tracking-tighter">
+                    <span class="text-4xl md:text-6xl lg:text-8xl font-bold bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block py-2 desktop-about-hero-h1"><?= e(getCurrentLang() === 'th' ? 'ผู้ให้บริการด้าน' : 'Service Provider for') ?></span><br class="hidden sm:inline">
+                    <span class="text-4xl md:text-6xl lg:text-8xl font-bold bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block py-2 desktop-about-hero-h1" style="animation-delay: -3s;">ERP / ERM</span>
                 </h1>
 
                 <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-lg md:text-xl leading-relaxed max-w-lg mb-10 font-medium desktop-about-hero-p ipad-pro-about-hero-p">

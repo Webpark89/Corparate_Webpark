@@ -190,10 +190,33 @@ $erpPortfolios = $mockErpPortfolios;
             scroll-behavior: auto !important;
         }
     }
-    @media (min-width: 1025px) {
+
+    @media (min-width: 1024px) and (max-width: 1279px) {
+        .ipad-pro-erp-hero-content {
+            margin-left: 0 !important;
+            padding-top: 0.5rem !important;
+        }
+        .desktop-erp-hero-h1 {
+            font-size: 3.75rem !important;
+            line-height: 1.15 !important;
+            font-weight: 700 !important;
+        }
+        .desktop-erp-hero-p {
+            font-size: 1.125rem !important;
+            line-height: 1.65 !important;
+            max-width: 28rem !important;
+        }
+    }
+    @media (min-width: 1280px) {
+        .desktop-wide-container-erp {
+            max-width: 1720px !important;
+            padding-left: 2.5rem !important;
+            padding-right: 2.5rem !important;
+        }
         .desktop-erp-hero-h1 {
             font-size: 5.5rem !important;
             line-height: 1.1 !important;
+            font-weight: 700 !important;
         }
         .desktop-erp-hero-p {
             font-size: 1.25rem !important;
@@ -201,41 +224,12 @@ $erpPortfolios = $mockErpPortfolios;
             max-width: 34rem !important;
         }
     }
-
-    /* iPad Pro Custom Layout */
-    @media (min-width: 1024px) and (max-width: 1279px) {
-        .ipad-pro-erp-hero-h1-wrapper {
-            white-space: nowrap !important;
-        }
-        .ipad-pro-erp-hero-h1 {
-            font-size: 4.2rem !important; /* Scale down further to ensure it fits strictly on one line */
-            line-height: 1 !important;
-            padding-bottom: 0 !important;
-            margin-bottom: 0 !important;
-            display: inline-block !important;
-            white-space: nowrap !important;
-        }
-        .ipad-pro-erp-hero-subtitle {
-            font-size: 2rem !important; /* Make subtitle fit beautifully on exactly two lines */
-            line-height: 1.3 !important;
-            display: inline-block !important;
-            margin-top: 1rem !important;
-        }
-        /* Break the subtitle nicely for English */
-        .ipad-pro-erp-hero-subtitle br {
-            display: block !important;
-        }
-    }
 </style>
-
-
-
-
 
 <section id="erp-hero" class="relative font-sans bg-[#f7faff] overflow-hidden mt-0 mx-4 mb-4 sm:mt-0 sm:mx-6 sm:mb-6 rounded-t-none rounded-b-[2rem] lg:m-0 lg:rounded-none">
     <div class="hidden lg:block absolute inset-0 z-0 overflow-hidden">
         <img src="<?= e($heroImage) ?>" alt="WEBPARK Solutions Background" 
-            class="hero-parallax-img w-full h-full object-cover object-center opacity-100 mix-blend-screen">
+            class="hero-parallax-img w-full h-full object-cover object-[75%_center] opacity-100 mix-blend-screen">
             
         <div class="absolute inset-0 bg-gradient-to-r from-white via-white/70 to-white/5"></div>
         <div class="absolute inset-x-0 bottom-0 h-[30%] bg-gradient-to-t from-white to-transparent z-10"></div>
@@ -261,7 +255,7 @@ $erpPortfolios = $mockErpPortfolios;
         .animate-scroll:hover { animation-play-state: paused; }
     </style>
 
-    <div class="mx-auto w-full max-w-7xl lg:max-w-[1720px] px-6 sm:px-6 lg:px-10 pt-12 pb-24 lg:pt-40 lg:pb-32 relative z-10">
+    <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8 pt-12 pb-24 lg:pt-28 lg:pb-32 relative z-10 desktop-wide-container-erp">
         <!-- Mobile Background Image (Only covers this Hero container) -->
         <div class="absolute inset-0 z-0 overflow-hidden lg:hidden rounded-2xl">
             <img src="<?= e($heroImage) ?>" alt="WEBPARK Solutions Background" 
@@ -272,7 +266,7 @@ $erpPortfolios = $mockErpPortfolios;
 
         <div class="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-12 lg:gap-20 items-center relative z-10">
             
-            <div class="max-w-2xl lg:ml-12 xl:ml-24">
+            <div class="max-w-2xl lg:ml-12 xl:ml-24 ipad-pro-erp-hero-content">
                 <nav aria-label="Breadcrumb" class="animate-fade-up delay-100 mb-6 hidden sm:block">
                         <ol class="inline-flex items-center text-sm md:text-base font-medium text-slate-500">
                             <li>
@@ -286,7 +280,7 @@ $erpPortfolios = $mockErpPortfolios;
                             </li>
                             
                             <li aria-current="page">
-                                <span class="text-slate-400">ERP System</span>
+                                <span class="text-slate-400"><?= e(t('common.nav_erp')) ?></span>
                             </li>
                         </ol>
                     </nav>
@@ -341,18 +335,14 @@ $erpPortfolios = $mockErpPortfolios;
 
                 <!-- Desktop Only Hero Content -->
                 <div class="hidden md:block">
-                    <h1 class="animate-fade-up delay-200 leading-[1.1] mb-2 tracking-tighter ipad-pro-erp-hero-h1-wrapper"><span class="text-4xl md:text-6xl lg:text-8xl font-bold bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block pb-0 pt-2 desktop-erp-hero-h1 ipad-pro-erp-hero-h1"><?= getCurrentLang() === 'th' ? 'ระบบ' : 'ERP' ?></span><span class="text-4xl md:text-6xl lg:text-8xl font-bold bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block pb-0 pt-2 ml-1 lg:ml-2 desktop-erp-hero-h1 ipad-pro-erp-hero-h1"><?= getCurrentLang() === 'th' ? 'ERP' : 'Systems' ?></span><br><span class="text-xl md:text-2xl lg:text-4xl font-medium leading-snug bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block mt-0 pb-3 pt-1 ipad-pro-erp-hero-subtitle" style="animation-delay: -3s;"><?= getCurrentLang() === 'th' ? 'เชื่อมต่อทุกกระบวนการธุรกิจ<br>แบบครบวงจรในแพลตฟอร์มเดียว' : 'Connecting every business process<br>end-to-end on a single platform' ?></span></h1>
+                    <h1 class="animate-fade-up delay-200 leading-[1.1] mb-2 tracking-tighter"><span class="text-4xl md:text-6xl lg:text-8xl font-bold bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block pb-0 pt-2 desktop-erp-hero-h1"><?= getCurrentLang() === 'th' ? 'ระบบ' : 'ERP' ?></span><span class="text-4xl md:text-6xl lg:text-8xl font-bold bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block pb-0 pt-2 ml-1 lg:ml-2 desktop-erp-hero-h1"><?= getCurrentLang() === 'th' ? 'ERP' : 'Systems' ?></span><br><span class="text-xl md:text-2xl lg:text-4xl font-medium leading-snug bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block mt-0 pb-3 pt-1" style="animation-delay: -3s;"><?= getCurrentLang() === 'th' ? 'เชื่อมต่อทุกกระบวนการธุรกิจ<br>แบบครบวงจรในแพลตฟอร์มเดียว' : 'Connecting every business process<br>end-to-end on a single platform' ?></span></h1>
 
                     <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-lg md:text-xl leading-relaxed max-w-lg mb-10 font-medium desktop-erp-hero-p">
                         <?php if (getCurrentLang() === 'th'): ?>
                             รวบรวมบทความรู้ เทคโนโลยี นวัตกรรม และแนวทางการทำธุรกิจ<br>ครอบคลุม ERP ระบบธุรกิจดิจิทัล การตลาดออนไลน์ AI<br>และโซลูชัน ที่ช่วยพัฒนาองค์กรให้เติบโตได้อย่างยั่งยืน
                         <?php else: ?>
-                            <?php 
-                                $en_knowledge = e(t('common.articles_knowledge_summary'));
-                                $en_knowledge = str_replace(', and business strategy', ',<br class="hidden md:block lg:hidden ipad-pro-strict-hidden"> and business strategy', $en_knowledge);
-                                echo $en_knowledge;
-                            ?> <br class="hidden md:block lg:hidden xl:block">
-                            <?= e(t('common.articles_coverage_summary')) ?><br class="hidden md:block lg:hidden xl:block">
+                            <?= e(t('common.articles_knowledge_summary')) ?> <br class="hidden md:block">
+                            <?= e(t('common.articles_coverage_summary')) ?><br class="hidden md:block">
                             <?= e(t('common.articles_growth_summary')) ?>
                         <?php endif; ?>
                     </p>
@@ -382,19 +372,31 @@ $erpPortfolios = $mockErpPortfolios;
 </section>
 
 <style>
-    @media (min-width: 1280px) {
-        .erp-left-col { flex: none !important; width: 480px !important; max-width: 480px !important; }
-        .erp-right-col { flex: 1 !important; width: auto !important; }
+    @media (min-width: 1024px) and (max-width: 1279px) {
+        .erp-left-col {
+            flex: none !important;
+            width: 340px !important;
+            max-width: 340px !important;
+        }
     }
-    @media (min-width: 1536px) {
-        .erp-left-col { width: 400px !important; max-width: 400px !important; }
+    @media (min-width: 1280px) {
+        .erp-left-col {
+            flex: none !important;
+            width: 380px !important;
+            max-width: 380px !important;
+        }
+        .erp-right-col {
+            flex: 1 !important;
+            width: auto !important;
+        }
     }
 </style>
 <section class="bg-white pt-8 pb-4 lg:pt-24 lg:pb-8">
-    <div class="mx-auto w-full max-w-[1720px] px-4 sm:px-6 lg:px-10 relative z-20 -mt-10 lg:-mt-18 pb-6 lg:pb-16 overflow-hidden">
-        <div class="w-full rounded-[1rem] bg-white flex flex-col xl:flex-row items-stretch shadow-[0_4px_25px_rgba(0,0,0,0.06)] border border-gray-100 overflow-hidden">
+    <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8 desktop-wide-container-erp relative z-20 -mt-10 lg:-mt-18 pb-6 lg:pb-16 overflow-hidden">
+        <div class="lg:px-12 xl:px-24">
+            <div class="w-full rounded-[1rem] bg-white flex flex-col lg:flex-row items-stretch shadow-[0_4px_25px_rgba(0,0,0,0.06)] border border-gray-100 overflow-hidden">
 
-            <div class="erp-left-col gsap-erp-about-left group flex-1 flex flex-col justify-center p-6 lg:p-8 border-b xl:border-b-0 xl:border-r border-gray-100 shrink-0 bg-white transition-all duration-300 hover:bg-slate-50/50 cursor-pointer opacity-0 translate-y-10">
+            <div class="erp-left-col gsap-erp-about-left group flex-1 flex flex-col justify-center p-6 lg:p-8 border-b lg:border-b-0 lg:border-r border-gray-100 shrink-0 bg-white transition-all duration-300 hover:bg-slate-50/50 cursor-pointer opacity-0 translate-y-10">
                 <div>
                     <span class="text-primary font-bold text-lg md:text-base tracking-wide inline-block mb-3 mx-0 uppercase">
                         <span class="border-b-[3px] border-primary pb-0.5">ERP</span> SYSTEM
@@ -411,7 +413,7 @@ $erpPortfolios = $mockErpPortfolios;
                 </div>
             </div>
 
-            <div class="erp-right-col gsap-erp-about-right flex-[4] grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 w-full opacity-0 translate-y-10">
+            <div class="erp-right-col gsap-erp-about-right flex-[4] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 w-full opacity-0 translate-y-10">
                 <?php
                 $serviceCards = [
                     ['icon' => asset_url('images/ERP_1.svg'), 'title' => getCurrentLang() === 'th' ? 'ข้อมูลเชื่อมต่อครบทุกแผนก' : 'Connected Data Across Departments', 'desc' => getCurrentLang() === 'th' ? 'ข้อมูลเป็นหนึ่งเดียว ไม่ต้องทำงานซ้ำ' : 'Single source of truth, eliminating duplicate work.', 'href' => '#'],
@@ -451,8 +453,6 @@ $erpPortfolios = $mockErpPortfolios;
                              <h2 class="lg:hidden text-[#043B94] font-bold text-lg md:text-xl xl:text-2xl text-center mb-3 whitespace-normal tracking-tight transition-colors duration-300 group-hover:text-blue-600">
                                  <?php if (getCurrentLang() === 'th' && $card['title'] === 'รองรับการเติบโต ของธุรกิจ'): ?>
                                      <span class="whitespace-nowrap">รองรับการเจริญเติบโต</span><br><span class="whitespace-nowrap">ของธุรกิจ</span>
-                                 <?php elseif (getCurrentLang() !== 'th' && $card['title'] === 'Automated Processes & Reduced Errors'): ?>
-                                     <span class="whitespace-nowrap">Automated Processes</span><br><span class="whitespace-nowrap">&amp; Reduced Errors</span>
                                  <?php else: ?>
                                      <?= e($card['title']) ?>
                                  <?php endif; ?>
@@ -468,6 +468,7 @@ $erpPortfolios = $mockErpPortfolios;
                     </div>
                 <?php endforeach; ?>
             </div>
+        </div>
         </div>
     </div>
 </section>
@@ -526,46 +527,8 @@ $erpPortfolios = $mockErpPortfolios;
                     grid-column: span 2 / span 2 !important;
                 }
             }
-            @media (min-width: 768px) and (max-width: 1023px) {
-                .ipad-air-grid-2 {
-                    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-                }
-                .ipad-air-span-2 {
-                    grid-column: span 2 / span 2 !important;
-                    display: flex !important;
-                    flex-direction: row !important;
-                    align-items: center !important;
-                    justify-content: center !important;
-                    text-align: left !important;
-                    gap: 1.5rem !important;
-                }
-                .ipad-air-span-2 .sm\:mx-auto {
-                    margin-left: 0 !important;
-                    margin-right: 0 !important;
-                    margin-bottom: 0 !important;
-                }
-            }
-            @media (min-width: 1024px) and (max-width: 1279px) {
-                .ipad-pro-grid-2 {
-                    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-                }
-                .ipad-pro-span-2 {
-                    grid-column: span 2 / span 2 !important;
-                    display: flex !important;
-                    flex-direction: row !important;
-                    align-items: center !important;
-                    justify-content: center !important;
-                    text-align: left !important;
-                    gap: 1.5rem !important;
-                }
-                .ipad-pro-span-2 .sm\:mx-auto {
-                    margin-left: 0 !important;
-                    margin-right: 0 !important;
-                    margin-bottom: 0 !important;
-                }
-            }
         </style>
-        <div class="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-5 gap-6 ipad-pro-grid-2 ipad-air-grid-2">
+        <div class="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-5 gap-6">
             <?php
             $erpBenefits = [
                 [
@@ -598,7 +561,7 @@ $erpPortfolios = $mockErpPortfolios;
             <?php foreach ($erpBenefits as $index => $benefit): ?>
                 <?php if($index === 4): ?>
                     <!-- 5th Block: Horizontal rectangle on mobile, Square on desktop -->
-                    <div class="gsap-erp-benefit-card bg-white rounded-2xl py-10 px-6 sm:p-6 border border-slate-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 mobile-span-2 ipad-pro-span-2 ipad-air-span-2 sm:col-span-1 flex flex-row sm:block items-center text-left sm:text-center gap-6 sm:gap-0 opacity-0 translate-y-10">
+                    <div class="gsap-erp-benefit-card bg-white rounded-2xl py-10 px-6 sm:p-6 border border-slate-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 mobile-span-2 sm:col-span-1 flex flex-row sm:block items-center text-left sm:text-center gap-6 sm:gap-0 opacity-0 translate-y-10">
                         <div class="w-16 h-16 sm:w-14 sm:h-14 sm:mx-auto shrink-0 bg-blue-50/70 rounded-full flex items-center justify-center sm:mb-4">
                             <img src="<?= e($benefit['icon']) ?>" alt="<?= e($benefit['title']) ?>" class="h-full w-full object-contain">
                         </div>
@@ -636,7 +599,7 @@ $erpPortfolios = $mockErpPortfolios;
             </div>
         </div>
 
-        <div id="erp-portfolio-scroll-container" class="flex overflow-x-auto snap-x snap-mandatory scrollbar-none gap-8 pb-6 -mx-4 px-4 md:mx-0 md:px-0 md:grid md:grid-cols-2 xl:grid-cols-4 md:overflow-visible md:snap-none">
+        <div id="erp-portfolio-scroll-container" class="flex overflow-x-auto snap-x snap-mandatory scrollbar-none gap-8 pb-6 -mx-4 px-4 md:mx-0 md:px-0 md:grid md:grid-cols-4 lg:grid-cols-4 md:overflow-visible md:snap-none">
             <?php foreach ($erpPortfolios as $port): 
                 $imgSrc = resolve_article_image_url($port['image_path'] ?? '', asset_url('images/erp.png'));
                 $detailUrl = isset($port['slug']) ? route_url('/portfolio/' . $port['slug']) : route_url('/portfolio');

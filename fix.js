@@ -1,1 +1,0 @@
-﻿const fs = require('fs'); const path = 'frontend/app/views/components/footer.php'; let content = fs.readFileSync(path, 'utf8'); content = content.replace(/'\/\" \. '([a-zA-Z0-9_\-\/]+)' \. \"'/g, '\'/\''); fs.writeFileSync(path, content, 'utf8');

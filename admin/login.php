@@ -21,6 +21,14 @@ if (isset($_GET['reset_rate_limit'])) {
     exit;
 }
 
+// Auto-redirect if already logged in or remembered via cookie
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    if (!empty($_SESSION['admin_logged_in']) || check_remember_me_cookie()) {
+        header('Location: ' . ADMIN_URL . '/index.php');
+        exit;
+    }
+}
+
 $isLocked = is_rate_limited($rateLimitKey);
 $lockoutSeconds = get_rate_limit_lockout_remaining($rateLimitKey);
 $lockoutMinutes = (int) max(1, ceil($lockoutSeconds / 60));
@@ -51,6 +59,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['admin_full_name'] = 'Administrator';
             $_SESSION['admin_role'] = 'admin';
             $_SESSION['last_activity'] = time();
+
+            // Set or clear Remember Me cookie (7 days)
+            if (!empty($_POST['remember'])) {
+                set_remember_me_cookie(ADMIN_USERNAME);
+            } else {
+                clear_remember_me_cookie();
+            }
 
             header('Location: ' . ADMIN_URL . '/index.php');
             exit;
@@ -283,6 +298,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             background-color: #ffffff;
         }
 
+        .input-futuristic.is-invalid {
+            border-color: #ef4444 !important;
+            background-color: #fef2f2 !important;
+            box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.15) !important;
+        }
+
+        .inline-error-msg {
+            display: none;
+            align-items: center;
+            gap: 0.375rem;
+            font-size: 0.75rem;
+            color: #ef4444;
+            font-weight: 500;
+            margin-top: 0.25rem;
+            animation: fadeInError 0.2s ease-in-out;
+        }
+
+        @keyframes fadeInError {
+            from { opacity: 0; transform: translateY(-3px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         @media (prefers-reduced-motion: reduce) {
             .anim-float-1, .anim-float-2, .anim-float-3, .anim-float-4,
             .anim-glow, .anim-platform, .circuit-line {
@@ -494,7 +531,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <?php endif; ?>
 
                     <!-- Login Form -->
-                    <form id="login-form" method="post" autocomplete="off" style="display: flex; flex-direction: column; gap: 1rem; margin: 0;">
+                    <form id="login-form" method="post" autocomplete="off" novalidate style="display: flex; flex-direction: column; gap: 1rem; margin: 0;">
                         <?= csrf_field() ?>
 
                         <!-- Username / Email Field -->
@@ -515,6 +552,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     placeholder="Enter your email or username"
                                     class="input-futuristic"
                                     style="<?= $isLocked ? 'cursor: not-allowed; opacity: 0.5; background-color: #f1f5f9;' : '' ?>">
+                            </div>
+                            <div id="username-error" class="inline-error-msg">
+                                <svg style="width: 14px; height: 14px; flex-shrink: 0;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <span class="error-text">กรุณากรอก Email หรือ Username</span>
                             </div>
                         </div>
 
@@ -551,6 +594,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     </svg>
                                 </button>
                             </div>
+                            <div id="password-error" class="inline-error-msg">
+                                <svg style="width: 14px; height: 14px; flex-shrink: 0;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <span class="error-text">กรุณากรอกรหัสผ่าน</span>
+                            </div>
                         </div>
 
                         <!-- Remember me & Forgot password -->
@@ -586,13 +635,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </div>
                     </form>
 
-                    <!-- Footer Sign Up & Copyright Note -->
-                    <div style="text-align: center; display: flex; flex-direction: column; gap: 0.375rem; padding-top: 0.25rem;">
+                    <!-- Footer Support & Copyright Note -->
+                    <div style="text-align: center; display: flex; flex-direction: column; gap: 0.5rem; padding-top: 0.25rem;">
                         <p style="font-size: 0.75rem; color: #64748b; margin: 0;">
-                            Don't have an account? 
-                            <a href="mailto:admin@webpark.co.th" style="font-weight: 600; color: #0284c7; text-decoration: none;">
-                                Sign up
-                            </a>
+                            ต้องการสิทธิ์เข้าใช้งานระบบ? 
+                            <button type="button" id="open-support-modal" style="font-weight: 600; color: #0284c7; background: none; border: none; padding: 0; cursor: pointer; text-decoration: underline; font-family: inherit; font-size: inherit;">
+                                ติดต่อฝ่ายดูแลระบบ
+                            </button>
                         </p>
                         <p style="font-size: 11px; color: #94a3b8; margin: 0;">
                             Secure Authentication System • © <?= date('Y') ?> <?= e(SITE_NAME) ?>
@@ -602,6 +651,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
             </div>
 
+        </div>
+    </div>
+
+    <!-- Support Contact Modal -->
+    <div id="support-modal" style="display: none; position: fixed; inset: 0; z-index: 50; background: rgba(15, 23, 42, 0.5); backdrop-filter: blur(4px); align-items: center; justify-content: center; padding: 1rem;">
+        <div style="background: #ffffff; width: 100%; max-width: 400px; border-radius: 1.5rem; padding: 1.75rem; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); border: 1px solid #e2e8f0; position: relative;">
+            <button type="button" id="close-support-modal" style="position: absolute; top: 1.25rem; right: 1.25rem; background: #f1f5f9; border: none; border-radius: 9999px; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; color: #64748b; cursor: pointer;">
+                <svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+            <div style="text-align: center; margin-bottom: 1.25rem;">
+                <div style="width: 48px; height: 48px; border-radius: 1rem; background: #e0f2fe; color: #0284c7; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 0.75rem;">
+                    <svg style="width: 24px; height: 24px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+                </div>
+                <h3 style="font-size: 1.125rem; font-weight: 700; color: #0f172a; margin: 0 0 0.25rem 0;">ติดต่อฝ่ายดูแลระบบ</h3>
+                <p style="font-size: 0.8125rem; color: #64748b; margin: 0;">หากต้องการขอสิทธิ์เข้าใช้งาน กรุณาติดต่อทีมผู้ดูแลระบบ</p>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 0.75rem; background: #f8fafc; border-radius: 1rem; padding: 1rem; border: 1px solid #e2e8f0; font-size: 0.8125rem;">
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <span style="color: #64748b;">อีเมล:</span>
+                    <span style="font-weight: 600; color: #0f172a;">admin@webpark.co.th</span>
+                </div>
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <span style="color: #64748b;">เบอร์โทรศัพท์:</span>
+                    <span style="font-weight: 600; color: #0f172a;">095 539 2666</span>
+                </div>
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <span style="color: #64748b;">เวลาทำการ:</span>
+                    <span style="font-weight: 600; color: #0f172a;">จันทร์ – ศุกร์ (9:00 - 18:00)</span>
+                </div>
+            </div>
+            <div style="margin-top: 1.25rem;">
+                <button type="button" id="confirm-close-modal" style="width: 100%; border-radius: 0.75rem; background: #0f172a; color: #ffffff; font-weight: 600; padding: 0.625rem 1rem; font-size: 0.875rem; border: none; cursor: pointer;">
+                    ปิดหน้าต่าง
+                </button>
+            </div>
         </div>
     </div>
 
@@ -749,10 +833,78 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 });
             }
 
-            // Form Submit Handling (Loading State & Animations)
+            const usernameError = document.getElementById('username-error');
+            const passwordError = document.getElementById('password-error');
+
+            // Inline validation helpers
+            function validateInput(input, errorEl, msg) {
+                if (!input) return true;
+                if (input.disabled) return true;
+                const val = input.value.trim();
+                if (val === '') {
+                    input.classList.add('is-invalid');
+                    if (errorEl) {
+                        const span = errorEl.querySelector('.error-text');
+                        if (span) span.textContent = msg;
+                        errorEl.style.display = 'flex';
+                    }
+                    return false;
+                } else {
+                    input.classList.remove('is-invalid');
+                    if (errorEl) {
+                        errorEl.style.display = 'none';
+                    }
+                    return true;
+                }
+            }
+
+            function clearInputError(input, errorEl) {
+                if (input) input.classList.remove('is-invalid');
+                if (errorEl) errorEl.style.display = 'none';
+            }
+
+            if (usernameInput) {
+                usernameInput.addEventListener('input', () => {
+                    if (usernameInput.value.trim() !== '') {
+                        clearInputError(usernameInput, usernameError);
+                    }
+                });
+            }
+
+            if (passwordInput) {
+                passwordInput.addEventListener('input', () => {
+                    if (passwordInput.value.trim() !== '') {
+                        clearInputError(passwordInput, passwordError);
+                    }
+                });
+            }
+
+            // Form Submit Handling (Validation & Loading State & Animations)
             if (loginForm && submitBtn) {
                 loginForm.addEventListener('submit', (e) => {
-                    // Show Loading Spinner
+                    const isUserValid = validateInput(usernameInput, usernameError, 'กรุณากรอก Email หรือ Username');
+                    const isPassValid = validateInput(passwordInput, passwordError, 'กรุณากรอกรหัสผ่าน');
+
+                    if (!isUserValid || !isPassValid) {
+                        e.preventDefault();
+                        
+                        // Shake form for tactile feedback
+                        const formInner = document.querySelector('.form-inner');
+                        if (formInner) {
+                            formInner.classList.remove('shake-animation');
+                            void formInner.offsetWidth; // trigger reflow
+                            formInner.classList.add('shake-animation');
+                        }
+
+                        if (!isUserValid && usernameInput) {
+                            usernameInput.focus();
+                        } else if (!isPassValid && passwordInput) {
+                            passwordInput.focus();
+                        }
+                        return false;
+                    }
+
+                    // Show Loading Spinner when valid
                     if (btnText && btnSpinner) {
                         btnText.style.display = 'none';
                         btnSpinner.style.display = 'inline-block';
@@ -763,6 +915,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                     // Jump robot animation
                     robotBodies.forEach(b => b.classList.add('jump-animation'));
+                });
+            }
+
+            // Support Contact Modal Controls
+            const supportModal = document.getElementById('support-modal');
+            const openSupportBtn = document.getElementById('open-support-modal');
+            const closeSupportBtn = document.getElementById('close-support-modal');
+            const confirmCloseBtn = document.getElementById('confirm-close-modal');
+
+            function openModal() {
+                if (supportModal) {
+                    supportModal.style.display = 'flex';
+                }
+            }
+
+            function closeModal() {
+                if (supportModal) {
+                    supportModal.style.display = 'none';
+                }
+            }
+
+            if (openSupportBtn) openSupportBtn.addEventListener('click', openModal);
+            if (closeSupportBtn) closeSupportBtn.addEventListener('click', closeModal);
+            if (confirmCloseBtn) confirmCloseBtn.addEventListener('click', closeModal);
+
+            if (supportModal) {
+                supportModal.addEventListener('click', (e) => {
+                    if (e.target === supportModal) {
+                        closeModal();
+                    }
                 });
             }
         });
