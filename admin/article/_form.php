@@ -10,6 +10,16 @@ $status = isset($_POST['status']) && in_array($_POST['status'], ['published', 'd
     : ($data['status'] ?? 'draft');
 $categories = db()->query('SELECT id, name FROM categories ORDER BY name')->fetchAll();
 $authors = db()->query('SELECT id, display_name FROM authors ORDER BY display_name')->fetchAll();
+$currentArticleId = (int)($data['id'] ?? 0);
+$pinnedArticle = null;
+try {
+    $stmt = db()->prepare('SELECT id, meta_title FROM article WHERE is_pinned = 1 AND id != ? LIMIT 1');
+    $stmt->execute([$currentArticleId]);
+    $pinnedArticle = $stmt->fetch();
+} catch (Exception $e) {
+    $pinnedArticle = null;
+}
+$isPinned = !empty($data['is_pinned']);
 $sections = [];
 if (!empty($data['content'])) {
     $rawContent = (string)$data['content'];
@@ -157,7 +167,7 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
                                 <input type="file"
                                     id="article-image-input"
                                     name="image_file"
-                                    accept=".webp,.png,.jpg,.jpeg,image/webp,image/png,image/jpeg"
+                                    accept=".webp,image/webp"
                                     class="w-full text-sm text-slate-600 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 transition-all cursor-pointer">
                             </div>
                         </div>
@@ -171,12 +181,10 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
 
                             <div class="flex flex-col" style="gap: 0.75rem; font-size: 0.8125rem;">
                                 <div>
-                                    <span class="text-slate-700 font-semibold block" style="margin-bottom: 0.35rem;">นามสกุลไฟล์ที่รองรับ:</span>
-                                    <div class="flex flex-wrap" style="gap: 0.375rem;">
-                                        <span class="rounded-lg bg-blue-600 text-white font-bold px-2.5 py-1 text-xs">⭐ WEBP (แนะนำ คมชัด+ไฟล์เบา)</span>
-                                        <span class="rounded-lg bg-white border border-slate-200 text-slate-700 font-semibold px-2.5 py-1 text-xs">PNG</span>
-                                        <span class="rounded-lg bg-white border border-slate-200 text-slate-700 font-semibold px-2.5 py-1 text-xs">JPG / JPEG</span>
-                                    </div>
+                                    <span class="text-slate-700 font-semibold block" style="margin-bottom: 0.25rem;">นามสกุลไฟล์ที่รองรับ:</span>
+                                    <p class="text-xs text-slate-700">
+                                        รองรับเฉพาะไฟล์ <strong class="text-blue-700 font-bold">.webp</strong> เท่านั้น
+                                    </p>
                                 </div>
 
                                 <div class="flex items-center justify-between border-t border-blue-100" style="padding-top: 0.5rem;">
@@ -187,8 +195,8 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
                                 <div class="border-t border-blue-100" style="padding-top: 0.5rem;">
                                     <span class="text-slate-700 font-semibold block" style="margin-bottom: 0.25rem;">สัดส่วนและขนาดภาพที่เหมาะสม:</span>
                                     <ul class="text-slate-600 list-disc list-inside space-y-1 text-xs leading-relaxed">
-                                        <li><strong class="text-slate-800">แนะนำ: 1200 × 900 px</strong> (สัดส่วน 4:3 พอดีกับกรอบหน้าบทความ) หรือ <strong>1280 × 720 px</strong> (สัดส่วน 16:9)</li>
-                                        <li>ขนาดขั้นต่ำ: 800 × 600 px</li>
+                                        <li><strong class="text-slate-800">แนะนำ: 1280 × 720 px</strong> (สัดส่วน 16:9)</li>
+                                        <li>ขนาดขั้นต่ำ: 800 × 450 px</li>
                                     </ul>
                                 </div>
                             </div>
@@ -339,18 +347,27 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
                             <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 block">
                                 วันที่เผยแพร่บทความ <span class="text-red-500 ml-0.5">*</span>
                             </label>
-                            <input type="datetime-local" name="created_at"
-                                value="<?= isset($data['created_at']) ? date('Y-m-d\TH:i', strtotime($data['created_at'])) : date('Y-m-d\TH:i') ?>"
+                            <input type="date" name="created_at"
+                                value="<?= isset($data['created_at']) ? date('Y-m-d', strtotime($data['created_at'])) : date('Y-m-d') ?>"
                                 class="<?= $inputClass ?> bg-white h-[46px]" required>
                         </div>
                         <div class="w-full">
-                            <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 block">
-                                ลำดับความสำคัญ (Priority) <span class="text-slate-400 ml-0.5">(ไม่บังคับ)</span>
+                            <div class="flex items-center justify-between mb-2">
+                                <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider block">
+                                    การปักหมุดบทความ
+                                </label>
+                                <span class="text-[11px] text-amber-600 font-medium">จำกัด 1 บทความ</span>
+                            </div>
+                            <label class="flex items-center gap-3 px-4 rounded-xl border border-slate-300 bg-slate-50 hover:bg-slate-100/80 cursor-pointer h-[46px] transition select-none">
+                                <input type="hidden" name="is_pinned" value="0">
+                                <input type="checkbox" id="is_pinned_input" name="is_pinned" value="1"
+                                    <?= $isPinned ? 'checked' : '' ?>
+                                    class="w-4 h-4 text-blue-600 rounded border-slate-300 focus:ring-blue-500 cursor-pointer">
+                                <span class="text-xs font-semibold text-slate-700 flex items-center gap-1.5">
+                                    <span>📌</span>
+                                    <span>ปักหมุดแสดงเป็นบทความแรกสุด</span>
+                                </span>
                             </label>
-                            <input type="number" name="priority"
-                                value="<?= e(isset($data['priority']) && $data['priority'] !== 999 ? str_pad((string)$data['priority'], 2, '0', STR_PAD_LEFT) : '') ?>"
-                                placeholder="เช่น 01, 02 (เว้นว่างไว้หากไม่ระบุ)"
-                                class="<?= $inputClass ?> bg-white h-[46px]">
                         </div>
                     </div>
                     <div class="lang-group lang-th-group space-y-6">
@@ -818,11 +835,11 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
 
                 // 2. Validate Extension
                 const fileExt = file.name.split('.').pop().toLowerCase();
-                const isAllowedExt = ['webp', 'png', 'jpg', 'jpeg'].includes(fileExt);
+                const isAllowedExt = ['webp'].includes(fileExt);
 
                 if (!isAllowedExt) {
                     statusBox.className = 'mt-2 p-3 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs font-medium flex items-center gap-2';
-                    statusBox.innerHTML = `<span>❌ <strong>นามสกุลไฟล์ไม่ถูกต้อง</strong> รองรับเฉพาะ .webp, .png, .jpg, .jpeg</span>`;
+                    statusBox.innerHTML = `<span>❌ <strong>นามสกุลไฟล์ไม่ถูกต้อง</strong> รองรับเฉพาะไฟล์รูปภาพ .webp เท่านั้น</span>`;
                     statusBox.classList.remove('hidden');
                     fileInput.value = ''; // Reset input
                     return;
@@ -839,10 +856,8 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
                         const fileSizeKb = Math.round(file.size / 1024);
 
                         let ratioText = 'สัดส่วนอื่น ๆ';
-                        if (Math.abs(ratio - (4/3).toFixed(2)) < 0.05) {
-                            ratioText = 'สัดส่วน 4:3 (เหมาะสมที่สุดกับหน้าบทความ ⭐)';
-                        } else if (Math.abs(ratio - (16/9).toFixed(2)) < 0.05) {
-                            ratioText = 'สัดส่วน 16:9 แนวนอน (ดีเยี่ยม ⭐)';
+                        if (Math.abs(ratio - (16/9).toFixed(2)) < 0.05) {
+                            ratioText = 'สัดส่วน 16:9 แนวนอน (เหมาะสมที่สุด ⭐)';
                         } else if (width > height) {
                             ratioText = 'แนวนอน';
                         } else {
@@ -877,6 +892,23 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
                     img.src = e.target.result;
                 };
                 reader.readAsDataURL(file);
+            });
+        }
+
+        // Pin Article Single-Constraint Confirmation
+        const isPinnedInput = document.getElementById('is_pinned_input');
+        const currentlyPinnedTitle = <?= json_encode($pinnedArticle['meta_title'] ?? '', JSON_UNESCAPED_UNICODE) ?>;
+        const hasOtherPinned = <?= !empty($pinnedArticle) ? 'true' : 'false' ?>;
+
+        if (isPinnedInput) {
+            isPinnedInput.addEventListener('change', function() {
+                if (this.checked && hasOtherPinned) {
+                    const articleName = currentlyPinnedTitle ? `"${currentlyPinnedTitle}"` : 'บทความอื่น';
+                    const confirmReplace = confirm(`ขณะนี้มีบทความ ${articleName} กำลังถูกปักหมุดอยู่แล้ว\n\nคุณต้องการเปลี่ยนการปักหมุดมาเป็นบทความนี้แทนหรือไม่?`);
+                    if (!confirmReplace) {
+                        this.checked = false;
+                    }
+                }
             });
         }
     });

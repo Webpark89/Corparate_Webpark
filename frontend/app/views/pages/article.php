@@ -297,11 +297,17 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                     <!-- ส่วนเนื้อหา -->
                     <div class="flex flex-col p-4">
                         
-                        <!-- Badge หมวดหมู่ (พื้นหลังฟ้า ขอบมนแคปซูล) -->
-                        <div class="mb-3">
+                        <!-- Badge หมวดหมู่ (พื้นหลังฟ้า ขอบมนแคปซูล) + Pinned Badge -->
+                        <div class="mb-3 flex items-center justify-between gap-2">
                             <span class="inline-block rounded-full bg-blue-50 px-3 py-1.5 text-xs font-semibold tracking-wide text-blue-700">
                                 <?= e($categoryName !== '' ? $categoryName : (getCurrentLang() === 'th' ? 'หมวดหมู่' : 'Category')) ?>
                             </span>
+                            <?php if (!empty($article['is_pinned'])): ?>
+                                <span class="inline-flex items-center gap-1 rounded-full bg-amber-50 border border-amber-200/80 px-2.5 py-1 text-[11px] font-bold text-amber-700 shadow-sm">
+                                    <span>📌</span>
+                                    <span><?= getCurrentLang() === 'th' ? 'บทความแนะนำ' : 'Pinned' ?></span>
+                                </span>
+                            <?php endif; ?>
                         </div>
                         
                         <!-- หัวข้อบทความ -->

@@ -52,13 +52,22 @@ $data = [
     'meta_description_en' => trim($_POST['meta_description_en'] ?? ''),
     'source_url' => trim($_POST['source_url'] ?? ''),
     'category_id' => (int) ($_POST['category_id'] ?? 0),
-    'priority' => (isset($_POST['priority']) && trim($_POST['priority']) !== '') ? (int) trim($_POST['priority']) : 999,
+    'is_pinned' => (isset($_POST['is_pinned']) && (string)$_POST['is_pinned'] === '1') ? 1 : 0,
     'cover_image_alt' => trim($_POST['cover_image_alt'] ?? $metaTitle),
     'content' => $serializedContent,
     'author_id' => (int) ($_POST['author_id'] ?? 0) ?: null,
     'status' => in_array($_POST['status'] ?? 'draft', ['published', 'draft', 'hidden'], true) ? ($_POST['status'] ?? 'draft') : 'draft',
     'created_at' => (isset($_POST['created_at']) && trim($_POST['created_at']) !== '') ? date('Y-m-d H:i:s', strtotime($_POST['created_at'])) : date('Y-m-d H:i:s'),
 ];
+
+// Ensure only 1 article is pinned across the system
+if ($data['is_pinned'] === 1) {
+    if ($id > 0) {
+        db()->prepare('UPDATE article SET is_pinned = 0 WHERE id != ?')->execute([$id]);
+    } else {
+        db()->exec('UPDATE article SET is_pinned = 0');
+    }
+}
 
 $imagePath = trim($_POST['cover_image'] ?? '');
 try {
@@ -68,7 +77,7 @@ try {
             $sizeKb = round($_FILES['image_file']['size'] / 1024, 1);
             throw new RuntimeException("ขนาดไฟล์รูปภาพเกินกำหนด ({$sizeKb} KB) กรุณาใช้รูปภาพขนาดไม่เกิน 1 MB (แนะนำ 150 – 350 KB)");
         }
-        $uploadedImage = handle_upload('image_file', ['webp', 'png', 'jpg', 'jpeg']);
+        $uploadedImage = handle_upload('image_file', ['webp']);
         if ($uploadedImage) {
             $data['cover_image'] = $uploadedImage;
         }

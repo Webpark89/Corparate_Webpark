@@ -8,12 +8,13 @@ require_once __DIR__ . '/../includes/header.php';
 $search = trim($_GET['search'] ?? '');
 $categoryFilter = $_GET['category_id'] ?? '';
 $statusFilter = $_GET['status'] ?? '';
+$dateFilter = trim($_GET['date'] ?? '');
 $currentPage = max(1, (int)($_GET['p'] ?? 1));
 $perPage = 10;
 
-// Auto-migrate priority column
+// Auto-migrate is_pinned column
 try {
-    db()->exec('ALTER TABLE article ADD COLUMN priority INT DEFAULT 999 AFTER category_id');
+    db()->exec('ALTER TABLE article ADD COLUMN is_pinned TINYINT(1) DEFAULT 0 AFTER category_id');
 } catch (Exception $e) {
     // Column already exists or other error
 }
@@ -33,6 +34,10 @@ if (in_array($statusFilter, ['draft', 'published', 'hidden'], true)) {
     $whereSql .= ' AND a.status = ?';
     $params[] = $statusFilter;
 }
+if ($dateFilter !== '') {
+    $whereSql .= ' AND DATE(a.created_at) = ?';
+    $params[] = $dateFilter;
+}
 
 // Total count
 $countStmt = db()->prepare('SELECT COUNT(*) FROM article a LEFT JOIN categories c ON a.category_id = c.id LEFT JOIN authors aut ON a.author_id = aut.id WHERE 1=1' . $whereSql);
@@ -46,7 +51,7 @@ $sql = 'SELECT a.*, c.name AS category_name, aut.display_name AS author_name
         LEFT JOIN categories c ON a.category_id = c.id
         LEFT JOIN authors aut ON a.author_id = aut.id
         WHERE 1=1' . $whereSql . '
-        ORDER BY a.priority ASC, a.created_at DESC
+        ORDER BY a.is_pinned DESC, a.id DESC
         LIMIT ' . (int)$pagination['perPage'] . ' OFFSET ' . (int)$pagination['offset'];
 $statement = db()->prepare($sql);
 $statement->execute($params);
@@ -83,14 +88,21 @@ if (count($categories) !== 4 || $categories[0]['name'] !== 'ERP / ERM') {
     <section class="mb-5 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
         <div class="p-4">
             <form method="get" class="grid grid-cols-1 gap-3 md:grid-cols-12 items-center">
-                <div class="md:col-span-4">
-                    <div class="flex overflow-hidden rounded-xl border border-slate-200 bg-slate-50/50 focus-within:bg-white focus-within:border-blue-500 focus-within:ring-4 focus-within:ring-blue-500/5 transition-all">
-                        <span class="inline-flex items-center border-r border-slate-200 px-3 text-xs text-slate-500 select-none">ค้นหา</span>
+                <div class="md:col-span-3">
+                    <div class="flex items-center overflow-hidden rounded-xl border border-slate-200 bg-slate-50/50 focus-within:bg-white focus-within:border-blue-500 focus-within:ring-4 focus-within:ring-blue-500/5 transition-all">
+                        <span class="inline-flex items-center border-r border-slate-200 px-3 text-xs text-slate-500 select-none whitespace-nowrap shrink-0">ค้นหา</span>
                         <input type="text" name="search" placeholder="ค้นหาหัวข้อบทความ..." value="<?= e($search) ?>"
-                            class="w-full border-0 bg-transparent px-3 py-2 text-xs text-slate-700 placeholder:text-slate-400 focus:outline-none focus:ring-0">
+                            class="w-full border-0 bg-transparent px-3 py-2 text-xs text-slate-700 placeholder:text-slate-400 focus:outline-none focus:ring-0 min-w-0">
                     </div>
                 </div>
                 <div class="md:col-span-3">
+                    <div class="flex items-center overflow-hidden rounded-xl border border-slate-200 bg-slate-50/50 focus-within:bg-white focus-within:border-blue-500 focus-within:ring-4 focus-within:ring-blue-500/5 transition-all">
+                        <span class="inline-flex items-center border-r border-slate-200 px-3 text-xs text-slate-500 select-none whitespace-nowrap shrink-0">วันที่</span>
+                        <input type="date" name="date" value="<?= e($dateFilter) ?>" onchange="this.form.submit()"
+                            class="w-full border-0 bg-transparent px-2.5 py-2 text-xs text-slate-700 placeholder:text-slate-400 focus:outline-none focus:ring-0 min-w-0 cursor-pointer">
+                    </div>
+                </div>
+                <div class="md:col-span-2">
                     <select name="category_id" onchange="this.form.submit()"
                         class="w-full rounded-xl border border-slate-200 bg-slate-50/50 px-3 py-2 text-xs text-slate-700 focus:bg-white focus:border-blue-500 focus:outline-none transition-all">
                         <option value="">ทุกหมวดหมู่</option>
@@ -99,7 +111,7 @@ if (count($categories) !== 4 || $categories[0]['name'] !== 'ERP / ERM') {
                         <?php endforeach; ?>
                     </select>
                 </div>
-                <div class="md:col-span-3">
+                <div class="md:col-span-2">
                     <select name="status" onchange="this.form.submit()"
                         class="w-full rounded-xl border border-slate-200 bg-slate-50/50 px-3 py-2 text-xs text-slate-700 focus:bg-white focus:border-blue-500 focus:outline-none transition-all">
                         <option value="">ทุกสถานะ</option>
@@ -130,8 +142,11 @@ if (count($categories) !== 4 || $categories[0]['name'] !== 'ERP / ERM') {
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-100 bg-white">
-                    <?php foreach ($articles as $row): ?>
-                        <tr class="hover:bg-slate-50/50 transition-colors cursor-pointer js-clickable-row"
+                    <?php foreach ($articles as $row): 
+                        $isRowPinned = !empty($row['is_pinned']);
+                    ?>
+                        <tr class="hover:bg-slate-50/70 transition-colors cursor-pointer js-clickable-row <?= $isRowPinned ? 'bg-blue-50/50' : '' ?>"
+                            style="<?= $isRowPinned ? 'background-color: #f0f7ff;' : '' ?>"
                             data-href="edit.php?id=<?= (int) $row['id'] ?>">
                             <td class="px-4 py-3">
                                 <img src="<?= e(resolve_admin_image_url($row['cover_image']) ?: 'https://picsum.photos/seed/' . $row['id'] . '/120/80') ?>"
@@ -139,8 +154,11 @@ if (count($categories) !== 4 || $categories[0]['name'] !== 'ERP / ERM') {
                                     alt="<?= e($row['cover_image_alt']) ?>">
                             </td>
                             <td class="px-3 py-3">
-                                <div class="max-w-[280px] truncate font-semibold text-slate-900">
-                                    <?= e($row['meta_title'] ?: 'ไม่มีหัวข้อ') ?>
+                                <div class="max-w-[280px] truncate font-semibold text-slate-900 flex items-center gap-1.5">
+                                    <?php if ($isRowPinned): ?>
+                                        <span class="text-sm shrink-0 select-none" title="ปักหมุดแสดงเป็นบทความแรก">📌</span>
+                                    <?php endif; ?>
+                                    <span class="truncate"><?= e($row['meta_title'] ?: 'ไม่มีหัวข้อ') ?></span>
                                 </div>
                                 <div class="mt-1 max-w-[280px] truncate text-[11px] text-slate-400 font-mono">
                                     /article/<?= e($row['slug']) ?>
@@ -164,11 +182,6 @@ if (count($categories) !== 4 || $categories[0]['name'] !== 'ERP / ERM') {
                                 <?php else: ?>
                                     <span class="inline-flex rounded-lg border border-amber-200 bg-amber-50 px-2.5 py-0.5 text-[11px] font-semibold text-amber-700">
                                         ฉบับร่าง
-                                    </span>
-                                <?php endif; ?>
-                                <?php if (isset($row['priority']) && $row['priority'] !== 999): ?>
-                                    <span class="inline-flex rounded-lg border border-purple-200 bg-purple-50 px-2.5 py-0.5 text-[11px] font-semibold text-purple-700 ml-1" title="Priority: <?= $row['priority'] ?>">
-                                        ★ <?= str_pad((string)$row['priority'], 2, '0', STR_PAD_LEFT) ?>
                                     </span>
                                 <?php endif; ?>
                             </td>
@@ -242,11 +255,12 @@ if (count($categories) !== 4 || $categories[0]['name'] !== 'ERP / ERM') {
                 $pageRange = [1, '...', $currPage - 1, $currPage, $currPage + 1, '...', $totalPages];
             }
 
-            $buildPageUrl = function($pageNum) use ($categoryFilter, $statusFilter, $search) {
+            $buildPageUrl = function($pageNum) use ($categoryFilter, $statusFilter, $search, $dateFilter) {
                 $q = ['p' => $pageNum];
                 if ($categoryFilter !== '') $q['category_id'] = $categoryFilter;
                 if ($statusFilter !== '') $q['status'] = $statusFilter;
                 if ($search !== '') $q['search'] = $search;
+                if ($dateFilter !== '') $q['date'] = $dateFilter;
                 return '?' . http_build_query($q);
             };
         ?>

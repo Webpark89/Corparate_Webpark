@@ -45,6 +45,7 @@ class HomeController
 
                 $latestArticles[] = [
                     'id' => (int) ($row['id'] ?? 0),
+                    'is_pinned' => !empty($row['is_pinned']),
                     'slug' => (string) ($row['slug'] ?? ''),
                     'slug_en' => (string) ($row['slug_en'] ?? ''),
                     'title' => (string) ($row['title'] ?? ''),
@@ -517,6 +518,7 @@ class HomeController
 
                 return [
                     'id' => (int) ($row['id'] ?? 0),
+                    'is_pinned' => !empty($row['is_pinned']),
                     'slug' => (string) ($row['slug'] ?? ''),
                     'slug_en' => (string) ($row['slug_en'] ?? ''),
                     'title' => $metaTitle,
