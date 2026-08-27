@@ -12,7 +12,7 @@ class Article
     /** Shared SELECT columns for list/detail queries. */
     private const SELECT_COLUMNS = '
         a.id,
-        a.priority,
+        a.is_pinned,
         a.slug,
         a.slug_en,
         a.meta_title,
@@ -61,7 +61,7 @@ class Article
     {
         $stmt = $this->pdo->query(
             'SELECT ' . self::SELECT_COLUMNS . self::FROM_JOIN .
-            " WHERE a.status = 'published' AND a.deleted_at IS NULL ORDER BY a.priority ASC, a.created_at DESC"
+            " WHERE a.status = 'published' AND a.deleted_at IS NULL ORDER BY a.is_pinned DESC, a.id DESC"
         );
 
         return $stmt->fetchAll();
@@ -102,7 +102,7 @@ class Article
         $stmt = $this->pdo->prepare(
             'SELECT ' . self::SELECT_COLUMNS . self::FROM_JOIN
             . ' WHERE a.category_id = ? AND a.id <> ? AND a.status = ? AND a.deleted_at IS NULL'
-            . ' ORDER BY a.priority ASC, a.created_at DESC LIMIT ?'
+            . ' ORDER BY a.is_pinned DESC, a.id DESC LIMIT ?'
         );
         $stmt->execute([$categoryId, $excludeId, 'published', $limit]);
 

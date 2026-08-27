@@ -31,29 +31,28 @@ if (!empty($partners) && is_array($partners)) {
         ];
     }
 }
-?>
-<section class="relative font-sans bg-[#f7faff] overflow-hidden mt-0 mx-4 mb-4 sm:mt-0 sm:mx-6 sm:mb-6 rounded-t-none rounded-b-[2rem] lg:m-0 lg:rounded-none">
+?><section class="relative font-sans bg-[#f7faff] overflow-hidden mt-0 mx-4 mb-4 sm:mt-0 sm:mx-6 sm:mb-6 rounded-t-none rounded-b-[2rem] lg:m-0 lg:rounded-none">
     <div class="absolute inset-0 z-0">
-        <img src="<?= e(asset_url('images/bg-5.png')) ?>" alt="bg" class="hero-parallax-img w-full h-full object-cover object-center opacity-70 mix-blend-screen">
+        <img src="<?= e(asset_url('images/bg-5.jpg')) ?>" alt="bg" class="hero-parallax-img w-full h-full object-cover object-center opacity-70 mix-blend-screen" fetchpriority="low" decoding="async">
         <div class="absolute inset-0 bg-gradient-to-r from-white via-white/80 to-white/5"></div>
         <div class="absolute inset-x-0 bottom-0 h-[30%] bg-gradient-to-t from-white to-transparent z-10"></div>
     </div>
     <style>
         @keyframes fadeSlideUp {
-            0% { opacity: 0; transform: translateY(40px); }
+            0% { opacity: 0; transform: translateY(30px); }
             100% { opacity: 1; transform: translateY(0); }
         }
-        @keyframes fadeSlideLeft {
-            0% { opacity: 0; transform: translateX(50px); }
-            100% { opacity: 1; transform: translateX(0); }
+        @keyframes smoothSlideIn {
+            0% { transform: translateX(20px); }
+            100% { transform: translateX(0); }
         }
-        .animate-entrance-up { opacity: 0; animation: fadeSlideUp 0.8s cubic-bezier(0.16,1,0.3,1) forwards; }
-        .animate-entrance-left { opacity: 0; animation: fadeSlideLeft 1s cubic-bezier(0.16,1,0.3,1) forwards; }
-        .delay-100 { animation-delay: 100ms; }
-        .delay-200 { animation-delay: 200ms; }
-        .delay-300 { animation-delay: 300ms; }
-        .delay-400 { animation-delay: 400ms; }
-        .delay-500 { animation-delay: 500ms; }
+        .animate-entrance-up { opacity: 0; animation: fadeSlideUp 0.6s cubic-bezier(0.16,1,0.3,1) forwards; }
+        .animate-hero-presenter { animation: smoothSlideIn 0.7s cubic-bezier(0.16,1,0.3,1) forwards; }
+        .delay-100 { animation-delay: 50ms; }
+        .delay-200 { animation-delay: 100ms; }
+        .delay-300 { animation-delay: 150ms; }
+        .delay-400 { animation-delay: 200ms; }
+        .delay-500 { animation-delay: 250ms; }
         .mobile-hero-woman { width: 62%; bottom: 0px; right: -2%; opacity: 1; z-index: 5; }
         @media (min-width: 768px) { .mobile-hero-woman { width: auto; bottom: 0; right: 0; opacity: 1; } }
         .hero-parallax-img {
@@ -93,7 +92,7 @@ if (!empty($partners) && is_array($partners)) {
                         <?= getCurrentLang() === 'th' ? 'ผู้ให้บริการพัฒนา Digital Platform<br>และระบบ AI ที่ช่วยให้ธุรกิจไทย<br>ก้าวไปข้างหน้า ด้วยเทคโนโลยี<br>ที่ใช้งานได้จริง' : 'Digital Platform and AI system<br>development provider helping Thai businesses<br>move forward with practical technology.' ?>
                     </span>
                     <span class="hidden md:inline">
-                        <?= getCurrentLang() === 'th' ? 'ผู้ให้บริการพัฒนา Digital Platform<br class="hidden ipad-air-br"> และระบบ AI <br class="ipad-air-hidden">ที่ช่วยให้ธุรกิจไทยก้าวไปข้างหน้า<br class="hidden ipad-pro-strict-inline ipad-air-br ipad-mini-br">ด้วยเทคโนโลยีที่ใช้งานได้จริง' : 'Digital Platform and AI system<br class="hidden ipad-pro-strict-inline"> development provider helping<br class="hidden ipad-pro-strict-inline"> Thai businesses move forward<br class="hidden ipad-pro-strict-inline"> with practical technology.' ?>
+                        <?= getCurrentLang() === 'th' ? 'ผู้ให้บริการพัฒนา Digital Platform<br class="hidden ipad-air-br"> และระบบ AI <br class="ipad-air-hidden">ที่ช่วยให้ธุรกิจไทยก้าวไปข้างหน้า<br class="hidden ipad-pro-strict-inline ipad-air-br ipad-mini-br">ด้วยเทคโนโลยีที่ใช้งานได้จริง' : 'Digital Platform and AI system<br class="hidden ipad-pro-strict-inline"> development provider <br class="ipad-pro-strict-hidden ipad-mini-hidden">helping Thai businesses<br class="hidden ipad-mini-br"> move forward <br class="hidden ipad-air-br">with<br class="hidden ipad-pro-strict-inline"> practical technology.' ?>
                     </span>
                 </p>
                 <div class="animate-entrance-up delay-400 flex flex-col items-start self-start md:self-auto md:flex-row md:justify-start gap-3 md:gap-4 ipad-air-hero-btn-container ipad-mini-hero-btn-container">
@@ -159,13 +158,6 @@ if (!empty($partners) && is_array($partners)) {
                 .ipad-air-card-link { font-size: 1rem !important; line-height: 1.5 !important; }
                 .ipad-air-card-badge { font-size: 0.875rem !important; padding: 0.375rem 0.75rem !important; }
 
-                /* About Us & Services Cards Font Sizes for iPad Air */
-                .ipad-air-font-about-tag { font-size: 1rem !important; }
-                .ipad-air-font-about-h2 { font-size: 1.625rem !important; line-height: 2rem !important; }
-                .ipad-air-font-title { font-size: 1.35rem !important; line-height: 1.75rem !important; }
-                .ipad-air-font-desc { font-size: 1.125rem !important; line-height: 1.65rem !important; }
-                .ipad-air-font-link { font-size: 1rem !important; line-height: 1.5rem !important; }
-
                 /* Our Approach Section for iPad Air */
                 .ipad-air-about-process-header {
                     flex-direction: row !important;
@@ -216,9 +208,9 @@ if (!empty($partners) && is_array($partners)) {
                 .ipad-air-card-badge { font-size: 0.875rem !important; padding: 0.375rem 0.75rem !important; }
             }
         </style>
-        <div class="animate-entrance-left delay-500 absolute top-auto bottom-0 lg:top-28 lg:bottom-auto right-0 md:right-4 lg:right-8 z-0 pointer-events-none max-w-full transform md:-translate-y-2 flex justify-end mobile-hero-woman desktop-hero-woman">
+        <div class="animate-hero-presenter absolute top-auto bottom-0 lg:top-28 lg:bottom-auto right-0 md:right-4 lg:right-8 z-0 pointer-events-none max-w-full transform md:-translate-y-2 flex justify-end mobile-hero-woman desktop-hero-woman">
             <picture class="w-full md:w-auto flex justify-end">
-                <img src="<?= e($heroImage) ?>" alt="WEBPARK Presenter" class="w-full md:w-auto object-contain object-right-bottom h-auto md:h-[400px] lg:h-[600px] opacity-100">
+                <img src="<?= e($heroImage) ?>" alt="WEBPARK Presenter" class="w-full md:w-auto object-contain object-right-bottom h-auto md:h-[400px] lg:h-[600px] opacity-100" fetchpriority="high" loading="eager" decoding="async" width="600" height="600">
             </picture>
         </div>
     </div>
@@ -252,13 +244,6 @@ if (!empty($partners) && is_array($partners)) {
     .ipad-pro-strict-hidden { display: none !important; }
     .ipad-pro-strict-inline { display: inline !important; }
     .ipad-pro-hero-desc { font-size: 1.375rem !important; line-height: 2.25rem !important; width: 520px !important; max-width: 520px !important; padding-right: 0; }
-    
-    .desktop-hero-woman {
-        right: -80px !important;
-    }
-    .desktop-hero-woman img {
-        height: 590px !important;
-    }
     
     /* iPad Pro (1024px) Font Size Overrides */
     .ipad-pro-font-about-tag { font-size: 1.125rem !important; line-height: 1.75rem !important; }
@@ -294,13 +279,13 @@ if (!empty($partners) && is_array($partners)) {
                         <div class="flex flex-col justify-between h-full lg:h-auto lg:contents ipad-pro-display-flex">
                             <div>
                                 <div class="text-left w-full mb-3">
-                                    <span class="text-primary font-bold text-lg md:text-sm tracking-wide inline-block mx-0 ipad-pro-font-about-tag ipad-air-font-about-tag"><?= e(t('common.about_us_heading')) ?></span>
+                                    <span class="text-primary font-bold text-lg md:text-sm tracking-wide inline-block mx-0 ipad-pro-font-about-tag"><?= e(t('common.about_us_heading')) ?></span>
                                     <div class="w-8 h-[3px] bg-primary mt-1"></div>
                                 </div>
-                                <h2 class="text-[#043B94] text-xl xl:text-2xl font-bold leading-tight mb-3 transition-colors duration-300 group-hover:text-blue-700 ipad-pro-font-about-h2 ipad-air-font-about-h2">
+                                <h2 class="text-[#043B94] text-xl xl:text-2xl font-bold leading-tight mb-3 transition-colors duration-300 group-hover:text-blue-700 ipad-pro-font-about-h2">
                                     <?= e(t('common.we_are_partner')) ?><br class="hidden lg:inline"><?= e(t('common.in_technology')) ?>
                                 </h2>
-                                <p class="text-gray-500 text-[0.8rem] md:text-sm leading-relaxed mb-4 ipad-pro-font-desc ipad-air-font-desc">
+                                <p class="text-gray-500 text-[0.8rem] md:text-sm leading-relaxed mb-4 ipad-pro-font-desc ipad-air-about-desc">
                                     <?= e(t('common.partner_description')) ?>
                                 </p>
                             </div>
@@ -333,31 +318,30 @@ if (!empty($partners) && is_array($partners)) {
                         $ipadProBorderClass = 'ipad-pro-border-none';
                     }
                 ?>
-                    <div class="gsap-home-service-card relative group cursor-pointer flex flex-col justify-between p-6 lg:p-8 <?= $borderClass ?> <?= $ipadProBorderClass ?> border-gray-100 bg-white transition-all duration-300 ease-out hover:shadow-[0_0_30px_rgba(0,0,0,0.08)] hover:-translate-y-1 hover:z-10 hover:rounded-xl opacity-0 translate-y-10 ipad-pro-p-6">
+                    <a href="<?= e($card['href']) ?>" class="gsap-home-service-card relative group flex flex-col justify-between p-6 lg:p-8 <?= $borderClass ?> <?= $ipadProBorderClass ?> border-gray-100 bg-white transition-all duration-300 ease-out hover:shadow-[0_0_30px_rgba(0,0,0,0.08)] hover:-translate-y-1 hover:z-10 hover:rounded-xl opacity-0 translate-y-10 ipad-pro-p-6">
                     <div>
                         <div class="h-14 w-14 mx-auto mb-5 flex items-center justify-center transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:-translate-y-2 group-hover:scale-110">
                             <img src="<?= e(asset_url('images/' . $card['icon'])) ?>" alt="<?= e($card['title']) ?>" class="h-full w-full object-contain">
                         </div>
-                        <h2 class="text-[#043B94] font-bold text-base md:text-lg xl:text-xl text-center mb-3 whitespace-normal lg:whitespace-nowrap tracking-tight transition-colors duration-300 group-hover:text-blue-600 ipad-pro-font-title ipad-air-font-title">
+                        <h2 class="text-[#043B94] font-bold text-base md:text-lg xl:text-xl text-center mb-3 whitespace-normal lg:whitespace-nowrap tracking-tight transition-colors duration-300 group-hover:text-blue-600 ipad-pro-font-title">
                             <?= e($card['title']) ?>
                         </h2>
-                        <p class="text-gray-500 text-sm md:text-base leading-relaxed mb-6 text-left transition-colors duration-300 group-hover:text-gray-600 ipad-pro-font-desc ipad-air-font-desc">
+                        <p class="text-gray-500 text-sm md:text-base leading-relaxed mb-6 text-left transition-colors duration-300 group-hover:text-gray-600 ipad-pro-font-desc">
                             <?= e($card['desc']) ?>
                         </p>
                     </div>
-                    <a href="<?= e($card['href']) ?>" class="inline-flex items-center text-primary text-sm font-medium transition-colors duration-300 group-hover:text-blue-700 w-max mt-auto ipad-pro-font-link ipad-air-font-link">
+                    <div class="inline-flex items-center text-primary text-sm font-medium transition-colors duration-300 group-hover:text-blue-700 w-max mt-auto ipad-pro-font-link">
                         <?= e(t('common.cta_read_more')) ?>
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1.5 transition-transform duration-300 ease-out group-hover:translate-x-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
                         </svg>
-                        </a>
                     </div>
+                    </a>
                 <?php endforeach; ?>
             </div>
         </div>
     </div>
 </section>
-<?php if (!empty($displayPortfolios)): ?>
 <section class="bg-white pt-16 pb-6 lg:pt-20 lg:pb-8 overflow-hidden">
     <div class="mx-auto w-full max-w-[1720px] px-4 sm:px-6 lg:px-10">
         <div class="mb-10">
@@ -472,7 +456,6 @@ if (!empty($partners) && is_array($partners)) {
         <div id="portfolio-pagination-container" class="flex lg:hidden justify-center items-center gap-2 mt-8"></div>
     </div>
 </section>
-<?php endif; ?>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     const prevBtn = document.getElementById('portfolio-prev');
@@ -707,7 +690,6 @@ $totalReviews = count($reviews);
             </div>
         </div>
         <?php endif; ?>
-        <?php if (!empty($partnerLogos)): ?>
         <div class="mx-auto w-full max-w-7xl py-8 mt-10">
             <h2 class="text-center text-primary font-bold text-2xl md:text-3xl tracking-normal uppercase mb-3 block">
                 <?= e(getCurrentLang() === 'th' ? 'องค์กรชั้นนำที่ไว้วางใจ WEBPARK' : 'Leading Organizations that Trust WEBPARK') ?>
@@ -777,7 +759,6 @@ $totalReviews = count($reviews);
                 <?= e(getCurrentLang() === 'th' ? 'ทั้งหมดมาจากธุรกิจ การเงิน อสังหาริมทรัพย์ โรงงาน วิศวกรรม สื่อ และอีกมากมาย' : 'Including finance, real estate, manufacturing, engineering, media, and more.') ?>
             </p>
         </div>
-        <?php endif; ?>
     </div>
 </section>
 <style>
@@ -789,7 +770,6 @@ $totalReviews = count($reviews);
     scrollbar-width: none;
 }
 </style>
-<?php if (count($displayArticles) > 0): ?>
 <section class="bg-slate-50 pt-10 pb-20 lg:py-20 border-t border-slate-100">
     <div class="mx-auto w-full max-w-[1720px] px-4 sm:px-6 lg:px-10">
         <div class="hidden lg:flex flex-row items-end justify-between mb-6 ipad-pro-hidden">
@@ -823,6 +803,7 @@ $totalReviews = count($reviews);
                 <?= getCurrentLang() === 'th' ? 'รวมบทความสาระน่ารู้ ที่จะช่วยต่อยอดแบรนด์<br>และพาธุรกิจสู่ดิจิทัลที่ช่วยให้ธุรกิจเติบโตได้อย่างยั่งยืน' : 'A collection of informative articles to help elevate your brand <br class="mobile-hidden">and guide your business into the digital era for sustainable growth.' ?>
             </p>
         </div>
+        <?php if (count($displayArticles) > 0): ?>
         <div id="knowledge-slider" class="flex lg:grid overflow-x-auto lg:overflow-visible snap-x snap-mandatory flex-nowrap lg:flex-wrap lg:grid-cols-3 gap-8 pt-2 pb-6 hide-scrollbar ipad-pro-articles-slider">
             <?php foreach ($displayArticles as $art): ?>
                 <?php
@@ -839,9 +820,10 @@ $totalReviews = count($reviews);
                 $artSummary  = mb_strimwidth(strip_tags($summaryContent), 0, 110, '...');
                 $artCat      = (string)($art['category'] ?? 'Knowledge');
                 $artImage    = resolve_article_image_url($art['image_path'] ?? '', asset_url('images/erp.png'));
+                $artSlug     = ($itemLang === 'en' && !empty($art['slug_en'])) ? $art['slug_en'] : (!empty($art['slug']) ? $art['slug'] : (string)$artId);
                 ?>
                 <article class="gsap-home-article-card flex flex-col overflow-hidden rounded-2xl bg-white shadow-sm border border-slate-100 transition-all duration-300 hover:-translate-y-1 hover:shadow-md group w-full lg:w-auto shrink-0 lg:shrink snap-center lg:snap-align-none opacity-0 translate-y-10 ipad-pro-articles-card">
-                    <a href="<?= e($artId > 0 ? route_url('/article', ['id' => $artId]) : route_url('/article')) ?>" class="flex flex-col h-full">
+                    <a href="<?= e($artId > 0 ? route_url('/article/' . $artSlug) : route_url('/article')) ?>" class="flex flex-col h-full">
                         <div class="relative aspect-[16/9] w-full bg-slate-900 overflow-hidden shrink-0">
                             <img src="<?= e($artImage) ?>" alt="<?= e($artTitle) ?>" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105">
                             <span class="absolute bottom-3 left-3 rounded-md bg-primary/95 backdrop-blur-sm px-2.5 py-1 text-[10px] font-bold tracking-wider text-white uppercase shadow-sm ipad-pro-card-badge">
@@ -867,9 +849,14 @@ $totalReviews = count($reviews);
             <?php endforeach; ?>
         </div>
         <div id="knowledge-dots" class="flex lg:hidden justify-center items-center gap-2 mt-4 flex-wrap ipad-pro-flex-visible"></div>
+        <?php else: ?>
+        <div class="flex flex-col items-center justify-center py-12 px-4 bg-white rounded-2xl border border-slate-100 shadow-sm w-full">
+            <img src="<?= e(asset_url('images/Empty.gif')) ?>" alt="No articles found" class="w-64 h-auto max-w-full mb-4 object-contain">
+            <p class="text-slate-500 font-medium text-center"><?= getCurrentLang() === 'th' ? 'ไม่มีข้อมูลบทความในขณะนี้' : 'No articles available at the moment' ?></p>
+        </div>
+        <?php endif; ?>
     </div>
 </section>
-<?php endif; ?>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     const slider = document.getElementById('knowledge-slider');

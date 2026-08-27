@@ -40,32 +40,21 @@ class HomeController
             // Extract 3 latest articles
             $latestRows = array_slice($rows, 0, 3);
             foreach ($latestRows as $row) {
-                $metaTitle = (string) ($row['meta_title'] ?? $row['title'] ?? '');
-                $metaDesc = (string) ($row['description'] ?? $row['meta_description'] ?? '');
-
-                if ($lang === 'en') {
-                    $metaTitle = (string) ($row['meta_title_en'] ?? '') ?: $metaTitle;
-                    $metaDesc = (string) ($row['meta_description_en'] ?? '') ?: $metaDesc;
-                }
-
                 $content = trim((string) ($row['content'] ?? ''));
-                if (trim($metaDesc) !== '') {
-                    $summary = mb_strimwidth(strip_tags($metaDesc), 0, 140, '...');
-                } else {
-                    $summary = $content === '' ? '' : (mb_strimwidth(get_article_summary_text($content, $lang), 0, 140, '...'));
-                }
+                $summary = $content === '' ? '' : (mb_strimwidth(get_article_summary_text($content, $lang), 0, 140, '...'));
 
                 $latestArticles[] = [
                     'id' => (int) ($row['id'] ?? 0),
-                    'title' => $metaTitle,
+                    'is_pinned' => !empty($row['is_pinned']),
+                    'slug' => (string) ($row['slug'] ?? ''),
+                    'slug_en' => (string) ($row['slug_en'] ?? ''),
+                    'title' => (string) ($row['title'] ?? ''),
                     'summary' => $summary,
                     'description' => $summary,
                     'category' => (string) ($row['category'] ?? 'Knowledge'),
                     'date' => (string) ($row['created_at'] ?? ''),
                     'image_path' => (string) ($row['image_path'] ?? $row['cover_image'] ?? ''),
                     'image' => (string) ($row['image_path'] ?? $row['cover_image'] ?? ''),
-                    'meta_title_en' => (string) ($row['meta_title_en'] ?? ''),
-                    'meta_description_en' => (string) ($row['meta_description_en'] ?? '')
                 ];
             }
 
@@ -80,6 +69,8 @@ class HomeController
 
                 $insights[$cat][] = [
                     'id' => (int) ($row['id'] ?? 0),
+                    'slug' => (string) ($row['slug'] ?? ''),
+                    'slug_en' => (string) ($row['slug_en'] ?? ''),
                     'tag' => $cat,
                     'title' => (string) ($row['title'] ?? ''),
                     'description' => $summary,
@@ -321,16 +312,16 @@ class HomeController
         ));
     }
 
-    public function article(): void
+    public function article(?string $slug = null): void
     {
-        $id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
+        $identifier = $slug !== null && trim($slug) !== '' ? trim($slug) : (isset($_GET['id']) ? trim((string)$_GET['id']) : '');
         $articleModel = new Article();
 
-        if ($id > 0) {
-            $row = $articleModel->getById($id);
+        if ($identifier !== '') {
+            $row = $articleModel->getBySlugOrId($identifier);
             $status = strtolower(trim((string) ($row['status'] ?? '')));
 
-            if ($row === false || $status === 'draft') {
+            if ($row === false || $status === 'draft' || $status === 'hidden') {
                 $this->notFound();
                 return;
             }
@@ -355,14 +346,19 @@ class HomeController
                 }
             }
 
+            $slugValue = ($lang === 'en' && !empty($row['slug_en'])) ? $row['slug_en'] : (!empty($row['slug']) ? $row['slug'] : (string)$row['id']);
+
             $article = [
                 'id' => (int) ($row['id'] ?? 0),
+                'slug' => (string) ($row['slug'] ?? ''),
+                'slug_en' => (string) ($row['slug_en'] ?? ''),
                 'title' => $metaTitle,
                 'meta_title' => $metaTitle,
                 'meta_description' => $descText,
                 'summary' => $descText !== '' ? mb_strimwidth($descText, 0, 140, '...') : '',
                 'meta_keywords' => $metaKeywords,
                 'category' => (string) ($row['category'] ?? 'General'),
+                'category_slug' => (string) ($row['category_slug'] ?? ''),
                 'image_path' => (string) ($row['image_path'] ?? ''),
                 'cover_image' => (string) ($row['image_path'] ?? ''),
                 'cover_image_alt' => (string) ($row['cover_image_alt'] ?? ''),
@@ -390,10 +386,108 @@ class HomeController
                 $popularCategories = [];
             }
 
+            // Track article view with anti-refresh throttle (1 view per article per session/hour)
+            $articleId = (int) ($row['id'] ?? 0);
+            if ($articleId > 0) {
+                if (session_status() === PHP_SESSION_NONE) {
+                    @session_start();
+                }
+                $viewedKey = 'viewed_article_' . $articleId;
+                $lastViewed = $_SESSION[$viewedKey] ?? 0;
+                if (time() - (int) $lastViewed > 3600) {
+                    $_SESSION[$viewedKey] = time();
+                    try {
+                        $articleModel->incrementViews($articleId);
+                    } catch (Throwable $e) {
+                        // Ignore view increment errors
+                    }
+                }
+            }
+
+            $articleUrl = route_url('/article/' . $slugValue);
+            $articleImageUrl = resolve_article_image_url($article['image_path'] ?? '', asset_url('images/story.png'));
+            $publishedIso = !empty($article['created_at']) ? date('c', strtotime($article['created_at'])) : date('c');
+            $modifiedIso = !empty($row['updated_at']) ? date('c', strtotime($row['updated_at'])) : $publishedIso;
+
+            $jsonLd = [
+                '@context' => 'https://schema.org',
+                '@graph' => [
+                    [
+                        '@type' => 'BreadcrumbList',
+                        'itemListElement' => [
+                            [
+                                '@type' => 'ListItem',
+                                'position' => 1,
+                                'name' => t('article_detail.breadcrumb_home', ['default' => 'หน้าแรก']),
+                                'item' => route_url('/'),
+                            ],
+                            [
+                                '@type' => 'ListItem',
+                                'position' => 2,
+                                'name' => t('article_detail.breadcrumb_articles', ['default' => 'บทความ']),
+                                'item' => route_url('/article'),
+                            ],
+                            [
+                                '@type' => 'ListItem',
+                                'position' => 3,
+                                'name' => $article['category'],
+                                'item' => route_url('/article', ['category' => $article['category_slug'] ?? 'all']),
+                            ],
+                            [
+                                '@type' => 'ListItem',
+                                'position' => 4,
+                                'name' => $article['title'],
+                                'item' => $articleUrl,
+                            ]
+                        ]
+                    ],
+                    [
+                        '@type' => 'Article',
+                        '@id' => $articleUrl . '#article',
+                        'isPartOf' => [
+                            '@type' => 'WebPage',
+                            '@id' => $articleUrl
+                        ],
+                        'headline' => $article['title'],
+                        'description' => $article['meta_description'] ?: $article['summary'],
+                        'image' => [
+                            $articleImageUrl
+                        ],
+                        'datePublished' => $publishedIso,
+                        'dateModified' => $modifiedIso,
+                        'mainEntityOfPage' => [
+                            '@type' => 'WebPage',
+                            '@id' => $articleUrl
+                        ],
+                        'author' => [
+                            '@type' => 'Organization',
+                            'name' => $article['author'] ?: 'Webpark Team'
+                        ],
+                        'publisher' => [
+                            '@type' => 'Organization',
+                            'name' => config('app.name', 'WEBPARK'),
+                            'logo' => [
+                                '@type' => 'ImageObject',
+                                'url' => asset_url('images/logo.png')
+                            ]
+                        ]
+                    ]
+                ]
+            ];
+
             $this->view('pages/article-detail.php', array_merge($this->sharedData('article', $article['title'] ?: 'Article'), [
                 'article' => $article,
                 'relatedArticles' => $relatedArticles,
                 'popularCategories' => $popularCategories,
+                'metaTitle' => $article['meta_title'] ?: $article['title'],
+                'metaDescription' => $article['meta_description'] ?: $article['summary'],
+                'imageUrl' => $articleImageUrl,
+                'imageAlt' => $article['cover_image_alt'] ?: $article['title'],
+                'publishedTime' => $publishedIso,
+                'modifiedTime' => $modifiedIso,
+                'authorName' => $article['author'] ?: 'Webpark Team',
+                'canonicalUrl' => $articleUrl,
+                'jsonLd' => $jsonLd,
             ]));
 
             return;
@@ -424,16 +518,17 @@ class HomeController
 
                 return [
                     'id' => (int) ($row['id'] ?? 0),
+                    'is_pinned' => !empty($row['is_pinned']),
+                    'slug' => (string) ($row['slug'] ?? ''),
+                    'slug_en' => (string) ($row['slug_en'] ?? ''),
                     'title' => $metaTitle,
                     'category_name' => (string) ($row['category'] ?? 'General'),
                     'category_slug' => (string) ($row['category_slug'] ?? ''),
-                    'image_path' => (string) ($row['image_path'] ?? $row['cover_image'] ?? ''),
+                    'image_path' => (string) ($row['image_path'] ?? ''),
                     'summary' => $summary,
                     'content' => $content,
                     'author' => (string) ($row['author'] ?? ''),
                     'created_at' => (string) ($row['created_at'] ?? ''),
-                    'meta_title_en' => (string) ($row['meta_title_en'] ?? ''),
-                    'meta_description_en' => (string) ($row['meta_description_en'] ?? '')
                 ];
             }, $rows);
 
@@ -518,6 +613,27 @@ class HomeController
     {
         $this->view('pages/article-detail-mockup.php', array_merge($this->sharedData('article', 'Article Detail Mockup'), [
             'currentPage' => 'article'
+        ]));
+    }
+
+    public function serviceDigitalPlatform(): void
+    {
+        $this->view('pages/service-digital-platform.php', array_merge($this->sharedData('services', 'Digital Platform'), [
+            'currentPage' => 'services'
+        ]));
+    }
+
+    public function serviceOnlineMarketing(): void
+    {
+        $this->view('pages/service-online-marketing.php', array_merge($this->sharedData('services', 'Online Marketing'), [
+            'currentPage' => 'services'
+        ]));
+    }
+
+    public function serviceCreativeDesign(): void
+    {
+        $this->view('pages/service-creative-design.php', array_merge($this->sharedData('services', 'Creative Design'), [
+            'currentPage' => 'services'
         ]));
     }
 
@@ -893,6 +1009,336 @@ class HomeController
         ]));
     }
 
+    /**
+     * Endpoint for contact form submissions (AJAX or standard POST from bottom CTA or forms).
+     */
+    public function contactSubmit(): void
+    {
+        send_security_headers();
+
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            http_response_code(405);
+            header('Content-Type: application/json');
+            echo json_encode(['success' => false, 'message' => 'Method Not Allowed']);
+            exit;
+        }
+
+        $isAjax = !empty($_SERVER['HTTP_X_REQUESTED_WITH'])
+            || (!empty($_SERVER['HTTP_ACCEPT']) && str_contains($_SERVER['HTTP_ACCEPT'], 'application/json'))
+            || !empty($_POST['is_ajax']);
+
+        // 1. Honeypot check (hidden field to trap spam bots)
+        $honeypot = trim((string) ($_POST['website_url'] ?? ''));
+        if ($honeypot !== '') {
+            error_log('[Contact Submit] Spam bot blocked via honeypot trap from IP: ' . ($_SERVER['REMOTE_ADDR'] ?? 'unknown'));
+            if ($isAjax) {
+                http_response_code(422);
+                header('Content-Type: application/json');
+                echo json_encode(['success' => false, 'errors' => ['ตรวจพบลักษณะของโปรแกรมอัตโนมัติ (Spam Detected)']]);
+                exit;
+            }
+            header('Location: ' . ($_SERVER['HTTP_REFERER'] ?? route_url('/')));
+            exit;
+        }
+
+        // 2. CSRF Token Verification
+        if (!verify_csrf_token()) {
+            if ($isAjax) {
+                http_response_code(403);
+                header('Content-Type: application/json');
+                echo json_encode([
+                    'success' => false,
+                    'errors' => [getCurrentLang() === 'th' ? 'เซสชันหมดอายุหรือคำขอไม่ถูกต้อง กรุณารีเฟรชหน้าเว็บแล้วลองอีกครั้ง' : 'Invalid or expired CSRF session. Please refresh and try again.']
+                ]);
+                exit;
+            }
+            $referer = $_SERVER['HTTP_REFERER'] ?? route_url('/');
+            header('Location: ' . $referer);
+            exit;
+        }
+
+        $settingModel = new Setting();
+        $settings = $settingModel->getByKeys([
+            'company_name',
+            'contact_address',
+            'contact_phone',
+            'contact_email',
+            'contact_hours',
+            'recaptcha_site_key',
+            'recaptcha_secret_key',
+            'mail_to',
+            'mail_host',
+            'mail_port',
+            'mail_user',
+            'mail_pass',
+            'mail_from_name',
+        ]);
+
+        $secretKey = (string) ($settings['recaptcha_secret_key'] ?? getenv('RECAPTCHA_SECRET_KEY') ?: '');
+
+        $form = [
+            'company_name' => trim((string) ($_POST['company_name'] ?? '')),
+            'first_name'   => trim((string) ($_POST['first_name'] ?? '')),
+            'last_name'    => trim((string) ($_POST['last_name'] ?? '')),
+            'phone'        => trim((string) ($_POST['phone'] ?? '')),
+            'email'        => trim((string) ($_POST['email'] ?? '')),
+            'message'      => trim((string) ($_POST['message'] ?? '')),
+            'pdpa_agreed'  => !empty($_POST['pdpa_agreed']),
+            'source_page'  => trim((string) ($_POST['source_page'] ?? ($_SERVER['HTTP_REFERER'] ?? ''))),
+        ];
+
+        $errors = $this->validateContactInput($form, $secretKey);
+
+        if (!empty($errors)) {
+            if ($isAjax) {
+                http_response_code(422);
+                header('Content-Type: application/json');
+                echo json_encode(['success' => false, 'errors' => $errors]);
+                exit;
+            }
+            $referer = $_SERVER['HTTP_REFERER'] ?? route_url('/');
+            header('Location: ' . $referer);
+            exit;
+        }
+
+        $contactModel = new ContactMessage();
+        $messageData = [
+            'company_name'    => $form['company_name'] !== '' ? $form['company_name'] : null,
+            'first_name'      => $form['first_name'],
+            'last_name'       => $form['last_name'],
+            'phone'           => $form['phone'],
+            'email'           => $form['email'],
+            'message'         => $form['message'],
+            'pdpa_consent'    => 1,
+            'pdpa_consent_at' => date('Y-m-d H:i:s'),
+            'status'          => 'new',
+            'ip_address'      => $_SERVER['REMOTE_ADDR'] ?? null,
+            'user_agent'      => $_SERVER['HTTP_USER_AGENT'] ?? null,
+            'source_page'     => $form['source_page'] !== '' ? $form['source_page'] : ($_SERVER['HTTP_REFERER'] ?? route_url('/')),
+            'email_sent'      => 0,
+        ];
+
+        try {
+            // Save contact message to database first
+            $messageId = $contactModel->create($messageData);
+
+            // Fast Non-blocking response for AJAX clients
+            if ($isAjax) {
+                header('Content-Type: application/json');
+                echo json_encode([
+                    'success' => true,
+                    'message' => getCurrentLang() === 'th' ? 'ส่งข้อมูลสำเร็จ เรียบร้อยแล้ว' : 'Submission Successful',
+                ]);
+
+                // Close connection early to prevent browser from hanging while SMTP delivers
+                if (function_exists('fastcgi_finish_request')) {
+                    fastcgi_finish_request();
+                } else {
+                    if (ob_get_level() > 0) {
+                        ob_end_flush();
+                    }
+                    flush();
+                }
+            }
+
+            // Deliver notification email asynchronously in background
+            try {
+                $emailSent = Mailer::sendContactNotification($messageData, $settings);
+                if ($emailSent) {
+                    $contactModel->updateEmailSent($messageId, true);
+                }
+            } catch (Throwable $mailEx) {
+                error_log('[Contact Mailer Async Error] ' . $mailEx->getMessage());
+            }
+
+            if (!$isAjax) {
+                $referer = $_SERVER['HTTP_REFERER'] ?? route_url('/');
+                header('Location: ' . $referer);
+            }
+            exit;
+        } catch (Exception $e) {
+            error_log('[Contact Submit Error] DB Insert failed: ' . $e->getMessage());
+            if ($isAjax) {
+                http_response_code(500);
+                header('Content-Type: application/json');
+                echo json_encode(['success' => false, 'errors' => ['เกิดข้อผิดพลาดในการบันทึกข้อมูล กรุณาลองใหม่อีกครั้ง']]);
+                exit;
+            }
+            $referer = $_SERVER['HTTP_REFERER'] ?? route_url('/');
+            header('Location: ' . $referer);
+            exit;
+        }
+    }
+
+    /**
+     * Shared contact validation logic.
+     *
+     * @param array<string, mixed> $form
+     * @return array<int, string> List of error messages.
+     */
+    private function validateContactInput(array $form, string $secretKey): array
+    {
+        $errors = [];
+
+        // 0. Rate Limiting / Anti-Flood (Max 5 submissions per 5 minutes per IP)
+        $ip = $_SERVER['REMOTE_ADDR'] ?? '';
+        if ($ip !== '') {
+            $contactModel = new ContactMessage();
+            $recentCount = $contactModel->countRecentByIp($ip, 5);
+            if ($recentCount >= 5) {
+                $errors[] = getCurrentLang() === 'th'
+                    ? 'คุณส่งข้อความถี่เกินไป กรุณารอประมาณ 5 นาทีแล้วลองใหม่อีกครั้ง'
+                    : 'Too many requests. Please wait about 5 minutes before submitting again.';
+                return $errors;
+            }
+        }
+
+        // 1. Validate First Name
+        if (($form['first_name'] ?? '') === '') {
+            $errors[] = 'กรุณาระบุชื่อจริง';
+        } elseif (preg_match('/\s/u', (string)$form['first_name'])) {
+            $errors[] = 'ชื่อจริงต้องไม่มีช่องว่าง (Space)';
+        } elseif (mb_strlen((string)$form['first_name'], 'UTF-8') > 30) {
+            $errors[] = 'ชื่อจริงต้องไม่เกิน 30 ตัวอักษร';
+        }
+
+        // 2. Validate Last Name
+        if (($form['last_name'] ?? '') === '') {
+            $errors[] = 'กรุณาระบุนามสกุล';
+        } elseif (preg_match('/\s/u', (string)$form['last_name'])) {
+            $errors[] = 'นามสกุลต้องไม่มีช่องว่าง (Space)';
+        } elseif (mb_strlen((string)$form['last_name'], 'UTF-8') > 30) {
+            $errors[] = 'นามสกุลต้องไม่เกิน 30 ตัวอักษร';
+        }
+
+        // 3. Validate Phone Number (numeric only <= 10 digits)
+        if (($form['phone'] ?? '') === '') {
+            $errors[] = 'กรุณาระบุเบอร์โทรศัพท์';
+        } elseif (!preg_match('/^[0-9]+$/', (string)$form['phone'])) {
+            $errors[] = 'เบอร์โทรศัพท์ต้องเป็นตัวเลขล้วนเท่านั้น';
+        } elseif (strlen((string)$form['phone']) < 9 || strlen((string)$form['phone']) > 10) {
+            $errors[] = 'เบอร์โทรศัพท์ต้องมีความยาว 9-10 หลัก';
+        }
+
+        // 4. Validate Email
+        if (($form['email'] ?? '') === '') {
+            $errors[] = 'กรุณาระบุอีเมล';
+        } elseif (!filter_var((string)$form['email'], FILTER_VALIDATE_EMAIL)) {
+            $errors[] = 'รูปแบบอีเมลไม่ถูกต้อง';
+        } elseif (strlen((string)$form['email']) > 255) {
+            $errors[] = 'อีเมลยาวเกินไป (ไม่เกิน 255 ตัวอักษร)';
+        } else {
+            // Check MX record on non-localhost
+            $serverHost = $_SERVER['HTTP_HOST'] ?? ($_SERVER['SERVER_NAME'] ?? '');
+            $isLocal = in_array($serverHost, ['localhost', '127.0.0.1'], true)
+                || str_starts_with($serverHost, 'localhost:')
+                || str_starts_with($serverHost, '127.0.0.1:');
+
+            if (!$isLocal) {
+                $domain = substr(strrchr((string)$form['email'], '@'), 1);
+                if ($domain && function_exists('checkdnsrr')) {
+                    if (!checkdnsrr($domain, 'MX') && !checkdnsrr($domain, 'A')) {
+                        $errors[] = 'ไม่พบ Mail Server สำหรับโดเมนของอีเมลนี้';
+                    }
+                }
+            }
+        }
+
+        // 5. Validate Message & Character count <= 500 characters
+        if (($form['message'] ?? '') === '') {
+            $errors[] = 'กรุณาระบุข้อความรายละเอียด';
+        } else {
+            $charCount = mb_strlen(trim((string)$form['message']), 'UTF-8');
+            if ($charCount > 500) {
+                $errors[] = "ข้อความมีความยาวเกินกำหนด ({$charCount} ตัวอักษร / สูงสุด 500 ตัวอักษร)";
+            }
+        }
+
+        // 6. Validate PDPA Consent
+        if (empty($form['pdpa_agreed'])) {
+            $errors[] = 'กรุณายินยอมตามนโยบายคุ้มครองข้อมูลส่วนบุคคล (PDPA)';
+        }
+
+        // 7. Verify Google reCAPTCHA v2
+        $recaptchaToken = (string) ($_POST['g-recaptcha-response'] ?? '');
+        if ($recaptchaToken === '') {
+            $errors[] = 'กรุณายืนยันว่าคุณไม่ใช่โปรแกรมอัตโนมัติ (reCAPTCHA)';
+        } else {
+            $isRecaptchaValid = $this->verifyRecaptcha($recaptchaToken, $secretKey);
+            if (!$isRecaptchaValid) {
+                $errors[] = 'การตรวจสอบ reCAPTCHA ไม่สำเร็จ กรุณาลองใหม่อีกครั้ง';
+            }
+        }
+
+        return $errors;
+    }
+
+    /**
+     * Verify Google reCAPTCHA v2 token with Google Siteverify API.
+     */
+    private function verifyRecaptcha(string $token, string $secretKey): bool
+    {
+        if ($token === '') {
+            return false;
+        }
+
+        // If secret key is not set, log error
+        if ($secretKey === '') {
+            error_log('[reCAPTCHA] Secret key is not configured in settings or environment.');
+            return false;
+        }
+
+        $postData = http_build_query([
+            'secret'   => $secretKey,
+            'response' => $token,
+            'remoteip' => $_SERVER['REMOTE_ADDR'] ?? '',
+        ]);
+
+        $opts = [
+            'http' => [
+                'method'  => 'POST',
+                'header'  => "Content-type: application/x-www-form-urlencoded\r\n" .
+                             "Content-Length: " . strlen($postData) . "\r\n",
+                'content' => $postData,
+                'timeout' => 8,
+            ],
+            'ssl' => [
+                'verify_peer'      => true,
+                'verify_peer_name' => true,
+            ]
+        ];
+
+        $context = stream_context_create($opts);
+        $response = @file_get_contents('https://www.google.com/recaptcha/api/siteverify', false, $context);
+
+        if ($response === false && function_exists('curl_init')) {
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, 'https://www.google.com/recaptcha/api/siteverify');
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_TIMEOUT, 8);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+            $response = curl_exec($ch);
+            curl_close($ch);
+        }
+
+        if ($response !== false) {
+            $result = json_decode($response, true);
+            return !empty($result['success']);
+        }
+
+        return false;
+    }
+
+    public function privacyPolicy(): void
+    {
+        $this->view('pages/privacy-policy.php', array_merge($this->sharedData('privacy-policy', 'นโยบายความเป็นส่วนตัว (Privacy Policy)'), [
+            'metaDescription' => 'นโยบายความเป็นส่วนตัว (Privacy Policy) ของ บริษัท เว็บพาร์ค จำกัด (WEBPARK) ตาม พ.ร.บ. คุ้มครองข้อมูลส่วนบุคคล พ.ศ. 2562 (PDPA)',
+        ]));
+    }
+
     public function notFound(): void
     {
         http_response_code(404);
@@ -918,10 +1364,54 @@ class HomeController
     }
 
     /**
+     * Track daily site pageviews and unique visitors.
+     */
+    private function trackDailyTraffic(): void
+    {
+        try {
+            if (session_status() === PHP_SESSION_NONE) {
+                @session_start();
+            }
+
+            // Exclude common search bots and web crawlers
+            $userAgent = strtolower($_SERVER['HTTP_USER_AGENT'] ?? '');
+            if ($userAgent !== '' && preg_match('/bot|crawl|slurp|spider|mediapartners/i', $userAgent)) {
+                return;
+            }
+
+            $today = date('Y-m-d');
+            $pdo = Database::getInstance();
+
+            $isUniqueToday = false;
+            $uniqueKey = 'visited_date_' . $today;
+            if (empty($_SESSION[$uniqueKey])) {
+                $_SESSION[$uniqueKey] = 1;
+                $isUniqueToday = true;
+            }
+
+            $sql = "INSERT INTO daily_traffic (`date`, `pageviews`, `unique_visitors`) 
+                    VALUES (:date, 1, :unique)
+                    ON DUPLICATE KEY UPDATE 
+                        pageviews = pageviews + 1,
+                        unique_visitors = unique_visitors + :unique_inc";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([
+                ':date' => $today,
+                ':unique' => $isUniqueToday ? 1 : 0,
+                ':unique_inc' => $isUniqueToday ? 1 : 0,
+            ]);
+        } catch (Throwable $e) {
+            // Silently catch errors so page rendering never breaks
+        }
+    }
+
+    /**
      * @param array<string, mixed> $data
      */
     private function view(string $path, array $data = []): void
     {
+        send_security_headers();
+        $this->trackDailyTraffic();
         $this->renderer->view($path, $data);
     }
 }
