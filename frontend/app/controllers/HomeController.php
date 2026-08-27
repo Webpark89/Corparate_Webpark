@@ -1014,10 +1014,46 @@ class HomeController
      */
     public function contactSubmit(): void
     {
+        send_security_headers();
+
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             http_response_code(405);
             header('Content-Type: application/json');
             echo json_encode(['success' => false, 'message' => 'Method Not Allowed']);
+            exit;
+        }
+
+        $isAjax = !empty($_SERVER['HTTP_X_REQUESTED_WITH'])
+            || (!empty($_SERVER['HTTP_ACCEPT']) && str_contains($_SERVER['HTTP_ACCEPT'], 'application/json'))
+            || !empty($_POST['is_ajax']);
+
+        // 1. Honeypot check (hidden field to trap spam bots)
+        $honeypot = trim((string) ($_POST['website_url'] ?? ''));
+        if ($honeypot !== '') {
+            error_log('[Contact Submit] Spam bot blocked via honeypot trap from IP: ' . ($_SERVER['REMOTE_ADDR'] ?? 'unknown'));
+            if ($isAjax) {
+                http_response_code(422);
+                header('Content-Type: application/json');
+                echo json_encode(['success' => false, 'errors' => ['ตรวจพบลักษณะของโปรแกรมอัตโนมัติ (Spam Detected)']]);
+                exit;
+            }
+            header('Location: ' . ($_SERVER['HTTP_REFERER'] ?? route_url('/')));
+            exit;
+        }
+
+        // 2. CSRF Token Verification
+        if (!verify_csrf_token()) {
+            if ($isAjax) {
+                http_response_code(403);
+                header('Content-Type: application/json');
+                echo json_encode([
+                    'success' => false,
+                    'errors' => [getCurrentLang() === 'th' ? 'เซสชันหมดอายุหรือคำขอไม่ถูกต้อง กรุณารีเฟรชหน้าเว็บแล้วลองอีกครั้ง' : 'Invalid or expired CSRF session. Please refresh and try again.']
+                ]);
+                exit;
+            }
+            $referer = $_SERVER['HTTP_REFERER'] ?? route_url('/');
+            header('Location: ' . $referer);
             exit;
         }
 
@@ -1038,7 +1074,7 @@ class HomeController
             'mail_from_name',
         ]);
 
-        $secretKey = $settings['recaptcha_secret_key'] ?? '6Lcf_pAtAAAAAHCPdvGcNyEnfTNv6MJ4HIjFnG4d';
+        $secretKey = (string) ($settings['recaptcha_secret_key'] ?? getenv('RECAPTCHA_SECRET_KEY') ?: '');
 
         $form = [
             'company_name' => trim((string) ($_POST['company_name'] ?? '')),
@@ -1052,10 +1088,6 @@ class HomeController
         ];
 
         $errors = $this->validateContactInput($form, $secretKey);
-
-        $isAjax = !empty($_SERVER['HTTP_X_REQUESTED_WITH'])
-            || (!empty($_SERVER['HTTP_ACCEPT']) && str_contains($_SERVER['HTTP_ACCEPT'], 'application/json'))
-            || !empty($_POST['is_ajax']);
 
         if (!empty($errors)) {
             if ($isAjax) {
@@ -1087,24 +1119,42 @@ class HomeController
         ];
 
         try {
+            // Save contact message to database first
             $messageId = $contactModel->create($messageData);
 
-            $emailSent = Mailer::sendContactNotification($messageData, $settings);
-            if ($emailSent) {
-                $contactModel->updateEmailSent($messageId, true);
-            }
-
+            // Fast Non-blocking response for AJAX clients
             if ($isAjax) {
                 header('Content-Type: application/json');
                 echo json_encode([
                     'success' => true,
                     'message' => getCurrentLang() === 'th' ? 'ส่งข้อมูลสำเร็จ เรียบร้อยแล้ว' : 'Submission Successful',
                 ]);
-                exit;
+
+                // Close connection early to prevent browser from hanging while SMTP delivers
+                if (function_exists('fastcgi_finish_request')) {
+                    fastcgi_finish_request();
+                } else {
+                    if (ob_get_level() > 0) {
+                        ob_end_flush();
+                    }
+                    flush();
+                }
             }
 
-            $referer = $_SERVER['HTTP_REFERER'] ?? route_url('/');
-            header('Location: ' . $referer);
+            // Deliver notification email asynchronously in background
+            try {
+                $emailSent = Mailer::sendContactNotification($messageData, $settings);
+                if ($emailSent) {
+                    $contactModel->updateEmailSent($messageId, true);
+                }
+            } catch (Throwable $mailEx) {
+                error_log('[Contact Mailer Async Error] ' . $mailEx->getMessage());
+            }
+
+            if (!$isAjax) {
+                $referer = $_SERVER['HTTP_REFERER'] ?? route_url('/');
+                header('Location: ' . $referer);
+            }
             exit;
         } catch (Exception $e) {
             error_log('[Contact Submit Error] DB Insert failed: ' . $e->getMessage());
@@ -1228,7 +1278,13 @@ class HomeController
      */
     private function verifyRecaptcha(string $token, string $secretKey): bool
     {
-        if ($token === '' || $secretKey === '') {
+        if ($token === '') {
+            return false;
+        }
+
+        // If secret key is not set, log error
+        if ($secretKey === '') {
+            error_log('[reCAPTCHA] Secret key is not configured in settings or environment.');
             return false;
         }
 
@@ -1247,8 +1303,8 @@ class HomeController
                 'timeout' => 8,
             ],
             'ssl' => [
-                'verify_peer'      => false,
-                'verify_peer_name' => false,
+                'verify_peer'      => true,
+                'verify_peer_name' => true,
             ]
         ];
 
@@ -1262,7 +1318,8 @@ class HomeController
             curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_TIMEOUT, 8);
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
             $response = curl_exec($ch);
             curl_close($ch);
         }
@@ -1353,6 +1410,7 @@ class HomeController
      */
     private function view(string $path, array $data = []): void
     {
+        send_security_headers();
         $this->trackDailyTraffic();
         $this->renderer->view($path, $data);
     }

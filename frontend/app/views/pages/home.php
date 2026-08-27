@@ -318,7 +318,7 @@ if (!empty($partners) && is_array($partners)) {
                         $ipadProBorderClass = 'ipad-pro-border-none';
                     }
                 ?>
-                    <a href="<?= e($card['href']) ?>" class="gsap-home-service-card relative group flex flex-col justify-between p-6 lg:p-8 <?= $borderClass ?> <?= $ipadProBorderClass ?> border-gray-100 bg-white transition-all duration-300 ease-out hover:shadow-[0_0_30px_rgba(0,0,0,0.08)] hover:-translate-y-1 hover:z-10 hover:rounded-xl opacity-0 translate-y-10 ipad-pro-p-6 block">
+                    <a href="<?= e($card['href']) ?>" class="gsap-home-service-card relative group flex flex-col justify-between p-6 lg:p-8 <?= $borderClass ?> <?= $ipadProBorderClass ?> border-gray-100 bg-white transition-all duration-300 ease-out hover:shadow-[0_0_30px_rgba(0,0,0,0.08)] hover:-translate-y-1 hover:z-10 hover:rounded-xl opacity-0 translate-y-10 ipad-pro-p-6">
                     <div>
                         <div class="h-14 w-14 mx-auto mb-5 flex items-center justify-center transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:-translate-y-2 group-hover:scale-110">
                             <img src="<?= e(asset_url('images/' . $card['icon'])) ?>" alt="<?= e($card['title']) ?>" class="h-full w-full object-contain">

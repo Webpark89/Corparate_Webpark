@@ -258,8 +258,15 @@ $form = $form ?? [];
                         </style>
                         <script src="https://www.google.com/recaptcha/api.js" async defer></script>
                         <form id="contactMainForm" method="post" action="<?= e(route_url('/contact/submit')) ?>" class="flex flex-col flex-grow space-y-4" novalidate>
+                            <?= csrf_field() ?>
                             <input type="hidden" name="source_page" value="<?= e($_SERVER['REQUEST_URI'] ?? '') ?>">
                             <input type="hidden" name="is_ajax" value="1">
+
+                            <!-- Honeypot Field (Spam Bot Trap - hidden from real humans) -->
+                            <div style="display:none !important; position:absolute; left:-9999px;" aria-hidden="true">
+                                <label for="contact_website_url">Leave this field empty</label>
+                                <input type="text" id="contact_website_url" name="website_url" tabindex="-1" autocomplete="off">
+                            </div>
 
                             <!-- First Name & Last Name (Separated, 2 columns) -->
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">

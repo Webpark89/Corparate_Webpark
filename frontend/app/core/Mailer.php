@@ -33,12 +33,17 @@ class Mailer
             return false;
         }
 
-        $mailHost = $settings['mail_host'] ?? 'smtp.gmail.com';
-        $mailPort = (int) ($settings['mail_port'] ?? 587);
-        $mailUser = $settings['mail_user'] ?? 'webpark-contact-form';
-        $mailPass = str_replace(' ', '', (string)($settings['mail_pass'] ?? 'pcvgpqnttmnmlvcw'));
-        $mailTo   = $settings['mail_to'] ?? 'kidzmaioxe@gmail.com';
-        $fromName = $settings['mail_from_name'] ?? 'WEBPARK Contact System';
+        $mailHost = $settings['mail_host'] ?? getenv('MAIL_HOST') ?: 'smtp.gmail.com';
+        $mailPort = (int) ($settings['mail_port'] ?? getenv('MAIL_PORT') ?: 587);
+        $mailUser = (string) ($settings['mail_user'] ?? getenv('MAIL_USER') ?: '');
+        $mailPass = str_replace(' ', '', (string) ($settings['mail_pass'] ?? getenv('MAIL_PASS') ?: ''));
+        $mailTo   = (string) ($settings['mail_to'] ?? getenv('MAIL_TO') ?: ($settings['contact_email'] ?? ''));
+        $fromName = (string) ($settings['mail_from_name'] ?? getenv('MAIL_FROM_NAME') ?: ($settings['company_name'] ?? 'WEBPARK Contact System'));
+
+        if ($mailUser === '' || $mailPass === '' || $mailTo === '') {
+            error_log('[Mailer] SMTP credentials (mail_user, mail_pass, or mail_to) are not configured.');
+            return false;
+        }
 
         // For Gmail SMTP, username usually needs the full address
         $fromEmail = strpos($mailUser, '@') !== false ? $mailUser : ($mailUser . '@gmail.com');
