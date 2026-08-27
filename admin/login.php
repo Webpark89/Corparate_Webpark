@@ -319,13 +319,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             from { opacity: 0; transform: translateY(-3px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
-        @media (prefers-reduced-motion: reduce) {
-            .anim-float-1, .anim-float-2, .anim-float-3, .anim-float-4,
-            .anim-glow, .anim-platform, .circuit-line {
-                animation: none !important;
-            }
-        }
     </style>
 </head>
 

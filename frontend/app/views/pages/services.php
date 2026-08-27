@@ -678,16 +678,6 @@ if (isset($services) && is_array($services)) {
                 color: #64748b !important;
             }
         }
-
-        /* Accessibility: เคารพการตั้งค่า Reduce Motion ของผู้ใช้ ลด/ปิด animation แบบ CSS ทั้งหมดในหน้านี้ */
-        @media (prefers-reduced-motion: reduce) {
-            *, *::before, *::after {
-                animation-duration: 0.001ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.001ms !important;
-                scroll-behavior: auto !important;
-            }
-        }
     </style>
     <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8 pt-12 pb-24 lg:pt-28 lg:pb-32 relative z-10 desktop-wide-container-services">
         <!-- Mobile Background Image (Only covers this Hero container) -->
@@ -947,52 +937,41 @@ if (isset($services) && is_array($services)) {
     document.addEventListener("DOMContentLoaded", (event) => {
         // ลงทะเบียน ScrollTrigger
         gsap.registerPlugin(ScrollTrigger);
-        // เช็คว่าผู้ใช้ตั้งค่าเครื่องให้ลด Motion ไว้หรือไม่ (Accessibility)
-        // ถ้าใช่ จะข้าม animation ที่เกี่ยวกับการเคลื่อนไหวเยอะๆ (parallax, pin, elastic pop)
-        // และแสดงเนื้อหาแบบปกติทันที โดยยังคง fade เบาๆ ไว้เพื่อไม่ให้กระพริบ
-        const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
         // 0. Parallax รูปพื้นหลัง Hero — รูปเลื่อนช้ากว่าคอนเทนต์เล็กน้อยตอน scroll ผ่าน section
-        if (!prefersReducedMotion) {
-            gsap.utils.toArray(".hero-parallax-img").forEach((img) => {
-                gsap.to(img, {
-                    yPercent: 12,
-                    ease: "none",
-                    scrollTrigger: {
-                        trigger: "#services-hero",
-                        start: "top top",
-                        end: "bottom top",
-                        scrub: true // ผูกตรงกับตำแหน่ง scroll แบบ real-time ไม่มี delay
-                    }
-                });
-            });
-        }
-        // 1. Animation สำหรับหัวข้อ OUR SERVICES
-        if (prefersReducedMotion) {
-            gsap.set(".gsap-fade-up", { y: 0, opacity: 1 });
-        } else {
-            gsap.from(".gsap-fade-up", {
+        gsap.utils.toArray(".hero-parallax-img").forEach((img) => {
+            gsap.to(img, {
+                yPercent: 12,
+                ease: "none",
                 scrollTrigger: {
-                    trigger: "#our-services",
-                    start: "top 85%", // เริ่มเมื่อขอบบนของ section เลื่อนมาถึง 85% ของหน้าจอ
-                    toggleActions: "play none none reverse" // เล่นเมื่อเจอ ถอยกลับเมื่อเลื่อนขึ้น
-                },
-                y: 40,
-                opacity: 0,
-                duration: 0.8,
-                stagger: 0.2, // ให้ h1 กับ p ค่อยๆ ขึ้นมาเหลื่อมเวลากันเล็กน้อย
-                ease: "power2.out"
+                    trigger: "#services-hero",
+                    start: "top top",
+                    end: "bottom top",
+                    scrub: true // ผูกตรงกับตำแหน่ง scroll แบบ real-time ไม่มี delay
+                }
             });
-        }
+        });
+
+        // 1. Animation สำหรับหัวข้อ OUR SERVICES
+        gsap.from(".gsap-fade-up", {
+            scrollTrigger: {
+                trigger: "#our-services",
+                start: "top 85%", // เริ่มเมื่อขอบบนของ section เลื่อนมาถึง 85% ของหน้าจอ
+                toggleActions: "play none none reverse" // เล่นเมื่อเจอ ถอยกลับเมื่อเลื่อนขึ้น
+            },
+            y: 40,
+            opacity: 0,
+            duration: 0.8,
+            stagger: 0.2, // ให้ h1 กับ p ค่อยๆ ขึ้นมาเหลื่อมเวลากันเล็กน้อย
+            ease: "power2.out"
+        });
+
         // 2. Animation สำหรับการ์ดบริการ
         // Desktop/Tablet (≥768px): Pin ทั้ง section ไว้ แล้วให้การ์ดโผล่ทีละใบตามระยะที่เลื่อน (scrub)
         //   จนกว่าจะครบ 4 ใบ ถึงจะปลดล็อกให้เลื่อนผ่าน section นี้ไปต่อได้
         // Mobile (<768px): ใช้แบบเดิม (โผล่ทีละใบเมื่อเลื่อนมาถึง ไม่ pin) เพราะจอเล็ก pin ยาวๆ จะกระทบ UX
         const serviceCardsWrapper = document.querySelector("#gsap-services-grid");
         const serviceCards = gsap.utils.toArray(".gsap-service-card");
-        if (serviceCardsWrapper && serviceCards.length && prefersReducedMotion) {
-            // Reduced motion: แสดงการ์ดทั้งหมดทันที ไม่ pin ไม่ scrub
-            gsap.set(serviceCards, { y: 0, opacity: 1 });
-        } else if (serviceCardsWrapper && serviceCards.length) {
+        if (serviceCardsWrapper && serviceCards.length) {
             ScrollTrigger.matchMedia({
                 // --- Desktop / Tablet: Pin + Scrub ---
                 "(min-width: 768px)": function () {
@@ -1045,25 +1024,23 @@ if (isset($services) && is_array($services)) {
                 }
             });
         }
+
         // 2.5 Animation สำหรับ CTA Box ท้ายหน้า — fade + slide ขึ้นตอน scroll มาถึง
         const ctaBox = document.querySelector(".gsap-cta-box");
         if (ctaBox) {
-            if (prefersReducedMotion) {
-                gsap.set(ctaBox, { y: 0, opacity: 1 });
-            } else {
-                gsap.to(ctaBox, {
-                    scrollTrigger: {
-                        trigger: ctaBox,
-                        start: "top 85%",
-                        toggleActions: "play none none reverse"
-                    },
-                    y: 0,
-                    opacity: 1,
-                    duration: 0.7,
-                    ease: "power2.out"
-                });
-            }
+            gsap.to(ctaBox, {
+                scrollTrigger: {
+                    trigger: ctaBox,
+                    start: "top 85%",
+                    toggleActions: "play none none reverse"
+                },
+                y: 0,
+                opacity: 1,
+                duration: 0.7,
+                ease: "power2.out"
+            });
         }
+
         // 3. Animation สำหรับ Our Approach
         // การ์ดทั้งใบ fade+slide ขึ้นตามปกติ ส่วนไอคอนกับเลขลำดับ (01-04) จะ "pop" ตามเข้ามาทีหลังเล็กน้อย
         // แบบ elastic ให้ความรู้สึกมีชีวิตชีวา ส่วน hover ของไอคอนคุมด้วย CSS (.gsap-approach-step:hover .gsap-approach-icon)
@@ -1071,12 +1048,7 @@ if (isset($services) && is_array($services)) {
         approachSteps.forEach((step) => {
             const icon = step.querySelector(".gsap-approach-icon");
             const number = step.querySelector(".gsap-approach-number");
-            if (prefersReducedMotion) {
-                gsap.set(step, { y: 0, opacity: 1 });
-                if (icon) gsap.set(icon, { clearProps: "opacity,transform" });
-                if (number) gsap.set(number, { clearProps: "opacity,transform" });
-                return;
-            }
+
             // ตั้งค่าเริ่มต้นของไอคอน/เลข ให้เล็กและโปร่งใสก่อน pop เข้ามา
             if (icon) gsap.set(icon, { opacity: 0, scale: 0.5, rotate: 14 });
             if (number) gsap.set(number, { opacity: 0, scale: 0.3 });

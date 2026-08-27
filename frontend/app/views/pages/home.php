@@ -901,14 +901,9 @@ document.addEventListener('DOMContentLoaded', function () {
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     gsap.registerPlugin(ScrollTrigger);
-    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     function revealOnScroll(selector, options = {}) {
         const els = gsap.utils.toArray(selector);
         if (!els.length) return;
-        if (prefersReducedMotion) {
-            gsap.set(els, { y: 0, opacity: 1 });
-            return;
-        }
         els.forEach((el) => {
             gsap.to(el, {
                 scrollTrigger: {
@@ -925,39 +920,33 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
     // 1. Hero Parallax
-    if (!prefersReducedMotion) {
-        gsap.utils.toArray(".hero-parallax-img").forEach((img) => {
-            gsap.to(img, {
-                yPercent: 12,
-                ease: "none",
-                scrollTrigger: {
-                    trigger: "section",
-                    start: "top top",
-                    end: "bottom top",
-                    scrub: true
-                }
-            });
+    gsap.utils.toArray(".hero-parallax-img").forEach((img) => {
+        gsap.to(img, {
+            yPercent: 12,
+            ease: "none",
+            scrollTrigger: {
+                trigger: "section",
+                start: "top top",
+                end: "bottom top",
+                scrub: true
+            }
         });
-    }
+    });
     // 2. Service Cards Stagger
     const serviceCards = gsap.utils.toArray(".gsap-home-service-card");
     if (serviceCards.length) {
-        if (prefersReducedMotion) {
-            gsap.set(serviceCards, { y: 0, opacity: 1 });
-        } else {
-            gsap.to(serviceCards, {
-                scrollTrigger: {
-                    trigger: ".gsap-home-service-card",
-                    start: "top 85%",
-                    toggleActions: "play none none reverse"
-                },
-                y: 0,
-                opacity: 1,
-                duration: 0.5,
-                stagger: 0.1,
-                ease: "power2.out"
-            });
-        }
+        gsap.to(serviceCards, {
+            scrollTrigger: {
+                trigger: ".gsap-home-service-card",
+                start: "top 85%",
+                toggleActions: "play none none reverse"
+            },
+            y: 0,
+            opacity: 1,
+            duration: 0.5,
+            stagger: 0.1,
+            ease: "power2.out"
+        });
     }
     // 3. Portfolio Cards
     revealOnScroll(".gsap-home-portfolio-card", { stagger: 0.1 });

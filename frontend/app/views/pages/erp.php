@@ -181,15 +181,6 @@ $erpPortfolios = $mockErpPortfolios;
         will-change: transform;
     }
 
-    /* Accessibility: เคารพการตั้งค่า Reduce Motion ของผู้ใช้ */
-    @media (prefers-reduced-motion: reduce) {
-        *, *::before, *::after {
-            animation-duration: 0.001ms !important;
-            animation-iteration-count: 1 !important;
-            transition-duration: 0.001ms !important;
-            scroll-behavior: auto !important;
-        }
-    }
 
     @media (min-width: 1024px) and (max-width: 1279px) {
         .ipad-pro-erp-hero-content {
@@ -704,17 +695,10 @@ $erpPortfolios = $mockErpPortfolios;
     document.addEventListener("DOMContentLoaded", () => {
         gsap.registerPlugin(ScrollTrigger);
 
-        const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
         // Helper function for reveal on scroll
         function revealOnScroll(selector, options = {}) {
             const els = gsap.utils.toArray(selector);
             if (!els.length) return;
-
-            if (prefersReducedMotion) {
-                gsap.set(els, { y: 0, opacity: 1 });
-                return;
-            }
 
             els.forEach((el) => {
                 gsap.to(el, {
@@ -733,104 +717,88 @@ $erpPortfolios = $mockErpPortfolios;
         }
 
         // 1. Hero Parallax Background Image
-        if (!prefersReducedMotion) {
-            gsap.utils.toArray(".hero-parallax-img").forEach((img) => {
-                gsap.to(img, {
-                    yPercent: 12,
-                    ease: "none",
-                    scrollTrigger: {
-                        trigger: "#erp-hero",
-                        start: "top top",
-                        end: "bottom top",
-                        scrub: true
-                    }
-                });
+        gsap.utils.toArray(".hero-parallax-img").forEach((img) => {
+            gsap.to(img, {
+                yPercent: 12,
+                ease: "none",
+                scrollTrigger: {
+                    trigger: "#erp-hero",
+                    start: "top top",
+                    end: "bottom top",
+                    scrub: true
+                }
             });
-        }
+        });
 
         // 2. Section "ระบบ ERP คืออะไร"
         revealOnScroll(".gsap-erp-about-left");
         revealOnScroll(".gsap-erp-about-right");
         
-        if (!prefersReducedMotion) {
-            const aboutCards = gsap.utils.toArray(".gsap-erp-about-card");
-            if (aboutCards.length) {
-                gsap.to(aboutCards, {
-                    scrollTrigger: {
-                        trigger: ".gsap-erp-about-right",
-                        start: "top 85%",
-                        toggleActions: "play none none reverse"
-                    },
-                    y: 0,
-                    opacity: 1,
-                    duration: 0.5,
-                    stagger: 0.1,
-                    ease: "power1.out"
-                });
-            }
+        const aboutCards = gsap.utils.toArray(".gsap-erp-about-card");
+        if (aboutCards.length) {
+            gsap.to(aboutCards, {
+                scrollTrigger: {
+                    trigger: ".gsap-erp-about-right",
+                    start: "top 85%",
+                    toggleActions: "play none none reverse"
+                },
+                y: 0,
+                opacity: 1,
+                duration: 0.5,
+                stagger: 0.1,
+                ease: "power1.out"
+            });
         }
 
         // 3. Section "ERP Modules" (10 Modules Staggered)
         const moduleCards = gsap.utils.toArray(".gsap-erp-module-card");
         if (moduleCards.length) {
-            if (prefersReducedMotion) {
-                gsap.set(moduleCards, { y: 0, opacity: 1 });
-            } else {
-                gsap.to(moduleCards, {
-                    scrollTrigger: {
-                        trigger: "#modules",
-                        start: "top 80%",
-                        toggleActions: "play none none reverse"
-                    },
-                    y: 0,
-                    opacity: 1,
-                    duration: 0.5,
-                    stagger: 0.08,
-                    ease: "power2.out"
-                });
-            }
+            gsap.to(moduleCards, {
+                scrollTrigger: {
+                    trigger: "#modules",
+                    start: "top 80%",
+                    toggleActions: "play none none reverse"
+                },
+                y: 0,
+                opacity: 1,
+                duration: 0.5,
+                stagger: 0.08,
+                ease: "power2.out"
+            });
         }
 
         // 4. Section "ERP Benefits" (5 Benefits Staggered)
         const benefitCards = gsap.utils.toArray(".gsap-erp-benefit-card");
         if (benefitCards.length) {
-            if (prefersReducedMotion) {
-                gsap.set(benefitCards, { y: 0, opacity: 1 });
-            } else {
-                gsap.to(benefitCards, {
-                    scrollTrigger: {
-                        trigger: ".gsap-erp-benefit-card",
-                        start: "top 85%",
-                        toggleActions: "play none none reverse"
-                    },
-                    y: 0,
-                    opacity: 1,
-                    duration: 0.5,
-                    stagger: 0.08,
-                    ease: "power2.out"
-                });
-            }
+            gsap.to(benefitCards, {
+                scrollTrigger: {
+                    trigger: ".gsap-erp-benefit-card",
+                    start: "top 85%",
+                    toggleActions: "play none none reverse"
+                },
+                y: 0,
+                opacity: 1,
+                duration: 0.5,
+                stagger: 0.08,
+                ease: "power2.out"
+            });
         }
 
         // 5. Section "Portfolio Showcase"
         const portfolioCards = gsap.utils.toArray(".gsap-erp-portfolio-card");
         if (portfolioCards.length) {
-            if (prefersReducedMotion) {
-                gsap.set(portfolioCards, { y: 0, opacity: 1 });
-            } else {
-                gsap.to(portfolioCards, {
-                    scrollTrigger: {
-                        trigger: "#erp-portfolio-scroll-container",
-                        start: "top 85%",
-                        toggleActions: "play none none reverse"
-                    },
-                    y: 0,
-                    opacity: 1,
-                    duration: 0.6,
-                    stagger: 0.1,
-                    ease: "power2.out"
-                });
-            }
+            gsap.to(portfolioCards, {
+                scrollTrigger: {
+                    trigger: "#erp-portfolio-scroll-container",
+                    start: "top 85%",
+                    toggleActions: "play none none reverse"
+                },
+                y: 0,
+                opacity: 1,
+                duration: 0.6,
+                stagger: 0.1,
+                ease: "power2.out"
+            });
         }
     });
 </script>

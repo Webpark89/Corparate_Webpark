@@ -65,14 +65,6 @@ $ctaImage = asset_url('images/bg-cta.jpg');
         transform: scale(1.12);
         will-change: transform;
     }
-    @media (prefers-reduced-motion: reduce) {
-        *, *::before, *::after {
-            animation-duration: 0.001ms !important;
-            animation-iteration-count: 1 !important;
-            transition-duration: 0.001ms !important;
-            scroll-behavior: auto !important;
-        }
-    }
 
     @media (min-width: 1024px) and (max-width: 1279px) {
         .ipad-pro-article-hero-content {
@@ -626,13 +618,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // เล่น GSAP animation สลับการ์ดบทความเมื่อเปลี่ยนหน้า/หมวดหมู่
         if (typeof gsap !== 'undefined') {
-            const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-            if (!prefersReducedMotion) {
-                gsap.fromTo(visible, 
-                    { opacity: 0, y: 20 },
-                    { opacity: 1, y: 0, duration: 0.45, stagger: 0.08, ease: "power2.out" }
-                );
-            }
+            gsap.fromTo(visible, 
+                { opacity: 0, y: 20 },
+                { opacity: 1, y: 0, duration: 0.45, stagger: 0.08, ease: "power2.out" }
+            );
         }
 
         noResults.classList.toggle('hidden', filteredCards.length > 0);
@@ -723,22 +712,18 @@ document.addEventListener('DOMContentLoaded', () => {
 document.addEventListener("DOMContentLoaded", () => {
     gsap.registerPlugin(ScrollTrigger);
 
-    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
     // Hero Parallax Background
-    if (!prefersReducedMotion) {
-        gsap.utils.toArray(".hero-parallax-img").forEach((img) => {
-            gsap.to(img, {
-                yPercent: 12,
-                ease: "none",
-                scrollTrigger: {
-                    trigger: "#article-hero",
-                    start: "top top",
-                    end: "bottom top",
-                    scrub: true
-                }
-            });
+    gsap.utils.toArray(".hero-parallax-img").forEach((img) => {
+        gsap.to(img, {
+            yPercent: 12,
+            ease: "none",
+            scrollTrigger: {
+                trigger: "#article-hero",
+                start: "top top",
+                end: "bottom top",
+                scrub: true
+            }
         });
-    }
+    });
 });
 </script>

@@ -380,21 +380,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // GSAP Related Articles Reveal
     gsap.registerPlugin(ScrollTrigger);
-    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    if (!prefersReducedMotion) {
-        gsap.from(".lg\\:col-span-4 a", {
-            scrollTrigger: {
-                trigger: ".lg\\:col-span-4",
-                start: "top 85%",
-                toggleActions: "play none none reverse"
-            },
-            y: 20,
-            opacity: 0,
-            duration: 0.5,
-            stagger: 0.1,
-            ease: "power2.out"
-        });
-    }
+    gsap.from(".lg\\:col-span-4 a", {
+        scrollTrigger: {
+            trigger: ".lg\\:col-span-4",
+            start: "top 85%",
+            toggleActions: "play none none reverse"
+        },
+        y: 20,
+        opacity: 0,
+        duration: 0.5,
+        stagger: 0.1,
+        ease: "power2.out"
+    });
 });
 </script>
