@@ -25,6 +25,8 @@ $navItems = [
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title><?= e($pageTitle ?? 'ผู้ดูแลระบบ') ?> | <?= e(SITE_NAME) ?></title>
+    <link rel="icon" type="image/png" href="<?= ADMIN_URL ?>/assets/images/logo.png">
+    <link rel="apple-touch-icon" href="<?= ADMIN_URL ?>/assets/images/logo.png">
     <link href="<?= ADMIN_URL ?>/assets/css/dist/tailwind.css?v=<?= file_exists(__DIR__ . '/../assets/css/dist/tailwind.css') ? filemtime(__DIR__ . '/../assets/css/dist/tailwind.css') : '1.0' ?>" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

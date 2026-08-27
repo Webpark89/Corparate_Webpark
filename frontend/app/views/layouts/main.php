@@ -44,6 +44,8 @@ $content = $content ?? '';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title><?= e($title) ?></title>
+    <link rel="icon" type="image/png" href="<?= e(asset_url('images/logo.png')) ?>">
+    <link rel="apple-touch-icon" href="<?= e(asset_url('images/logo.png')) ?>">
     <meta name="description" content="<?= e($metaDescription) ?>">
     <meta name="robots" content="<?= e($robots) ?>">
     <link rel="canonical" href="<?= e($canonicalUrl) ?>">
