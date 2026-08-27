@@ -128,11 +128,9 @@ CREATE TABLE `article` (
     `content` LONGTEXT COMMENT 'เนื้อหาบทความแบบเต็ม (HTML/Rich Text)',
     `author_id` INT COMMENT 'อ้างอิงผู้เขียน',
     `status` VARCHAR(50) DEFAULT 'draft' COMMENT 'สถานะ: draft (ร่าง), published (เผยแพร่)',
-    `views` INT UNSIGNED NOT NULL DEFAULT 0 COMMENT 'จำนวนการเปิดอ่านบทความ',
     `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT 'วันที่สร้างบทความ',
     `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'วันที่แก้ไขล่าสุด',
     `deleted_at` TIMESTAMP NULL DEFAULT NULL COMMENT 'Soft Delete: เก็บเวลาที่ลบบทความ',
-    INDEX `idx_article_views` (`views`),
     FOREIGN KEY (`category_id`) REFERENCES `categories`(`id`) ON DELETE SET NULL,
     FOREIGN KEY (`author_id`) REFERENCES `authors`(`id`) ON DELETE SET NULL
 ) COMMENT = 'ตารางเก็บข้อมูลบทความ / บล็อก';
@@ -205,13 +203,3 @@ CREATE TABLE `contact_messages` (
     INDEX `idx_contact_status` (`status`),
     INDEX `idx_contact_created` (`created_at` DESC)
 ) COMMENT = 'ตารางเก็บข้อมูลข้อความติดต่อจากลูกค้า';
-
-CREATE TABLE IF NOT EXISTS `daily_traffic` (
-    `id` INT AUTO_INCREMENT PRIMARY KEY,
-    `date` DATE NOT NULL UNIQUE COMMENT 'วันที่บันทึกสถิติ',
-    `pageviews` INT UNSIGNED NOT NULL DEFAULT 0 COMMENT 'จำนวนเปิดหน้าเพจรวม',
-    `unique_visitors` INT UNSIGNED NOT NULL DEFAULT 0 COMMENT 'จำนวนผู้เข้าชมไม่ซ้ำในแต่ละวัน',
-    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    INDEX `idx_traffic_date` (`date`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='ตารางเก็บสถิติการเข้าชมเว็บไซต์รายวัน';

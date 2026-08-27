@@ -15,7 +15,7 @@ $trustLogos = $trustLogos ?? [];
 $company = $company ?? [];
 $contactEmail = $company['contact']['email'] ?? 'oraphan@webpark.co.th';
 $contactPhone = $company['contact']['phone'] ?? '095 539 2666';
-$contactAddress = $company['contact']['address'] ?? '525/89 ซอยลาดพร้าว126 แขวงพลับพลา เขตวังทองหลาง กรุงเทพมหานคร 10310';
+$contactAddress = $company['contact']['address'] ?? t('footer.office_address');
 ?>
 
 <style>
@@ -67,15 +67,23 @@ $contactAddress = $company['contact']['address'] ?? '525/89 ซอยลาด�
         will-change: transform;
     }
     @media (min-width: 1025px) {
+        .hero-parallax-img {
+            transform: scale(1.6) translate(-2%, -5%) !important;
+        }
         .desktop-about-hero-h1 {
-            font-size: 5.5rem !important;
+            font-size: 4.5rem !important;
             line-height: 1.1 !important;
-            font-weight: 700 !important;
+            font-weight: 900 !important;
         }
         .desktop-about-hero-p {
             font-size: 1.25rem !important;
             line-height: 1.75 !important;
             max-width: 34rem !important;
+        }
+    }
+    @media (min-width: 1536px) {
+        .hero-parallax-img {
+            transform: scale(1.8) translate(-2%, -2%) !important;
         }
     }
     
@@ -113,8 +121,11 @@ $contactAddress = $company['contact']['address'] ?? '525/89 ซอยลาด�
     @media (max-width: 759px) {
         .mobile-about-process-title {
             white-space: nowrap !important;
-            font-size: 1rem !important;
+            font-size: 1.15rem !important;
             letter-spacing: -0.3px !important;
+        }
+        .mobile-about-process-desc {
+            font-size: 1.05rem !important;
         }
     }
     
@@ -256,9 +267,9 @@ $contactAddress = $company['contact']['address'] ?? '525/89 ซอยลาด�
                     </ol>
                 </nav>
                     
-                <h1 class="animate-fade-up delay-200 leading-[1.1] mb-2 tracking-tighter">
-                    <span class="text-4xl md:text-6xl lg:text-8xl font-bold bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block py-2 desktop-about-hero-h1"><?= e(getCurrentLang() === 'th' ? 'ผู้ให้บริการด้าน' : 'Service Provider for') ?></span><br class="hidden sm:inline">
-                    <span class="text-4xl md:text-6xl lg:text-8xl font-bold bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block py-2 desktop-about-hero-h1" style="animation-delay: -3s;">ERP / ERM</span>
+                <h1 class="animate-fade-up delay-200 text-5xl sm:text-4xl md:text-6xl lg:text-8xl font-lg leading-[1.1] mb-2 tracking-tighter">
+                    <span class="bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block py-3 desktop-about-hero-h1 ipad-pro-about-hero-span1"><?= e(getCurrentLang() === 'th' ? 'ผู้ให้บริการด้าน' : 'Service Provider for') ?></span><br class="hidden sm:inline">
+                    <span class="bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block desktop-about-hero-h1 ipad-pro-about-hero-span2" style="animation-delay: -3s;">ERP / ERM</span>
                 </h1>
 
                 <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-lg md:text-xl leading-relaxed max-w-lg mb-10 font-medium desktop-about-hero-p ipad-pro-about-hero-p">
@@ -451,7 +462,7 @@ $contactAddress = $company['contact']['address'] ?? '525/89 ซอยลาด�
                                     <span class="text-xl font-extrabold desktop-about-process-step ipad-pro-about-process-step ipad-air-about-process-step" style="color: #043B94;"><?= e($item['step']) ?></span>
                                     <h4 class="text-dark font-bold text-lg md:text-base group-hover:text-primary transition-colors desktop-about-process-title ipad-pro-about-process-title ipad-air-about-process-title mobile-about-process-title"><?= e($item['title']) ?></h4>
                                 </div>
-                                <p class="text-slate-500 text-base md:text-sm leading-relaxed desktop-about-process-desc ipad-pro-about-process-desc ipad-air-about-process-desc ipad-mini-about-process-desc"><?= $item['desc'] ?></p>
+                                <p class="text-slate-500 text-base md:text-sm leading-relaxed desktop-about-process-desc ipad-pro-about-process-desc ipad-air-about-process-desc ipad-mini-about-process-desc mobile-about-process-desc"><?= $item['desc'] ?></p>
                             </div>
                         </div>
                     <?php endforeach; ?>

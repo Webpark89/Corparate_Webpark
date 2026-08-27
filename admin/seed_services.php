@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../frontend/app/bootstrap.php';
 $db = Database::getInstance();
+
 $services = [
     [
         'slug' => 'erp-erm',
@@ -40,9 +41,12 @@ $services = [
         ]
     ]
 ];
+
 $stmt = $db->prepare('UPDATE service SET details_json = ? WHERE slug = ?');
+
 foreach ($services as $s) {
     $detailsJson = json_encode(['features' => $s['features']]);
     $stmt->execute([$detailsJson, $s['slug']]);
 }
+
 echo "Database features successfully updated for all 4 services!\n";

@@ -117,7 +117,7 @@ class Router
             $params = [];
             foreach ($matches as $key => $value) {
                 if (is_string($key)) {
-                    $params[$key] = rawurldecode($value);
+                    $params[$key] = $value;
                 }
             }
 

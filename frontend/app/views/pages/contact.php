@@ -242,23 +242,15 @@ $form = $form ?? [];
                             }
                         </style>
                         <form id="contactMainForm" method="post" class="flex flex-col flex-grow space-y-4">
-                            <!-- First Name & Last Name (Separated, 2 columns) -->
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                <div>
-                                    <input type="text" id="contact_first_name" name="first_name" placeholder="<?= e(t('common.form_label_firstname')) ?> *" value="<?= e($form['first_name'] ?? '') ?>" required maxlength="30"
-                                        class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-base text-slate-900 outline-none transition-all duration-300 custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary focus:shadow-inner"
-                                        oninput="this.value = this.value.replace(/\s+/g, '');">
-                                </div>
-                                <div>
-                                    <input type="text" id="contact_last_name" name="last_name" placeholder="<?= e(t('common.form_label_lastname')) ?> *" value="<?= e($form['last_name'] ?? '') ?>" required maxlength="30"
-                                        class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-base text-slate-900 outline-none transition-all duration-300 custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary focus:shadow-inner"
-                                        oninput="this.value = this.value.replace(/\s+/g, '');">
-                                </div>
+                            <!-- Full Name -->
+                            <div>
+                                <input type="text" id="contact_name" name="name" placeholder="<?= e(t('common.form_label_fullname')) ?> *" value="<?= e($form['name'] ?? '') ?>" required maxlength="100"
+                                    class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-base text-slate-900 outline-none transition-all duration-300 custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary focus:shadow-inner">
                             </div>
 
                             <!-- Company Name (Optional) -->
                             <div>
-                                <input type="text" name="company_name" placeholder="<?= e(t('common.form_label_company_optional')) ?>" value="<?= e($form['company_name'] ?? '') ?>" maxlength="100"
+                                <input type="text" name="company" placeholder="<?= e(t('common.form_label_company')) ?>" value="<?= e($form['company'] ?? '') ?>" maxlength="100"
                                     class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-base text-slate-900 outline-none transition-all duration-300 custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary focus:shadow-inner">
                             </div>
 
@@ -449,6 +441,13 @@ $form = $form ?? [];
                             border: none !important;
                         }
                     }
+                    @media (min-width: 760px) and (max-width: 819px) {
+                        .ipad-mini-feature-item {
+                            flex-direction: column !important;
+                            align-items: center !important;
+                            text-align: center !important;
+                        }
+                    }
                 </style>
                 <div class="text-[#043B94] shrink-0">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-12 h-12">
@@ -475,21 +474,21 @@ $form = $form ?? [];
     <div class="mx-auto w-full max-w-7xl px-4 sm:px-4 lg:px-6 desktop-wide-container-contact"> 
         <div class="lg:px-12 xl:px-24">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 bg-[#f4f9ff] border border-blue-50/50 rounded-[2rem] p-6 md:p-8 desktop-features-container">
-                <div class="flex items-start gap-4 p-4">
+                <div class="flex items-start gap-4 p-4 ipad-mini-feature-item">
                     <div class="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center shrink-0 shadow-sm desktop-feature-icon-wrapper"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg></div>
                     <div>
                         <h4 style="color: #0663F6;" class="font-bold text-[17px] md:text-lg mb-1 desktop-feature-title"><?= e(t('contact.fast_response_title')) ?></h4>
                         <p style="color: #022862;" class="text-base leading-relaxed desktop-feature-desc"><?= e(t('contact.fast_response_desc')) ?></p>
                     </div>
                 </div>
-                <div class="flex items-start gap-4 p-4 border-y md:border-y-0 md:border-x border-blue-100/50 desktop-border-none">
+                <div class="flex items-start gap-4 p-4 border-y md:border-y-0 md:border-x border-blue-100/50 desktop-border-none ipad-mini-feature-item">
                     <div class="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center shrink-0 shadow-sm desktop-feature-icon-wrapper"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg></div>
                     <div>
                         <h4 style="color: #0663F6;" class="font-bold text-[17px] md:text-lg mb-1 desktop-feature-title"><?= e(t('contact.expert_advice_title')) ?></h4>
                         <p style="color: #022862;" class="text-base leading-relaxed desktop-feature-desc"><?= e(t('contact.expert_advice_desc')) ?></p>
                     </div>
                 </div>
-                <div class="flex items-start gap-4 p-4">
+                <div class="flex items-start gap-4 p-4 ipad-mini-feature-item">
                     <div class="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center shrink-0 shadow-sm desktop-feature-icon-wrapper"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg></div>
                     <div>
                         <h4 style="color: #0663F6;" class="font-bold text-[17px] md:text-lg mb-1 desktop-feature-title"><?= e(t('contact.full_system_support_title')) ?></h4>
@@ -527,13 +526,7 @@ $form = $form ?? [];
             
             <div class="w-full h-[260px] md:h-[320px] rounded-2xl overflow-hidden relative border border-slate-200 shadow-sm group desktop-map-container">
                 
-                <!-- Desktop Info Card Overlay -->
-                <div class="hidden lg:block absolute top-8 left-8 bg-white p-6 rounded-[1.25rem] shadow-xl z-30 max-w-sm border border-slate-100">
-                    <h3 class="text-[#043B94] font-bold text-xl mb-2"><?= e(t('contact.company_name')) ?></h3>
-                    <p class="text-[#022862] text-sm leading-relaxed">
-                        <?= e(t('contact.company_address')) ?>
-                    </p>
-                </div>
+                <!-- Desktop Info Card Overlay removed to prevent overlap with native map bubble -->
 
                 <!-- Full Overlay Link (Hidden on Desktop) -->
                 <a href="https://www.google.com/maps/search/?api=1&query=บริษัท+เวบปาค+จำกัด+525/89+ซอยลาดพร้าว+126" 

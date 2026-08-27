@@ -1,17 +1,21 @@
 <?php
+
 /**
  * Admin portfolio list — search, filter, paginate, and manage portfolio entries.
  */
 $pageTitle = 'Portfolio Management';
 $page = 'portfolio';
 require_once __DIR__ . '/../includes/header.php';
+
 $search = trim($_GET['search'] ?? '');
 $categoryFilter = $_GET['category_id'] ?? '';
 $statusFilter = $_GET['status'] ?? '';
 $current = max(1, (int) ($_GET['p'] ?? 1));
 $perPage = 10;
+
 $where = [];
 $params = [];
+
 if ($search !== '') {
     $searchLike = "%{$search}%";
     $where[] = '(p.meta_title LIKE ? OR p.client_name LIKE ? OR p.tech_stack LIKE ?)';
@@ -19,19 +23,25 @@ if ($search !== '') {
     $params[] = $searchLike;
     $params[] = $searchLike;
 }
+
 if ($categoryFilter !== '') {
     $where[] = 'p.category_id = ?';
     $params[] = (int) $categoryFilter;
 }
+
 if (in_array($statusFilter, ['draft', 'published', 'hidden'], true)) {
     $where[] = 'p.status = ?';
     $params[] = $statusFilter;
 }
+
 $whereSql = $where ? 'WHERE ' . implode(' AND ', $where) : '';
+
 $totalStatement = db()->prepare("SELECT COUNT(*) FROM portfolio p $whereSql");
 $totalStatement->execute($params);
 $total = (int) $totalStatement->fetchColumn();
+
 $pagination = paginate($total, $perPage, $current);
+
 $sql = "SELECT p.*, c.name AS category_name, aut.display_name AS author_name
         FROM portfolio p
         LEFT JOIN categories c ON p.category_id = c.id
@@ -39,22 +49,28 @@ $sql = "SELECT p.*, c.name AS category_name, aut.display_name AS author_name
         $whereSql
         ORDER BY p.created_at DESC
         LIMIT {$pagination['perPage']} OFFSET {$pagination['offset']}";
+
 $statement = db()->prepare($sql);
 $statement->execute($params);
 $portfolios = $statement->fetchAll();
+
 $categories = db()->query('SELECT id, name FROM categories ORDER BY name')->fetchAll();
 ?>
+
 <div class="mx-auto w-full max-w-none px-2 pb-8 pt-1 text-sm md:px-4 lg:px-8">
+
     <header class="mb-5 flex flex-col gap-3 border-l-4 border-blue-500 pl-4 md:flex-row md:items-center md:justify-between">
         <div>
             <h2 class="text-lg font-bold text-slate-900">การจัดการผลงาน (Portfolio)</h2>
             <p class="mt-1 text-xs text-slate-500">รายการผลงานโครงการทั้งหมดของบริษัท อัปเดตล่าสุดปี 2026</p>
         </div>
+
         <a href="create.php"
             class="inline-flex h-9 items-center rounded-xl bg-blue-600 px-4 text-xs font-semibold text-white transition hover:bg-blue-700 shadow-sm shadow-blue-500/10">
             + สร้างผลงานใหม่
         </a>
     </header>
+
     <section class="mb-5 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
         <div class="p-4">
             <form method="get" class="grid grid-cols-1 gap-3 md:grid-cols-12 items-center">
@@ -65,6 +81,7 @@ $categories = db()->query('SELECT id, name FROM categories ORDER BY name')->fetc
                             class="w-full border-0 bg-transparent px-3 py-2 text-xs text-slate-700 placeholder:text-slate-400 focus:outline-none focus:ring-0">
                     </div>
                 </div>
+
                 <div class="md:col-span-3">
                     <select name="category_id" onchange="this.form.submit()"
                         class="w-full rounded-xl border border-slate-200 bg-slate-50/50 px-3 py-2 text-xs text-slate-700 focus:bg-white focus:border-blue-500 focus:outline-none transition-all">
@@ -74,6 +91,7 @@ $categories = db()->query('SELECT id, name FROM categories ORDER BY name')->fetc
                         <?php endforeach; ?>
                     </select>
                 </div>
+
                 <div class="md:col-span-3">
                     <select name="status" onchange="this.form.submit()"
                         class="w-full rounded-xl border border-slate-200 bg-slate-50/50 px-3 py-2 text-xs text-slate-700 focus:bg-white focus:border-blue-500 focus:outline-none transition-all">
@@ -83,6 +101,7 @@ $categories = db()->query('SELECT id, name FROM categories ORDER BY name')->fetc
                         <option value="hidden" <?= $statusFilter === 'hidden' ? 'selected' : '' ?>>ซ่อนอยู่</option>
                     </select>
                 </div>
+
                 <div class="flex gap-2 md:col-span-2">
                     <button type="submit" class="flex-1 h-8 rounded-xl bg-slate-900 text-xs font-semibold text-white transition hover:bg-slate-800">กรอง</button>
                     <a href="index.php" class="inline-flex flex-1 items-center justify-center h-8 rounded-xl border border-slate-200 bg-white text-xs font-medium text-slate-600 transition hover:bg-slate-50">ล้าง</a>
@@ -90,6 +109,7 @@ $categories = db()->query('SELECT id, name FROM categories ORDER BY name')->fetc
             </form>
         </div>
     </section>
+
     <section class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
         <div class="overflow-x-auto">
             <table class="min-w-full divide-y divide-slate-200 text-xs">
@@ -105,15 +125,18 @@ $categories = db()->query('SELECT id, name FROM categories ORDER BY name')->fetc
                         <th class="px-4 py-3 text-right">การจัดการ</th>
                     </tr>
                 </thead>
+
                 <tbody class="divide-y divide-slate-100 bg-white">
                     <?php foreach ($portfolios as $row): ?>
                         <tr class="hover:bg-slate-50/50 transition-colors cursor-pointer js-clickable-row"
                             data-href="edit.php?id=<?= (int) $row['id'] ?>">
+
                             <td class="px-4 py-3">
                                 <img src="<?= e(resolve_admin_image_url($row['cover_image']) ?: 'https://picsum.photos/seed/p' . $row['id'] . '/120/80') ?>"
                                     class="h-10 w-[60px] rounded-lg border border-slate-200 object-cover shadow-sm"
                                     alt="<?= e($row['cover_image_alt'] ?? '') ?>">
                             </td>
+
                             <td class="px-3 py-3">
                                 <div class="max-w-[200px] truncate font-semibold text-slate-900">
                                     <?= e($row['meta_title'] ?: 'ไม่มีชื่อผลงาน') ?>
@@ -122,6 +145,7 @@ $categories = db()->query('SELECT id, name FROM categories ORDER BY name')->fetc
                                     /portfolio/<?= e($row['slug']) ?>
                                 </div>
                             </td>
+
                             <td class="px-3 py-3">
                                 <div class="max-w-[150px] truncate font-medium text-slate-700">
                                     <?= e($row['client_name'] ?: 'ไม่ระบุลูกค้า') ?>
@@ -130,11 +154,13 @@ $categories = db()->query('SELECT id, name FROM categories ORDER BY name')->fetc
                                     <?= e($row['tech_stack'] ?: '-') ?>
                                 </div>
                             </td>
+
                             <td class="px-3 py-3">
                                 <span class="inline-flex rounded-md border border-slate-200 bg-slate-50 px-2 py-0.5 text-[11px] font-medium text-slate-600">
                                     <?= e($row['category_name'] ?? 'ไม่มีหมวดหมู่') ?>
                                 </span>
                             </td>
+
                             <td class="px-3 py-3">
                                 <?php if ($row['status'] === 'published'): ?>
                                     <span class="inline-flex rounded-lg border border-emerald-200 bg-emerald-50 px-2.5 py-0.5 text-[11px] font-semibold text-emerald-700">
@@ -151,9 +177,11 @@ $categories = db()->query('SELECT id, name FROM categories ORDER BY name')->fetc
                                     </span>
                                 <?php endif; ?>
                             </td>
+
                             <td class="px-3 py-3 text-[11px] text-slate-500 font-mono">
                                 <?= date('d/m/Y', strtotime($row['created_at'])) ?>
                             </td>
+
                             <td class="px-3 py-3 text-[11px] text-slate-500 font-mono">
                                 <?php if (!empty($row['updated_at'])): ?>
                                     <?= date('d/m/Y H:i', strtotime($row['updated_at'])) ?>
@@ -161,6 +189,7 @@ $categories = db()->query('SELECT id, name FROM categories ORDER BY name')->fetc
                                     <span class="text-slate-400 italic">-</span>
                                 <?php endif; ?>
                             </td>
+
                             <td class="px-4 py-3 text-right" onclick="event.stopPropagation();">
                                 <div class="inline-flex overflow-hidden rounded-xl border border-slate-200 shadow-sm">
                                     <a href="edit.php?id=<?= (int) $row['id'] ?>"
@@ -192,8 +221,10 @@ $categories = db()->query('SELECT id, name FROM categories ORDER BY name')->fetc
                                     </button>
                                 </div>
                             </td>
+
                         </tr>
                     <?php endforeach; ?>
+
                     <?php if (!$portfolios): ?>
                         <tr>
                             <td colspan="8" class="px-4 py-12 text-center text-xs text-slate-400 border-dashed">
@@ -204,89 +235,31 @@ $categories = db()->query('SELECT id, name FROM categories ORDER BY name')->fetc
                 </tbody>
             </table>
         </div>
-        <!-- Pagination -->
-        <?php if ($total > 0): 
-            $totalPages = (int)$pagination['pages'];
-            $currPage = (int)$pagination['current'];
-            if ($totalPages <= 7) {
-                $pageRange = range(1, $totalPages);
-            } elseif ($currPage <= 4) {
-                $pageRange = [1, 2, 3, 4, 5, '...', $totalPages];
-            } elseif ($currPage >= $totalPages - 3) {
-                $pageRange = [1, '...', $totalPages - 4, $totalPages - 3, $totalPages - 2, $totalPages - 1, $totalPages];
-            } else {
-                $pageRange = [1, '...', $currPage - 1, $currPage, $currPage + 1, '...', $totalPages];
-            }
-
-            $buildPageUrl = function($pageNum) use ($categoryFilter, $statusFilter, $search) {
-                $q = ['p' => $pageNum];
-                if ($categoryFilter !== '') $q['category_id'] = $categoryFilter;
-                if ($statusFilter !== '') $q['status'] = $statusFilter;
-                if ($search !== '') $q['search'] = $search;
-                return '?' . http_build_query($q);
-            };
-        ?>
-            <div class="flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-slate-100 bg-white px-6 py-4 text-sm text-slate-700 select-none">
-                <!-- Pagination Controls -->
-                <div class="flex flex-wrap items-center gap-1 sm:gap-1.5">
-                    <!-- Previous Button -->
-                    <?php if ($currPage > 1): ?>
-                        <a href="<?= $buildPageUrl($currPage - 1) ?>" class="inline-flex items-center text-sm font-medium text-slate-700 hover:text-indigo-600 transition px-2 py-1 mr-1">
-                            <svg class="w-4 h-4 mr-1 text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
-                            </svg>
-                            Previous
-                        </a>
-                    <?php else: ?>
-                        <span class="inline-flex items-center text-sm font-medium text-slate-300 pointer-events-none px-2 py-1 mr-1">
-                            <svg class="w-4 h-4 mr-1 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
-                            </svg>
-                            Previous
-                        </span>
-                    <?php endif; ?>
-
-                    <!-- Page Numbers -->
-                    <?php foreach ($pageRange as $pItem): ?>
-                        <?php if ($pItem === '...'): ?>
-                            <span class="inline-flex items-center justify-center w-8 h-8 text-sm text-slate-400 font-medium">...</span>
-                        <?php elseif ($pItem === $currPage): ?>
-                            <span class="inline-flex items-center justify-center w-8 h-8 rounded-full text-white text-sm font-semibold shadow-sm" style="background-color: #5046e5; box-shadow: 0 0 0 4px #e0e7ff;">
-                                <?= $pItem ?>
-                            </span>
-                        <?php else: ?>
-                            <a href="<?= $buildPageUrl($pItem) ?>" class="inline-flex items-center justify-center w-8 h-8 rounded-full text-slate-700 hover:bg-slate-100 hover:text-slate-900 text-sm font-medium transition">
-                                <?= $pItem ?>
-                            </a>
-                        <?php endif; ?>
-                    <?php endforeach; ?>
-
-                    <!-- Next Button -->
-                    <?php if ($currPage < $totalPages): ?>
-                        <a href="<?= $buildPageUrl($currPage + 1) ?>" class="inline-flex items-center text-sm font-medium text-slate-700 hover:text-indigo-600 transition px-2 py-1 ml-1">
-                            Next
-                            <svg class="w-4 h-4 ml-1 text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
-                            </svg>
-                        </a>
-                    <?php else: ?>
-                        <span class="inline-flex items-center text-sm font-medium text-slate-300 pointer-events-none px-2 py-1 ml-1">
-                            Next
-                            <svg class="w-4 h-4 ml-1 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
-                            </svg>
-                        </span>
-                    <?php endif; ?>
-                </div>
-
-                <!-- Right Summary -->
-                <div class="text-sm text-slate-600 font-normal">
-                    Showing <?= count($portfolios) ?> of <?= number_format($total) ?> results
-                </div>
-            </div>
-        <?php endif; ?>
     </section>
+
+    <?php if ($pagination['pages'] > 1): ?>
+        <nav class="mt-4 flex justify-center" aria-label="Pagination">
+            <ul class="inline-flex items-center gap-1">
+                <?php for ($pageNumber = 1; $pageNumber <= $pagination['pages']; $pageNumber++):
+                    $queryString = http_build_query(array_filter([
+                        'search' => $search,
+                        'category_id' => $categoryFilter,
+                        'status' => $statusFilter,
+                        'p' => $pageNumber,
+                    ], static fn($value) => $value !== null && $value !== '')); ?>
+                    <li>
+                        <a href="?<?= e($queryString) ?>"
+                            class="inline-flex h-8 w-8 items-center justify-center rounded-lg text-xs font-semibold transition-colors <?= $pageNumber === $pagination['current'] ? 'bg-slate-900 text-white shadow-sm' : 'border border-slate-200 bg-white text-slate-600 hover:bg-slate-50' ?>">
+                            <?= $pageNumber ?>
+                        </a>
+                    </li>
+                <?php endfor; ?>
+            </ul>
+        </nav>
+    <?php endif; ?>
+
 </div>
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const rows = document.querySelectorAll('.js-clickable-row');
@@ -300,6 +273,7 @@ $categories = db()->query('SELECT id, name FROM categories ORDER BY name')->fetc
                 }
             });
         });
+
         const toggleForms = document.querySelectorAll('.js-toggle-form');
         toggleForms.forEach(form => {
             form.addEventListener('submit', function(event) {
@@ -312,4 +286,5 @@ $categories = db()->query('SELECT id, name FROM categories ORDER BY name')->fetc
         });
     });
 </script>
+
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>

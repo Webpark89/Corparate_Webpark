@@ -10,17 +10,12 @@ declare(strict_types=1);
  *
  * @return array<string, mixed>
  */
-$host = (string) ($_SERVER['HTTP_HOST'] ?? '');
-$isLocalhost = in_array($host, ['localhost', '127.0.0.1'], true)
-    || str_starts_with($host, 'localhost:')
-    || str_starts_with($host, '127.0.0.1:');
-
 return [
     'app' => [
         'name' => 'webpark',
-        /** Base path for routing — auto-detect localhost vs domain root */
-        'base_url' => $isLocalhost ? '/Corparate_Webpark' : '',
-        'asset_base_url' => $isLocalhost ? '/Corparate_Webpark/frontend/public' : '/frontend/public',
+        /** Base path for routing — must match Apache/nginx alias or subdirectory. */
+        'base_url' => '/Corparate_Webpark',
+        'asset_base_url' => '/Corparate_Webpark/frontend/public',
         'description' => 'Lightweight MVC refactor for the WEBPARK site.',
     ],
     'company' => [

@@ -318,6 +318,11 @@ if (isset($services) && is_array($services)) {
         
         /* iPad Mini (768px) specific fixes */
         @media (min-width: 760px) and (max-width: 819px) {
+            .ipad-mini-services-subtitle {
+                white-space: normal !important;
+                font-size: 1.5rem !important;
+            }
+            .ipad-mini-services-approach-section { padding-top: 0 !important; }
             /* General Grey Text Sizes */
             .ipad-mini-services-desc { font-size: 1.15rem !important; line-height: 1.7 !important; }
             .ipad-mini-service-card-desc { 
@@ -778,7 +783,7 @@ if (isset($services) && is_array($services)) {
                 <?= e(t('common.nav_services') !== 'common.nav_services' ? t('common.nav_services') : (getCurrentLang() === 'th' ? 'บริการของเรา' : 'Our Services')) ?>
             </h1>
             <div class="mt-2 mb-4 md:mb-6 gsap-fade-up" style="width: 48px; height: 3px; background-color: #0663F6;"></div>
-            <span class="text-lg sm:text-xl md:text-3xl font-bold gsap-fade-up w-full max-w-none mb-4 block leading-tight tracking-tighter md:tracking-normal whitespace-nowrap ipad-pro-services-subtitle ipad-air-services-subtitle" style="color: #043B94;">
+            <span class="text-lg sm:text-xl md:text-3xl font-bold gsap-fade-up w-full max-w-none mb-4 block leading-tight tracking-tighter md:tracking-normal whitespace-nowrap ipad-pro-services-subtitle ipad-air-services-subtitle ipad-mini-services-subtitle" style="color: #043B94;">
                 <?= getCurrentLang() === 'th' ? 'บริการของเรา ครอบคลุมทุกมิติธุรกิจดิจิทัล' : 'Our services cover every dimension of digital business' ?>
             </span>
             <p class="gsap-fade-up text-slate-500 text-lg md:text-[15px] lg:text-base xl:text-[17px] leading-relaxed w-full max-w-none ipad-pro-services-desc ipad-air-services-desc ipad-mini-services-desc">
@@ -787,6 +792,7 @@ if (isset($services) && is_array($services)) {
         </div>
     </div>
 </section>
+<?php if (!empty($services)): ?>
 <section id="gsap-services-grid" class="bg-white py-8 lg:py-16 font-sans">
     <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8 desktop-wide-container-services">
         <div class="lg:px-12 xl:px-24">
@@ -849,6 +855,7 @@ if (isset($services) && is_array($services)) {
         </div>
     </div>
 </section>
+<?php endif; ?>
 <section class="font-sans pb-12">
     <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8 desktop-wide-container-services">
         <div class="lg:px-12 xl:px-24">
@@ -887,7 +894,7 @@ if (isset($services) && is_array($services)) {
         </div>
     </div>
 </section>
-<section id="our-approach" class="py-16 lg:py-24 ipad-pro-services-approach-section" style="background-color: #f1f5f9;">
+<section id="our-approach" class="py-16 lg:py-24 ipad-pro-services-approach-section ipad-mini-services-approach-section" style="background-color: #f1f5f9;">
     <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8 desktop-wide-container-services">
         <div class="lg:px-12 xl:px-24">
             <div class="text-left md:text-center mb-10 md:mb-16 flex flex-col items-start md:items-center">

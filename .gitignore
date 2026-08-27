@@ -1,6 +1,4 @@
 node_modules/
 admin/node_modules/
 frontend/node_modules/
-vendor/
-composer.phar
 .agents/

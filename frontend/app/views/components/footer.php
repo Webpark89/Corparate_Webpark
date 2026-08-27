@@ -15,8 +15,8 @@ $email = $company['contact']['email'] ?? '';
 $phone = $company['contact']['phone'] ?? '';
 $phone = str_replace(' ', '-', $phone);
 $address = $company['contact']['address'] ?? '';
-$officeLabel = 'สำนักงานใหญ่ :';
-$officeValue = $company['contact']['address'] ?? '525/89 ซอยลาดพร้าว126 แขวงพลับพลา เขตวังทองหลาง กรุงเทพมหานคร 10310';
+$officeLabel = t('footer.office_headquarters_label');
+$officeValue = t('footer.office_address');
 $phoneHref = preg_replace('/[^0-9+]/', '', $phone) ?? '';
 
 $structuredSitemap = [
@@ -298,11 +298,11 @@ $socialLinks = [
 
                     <div class="footer-contact-block" style="display: flex; flex-direction: column; gap: 0.75rem;">
                         <div style="display: flex; flex-wrap: wrap; gap: 0.25rem; align-items: baseline;">
-                            <span style="font-weight: 700; color: #0663F6; font-size: 1.125rem;">อีเมล :</span>
+                            <span style="font-weight: 700; color: #0663F6; font-size: 1.125rem;"><?= e(t('footer.email_label')) ?></span>
                             <a style="font-size: 0.9rem; color: #054FC5; text-decoration: none;" href="mailto:<?= e($email) ?>"><?= e($email) ?></a>
                         </div>
                         <div style="display: flex; flex-wrap: wrap; gap: 0.25rem; align-items: baseline;">
-                            <span style="font-weight: 700; color: #0663F6; font-size: 1.125rem;">เบอร์โทร :</span>
+                            <span style="font-weight: 700; color: #0663F6; font-size: 1.125rem;"><?= e(t('footer.phone_label')) ?></span>
                             <a style="font-size: 0.9rem; color: #054FC5; text-decoration: none;" href="tel:<?= e($phoneHref) ?>"><?= e($phone) ?></a>
                         </div>
                     </div>

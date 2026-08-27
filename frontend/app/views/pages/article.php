@@ -73,18 +73,27 @@ $ctaImage = asset_url('images/bg-cta.jpg');
             scroll-behavior: auto !important;
         }
     }
-
-    @media (min-width: 1024px) and (max-width: 1279px) {
-        .ipad-pro-article-hero-content {
-            margin-left: 0 !important;
+    @media (min-width: 768px) and (max-width: 1023px) {
+        .article-filter-btn {
+            padding-left: 0.85rem !important;
+            padding-right: 0.85rem !important;
+            font-size: 0.825rem !important;
+        }
+        .article-filter-track {
+            gap: 0.5rem !important;
         }
     }
-
-    @media (min-width: 1025px) {
-        .desktop-wide-container-article {
-            max-width: 1720px !important;
-            padding-left: 2.5rem !important;
-            padding-right: 2.5rem !important;
+    @media (min-width: 1024px) {
+        .article-filter-track {
+            justify-content: center !important;
+            gap: 1rem !important;
+        }
+        .article-filter-btn {
+            font-size: 1rem !important;
+            padding-left: 1.5rem !important;
+            padding-right: 1.5rem !important;
+            padding-top: 0.6rem !important;
+            padding-bottom: 0.6rem !important;
         }
     }
 </style>
@@ -100,10 +109,10 @@ $ctaImage = asset_url('images/bg-cta.jpg');
         <div class="absolute inset-x-0 bottom-0 h-[30%] bg-gradient-to-t from-white/50 to-transparent z-10"></div>
     </div>
 
-    <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8 pt-12 pb-24 lg:pt-28 lg:pb-32 relative z-10 desktop-wide-container-article">
+    <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 pt-12 pb-24 lg:pt-28 lg:pb-32 relative z-10">
         <div class="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-12 lg:gap-20 items-center">
             
-            <div class="max-w-2xl lg:ml-12 xl:ml-24 ipad-pro-article-hero-content">
+            <div class="max-w-3xl lg:max-w-none">
                 <nav aria-label="Breadcrumb" class="hidden md:block animate-fade-up delay-100 mb-6">
                     <ol class="inline-flex items-center text-sm md:text-base font-medium text-slate-500">
                         <li>
@@ -134,6 +143,9 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                         .hero-title-text { font-size: 3.5rem; line-height: 1.2; }
                         .hero-desc-text { font-size: 24px !important; line-height: 1.7; }
                     }
+                    @media (min-width: 768px) and (max-width: 1023px) {
+                        .ipad-mini-hero-desc { max-width: 450px !important; }
+                    }
                     @media (min-width: 1024px) {
                         .hero-title-text { font-size: 4.5rem; line-height: 1.2; }
                     }
@@ -145,7 +157,7 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                     <span class="hero-title-text font-bold bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block pb-1 md:pb-2 whitespace-nowrap">
                         <?= e(getCurrentLang() === 'th' ? 'บทความความรู้' : 'Knowledge Articles') ?>
                     </span><br>
-                    <span class="hero-title-text font-bold bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block -mt-2 md:-mt-8 whitespace-nowrap" style="animation-delay: -3s;">
+                    <span class="hero-title-text font-bold bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block -mt-2 md:-mt-2 lg:-mt-2 xl:-mt-8 whitespace-nowrap" style="animation-delay: -3s;">
                         <?= e(getCurrentLang() === 'th' ? 'และอัพเดต' : '& Updates') ?>
                     </span>
                 </h1>
@@ -157,7 +169,7 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                     $mobile_desc = "Knowledge articles, tech, and innovation covering ERP systems, digital business, online marketing, AI, and solutions to sustainably grow your organization.";
                 }
                 ?>
-                <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-lg md:text-xl leading-relaxed max-w-2xl mb-10 font-medium">
+                <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-lg md:text-xl leading-relaxed max-w-2xl mb-10 font-medium ipad-mini-hero-desc">
                     <span class="block md:hidden leading-[1.75]">
                         <?= $mobile_desc ?>
                     </span>
@@ -167,8 +179,8 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                             ครอบคลุม ERP ระบบธุรกิจดิจิทัล การตลาดออนไลน์ AI และโซลูชัน<br>
                             <?= e(t('common.articles_growth_summary')) ?>
                         <?php else: ?>
-                            A collection of articles on technology, innovation, and business<br>
-                            strategy covering ERP systems, digital business, online marketing,<br>
+                            A collection of articles on technology, innovation,<br class="hidden lg:block">
+                            and business strategy covering ERP systems, digital business, online marketing,<br class="hidden lg:block">
                             AI, and solutions that help organizations grow sustainably.
                         <?php endif; ?>
                     </span>
@@ -179,99 +191,88 @@ $ctaImage = asset_url('images/bg-cta.jpg');
 </section>
 
 <section class="bg-white" style="padding-top: 1.5rem; padding-bottom: 2.5rem;">
-    <div class="mx-auto max-w-7xl px-6 sm:px-6 lg:px-8 desktop-wide-container-article">
-        <div class="lg:px-12 xl:px-24">
-            <div class="flex flex-col gap-4 md:flex-row md:items-center relative w-full">
-                <div class="hidden items-center md:flex shrink-0 pr-4">
-                    <button id="filter-scroll-left"
-                            type="button"
-                            class="article-filter-arrow flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 text-slate-500 transition-all duration-300 hover:bg-slate-50 opacity-0 pointer-events-none"
-                            aria-label="<?= e(t('article_list.category_scroll_left')) ?>">
-                        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M15 19l-7-7 7-7"/>
-                        </svg>
-                    </button>
-                </div>
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col gap-4 md:flex-row md:items-center relative w-full">
+            <div class="hidden items-center md:flex shrink-0 pr-4">
+                <button id="filter-scroll-left"
+                        type="button"
+                        class="article-filter-arrow flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 text-slate-500 transition-all duration-300 hover:bg-slate-50 opacity-0 pointer-events-none"
+                        aria-label="<?= e(t('article_list.category_scroll_left')) ?>">
+                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M15 19l-7-7 7-7"/>
+                    </svg>
+                </button>
+            </div>
 
-                <div class="relative flex-1 overflow-hidden">
-                    <div id="category-filters" class="article-filter-track flex gap-3 overflow-x-auto py-1 hide-scroll scroll-smooth justify-start md:justify-center" style="-ms-overflow-style: none; scrollbar-width: none;">
-                        
-                        <!-- ปุ่ม: ทั้งหมด -->
-                        <?php 
-                            $allBtnClass = $activeCategorySlug === 'all' 
-                                ? 'border-transparent bg-blue-600 text-white' 
-                                : 'border-blue-200 bg-white text-[#1a2b6d] hover:bg-blue-600 hover:text-white hover:border-transparent';
-                        ?>
+            <div class="relative flex-1 overflow-hidden">
+                <div id="category-filters" class="article-filter-track flex gap-3 overflow-x-auto py-1 hide-scroll scroll-smooth" style="-ms-overflow-style: none; scrollbar-width: none;">
+                    
+                    <!-- ปุ่ม: ทั้งหมด -->
+                    <button type="button"
+                            data-filter="all"
+                            class="article-filter-btn whitespace-nowrap rounded-md border px-5 py-2 text-sm font-medium transition-colors <?= $activeCategorySlug === 'all' ? 'border-transparent bg-blue-600 text-white' : 'border-blue-200 bg-white text-[#1a2b6d] hover:bg-blue-600 hover:text-white hover:border-transparent' ?>">
+                        <?= e(t('common.cta_view_all')) ?>
+                    </button>
+
+                    <!-- ปุ่ม: หมวดหมู่ตาม Loop -->
+                    <?php foreach ($categories as $category):
+                        $slug = trim((string) ($category['slug'] ?? ''));
+                        // You could use translated category names if they are dynamically loaded with current language
+                        $name = $category['name'] ?? '';
+                        if ($slug === '' || $name === '') {
+                            continue;
+                        }
+                        $isActive = $activeCategorySlug === $slug;
+                    ?>
                         <button type="button"
-                                data-filter="all"
-                                class="article-filter-btn whitespace-nowrap rounded-md border px-5 py-2 text-sm font-medium transition-colors <?= $allBtnClass ?>">
-                            <?= e(t('common.cta_view_all')) ?>
+                                data-filter="<?= e($slug) ?>"
+                                class="article-filter-btn whitespace-nowrap rounded-md border px-5 py-2 text-sm font-medium transition-colors <?= $isActive ? 'border-transparent bg-blue-600 text-white' : 'border-blue-200 bg-white text-[#1a2b6d] hover:border-transparent hover:bg-blue-600 hover:text-white' ?>">
+                            <?= e($name) ?>
                         </button>
+                    <?php endforeach; ?>
+                    
 
-                        <!-- ปุ่ม: หมวดหมู่ตาม Loop -->
-                        <?php foreach ($categories as $category):
-                            $slug = trim((string) ($category['slug'] ?? ''));
-                            $name = $category['name'] ?? '';
-                            if ($slug === '' || $name === '') {
-                                continue;
-                            }
-                            $isActive = $activeCategorySlug === $slug;
-                            $catBtnClass = $isActive 
-                                ? 'border-transparent bg-blue-600 text-white' 
-                                : 'border-blue-200 bg-white text-[#1a2b6d] hover:border-transparent hover:bg-blue-600 hover:text-white';
-                        ?>
-                            <button type="button"
-                                    data-filter="<?= e($slug) ?>"
-                                    class="article-filter-btn whitespace-nowrap rounded-md border px-5 py-2 text-sm font-medium transition-colors <?= $catBtnClass ?>">
-                                <?= e($name) ?>
-                            </button>
-                        <?php endforeach; ?>
-                        
-
-                    </div>
                 </div>
+            </div>
 
-                <div class="hidden items-center md:flex shrink-0 pl-4">
-                    <button id="filter-scroll-right"
-                            type="button"
-                            class="article-filter-arrow flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 text-slate-500 transition-all duration-300 hover:bg-slate-50 opacity-0 pointer-events-none"
-                            aria-label="<?= e(t('article_list.category_scroll_right')) ?>">
-                        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M9 5l7 7-7 7"/>
-                        </svg>
-                    </button>
-                </div>
+            <div class="hidden items-center md:flex shrink-0 pl-4">
+                <button id="filter-scroll-right"
+                        type="button"
+                        class="article-filter-arrow flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 text-slate-500 transition-all duration-300 hover:bg-slate-50"
+                        aria-label="<?= e(t('article_list.category_scroll_right')) ?>">
+                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9 5l7 7-7 7"/>
+                    </svg>
+                </button>
             </div>
         </div>
     </div>
 </section>
 
 <section class="bg-white pb-20">
-    <div class="mx-auto max-w-7xl px-6 sm:px-6 lg:px-8 desktop-wide-container-article">
-        <div class="lg:px-12 xl:px-24">
-            <style>
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <style>
+            .article-grid-container {
+                display: grid;
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            .article-card-slide {
+                width: 100%;
+            }
+            @media (min-width: 1024px) {
                 .article-grid-container {
-                    display: grid;
-                    grid-template-columns: 1fr;
-                    gap: 1.5rem;
+                    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
                 }
-                .article-card-slide {
-                    width: 100%;
-                }
-                @media (min-width: 1024px) {
-                    .article-grid-container {
-                        grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-                    }
-                }
-            </style>
-            <div id="article-grid" class="article-grid article-grid-container gap-6 hide-scroll scroll-smooth" style="-ms-overflow-style: none; scrollbar-width: none;">
+            }
+        </style>
+        <div id="article-grid" class="article-grid article-grid-container gap-6 hide-scroll scroll-smooth" style="-ms-overflow-style: none; scrollbar-width: none;">
             <?php 
             foreach ($articles as $article):
-                $itemLang = getCurrentLang();
-                $articleSlug = ($itemLang === 'en' && !empty($article['slug_en'])) ? $article['slug_en'] : (!empty($article['slug']) ? $article['slug'] : (string) ($article['id'] ?? 0));
-                $detailUrl = route_url('/article/' . $articleSlug);
+                $detailUrl = route_url('/article', ['id' => (int) ($article['id'] ?? 0)]);
                 $categoryName = trim((string) ($article['category_name'] ?? ''));
                 $categorySlug = trim((string) ($article['category_slug'] ?? ''));
+                $itemLang = getCurrentLang();
                 $articleTitle = (string) ($article['title'] ?? t('article_list.page_title'));
                 if ($itemLang === 'en' && !empty($article['meta_title_en'])) {
                     $articleTitle = $article['meta_title_en'];
@@ -331,14 +332,13 @@ $ctaImage = asset_url('images/bg-cta.jpg');
             <?php endforeach; ?>
         </div>
 
-        <div id="no-results" class="article-no-results hidden py-14 text-center text-slate-600 flex-col items-center justify-center">
+        <div id="no-results" class="article-no-results hidden py-14 text-center text-slate-600 flex flex-col items-center justify-center">
             <img src="<?= e(asset_url('images/Empty.gif')) ?>" alt="No results" class="w-64 h-auto max-w-full mb-4 object-contain">
             <h3 class="text-lg font-bold text-[#1a2b6d] mb-2"><?= e(t('article_list.empty_state_title')) ?></h3>
             <p class="text-sm text-slate-500"><?= e(t('article_list.empty_state_desc')) ?></p>
         </div>
 
         <nav id="pagination" class="article-pagination mt-8 flex items-center justify-center gap-2" aria-label="Article pagination"></nav>
-        </div>
     </div>
 </section>
 
@@ -630,7 +630,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         noResults.classList.toggle('hidden', filteredCards.length > 0);
-        noResults.classList.toggle('flex', filteredCards.length === 0);
         setTimeout(renderPagination, 100); 
     };
 
@@ -654,13 +653,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const scrollWidth = filterTrack.scrollWidth;
             const clientWidth = filterTrack.clientWidth;
             
-            // If content fits completely without overflow, hide both buttons
-            if (scrollWidth <= clientWidth + 2) {
-                scrollLeftBtn.classList.add('opacity-0', 'pointer-events-none');
-                scrollRightBtn.classList.add('opacity-0', 'pointer-events-none');
-                return;
-            }
-
             // At the leftmost edge (or if not scrolled at all)
             if (scrollLeft <= 5) {
                 scrollLeftBtn.classList.add('opacity-0', 'pointer-events-none');

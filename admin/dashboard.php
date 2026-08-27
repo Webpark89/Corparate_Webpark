@@ -1,32 +1,38 @@
 <?php
+
 /**
  * Admin dashboard — overview stats and recent articles/portfolio activity.
  */
 $pageTitle = 'Dashboard';
 $page = 'dashboard';
 require_once __DIR__ . '/includes/header.php';
+
 $counts = [
     'article' => [
         'total' => (int) db()->query('SELECT COUNT(*) FROM article')->fetchColumn(),
         'published' => (int) db()->query('SELECT COUNT(*) FROM article WHERE status = \'published\'')->fetchColumn(),
         'draft' => (int) db()->query('SELECT COUNT(*) FROM article WHERE status = \'draft\'')->fetchColumn(),
     ],
+
     'portfolio' => [
         'total' => (int) db()->query('SELECT COUNT(*) FROM portfolio')->fetchColumn(),
         'published' => (int) db()->query('SELECT COUNT(*) FROM portfolio WHERE status = \'published\'')->fetchColumn(),
         'draft' => (int) db()->query('SELECT COUNT(*) FROM portfolio WHERE status = \'draft\'')->fetchColumn(),
     ],
+
     'partners' => [
         'total' => (int) db()->query('SELECT COUNT(*) FROM partners')->fetchColumn(),
         'active' => (int) db()->query('SELECT COALESCE(SUM(CASE WHEN is_active = 1 THEN 1 ELSE 0 END), 0) FROM partners')->fetchColumn(),
         'inactive' => (int) db()->query('SELECT COALESCE(SUM(CASE WHEN is_active = 0 THEN 1 ELSE 0 END), 0) FROM partners')->fetchColumn(),
     ],
+
     'review' => [
         'total' => (int) db()->query('SELECT COUNT(*) FROM review')->fetchColumn(),
         'active' => (int) db()->query('SELECT COALESCE(SUM(CASE WHEN is_active = 1 THEN 1 ELSE 0 END), 0) FROM review')->fetchColumn(),
         'inactive' => (int) db()->query('SELECT COALESCE(SUM(CASE WHEN is_active = 0 THEN 1 ELSE 0 END), 0) FROM review')->fetchColumn(),
     ],
 ];
+
 $dashboardCards = [
     [
         'key' => 'article',
@@ -85,119 +91,42 @@ $dashboardCards = [
         'secondaryKey' => 'inactive',
     ],
 ];
+
 $recentPortfolio = db()->query(
     'SELECT p.id, p.meta_title, p.client_name, p.created_at
      FROM portfolio p
      ORDER BY p.created_at DESC LIMIT 5'
 )->fetchAll();
+
 $recentArticle = db()->query(
     'SELECT a.id, a.meta_title, c.name AS category, a.created_at
      FROM article a
      LEFT JOIN categories c ON c.id = a.category_id
      ORDER BY a.created_at DESC LIMIT 5'
 )->fetchAll();
-// Fetch Real Top 5 and Bottom 5 Articles based on views
+
+// Fetch 10 articles for mock stats to replace dummy text, ordered by priority to match the admin list
+$statsArticles = db()->query('SELECT meta_title FROM article ORDER BY priority ASC, created_at DESC LIMIT 10')->fetchAll();
+$mockTop5 = [];
+$mockBottom5 = [];
+$topViews = [450, 320, 210, 150, 90];
+$topPercents = [37, 26, 17, 12, 7];
+$bottomViews = [12, 18, 25, 30, 45];
+$bottomPercents = [9, 14, 19, 23, 35];
 $topColors = ['#3b82f6', '#06b6d4', '#10b981', '#f59e0b', '#8b5cf6'];
 $bottomColors = ['#ef4444', '#f97316', '#facc15', '#a8a29e', '#94a3b8'];
 
-$top5Rows = db()->query(
-    "SELECT id, meta_title, views 
-     FROM article 
-     WHERE (status = 'published' OR status IS NULL) AND deleted_at IS NULL 
-     ORDER BY views DESC, priority ASC, created_at DESC 
-     LIMIT 5"
-)->fetchAll();
-
-$sumTop5Views = array_sum(array_column($top5Rows, 'views'));
-$top5Stats = [];
-foreach ($top5Rows as $i => $row) {
-    $views = (int) ($row['views'] ?? 0);
-    $percent = $sumTop5Views > 0 ? round(($views / $sumTop5Views) * 100) : 20;
-    $top5Stats[] = [
-        'title' => $row['meta_title'] ?: 'บทความ #' . ($row['id'] ?? ($i + 1)),
-        'views' => $views,
-        'percent' => $percent,
-        'color' => $topColors[$i] ?? '#94a3b8',
-    ];
+for ($i = 0; $i < 5; $i++) {
+    $title = isset($statsArticles[$i]) ? $statsArticles[$i]['meta_title'] : 'Article ' . ($i+1);
+    $mockTop5[] = ['title' => $title, 'views' => $topViews[$i], 'percent' => $topPercents[$i], 'color' => $topColors[$i]];
 }
-
-$bottom5Rows = db()->query(
-    "SELECT id, meta_title, views 
-     FROM article 
-     WHERE (status = 'published' OR status IS NULL) AND deleted_at IS NULL 
-     ORDER BY views ASC, priority ASC, created_at ASC 
-     LIMIT 5"
-)->fetchAll();
-
-$sumBottom5Views = array_sum(array_column($bottom5Rows, 'views'));
-$bottom5Stats = [];
-foreach ($bottom5Rows as $i => $row) {
-    $views = (int) ($row['views'] ?? 0);
-    $percent = $sumBottom5Views > 0 ? round(($views / $sumBottom5Views) * 100) : 20;
-    $bottom5Stats[] = [
-        'title' => $row['meta_title'] ?: 'บทความ #' . ($row['id'] ?? ($i + 1)),
-        'views' => $views,
-        'percent' => $percent,
-        'color' => $bottomColors[$i] ?? '#94a3b8',
-    ];
+for ($i = 0; $i < 5; $i++) {
+    $idx = $i + 5;
+    $title = isset($statsArticles[$idx]) ? $statsArticles[$idx]['meta_title'] : 'Article ' . ($idx+1);
+    $mockBottom5[] = ['title' => $title, 'views' => $bottomViews[$i], 'percent' => $bottomPercents[$i], 'color' => $bottomColors[$i]];
 }
-
-// Fetch Real Traffic Data (7 Days, 30 Days, 1 Year)
-$thaiDays = ['อา.', 'จ.', 'อ.', 'พ.', 'พฤ.', 'ศ.', 'ส.'];
-$thaiMonths = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
-
-// 7 Days
-$last7Days = [];
-for ($i = 6; $i >= 0; $i--) {
-    $d = date('Y-m-d', strtotime("-$i days"));
-    $w = (int) date('w', strtotime($d));
-    $last7Days[$d] = ['label' => ($thaiDays[$w] ?? '') . ' (' . date('d/m', strtotime($d)) . ')', 'views' => 0];
-}
-$rows7 = db()->query("SELECT date, pageviews FROM daily_traffic WHERE date >= CURDATE() - INTERVAL 6 DAY ORDER BY date ASC")->fetchAll();
-foreach ($rows7 as $r) {
-    if (isset($last7Days[$r['date']])) {
-        $last7Days[$r['date']]['views'] = (int) $r['pageviews'];
-    }
-}
-$traffic7Labels = array_column(array_values($last7Days), 'label');
-$traffic7Data = array_column(array_values($last7Days), 'views');
-
-// 30 Days (4 Weeks)
-$weeks = [
-    'สัปดาห์ที่ 1' => 0,
-    'สัปดาห์ที่ 2' => 0,
-    'สัปดาห์ที่ 3' => 0,
-    'สัปดาห์ที่ 4' => 0,
-];
-$rows30 = db()->query("SELECT date, pageviews FROM daily_traffic WHERE date >= CURDATE() - INTERVAL 28 DAY ORDER BY date ASC")->fetchAll();
-$todayTs = strtotime(date('Y-m-d'));
-foreach ($rows30 as $r) {
-    $diffDays = (int) floor(($todayTs - strtotime($r['date'])) / 86400);
-    $weekIdx = 4 - min(3, (int) floor($diffDays / 7));
-    $weekKey = 'สัปดาห์ที่ ' . $weekIdx;
-    if (isset($weeks[$weekKey])) {
-        $weeks[$weekKey] += (int) $r['pageviews'];
-    }
-}
-$traffic30Labels = array_keys($weeks);
-$traffic30Data = array_values($weeks);
-
-// 1 Year (12 Months)
-$last12Months = [];
-for ($i = 11; $i >= 0; $i--) {
-    $ym = date('Y-m', strtotime("-$i months"));
-    $mIndex = (int) date('n', strtotime($ym . '-01')) - 1;
-    $last12Months[$ym] = ['label' => $thaiMonths[$mIndex], 'views' => 0];
-}
-$rows12m = db()->query("SELECT DATE_FORMAT(date, '%Y-%m') AS ym, SUM(pageviews) AS total_views FROM daily_traffic WHERE date >= DATE_SUB(CURDATE(), INTERVAL 11 MONTH) GROUP BY ym ORDER BY ym ASC")->fetchAll();
-foreach ($rows12m as $r) {
-    if (isset($last12Months[$r['ym']])) {
-        $last12Months[$r['ym']]['views'] = (int) $r['total_views'];
-    }
-}
-$traffic365Labels = array_column(array_values($last12Months), 'label');
-$traffic365Data = array_column(array_values($last12Months), 'views');
 ?>
+
 <section class="space-y-4" aria-labelledby="dashboardOverviewTitle">
     <header class="section-header">
         <div>
@@ -205,6 +134,7 @@ $traffic365Data = array_column(array_values($last12Months), 'views');
             <p class="section-note text-xs text-slate-500">ภาพรวมสถิติข้อมูลในระบบจัดการเนื้อหา</p>
         </div>
     </header>
+
     <div class="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-4">
         <?php foreach ($dashboardCards as $card): ?>
             <?php
@@ -221,6 +151,7 @@ $traffic365Data = array_column(array_values($last12Months), 'views');
                         <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider block"><?= e($card['title']) ?></span>
                         <div class="text-3xl font-extrabold font-mono <?= e($card['totalTextColor']) ?> mt-0.5"><?= $total ?> <span class="text-xs font-normal text-slate-500"><?= e($card['unit']) ?></span></div>
                     </div>
+
                     <div class="space-y-1.5 pt-1">
                         <div class="flex items-center gap-2 text-xs font-medium text-slate-600">
                             <span class="w-2.5 h-2.5 rounded-md" style="background-color: <?= e($card['primaryColor']) ?>"></span>
@@ -232,6 +163,7 @@ $traffic365Data = array_column(array_values($last12Months), 'views');
                         </div>
                     </div>
                 </div>
+
                 <div class="relative flex items-center justify-center w-28 h-28 shrink-0">
                     <svg class="w-full h-full transform -rotate-90" viewBox="0 0 120 120">
                         <circle cx="60" cy="60" r="50" stroke-width="12" stroke="<?= e($card['secondaryColor']) ?>" fill="transparent" />
@@ -249,6 +181,8 @@ $traffic365Data = array_column(array_values($last12Months), 'views');
         <?php endforeach; ?>
     </div>
 </section>
+
+<!-- โซนกราฟสถิติ (จัดให้พอดีกับ 4 บล็อคด้านบน) -->
 <style>
     @media (min-width: 1280px) {
         .xl-col-span-3 { grid-column: span 3 / span 3 !important; }
@@ -256,156 +190,206 @@ $traffic365Data = array_column(array_values($last12Months), 'views');
     }
 </style>
 <div class="mt-8 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+    
+    <!-- ฝั่งซ้าย: กราฟสถิติการเข้าชมเว็บไซต์ (Traffic Chart) กว้างเท่ากับ 3 บล็อค -->
     <section class="md:col-span-1 xl-col-span-3 bg-white border border-slate-200 rounded-2xl shadow-sm p-6 overflow-hidden flex flex-col min-w-0">
         <div class="flex items-center justify-between mb-4">
             <div>
                 <h3 class="text-lg font-bold text-slate-800">สถิติการเข้าชมเว็บไซต์ (Traffic)</h3>
-                <p class="text-xs text-slate-500">สถิติการเข้าชมจริงจากระบบ (Live Analytics)</p>
+                <p class="text-xs text-slate-500">ข้อมูลจำลองการเข้าชม (Mock Data)</p>
             </div>
             <select id="timeRangeSelector" class="text-xs border-slate-200 rounded-md bg-slate-50 text-slate-600 px-3 py-1.5 focus:ring-primary focus:border-primary">
+                <option value="all">ทั้งหมด</option>
                 <option value="7">7 วันล่าสุด</option>
                 <option value="30">30 วันล่าสุด</option>
                 <option value="365">1 ปีล่าสุด</option>
             </select>
         </div>
+        
         <div class="relative w-full flex-1" style="min-height: 350px;">
             <canvas id="trafficChart"></canvas>
         </div>
     </section>
+
+    <!-- ฝั่งขวา: กราฟวงกลม Top 5 และ Bottom 5 กว้างเท่ากับ 1 บล็อค -->
     <section class="md:col-span-1 xl-col-span-1 flex flex-col gap-6 min-w-0">
         <!-- Top 5 -->
-        <div class="bg-white border border-slate-200 rounded-2xl shadow-sm p-6 flex-1 flex flex-col justify-center">
-            <div class="mb-4 ml-2">
+        <div class="bg-white border border-slate-200 rounded-2xl shadow-sm p-5 flex-1 flex flex-col justify-center">
+            <div class="mb-4">
                 <h3 class="text-sm font-bold text-slate-800">5 อันดับบทความยอดฮิต (Top 5)</h3>
                 <p class="text-[10px] text-slate-400">บทความที่มีคนเข้าชมมากที่สุด</p>
             </div>
+            
             <div class="flex items-center justify-between gap-4">
+                <!-- คำอธิบาย (Legend) แบบ Custom อยู่ซ้าย -->
                 <div class="flex-1 space-y-2 min-w-0">
-                    <?php if (empty($top5Stats)): ?>
-                        <p class="text-xs text-slate-400">ยังไม่มีข้อมูลบทความ</p>
-                    <?php else: ?>
-                        <?php foreach ($top5Stats as $stat): ?>
-                        <div class="flex items-center justify-between text-xs gap-2">
-                            <div class="flex items-center gap-2 min-w-0 flex-1">
-                                <span class="w-2.5 h-2.5 rounded-full shrink-0" style="background-color: <?= e($stat['color']) ?>"></span>
-                                <span class="text-slate-600 font-medium truncate" title="<?= e($stat['title']) ?>"><?= e($stat['title']) ?></span>
-                            </div>
-                            <div class="text-right shrink-0">
-                                <span class="font-bold text-slate-800"><?= number_format($stat['views']) ?></span>
-                            </div>
+                    <?php foreach ($mockTop5 as $stat): ?>
+                    <div class="flex items-center justify-between text-xs gap-2">
+                        <div class="flex items-center gap-2 min-w-0 flex-1">
+                            <span class="w-2.5 h-2.5 rounded-full shrink-0" style="background-color: <?= e($stat['color']) ?>"></span>
+                            <span class="text-slate-600 font-medium truncate"><?= e($stat['title']) ?></span>
                         </div>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
+                        <div class="text-right shrink-0">
+                            <span class="font-bold text-slate-800"><?= $stat['views'] ?></span>
+                        </div>
+                    </div>
+                    <?php endforeach; ?>
                 </div>
+
+                <!-- ตัวกราฟวงกลม อยู่ขวา และมีขนาดเล็กลง -->
                 <div class="relative shrink-0 flex items-center justify-center" style="width: 100px; height: 100px;">
                     <canvas id="top5Chart"></canvas>
                 </div>
             </div>
         </div>
+
         <!-- Bottom 5 -->
-        <div class="bg-white border border-slate-200 rounded-2xl shadow-sm p-6 flex-1 flex flex-col justify-center">
-            <div class="mb-4 ml-2">
+        <div class="bg-white border border-slate-200 rounded-2xl shadow-sm p-5 flex-1 flex flex-col justify-center">
+            <div class="mb-4">
                 <h3 class="text-sm font-bold text-slate-800">5 อันดับยอดชมน้อย (Bottom 5)</h3>
                 <p class="text-[10px] text-slate-400">บทความที่ควรปรับปรุงเนื้อหา</p>
             </div>
+            
             <div class="flex items-center justify-between gap-4">
+                <!-- คำอธิบาย (Legend) แบบ Custom อยู่ซ้าย -->
                 <div class="flex-1 space-y-2 min-w-0">
-                    <?php if (empty($bottom5Stats)): ?>
-                        <p class="text-xs text-slate-400">ยังไม่มีข้อมูลบทความ</p>
-                    <?php else: ?>
-                        <?php foreach ($bottom5Stats as $stat): ?>
-                        <div class="flex items-center justify-between text-xs gap-2">
-                            <div class="flex items-center gap-2 min-w-0 flex-1">
-                                <span class="w-2.5 h-2.5 rounded-full shrink-0" style="background-color: <?= e($stat['color']) ?>"></span>
-                                <span class="text-slate-600 font-medium truncate" title="<?= e($stat['title']) ?>"><?= e($stat['title']) ?></span>
-                            </div>
-                            <div class="text-right shrink-0">
-                                <span class="font-bold text-slate-800"><?= number_format($stat['views']) ?></span>
-                            </div>
+                    <?php foreach ($mockBottom5 as $stat): ?>
+                    <div class="flex items-center justify-between text-xs gap-2">
+                        <div class="flex items-center gap-2 min-w-0 flex-1">
+                            <span class="w-2.5 h-2.5 rounded-full shrink-0" style="background-color: <?= e($stat['color']) ?>"></span>
+                            <span class="text-slate-600 font-medium truncate"><?= e($stat['title']) ?></span>
                         </div>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
+                        <div class="text-right shrink-0">
+                            <span class="font-bold text-slate-800"><?= $stat['views'] ?></span>
+                        </div>
+                    </div>
+                    <?php endforeach; ?>
                 </div>
+
+                <!-- ตัวกราฟวงกลม อยู่ขวา และมีขนาดเล็กลง -->
                 <div class="relative shrink-0 flex items-center justify-center" style="width: 100px; height: 100px;">
                     <canvas id="bottom5Chart"></canvas>
                 </div>
             </div>
         </div>
     </section>
+
 </div>
+
+<!-- ดึงไฟล์ Chart.js จากในเครื่อง Server โดยตรง (แก้ปัญหาเน็ต/แอนตี้ไวรัสบล็อก CDN) -->
 <script src="<?= ADMIN_URL ?>/assets/js/chart.min.js"></script>
 <script>
     const ctx = document.getElementById('trafficChart').getContext('2d');
     
-    // Gradients
+    // สร้าง Gradient สีน้ำเงิน
     const gradientBlue = ctx.createLinearGradient(0, 0, 0, 350);
     gradientBlue.addColorStop(0, 'rgba(59, 130, 246, 0.4)');
     gradientBlue.addColorStop(1, 'rgba(59, 130, 246, 0.0)');
 
+    // สร้าง Gradient สีฟ้าคราม (Teal)
     const gradientTeal = ctx.createLinearGradient(0, 0, 0, 350);
     gradientTeal.addColorStop(0, 'rgba(6, 182, 212, 0.4)');
     gradientTeal.addColorStop(1, 'rgba(6, 182, 212, 0.0)');
 
+    // สร้าง Gradient สีม่วง (Purple)
     const gradientPurple = ctx.createLinearGradient(0, 0, 0, 350);
     gradientPurple.addColorStop(0, 'rgba(139, 92, 246, 0.4)');
     gradientPurple.addColorStop(1, 'rgba(139, 92, 246, 0.0)');
 
-    // Real Traffic Data from PHP
-    const realTraffic = {
+    // ข้อมูล Mock Data 4 แบบ มีการคละตัวเลขให้สมจริง ไม่ให้เพิ่มขึ้นอย่างเดียว
+    const mockData = {
+        'all': {
+            // ใช้คำว่า "ช่วงที่" แทนวันที่หรือเดือน เพื่อให้ครอบคลุมทั้ง วัน (7), สัปดาห์ (4), และเดือน (12)
+            labels: ['ช่วงที่ 1', 'ช่วงที่ 2', 'ช่วงที่ 3', 'ช่วงที่ 4', 'ช่วงที่ 5', 'ช่วงที่ 6', 'ช่วงที่ 7', 'ช่วงที่ 8', 'ช่วงที่ 9', 'ช่วงที่ 10', 'ช่วงที่ 11', 'ช่วงที่ 12'],
+            datasets: [
+                {
+                    label: '7 วันล่าสุด',
+                    data: [320, 250, 480, 190, 510, 890, 720],
+                    borderColor: '#3b82f6', // สีน้ำเงิน
+                    backgroundColor: 'transparent',
+                    borderWidth: 3,
+                    pointBackgroundColor: '#ffffff',
+                    pointBorderColor: '#3b82f6',
+                    tension: 0.4,
+                    fill: false
+                },
+                {
+                    label: '30 วันล่าสุด',
+                    data: [3100, 1850, 4200, 2750],
+                    borderColor: '#06b6d4', // สีฟ้าคราม
+                    backgroundColor: 'transparent',
+                    borderWidth: 3,
+                    pointBackgroundColor: '#ffffff',
+                    pointBorderColor: '#06b6d4',
+                    tension: 0.4,
+                    fill: false
+                },
+                {
+                    label: '1 ปีล่าสุด',
+                    data: [1890, 5000, 3000, 8500, 4200, 9100, 6800, 12500, 7300, 10500, 8200, 14000],
+                    borderColor: '#8b5cf6', // สีม่วง
+                    backgroundColor: 'transparent',
+                    borderWidth: 3,
+                    pointBackgroundColor: '#ffffff',
+                    pointBorderColor: '#8b5cf6',
+                    tension: 0.4,
+                    fill: false
+                }
+            ],
+            max: 15000
+        },
         '7': {
-            labels: <?= json_encode($traffic7Labels, JSON_UNESCAPED_UNICODE) ?>,
+            labels: ['จันทร์', 'อังคาร', 'พุธ', 'พฤหัสฯ', 'ศุกร์', 'เสาร์', 'อาทิตย์'],
             datasets: [{
                 label: 'ผู้เข้าชมเว็บไซต์ (7 วัน)',
-                data: <?= json_encode($traffic7Data) ?>,
-                borderColor: '#3b82f6',
+                data: [320, 250, 480, 190, 510, 890, 720],
+                borderColor: '#3b82f6', // สีน้ำเงิน
                 backgroundColor: gradientBlue,
                 borderWidth: 3,
                 pointBackgroundColor: '#ffffff',
                 pointBorderColor: '#3b82f6',
                 tension: 0.4,
                 fill: true
-            }]
+            }],
+            max: 1000
         },
         '30': {
-            labels: <?= json_encode($traffic30Labels, JSON_UNESCAPED_UNICODE) ?>,
+            labels: ['สัปดาห์ที่ 1', 'สัปดาห์ที่ 2', 'สัปดาห์ที่ 3', 'สัปดาห์ที่ 4'],
             datasets: [{
                 label: 'ผู้เข้าชมเว็บไซต์ (30 วัน)',
-                data: <?= json_encode($traffic30Data) ?>,
-                borderColor: '#06b6d4',
+                data: [3100, 1850, 4200, 2750], 
+                borderColor: '#06b6d4', // สีฟ้าคราม
                 backgroundColor: gradientTeal,
                 borderWidth: 3,
                 pointBackgroundColor: '#ffffff',
                 pointBorderColor: '#06b6d4',
                 tension: 0.4,
                 fill: true
-            }]
+            }],
+            max: 5000
         },
         '365': {
-            labels: <?= json_encode($traffic365Labels, JSON_UNESCAPED_UNICODE) ?>,
+            labels: ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'],
             datasets: [{
                 label: 'ผู้เข้าชมเว็บไซต์ (1 ปี)',
-                data: <?= json_encode($traffic365Data) ?>,
-                borderColor: '#8b5cf6',
+                data: [1890, 5000, 3000, 8500, 4200, 9100, 6800, 12500, 7300, 10500, 8200, 14000],
+                borderColor: '#8b5cf6', // สีม่วง
                 backgroundColor: gradientPurple,
                 borderWidth: 3,
                 pointBackgroundColor: '#ffffff',
                 pointBorderColor: '#8b5cf6',
                 tension: 0.4,
                 fill: true
-            }]
+            }],
+            max: 15000
         }
-    };
-
-    const getOptimalMax = (dataArr) => {
-        const maxVal = Math.max(...dataArr, 0);
-        return maxVal > 0 ? Math.ceil(maxVal * 1.25) : 10;
     };
 
     let trafficChart = new Chart(ctx, {
         type: 'line',
         data: {
-            labels: realTraffic['7'].labels,
-            datasets: realTraffic['7'].datasets
+            labels: mockData['all'].labels,
+            datasets: mockData['all'].datasets.map(ds => ({ ...ds, data: [...ds.data] }))
         },
         options: {
             responsive: true,
@@ -432,9 +416,9 @@ $traffic365Data = array_column(array_values($last12Months), 'views');
             scales: {
                 y: {
                     beginAtZero: true,
-                    suggestedMax: getOptimalMax(realTraffic['7'].datasets[0].data),
+                    max: mockData['all'].max,
                     grid: { color: '#f1f5f9', drawBorder: false, borderDash: [5, 5] },
-                    ticks: { color: '#94a3b8', font: { size: 11 }, padding: 10, precision: 0 }
+                    ticks: { color: '#94a3b8', font: { size: 11 }, padding: 10 }
                 },
                 x: {
                     grid: { display: false, drawBorder: false },
@@ -449,29 +433,33 @@ $traffic365Data = array_column(array_values($last12Months), 'views');
         }
     });
 
+    // จับเหตุการณ์เมื่อเปลี่ยน Dropdown
     document.getElementById('timeRangeSelector').addEventListener('change', function(e) {
         const type = e.target.value; 
-        const selected = realTraffic[type];
-        if (!selected) return;
-        trafficChart.data.labels = selected.labels;
-        trafficChart.data.datasets = selected.datasets.map(ds => ({ ...ds }));
-        trafficChart.options.scales.y.suggestedMax = getOptimalMax(selected.datasets[0].data);
+        const data = mockData[type];
+        
+        // อัปเดตข้อมูลในกราฟ (ใช้ map เพื่อไม่ให้ object Gradient สีพัง)
+        trafficChart.data.labels = data.labels;
+        trafficChart.data.datasets = data.datasets.map(ds => ({
+            ...ds,
+            data: [...ds.data]
+        }));
+        
+        // อัปเดตสเกล Y ให้สอดคล้องกับจำนวนข้อมูล
+        trafficChart.options.scales.y.max = data.max;
+        
+        // สั่งให้กราฟวาดตัวเองใหม่
         trafficChart.update();
     });
 
-    // Top 5 Real Data
-    const top5Labels = <?= json_encode(array_column($top5Stats, 'title'), JSON_UNESCAPED_UNICODE) ?>;
-    const top5Data = <?= json_encode(array_column($top5Stats, 'views')) ?>;
-    const top5Colors = <?= json_encode(array_column($top5Stats, 'color')) ?>;
-    const isTop5Empty = top5Data.length === 0 || top5Data.every(v => v === 0);
-
+    // กราฟวงกลม: 5 อันดับยอดฮิต (Top 5)
     new Chart(document.getElementById('top5Chart').getContext('2d'), {
         type: 'doughnut',
         data: {
-            labels: isTop5Empty ? ['ยังไม่มีผู้เข้าชม'] : top5Labels,
+            labels: ['ทำเว็บไซต์องค์กร', 'กลยุทธ์การตลาด', 'ออกแบบโลโก้', 'ยิงแอด Google', 'ทำ SEO เบื้องต้น'],
             datasets: [{
-                data: isTop5Empty ? [1] : top5Data,
-                backgroundColor: isTop5Empty ? ['#e2e8f0'] : top5Colors,
+                data: [450, 320, 210, 150, 90],
+                backgroundColor: ['#3b82f6', '#06b6d4', '#10b981', '#f59e0b', '#8b5cf6'],
                 borderWidth: 0,
                 hoverOffset: 5
             }]
@@ -481,38 +469,27 @@ $traffic365Data = array_column(array_values($last12Months), 'views');
             maintainAspectRatio: false,
             cutout: '70%',
             plugins: {
-                legend: { display: false },
+                legend: { display: false }, // ซ่อน legend เพราะจะกินพื้นที่ ให้ดูจาก tooltip แทน
                 tooltip: {
                     backgroundColor: '#0f172a',
                     titleFont: { family: 'sans-serif', size: 12 },
                     bodyFont: { family: 'sans-serif', size: 12 },
                     padding: 10,
                     cornerRadius: 8,
-                    displayColors: true,
-                    callbacks: {
-                        label: function(context) {
-                            if (isTop5Empty) return 'ยังไม่มีผู้เข้าชม';
-                            return context.label + ': ' + context.parsed + ' ครั้ง';
-                        }
-                    }
+                    displayColors: true
                 }
             }
         }
     });
 
-    // Bottom 5 Real Data
-    const bottom5Labels = <?= json_encode(array_column($bottom5Stats, 'title'), JSON_UNESCAPED_UNICODE) ?>;
-    const bottom5Data = <?= json_encode(array_column($bottom5Stats, 'views')) ?>;
-    const bottom5Colors = <?= json_encode(array_column($bottom5Stats, 'color')) ?>;
-    const isBottom5Empty = bottom5Data.length === 0 || bottom5Data.every(v => v === 0);
-
+    // กราฟวงกลม: 5 อันดับยอดชมน้อย (Bottom 5)
     new Chart(document.getElementById('bottom5Chart').getContext('2d'), {
         type: 'doughnut',
         data: {
-            labels: isBottom5Empty ? ['ยังไม่มีผู้เข้าชม'] : bottom5Labels,
+            labels: ['การเขียนโค้ดเบื้องต้น', 'ประวัติบริษัทเก่า', 'รวมรูปกิจกรรม', 'นโยบายปี 2021', 'ประกาศรับสมัครงาน'],
             datasets: [{
-                data: isBottom5Empty ? [1] : bottom5Data,
-                backgroundColor: isBottom5Empty ? ['#e2e8f0'] : bottom5Colors,
+                data: [12, 18, 25, 30, 45],
+                backgroundColor: ['#ef4444', '#f97316', '#facc15', '#a8a29e', '#94a3b8'],
                 borderWidth: 0,
                 hoverOffset: 5
             }]
@@ -529,16 +506,11 @@ $traffic365Data = array_column(array_values($last12Months), 'views');
                     bodyFont: { family: 'sans-serif', size: 12 },
                     padding: 10,
                     cornerRadius: 8,
-                    displayColors: true,
-                    callbacks: {
-                        label: function(context) {
-                            if (isBottom5Empty) return 'ยังไม่มีผู้เข้าชม';
-                            return context.label + ': ' + context.parsed + ' ครั้ง';
-                        }
-                    }
+                    displayColors: true
                 }
             }
         }
     });
 </script>
+
 <?php require_once __DIR__ . '/includes/footer.php'; ?>
