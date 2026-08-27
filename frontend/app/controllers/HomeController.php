@@ -1348,6 +1348,75 @@ class HomeController
         ]));
     }
 
+    public function serverError(int|string $code = 500, ?string $message = null): void
+    {
+        $statusCode = is_numeric($code) ? (int)$code : 500;
+        if (!in_array($statusCode, [500, 502, 503, 504], true)) {
+            $statusCode = 500;
+        }
+
+        http_response_code($statusCode);
+        $lang = getCurrentLang();
+        $isTh = $lang === 'th';
+
+        $configs = [
+            500 => [
+                'badge' => $isTh ? 'เกิดข้อผิดพลาดของระบบ' : 'Server Error',
+                'heading' => $isTh ? 'เกิดข้อผิดพลาดของเซิร์ฟเวอร์' : 'Internal Server Error',
+                'description' => $isTh 
+                    ? 'ขออภัยในความไม่สะดวก ระบบกำลังประสบปัญหาทางเทคนิคชั่วคราว ทีมงานได้รับทราบและกำลังดำเนินการแก้ไข กรุณาลองใหม่อีกครั้ง' 
+                    : 'Sorry for the inconvenience. Our server encountered an internal technical issue. Our team is working to fix it.',
+            ],
+            502 => [
+                'badge' => $isTh ? 'การเชื่อมต่อผิดพลาด' : 'Bad Gateway',
+                'heading' => $isTh ? 'การเชื่อมต่อไปยังเซิร์ฟเวอร์ขัดข้อง' : 'Bad Gateway',
+                'description' => $isTh 
+                    ? 'ขออภัย เซิร์ฟเวอร์ตัวกลางไม่ได้รับสัญญาณตอบรับที่ถูกต้องจากเซิร์ฟเวอร์หลัก กรุณาลองใหม่อีกครั้งในภายหลัง' 
+                    : 'The proxy server received an invalid response from the upstream server. Please try again in a few moments.',
+            ],
+            503 => [
+                'badge' => $isTh ? 'ปิดปรับปรุงระบบชั่วคราว' : 'Maintenance Mode',
+                'heading' => $isTh ? 'ระบบปิดปรับปรุงชั่วคราว' : 'Service Unavailable',
+                'description' => $isTh 
+                    ? 'ขออภัยในความไม่สะดวก เว็บไซต์กำลังอยู่ระหว่างการบำรุงรักษาหรือมีปริมาณการใช้งานหนาแน่นชั่วคราว กรุณากลับมาใหม่อีกครั้งในไม่ช้า' 
+                    : 'The service is temporarily unavailable due to maintenance downtime or capacity limits. Please check back soon.',
+            ],
+            504 => [
+                'badge' => $isTh ? 'หมดเวลาการเชื่อมต่อ' : 'Gateway Timeout',
+                'heading' => $isTh ? 'หมดเวลาการเชื่อมต่อเซิร์ฟเวอร์' : 'Gateway Timeout',
+                'description' => $isTh 
+                    ? 'ขออภัย การเชื่อมต่อใช้เวลานานเกินกำหนด ทำให้เซิร์ฟเวอร์ไม่สามารถประมวลผลคำขอได้ทัน กรุณาลองใหม่อีกครั้ง' 
+                    : 'The server took too long to respond and the request timed out. Please try reloading the page.',
+            ],
+        ];
+
+        $currentConfig = $configs[$statusCode] ?? $configs[500];
+
+        $this->view('pages/error-500.php', array_merge($this->sharedData('error-500', $currentConfig['heading']), [
+            'currentPage' => '',
+            'statusCode' => $statusCode,
+            'badgeText' => $currentConfig['badge'],
+            'errorHeading' => $currentConfig['heading'],
+            'errorDescription' => $currentConfig['description'],
+            'errorMessage' => $message,
+        ]));
+    }
+
+    public function serverError502(): void
+    {
+        $this->serverError(502);
+    }
+
+    public function serverError503(): void
+    {
+        $this->serverError(503);
+    }
+
+    public function serverError504(): void
+    {
+        $this->serverError(504);
+    }
+
     /**
      * Layout variables shared across every page.
      *

@@ -4,3 +4,8 @@ RewriteRule ^admin/ - [L]
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)$ index.php [QSA,L]
+
+ErrorDocument 500 /Corparate_Webpark/500
+ErrorDocument 502 /Corparate_Webpark/502
+ErrorDocument 503 /Corparate_Webpark/503
+ErrorDocument 504 /Corparate_Webpark/504

@@ -272,7 +272,7 @@ $traffic365Unique = array_column(array_values($last12Months), 'unique');
                 <h3 class="text-lg font-bold text-slate-800">สถิติการเข้าชมเว็บไซต์ (Traffic)</h3>
                 <p class="text-xs text-slate-500">สถิติการเข้าชมจริงจากระบบ (Live Analytics)</p>
             </div>
-            <select id="timeRangeSelector" class="text-xs border-slate-200 rounded-md bg-slate-50 text-slate-600 px-3 py-1.5 focus:ring-primary focus:border-primary">
+            <select id="timeRangeSelector" class="text-xs border-slate-200 rounded-md bg-slate-50 text-slate-600 py-1.5 focus:ring-primary focus:border-primary cursor-pointer">
                 <option value="7">7 วันล่าสุด</option>
                 <option value="30">30 วันล่าสุด</option>
                 <option value="365">1 ปีล่าสุด</option>

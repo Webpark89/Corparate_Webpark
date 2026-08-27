@@ -26,4 +26,10 @@ return [
     '/contact/submit' => [HomeController::class, 'contactSubmit'],
     '/privacy-policy' => [HomeController::class, 'privacyPolicy'],
     '/privacy-policy.php' => [HomeController::class, 'privacyPolicy'],
+    '/500' => [HomeController::class, 'serverError'],
+    '/error-500' => [HomeController::class, 'serverError'],
+    '/502' => [HomeController::class, 'serverError502'],
+    '/503' => [HomeController::class, 'serverError503'],
+    '/504' => [HomeController::class, 'serverError504'],
+    '/error/{code}' => [HomeController::class, 'serverError'],
 ];
