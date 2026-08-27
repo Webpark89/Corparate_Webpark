@@ -593,36 +593,28 @@ $erpPortfolios = $mockErpPortfolios;
         <div id="erp-portfolio-scroll-container" class="flex overflow-x-auto snap-x snap-mandatory scrollbar-none gap-8 pb-6 -mx-4 px-4 md:mx-0 md:px-0 md:grid md:grid-cols-4 lg:grid-cols-4 md:overflow-visible md:snap-none">
             <?php foreach ($erpPortfolios as $port): 
                 $imgSrc = resolve_article_image_url($port['image_path'] ?? '', asset_url('images/erp.png'));
-                $detailUrl = isset($port['slug']) ? route_url('/portfolio/' . $port['slug']) : route_url('/portfolio');
             ?>
-                <a href="<?= e($detailUrl) ?>" class="gsap-erp-portfolio-card block w-[85vw] md:w-auto shrink-0 snap-center opacity-0 translate-y-10">
-                    <article class="group w-full h-full rounded-2xl overflow-hidden border border-slate-100 bg-white shadow-sm hover:shadow-xl transition-all duration-500 flex flex-col hover:-translate-y-1">
-                    <div class="h-[220px] w-full overflow-hidden bg-slate-100 relative">
-                        <img src="<?= e($imgSrc) ?>" alt="<?= e($port['title']) ?>" class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105">
-                        <span class="absolute bottom-3 left-3 bg-primary/95 backdrop-blur text-white text-[10px] font-bold px-2.5 py-1 rounded-md uppercase tracking-wider shadow-sm">ERP SYSTEM</span>
-                    </div>
-                    <div class="p-6 flex flex-col flex-1">
-                        <h3 class="text-base font-bold text-[#0b1b42] leading-snug line-clamp-2 group-hover:text-primary transition-colors mb-3">
-                            <?= e($port['title']) ?>
-                        </h3>
-                        <p class="text-[13px] text-slate-500 leading-relaxed line-clamp-3 mb-5 flex-1">
-                            <?= e($port['description']) ?>
-                        </p>
-                        <div class="mt-auto pt-4 border-t border-slate-50"> 
-                            <span
-                                class="inline-flex items-center justify-center
-                                    rounded-full border-2 border-primary
-                                    px-3 py-1
-                                    text-sm font-medium
-                                    text-primary
-                                    hover:bg-primary hover:text-white
-                                    transition-colors">
-                                ERP System
-                            </span>
+                <div class="gsap-erp-portfolio-card block w-[85vw] md:w-auto shrink-0 snap-center opacity-0 translate-y-10">
+                    <article class="w-full h-full rounded-2xl overflow-hidden border border-slate-100 bg-white shadow-sm transition-all duration-500 flex flex-col">
+                        <div class="h-[220px] w-full overflow-hidden bg-slate-100 relative">
+                            <img src="<?= e($imgSrc) ?>" alt="<?= e($port['title']) ?>" class="w-full h-full object-cover">
+                            <span class="absolute bottom-3 left-3 bg-primary/95 backdrop-blur text-white text-[10px] font-bold px-2.5 py-1 rounded-md uppercase tracking-wider shadow-sm">ERP SYSTEM</span>
                         </div>
-                    </div>
-                </article>
-                </a>
+                        <div class="p-6 flex flex-col flex-1">
+                            <h3 class="text-base font-bold text-[#0b1b42] leading-snug line-clamp-2 mb-3">
+                                <?= e($port['title']) ?>
+                            </h3>
+                            <p class="text-[13px] text-slate-500 leading-relaxed line-clamp-3 mb-5 flex-1">
+                                <?= e($port['description']) ?>
+                            </p>
+                            <div class="mt-auto pt-4 border-t border-slate-50"> 
+                                <span class="inline-flex items-center justify-center rounded-full border border-primary/40 px-3 py-1 text-sm font-medium text-primary bg-primary/5">
+                                    ERP System
+                                </span>
+                            </div>
+                        </div>
+                    </article>
+                </div>
             <?php endforeach; ?>
         </div>
 
@@ -651,7 +643,7 @@ $erpPortfolios = $mockErpPortfolios;
                 let minDiff = Infinity;
                 
                 const children = container.children;
-                const cardElements = Array.from(children).filter(el => el.tagName === 'A');
+                const cardElements = Array.from(children).filter(el => el.classList.contains('gsap-erp-portfolio-card'));
                 
                 cardElements.forEach((el, index) => {
                     const diff = Math.abs(el.offsetLeft - scrollLeft - (width - el.clientWidth) / 2);
@@ -676,7 +668,7 @@ $erpPortfolios = $mockErpPortfolios;
         function scrollToErpPortfolio(index) {
             const container = document.getElementById('erp-portfolio-scroll-container');
             if (!container) return;
-            const cardElements = Array.from(container.children).filter(el => el.tagName === 'A');
+            const cardElements = Array.from(container.children).filter(el => el.classList.contains('gsap-erp-portfolio-card'));
             if (cardElements[index]) {
                 cardElements[index].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
             }
