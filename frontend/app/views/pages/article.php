@@ -283,7 +283,7 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                 }
                 $imageSrc = resolve_article_image_url((string) ($article['image_path'] ?? ''), $fallbackImage);
                 $linkToUse = (trim($articleTitle) === 'ทำไม SEO ถึงสำคัญสำหรับธุรกิจในปีนี้') 
-                             ? '/Corparate_Webpark/article-detail-mockup' 
+                             ? app_url('article-detail-mockup') 
                              : $detailUrl;
                 ?>
                 <article class="article-card article-card-slide snap-start group h-fit flex flex-col overflow-hidden rounded-[1.5rem] border border-slate-100 bg-white shadow-[0_4px_20px_rgba(0,0,0,0.04)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(0,0,0,0.08)]"
