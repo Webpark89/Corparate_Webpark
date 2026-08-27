@@ -105,6 +105,71 @@ $content = $content ?? '';
             font-weight: 700;
             color: #022862;
         }
+
+        /* =========================================================================
+           Master Fixed Typography & Spacing System (Locked across all pages)
+           ========================================================================= */
+        @media (min-width: 1025px) {
+            /* 1. Main Hero Titles H1 (Locked to exactly 5.5rem, line-height 1.1, weight 900) */
+            .desktop-home-hero-h1,
+            .desktop-about-hero-h1,
+            .desktop-services-hero-h1,
+            .desktop-erp-hero-h1,
+            .desktop-article-hero-h1,
+            .desktop-contact-hero-h1,
+            .desktop-portfolio-hero-h1,
+            .desktop-subpage-hero-h1 {
+                font-size: 5.5rem !important;
+                line-height: 1.1 !important;
+                font-weight: 900 !important;
+                letter-spacing: -0.05em !important;
+            }
+
+            /* 2. Hero Subtitle / Description Paragraphs P (Locked to 1.25rem, line-height 1.75, max-width 34rem) */
+            .desktop-home-hero-p,
+            .desktop-about-hero-p,
+            .desktop-services-hero-p,
+            .desktop-erp-hero-p,
+            .desktop-article-hero-p,
+            .desktop-contact-hero-p,
+            .desktop-portfolio-hero-p,
+            .desktop-subpage-hero-p {
+                font-size: 1.25rem !important;
+                line-height: 1.75 !important;
+                max-width: 34rem !important;
+                font-weight: 600 !important;
+                color: #0b1b42 !important;
+                margin-top: 1.5rem !important;
+                margin-bottom: 2.5rem !important;
+            }
+
+            /* 3. Hero Wide Containers (Locked to 1720px width & 2.5rem padding) */
+            .desktop-wide-container-about,
+            .desktop-wide-container-contact,
+            .desktop-wide-container-article,
+            .desktop-wide-container-cta {
+                max-width: 1720px !important;
+                padding-left: 2.5rem !important;
+                padding-right: 2.5rem !important;
+            }
+
+            /* 4. Section Main Titles H2 (Locked to 2.75rem, line-height 1.2) */
+            .desktop-section-h2 {
+                font-size: 2.75rem !important;
+                line-height: 1.2 !important;
+                font-weight: 800 !important;
+                letter-spacing: -0.03em !important;
+                margin-bottom: 1rem !important;
+            }
+
+            /* 5. Section Subtitle Description P (Locked to 1.125rem, line-height 1.7) */
+            .desktop-section-p {
+                font-size: 1.125rem !important;
+                line-height: 1.7 !important;
+                color: #475569 !important;
+                margin-bottom: 2rem !important;
+            }
+        }
     </style>
     <link rel="stylesheet" href="<?= e(asset_url('assets/css/tailwind.css')) ?>?v=<?= e($tailwindCssVersion) ?>">
     <?php if ($jsonGraph !== []): ?>
@@ -162,6 +227,19 @@ $content = $content ?? '';
         }
         #scrollToTopBtn:hover svg {
             transform: translateY(-3px);
+        }
+        @media (max-width: 767px) {
+            #scrollToTopBtn {
+                bottom: 16px;
+                right: 16px;
+                width: 40px;
+                height: 40px;
+                border-radius: 10px;
+            }
+            #scrollToTopBtn svg {
+                width: 18px;
+                height: 18px;
+            }
         }
     </style>
 

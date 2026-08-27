@@ -757,7 +757,7 @@ if (isset($services) && is_array($services)) {
                     <?php endif; ?>
                 </p>
                 <div class="animate-entrance-up delay-400 flex flex-col lg:flex-row items-start gap-4">
-                    <a href="<?= e(route_url('/contact')) ?>" class="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-primary text-white text-base md:text-lg font-semibold rounded-full hover:bg-blue-700 transition-all shadow-md hover:-translate-y-0.5 ipad-pro-hero-btn">
+                    <a href="<?= e(route_url('/contact')) ?>" class="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-primary text-white text-base font-semibold rounded-full hover:bg-blue-700 transition-all shadow-md hover:-translate-y-0.5 whitespace-nowrap ipad-pro-hero-btn">
                         <?= e(getCurrentLang() === 'th' ? 'ปรึกษาผู้เชี่ยวชาญ' : 'Consult an Expert') ?>
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
@@ -897,14 +897,14 @@ if (isset($services) && is_array($services)) {
 <section id="our-approach" class="py-16 lg:py-24 ipad-pro-services-approach-section ipad-mini-services-approach-section" style="background-color: #f1f5f9;">
     <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8 desktop-wide-container-services">
         <div class="lg:px-12 xl:px-24">
-            <div class="text-left md:text-center mb-10 md:mb-16 flex flex-col items-start md:items-center">
-                <div class="flex flex-col items-start mb-4 md:mb-6">
+            <div class="text-center md:text-center mb-10 md:mb-16 flex flex-col items-center md:items-center">
+                <div class="flex flex-col items-center mb-4 md:mb-6">
                     <span class="text-3xl md:text-4xl font-bold gsap-fade-up mb-1 block ipad-pro-approach-title" style="color: #054FC5 !important; -webkit-text-fill-color: #054FC5 !important; background: none !important;">
                         <?= getCurrentLang() === 'th' ? 'แนวคิดในการทำงานของเรา' : 'Our Approach' ?>
                     </span>
                     <div class="mt-1 gsap-fade-up" style="width: 48px; height: 3px; background-color: #0663F6;"></div>
                 </div>
-                <p class="text-slate-500 text-lg md:text-xl leading-relaxed max-w-4xl text-left md:text-center mx-0 md:mx-auto desktop-approach-subtitle ipad-pro-approach-desc ipad-mini-approach-desc">
+                <p class="text-slate-500 text-lg md:text-xl leading-relaxed max-w-4xl text-center md:text-center mx-auto desktop-approach-subtitle ipad-pro-approach-desc ipad-mini-approach-desc">
                     <?= getCurrentLang() === 'th' ? 'กระบวนการทำงานที่เป็นระบบ เพื่อส่งมอบโซลูชันดิจิทัลที่ตอบโจทย์ธุรกิจ <br class="hidden md:block"> และความยั่งยืนของข้อมูลธุรกิจที่องค์กรถือครอง' : 'A systematic work process to deliver digital solutions that meet business needs and ensure the sustainability of business data held by the organization.' ?>
                 </p>
             </div>

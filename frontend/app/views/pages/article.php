@@ -109,10 +109,10 @@ $ctaImage = asset_url('images/bg-cta.jpg');
         <div class="absolute inset-x-0 bottom-0 h-[30%] bg-gradient-to-t from-white/50 to-transparent z-10"></div>
     </div>
 
-    <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 pt-12 pb-24 lg:pt-28 lg:pb-32 relative z-10">
-        <div class="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-12 lg:gap-20 items-center">
+    <div class="mx-auto w-full max-w-[1720px] px-4 sm:px-6 lg:px-10 pt-12 pb-24 lg:pt-28 lg:pb-32 relative z-10 desktop-wide-container-article">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
             
-            <div class="max-w-3xl lg:max-w-none">
+            <div class="max-w-3xl lg:max-w-none text-left mx-0 lg:ml-12 ipad-pro-ml-0 xl:ml-24">
                 <nav aria-label="Breadcrumb" class="hidden md:block animate-fade-up delay-100 mb-6">
                     <ol class="inline-flex items-center text-sm md:text-base font-medium text-slate-500">
                         <li>
@@ -146,18 +146,29 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                     @media (min-width: 768px) and (max-width: 1023px) {
                         .ipad-mini-hero-desc { max-width: 450px !important; }
                     }
-                    @media (min-width: 1024px) {
-                        .hero-title-text { font-size: 4.5rem; line-height: 1.2; }
-                    }
-                    @media (min-width: 1280px) {
-                        .hero-title-text { font-size: 5rem; line-height: 1.2; }
+                    @media (min-width: 1025px) {
+                        .desktop-wide-container-article {
+                            max-width: 1720px !important;
+                            padding-left: 2.5rem !important;
+                            padding-right: 2.5rem !important;
+                        }
+                        .desktop-article-hero-h1 {
+                            font-size: 5.5rem !important;
+                            line-height: 1.1 !important;
+                            font-weight: 900 !important;
+                        }
+                        .desktop-article-hero-p {
+                            font-size: 1.25rem !important;
+                            line-height: 1.75 !important;
+                            max-width: 34rem !important;
+                        }
                     }
                 </style>
                 <h1 class="animate-fade-up delay-200 tracking-tight mb-2">
-                    <span class="hero-title-text font-bold bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block pb-1 md:pb-2 whitespace-nowrap">
+                    <span class="hero-title-text font-bold bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block pb-1 md:pb-2 whitespace-nowrap desktop-article-hero-h1">
                         <?= e(getCurrentLang() === 'th' ? 'บทความความรู้' : 'Knowledge Articles') ?>
                     </span><br>
-                    <span class="hero-title-text font-bold bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block -mt-2 md:-mt-2 lg:-mt-2 xl:-mt-8 whitespace-nowrap" style="animation-delay: -3s;">
+                    <span class="hero-title-text font-bold bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block -mt-2 md:-mt-2 lg:-mt-2 xl:-mt-8 whitespace-nowrap desktop-article-hero-h1" style="animation-delay: -3s;">
                         <?= e(getCurrentLang() === 'th' ? 'และอัพเดต' : '& Updates') ?>
                     </span>
                 </h1>
@@ -169,7 +180,7 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                     $mobile_desc = "Knowledge articles, tech, and innovation covering ERP systems, digital business, online marketing, AI, and solutions to sustainably grow your organization.";
                 }
                 ?>
-                <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-lg md:text-xl leading-relaxed max-w-2xl mb-10 font-medium ipad-mini-hero-desc">
+                <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-lg md:text-xl leading-relaxed max-w-2xl mb-10 font-medium ipad-mini-hero-desc desktop-article-hero-p">
                     <span class="block md:hidden leading-[1.75]">
                         <?= $mobile_desc ?>
                     </span>
@@ -283,9 +294,7 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                     $summary = trim(strip_tags((string) $article['meta_description_en']));
                 }
                 $imageSrc = resolve_article_image_url((string) ($article['image_path'] ?? ''), $fallbackImage);
-                $linkToUse = (trim($articleTitle) === 'ทำไม SEO ถึงสำคัญสำหรับธุรกิจในปีนี้') 
-                             ? '/Corparate_Webpark/article-detail-mockup' 
-                             : $detailUrl;
+                $linkToUse = $detailUrl;
                 ?>
                 <article class="article-card article-card-slide snap-start group h-fit flex flex-col overflow-hidden rounded-[1.5rem] border border-slate-100 bg-white shadow-[0_4px_20px_rgba(0,0,0,0.04)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(0,0,0,0.08)]"
                          data-category="<?= e($categorySlug !== '' ? $categorySlug : 'all') ?>">
@@ -298,17 +307,11 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                     <!-- ส่วนเนื้อหา -->
                     <div class="flex flex-col p-4">
                         
-                        <!-- Badge หมวดหมู่ (พื้นหลังฟ้า ขอบมนแคปซูล) + Pinned Badge -->
-                        <div class="mb-3 flex items-center justify-between gap-2">
+                        <!-- Badge หมวดหมู่ (พื้นหลังฟ้า ขอบมนแคปซูล) -->
+                        <div class="mb-3">
                             <span class="inline-block rounded-full bg-blue-50 px-3 py-1.5 text-xs font-semibold tracking-wide text-blue-700">
                                 <?= e($categoryName !== '' ? $categoryName : (getCurrentLang() === 'th' ? 'หมวดหมู่' : 'Category')) ?>
                             </span>
-                            <?php if (!empty($article['is_pinned'])): ?>
-                                <span class="inline-flex items-center gap-1 rounded-full bg-amber-50 border border-amber-200/80 px-2.5 py-1 text-[11px] font-bold text-amber-700 shadow-sm">
-                                    <span>📌</span>
-                                    <span><?= getCurrentLang() === 'th' ? 'บทความแนะนำ' : 'Pinned' ?></span>
-                                </span>
-                            <?php endif; ?>
                         </div>
                         
                         <!-- หัวข้อบทความ -->
@@ -469,10 +472,14 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    const getFilteredCards = () => articleCards.filter(card => {
-        const category = card.dataset.category || DEFAULT_FILTER;
-        return currentFilter === DEFAULT_FILTER || category === currentFilter;
-    });
+    const getFilteredCards = () => {
+        const cards = Array.from(document.querySelectorAll('.article-card'));
+        const active = (currentFilter || DEFAULT_FILTER).toLowerCase().trim();
+        return cards.filter(card => {
+            const category = (card.dataset.category || DEFAULT_FILTER).toLowerCase().trim();
+            return active === DEFAULT_FILTER || category === active;
+        });
+    };
 
     const updateDots = () => {
         if (isDesktopMode) return;
@@ -615,14 +622,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const render = () => {
         filteredCards = getFilteredCards();
-        articleCards.forEach(card => card.classList.add('hidden'));
+        const allCards = Array.from(document.querySelectorAll('.article-card'));
+        allCards.forEach(card => {
+            card.classList.add('hidden');
+            card.style.display = 'none';
+        });
 
         const totalPages = Math.max(1, Math.ceil(filteredCards.length / PAGE_SIZE));
         if (currentPage > totalPages) currentPage = Math.max(1, totalPages);
         
         const start = (currentPage - 1) * PAGE_SIZE;
         const visible = filteredCards.slice(start, start + PAGE_SIZE);
-        visible.forEach(card => card.classList.remove('hidden'));
+        visible.forEach(card => {
+            card.classList.remove('hidden');
+            card.style.display = '';
+        });
 
         // เล่น GSAP animation สลับการ์ดบทความเมื่อเปลี่ยนหน้า/หมวดหมู่
         if (typeof gsap !== 'undefined') {

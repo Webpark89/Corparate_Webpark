@@ -71,7 +71,7 @@ $contactAddress = $company['contact']['address'] ?? t('footer.office_address');
             transform: scale(1.6) translate(-2%, -5%) !important;
         }
         .desktop-about-hero-h1 {
-            font-size: 4.5rem !important;
+            font-size: 5.5rem !important;
             line-height: 1.1 !important;
             font-weight: 900 !important;
         }
@@ -277,7 +277,7 @@ $contactAddress = $company['contact']['address'] ?? t('footer.office_address');
                 </p>
 
                 <div class="animate-entrance-up delay-400 flex flex-col sm:flex-row items-start gap-4">
-                    <a href="<?= e(route_url('/contact')) ?>" class="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-primary text-white text-base md:text-lg font-semibold rounded-full hover:bg-blue-700 transition-all shadow-md hover:-translate-y-0.5 whitespace-nowrap">
+                    <a href="<?= e(route_url('/contact')) ?>" class="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-primary text-white text-base font-semibold rounded-full hover:bg-blue-700 transition-all shadow-md hover:-translate-y-0.5 whitespace-nowrap">
                         <?= e(getCurrentLang() === 'th' ? 'ปรึกษาผู้เชี่ยวชาญ' : 'Consult an Expert') ?>
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -410,11 +410,11 @@ $contactAddress = $company['contact']['address'] ?? t('footer.office_address');
         <div class="lg:px-12 xl:px-24">
             <div class="grid grid-cols-1 lg:grid-cols-[40%_55%] gap-12 lg:gap-16 justify-between items-start">
                 
-                <div class="lg:top-8 self-start ipad-pro-approach-left-col">
-                    <h2 class="text-3xl md:text-4xl md:text-center lg:text-left font-bold leading-tight mb-6 ipad-mini-concept-title" style="color: #054FC5;">
+                <div class="lg:top-8 self-start ipad-pro-approach-left-col text-center lg:text-left">
+                    <h2 class="text-3xl md:text-4xl text-center lg:text-left font-bold leading-tight mb-6 ipad-mini-concept-title" style="color: #054FC5;">
                         <?= getCurrentLang() === 'th' ? 'แนวคิดในการทำงานของเรา' : 'Our Approach' ?>
                     </h2>
-                    <p class="text-left md:text-center lg:text-left text-slate-600 text-lg md:text-lg leading-relaxed max-w-2xl lg:max-w-md mx-0 md:mx-auto lg:mx-0 desktop-concept-p ipad-pro-concept-p ipad-mini-concept-desc">
+                    <p class="text-center lg:text-left text-slate-600 text-lg md:text-lg leading-relaxed max-w-2xl lg:max-w-md mx-auto lg:mx-0 desktop-concept-p ipad-pro-concept-p ipad-mini-concept-desc">
                         <?= getCurrentLang() === 'th' ? 'เราเชื่อว่าการพัฒนาระบบและโซลูชันดิจิทัลที่ดี <br class="md:hidden"> ไม่ได้เริ่มจากเทคโนโลยีเพียงอย่างเดียว <br class="md:hidden"> แต่เริ่มจากความเข้าใจธุรกิจของคุณ <br class="md:hidden"> เราทำงานแบบพาร์ทเนอร์ร่วมคิด ร่วมสร้าง <br class="md:hidden"> เพื่อให้ทุกโซลูชันที่เราส่งมอบ <span class="whitespace-nowrap">สามารถใช้งานได้</span> <br class="md:hidden"> <span class="whitespace-nowrap">สร้างคุณค่า</span> และช่วยให้ธุรกิจของคุณ <br class="md:hidden"> เติบโตได้อย่างยั่งยืน' : 'We believe that developing great digital systems and solutions doesn\'t start with technology alone, but with understanding your business.<br class="hidden ipad-pro-strict-inline"><br class="hidden ipad-pro-strict-inline"> We work as a partner to co-think and co-create, ensuring every solution we deliver is practical, creates value, and helps your business grow sustainably.' ?>
                     </p>
                 </div>

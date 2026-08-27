@@ -312,15 +312,89 @@ $socialLinks = [
 
             <div class="footer-bottom-bar">
                 <style>
-                    .footer-bottom-link { font-size: 0.75rem; color: #043B94 !important; text-decoration: none; transition: color 0.3s ease; }
+                    .footer-bottom-link { font-size: 0.75rem; color: #043B94 !important; text-decoration: none; transition: color 0.3s ease; cursor: pointer; }
                     .footer-bottom-link:hover { color: #0663F6 !important; }
                 </style>
-                <a class="footer-bottom-link" href="#privacy-policy">Privacy Policy</a>
+                <a class="footer-bottom-link" id="footerPrivacyPolicyBtn">Privacy Policy</a>
                 <nav style="display: flex; flex-wrap: wrap; gap: 1rem;" aria-label="Social media links">
                     <?php foreach ($socialLinks as $socialLink): ?>
                         <a class="footer-bottom-link" href="<?= e($socialLink['href']) ?>" target="_blank" rel="noopener noreferrer"><?= e($socialLink['label']) ?></a>
                     <?php endforeach; ?>
                 </nav>
+            </div>
+            
+            <!-- Privacy Policy Modal -->
+            <div id="footerPrivacyModal" class="fixed inset-0 z-50 flex items-center justify-center hidden opacity-0 transition-opacity duration-300" style="background-color: rgba(0,0,0,0.5);">
+                <div class="bg-white rounded-2xl shadow-2xl w-full max-w-3xl mx-4 max-h-[85vh] flex flex-col transform scale-95 transition-transform duration-300 relative">
+                    <!-- Modal Header -->
+                    <div class="flex items-center justify-between p-5 md:p-6 border-b border-slate-100">
+                        <h3 class="text-xl font-bold text-slate-800">นโยบายความเป็นส่วนตัว (Privacy Policy)</h3>
+                        <button id="closeFooterPrivacyModalBtn" class="text-slate-400 hover:text-red-500 hover:bg-red-50 p-2 rounded-full transition-colors outline-none">
+                            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                        </button>
+                    </div>
+                    
+                    <!-- Modal Body (Scrollable) -->
+                    <div class="p-5 md:p-6 overflow-y-auto custom-scrollbar text-sm md:text-base text-slate-600 leading-relaxed text-left">
+                        <p class="mb-4">
+                            WEBPARK Co., Ltd. ("เรา" หรือ "WebPark") ในฐานะผู้ควบคุมข้อมูลส่วนบุคคล (Data Controller) ตระหนักและให้ความสำคัญอย่างยิ่งต่อการคุ้มครองข้อมูลส่วนบุคคลและสิทธิความเป็นส่วนตัวของท่าน นโยบายฉบับนี้จัดทำขึ้นตามพระราชบัญญัติคุ้มครองข้อมูลส่วนบุคคล พ.ศ. 2562 (PDPA) เพื่อชี้แจงรายละเอียดเกี่ยวกับการเก็บรวบรวม ใช้ เปิดเผยข้อมูล และการใช้คุกกี้ บนเว็บไซต์ webpark.co.th ทั้งหมด
+                        </p>
+                        
+                        <h5 class="font-bold text-slate-800 mt-6 mb-3 flex items-center gap-2">
+                            <span class="w-6 h-6 rounded-full bg-primary text-white flex items-center justify-center text-xs shrink-0">1</span> 
+                            ขอบเขตข้อมูลส่วนบุคคลที่เราเก็บรวบรวม
+                        </h5>
+                        <p class="mb-2">เราเก็บรวบรวมข้อมูลส่วนบุคคลของท่านผ่านการใช้งานเว็บไซต์ในกรณีต่างๆ เท่าที่จำเป็นดังนี้:</p>
+                        <ul class="list-disc pl-6 mb-4 space-y-1">
+                            <li>ชื่อ-นามสกุล, เบอร์โทรศัพท์, และอีเมล ที่ท่านกรอกผ่านแบบฟอร์มติดต่อเรา</li>
+                            <li>ข้อมูลองค์กรหรือบริษัทของท่าน (หากมี)</li>
+                            <li>รายละเอียดข้อความหรือความต้องการที่ท่านส่งถึงเรา</li>
+                        </ul>
+
+                        <h5 class="font-bold text-slate-800 mt-6 mb-3 flex items-center gap-2">
+                            <span class="w-6 h-6 rounded-full bg-primary text-white flex items-center justify-center text-xs shrink-0">2</span> 
+                            วัตถุประสงค์ในการเก็บรวบรวมข้อมูล
+                        </h5>
+                        <p class="mb-4">
+                            ข้อมูลที่ท่านให้จะถูกนำไปใช้เพื่อติดต่อกลับ นำเสนอบริการที่ตรงกับความต้องการของท่าน และปรับปรุงประสิทธิภาพของเว็บไซต์เท่านั้น เราจะไม่มีการเปิดเผยข้อมูลของท่านแก่บุคคลที่สามโดยไม่ได้รับอนุญาต
+                        </p>
+
+                        <h5 class="font-bold text-slate-800 mt-6 mb-3 flex items-center gap-2">
+                            <span class="w-6 h-6 rounded-full bg-primary text-white flex items-center justify-center text-xs shrink-0">3</span> 
+                            การเปิดเผยข้อมูลแก่บุคคลที่สาม
+                        </h5>
+                        <p class="mb-4">
+                            เราจะไม่ขาย ให้เช่า หรือเปิดเผยข้อมูลส่วนบุคคลของท่านให้แก่บุคคลภายนอก เว้นแต่กรณีที่จำเป็นเพื่อการให้บริการแก่ท่าน (เช่น ผู้ให้บริการระบบคลาวด์/เซิร์ฟเวอร์ที่ปลอดภัย หรือผู้ให้บริการจัดส่งเอกสาร) หรือในกรณีที่กฎหมายบังคับให้เปิดเผยเท่านั้น
+                        </p>
+
+                        <h5 class="font-bold text-slate-800 mt-6 mb-3 flex items-center gap-2">
+                            <span class="w-6 h-6 rounded-full bg-primary text-white flex items-center justify-center text-xs shrink-0">4</span> 
+                            ระยะเวลาจัดเก็บและการรักษาความปลอดภัย
+                        </h5>
+                        <p class="mb-4">
+                            เราจะจัดเก็บข้อมูลส่วนบุคคลของท่านไว้เป็นเวลาตลอดระยะเวลาที่ให้บริการ เพื่อบรรลุวัตถุประสงค์ตามที่แจ้งไว้ โดยเราใช้มาตรการรักษาความปลอดภัยทางเทคนิคที่ได้มาตรฐาน (เช่น การเข้ารหัสข้อมูล SSL) เพื่อปกป้องข้อมูลของท่านจากการเข้าถึง แก้ไข หรือเปิดเผยโดยไม่ได้รับอนุญาต
+                        </p>
+
+                        <h5 class="font-bold text-slate-800 mt-6 mb-3 flex items-center gap-2">
+                            <span class="w-6 h-6 rounded-full bg-primary text-white flex items-center justify-center text-xs shrink-0">5</span> 
+                            สิทธิของเจ้าของข้อมูลและช่องทางการติดต่อ
+                        </h5>
+                        <p class="mb-2">
+                            ท่านมีสิทธิ์ตามกฎหมายในการขอเข้าถึง ขอสำเนา ขอแก้ไข หรือขอให้ลบข้อมูลส่วนบุคคลของท่านได้ทุกเมื่อ หากท่านต้องการใช้สิทธิ์ดังกล่าว หรือมีข้อสงสัยเกี่ยวกับนโยบายนี้ สามารถติดต่อเราได้ที่:
+                        </p>
+                        <ul class="list-none mb-4 space-y-1">
+                            <li><strong>อีเมล:</strong> oraphan@webpark.co.th</li>
+                            <li><strong>โทรศัพท์:</strong> 095-539-2666</li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Modal Footer -->
+                    <div class="p-4 md:p-5 border-t border-slate-100 flex justify-end bg-slate-50 rounded-b-2xl">
+                        <button id="closeFooterPrivacyModalBtnBottom" class="px-6 py-2.5 bg-primary text-white rounded-full font-bold text-sm hover:bg-blue-600 transition-colors shadow-sm">
+                            ปิด (Close)
+                        </button>
+                    </div>
+                </div>
             </div>
 
         </div>
@@ -404,5 +478,60 @@ $socialLinks = [
         }, { root: null, rootMargin: '0px', threshold: 0.05 });
 
         document.querySelectorAll('.js-scroll-animate').forEach(el => observer.observe(el));
+        
+        // Privacy Policy Modal Logic
+        const privacyModal = document.getElementById('footerPrivacyModal');
+        const openPrivacyBtn = document.getElementById('footerPrivacyPolicyBtn');
+        const closeBtns = [
+            document.getElementById('closeFooterPrivacyModalBtn'),
+            document.getElementById('closeFooterPrivacyModalBtnBottom')
+        ];
+        
+        if (privacyModal && openPrivacyBtn) {
+            const modalContent = privacyModal.querySelector('div.bg-white');
+            
+            function openModal() {
+                privacyModal.classList.remove('hidden');
+                // Small delay to allow display:block to apply before animating opacity/transform
+                setTimeout(() => {
+                    privacyModal.classList.remove('opacity-0');
+                    privacyModal.classList.add('opacity-100');
+                    if (modalContent) {
+                        modalContent.classList.remove('scale-95');
+                        modalContent.classList.add('scale-100');
+                    }
+                }, 10);
+                document.body.style.overflow = 'hidden'; // Prevent background scrolling
+            }
+            
+            function closeModal() {
+                privacyModal.classList.remove('opacity-100');
+                privacyModal.classList.add('opacity-0');
+                if (modalContent) {
+                    modalContent.classList.remove('scale-100');
+                    modalContent.classList.add('scale-95');
+                }
+                setTimeout(() => {
+                    privacyModal.classList.add('hidden');
+                    document.body.style.overflow = '';
+                }, 300); // Wait for transition
+            }
+            
+            openPrivacyBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                openModal();
+            });
+            
+            closeBtns.forEach(btn => {
+                if (btn) btn.addEventListener('click', closeModal);
+            });
+            
+            // Close on click outside
+            privacyModal.addEventListener('click', (e) => {
+                if (e.target === privacyModal) {
+                    closeModal();
+                }
+            });
+        }
     })();
 </script>
