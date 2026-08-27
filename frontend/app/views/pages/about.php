@@ -220,15 +220,6 @@ $contactAddress = $company['contact']['address'] ?? t('footer.office_address');
         }
     }
 
-    /* Accessibility: เคารพการตั้งค่า Reduce Motion ของผู้ใช้ ลด/ปิด animation แบบ CSS ทั้งหมดในหน้านี้ */
-    @media (prefers-reduced-motion: reduce) {
-        *, *::before, *::after {
-            animation-duration: 0.001ms !important;
-            animation-iteration-count: 1 !important;
-            transition-duration: 0.001ms !important;
-            scroll-behavior: auto !important;
-        }
-    }
 
 </style>
 
@@ -622,20 +613,10 @@ $contactAddress = $company['contact']['address'] ?? t('footer.office_address');
     document.addEventListener("DOMContentLoaded", () => {
         gsap.registerPlugin(ScrollTrigger);
 
-        // เช็คว่าผู้ใช้ตั้งค่าเครื่องให้ลด Motion ไว้หรือไม่ (Accessibility)
-        // ถ้าใช่ จะข้าม animation ที่เกี่ยวกับการเคลื่อนไหวเยอะๆ (parallax, count-up)
-        // และแสดงเนื้อหาแบบปกติทันที
-        const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-        // Helper: reveal element(s) แบบ fade+slide ตอน scroll มาถึง หรือแสดงทันทีถ้า reduced motion
+        // Helper: reveal element(s) แบบ fade+slide ตอน scroll มาถึง
         function revealOnScroll(selector, options = {}) {
             const els = gsap.utils.toArray(selector);
             if (!els.length) return;
-
-            if (prefersReducedMotion) {
-                gsap.set(els, { y: 0, opacity: 1 });
-                return;
-            }
 
             els.forEach((el) => {
                 gsap.to(el, {
@@ -654,53 +635,45 @@ $contactAddress = $company['contact']['address'] ?? t('footer.office_address');
         }
 
         // 1. Parallax รูปพื้นหลัง Hero
-        if (!prefersReducedMotion) {
-            gsap.utils.toArray(".hero-parallax-img").forEach((img) => {
-                gsap.to(img, {
-                    yPercent: 12,
-                    ease: "none",
-                    scrollTrigger: {
-                        trigger: "#about-hero",
-                        start: "top top",
-                        end: "bottom top",
-                        scrub: true
-                    }
-                });
+        gsap.utils.toArray(".hero-parallax-img").forEach((img) => {
+            gsap.to(img, {
+                yPercent: 12,
+                ease: "none",
+                scrollTrigger: {
+                    trigger: "#about-hero",
+                    start: "top top",
+                    end: "bottom top",
+                    scrub: true
+                }
             });
-        }
+        });
 
         // 2. Section "เกี่ยวกับเรา" — ข้อความและกล่อง grid ไอคอน fade+slide เข้ามาแยกกัน
         revealOnScroll(".about-intro-text");
         revealOnScroll(".about-intro-grid");
 
         // 2.1 ไอคอน 4 ช่องภายในกล่อง ไล่ทีละอันเล็กน้อย (stagger) หลังจากกล่องแม่โผล่
-        if (!prefersReducedMotion) {
-            const introItems = gsap.utils.toArray(".about-intro-item");
-            gsap.set(introItems, { opacity: 0 }); // ตั้งค่าเริ่มต้นให้โปร่งใสก่อน (ไม่มี CSS class รองรับ opacity-0 อยู่แล้ว)
-            introItems.forEach((item, i) => {
-                gsap.to(item, {
-                    scrollTrigger: {
-                        trigger: ".about-intro-grid",
-                        start: "top 85%",
-                        toggleActions: "play none none reverse"
-                    },
-                    opacity: 1,
-                    duration: 0.5,
-                    delay: 0.2 + i * 0.1,
-                    ease: "power1.out"
-                });
+        const introItems = gsap.utils.toArray(".about-intro-item");
+        gsap.set(introItems, { opacity: 0 }); // ตั้งค่าเริ่มต้นให้โปร่งใสก่อน (ไม่มี CSS class รองรับ opacity-0 อยู่แล้ว)
+        introItems.forEach((item, i) => {
+            gsap.to(item, {
+                scrollTrigger: {
+                    trigger: ".about-intro-grid",
+                    start: "top 85%",
+                    toggleActions: "play none none reverse"
+                },
+                opacity: 1,
+                duration: 0.5,
+                delay: 0.2 + i * 0.1,
+                ease: "power1.out"
             });
-        }
+        });
 
         // 3. CTA banner สีเข้ม
         revealOnScroll(".gsap-dark-cta");
 
         // 4. Our Approach — ไล่ทีละขั้นตอนจากบนลงล่าง
         gsap.utils.toArray(".gsap-process-item").forEach((item, i) => {
-            if (prefersReducedMotion) {
-                gsap.set(item, { y: 0, opacity: 1 });
-                return;
-            }
             gsap.to(item, {
                 scrollTrigger: {
                     trigger: item,
@@ -719,34 +692,24 @@ $contactAddress = $company['contact']['address'] ?? t('footer.office_address');
         //    ใช้ section ครอบเป็น trigger ตัวเดียว (การ์ดเรียงแนวนอน ไม่ได้อยู่คนละตำแหน่งแนวตั้ง)
         const scrollCards = gsap.utils.toArray(".gsap-scroll-card");
         if (scrollCards.length) {
-            if (prefersReducedMotion) {
-                gsap.set(scrollCards, { y: 0, opacity: 1 });
-            } else {
-                gsap.to(scrollCards, {
-                    scrollTrigger: {
-                        trigger: "#about-services-scroll",
-                        start: "top 80%",
-                        toggleActions: "play none none reverse"
-                    },
-                    y: 0,
-                    opacity: 1,
-                    duration: 0.6,
-                    stagger: 0.12,
-                    ease: "power2.out"
-                });
-            }
+            gsap.to(scrollCards, {
+                scrollTrigger: {
+                    trigger: "#about-services-scroll",
+                    start: "top 80%",
+                    toggleActions: "play none none reverse"
+                },
+                y: 0,
+                opacity: 1,
+                duration: 0.6,
+                stagger: 0.12,
+                ease: "power2.out"
+            });
         }
 
         // 6. การ์ดสถิติ + Count-up ตัวเลข (120+ / 15+ / 50+)
         gsap.utils.toArray(".gsap-stat-card").forEach((card) => {
             const countEl = card.querySelector(".stat-count");
             const target = countEl ? parseInt(countEl.getAttribute("data-target"), 10) || 0 : 0;
-
-            if (prefersReducedMotion) {
-                gsap.set(card, { y: 0, opacity: 1 });
-                if (countEl) countEl.textContent = target; // แสดงเลขสุดท้ายทันที ไม่ต้องนับ
-                return;
-            }
 
             const cardTimeline = gsap.timeline({
                 scrollTrigger: {

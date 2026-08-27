@@ -65,35 +65,18 @@ $ctaImage = asset_url('images/bg-cta.jpg');
         transform: scale(1.12);
         will-change: transform;
     }
-    @media (prefers-reduced-motion: reduce) {
-        *, *::before, *::after {
-            animation-duration: 0.001ms !important;
-            animation-iteration-count: 1 !important;
-            transition-duration: 0.001ms !important;
-            scroll-behavior: auto !important;
+
+    @media (min-width: 1024px) and (max-width: 1279px) {
+        .ipad-pro-article-hero-content {
+            margin-left: 0 !important;
         }
     }
-    @media (min-width: 768px) and (max-width: 1023px) {
-        .article-filter-btn {
-            padding-left: 0.85rem !important;
-            padding-right: 0.85rem !important;
-            font-size: 0.825rem !important;
-        }
-        .article-filter-track {
-            gap: 0.5rem !important;
-        }
-    }
-    @media (min-width: 1024px) {
-        .article-filter-track {
-            justify-content: center !important;
-            gap: 1rem !important;
-        }
-        .article-filter-btn {
-            font-size: 1rem !important;
-            padding-left: 1.5rem !important;
-            padding-right: 1.5rem !important;
-            padding-top: 0.6rem !important;
-            padding-bottom: 0.6rem !important;
+
+    @media (min-width: 1025px) {
+        .desktop-wide-container-article {
+            max-width: 1720px !important;
+            padding-left: 2.5rem !important;
+            padding-right: 2.5rem !important;
         }
     }
 </style>
@@ -109,10 +92,10 @@ $ctaImage = asset_url('images/bg-cta.jpg');
         <div class="absolute inset-x-0 bottom-0 h-[30%] bg-gradient-to-t from-white/50 to-transparent z-10"></div>
     </div>
 
-    <div class="mx-auto w-full max-w-[1720px] px-4 sm:px-6 lg:px-10 pt-12 pb-24 lg:pt-28 lg:pb-32 relative z-10 desktop-wide-container-article">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+    <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8 pt-12 pb-24 lg:pt-28 lg:pb-32 relative z-10 desktop-wide-container-article">
+        <div class="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-12 lg:gap-20 items-center">
             
-            <div class="max-w-3xl lg:max-w-none text-left mx-0 lg:ml-12 ipad-pro-ml-0 xl:ml-24">
+            <div class="max-w-2xl lg:ml-12 xl:ml-24 ipad-pro-article-hero-content">
                 <nav aria-label="Breadcrumb" class="hidden md:block animate-fade-up delay-100 mb-6">
                     <ol class="inline-flex items-center text-sm md:text-base font-medium text-slate-500">
                         <li>
@@ -143,32 +126,18 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                         .hero-title-text { font-size: 3.5rem; line-height: 1.2; }
                         .hero-desc-text { font-size: 24px !important; line-height: 1.7; }
                     }
-                    @media (min-width: 768px) and (max-width: 1023px) {
-                        .ipad-mini-hero-desc { max-width: 450px !important; }
+                    @media (min-width: 1024px) {
+                        .hero-title-text { font-size: 4.5rem; line-height: 1.2; }
                     }
-                    @media (min-width: 1025px) {
-                        .desktop-wide-container-article {
-                            max-width: 1720px !important;
-                            padding-left: 2.5rem !important;
-                            padding-right: 2.5rem !important;
-                        }
-                        .desktop-article-hero-h1 {
-                            font-size: 5.5rem !important;
-                            line-height: 1.1 !important;
-                            font-weight: 900 !important;
-                        }
-                        .desktop-article-hero-p {
-                            font-size: 1.25rem !important;
-                            line-height: 1.75 !important;
-                            max-width: 34rem !important;
-                        }
+                    @media (min-width: 1280px) {
+                        .hero-title-text { font-size: 5rem; line-height: 1.2; }
                     }
                 </style>
                 <h1 class="animate-fade-up delay-200 tracking-tight mb-2">
-                    <span class="hero-title-text font-bold bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block pb-1 md:pb-2 whitespace-nowrap desktop-article-hero-h1">
+                    <span class="hero-title-text font-bold bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block pb-1 md:pb-2 whitespace-nowrap">
                         <?= e(getCurrentLang() === 'th' ? 'บทความความรู้' : 'Knowledge Articles') ?>
                     </span><br>
-                    <span class="hero-title-text font-bold bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block -mt-2 md:-mt-2 lg:-mt-2 xl:-mt-8 whitespace-nowrap desktop-article-hero-h1" style="animation-delay: -3s;">
+                    <span class="hero-title-text font-bold bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block -mt-2 md:-mt-8 whitespace-nowrap" style="animation-delay: -3s;">
                         <?= e(getCurrentLang() === 'th' ? 'และอัพเดต' : '& Updates') ?>
                     </span>
                 </h1>
@@ -180,7 +149,7 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                     $mobile_desc = "Knowledge articles, tech, and innovation covering ERP systems, digital business, online marketing, AI, and solutions to sustainably grow your organization.";
                 }
                 ?>
-                <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-lg md:text-xl leading-relaxed max-w-2xl mb-10 font-medium ipad-mini-hero-desc desktop-article-hero-p">
+                <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-lg md:text-xl leading-relaxed max-w-2xl mb-10 font-medium">
                     <span class="block md:hidden leading-[1.75]">
                         <?= $mobile_desc ?>
                     </span>
@@ -190,8 +159,8 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                             ครอบคลุม ERP ระบบธุรกิจดิจิทัล การตลาดออนไลน์ AI และโซลูชัน<br>
                             <?= e(t('common.articles_growth_summary')) ?>
                         <?php else: ?>
-                            A collection of articles on technology, innovation,<br class="hidden lg:block">
-                            and business strategy covering ERP systems, digital business, online marketing,<br class="hidden lg:block">
+                            A collection of articles on technology, innovation, and business<br>
+                            strategy covering ERP systems, digital business, online marketing,<br>
                             AI, and solutions that help organizations grow sustainably.
                         <?php endif; ?>
                     </span>
@@ -202,88 +171,99 @@ $ctaImage = asset_url('images/bg-cta.jpg');
 </section>
 
 <section class="bg-white" style="padding-top: 1.5rem; padding-bottom: 2.5rem;">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div class="flex flex-col gap-4 md:flex-row md:items-center relative w-full">
-            <div class="hidden items-center md:flex shrink-0 pr-4">
-                <button id="filter-scroll-left"
-                        type="button"
-                        class="article-filter-arrow flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 text-slate-500 transition-all duration-300 hover:bg-slate-50 opacity-0 pointer-events-none"
-                        aria-label="<?= e(t('article_list.category_scroll_left')) ?>">
-                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M15 19l-7-7 7-7"/>
-                    </svg>
-                </button>
-            </div>
-
-            <div class="relative flex-1 overflow-hidden">
-                <div id="category-filters" class="article-filter-track flex gap-3 overflow-x-auto py-1 hide-scroll scroll-smooth" style="-ms-overflow-style: none; scrollbar-width: none;">
-                    
-                    <!-- ปุ่ม: ทั้งหมด -->
-                    <button type="button"
-                            data-filter="all"
-                            class="article-filter-btn whitespace-nowrap rounded-md border px-5 py-2 text-sm font-medium transition-colors <?= $activeCategorySlug === 'all' ? 'border-transparent bg-blue-600 text-white' : 'border-blue-200 bg-white text-[#1a2b6d] hover:bg-blue-600 hover:text-white hover:border-transparent' ?>">
-                        <?= e(t('common.cta_view_all')) ?>
+    <div class="mx-auto max-w-7xl px-6 sm:px-6 lg:px-8 desktop-wide-container-article">
+        <div class="lg:px-12 xl:px-24">
+            <div class="flex flex-col gap-4 md:flex-row md:items-center relative w-full">
+                <div class="hidden items-center md:flex shrink-0 pr-4">
+                    <button id="filter-scroll-left"
+                            type="button"
+                            class="article-filter-arrow flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 text-slate-500 transition-all duration-300 hover:bg-slate-50 opacity-0 pointer-events-none"
+                            aria-label="<?= e(t('article_list.category_scroll_left')) ?>">
+                        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M15 19l-7-7 7-7"/>
+                        </svg>
                     </button>
-
-                    <!-- ปุ่ม: หมวดหมู่ตาม Loop -->
-                    <?php foreach ($categories as $category):
-                        $slug = trim((string) ($category['slug'] ?? ''));
-                        // You could use translated category names if they are dynamically loaded with current language
-                        $name = $category['name'] ?? '';
-                        if ($slug === '' || $name === '') {
-                            continue;
-                        }
-                        $isActive = $activeCategorySlug === $slug;
-                    ?>
-                        <button type="button"
-                                data-filter="<?= e($slug) ?>"
-                                class="article-filter-btn whitespace-nowrap rounded-md border px-5 py-2 text-sm font-medium transition-colors <?= $isActive ? 'border-transparent bg-blue-600 text-white' : 'border-blue-200 bg-white text-[#1a2b6d] hover:border-transparent hover:bg-blue-600 hover:text-white' ?>">
-                            <?= e($name) ?>
-                        </button>
-                    <?php endforeach; ?>
-                    
-
                 </div>
-            </div>
 
-            <div class="hidden items-center md:flex shrink-0 pl-4">
-                <button id="filter-scroll-right"
-                        type="button"
-                        class="article-filter-arrow flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 text-slate-500 transition-all duration-300 hover:bg-slate-50"
-                        aria-label="<?= e(t('article_list.category_scroll_right')) ?>">
-                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M9 5l7 7-7 7"/>
-                    </svg>
-                </button>
+                <div class="relative flex-1 overflow-hidden">
+                    <div id="category-filters" class="article-filter-track flex gap-3 overflow-x-auto py-1 hide-scroll scroll-smooth justify-start md:justify-center" style="-ms-overflow-style: none; scrollbar-width: none;">
+                        
+                        <!-- ปุ่ม: ทั้งหมด -->
+                        <?php 
+                            $allBtnClass = $activeCategorySlug === 'all' 
+                                ? 'border-transparent bg-blue-600 text-white' 
+                                : 'border-blue-200 bg-white text-[#1a2b6d] hover:bg-blue-600 hover:text-white hover:border-transparent';
+                        ?>
+                        <button type="button"
+                                data-filter="all"
+                                class="article-filter-btn whitespace-nowrap rounded-md border px-5 py-2 text-sm font-medium transition-colors <?= $allBtnClass ?>">
+                            <?= e(t('common.cta_view_all')) ?>
+                        </button>
+
+                        <!-- ปุ่ม: หมวดหมู่ตาม Loop -->
+                        <?php foreach ($categories as $category):
+                            $slug = trim((string) ($category['slug'] ?? ''));
+                            $name = $category['name'] ?? '';
+                            if ($slug === '' || $name === '') {
+                                continue;
+                            }
+                            $isActive = $activeCategorySlug === $slug;
+                            $catBtnClass = $isActive 
+                                ? 'border-transparent bg-blue-600 text-white' 
+                                : 'border-blue-200 bg-white text-[#1a2b6d] hover:border-transparent hover:bg-blue-600 hover:text-white';
+                        ?>
+                            <button type="button"
+                                    data-filter="<?= e($slug) ?>"
+                                    class="article-filter-btn whitespace-nowrap rounded-md border px-5 py-2 text-sm font-medium transition-colors <?= $catBtnClass ?>">
+                                <?= e($name) ?>
+                            </button>
+                        <?php endforeach; ?>
+                        
+
+                    </div>
+                </div>
+
+                <div class="hidden items-center md:flex shrink-0 pl-4">
+                    <button id="filter-scroll-right"
+                            type="button"
+                            class="article-filter-arrow flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 text-slate-500 transition-all duration-300 hover:bg-slate-50 opacity-0 pointer-events-none"
+                            aria-label="<?= e(t('article_list.category_scroll_right')) ?>">
+                        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 5l7 7-7 7"/>
+                        </svg>
+                    </button>
+                </div>
             </div>
         </div>
     </div>
 </section>
 
 <section class="bg-white pb-20">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <style>
-            .article-grid-container {
-                display: grid;
-                grid-template-columns: 1fr;
-                gap: 1.5rem;
-            }
-            .article-card-slide {
-                width: 100%;
-            }
-            @media (min-width: 1024px) {
+    <div class="mx-auto max-w-7xl px-6 sm:px-6 lg:px-8 desktop-wide-container-article">
+        <div class="lg:px-12 xl:px-24">
+            <style>
                 .article-grid-container {
-                    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+                    display: grid;
+                    grid-template-columns: 1fr;
+                    gap: 1.5rem;
                 }
-            }
-        </style>
-        <div id="article-grid" class="article-grid article-grid-container gap-6 hide-scroll scroll-smooth" style="-ms-overflow-style: none; scrollbar-width: none;">
+                .article-card-slide {
+                    width: 100%;
+                }
+                @media (min-width: 1024px) {
+                    .article-grid-container {
+                        grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+                    }
+                }
+            </style>
+            <div id="article-grid" class="article-grid article-grid-container gap-6 hide-scroll scroll-smooth" style="-ms-overflow-style: none; scrollbar-width: none;">
             <?php 
             foreach ($articles as $article):
-                $detailUrl = route_url('/article', ['id' => (int) ($article['id'] ?? 0)]);
+                $itemLang = getCurrentLang();
+                $articleSlug = ($itemLang === 'en' && !empty($article['slug_en'])) ? $article['slug_en'] : (!empty($article['slug']) ? $article['slug'] : (string) ($article['id'] ?? 0));
+                $detailUrl = route_url('/article/' . $articleSlug);
                 $categoryName = trim((string) ($article['category_name'] ?? ''));
                 $categorySlug = trim((string) ($article['category_slug'] ?? ''));
-                $itemLang = getCurrentLang();
                 $articleTitle = (string) ($article['title'] ?? t('article_list.page_title'));
                 if ($itemLang === 'en' && !empty($article['meta_title_en'])) {
                     $articleTitle = $article['meta_title_en'];
@@ -294,7 +274,9 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                     $summary = trim(strip_tags((string) $article['meta_description_en']));
                 }
                 $imageSrc = resolve_article_image_url((string) ($article['image_path'] ?? ''), $fallbackImage);
-                $linkToUse = $detailUrl;
+                $linkToUse = (trim($articleTitle) === 'ทำไม SEO ถึงสำคัญสำหรับธุรกิจในปีนี้') 
+                             ? app_url('article-detail-mockup') 
+                             : $detailUrl;
                 ?>
                 <article class="article-card article-card-slide snap-start group h-fit flex flex-col overflow-hidden rounded-[1.5rem] border border-slate-100 bg-white shadow-[0_4px_20px_rgba(0,0,0,0.04)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(0,0,0,0.08)]"
                          data-category="<?= e($categorySlug !== '' ? $categorySlug : 'all') ?>">
@@ -307,11 +289,17 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                     <!-- ส่วนเนื้อหา -->
                     <div class="flex flex-col p-4">
                         
-                        <!-- Badge หมวดหมู่ (พื้นหลังฟ้า ขอบมนแคปซูล) -->
-                        <div class="mb-3">
+                        <!-- Badge หมวดหมู่ (พื้นหลังฟ้า ขอบมนแคปซูล) + Pinned Badge -->
+                        <div class="mb-3 flex items-center justify-between gap-2">
                             <span class="inline-block rounded-full bg-blue-50 px-3 py-1.5 text-xs font-semibold tracking-wide text-blue-700">
                                 <?= e($categoryName !== '' ? $categoryName : (getCurrentLang() === 'th' ? 'หมวดหมู่' : 'Category')) ?>
                             </span>
+                            <?php if (!empty($article['is_pinned'])): ?>
+                                <span class="inline-flex items-center gap-1 rounded-full bg-amber-50 border border-amber-200/80 px-2.5 py-1 text-[11px] font-bold text-amber-700 shadow-sm">
+                                    <span>📌</span>
+                                    <span><?= getCurrentLang() === 'th' ? 'บทความแนะนำ' : 'Pinned' ?></span>
+                                </span>
+                            <?php endif; ?>
                         </div>
                         
                         <!-- หัวข้อบทความ -->
@@ -341,13 +329,14 @@ $ctaImage = asset_url('images/bg-cta.jpg');
             <?php endforeach; ?>
         </div>
 
-        <div id="no-results" class="article-no-results hidden py-14 text-center text-slate-600 flex flex-col items-center justify-center">
+        <div id="no-results" class="article-no-results hidden py-14 text-center text-slate-600 flex-col items-center justify-center">
             <img src="<?= e(asset_url('images/Empty.gif')) ?>" alt="No results" class="w-64 h-auto max-w-full mb-4 object-contain">
             <h3 class="text-lg font-bold text-[#1a2b6d] mb-2"><?= e(t('article_list.empty_state_title')) ?></h3>
             <p class="text-sm text-slate-500"><?= e(t('article_list.empty_state_desc')) ?></p>
         </div>
 
         <nav id="pagination" class="article-pagination mt-8 flex items-center justify-center gap-2" aria-label="Article pagination"></nav>
+        </div>
     </div>
 </section>
 
@@ -472,14 +461,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    const getFilteredCards = () => {
-        const cards = Array.from(document.querySelectorAll('.article-card'));
-        const active = (currentFilter || DEFAULT_FILTER).toLowerCase().trim();
-        return cards.filter(card => {
-            const category = (card.dataset.category || DEFAULT_FILTER).toLowerCase().trim();
-            return active === DEFAULT_FILTER || category === active;
-        });
-    };
+    const getFilteredCards = () => articleCards.filter(card => {
+        const category = card.dataset.category || DEFAULT_FILTER;
+        return currentFilter === DEFAULT_FILTER || category === currentFilter;
+    });
 
     const updateDots = () => {
         if (isDesktopMode) return;
@@ -622,34 +607,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const render = () => {
         filteredCards = getFilteredCards();
-        const allCards = Array.from(document.querySelectorAll('.article-card'));
-        allCards.forEach(card => {
-            card.classList.add('hidden');
-            card.style.display = 'none';
-        });
+        articleCards.forEach(card => card.classList.add('hidden'));
 
         const totalPages = Math.max(1, Math.ceil(filteredCards.length / PAGE_SIZE));
         if (currentPage > totalPages) currentPage = Math.max(1, totalPages);
         
         const start = (currentPage - 1) * PAGE_SIZE;
         const visible = filteredCards.slice(start, start + PAGE_SIZE);
-        visible.forEach(card => {
-            card.classList.remove('hidden');
-            card.style.display = '';
-        });
+        visible.forEach(card => card.classList.remove('hidden'));
 
         // เล่น GSAP animation สลับการ์ดบทความเมื่อเปลี่ยนหน้า/หมวดหมู่
         if (typeof gsap !== 'undefined') {
-            const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-            if (!prefersReducedMotion) {
-                gsap.fromTo(visible, 
-                    { opacity: 0, y: 20 },
-                    { opacity: 1, y: 0, duration: 0.45, stagger: 0.08, ease: "power2.out" }
-                );
-            }
+            gsap.fromTo(visible, 
+                { opacity: 0, y: 20 },
+                { opacity: 1, y: 0, duration: 0.45, stagger: 0.08, ease: "power2.out" }
+            );
         }
 
         noResults.classList.toggle('hidden', filteredCards.length > 0);
+        noResults.classList.toggle('flex', filteredCards.length === 0);
         setTimeout(renderPagination, 100); 
     };
 
@@ -673,6 +649,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const scrollWidth = filterTrack.scrollWidth;
             const clientWidth = filterTrack.clientWidth;
             
+            // If content fits completely without overflow, hide both buttons
+            if (scrollWidth <= clientWidth + 2) {
+                scrollLeftBtn.classList.add('opacity-0', 'pointer-events-none');
+                scrollRightBtn.classList.add('opacity-0', 'pointer-events-none');
+                return;
+            }
+
             // At the leftmost edge (or if not scrolled at all)
             if (scrollLeft <= 5) {
                 scrollLeftBtn.classList.add('opacity-0', 'pointer-events-none');
@@ -729,22 +712,18 @@ document.addEventListener('DOMContentLoaded', () => {
 document.addEventListener("DOMContentLoaded", () => {
     gsap.registerPlugin(ScrollTrigger);
 
-    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
     // Hero Parallax Background
-    if (!prefersReducedMotion) {
-        gsap.utils.toArray(".hero-parallax-img").forEach((img) => {
-            gsap.to(img, {
-                yPercent: 12,
-                ease: "none",
-                scrollTrigger: {
-                    trigger: "#article-hero",
-                    start: "top top",
-                    end: "bottom top",
-                    scrub: true
-                }
-            });
+    gsap.utils.toArray(".hero-parallax-img").forEach((img) => {
+        gsap.to(img, {
+            yPercent: 12,
+            ease: "none",
+            scrollTrigger: {
+                trigger: "#article-hero",
+                start: "top top",
+                end: "bottom top",
+                scrub: true
+            }
         });
-    }
+    });
 });
 </script>

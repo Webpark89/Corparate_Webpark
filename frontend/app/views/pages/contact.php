@@ -24,15 +24,6 @@ $recaptchaSiteKey = '6Lcf_pAtAAAAAOVhatPPwrHSYXeb_0J4yXf5BrRO';
     .hero-parallax-img {
         transform: scale(1.12);
         will-change: transform;
-    }
-    @media (prefers-reduced-motion: reduce) {
-        *, *::before, *::after {
-            animation-duration: 0.001ms !important;
-            animation-iteration-count: 1 !important;
-            transition-duration: 0.001ms !important;
-            scroll-behavior: auto !important;
-        }
-    }
 </style>
 <section id="contact-hero" class="relative overflow-hidden font-sans bg-white border-none">
     <div class="absolute inset-0 z-0">
@@ -620,15 +611,10 @@ $recaptchaSiteKey = '6Lcf_pAtAAAAAOVhatPPwrHSYXeb_0J4yXf5BrRO';
 <script>
 document.addEventListener("DOMContentLoaded", () => {
     gsap.registerPlugin(ScrollTrigger);
-    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     // Helper function for reveal on scroll
     function revealOnScroll(selector, options = {}) {
         const els = gsap.utils.toArray(selector);
         if (!els.length) return;
-        if (prefersReducedMotion) {
-            gsap.set(els, { y: 0, opacity: 1 });
-            return;
-        }
         els.forEach((el) => {
             gsap.to(el, {
                 scrollTrigger: {
@@ -645,20 +631,18 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
     // 1. Hero Parallax
-    if (!prefersReducedMotion) {
-        gsap.utils.toArray(".hero-parallax-img").forEach((img) => {
-            gsap.to(img, {
-                yPercent: 12,
-                ease: "none",
-                scrollTrigger: {
-                    trigger: "#contact-hero",
-                    start: "top top",
-                    end: "bottom top",
-                    scrub: true
-                }
-            });
+    gsap.utils.toArray(".hero-parallax-img").forEach((img) => {
+        gsap.to(img, {
+            yPercent: 12,
+            ease: "none",
+            scrollTrigger: {
+                trigger: "#contact-hero",
+                start: "top top",
+                end: "bottom top",
+                scrub: true
+            }
         });
-    }
+    });
     // 2. Form & Info Cards Stagger
     revealOnScroll(".gsap-contact-form");
     revealOnScroll(".gsap-contact-info-card", { stagger: 0.1 });
