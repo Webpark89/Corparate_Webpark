@@ -151,52 +151,62 @@ $last7Days = [];
 for ($i = 6; $i >= 0; $i--) {
     $d = date('Y-m-d', strtotime("-$i days"));
     $w = (int) date('w', strtotime($d));
-    $last7Days[$d] = ['label' => ($thaiDays[$w] ?? '') . ' (' . date('d/m', strtotime($d)) . ')', 'views' => 0];
+    $last7Days[$d] = [
+        'label' => ($thaiDays[$w] ?? '') . ' (' . date('d/m', strtotime($d)) . ')',
+        'views' => 0,
+        'unique' => 0,
+    ];
 }
-$rows7 = db()->query("SELECT date, pageviews FROM daily_traffic WHERE date >= CURDATE() - INTERVAL 6 DAY ORDER BY date ASC")->fetchAll();
+$rows7 = db()->query("SELECT date, pageviews, unique_visitors FROM daily_traffic WHERE date >= CURDATE() - INTERVAL 6 DAY ORDER BY date ASC")->fetchAll();
 foreach ($rows7 as $r) {
     if (isset($last7Days[$r['date']])) {
         $last7Days[$r['date']]['views'] = (int) $r['pageviews'];
+        $last7Days[$r['date']]['unique'] = (int) ($r['unique_visitors'] ?? 0);
     }
 }
 $traffic7Labels = array_column(array_values($last7Days), 'label');
-$traffic7Data = array_column(array_values($last7Days), 'views');
+$traffic7Pageviews = array_column(array_values($last7Days), 'views');
+$traffic7Unique = array_column(array_values($last7Days), 'unique');
 
 // 30 Days (4 Weeks)
 $weeks = [
-    'สัปดาห์ที่ 1' => 0,
-    'สัปดาห์ที่ 2' => 0,
-    'สัปดาห์ที่ 3' => 0,
-    'สัปดาห์ที่ 4' => 0,
+    'สัปดาห์ที่ 1' => ['views' => 0, 'unique' => 0],
+    'สัปดาห์ที่ 2' => ['views' => 0, 'unique' => 0],
+    'สัปดาห์ที่ 3' => ['views' => 0, 'unique' => 0],
+    'สัปดาห์ที่ 4' => ['views' => 0, 'unique' => 0],
 ];
-$rows30 = db()->query("SELECT date, pageviews FROM daily_traffic WHERE date >= CURDATE() - INTERVAL 28 DAY ORDER BY date ASC")->fetchAll();
+$rows30 = db()->query("SELECT date, pageviews, unique_visitors FROM daily_traffic WHERE date >= CURDATE() - INTERVAL 28 DAY ORDER BY date ASC")->fetchAll();
 $todayTs = strtotime(date('Y-m-d'));
 foreach ($rows30 as $r) {
     $diffDays = (int) floor(($todayTs - strtotime($r['date'])) / 86400);
     $weekIdx = 4 - min(3, (int) floor($diffDays / 7));
     $weekKey = 'สัปดาห์ที่ ' . $weekIdx;
     if (isset($weeks[$weekKey])) {
-        $weeks[$weekKey] += (int) $r['pageviews'];
+        $weeks[$weekKey]['views'] += (int) $r['pageviews'];
+        $weeks[$weekKey]['unique'] += (int) ($r['unique_visitors'] ?? 0);
     }
 }
 $traffic30Labels = array_keys($weeks);
-$traffic30Data = array_values($weeks);
+$traffic30Pageviews = array_column(array_values($weeks), 'views');
+$traffic30Unique = array_column(array_values($weeks), 'unique');
 
 // 1 Year (12 Months)
 $last12Months = [];
 for ($i = 11; $i >= 0; $i--) {
     $ym = date('Y-m', strtotime("-$i months"));
     $mIndex = (int) date('n', strtotime($ym . '-01')) - 1;
-    $last12Months[$ym] = ['label' => $thaiMonths[$mIndex], 'views' => 0];
+    $last12Months[$ym] = ['label' => $thaiMonths[$mIndex], 'views' => 0, 'unique' => 0];
 }
-$rows12m = db()->query("SELECT DATE_FORMAT(date, '%Y-%m') AS ym, SUM(pageviews) AS total_views FROM daily_traffic WHERE date >= DATE_SUB(CURDATE(), INTERVAL 11 MONTH) GROUP BY ym ORDER BY ym ASC")->fetchAll();
+$rows12m = db()->query("SELECT DATE_FORMAT(date, '%Y-%m') AS ym, SUM(pageviews) AS total_views, SUM(unique_visitors) AS total_unique FROM daily_traffic WHERE date >= DATE_SUB(CURDATE(), INTERVAL 11 MONTH) GROUP BY ym ORDER BY ym ASC")->fetchAll();
 foreach ($rows12m as $r) {
     if (isset($last12Months[$r['ym']])) {
         $last12Months[$r['ym']]['views'] = (int) $r['total_views'];
+        $last12Months[$r['ym']]['unique'] = (int) ($r['total_unique'] ?? 0);
     }
 }
 $traffic365Labels = array_column(array_values($last12Months), 'label');
-$traffic365Data = array_column(array_values($last12Months), 'views');
+$traffic365Pageviews = array_column(array_values($last12Months), 'views');
+$traffic365Unique = array_column(array_values($last12Months), 'unique');
 ?>
 <section class="space-y-4" aria-labelledby="dashboardOverviewTitle">
     <header class="section-header">
@@ -339,65 +349,120 @@ $traffic365Data = array_column(array_values($last12Months), 'views');
     
     // Gradients
     const gradientBlue = ctx.createLinearGradient(0, 0, 0, 350);
-    gradientBlue.addColorStop(0, 'rgba(59, 130, 246, 0.4)');
+    gradientBlue.addColorStop(0, 'rgba(59, 130, 246, 0.35)');
     gradientBlue.addColorStop(1, 'rgba(59, 130, 246, 0.0)');
 
-    const gradientTeal = ctx.createLinearGradient(0, 0, 0, 350);
-    gradientTeal.addColorStop(0, 'rgba(6, 182, 212, 0.4)');
-    gradientTeal.addColorStop(1, 'rgba(6, 182, 212, 0.0)');
+    const gradientEmerald = ctx.createLinearGradient(0, 0, 0, 350);
+    gradientEmerald.addColorStop(0, 'rgba(16, 185, 129, 0.35)');
+    gradientEmerald.addColorStop(1, 'rgba(16, 185, 129, 0.0)');
 
-    const gradientPurple = ctx.createLinearGradient(0, 0, 0, 350);
-    gradientPurple.addColorStop(0, 'rgba(139, 92, 246, 0.4)');
-    gradientPurple.addColorStop(1, 'rgba(139, 92, 246, 0.0)');
-
-    // Real Traffic Data from PHP
+    // Real Traffic Data from PHP (Pageviews & Unique Visitors)
     const realTraffic = {
         '7': {
             labels: <?= json_encode($traffic7Labels, JSON_UNESCAPED_UNICODE) ?>,
-            datasets: [{
-                label: 'ผู้เข้าชมเว็บไซต์ (7 วัน)',
-                data: <?= json_encode($traffic7Data) ?>,
-                borderColor: '#3b82f6',
-                backgroundColor: gradientBlue,
-                borderWidth: 3,
-                pointBackgroundColor: '#ffffff',
-                pointBorderColor: '#3b82f6',
-                tension: 0.4,
-                fill: true
-            }]
+            datasets: [
+                {
+                    label: 'ยอดเปิดหน้าเว็บรวม (Pageviews)',
+                    data: <?= json_encode($traffic7Pageviews) ?>,
+                    borderColor: '#3b82f6',
+                    backgroundColor: gradientBlue,
+                    borderWidth: 2.5,
+                    pointBackgroundColor: '#ffffff',
+                    pointBorderColor: '#3b82f6',
+                    pointHoverBackgroundColor: '#3b82f6',
+                    pointHoverBorderColor: '#ffffff',
+                    tension: 0.35,
+                    fill: true
+                },
+                {
+                    label: 'ผู้เข้าชมจริง (Unique Visitors)',
+                    data: <?= json_encode($traffic7Unique) ?>,
+                    borderColor: '#10b981',
+                    backgroundColor: gradientEmerald,
+                    borderWidth: 2.5,
+                    pointBackgroundColor: '#ffffff',
+                    pointBorderColor: '#10b981',
+                    pointHoverBackgroundColor: '#10b981',
+                    pointHoverBorderColor: '#ffffff',
+                    tension: 0.35,
+                    fill: true
+                }
+            ]
         },
         '30': {
             labels: <?= json_encode($traffic30Labels, JSON_UNESCAPED_UNICODE) ?>,
-            datasets: [{
-                label: 'ผู้เข้าชมเว็บไซต์ (30 วัน)',
-                data: <?= json_encode($traffic30Data) ?>,
-                borderColor: '#06b6d4',
-                backgroundColor: gradientTeal,
-                borderWidth: 3,
-                pointBackgroundColor: '#ffffff',
-                pointBorderColor: '#06b6d4',
-                tension: 0.4,
-                fill: true
-            }]
+            datasets: [
+                {
+                    label: 'ยอดเปิดหน้าเว็บรวม (Pageviews)',
+                    data: <?= json_encode($traffic30Pageviews) ?>,
+                    borderColor: '#3b82f6',
+                    backgroundColor: gradientBlue,
+                    borderWidth: 2.5,
+                    pointBackgroundColor: '#ffffff',
+                    pointBorderColor: '#3b82f6',
+                    pointHoverBackgroundColor: '#3b82f6',
+                    pointHoverBorderColor: '#ffffff',
+                    tension: 0.35,
+                    fill: true
+                },
+                {
+                    label: 'ผู้เข้าชมจริง (Unique Visitors)',
+                    data: <?= json_encode($traffic30Unique) ?>,
+                    borderColor: '#10b981',
+                    backgroundColor: gradientEmerald,
+                    borderWidth: 2.5,
+                    pointBackgroundColor: '#ffffff',
+                    pointBorderColor: '#10b981',
+                    pointHoverBackgroundColor: '#10b981',
+                    pointHoverBorderColor: '#ffffff',
+                    tension: 0.35,
+                    fill: true
+                }
+            ]
         },
         '365': {
             labels: <?= json_encode($traffic365Labels, JSON_UNESCAPED_UNICODE) ?>,
-            datasets: [{
-                label: 'ผู้เข้าชมเว็บไซต์ (1 ปี)',
-                data: <?= json_encode($traffic365Data) ?>,
-                borderColor: '#8b5cf6',
-                backgroundColor: gradientPurple,
-                borderWidth: 3,
-                pointBackgroundColor: '#ffffff',
-                pointBorderColor: '#8b5cf6',
-                tension: 0.4,
-                fill: true
-            }]
+            datasets: [
+                {
+                    label: 'ยอดเปิดหน้าเว็บรวม (Pageviews)',
+                    data: <?= json_encode($traffic365Pageviews) ?>,
+                    borderColor: '#3b82f6',
+                    backgroundColor: gradientBlue,
+                    borderWidth: 2.5,
+                    pointBackgroundColor: '#ffffff',
+                    pointBorderColor: '#3b82f6',
+                    pointHoverBackgroundColor: '#3b82f6',
+                    pointHoverBorderColor: '#ffffff',
+                    tension: 0.35,
+                    fill: true
+                },
+                {
+                    label: 'ผู้เข้าชมจริง (Unique Visitors)',
+                    data: <?= json_encode($traffic365Unique) ?>,
+                    borderColor: '#10b981',
+                    backgroundColor: gradientEmerald,
+                    borderWidth: 2.5,
+                    pointBackgroundColor: '#ffffff',
+                    pointBorderColor: '#10b981',
+                    pointHoverBackgroundColor: '#10b981',
+                    pointHoverBorderColor: '#ffffff',
+                    tension: 0.35,
+                    fill: true
+                }
+            ]
         }
     };
 
-    const getOptimalMax = (dataArr) => {
-        const maxVal = Math.max(...dataArr, 0);
+    const getOptimalMax = (datasets) => {
+        let maxVal = 0;
+        if (Array.isArray(datasets)) {
+            datasets.forEach(ds => {
+                if (Array.isArray(ds.data)) {
+                    const m = Math.max(...ds.data, 0);
+                    if (m > maxVal) maxVal = m;
+                }
+            });
+        }
         return maxVal > 0 ? Math.ceil(maxVal * 1.25) : 10;
     };
 
@@ -415,24 +480,36 @@ $traffic365Data = array_column(array_values($last12Months), 'views');
                     display: true,
                     position: 'top',
                     align: 'end',
-                    labels: { boxWidth: 10, usePointStyle: true, font: { family: 'sans-serif', size: 12, weight: '500' }, padding: 20, color: '#475569' }
+                    labels: {
+                        boxWidth: 12,
+                        usePointStyle: true,
+                        pointStyle: 'circle',
+                        font: { family: 'sans-serif', size: 12, weight: '500' },
+                        padding: 16,
+                        color: '#475569'
+                    }
                 },
                 tooltip: {
                     backgroundColor: '#0f172a',
                     padding: 14,
                     titleFont: { size: 13, family: 'sans-serif', weight: 'bold' },
-                    bodyFont: { size: 13, family: 'sans-serif' },
-                    bodySpacing: 6,
+                    bodyFont: { size: 12, family: 'sans-serif' },
+                    bodySpacing: 8,
                     cornerRadius: 12,
                     mode: 'index',
                     intersect: false,
-                    boxPadding: 6
+                    boxPadding: 6,
+                    callbacks: {
+                        label: function(context) {
+                            return ' ' + context.dataset.label + ': ' + Number(context.parsed.y).toLocaleString() + ' ครั้ง';
+                        }
+                    }
                 }
             },
             scales: {
                 y: {
                     beginAtZero: true,
-                    suggestedMax: getOptimalMax(realTraffic['7'].datasets[0].data),
+                    suggestedMax: getOptimalMax(realTraffic['7'].datasets),
                     grid: { color: '#f1f5f9', drawBorder: false, borderDash: [5, 5] },
                     ticks: { color: '#94a3b8', font: { size: 11 }, padding: 10, precision: 0 }
                 },
@@ -455,7 +532,7 @@ $traffic365Data = array_column(array_values($last12Months), 'views');
         if (!selected) return;
         trafficChart.data.labels = selected.labels;
         trafficChart.data.datasets = selected.datasets.map(ds => ({ ...ds }));
-        trafficChart.options.scales.y.suggestedMax = getOptimalMax(selected.datasets[0].data);
+        trafficChart.options.scales.y.suggestedMax = getOptimalMax(selected.datasets);
         trafficChart.update();
     });
 
