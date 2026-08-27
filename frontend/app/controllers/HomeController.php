@@ -1433,7 +1433,7 @@ class HomeController
     }
 
     /**
-     * Track daily site pageviews and unique visitors.
+     * Track daily site pageviews and unique visitors using hybrid Cookie + IP Hash tracking.
      */
     private function trackDailyTraffic(): void
     {
@@ -1442,22 +1442,64 @@ class HomeController
                 @session_start();
             }
 
-            // Exclude common search bots and web crawlers
+            // 1. Exclude logged-in Admin from site statistics
+            if (!empty($_SESSION['admin_logged_in'])) {
+                return;
+            }
+
+            // 2. Exclude common search bots, crawlers, and automated scanners
             $userAgent = strtolower($_SERVER['HTTP_USER_AGENT'] ?? '');
-            if ($userAgent !== '' && preg_match('/bot|crawl|slurp|spider|mediapartners/i', $userAgent)) {
+            if ($userAgent === '' || preg_match('/bot|crawl|slurp|spider|mediapartners|curl|wget|python|postman|insomnia|go-http-client|axios|httpclient|headless|scanner|sqlmap|nikto|nmap|censys|zgrab/i', $userAgent)) {
                 return;
             }
 
             $today = date('Y-m-d');
             $pdo = Database::getInstance();
 
-            $isUniqueToday = false;
-            $uniqueKey = 'visited_date_' . $today;
-            if (empty($_SESSION[$uniqueKey])) {
-                $_SESSION[$uniqueKey] = 1;
-                $isUniqueToday = true;
+            // 3. Extract Real Client IP (supporting reverse proxies / Cloudflare)
+            $clientIp = $_SERVER['HTTP_CF_CONNECTING_IP']
+                ?? $_SERVER['HTTP_X_FORWARDED_FOR']
+                ?? $_SERVER['REMOTE_ADDR']
+                ?? '127.0.0.1';
+
+            if (str_contains($clientIp, ',')) {
+                $parts = explode(',', $clientIp);
+                $clientIp = trim($parts[0]);
             }
 
+            // 4. Two-Tier Unique Visitor Check:
+            $cookieName = 'wp_vid_' . $today;
+            $isUniqueToday = false;
+
+            if (empty($_COOKIE[$cookieName])) {
+                // Tier 2: Check IP + UserAgent Hash in database
+                $visitorHash = hash('sha256', $clientIp . '|' . $userAgent . '|' . $today);
+
+                $logStmt = $pdo->prepare("INSERT IGNORE INTO daily_visitor_logs (`date`, `visitor_hash`) VALUES (:date, :hash)");
+                $logStmt->execute([
+                    ':date' => $today,
+                    ':hash' => $visitorHash,
+                ]);
+
+                // If a new row was inserted, this is the first visit today
+                if ($logStmt->rowCount() > 0) {
+                    $isUniqueToday = true;
+                }
+
+                // Plant 1-day cookie expiring at midnight
+                $midnight = strtotime('tomorrow');
+                if (!headers_sent()) {
+                    setcookie($cookieName, '1', [
+                        'expires' => $midnight,
+                        'path' => '/',
+                        'secure' => !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off',
+                        'httponly' => true,
+                        'samesite' => 'Lax',
+                    ]);
+                }
+            }
+
+            // 5. Update daily_traffic table
             $sql = "INSERT INTO daily_traffic (`date`, `pageviews`, `unique_visitors`) 
                     VALUES (:date, 1, :unique)
                     ON DUPLICATE KEY UPDATE 
