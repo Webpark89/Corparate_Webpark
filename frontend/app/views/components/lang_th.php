@@ -27,7 +27,7 @@ return [
         'form_label_fullname' => 'ชื่อ - นามสกุล',
         'form_label_firstname' => 'ชื่อ',
         'form_label_lastname' => 'นามสกุล',
-        'form_label_company_optional' => 'ชื่อบริษัท / องค์กร (ถ้ามี)',
+        'form_label_company_optional' => 'ชื่อบริษัท / องค์กร (ถ้าไม่มีให้ใส่ -)',
         'form_label_phone' => 'เบอร์โทรศัพท์',
         'form_label_email' => 'อีเมล',
         'form_label_company' => 'บริษัท',

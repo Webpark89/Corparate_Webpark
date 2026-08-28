@@ -24,6 +24,15 @@ $recaptchaSiteKey = '6Lcf_pAtAAAAAOVhatPPwrHSYXeb_0J4yXf5BrRO';
     .hero-parallax-img {
         transform: scale(1.12);
         will-change: transform;
+    }
+    @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after {
+            animation-duration: 0.001ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.001ms !important;
+            scroll-behavior: auto !important;
+        }
+    }
 </style>
 <section id="contact-hero" class="relative overflow-hidden font-sans bg-white border-none">
     <div class="absolute inset-0 z-0">
@@ -110,9 +119,9 @@ $recaptchaSiteKey = '6Lcf_pAtAAAAAOVhatPPwrHSYXeb_0J4yXf5BrRO';
                 </h1>
                 <?php
                 if (getCurrentLang() === 'th') {
-                    $mobile_desc = "มาพูดคุยเกี่ยวกับโปรเจกต์ ระบบ เว็บไซต์<br>หรือ ERP/ERM และดิจิทัลโซลูชัน<br>สำหรับธุรกิจคุณ";
+                    $mobile_desc = "มาพูดคุยเกี่ยวกับโปรเจกต์ ระบบ เว็บไซต์ หรือ ERP/ERM และดิจิทัลโซลูชันสำหรับธุรกิจคุณ";
                 } else {
-                    $mobile_desc = "Let's talk about your project, system,<br>website, or ERP/ERM and digital<br>solutions for your business";
+                    $mobile_desc = "Let's talk about your project, system, website, or ERP/ERM and digital solutions for your business.";
                 }
                 ?>
                 <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-lg md:text-xl leading-relaxed max-w-lg mb-10 font-medium desktop-contact-hero-p">
@@ -245,9 +254,9 @@ $recaptchaSiteKey = '6Lcf_pAtAAAAAOVhatPPwrHSYXeb_0J4yXf5BrRO';
                                 </div>
                             </div>
 
-                            <!-- Company Name (Optional) -->
+                            <!-- Company Name (Mandatory, '-' if none) -->
                             <div>
-                                <input type="text" name="company" placeholder="<?= e(t('common.form_label_company_optional')) ?>" value="<?= e($form['company'] ?? '') ?>" maxlength="100"
+                                <input type="text" name="company" placeholder="<?= e(t('common.form_label_company_optional')) ?>" value="<?= e($form['company'] ?? '') ?>" required maxlength="100"
                                     class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-base text-slate-900 outline-none transition-all duration-300 custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary focus:shadow-inner">
                             </div>
 
@@ -611,10 +620,15 @@ $recaptchaSiteKey = '6Lcf_pAtAAAAAOVhatPPwrHSYXeb_0J4yXf5BrRO';
 <script>
 document.addEventListener("DOMContentLoaded", () => {
     gsap.registerPlugin(ScrollTrigger);
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     // Helper function for reveal on scroll
     function revealOnScroll(selector, options = {}) {
         const els = gsap.utils.toArray(selector);
         if (!els.length) return;
+        if (prefersReducedMotion) {
+            gsap.set(els, { y: 0, opacity: 1 });
+            return;
+        }
         els.forEach((el) => {
             gsap.to(el, {
                 scrollTrigger: {
@@ -631,18 +645,20 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
     // 1. Hero Parallax
-    gsap.utils.toArray(".hero-parallax-img").forEach((img) => {
-        gsap.to(img, {
-            yPercent: 12,
-            ease: "none",
-            scrollTrigger: {
-                trigger: "#contact-hero",
-                start: "top top",
-                end: "bottom top",
-                scrub: true
-            }
+    if (!prefersReducedMotion) {
+        gsap.utils.toArray(".hero-parallax-img").forEach((img) => {
+            gsap.to(img, {
+                yPercent: 12,
+                ease: "none",
+                scrollTrigger: {
+                    trigger: "#contact-hero",
+                    start: "top top",
+                    end: "bottom top",
+                    scrub: true
+                }
+            });
         });
-    });
+    }
     // 2. Form & Info Cards Stagger
     revealOnScroll(".gsap-contact-form");
     revealOnScroll(".gsap-contact-info-card", { stagger: 0.1 });

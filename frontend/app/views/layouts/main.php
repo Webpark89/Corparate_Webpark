@@ -170,6 +170,81 @@ $content = $content ?? '';
                 margin-bottom: 2rem !important;
             }
         }
+
+        /* =========================================================================
+           Master Mobile Fluid Typography & Proportional System (< 768px)
+           Dynamically scales font sizes and spacing across all mobile screen sizes
+           ========================================================================= */
+        @media (max-width: 767px) {
+            html, body {
+                overflow-x: hidden;
+                width: 100%;
+                -webkit-text-size-adjust: 100%;
+            }
+
+            /* 1. Fluid Mobile Hero Titles H1 (Scales proportionally from 320px to 480px) */
+            .mobile-fluid-h1,
+            h1.text-5xl,
+            h1.text-4xl {
+                font-size: clamp(2.25rem, 8.5vw, 3.25rem) !important;
+                line-height: 1.15 !important;
+                letter-spacing: -0.03em !important;
+            }
+
+            /* 2. Fluid Section Titles H2 */
+            .mobile-fluid-h2,
+            h2.text-3xl,
+            h2.text-2xl {
+                font-size: clamp(1.65rem, 6.2vw, 2.25rem) !important;
+                line-height: 1.25 !important;
+                letter-spacing: -0.02em !important;
+            }
+
+            /* 3. Fluid Card Titles H3 / H4 */
+            .mobile-fluid-h3,
+            h3.text-xl,
+            h3.text-lg,
+            h4.text-lg {
+                font-size: clamp(1.05rem, 4.2vw, 1.3rem) !important;
+                line-height: 1.35 !important;
+            }
+
+            /* 4. Fluid Body Paragraphs */
+            .mobile-fluid-p,
+            p.text-base,
+            p.text-lg {
+                font-size: clamp(0.925rem, 3.7vw, 1.05rem) !important;
+                line-height: 1.65 !important;
+                overflow-wrap: break-word;
+            }
+
+            /* 5. Fluid Subtitle / Badges */
+            .mobile-fluid-badge {
+                font-size: clamp(0.75rem, 3.2vw, 0.875rem) !important;
+            }
+
+            /* 6. Hero Presenter & Description Proportional Scaling */
+            .mobile-hero-woman {
+                width: clamp(52%, 58vw, 64%) !important;
+                max-width: clamp(240px, 60vw, 310px) !important;
+                right: clamp(-36px, -7vw, -16px) !important;
+                bottom: 0px !important;
+            }
+            .mobile-hero-woman img {
+                object-fit: contain !important;
+                object-position: right bottom !important;
+                height: clamp(370px, 54vh, 430px) !important;
+                max-height: 58vh !important;
+                width: auto !important;
+            }
+            .mobile-hero-desc {
+                max-width: clamp(54%, 58vw, 62%) !important;
+                width: clamp(54%, 58vw, 62%) !important;
+                font-size: clamp(0.85rem, 3.6vw, 0.975rem) !important;
+                line-height: 1.55 !important;
+                letter-spacing: -0.2px !important;
+            }
+        }
     </style>
     <link rel="stylesheet" href="<?= e(asset_url('assets/css/tailwind.css')) ?>?v=<?= e($tailwindCssVersion) ?>">
     <?php if ($jsonGraph !== []): ?>

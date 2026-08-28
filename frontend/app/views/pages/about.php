@@ -220,6 +220,15 @@ $contactAddress = $company['contact']['address'] ?? t('footer.office_address');
         }
     }
 
+    /* Accessibility: เคารพการตั้งค่า Reduce Motion ของผู้ใช้ ลด/ปิด animation แบบ CSS ทั้งหมดในหน้านี้ */
+    @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after {
+            animation-duration: 0.001ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.001ms !important;
+            scroll-behavior: auto !important;
+        }
+    }
 
 </style>
 
@@ -258,9 +267,9 @@ $contactAddress = $company['contact']['address'] ?? t('footer.office_address');
                     </ol>
                 </nav>
                     
-                <h1 class="animate-fade-up delay-200 text-5xl sm:text-4xl md:text-6xl lg:text-8xl font-lg leading-[1.1] mb-2 tracking-tighter">
-                    <span class="bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block py-3 desktop-about-hero-h1 ipad-pro-about-hero-span1"><?= e(getCurrentLang() === 'th' ? 'ผู้ให้บริการด้าน' : 'Service Provider for') ?></span><br class="hidden sm:inline">
-                    <span class="bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block desktop-about-hero-h1 ipad-pro-about-hero-span2" style="animation-delay: -3s;">ERP / ERM</span>
+                <h1 class="animate-fade-up delay-200 leading-[1.15] mb-2 tracking-tighter">
+                    <span class="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-bold bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block py-1 md:py-2.5 desktop-about-hero-h1 ipad-pro-about-hero-span1"><?= e(getCurrentLang() === 'th' ? 'ผู้ให้บริการด้าน' : 'Service Provider for') ?></span><br>
+                    <span class="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-bold bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block py-1 md:py-2 -mt-1 md:-mt-2 lg:-mt-2 desktop-about-hero-h1 ipad-pro-about-hero-span2" style="animation-delay: -3s;">ERP / ERM</span>
                 </h1>
 
                 <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-lg md:text-xl leading-relaxed max-w-lg mb-10 font-medium desktop-about-hero-p ipad-pro-about-hero-p">
@@ -376,7 +385,7 @@ $contactAddress = $company['contact']['address'] ?? t('footer.office_address');
                     <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight mb-0 md:mb-1">
                         <?= e(t('common.nav_services') !== 'common.nav_services' ? t('common.nav_services') : (getCurrentLang() === 'th' ? 'บริการของเรา' : 'Our Services')) ?>
                     </h2>
-                    <div class="mt-2 mb-4" style="width: 48px; height: 3px; background-color: #0663F6;"></div>
+                    <div class="mt-2 mb-4" style="width: 32px; height: 3px; background-color: #0663F6;"></div>
                     <p class="text-slate-300 text-base md:text-lg leading-relaxed mb-8 max-w-sm">
                         <?= getCurrentLang() === 'th' ? 'Webpark ให้บริการด้าน ERP / ERM, Digital Platform, Online Marketing และ Creative / Design แบบครบวงจร เพื่อช่วยให้องค์กรทำงานได้อย่างมีประสิทธิภาพ เติบโตอย่างเป็นระบบและพร้อมแข่งขันในยุคดิจิทัล' : 'Webpark provides comprehensive services in ERP/ERM, Digital Platform, Online Marketing, and Creative/Design to help organizations work efficiently, grow systematically, and be ready to compete in the digital era.' ?>
                     </p>
@@ -402,11 +411,18 @@ $contactAddress = $company['contact']['address'] ?? t('footer.office_address');
             <div class="grid grid-cols-1 lg:grid-cols-[40%_55%] gap-12 lg:gap-16 justify-between items-start">
                 
                 <div class="lg:top-8 self-start ipad-pro-approach-left-col text-center lg:text-left">
-                    <h2 class="text-3xl md:text-4xl text-center lg:text-left font-bold leading-tight mb-6 ipad-mini-concept-title" style="color: #054FC5;">
-                        <?= getCurrentLang() === 'th' ? 'แนวคิดในการทำงานของเรา' : 'Our Approach' ?>
-                    </h2>
-                    <p class="text-center lg:text-left text-slate-600 text-lg md:text-lg leading-relaxed max-w-2xl lg:max-w-md mx-auto lg:mx-0 desktop-concept-p ipad-pro-concept-p ipad-mini-concept-desc">
-                        <?= getCurrentLang() === 'th' ? 'เราเชื่อว่าการพัฒนาระบบและโซลูชันดิจิทัลที่ดี <br class="md:hidden"> ไม่ได้เริ่มจากเทคโนโลยีเพียงอย่างเดียว <br class="md:hidden"> แต่เริ่มจากความเข้าใจธุรกิจของคุณ <br class="md:hidden"> เราทำงานแบบพาร์ทเนอร์ร่วมคิด ร่วมสร้าง <br class="md:hidden"> เพื่อให้ทุกโซลูชันที่เราส่งมอบ <span class="whitespace-nowrap">สามารถใช้งานได้</span> <br class="md:hidden"> <span class="whitespace-nowrap">สร้างคุณค่า</span> และช่วยให้ธุรกิจของคุณ <br class="md:hidden"> เติบโตได้อย่างยั่งยืน' : 'We believe that developing great digital systems and solutions doesn\'t start with technology alone, but with understanding your business.<br class="hidden ipad-pro-strict-inline"><br class="hidden ipad-pro-strict-inline"> We work as a partner to co-think and co-create, ensuring every solution we deliver is practical, creates value, and helps your business grow sustainably.' ?>
+                    <div class="inline-flex flex-col items-center lg:items-start mb-3">
+                        <h2 class="text-3xl md:text-4xl text-center lg:text-left font-bold leading-tight ipad-mini-concept-title" style="color: #054FC5;">
+                            <?= getCurrentLang() === 'th' ? 'แนวคิดในการทำงานของเรา' : 'Our Approach' ?>
+                        </h2>
+                        <div class="w-8 h-[3px] bg-primary mt-2"></div>
+                    </div>
+                    <p class="text-center lg:text-left text-slate-500 text-sm sm:text-base md:text-lg leading-relaxed max-w-2xl lg:max-w-md mx-auto lg:mx-0 desktop-concept-p ipad-pro-concept-p ipad-mini-concept-desc">
+                        <?php if (getCurrentLang() === 'th'): ?>
+                            เราเชื่อว่าการพัฒนาระบบและโซลูชันดิจิทัลที่ดี ไม่ได้เริ่มจากเทคโนโลยีเพียงอย่างเดียว แต่เริ่มจากความเข้าใจธุรกิจของคุณ เราทำงานแบบพาร์ทเนอร์ร่วมคิด ร่วมสร้าง เพื่อให้ทุกโซลูชันที่เราส่งมอบสามารถใช้งานได้จริง สร้างคุณค่า และช่วยให้ธุรกิจของคุณเติบโตได้อย่างยั่งยืน
+                        <?php else: ?>
+                            We believe that developing great digital systems and solutions doesn't start with technology alone, but with understanding your business. We work as a partner to co-think and co-create, ensuring every solution we deliver is practical, creates value, and helps your business grow sustainably.
+                        <?php endif; ?>
                     </p>
                 </div>
 
@@ -422,38 +438,38 @@ $contactAddress = $company['contact']['address'] ?? t('footer.office_address');
                         [
                             'step' => '02', 
                             'title' => getCurrentLang() === 'th' ? 'ออกแบบให้ใช้งานได้จริง' : 'Design for Practical Use', 
-                            'desc' => getCurrentLang() === 'th' ? 'เราออกแบบระบบให้ใช้งานง่าย รองรับการขยายตัว <br> และสอดคล้องกับกระบวนการทำงานของธุรกิจ' : 'We design systems that are easy to use, scalable <br> and aligned with your business processes.',                              
+                            'desc' => getCurrentLang() === 'th' ? 'เราออกแบบระบบให้ใช้งานง่าย รองรับการขยายตัว และสอดคล้องกับกระบวนการทำงานของธุรกิจ' : 'We design systems that are easy to use, scalable and aligned with your business processes.',                              
                             'icon' => asset_url('images/think_2.svg')
                         ],
                         [
                             'step' => '03', 
                             'title' => getCurrentLang() === 'th' ? 'ดูแลอย่างต่อเนื่อง' : 'Continuous Care',       
-                            'desc' => getCurrentLang() === 'th' ? 'เราพร้อมให้คำปรึกษาและบริการหลังการขายอย่างต่อเนื่อง <br> เพื่อสร้างความมั่นใจตลอดการใช้งาน' : 'We provide continuous consultation and after-sales service <br> to build confidence throughout usage.',                         
+                            'desc' => getCurrentLang() === 'th' ? 'เราพร้อมให้คำปรึกษาและบริการหลังการขายอย่างต่อเนื่อง เพื่อสร้างความมั่นใจตลอดการใช้งาน' : 'We provide continuous consultation and after-sales service to build confidence throughout usage.',                         
                             'icon' => asset_url('images/think_3.svg')
                         ],
                         [
                             'step' => '04', 
                             'title' => getCurrentLang() === 'th' ? 'รองรับการเติบโต' : 'Support Growth',          
-                            'desc' => getCurrentLang() === 'th' ? 'เราพัฒนาระบบที่สามารถเติบโตไปพร้อมกับธุรกิจของคุณ <br> และพร้อมปรับเปลี่ยนให้รองรับอนาคตขององค์กร' : 'We develop systems that grow with your business <br> and are ready to adapt for the future of your organization.',                                          
+                            'desc' => getCurrentLang() === 'th' ? 'เราพัฒนาระบบที่สามารถเติบโตไปพร้อมกับธุรกิจของคุณ และพร้อมปรับเปลี่ยนให้รองรับอนาคตขององค์กร' : 'We develop systems that grow with your business and are ready to adapt for the future of your organization.',                                          
                             'icon' => asset_url('images/think_4.svg')
                         ],
                     ];
                     ?>
 
                     <?php foreach ($processes as $item): ?>
-                        <div class="gsap-process-item bg-white rounded-2xl p-5 border border-slate-100 shadow-[0_2px_12px_rgba(4,59,148,0.06)] flex items-center gap-5 hover:border-blue-200 hover:shadow-md transition-all group opacity-0 translate-y-10">
-                            <div class="w-16 h-16 shrink-0 rounded-xl overflow-hidden bg-slate-50 flex items-center justify-center group-hover:scale-105 transition-transform">
+                        <div class="gsap-process-item bg-white rounded-2xl p-4 sm:p-5 border border-slate-100 shadow-[0_2px_12px_rgba(4,59,148,0.06)] flex items-center gap-3.5 sm:gap-5 hover:border-blue-200 hover:shadow-md transition-all group opacity-0 translate-y-10">
+                            <div class="w-12 h-12 sm:w-16 sm:h-16 shrink-0 rounded-xl overflow-hidden bg-slate-50 flex items-center justify-center group-hover:scale-105 transition-transform p-2">
                                 <img src="<?= e($item['icon']) ?>"
                                      alt="<?= e($item['title']) ?>"
-                                     class="w-12 h-12 object-contain"
+                                     class="w-full h-full object-contain"
                                      onerror="this.onerror=null;this.style.display='none'">
                             </div>
-                            <div class="flex flex-col gap-1 desktop-about-process-content">
+                            <div class="flex flex-col gap-1 desktop-about-process-content flex-1 min-w-0">
                                 <div class="flex flex-row items-center gap-2 desktop-about-process-header ipad-pro-about-process-header ipad-air-about-process-header">
-                                    <span class="text-xl font-extrabold desktop-about-process-step ipad-pro-about-process-step ipad-air-about-process-step" style="color: #043B94;"><?= e($item['step']) ?></span>
-                                    <h4 class="text-dark font-bold text-lg md:text-base group-hover:text-primary transition-colors desktop-about-process-title ipad-pro-about-process-title ipad-air-about-process-title mobile-about-process-title"><?= e($item['title']) ?></h4>
+                                    <span class="text-lg sm:text-xl font-extrabold desktop-about-process-step ipad-pro-about-process-step ipad-air-about-process-step shrink-0" style="color: #043B94;"><?= e($item['step']) ?></span>
+                                    <h4 class="text-dark font-bold text-sm sm:text-base md:text-base group-hover:text-primary transition-colors desktop-about-process-title ipad-pro-about-process-title ipad-air-about-process-title mobile-about-process-title leading-snug"><?= e($item['title']) ?></h4>
                                 </div>
-                                <p class="text-slate-500 text-base md:text-sm leading-relaxed desktop-about-process-desc ipad-pro-about-process-desc ipad-air-about-process-desc ipad-mini-about-process-desc mobile-about-process-desc"><?= $item['desc'] ?></p>
+                                <p class="text-slate-500 text-xs sm:text-sm md:text-sm leading-relaxed desktop-about-process-desc ipad-pro-about-process-desc ipad-air-about-process-desc ipad-mini-about-process-desc mobile-about-process-desc"><?= $item['desc'] ?></p>
                             </div>
                         </div>
                     <?php endforeach; ?>
@@ -613,10 +629,20 @@ $contactAddress = $company['contact']['address'] ?? t('footer.office_address');
     document.addEventListener("DOMContentLoaded", () => {
         gsap.registerPlugin(ScrollTrigger);
 
-        // Helper: reveal element(s) แบบ fade+slide ตอน scroll มาถึง
+        // เช็คว่าผู้ใช้ตั้งค่าเครื่องให้ลด Motion ไว้หรือไม่ (Accessibility)
+        // ถ้าใช่ จะข้าม animation ที่เกี่ยวกับการเคลื่อนไหวเยอะๆ (parallax, count-up)
+        // และแสดงเนื้อหาแบบปกติทันที
+        const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+        // Helper: reveal element(s) แบบ fade+slide ตอน scroll มาถึง หรือแสดงทันทีถ้า reduced motion
         function revealOnScroll(selector, options = {}) {
             const els = gsap.utils.toArray(selector);
             if (!els.length) return;
+
+            if (prefersReducedMotion) {
+                gsap.set(els, { y: 0, opacity: 1 });
+                return;
+            }
 
             els.forEach((el) => {
                 gsap.to(el, {
@@ -635,45 +661,53 @@ $contactAddress = $company['contact']['address'] ?? t('footer.office_address');
         }
 
         // 1. Parallax รูปพื้นหลัง Hero
-        gsap.utils.toArray(".hero-parallax-img").forEach((img) => {
-            gsap.to(img, {
-                yPercent: 12,
-                ease: "none",
-                scrollTrigger: {
-                    trigger: "#about-hero",
-                    start: "top top",
-                    end: "bottom top",
-                    scrub: true
-                }
+        if (!prefersReducedMotion) {
+            gsap.utils.toArray(".hero-parallax-img").forEach((img) => {
+                gsap.to(img, {
+                    yPercent: 12,
+                    ease: "none",
+                    scrollTrigger: {
+                        trigger: "#about-hero",
+                        start: "top top",
+                        end: "bottom top",
+                        scrub: true
+                    }
+                });
             });
-        });
+        }
 
         // 2. Section "เกี่ยวกับเรา" — ข้อความและกล่อง grid ไอคอน fade+slide เข้ามาแยกกัน
         revealOnScroll(".about-intro-text");
         revealOnScroll(".about-intro-grid");
 
         // 2.1 ไอคอน 4 ช่องภายในกล่อง ไล่ทีละอันเล็กน้อย (stagger) หลังจากกล่องแม่โผล่
-        const introItems = gsap.utils.toArray(".about-intro-item");
-        gsap.set(introItems, { opacity: 0 }); // ตั้งค่าเริ่มต้นให้โปร่งใสก่อน (ไม่มี CSS class รองรับ opacity-0 อยู่แล้ว)
-        introItems.forEach((item, i) => {
-            gsap.to(item, {
-                scrollTrigger: {
-                    trigger: ".about-intro-grid",
-                    start: "top 85%",
-                    toggleActions: "play none none reverse"
-                },
-                opacity: 1,
-                duration: 0.5,
-                delay: 0.2 + i * 0.1,
-                ease: "power1.out"
+        if (!prefersReducedMotion) {
+            const introItems = gsap.utils.toArray(".about-intro-item");
+            gsap.set(introItems, { opacity: 0 }); // ตั้งค่าเริ่มต้นให้โปร่งใสก่อน (ไม่มี CSS class รองรับ opacity-0 อยู่แล้ว)
+            introItems.forEach((item, i) => {
+                gsap.to(item, {
+                    scrollTrigger: {
+                        trigger: ".about-intro-grid",
+                        start: "top 85%",
+                        toggleActions: "play none none reverse"
+                    },
+                    opacity: 1,
+                    duration: 0.5,
+                    delay: 0.2 + i * 0.1,
+                    ease: "power1.out"
+                });
             });
-        });
+        }
 
         // 3. CTA banner สีเข้ม
         revealOnScroll(".gsap-dark-cta");
 
         // 4. Our Approach — ไล่ทีละขั้นตอนจากบนลงล่าง
         gsap.utils.toArray(".gsap-process-item").forEach((item, i) => {
+            if (prefersReducedMotion) {
+                gsap.set(item, { y: 0, opacity: 1 });
+                return;
+            }
             gsap.to(item, {
                 scrollTrigger: {
                     trigger: item,
@@ -692,24 +726,34 @@ $contactAddress = $company['contact']['address'] ?? t('footer.office_address');
         //    ใช้ section ครอบเป็น trigger ตัวเดียว (การ์ดเรียงแนวนอน ไม่ได้อยู่คนละตำแหน่งแนวตั้ง)
         const scrollCards = gsap.utils.toArray(".gsap-scroll-card");
         if (scrollCards.length) {
-            gsap.to(scrollCards, {
-                scrollTrigger: {
-                    trigger: "#about-services-scroll",
-                    start: "top 80%",
-                    toggleActions: "play none none reverse"
-                },
-                y: 0,
-                opacity: 1,
-                duration: 0.6,
-                stagger: 0.12,
-                ease: "power2.out"
-            });
+            if (prefersReducedMotion) {
+                gsap.set(scrollCards, { y: 0, opacity: 1 });
+            } else {
+                gsap.to(scrollCards, {
+                    scrollTrigger: {
+                        trigger: "#about-services-scroll",
+                        start: "top 80%",
+                        toggleActions: "play none none reverse"
+                    },
+                    y: 0,
+                    opacity: 1,
+                    duration: 0.6,
+                    stagger: 0.12,
+                    ease: "power2.out"
+                });
+            }
         }
 
         // 6. การ์ดสถิติ + Count-up ตัวเลข (120+ / 15+ / 50+)
         gsap.utils.toArray(".gsap-stat-card").forEach((card) => {
             const countEl = card.querySelector(".stat-count");
             const target = countEl ? parseInt(countEl.getAttribute("data-target"), 10) || 0 : 0;
+
+            if (prefersReducedMotion) {
+                gsap.set(card, { y: 0, opacity: 1 });
+                if (countEl) countEl.textContent = target; // แสดงเลขสุดท้ายทันที ไม่ต้องนับ
+                return;
+            }
 
             const cardTimeline = gsap.timeline({
                 scrollTrigger: {

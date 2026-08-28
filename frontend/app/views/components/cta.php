@@ -89,7 +89,13 @@ $contactButtonUrl = $cbuttonUrl ?? '/contact';
                                 <input type="text" id="contact_lastname_cta" name="lastname" placeholder="<?= e(t('common.form_label_lastname')) ?>" value="<?= e($form['lastname'] ?? '') ?>" required
                                     class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base text-slate-900 outline-none transition custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary">
                             </div>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+
+                            <div>
+                                <input type="text" id="contact_company_cta" name="company" placeholder="<?= e(t('common.form_label_company_optional')) ?>" value="<?= e($form['company'] ?? '') ?>" required maxlength="100"
+                                    class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base text-slate-900 outline-none transition custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary">
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <input type="text" inputmode="numeric" name="phone" placeholder="<?= e(t('common.form_label_phone')) ?>" value="<?= e($form['phone'] ?? '') ?>" required maxlength="10" pattern="\d{9,10}"
                                     oninput="this.value = this.value.replace(/[^0-9]/g, '');"
                                     class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base text-slate-900 outline-none transition custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary">

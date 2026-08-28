@@ -413,7 +413,9 @@ $socialLinks = [
         const footerSitemapSection  = document.getElementById('footerSitemapSection');
         const footerSitemapLabel    = document.getElementById('footerSitemapLabel');
         const footerSitemapArrowSvg = document.getElementById('footerSitemapArrowSvg');
-        const durationMs = 350;
+
+        const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const durationMs = reduceMotion ? 0 : 350;
 
         const setPanelHeight = () => {
             if (!footerSitemapPanelInner) return;

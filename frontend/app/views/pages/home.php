@@ -54,7 +54,7 @@ if (!empty($partners) && is_array($partners)) {
         .delay-300 { animation-delay: 300ms; }
         .delay-400 { animation-delay: 400ms; }
         .delay-500 { animation-delay: 500ms; }
-        .mobile-hero-woman { width: 62%; bottom: 0px; right: -2%; opacity: 1; z-index: 5; }
+        .mobile-hero-woman { width: 58%; bottom: 0px; right: 0px; opacity: 1; z-index: 5; }
         @media (min-width: 768px) { .mobile-hero-woman { width: auto; bottom: 0; right: 0; opacity: 1; } }
         .hero-parallax-img {
             transform: scale(1.12);
@@ -84,11 +84,11 @@ if (!empty($partners) && is_array($partners)) {
                         Digital Solutions for Modern Business
                     </span>
                 </div>
-                <h1 class="animate-entrance-up delay-200 text-5xl md:text-7xl lg:text-8xl font-black leading-[1.1] mb-4 tracking-tighter text-left">
+                <h1 class="animate-entrance-up delay-200 text-5xl md:text-7xl lg:text-8xl font-black leading-[1.1] mb-2 tracking-tighter text-left">
                     <span class="bg-gradient-to-r from-[#898F98] to-[#000208] bg-clip-text text-transparent inline-block py-2 md:py-2.5 desktop-home-hero-h1">WEBPARK</span><br>
                     <span class="bg-gradient-to-r from-[#003380] to-[#0055ff] bg-clip-text text-transparent inline-block py-1 md:py-2 -mt-1 md:-mt-2 lg:-mt-2 desktop-home-hero-h1">COMPANY</span>
                 </h1>
-                <p class="animate-entrance-up delay-300 mt-5 md:mt-6 text-blue-900 md:text-[#0b1b42] text-base md:text-lg leading-relaxed max-w-lg mx-0 mb-8 md:mb-10 font-bold md:font-semibold w-11/12 sm:w-3/4 md:w-full text-left relative z-20 ipad-pro-hero-desc ipad-mini-hero-desc mobile-hero-desc desktop-home-hero-p">
+                <p class="animate-entrance-up delay-300 mt-6 text-blue-900 md:text-[#0b1b42] text-base md:text-lg leading-relaxed max-w-lg mx-0 mb-10 font-bold md:font-semibold w-11/12 sm:w-3/4 md:w-full text-left relative z-20 ipad-pro-hero-desc ipad-mini-hero-desc mobile-hero-desc desktop-home-hero-p">
                     <span class="md:hidden">
                         <?= getCurrentLang() === 'th' ? 'ผู้ให้บริการพัฒนา Digital Platform<br>และระบบ AI ที่ช่วยให้ธุรกิจไทย<br>ก้าวไปข้างหน้า ด้วยเทคโนโลยี<br>ที่ใช้งานได้จริง' : 'Digital Platform and AI system<br>development provider helping Thai businesses<br>move forward with practical technology.' ?>
                     </span>
@@ -179,9 +179,22 @@ if (!empty($partners) && is_array($partners)) {
             
             /* Mobile (< 768px) specific fixes */
             @media (max-width: 767px) {
-                .mobile-hero-desc {
-                    max-width: 62% !important;
+                .mobile-hero-woman {
                     width: 62% !important;
+                    max-width: 305px !important;
+                    right: -32px !important;
+                    bottom: 0px !important;
+                }
+                .mobile-hero-woman img {
+                    object-fit: contain !important;
+                    object-position: right bottom !important;
+                    height: 425px !important;
+                    max-height: 58vh !important;
+                    width: auto !important;
+                }
+                .mobile-hero-desc {
+                    max-width: 58% !important;
+                    width: 58% !important;
                     font-size: 0.925rem !important;
                     letter-spacing: -0.3px !important;
                 }
@@ -360,11 +373,14 @@ if (!empty($partners) && is_array($partners)) {
 <?php if (!empty($displayPortfolios)): ?>
 <section class="bg-white pt-16 pb-6 lg:pt-20 lg:pb-8 overflow-hidden">
     <div class="mx-auto w-full max-w-[1720px] px-4 sm:px-6 lg:px-10">
-        <div class="mb-10">
+        <div class="mb-10 lg:ml-12 ipad-pro-ml-0 xl:ml-24 lg:mr-12 xl:mr-24">
             <div class="hidden md:block">
-                <h2 class="text-3xl md:text-4xl font-extrabold leading-none tracking-tighter text-blue-600 m-0 mb-4 ipad-pro-font-h2">
-                    <?= e(t('common.nav_services') !== 'common.nav_services' ? t('common.nav_services') : (getCurrentLang() === 'th' ? 'บริการของเรา' : 'Our Services')) ?>
-                </h2>
+                <div class="pl-0.5">
+                    <h2 class="text-3xl md:text-4xl font-extrabold leading-none text-blue-600 m-0 mb-2.5 ipad-pro-font-h2 inline-block">
+                        <?= e(t('common.nav_services') !== 'common.nav_services' ? t('common.nav_services') : (getCurrentLang() === 'th' ? 'บริการของเรา' : 'Our Services')) ?>
+                    </h2>
+                    <div class="w-8 h-[3px] bg-primary mb-4"></div>
+                </div>
                 <span class="block text-2xl lg:text-3xl font-bold leading-tight text-[#0b1b42] mb-6 ipad-pro-font-subtitle">
                     <?= e(t('home.portfolio_subtitle') !== 'home.portfolio_subtitle' ? t('home.portfolio_subtitle') : (getCurrentLang() === 'th' ? 'ตัวอย่างผลงานของเรา' : 'Our Portfolio')) ?>
                 </span>
@@ -381,7 +397,10 @@ if (!empty($partners) && is_array($partners)) {
                 </div>
             </div>
             <div class="block md:hidden text-left">
-                <span class="text-primary font-bold text-xl tracking-wide inline-block border-b-2 border-primary pb-1 mb-3"><?= e(t('common.nav_services') !== 'common.nav_services' ? t('common.nav_services') : (getCurrentLang() === 'th' ? 'บริการของเรา' : 'Our Services')) ?></span>
+                <div class="mb-3">
+                    <span class="text-primary font-bold text-xl tracking-wide inline-block"><?= e(t('common.nav_services') !== 'common.nav_services' ? t('common.nav_services') : (getCurrentLang() === 'th' ? 'บริการของเรา' : 'Our Services')) ?></span>
+                    <div class="w-8 h-[3px] bg-primary mt-1"></div>
+                </div>
                 <h2 class="text-dark font-bold text-2xl leading-tight mb-3"><?= e(t('home.portfolio_subtitle') !== 'home.portfolio_subtitle' ? t('home.portfolio_subtitle') : (getCurrentLang() === 'th' ? 'ตัวอย่างผลงานของเรา' : 'Our Portfolio')) ?></h2>
                 <p class="text-sm leading-relaxed text-slate-500 mb-0">
                     <?= e(getCurrentLang() === 'th' ? 'รวมผลงานที่เราช่วยออกแบบและพัฒนาโซลูชันดิจิทัล ที่ช่วยให้ธุรกิจเติบโตอย่างยั่งยืน' : 'A collection of digital solutions we designed and developed to help businesses grow sustainably.') ?>
@@ -400,7 +419,7 @@ if (!empty($partners) && is_array($partners)) {
         $totalPortfolios = count($displayPortfolios);
         $visibleCount    = 4;
         ?>
-        <div class="relative">
+        <div class="relative lg:ml-12 ipad-pro-ml-0 xl:ml-24 lg:mr-12 xl:mr-24">
             <button id="portfolio-prev"
                     class="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-5 z-10 w-10 h-10 rounded-full bg-white border border-slate-200 shadow-md hidden lg:flex items-center justify-center text-slate-400 hover:text-primary hover:border-primary transition-all disabled:opacity-30 disabled:cursor-not-allowed"
                     <?= $totalPortfolios <= $visibleCount ? 'disabled' : '' ?> aria-label="Previous">
@@ -621,28 +640,28 @@ $totalReviews = count($reviews);
         <div class="lg:hidden mb-12">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div class="bg-white rounded-2xl shadow-sm hover:shadow-md transition-shadow p-5 flex flex-row items-center justify-start gap-5 border border-slate-100">
-                    <img src="<?= asset_url('images/Capa_2.svg') ?>" alt="120+ องค์กรชั้นนำ" class="w-20 h-20 object-contain flex-shrink-0" />
+                    <img src="/Corparate_Webpark/frontend/public/assets/images/Capa_2.svg" alt="120+ องค์กรชั้นนำ" class="w-20 h-20 object-contain flex-shrink-0" />
                     <div class="flex flex-col text-left">
                         <h3 class="text-2xl font-black text-blue-600 mb-1 tracking-tight">120+ <span class="text-xl"><?= e(getCurrentLang() === 'th' ? 'องค์กรชั้นนำ' : 'Top Orgs') ?></span></h3>
                         <p class="text-slate-600 text-sm font-medium ipad-air-stat-desc"><?= e(getCurrentLang() === 'th' ? 'ที่ไว้วางใจ Webpark' : 'Trust Webpark') ?></p>
                     </div>
                 </div>
                 <div class="bg-white rounded-2xl shadow-sm hover:shadow-md transition-shadow p-5 flex flex-row items-center justify-start gap-5 border border-slate-100">
-                    <img src="<?= asset_url('images/Capa_1.svg') ?>" alt="15+ ปี" class="w-20 h-20 object-contain flex-shrink-0" />
+                    <img src="/Corparate_Webpark/frontend/public/assets/images/Capa_1.svg" alt="15+ ปี" class="w-20 h-20 object-contain flex-shrink-0" />
                     <div class="flex flex-col text-left">
                         <h3 class="text-2xl font-black text-blue-600 mb-1 tracking-tight">15+ <span class="text-xl"><?= e(getCurrentLang() === 'th' ? 'ปี' : 'Years') ?></span></h3>
                         <p class="text-slate-600 text-sm font-medium ipad-air-stat-desc"><?= e(getCurrentLang() === 'th' ? 'แห่งประสบการณ์ ด้านเทคโนโลยี' : 'Of Technology Experience') ?></p>
                     </div>
                 </div>
                 <div class="bg-white rounded-2xl shadow-sm hover:shadow-md transition-shadow p-5 flex flex-row items-center justify-start gap-5 border border-slate-100">
-                    <img src="<?= asset_url('images/Capa_3.svg') ?>" alt="50+" class="w-20 h-20 object-contain flex-shrink-0" />
+                    <img src="/Corparate_Webpark/frontend/public/assets/images/Capa_3.svg" alt="50+" class="w-20 h-20 object-contain flex-shrink-0" />
                     <div class="flex flex-col text-left">
                         <h3 class="text-2xl font-black text-blue-600 mb-1 tracking-tight decoration-blue-500">50+</h3>
                         <p class="text-slate-600 text-sm font-medium mt-1 ipad-air-stat-desc"><?= e(getCurrentLang() === 'th' ? 'ระบบและโปรเจกต์ ที่ส่งมอบ' : 'Systems & Projects Delivered') ?></p>
                     </div>
                 </div>
                 <div class="bg-white rounded-2xl shadow-sm hover:shadow-md transition-shadow p-5 flex flex-row items-center justify-start gap-5 border border-slate-100">
-                    <img src="<?= asset_url('images/Capa_4.svg') ?>" alt="ครบวงจร" class="w-20 h-20 object-contain flex-shrink-0" />
+                    <img src="/Corparate_Webpark/frontend/public/assets/images/Capa_4.svg" alt="ครบวงจร" class="w-20 h-20 object-contain flex-shrink-0" />
                     <div class="flex flex-col text-left">
                         <h3 class="text-2xl font-black text-blue-600 mb-1 tracking-tight"><?= e(getCurrentLang() === 'th' ? 'ครบวงจร' : 'End-to-End') ?></h3>
                         <p class="text-slate-600 text-sm font-medium ipad-air-stat-desc"><?= e(getCurrentLang() === 'th' ? 'ตั้งแต่วางแผนพัฒนา ถึงดูแลหลังบ้าน' : 'From Planning to Maintenance') ?></p>
@@ -792,7 +811,7 @@ $totalReviews = count($reviews);
 <?php if (count($displayArticles) > 0): ?>
 <section class="bg-slate-50 pt-10 pb-20 lg:py-20 border-t border-slate-100">
     <div class="mx-auto w-full max-w-[1720px] px-4 sm:px-6 lg:px-10">
-        <div class="hidden lg:flex flex-row items-end justify-between mb-6 ipad-pro-hidden">
+        <div class="hidden lg:flex flex-row items-end justify-between mb-6 ipad-pro-hidden lg:ml-12 ipad-pro-ml-0 xl:ml-24 lg:mr-12 xl:mr-24">
             <div>
                 <h2 class="text-primary font-black text-3xl tracking-normal m-0 inline-block">
                     <?= getCurrentLang() === 'th' ? 'บทความ' : 'Articles' ?>
@@ -823,7 +842,7 @@ $totalReviews = count($reviews);
                 <?= getCurrentLang() === 'th' ? 'รวมบทความสาระน่ารู้ ที่จะช่วยต่อยอดแบรนด์<br>และพาธุรกิจสู่ดิจิทัลที่ช่วยให้ธุรกิจเติบโตได้อย่างยั่งยืน' : 'A collection of informative articles to help elevate your brand <br class="mobile-hidden">and guide your business into the digital era for sustainable growth.' ?>
             </p>
         </div>
-        <div id="knowledge-slider" class="flex lg:grid overflow-x-auto lg:overflow-visible snap-x snap-mandatory flex-nowrap lg:flex-wrap lg:grid-cols-3 gap-8 pt-2 pb-6 hide-scrollbar ipad-pro-articles-slider">
+        <div id="knowledge-slider" class="flex lg:grid overflow-x-auto lg:overflow-visible snap-x snap-mandatory flex-nowrap lg:flex-wrap lg:grid-cols-3 gap-8 pt-2 pb-6 hide-scrollbar ipad-pro-articles-slider lg:ml-12 ipad-pro-ml-0 xl:ml-24 lg:mr-12 xl:mr-24">
             <?php foreach ($displayArticles as $art): ?>
                 <?php
                 $artId       = (int)($art['id'] ?? 0);
@@ -914,9 +933,14 @@ document.addEventListener('DOMContentLoaded', function () {
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     gsap.registerPlugin(ScrollTrigger);
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     function revealOnScroll(selector, options = {}) {
         const els = gsap.utils.toArray(selector);
         if (!els.length) return;
+        if (prefersReducedMotion) {
+            gsap.set(els, { y: 0, opacity: 1 });
+            return;
+        }
         els.forEach((el) => {
             gsap.to(el, {
                 scrollTrigger: {
@@ -933,33 +957,39 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
     // 1. Hero Parallax
-    gsap.utils.toArray(".hero-parallax-img").forEach((img) => {
-        gsap.to(img, {
-            yPercent: 12,
-            ease: "none",
-            scrollTrigger: {
-                trigger: "section",
-                start: "top top",
-                end: "bottom top",
-                scrub: true
-            }
+    if (!prefersReducedMotion) {
+        gsap.utils.toArray(".hero-parallax-img").forEach((img) => {
+            gsap.to(img, {
+                yPercent: 12,
+                ease: "none",
+                scrollTrigger: {
+                    trigger: "section",
+                    start: "top top",
+                    end: "bottom top",
+                    scrub: true
+                }
+            });
         });
-    });
+    }
     // 2. Service Cards Stagger
     const serviceCards = gsap.utils.toArray(".gsap-home-service-card");
     if (serviceCards.length) {
-        gsap.to(serviceCards, {
-            scrollTrigger: {
-                trigger: ".gsap-home-service-card",
-                start: "top 85%",
-                toggleActions: "play none none reverse"
-            },
-            y: 0,
-            opacity: 1,
-            duration: 0.5,
-            stagger: 0.1,
-            ease: "power2.out"
-        });
+        if (prefersReducedMotion) {
+            gsap.set(serviceCards, { y: 0, opacity: 1 });
+        } else {
+            gsap.to(serviceCards, {
+                scrollTrigger: {
+                    trigger: ".gsap-home-service-card",
+                    start: "top 85%",
+                    toggleActions: "play none none reverse"
+                },
+                y: 0,
+                opacity: 1,
+                duration: 0.5,
+                stagger: 0.1,
+                ease: "power2.out"
+            });
+        }
     }
     // 3. Portfolio Cards
     revealOnScroll(".gsap-home-portfolio-card", { stagger: 0.1 });

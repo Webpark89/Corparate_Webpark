@@ -27,7 +27,7 @@ return [
         'form_label_fullname' => 'Full Name',
         'form_label_firstname' => 'First Name',
         'form_label_lastname' => 'Last Name',
-        'form_label_company_optional' => 'Company Name (Optional)',
+        'form_label_company_optional' => 'Company Name (Enter \'-\' if none)',
         'form_label_phone' => 'Phone Number',
         'form_label_email' => 'Email',
         'form_label_company' => 'Company',

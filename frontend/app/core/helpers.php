@@ -442,3 +442,15 @@ function partner_logo_url(?string $path): string
     return app_base_url() . '/admin/uploads/' . $path;
 }
 
+/**
+ * Send standard security headers.
+ */
+function send_security_headers(): void
+{
+    if (!headers_sent()) {
+        header('X-Content-Type-Options: nosniff');
+        header('X-Frame-Options: SAMEORIGIN');
+        header('X-XSS-Protection: 1; mode=block');
+        header('Referrer-Policy: strict-origin-when-cross-origin');
+    }
+}

@@ -365,3 +365,124 @@ function get_rate_limit_remaining(string $key, int $maxAttempts = 5, int $window
 
     return max(0, $maxAttempts - count($_SESSION[$sessionKey]));
 }
+
+/**
+ * Check remember-me cookie if present.
+ */
+function check_remember_me_cookie(): bool
+{
+    if (!empty($_SESSION['admin_logged_in'])) {
+        return true;
+    }
+    $cookie = $_COOKIE['admin_remember_token'] ?? '';
+    if (!$cookie) {
+        return false;
+    }
+    $decoded = base64_decode($cookie, true);
+    if (!$decoded || !str_contains($decoded, ':')) {
+        return false;
+    }
+    [$username, $hash] = explode(':', $decoded, 2);
+    $secret = defined('APP_KEY') ? APP_KEY : 'wp_secret_key_2026';
+    if ($username === ADMIN_USERNAME && hash_equals(hash_hmac('sha256', $username, $secret), $hash)) {
+        session_regenerate_id(true);
+        $_SESSION['admin_logged_in'] = true;
+        $_SESSION['admin_username'] = ADMIN_USERNAME;
+        $_SESSION['admin_full_name'] = 'Administrator';
+        $_SESSION['admin_role'] = 'admin';
+        $_SESSION['last_activity'] = time();
+        return true;
+    }
+    return false;
+}
+
+/**
+ * Set remember-me cookie for 7 days.
+ */
+function set_remember_me_cookie(string $username): void
+{
+    $secret = defined('APP_KEY') ? APP_KEY : 'wp_secret_key_2026';
+    $hash = hash_hmac('sha256', $username, $secret);
+    $token = base64_encode($username . ':' . $hash);
+    setcookie('admin_remember_token', $token, [
+        'expires' => time() + (86400 * 7),
+        'path' => '/',
+        'httponly' => true,
+        'samesite' => 'Lax',
+    ]);
+}
+
+/**
+ * Clear remember-me cookie.
+ */
+function clear_remember_me_cookie(): void
+{
+    if (isset($_COOKIE['admin_remember_token'])) {
+        setcookie('admin_remember_token', '', [
+            'expires' => time() - 3600,
+            'path' => '/',
+            'httponly' => true,
+            'samesite' => 'Lax',
+        ]);
+        unset($_COOKIE['admin_remember_token']);
+    }
+}
+
+/**
+ * Check if the given key is currently locked out by rate limiting.
+ */
+function is_rate_limited(string $key): bool
+{
+    $lockKey = 'lockout_' . $key;
+    return isset($_SESSION[$lockKey]) && $_SESSION[$lockKey] > time();
+}
+
+/**
+ * Get remaining lockout seconds for a key.
+ */
+function get_rate_limit_lockout_remaining(string $key): int
+{
+    $lockKey = 'lockout_' . $key;
+    if (isset($_SESSION[$lockKey]) && $_SESSION[$lockKey] > time()) {
+        return $_SESSION[$lockKey] - time();
+    }
+    return 0;
+}
+
+/**
+ * Reset rate limit and lockout state for a key.
+ */
+function reset_rate_limit(string $key): void
+{
+    unset($_SESSION['ratelimit_' . $key], $_SESSION['lockout_' . $key]);
+}
+
+/**
+ * Record a failed login attempt and set lockout if threshold is reached.
+ *
+ * @return array{failed_count: int, is_locked: bool}
+ */
+function record_failed_attempt(string $key, int $maxAttempts = 5, int $windowSeconds = 600): array
+{
+    $sessionKey = 'ratelimit_' . $key;
+    $now = time();
+    if (!isset($_SESSION[$sessionKey])) {
+        $_SESSION[$sessionKey] = [];
+    }
+    $_SESSION[$sessionKey] = array_filter(
+        $_SESSION[$sessionKey],
+        static fn(int $timestamp) => $now - $timestamp < $windowSeconds
+    );
+    $_SESSION[$sessionKey][] = $now;
+    $failedCount = count($_SESSION[$sessionKey]);
+    $isLocked = false;
+    if ($failedCount >= $maxAttempts) {
+        $_SESSION['lockout_' . $key] = $now + $windowSeconds;
+        $isLocked = true;
+    }
+    return [
+        'failed_count' => $failedCount,
+        'is_locked' => $isLocked,
+    ];
+}
+
