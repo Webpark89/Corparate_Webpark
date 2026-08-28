@@ -1,41 +1,55 @@
 <?php
+
 /**
  * Shared portfolio create/edit form partial.
  */
 $data = $portfolio ?? [];
 $action = $action ?? 'create';
 $formAction = $formAction ?? 'create.php';
+
 $categories = db()->query('SELECT id, name FROM categories ORDER BY name')->fetchAll();
 $authors = db()->query('SELECT id, display_name FROM authors ORDER BY display_name')->fetchAll();
 $content = $data['description'] ?? ($data['content'] ?? '');
-$inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-4 text-lg text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition';
+
+$inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition';
 ?>
+
 <div class="mx-auto max-w-7xl px-4 py-6 lg:px-8">
+
     <form method="post"
         action="<?= e($formAction) ?>"
         enctype="multipart/form-data"
         id="unifiedForm"
         class="grid grid-cols-1 gap-6 lg:grid-cols-12">
+
         <?= csrf_field() ?>
+
         <?php if ($action === 'edit'): ?>
             <input type="hidden" name="id" value="<?= (int)($data['id'] ?? 0) ?>">
         <?php endif; ?>
+
         <div class="lg:col-span-12 space-y-6">
+
             <section class="rounded-2xl border border-slate-200/80 bg-white shadow-sm overflow-hidden">
+
                 <div class="border-b border-slate-100 px-6 py-4">
                     <h3 class="text-sm font-semibold text-slate-900">ตั้งค่ารูปภาพหน้าปกผลงาน</h3>
                     <p class="text-xs text-slate-500 mt-0.5">อัปโหลดและจัดการรูปภาพหลักสำหรับใช้แสดงผลในโครงการผลงานนี้</p>
                 </div>
+
                 <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+
                     <div class="flex flex-col">
                         <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 block">
                             ตัวอย่างรูปภาพปกผลงาน
                         </label>
+
                         <div class="w-full h-64 rounded-xl border border-slate-200 bg-slate-50 p-2 flex items-center justify-center overflow-hidden">
                             <?php if (!empty($data['cover_image'])): ?>
                                 <img src="<?= e(resolve_admin_image_url($data['cover_image'])) ?>"
                                     onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
                                     class="w-full h-full object-contain rounded-lg shadow-sm transition-transform duration-200 hover:scale-[1.01]">
+
                                 <div class="hidden text-center p-6 space-y-2">
                                     <div class="mx-auto w-12 h-12 rounded-full bg-red-50 flex items-center justify-center text-red-400">
                                         <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
@@ -57,7 +71,9 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-4 text
                             <?php endif; ?>
                         </div>
                     </div>
+
                     <div class="flex flex-col justify-center space-y-5">
+
                         <div class="space-y-2">
                             <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider block">
                                 อัปโหลดไฟล์ภาพปกใหม่
@@ -67,25 +83,15 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-4 text
                             </label>
                             <div class="relative group border border-slate-200 rounded-xl bg-slate-50/50 p-3 hover:bg-slate-50 transition-colors">
                                 <input type="file"
-                                    id="portfolioImageInput"
                                     name="image_file"
-                                    accept="image/jpeg,image/png,image/webp,image/gif"
                                     <?php if ($action === 'create'): ?>required<?php endif; ?>
                                     class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 transition-all cursor-pointer">
                             </div>
-                            <div class="space-y-1 px-1">
-                                <div class="flex flex-wrap items-center gap-2 text-[11px]">
-                                    <span class="inline-flex items-center rounded-md bg-blue-50 px-2 py-0.5 font-bold text-blue-700 border border-blue-200">
-                                        บังคับสัดส่วน 16:9
-                                    </span>
-                                    <span class="text-slate-600 font-medium">ขนาดที่แนะนำ <strong>1200 × 675 px</strong></span>
-                                </div>
-                                <p class="text-[11px] text-slate-400">
-                                    * รองรับไฟล์นามสกุล: JPEG, JPG, PNG, WEBP (ขนาดสูงสุดไม่เกิน 25MB)
-                                </p>
-                            </div>
-                            <div id="imageDimensionFeedback" class="hidden"></div>
+                            <p class="text-[11px] text-slate-400 px-1">
+                                * รองรับไฟล์นามสกุล: JPEG, JPG, PNG, WEBP, GIF (ขนาดสูงสุดไม่เกิน 8MB)
+                            </p>
                         </div>
+
                         <div class="space-y-2">
                             <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider block">
                                 ข้อความอธิบายรูปภาพปก (SEO Alt Text) <span class="text-red-500 ml-0.5">*</span>
@@ -96,15 +102,21 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-4 text
                                 class="w-full rounded-xl border border-slate-200 bg-slate-50/50 px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/5 outline-none transition-all duration-200"
                                 required>
                         </div>
+
                     </div>
+
                 </div>
             </section>
+
             <section class="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden">
+
                 <div class="border-b px-6 py-4">
                     <h3 class="text-sm font-semibold">การปรับแต่งประสิทธิภาพ SEO ของผลงาน</h3>
                     <p class="text-xs text-slate-500 mt-1">เพิ่มโอกาสในการติดอันดับการค้นหาโครงการผลงานที่ดีบน Google</p>
                 </div>
+
                 <div class="p-6 space-y-5">
+
                     <div>
                         <div class="flex justify-between mb-2">
                             <label class="text-sm font-medium text-slate-700">
@@ -112,6 +124,7 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-4 text
                             </label>
                             <span id="titleCount" class="text-xs text-slate-500">0 / 60</span>
                         </div>
+
                         <input id="mainTitle"
                             name="meta_title"
                             value="<?= e($data['meta_title'] ?? '') ?>"
@@ -119,6 +132,7 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-4 text
                             class="<?= $inputClass ?>"
                             required>
                     </div>
+
                     <div>
                         <div class="flex justify-between mb-2">
                             <label class="text-sm font-medium text-slate-700">
@@ -126,6 +140,7 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-4 text
                             </label>
                             <span id="descCount" class="text-xs text-slate-500">0 / 155</span>
                         </div>
+
                         <textarea id="metaDesc"
                             name="meta_description"
                             rows="4"
@@ -133,24 +148,31 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-4 text
                             class="<?= $inputClass ?>"
                             required><?= e($data['meta_description'] ?? '') ?></textarea>
                     </div>
+
                     <div>
                         <label class="text-sm font-medium mb-2 block text-slate-700">
                             คำค้นหาสำคัญ (Keywords) <span class="text-red-500 ml-0.5">*</span>
                         </label>
+
                         <input name="meta_keywords"
                             value="<?= e($data['meta_keywords'] ?? '') ?>"
                             placeholder="ระบุคำค้นหา เช่น พัฒนาระบบ ERP, ออกแบบเว็บไซต์องค์กร, พัฒนาแอปพลิเคชัน (คั่นด้วยเครื่องหมายจุลภาค , )"
                             class="<?= $inputClass ?>"
                             required>
                     </div>
+
                 </div>
             </section>
+
             <section class="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden">
+
                 <div class="border-b border-slate-100 px-6 py-4">
                     <h3 class="text-sm font-semibold text-slate-900">ข้อมูลรายละเอียดโครงการและการตั้งค่า</h3>
                     <p class="text-xs text-slate-500 mt-0.5">จัดการข้อมูลแบรนด์ลูกค้า เทคโนโลยีที่ใช้เขียนระบบ และสถานะโครงการ</p>
                 </div>
+
                 <div class="p-6 space-y-6">
+
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div class="w-full">
                             <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 block">
@@ -161,6 +183,7 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-4 text
                                 placeholder="ตัวอย่างเช่น บริษัท เอสซีจี จำกัด (มหาชน)"
                                 class="<?= $inputClass ?>">
                         </div>
+
                         <div class="w-full">
                             <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 block">
                                 เทคโนโลยีที่ใช้งาน (Tech Stack)
@@ -171,52 +194,58 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-4 text
                                 class="<?= $inputClass ?>">
                         </div>
                     </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-end">
+
                         <div class="w-full">
                             <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 block">
                                 สถานะการเผยแพร่ผลงาน
                             </label>
-                            <div class="grid grid-cols-1 xl:grid-cols-3 gap-3">
-                                <label class="block cursor-pointer">
+
+                            <div class="grid grid-cols-3 gap-3 h-[46px]">
+                                <label class="block cursor-pointer h-full">
                                     <input
                                         type="radio"
                                         name="status"
                                         value="draft"
                                         class="peer sr-only"
                                         <?= (($data['status'] ?? 'draft') === 'draft') ? 'checked' : '' ?>>
-                                    <div class="w-full flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-4 text-center text-lg font-semibold text-slate-600 transition-all duration-200 hover:bg-slate-50 peer-checked:border-amber-400 peer-checked:bg-amber-50/60 peer-checked:text-amber-800">
+                                    <div class="h-full w-full flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 text-center text-sm font-semibold text-slate-600 transition-all duration-200 hover:bg-slate-50 peer-checked:border-amber-400 peer-checked:bg-amber-50/60 peer-checked:text-amber-800">
                                         แบบร่าง (Draft)
                                     </div>
                                 </label>
-                                <label class="block cursor-pointer">
+
+                                <label class="block cursor-pointer h-full">
                                     <input
                                         type="radio"
                                         name="status"
                                         value="hidden"
                                         class="peer sr-only"
                                         <?= (($data['status'] ?? 'draft') === 'hidden') ? 'checked' : '' ?>>
-                                    <div class="w-full flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-4 text-center text-lg font-semibold text-slate-600 transition-all duration-200 hover:bg-slate-50 peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-800">
+                                    <div class="h-full w-full flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 text-center text-sm font-semibold text-slate-600 transition-all duration-200 hover:bg-slate-50 peer-checked:border-slate-400 peer-checked:bg-slate-100 peer-checked:text-slate-800">
                                         ซ่อนอยู่ (Hidden)
                                     </div>
                                 </label>
-                                <label class="block cursor-pointer">
+
+                                <label class="block cursor-pointer h-full">
                                     <input
                                         type="radio"
                                         name="status"
                                         value="published"
                                         class="peer sr-only"
                                         <?= (($data['status'] ?? 'draft') === 'published') ? 'checked' : '' ?>>
-                                    <div class="w-full flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-4 text-center text-lg font-semibold text-slate-600 transition-all duration-200 hover:bg-slate-50 peer-checked:border-emerald-500 peer-checked:bg-emerald-50/60 peer-checked:text-emerald-800">
+                                    <div class="h-full w-full flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 text-center text-sm font-semibold text-slate-600 transition-all duration-200 hover:bg-slate-50 peer-checked:border-emerald-500 peer-checked:bg-emerald-50/60 peer-checked:text-emerald-800">
                                         เผยแพร่ (Published)
                                     </div>
                                 </label>
                             </div>
                         </div>
+
                         <div class="w-full">
                             <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 block">
                                 หมวดหมู่ผลงานโครงการ <span class="text-red-500 ml-0.5">*</span>
                             </label>
-                            <select name="category_id" class="<?= $inputClass ?> bg-white border-slate-200" required>
+                            <select name="category_id" class="<?= $inputClass ?> bg-white border-slate-200 h-[46px] py-0" required>
                                 <option value="">เลือกหมวดหมู่ผลงานโครงการ...</option>
                                 <?php foreach ($categories as $category): ?>
                                     <option value="<?= (int) $category['id'] ?>" <?= (int) ($data['category_id'] ?? 0) === (int) $category['id'] ? 'selected' : '' ?>>
@@ -225,7 +254,9 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-4 text
                                 <?php endforeach; ?>
                             </select>
                         </div>
+
                     </div>
+
                     <div>
                         <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 block">
                             ลิงก์หน้าผลงาน (URL Slug) <span class="text-red-500 ml-0.5">*</span>
@@ -242,6 +273,7 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-4 text
                                 required>
                         </div>
                     </div>
+
                     <div class="space-y-2">
                         <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider block">
                             รายละเอียดเนื้อหาหลักของผลงานโครงการ <span class="text-red-500 ml-0.5">*</span>
@@ -253,20 +285,26 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-4 text
                         </div>
                         <textarea id="mainEditorData" name="content" hidden><?= e($content) ?></textarea>
                     </div>
+
                 </div>
             </section>
         </div>
+
         <div class="lg:col-span-12 pt-4">
             <section class="sticky bottom-0 bg-white/90 backdrop-blur-sm p-4 -m-4 rounded-2xl border border-slate-200 shadow-sm">
              <div class="flex items-center justify-between">
+            
             <a href="index.php" class="px-6 h-11 flex items-center justify-center rounded-xl border border-slate-200 text-slate-700 hover:bg-slate-50 transition">
                 ยกเลิก
             </a>
+
             <div class="flex items-center gap-3">
+                
                 <button type="submit" name="status" value="draft" 
                     class="px-6 h-11 rounded-xl border bg-amber-50 border-amber-300 text-amber-700 font-semibold hover:bg-amber-50 transition">
                     บันทึกเป็นฉบับร่าง
                 </button>
+
                 <button type="submit" name="status" value="hidden" 
                     class="px-6 h-11 flex items-center justify-center gap-2 rounded-xl border bg-slate-50 border-slate-200 text-slate-600 font-semibold hover:bg-slate-100 transition">
                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -274,18 +312,23 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-4 text
                     </svg>
                     บันทึกและซ่อน
                 </button>
+
                 <button type="submit" name="status" value="published" 
                     class="px-6 h-11 rounded-xl border bg-emerald-50 border-emerald-300 text-emerald-700 font-semibold hover:bg-emerald-50 transition">
                     บันทึกและเผยแพร่
                 </button>
+
                  </div>
                     </div>
                 </section>
         </div>
+
     </form>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/tinymce@6.8.3/tinymce.min.js" referrerpolicy="origin"></script>
+
+<script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
 <script src="../assets/js/seo-editor.js"></script>
+
 <script>
     window.WEBPARKSeoEditor.init({
         formSelector: '#unifiedForm',
@@ -299,80 +342,28 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-4 text
         placeholder: 'เริ่มต้นเขียนรายละเอียดโครงการ ผลงาน และขั้นตอนความสำเร็จตรงนี้ได้เลย...'
     });
 </script>
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const fileInput = document.getElementById('portfolioImageInput') || document.querySelector('input[name="image_file"]');
+        const fileInput = document.querySelector('input[name="image_file"]');
         const previewContainer = document.querySelector('.w-full.h-64.rounded-xl.border');
-        const feedbackContainer = document.getElementById('imageDimensionFeedback');
-        const originalPreviewHtml = previewContainer ? previewContainer.innerHTML : '';
 
         if (fileInput && previewContainer) {
             fileInput.addEventListener('change', function(event) {
                 const file = event.target.files[0];
-                if (!file) {
-                    if (feedbackContainer) {
-                        feedbackContainer.className = 'hidden';
-                        feedbackContainer.innerHTML = '';
-                    }
-                    return;
-                }
+                if (file && file.type.startsWith('image/')) {
+                    const reader = new FileReader();
 
-                if (!file.type.startsWith('image/')) {
-                    alert('กรุณาเลือกไฟล์รูปภาพเท่านั้น (JPEG, PNG, WEBP)');
-                    fileInput.value = '';
-                    return;
-                }
-
-                const reader = new FileReader();
-                reader.onload = function(loadEvent) {
-                    const img = new Image();
-                    img.onload = function() {
-                        const width = this.naturalWidth;
-                        const height = this.naturalHeight;
-                        const ratio = width / height;
-
-                        // Allow tolerance between 1.70 and 1.85 (16:9 is ~1.778)
-                        const is16by9 = ratio >= 1.70 && ratio <= 1.85;
-
-                        if (!is16by9) {
-                            const ratioStr = ratio.toFixed(2);
-                            const errorMsg = `❌ สัดส่วนรูปภาพไม่ถูกต้อง!\n\nภาพที่คุณเลือกมีขนาด: ${width} × ${height} px (สัดส่วน ${ratioStr}:1)\n\nกรุณาเลือกรูปภาพที่มีสัดส่วน 16:9 (ขนาดที่แนะนำคือ 1200 × 675 px)`;
-                            
-                            if (feedbackContainer) {
-                                feedbackContainer.className = 'mt-2 rounded-xl bg-red-50 border border-red-200 p-3 text-xs text-red-700 flex flex-col gap-1';
-                                feedbackContainer.innerHTML = `
-                                    <div class="font-bold flex items-center gap-1.5">
-                                        <svg class="w-4 h-4 text-red-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
-                                        สัดส่วนภาพไม่ถูกต้อง: ${width} × ${height} px (${ratioStr}:1)
-                                    </div>
-                                    <div class="text-[11px] text-red-600">กรุณาเลือกรูปภาพที่มีสัดส่วน <strong>16:9</strong> (ขนาดแนะนำคือ <strong>1200 × 675 px</strong>)</div>
-                                `;
-                            }
-                            
-                            alert(errorMsg);
-                            fileInput.value = '';
-                            previewContainer.innerHTML = originalPreviewHtml;
-                            return;
-                        }
-
-                        // Success validation
-                        if (feedbackContainer) {
-                            feedbackContainer.className = 'mt-2 rounded-xl bg-emerald-50 border border-emerald-200 p-2.5 text-xs text-emerald-700 flex items-center gap-2';
-                            feedbackContainer.innerHTML = `
-                                <svg class="w-4 h-4 text-emerald-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                                <div>ขนาดรูปภาพผ่านเกณฑ์: <strong>${width} × ${height} px</strong> (สัดส่วน 16:9 เหมาะสม)</div>
-                            `;
-                        }
-
+                    reader.onload = function(loadEvent) {
                         previewContainer.innerHTML = '';
-                        const previewImg = document.createElement('img');
-                        previewImg.src = loadEvent.target.result;
-                        previewImg.className = 'w-full h-full object-contain rounded-lg shadow-sm';
-                        previewContainer.appendChild(previewImg);
-                    };
-                    img.src = loadEvent.target.result;
-                };
-                reader.readAsDataURL(file);
+                        const img = document.createElement('img');
+                        img.src = loadEvent.target.result;
+                        img.className = 'w-full h-full object-contain rounded-lg';
+                        previewContainer.appendChild(img);
+                    }
+
+                    reader.readAsDataURL(file);
+                }
             });
         }
     });

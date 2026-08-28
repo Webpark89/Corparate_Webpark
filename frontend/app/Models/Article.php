@@ -12,7 +12,7 @@ class Article
     /** Shared SELECT columns for list/detail queries. */
     private const SELECT_COLUMNS = '
         a.id,
-        a.is_pinned,
+        a.priority,
         a.slug,
         a.slug_en,
         a.meta_title,
@@ -33,7 +33,6 @@ class Article
         a.author_id,
         COALESCE(au.display_name, \'\') AS author,
         a.status,
-        a.views,
         a.created_at,
         a.updated_at';
 
@@ -62,7 +61,7 @@ class Article
     {
         $stmt = $this->pdo->query(
             'SELECT ' . self::SELECT_COLUMNS . self::FROM_JOIN .
-            " WHERE a.status = 'published' AND a.deleted_at IS NULL ORDER BY a.is_pinned DESC, a.id DESC"
+            " WHERE a.status = 'published' AND a.deleted_at IS NULL ORDER BY a.priority ASC, a.created_at DESC"
         );
 
         return $stmt->fetchAll();
@@ -77,32 +76,6 @@ class Article
             'SELECT ' . self::SELECT_COLUMNS . self::FROM_JOIN . ' WHERE a.id = ? AND a.status = \'published\' AND a.deleted_at IS NULL'
         );
         $stmt->execute([$id]);
-
-        return $stmt->fetch();
-    }
-
-    /**
-     * Fetch published article by either ID or slug (supports both slug and slug_en).
-     *
-     * @return array<string, mixed>|false
-     */
-    public function getBySlugOrId(string|int $identifier): array|false
-    {
-        $identifier = trim((string) $identifier);
-        if ($identifier === '') {
-            return false;
-        }
-
-        $decoded = rawurldecode($identifier);
-
-        if (ctype_digit($identifier) || ctype_digit($decoded)) {
-            return $this->getById((int) ($identifier ?: $decoded));
-        }
-
-        $stmt = $this->pdo->prepare(
-            'SELECT ' . self::SELECT_COLUMNS . self::FROM_JOIN . ' WHERE (a.slug = ? OR a.slug_en = ? OR a.slug = ? OR a.slug_en = ?) AND a.status = \'published\' AND a.deleted_at IS NULL LIMIT 1'
-        );
-        $stmt->execute([$identifier, $identifier, $decoded, $decoded]);
 
         return $stmt->fetch();
     }
@@ -129,7 +102,7 @@ class Article
         $stmt = $this->pdo->prepare(
             'SELECT ' . self::SELECT_COLUMNS . self::FROM_JOIN
             . ' WHERE a.category_id = ? AND a.id <> ? AND a.status = ? AND a.deleted_at IS NULL'
-            . ' ORDER BY a.is_pinned DESC, a.id DESC LIMIT ?'
+            . ' ORDER BY a.priority ASC, a.created_at DESC LIMIT ?'
         );
         $stmt->execute([$categoryId, $excludeId, 'published', $limit]);
 
@@ -250,13 +223,6 @@ class Article
     public function delete(int $id): bool
     {
         $stmt = $this->pdo->prepare('DELETE FROM article WHERE id = ?');
-
-        return $stmt->execute([$id]);
-    }
-
-    public function incrementViews(int $id): bool
-    {
-        $stmt = $this->pdo->prepare('UPDATE article SET views = views + 1 WHERE id = ?');
 
         return $stmt->execute([$id]);
     }

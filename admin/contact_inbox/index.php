@@ -2,14 +2,14 @@
 /**
  * Admin contact inbox — list, filter, inspect, and update customer contact submissions.
  */
-$pageTitle = 'Contact Inbox';
+$pageTitle = 'ข้อความจากลูกค้า';
 $page = 'contact_inbox';
 require_once __DIR__ . '/../includes/header.php';
 
 $search = trim($_GET['search'] ?? '');
 $statusFilter = trim($_GET['status'] ?? '');
 $currentPage = max(1, (int)($_GET['p'] ?? 1));
-$perPage = 10;
+$perPage = 15;
 
 // Status counts
 $countAll = (int) db()->query("SELECT COUNT(*) FROM contact_messages")->fetchColumn();
@@ -155,11 +155,7 @@ $flashError = flash('error');
             <input type="text" name="search" placeholder="ค้นหาชื่อ, อีเมล, เบอร์โทร, บริษัท..." value="<?= e($search) ?>"
                 class="w-full rounded-full border border-slate-200 bg-white py-2.5 px-11 text-xs text-slate-700 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/10 transition shadow-2xs">
             <?php if ($search !== ''): ?>
-                <a href="?status=<?= urlencode($statusFilter) ?>" 
-                   style="position: absolute; right: 1rem; top: 50%; transform: translateY(-50%); color: #94a3b8; font-weight: bold; font-size: 0.85rem; line-height: 1; text-decoration: none; padding: 0.25rem; transition: color 0.15s ease;"
-                   onmouseover="this.style.color='#ef4444'"
-                   onmouseout="this.style.color='#94a3b8'"
-                   title="ล้างการค้นหา">✕</a>
+                <a href="?status=<?= urlencode($statusFilter) ?>" class="absolute inset-y-0 right-0 flex items-center pr-4 text-xs font-bold text-slate-400 hover:text-slate-600" title="ล้างการค้นหา">✕</a>
             <?php endif; ?>
         </form>
     </div>
@@ -303,82 +299,18 @@ $flashError = flash('error');
         </div>
 
         <!-- Pagination -->
-        <?php if ($totalRows > 0): 
-            $totalPages = (int)$pagination['pages'];
-            $currPage = (int)$pagination['current'];
-            if ($totalPages <= 7) {
-                $pageRange = range(1, $totalPages);
-            } elseif ($currPage <= 4) {
-                $pageRange = [1, 2, 3, 4, 5, '...', $totalPages];
-            } elseif ($currPage >= $totalPages - 3) {
-                $pageRange = [1, '...', $totalPages - 4, $totalPages - 3, $totalPages - 2, $totalPages - 1, $totalPages];
-            } else {
-                $pageRange = [1, '...', $currPage - 1, $currPage, $currPage + 1, '...', $totalPages];
-            }
-
-            $buildPageUrl = function($pageNum) use ($statusFilter, $search) {
-                $q = ['p' => $pageNum];
-                if ($statusFilter !== '') $q['status'] = $statusFilter;
-                if ($search !== '') $q['search'] = $search;
-                return '?' . http_build_query($q);
-            };
-        ?>
-            <div class="flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-slate-100 bg-white px-6 py-4 text-sm text-slate-700 select-none">
-                <!-- Pagination Controls -->
-                <div class="flex flex-wrap items-center gap-1 sm:gap-1.5">
-                    <!-- Previous Button -->
-                    <?php if ($currPage > 1): ?>
-                        <a href="<?= $buildPageUrl($currPage - 1) ?>" class="inline-flex items-center text-sm font-medium text-slate-700 hover:text-indigo-600 transition px-2 py-1 mr-1">
-                            <svg class="w-4 h-4 mr-1 text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
-                            </svg>
-                            Previous
-                        </a>
-                    <?php else: ?>
-                        <span class="inline-flex items-center text-sm font-medium text-slate-300 pointer-events-none px-2 py-1 mr-1">
-                            <svg class="w-4 h-4 mr-1 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
-                            </svg>
-                            Previous
-                        </span>
-                    <?php endif; ?>
-
-                    <!-- Page Numbers -->
-                    <?php foreach ($pageRange as $pItem): ?>
-                        <?php if ($pItem === '...'): ?>
-                            <span class="inline-flex items-center justify-center w-8 h-8 text-sm text-slate-400 font-medium">...</span>
-                        <?php elseif ($pItem === $currPage): ?>
-                            <span class="inline-flex items-center justify-center w-8 h-8 rounded-full text-white text-sm font-semibold shadow-sm" style="background-color: #5046e5; box-shadow: 0 0 0 4px #e0e7ff;">
-                                <?= $pItem ?>
-                            </span>
-                        <?php else: ?>
-                            <a href="<?= $buildPageUrl($pItem) ?>" class="inline-flex items-center justify-center w-8 h-8 rounded-full text-slate-700 hover:bg-slate-100 hover:text-slate-900 text-sm font-medium transition">
-                                <?= $pItem ?>
-                            </a>
-                        <?php endif; ?>
-                    <?php endforeach; ?>
-
-                    <!-- Next Button -->
-                    <?php if ($currPage < $totalPages): ?>
-                        <a href="<?= $buildPageUrl($currPage + 1) ?>" class="inline-flex items-center text-sm font-medium text-slate-700 hover:text-indigo-600 transition px-2 py-1 ml-1">
-                            Next
-                            <svg class="w-4 h-4 ml-1 text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
-                            </svg>
-                        </a>
-                    <?php else: ?>
-                        <span class="inline-flex items-center text-sm font-medium text-slate-300 pointer-events-none px-2 py-1 ml-1">
-                            Next
-                            <svg class="w-4 h-4 ml-1 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
-                            </svg>
-                        </span>
-                    <?php endif; ?>
+        <?php if ($pagination['pages'] > 1): ?>
+            <div class="flex items-center justify-between border-t border-slate-100 bg-slate-50/50 px-4 py-3 text-xs text-slate-500">
+                <div>
+                    แสดง <?= ($pagination['offset'] + 1) ?> - <?= min($pagination['total'], $pagination['offset'] + $pagination['perPage']) ?> จากทั้งหมด <?= $pagination['total'] ?> รายการ
                 </div>
-
-                <!-- Right Summary -->
-                <div class="text-sm text-slate-600 font-normal">
-                    Showing <?= count($messages) ?> of <?= number_format($totalRows) ?> results
+                <div class="flex items-center gap-1">
+                    <?php for ($i = 1; $i <= $pagination['pages']; $i++): ?>
+                        <a href="?p=<?= $i ?>&status=<?= urlencode($statusFilter) ?>&search=<?= urlencode($search) ?>"
+                            class="inline-flex h-8 w-8 items-center justify-center rounded-lg border font-semibold transition <?= $i === $pagination['current'] ? 'border-blue-600 bg-blue-600 text-white' : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-50' ?>">
+                            <?= $i ?>
+                        </a>
+                    <?php endfor; ?>
                 </div>
             </div>
         <?php endif; ?>

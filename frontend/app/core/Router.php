@@ -23,33 +23,18 @@ class Router
      */
     public function dispatch(?string $requestUri = null): void
     {
-        try {
-            $requestPath = $this->resolveRequestPath($requestUri);
+        $requestPath = $this->resolveRequestPath($requestUri);
 
-            if ($this->dispatchExactRoute($requestPath)) {
-                return;
-            }
-
-            if ($this->dispatchDynamicRoute($requestPath)) {
-                return;
-            }
-
-            http_response_code(404);
-            (new HomeController())->notFound();
-        } catch (Throwable $e) {
-            error_log('Application Exception [500]: ' . $e->getMessage() . "\n" . $e->getTraceAsString());
-            try {
-                (new HomeController())->serverError($e->getMessage());
-            } catch (Throwable $renderError) {
-                http_response_code(500);
-                $errorFile = __DIR__ . '/../views/pages/error-500.php';
-                if (file_exists($errorFile)) {
-                    require_once $errorFile;
-                } else {
-                    echo 'Internal Server Error (500)';
-                }
-            }
+        if ($this->dispatchExactRoute($requestPath)) {
+            return;
         }
+
+        if ($this->dispatchDynamicRoute($requestPath)) {
+            return;
+        }
+
+        http_response_code(404);
+        (new HomeController())->notFound();
     }
 
     /**
@@ -132,7 +117,7 @@ class Router
             $params = [];
             foreach ($matches as $key => $value) {
                 if (is_string($key)) {
-                    $params[$key] = rawurldecode($value);
+                    $params[$key] = $value;
                 }
             }
 
@@ -153,15 +138,12 @@ class Router
      */
     private function invokeController(string $controllerClass, string $method, array $params = []): bool
     {
-        if (!class_exists($controllerClass)) {
-            (new HomeController())->serverError('Controller class not found: ' . $controllerClass);
-            return true;
-        }
-
         $controller = new $controllerClass();
 
         if (!method_exists($controller, $method)) {
-            (new HomeController())->serverError('Controller action not found: ' . $method);
+            http_response_code(500);
+            echo 'Controller method not found.';
+
             return true;
         }
 

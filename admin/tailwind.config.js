@@ -7,7 +7,7 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["Noto Sans Thai", "Inter", "ui-sans-serif", "system-ui", "-apple-system", "Segoe UI", "Roboto", "Helvetica Neue", "Arial", "sans-serif"]
+        sans: ["Noto Sans Thai", "Inter", "Noto Sans Thai", "system-ui", "-apple-system", "Segoe UI", "Roboto", "Helvetica Neue", "Arial", "sans-serif"]
       },
       colors: {
         primary: '#2563eb',
@@ -75,14 +75,6 @@ module.exports = {
         lift: 'lift 0.18s ease',
         'fade-in': 'fade-in 180ms ease',
         'slide-up': 'slide-up 220ms ease'
-      },
-      screens: {
-        'tablet': '768px',
-        'laptop': '1024px',
-        'desktop': '1280px',
-        '3xl': '1920px',
-        '4xl': '2560px',
-        '5xl': '3840px',
       }
     }
   },
