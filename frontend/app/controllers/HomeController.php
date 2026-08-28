@@ -396,9 +396,6 @@ class HomeController
             $descText = trim($metaDesc);
             if ($descText === '') {
                 $descText = get_article_summary_text((string) ($row['content'] ?? ''), $lang);
-                if ($descText !== '') {
-                    $descText = mb_strimwidth($descText, 0, 180, '...');
-                }
             }
 
             $article = [
@@ -406,7 +403,7 @@ class HomeController
                 'title' => $metaTitle,
                 'meta_title' => $metaTitle,
                 'meta_description' => $descText,
-                'summary' => $descText !== '' ? mb_strimwidth($descText, 0, 140, '...') : '',
+                'summary' => $descText,
                 'meta_keywords' => $metaKeywords,
                 'category' => (string) ($row['category'] ?? 'General'),
                 'image_path' => (string) ($row['image_path'] ?? ''),
@@ -462,11 +459,7 @@ class HomeController
 
                 $description = trim($metaDesc);
                 $content = trim((string) ($row['content'] ?? ''));
-                if ($description !== '') {
-                    $summary = mb_strimwidth(strip_tags($description), 0, 140, '...');
-                } else {
-                    $summary = mb_strimwidth(get_article_summary_text($content, $lang), 0, 140, '...');
-                }
+                $summary = $description !== '' ? strip_tags($description) : get_article_summary_text($content, $lang);
 
                 return [
                     'id' => (int) ($row['id'] ?? 0),

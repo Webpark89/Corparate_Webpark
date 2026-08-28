@@ -27,10 +27,14 @@ $navItems = [
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><?= e($pageTitle ?? 'ผู้ดูแลระบบ') ?> | <?= e(SITE_NAME) ?></title>
-    <link href="<?= ADMIN_URL ?>/assets/css/dist/tailwind.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+Thai:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        *, body, .admin-body, .font-sans, h1, h2, h3, h4, h5, h6, p, span, a, input, textarea, select, button, table, th, td, .ck, .ck-content {
+            font-family: 'Noto Sans Thai', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
+        }
+    </style>
 </head>
 
 <body class="admin-body bg-slate-50 font-sans antialiased text-slate-800">

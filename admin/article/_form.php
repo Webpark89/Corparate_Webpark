@@ -10,16 +10,6 @@ $status = isset($_POST['status']) && in_array($_POST['status'], ['published', 'd
     : ($data['status'] ?? 'draft');
 $categories = db()->query('SELECT id, name FROM categories ORDER BY name')->fetchAll();
 $authors = db()->query('SELECT id, display_name FROM authors ORDER BY display_name')->fetchAll();
-$currentArticleId = (int)($data['id'] ?? 0);
-$pinnedArticle = null;
-try {
-    $stmt = db()->prepare('SELECT id, meta_title FROM article WHERE is_pinned = 1 AND id != ? LIMIT 1');
-    $stmt->execute([$currentArticleId]);
-    $pinnedArticle = $stmt->fetch();
-} catch (Exception $e) {
-    $pinnedArticle = null;
-}
-$isPinned = !empty($data['is_pinned']);
 $sections = [];
 if (!empty($data['content'])) {
     $rawContent = (string)$data['content'];
@@ -73,6 +63,12 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
         border: none !important;
         border-radius: 0 !important;
         min-height: 150px;
+        font-family: 'Noto Sans Thai', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
+        font-size: 15px !important;
+        line-height: 1.8 !important;
+    }
+    .editor-frame .ck.ck-content * {
+        font-family: 'Noto Sans Thai', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
     }
     .editor-frame .ck.ck-content:focus,
     .editor-frame .ck.ck-focused {
@@ -104,29 +100,20 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
                 </button>
             </div>
             <section class="rounded-2xl border border-slate-200/80 bg-white shadow-sm overflow-hidden">
-                <div class="border-b border-slate-100 px-6 py-4 flex items-center justify-between">
-                    <div>
-                        <h3 class="text-sm font-semibold text-slate-900">ตั้งค่ารูปภาพหน้าปกบทความ</h3>
-                        <p class="text-xs text-slate-500 mt-0.5">อัปโหลดและจัดการรูปภาพหลัก (Hero Image) สำหรับบทความและแชร์ลงโซเชียลมีเดีย</p>
-                    </div>
-                    <span class="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700 border border-emerald-200">
-                        ⚡ Core Web Vitals Optimized
-                    </span>
+                <div class="border-b border-slate-100 px-6 py-4">
+                    <h3 class="text-sm font-semibold text-slate-900">ตั้งค่ารูปภาพหน้าปก</h3>
+                    <p class="text-xs text-slate-500 mt-0.5">อัปโหลดและจัดการรูปภาพหลักสำหรับใช้แสดงผลในบทความนี้</p>
                 </div>
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; padding: 1.5rem; width: 100%;">
-                    <!-- Left: Preview -->
-                    <div class="flex flex-col" style="width: 100%; min-width: 0; gap: 0.75rem;">
-                        <div class="flex items-center justify-between">
-                            <label class="text-xs font-semibold text-slate-700 uppercase tracking-wider block">
-                                ตัวอย่างรูปภาพ
-                            </label>
-                            <span class="text-xs text-slate-400">Live Preview</span>
-                        </div>
-                        <div id="article-img-preview-box" class="w-full rounded-xl border border-slate-200 bg-slate-50 flex items-center justify-center overflow-hidden relative" style="height: 260px; padding: 0.75rem;">
+                <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="flex flex-col">
+                        <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 block">
+                            ตัวอย่างรูปภาพ
+                        </label>
+                        <div class="w-full h-64 rounded-xl border border-slate-200 bg-slate-50 p-2 flex items-center justify-center overflow-hidden">
                             <?php if (!empty($data['cover_image'])): ?>
-                                <img id="article-img-preview" src="<?= e(resolve_admin_image_url($data['cover_image'])) ?>"
+                                <img src="<?= e(resolve_admin_image_url($data['cover_image'])) ?>"
                                     onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
-                                    class="max-h-full max-w-full w-auto h-auto object-contain rounded-lg shadow-sm transition-transform duration-200 hover:scale-[1.01]">
+                                    class="w-full h-full object-contain rounded-lg shadow-sm transition-transform duration-200 hover:scale-[1.01]">
                                 <div class="hidden text-center p-6 space-y-2">
                                     <div class="mx-auto w-12 h-12 rounded-full bg-red-50 flex items-center justify-center text-red-400">
                                         <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
@@ -137,8 +124,7 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
                                     <p class="text-[10px] text-slate-400">กรุณาตรวจสอบที่อยู่ไฟล์: <?= e($data['cover_image']) ?></p>
                                 </div>
                             <?php else: ?>
-                                <img id="article-img-preview" src="" alt="Preview" class="max-h-full max-w-full w-auto h-auto object-contain rounded-lg hidden">
-                                <div id="article-img-placeholder" class="text-center p-6 space-y-2">
+                                <div class="text-center p-6 space-y-2">
                                     <div class="mx-auto w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center text-slate-400">
                                         <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375 0 11-.75 0 .375 0 01.75 0z" />
@@ -148,101 +134,51 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
                                 </div>
                             <?php endif; ?>
                         </div>
-                        <?php if (!empty($data['cover_image'])): ?>
-                            <input type="hidden" name="cover_image" value="<?= e($data['cover_image']) ?>">
-                        <?php endif; ?>
-                        <div id="articleImageValidationStatus" class="mt-2 hidden"></div>
                     </div>
-
-                    <!-- Right: Upload and Guidelines -->
-                    <div class="flex flex-col" style="width: 100%; min-width: 0; gap: 1.25rem;">
-                        <div>
-                            <label class="text-xs font-semibold text-slate-700 uppercase tracking-wider block" style="margin-bottom: 0.5rem;">
-                                เลือกไฟล์รูปภาพใหม่
-                                <?php if ($action === 'create' && empty($data['cover_image'])): ?>
+                    <div class="flex flex-col justify-center space-y-5">
+                        <div class="space-y-2">
+                            <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider block">
+                                อัปโหลดไฟล์ใหม่
+                                <?php if ($action === 'create'): ?>
                                     <span class="text-red-500 ml-0.5">*</span>
                                 <?php endif; ?>
                             </label>
-                            <div class="border border-slate-200 rounded-xl bg-slate-50 transition-colors" style="padding: 0.75rem;">
+                            <div class="relative group border border-slate-200 rounded-xl bg-slate-50/50 p-3 hover:bg-slate-50 transition-colors">
                                 <input type="file"
-                                    id="article-image-input"
                                     name="image_file"
-                                    accept=".webp,image/webp"
-                                    class="w-full text-sm text-slate-600 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 transition-all cursor-pointer">
+                                    class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 transition-all cursor-pointer">
                             </div>
-                        </div>
-
-                        <!-- Requirements Guide Card -->
-                        <div class="rounded-xl border border-blue-100 bg-blue-50/40" style="padding: 1.25rem;">
-                            <div class="flex items-center font-bold text-blue-900 text-xs uppercase tracking-wider" style="gap: 0.5rem; margin-bottom: 0.75rem;">
-                                <svg class="w-4 h-4 text-blue-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                                <span>ข้อกำหนดและขนาดภาพหน้าปกที่แนะนำ (SEO & Speed)</span>
-                            </div>
-
-                            <div class="flex flex-col" style="gap: 0.75rem; font-size: 0.8125rem;">
-                                <div>
-                                    <span class="text-slate-700 font-semibold block" style="margin-bottom: 0.25rem;">นามสกุลไฟล์ที่รองรับ:</span>
-                                    <p class="text-xs text-slate-700">
-                                        รองรับเฉพาะไฟล์ <strong class="text-blue-700 font-bold">.webp</strong> เท่านั้น
-                                    </p>
-                                </div>
-
-                                <div class="flex items-center justify-between border-t border-blue-100" style="padding-top: 0.5rem;">
-                                    <span class="text-slate-700 font-semibold">ขนาดไฟล์:</span>
-                                    <span class="rounded-full bg-emerald-100 border border-emerald-300 text-emerald-800 font-bold px-2.5 py-0.5 text-xs">ไม่เกิน 1 MB (แนะนำ 150 – 350 KB)</span>
-                                </div>
-
-                                <div class="border-t border-blue-100" style="padding-top: 0.5rem;">
-                                    <span class="text-slate-700 font-semibold block" style="margin-bottom: 0.25rem;">สัดส่วนและขนาดภาพที่เหมาะสม:</span>
-                                    <ul class="text-slate-600 list-disc list-inside space-y-1 text-xs leading-relaxed">
-                                        <li><strong class="text-slate-800">แนะนำ: 1280 × 720 px</strong> (สัดส่วน 16:9)</li>
-                                        <li>ขนาดขั้นต่ำ: 800 × 450 px</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Alt text input -->
-                        <div class="flex flex-col" style="gap: 0.5rem;">
-                            <div class="flex justify-between items-center">
-                                <label class="text-xs font-semibold text-slate-700 uppercase tracking-wider block">
-                                    ข้อความอธิบายรูปภาพ (SEO Alt Text) <span class="text-red-500 ml-0.5">*</span>
-                                </label>
-                                <span id="altTextBadge" class="text-xs font-medium text-slate-400"></span>
-                            </div>
-                            <input id="coverImageAlt"
-                                name="cover_image_alt"
-                                value="<?= e($data['cover_image_alt'] ?? '') ?>"
-                                placeholder="ตัวอย่าง: 'หน้าจอระบบบริหารจัดการ ERP บัญชีสำหรับองค์กรธุรกิจและโรงงาน'"
-                                class="w-full rounded-xl border border-slate-200 bg-slate-50/50 px-4 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/5 outline-none transition-all duration-200"
-                                required>
-                            <p class="text-[11px] text-slate-500" style="margin-top: 0.15rem;">
-                                💡 <strong>คำแนะนำ SEO:</strong> อธิบายสิ่งที่อยู่ในภาพ + ใส่คำค้นหา เพื่อให้ติดอันดับ <strong>Google Image Search</strong> (⚠️ <em>หลีกเลี่ยงการใส่ตัวเลขสั้นๆ เช่น 01 หรือ image1</em>)
+                            <p class="text-[11px] text-slate-400 px-1">
+                                * รองรับไฟล์นามสกุล: JPEG, JPG, PNG, WEBP, GIF (ขนาดสูงสุดไม่เกิน 8MB)
                             </p>
-                            <div id="altTextWarning" class="text-xs font-medium text-rose-600 hidden p-2 rounded-lg bg-rose-50 border border-rose-200"></div>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider block">
+                                ข้อความอธิบายรูปภาพ (SEO Alt Text) <span class="text-red-500 ml-0.5">*</span>
+                            </label>
+                            <input name="cover_image_alt"
+                                value="<?= e($data['cover_image_alt'] ?? '') ?>"
+                                placeholder="ตัวอย่างเช่น 'โต๊ะทำงานดีไซน์มินิมอล' - ข้อความนี้ช่วยให้ Google Images ค้นพบเซกชันนี้ได้ง่ายขึ้น"
+                                class="w-full rounded-xl border border-slate-200 bg-slate-50/50 px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/5 outline-none transition-all duration-200"
+                                required>
                         </div>
                     </div>
                 </div>
             </section>
             <section class="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden">
-                <div class="border-b px-6 py-4 flex items-center justify-between">
-                    <div>
-                        <h3 class="text-sm font-semibold">การปรับแต่งประสิทธิภาพ SEO</h3>
-                        <p class="text-xs text-slate-500 mt-0.5">เพิ่มโอกาสในการติดอันดับการค้นหาที่ดีบน Google Search</p>
-                    </div>
-                    <span class="inline-flex items-center gap-1 rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700 border border-blue-200">
-                        ⚡ Google SEO Checklist
-                    </span>
+                <div class="border-b px-6 py-4">
+                    <h3 class="text-sm font-semibold">การปรับแต่งประสิทธิภาพ SEO</h3>
+                    <p class="text-xs text-slate-500 mt-1">เพิ่มโอกาสในการติดอันดับการค้นหาที่ดีบน Google</p>
                 </div>
                 <div class="p-6 space-y-5">
                     <!-- Thai SEO Fields -->
                     <div class="lang-group lang-th-group space-y-5">
                         <div>
-                            <div class="flex justify-between items-center mb-2">
+                            <div class="flex justify-between mb-2">
                                 <label class="text-sm font-medium text-slate-700">
                                     หัวข้อบทความ (Article Title) <span class="text-red-500 ml-0.5">*</span>
                                 </label>
-                                <span id="titleCount" class="text-xs font-medium text-slate-500">0 / 120 (แนะนำ 50-60 ตัวอักษร)</span>
+                                <span id="titleCount" class="text-xs text-slate-500">0 / 120</span>
                             </div>
                             <input id="mainTitle"
                                 name="meta_title"
@@ -250,16 +186,13 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
                                 placeholder="ระบุหัวข้อบทความหลัก..."
                                 class="<?= $inputClass ?>"
                                 required>
-                            <p id="titleSeoHint" class="text-[11px] text-slate-500 mt-1">
-                                💡 <strong>เคล็ดลับ Title:</strong> วางคำค้นหาสำคัญ (Keyword) ไว้ <strong>50–60 ตัวอักษรแรก</strong> เพื่อให้แสดงผลครบถ้วนบนหน้าค้นหา Google
-                            </p>
                         </div>
                         <div>
-                            <div class="flex justify-between items-center mb-2">
+                            <div class="flex justify-between mb-2">
                                 <label class="text-sm font-medium text-slate-700">
                                     คำอธิบายสรุปบทความ (Article Summary) <span class="text-red-500 ml-0.5">*</span>
                                 </label>
-                                <span id="descCount" class="text-xs font-medium text-slate-500">0 / 200 (แนะนำ 120-160 ตัวอักษร)</span>
+                                <span id="descCount" class="text-xs text-slate-500">0 / 200</span>
                             </div>
                             <textarea id="metaDesc"
                                 name="meta_description"
@@ -267,9 +200,6 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
                                 placeholder="เขียนคำอธิบายสั้น ๆ สรุปเนื้อหาบทความ..."
                                 class="<?= $inputClass ?>"
                                 required><?= e($data['meta_description'] ?? '') ?></textarea>
-                            <p id="descSeoHint" class="text-[11px] text-slate-500 mt-1">
-                                💡 <strong>เคล็ดลับ Meta Description:</strong> ความยาวที่เหมาะสมที่สุดคือ <strong>120–160 ตัวอักษร</strong> สรุปเนื้อหาและมีคำกระตุ้นให้คลิก
-                            </p>
                         </div>
                         <div>
                             <label class="text-sm font-medium mb-2 block text-slate-700">
@@ -277,7 +207,7 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
                             </label>
                             <input name="meta_keywords"
                                 value="<?= e($data['meta_keywords'] ?? '') ?>"
-                                placeholder="ระบุคำค้นหา เช่น บริการพัฒนาระบบ ERP บัญชี, ERP สำหรับธุรกิจ (คั่นด้วยเครื่องหมายจุลภาค , )"
+                                placeholder="ระบุคำค้นหา เช่น เว็บดีไซน์, ความรู้คู่ระบบ, เทคโนโลยี (คั่นด้วยเครื่องหมายจุลภาค , )"
                                 class="<?= $inputClass ?>"
                                 required>
                         </div>
@@ -285,11 +215,11 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
                     <!-- English SEO Fields -->
                     <div class="lang-group lang-en-group space-y-5 hidden">
                         <div>
-                            <div class="flex justify-between items-center mb-2">
+                            <div class="flex justify-between mb-2">
                                 <label class="text-sm font-medium text-slate-700">
                                     หัวข้อบทความ (EN) <span class="text-red-500 ml-0.5">*</span>
                                 </label>
-                                <span id="titleCountEn" class="text-xs font-medium text-slate-500">0 / 120</span>
+                                <span id="titleCountEn" class="text-xs text-slate-500">0 / 120</span>
                             </div>
                             <input id="mainTitleEn"
                                 name="meta_title_en"
@@ -298,11 +228,11 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
                                 class="<?= $inputClass ?>">
                         </div>
                         <div>
-                            <div class="flex justify-between items-center mb-2">
+                            <div class="flex justify-between mb-2">
                                 <label class="text-sm font-medium text-slate-700">
                                     SEO Description (English) <span class="text-red-500 ml-0.5">*</span>
                                 </label>
-                                <span id="descCountEn" class="text-xs font-medium text-slate-500">0 / 200</span>
+                                <span id="descCountEn" class="text-xs text-slate-500">0 / 200</span>
                             </div>
                             <textarea id="metaDescEn"
                                 name="meta_description_en"
@@ -347,37 +277,25 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
                             <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 block">
                                 วันที่เผยแพร่บทความ <span class="text-red-500 ml-0.5">*</span>
                             </label>
-                            <input type="date" name="created_at"
-                                value="<?= isset($data['created_at']) ? date('Y-m-d', strtotime($data['created_at'])) : date('Y-m-d') ?>"
+                            <input type="datetime-local" name="created_at"
+                                value="<?= isset($data['created_at']) ? date('Y-m-d\TH:i', strtotime($data['created_at'])) : date('Y-m-d\TH:i') ?>"
                                 class="<?= $inputClass ?> bg-white h-[46px]" required>
                         </div>
                         <div class="w-full">
-                            <div class="flex items-center justify-between mb-2">
-                                <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider block">
-                                    การปักหมุดบทความ
-                                </label>
-                                <span class="text-[11px] text-amber-600 font-medium">จำกัด 1 บทความ</span>
-                            </div>
-                            <label class="flex items-center gap-3 px-4 rounded-xl border border-slate-300 bg-slate-50 hover:bg-slate-100/80 cursor-pointer h-[46px] transition select-none">
-                                <input type="hidden" name="is_pinned" value="0">
-                                <input type="checkbox" id="is_pinned_input" name="is_pinned" value="1"
-                                    <?= $isPinned ? 'checked' : '' ?>
-                                    class="w-4 h-4 text-blue-600 rounded border-slate-300 focus:ring-blue-500 cursor-pointer">
-                                <span class="text-xs font-semibold text-slate-700 flex items-center gap-1.5">
-                                    <span>📌</span>
-                                    <span>ปักหมุดแสดงเป็นบทความแรกสุด</span>
-                                </span>
+                            <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 block">
+                                ลำดับความสำคัญ (Priority) <span class="text-slate-400 ml-0.5">(ไม่บังคับ)</span>
                             </label>
+                            <input type="number" name="priority"
+                                value="<?= e(isset($data['priority']) && $data['priority'] !== 999 ? str_pad((string)$data['priority'], 2, '0', STR_PAD_LEFT) : '') ?>"
+                                placeholder="เช่น 01, 02 (เว้นว่างไว้หากไม่ระบุ)"
+                                class="<?= $inputClass ?> bg-white h-[46px]">
                         </div>
                     </div>
                     <div class="lang-group lang-th-group space-y-6">
                         <div>
-                            <div class="flex justify-between items-center mb-2">
-                                <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider block">
-                                    ลิงก์บทความ (URL Slug) <span class="text-red-500 ml-0.5">*</span>
-                                </label>
-                                <span class="text-[11px] text-slate-400">ภาษาอังกฤษตัวพิมพ์เล็ก คั่นด้วยขีดกลาง (-)</span>
-                            </div>
+                            <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 block">
+                                ลิงก์บทความ (URL Slug) <span class="text-red-500 ml-0.5">*</span>
+                            </label>
                             <div class="flex overflow-hidden rounded-xl border border-slate-200 bg-slate-50 focus-within:border-blue-500 focus-within:ring-4 focus-within:ring-blue-500/5 transition-all">
                                 <span class="flex items-center px-4 bg-slate-100 text-sm text-slate-500 border-r border-slate-200 select-none">
                                     /article/
@@ -385,7 +303,7 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
                                 <input id="slug"
                                     name="slug"
                                     value="<?= e($data['slug'] ?? '') ?>"
-                                    placeholder="เช่น erp-accounting-guide-2026"
+                                    placeholder="ชื่อเนื้อหาภาษาอังกฤษหรือไทยเพื่อเป็นลิงก์ถาวร"
                                     class="flex-1 bg-transparent px-4 py-3 text-sm outline-none"
                                     required>
                             </div>
@@ -403,7 +321,7 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
                                 <input id="slug_en"
                                     name="slug_en"
                                     value="<?= e($data['slug_en'] ?? '') ?>"
-                                    placeholder="English URL slug e.g. erp-accounting-guide-2026"
+                                    placeholder="English URL slug"
                                     class="flex-1 bg-transparent px-4 py-3 text-sm outline-none">
                             </div>
                         </div>
@@ -811,103 +729,21 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
 </script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const fileInput = document.getElementById('article-image-input');
-        const statusBox = document.getElementById('articleImageValidationStatus');
-        const maxSizeBytes = 1024 * 1024; // 1 MB limit
-
-        if (fileInput) {
+        const fileInput = document.querySelector('input[name="image_file"]');
+        const previewContainer = document.querySelector('.w-full.h-64.rounded-xl.border');
+        if (fileInput && previewContainer) {
             fileInput.addEventListener('change', function(event) {
                 const file = event.target.files[0];
-                if (!file) {
-                    if (statusBox) statusBox.classList.add('hidden');
-                    return;
-                }
-
-                // 1. Validate File Size (Max 1 MB)
-                if (file.size > maxSizeBytes) {
-                    const fileSizeKb = Math.round(file.size / 1024);
-                    statusBox.className = 'mt-2 p-3 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs font-medium flex items-center gap-2';
-                    statusBox.innerHTML = `<span>❌ <strong>ขนาดไฟล์เกิน 1 MB</strong> (ไฟล์ของคุณมีขนาด ${fileSizeKb} KB) กรุณาบีบอัดรูปภาพให้ไม่เกิน 1 MB (แนะนำ 150 - 350 KB)</span>`;
-                    statusBox.classList.remove('hidden');
-                    fileInput.value = ''; // Reset input
-                    return;
-                }
-
-                // 2. Validate Extension
-                const fileExt = file.name.split('.').pop().toLowerCase();
-                const isAllowedExt = ['webp'].includes(fileExt);
-
-                if (!isAllowedExt) {
-                    statusBox.className = 'mt-2 p-3 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs font-medium flex items-center gap-2';
-                    statusBox.innerHTML = `<span>❌ <strong>นามสกุลไฟล์ไม่ถูกต้อง</strong> รองรับเฉพาะไฟล์รูปภาพ .webp เท่านั้น</span>`;
-                    statusBox.classList.remove('hidden');
-                    fileInput.value = ''; // Reset input
-                    return;
-                }
-
-                // 3. Load Image & Read Dimensions
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const img = new Image();
-                    img.onload = function() {
-                        const width = img.naturalWidth;
-                        const height = img.naturalHeight;
-                        const ratio = (width / height).toFixed(2);
-                        const fileSizeKb = Math.round(file.size / 1024);
-
-                        let ratioText = 'สัดส่วนอื่น ๆ';
-                        if (Math.abs(ratio - (16/9).toFixed(2)) < 0.05) {
-                            ratioText = 'สัดส่วน 16:9 แนวนอน (เหมาะสมที่สุด ⭐)';
-                        } else if (width > height) {
-                            ratioText = 'แนวนอน';
-                        } else {
-                            ratioText = 'แนวตั้ง';
-                        }
-
-                        const previewImg = document.getElementById('article-img-preview');
-                        const placeholder = document.getElementById('article-img-placeholder');
-                        if (previewImg) {
-                            previewImg.src = e.target.result;
-                            previewImg.style.display = 'block';
-                            previewImg.classList.remove('hidden');
-                        }
-                        if (placeholder) {
-                            placeholder.style.display = 'none';
-                        }
-
-                        // Display Success Status Badge
-                        statusBox.className = 'mt-2 p-2.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs flex flex-col gap-0.5';
-                        statusBox.innerHTML = `
-                            <div class="font-bold flex items-center gap-1">
-                                <span>✅ ไฟล์ผ่านเกณฑ์:</span>
-                                <span>${fileSizeKb} KB</span>
-                                ${fileSizeKb <= 350 ? '<span class="text-[10px] bg-emerald-100 text-emerald-800 px-1 rounded">PageSpeed เร็วมาก ⚡</span>' : ''}
-                            </div>
-                            <div class="text-[11px] text-emerald-700">
-                                ขนาดรูป: <strong>${width} × ${height} px</strong> (${ratioText})
-                            </div>
-                        `;
-                        statusBox.classList.remove('hidden');
+                if (file && file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = function(loadEvent) {
+                        previewContainer.innerHTML = '';
+                        const img = document.createElement('img');
+                        img.src = loadEvent.target.result;
+                        img.className = 'w-full h-full object-contain rounded-lg';
+                        previewContainer.appendChild(img);
                     };
-                    img.src = e.target.result;
-                };
-                reader.readAsDataURL(file);
-            });
-        }
-
-        // Pin Article Single-Constraint Confirmation
-        const isPinnedInput = document.getElementById('is_pinned_input');
-        const currentlyPinnedTitle = <?= json_encode($pinnedArticle['meta_title'] ?? '', JSON_UNESCAPED_UNICODE) ?>;
-        const hasOtherPinned = <?= !empty($pinnedArticle) ? 'true' : 'false' ?>;
-
-        if (isPinnedInput) {
-            isPinnedInput.addEventListener('change', function() {
-                if (this.checked && hasOtherPinned) {
-                    const articleName = currentlyPinnedTitle ? `"${currentlyPinnedTitle}"` : 'บทความอื่น';
-                    const confirmReplace = confirm(`ขณะนี้มีบทความ ${articleName} กำลังถูกปักหมุดอยู่แล้ว\n\nคุณต้องการเปลี่ยนการปักหมุดมาเป็นบทความนี้แทนหรือไม่?`);
-                    if (!confirmReplace) {
-                        this.checked = false;
-                    }
+                    reader.readAsDataURL(file);
                 }
             });
         }
