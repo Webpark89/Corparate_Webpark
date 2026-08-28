@@ -1,5 +1,7 @@
 <?php
+
 declare(strict_types=1);
+
 /**
  * Main HTML layout — SEO meta, Open Graph, JSON-LD, and page shell.
  *
@@ -20,29 +22,34 @@ $jsonLd = isset($jsonLd) && is_array($jsonLd) ? $jsonLd : [];
 $jsonGraph = [];
 $tailwindCssFile = realpath(__DIR__ . '/../../../public/assets/css/tailwind.css');
 $tailwindCssVersion = $tailwindCssFile !== false ? filemtime($tailwindCssFile) : time();
+
 if (!headers_sent()) {
     header('Content-Type: text/html; charset=UTF-8');
 }
+
 if ($jsonLd !== []) {
     if (isset($jsonLd['@graph']) && is_array($jsonLd['@graph'])) {
         $jsonGraph = $jsonLd;
     } else {
         $isList = array_keys($jsonLd) === range(0, count($jsonLd) - 1);
+
         $jsonGraph = [
             '@context' => 'https://schema.org',
             '@graph' => $isList ? $jsonLd : [$jsonLd],
         ];
     }
 }
+
 $currentPage = $currentPage ?? '';
 $content = $content ?? '';
 ?>
 <!DOCTYPE html>
-<html lang="<?= e(function_exists('getCurrentLang') ? getCurrentLang() : 'th') ?>" translate="no">
+<html lang="<?= e(function_exists('getCurrentLang') ? getCurrentLang() : 'th') ?>">
+
 <head>
-    <meta name="google" content="notranslate">
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <title><?= e($title) ?></title>
     <link rel="icon" type="image/png" href="<?= e(asset_url('images/logo.png')) ?>">
     <link rel="apple-touch-icon" href="<?= e(asset_url('images/logo.png')) ?>">
@@ -70,18 +77,14 @@ $content = $content ?? '';
     <meta name="twitter:description" content="<?= e($metaDescription) ?>">
     <meta name="twitter:image" content="<?= e($imageUrl) ?>">
     <meta name="twitter:image:alt" content="<?= e($imageAlt) ?>">
-    <?php if (($currentPage ?? '') === 'home' || empty($currentPage)): ?>
-        <link rel="preload" as="image" href="<?= e(asset_url('images/Pkatty.webp')) ?>" fetchpriority="high" type="image/webp">
-    <?php endif; ?>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+Thai:wght@100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+Thai:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
-        /* Set Noto Sans Thai as default system font */
-        body, .font-sans {
-            font-family: 'Noto Sans Thai', 'Inter', ui-sans-serif, system-ui, sans-serif !important;
-            line-height: 1.6;
+        *, body, .font-sans, h1, h2, h3, h4, h5, h6, p, span, a, input, textarea, select, button {
+            font-family: 'Noto Sans Thai', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
         }
+
         /* Global Article Format Styling for Tables */
         .article-format table {
             width: 100%;
@@ -103,6 +106,146 @@ $content = $content ?? '';
             font-weight: 700;
             color: #022862;
         }
+
+        /* =========================================================================
+           Master Fixed Typography & Spacing System (Locked across all pages)
+           ========================================================================= */
+        @media (min-width: 1025px) {
+            /* 1. Main Hero Titles H1 (Locked to exactly 5.5rem, line-height 1.1, weight 900) */
+            .desktop-home-hero-h1,
+            .desktop-about-hero-h1,
+            .desktop-services-hero-h1,
+            .desktop-erp-hero-h1,
+            .desktop-article-hero-h1,
+            .desktop-contact-hero-h1,
+            .desktop-portfolio-hero-h1,
+            .desktop-subpage-hero-h1 {
+                font-size: 5.5rem !important;
+                line-height: 1.1 !important;
+                font-weight: 900 !important;
+                letter-spacing: -0.05em !important;
+            }
+
+            /* 2. Hero Subtitle / Description Paragraphs P (Locked to 1.25rem, line-height 1.75, max-width 34rem) */
+            .desktop-home-hero-p,
+            .desktop-about-hero-p,
+            .desktop-services-hero-p,
+            .desktop-erp-hero-p,
+            .desktop-article-hero-p,
+            .desktop-contact-hero-p,
+            .desktop-portfolio-hero-p,
+            .desktop-subpage-hero-p {
+                font-size: 1.25rem !important;
+                line-height: 1.75 !important;
+                max-width: 34rem !important;
+                font-weight: 600 !important;
+                color: #0b1b42 !important;
+                margin-top: 1.5rem !important;
+                margin-bottom: 2.5rem !important;
+            }
+
+            /* 3. Hero Wide Containers (Locked to 1720px width & 2.5rem padding) */
+            .desktop-wide-container-about,
+            .desktop-wide-container-contact,
+            .desktop-wide-container-article,
+            .desktop-wide-container-cta {
+                max-width: 1720px !important;
+                padding-left: 2.5rem !important;
+                padding-right: 2.5rem !important;
+            }
+
+            /* 4. Section Main Titles H2 (Locked to 2.75rem, line-height 1.2) */
+            .desktop-section-h2 {
+                font-size: 2.75rem !important;
+                line-height: 1.2 !important;
+                font-weight: 800 !important;
+                letter-spacing: -0.03em !important;
+                margin-bottom: 1rem !important;
+            }
+
+            /* 5. Section Subtitle Description P (Locked to 1.125rem, line-height 1.7) */
+            .desktop-section-p {
+                font-size: 1.125rem !important;
+                line-height: 1.7 !important;
+                color: #475569 !important;
+                margin-bottom: 2rem !important;
+            }
+        }
+
+        /* =========================================================================
+           Master Mobile Fluid Typography & Proportional System (< 768px)
+           Dynamically scales font sizes and spacing across all mobile screen sizes
+           ========================================================================= */
+        @media (max-width: 767px) {
+            html, body {
+                overflow-x: hidden;
+                width: 100%;
+                -webkit-text-size-adjust: 100%;
+            }
+
+            /* 1. Fluid Mobile Hero Titles H1 (Scales proportionally from 320px to 480px) */
+            .mobile-fluid-h1,
+            h1.text-5xl,
+            h1.text-4xl {
+                font-size: clamp(2.25rem, 8.5vw, 3.25rem) !important;
+                line-height: 1.15 !important;
+                letter-spacing: -0.03em !important;
+            }
+
+            /* 2. Fluid Section Titles H2 */
+            .mobile-fluid-h2,
+            h2.text-3xl,
+            h2.text-2xl {
+                font-size: clamp(1.65rem, 6.2vw, 2.25rem) !important;
+                line-height: 1.25 !important;
+                letter-spacing: -0.02em !important;
+            }
+
+            /* 3. Fluid Card Titles H3 / H4 */
+            .mobile-fluid-h3,
+            h3.text-xl,
+            h3.text-lg,
+            h4.text-lg {
+                font-size: clamp(1.05rem, 4.2vw, 1.3rem) !important;
+                line-height: 1.35 !important;
+            }
+
+            /* 4. Fluid Body Paragraphs */
+            .mobile-fluid-p,
+            p.text-base,
+            p.text-lg {
+                font-size: clamp(0.925rem, 3.7vw, 1.05rem) !important;
+                line-height: 1.65 !important;
+                overflow-wrap: break-word;
+            }
+
+            /* 5. Fluid Subtitle / Badges */
+            .mobile-fluid-badge {
+                font-size: clamp(0.75rem, 3.2vw, 0.875rem) !important;
+            }
+
+            /* 6. Hero Presenter & Description Proportional Scaling */
+            .mobile-hero-woman {
+                width: clamp(52%, 58vw, 64%) !important;
+                max-width: clamp(240px, 60vw, 310px) !important;
+                right: clamp(-36px, -7vw, -16px) !important;
+                bottom: 0px !important;
+            }
+            .mobile-hero-woman img {
+                object-fit: contain !important;
+                object-position: right bottom !important;
+                height: clamp(370px, 54vh, 430px) !important;
+                max-height: 58vh !important;
+                width: auto !important;
+            }
+            .mobile-hero-desc {
+                max-width: clamp(54%, 58vw, 62%) !important;
+                width: clamp(54%, 58vw, 62%) !important;
+                font-size: clamp(0.85rem, 3.6vw, 0.975rem) !important;
+                line-height: 1.55 !important;
+                letter-spacing: -0.2px !important;
+            }
+        }
     </style>
     <link rel="stylesheet" href="<?= e(asset_url('assets/css/tailwind.css')) ?>?v=<?= e($tailwindCssVersion) ?>">
     <?php if ($jsonGraph !== []): ?>
@@ -110,35 +253,27 @@ $content = $content ?? '';
             <?= json_encode($jsonGraph, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>
         </script>
     <?php endif; ?>
-    <style>
-        html, body {
-            width: 100% !important;
-            max-width: 100% !important;
-            position: relative;
-            margin: 0;
-            padding: 0;
-        }
-        main, section, header, footer {
-            max-width: 100% !important;
-        }
-    </style>
 </head>
-<body class="bg-slate-50 text-slate-900 antialiased relative w-full max-w-full">
-    <div class="site-wrapper relative w-full max-w-full min-h-screen">
-        <?php require __DIR__ . '/../components/navbar.php'; ?>
-        <main class="min-h-screen w-full max-w-full">
-            <?= $content ?>
-        </main>
-        <?php if ($currentPage !== 'contact'): ?>
-            <?php require __DIR__ . '/../components/cta.php'; ?>
-        <?php endif; ?>
-        <?php require __DIR__ . '/../components/footer.php'; ?>
-    </div>
+
+<body class="bg-slate-50 text-slate-900 antialiased">
+    <?php require __DIR__ . '/../components/navbar.php'; ?>
+
+    <main class="min-h-screen">
+        <?= $content ?>
+    </main>
+
+    <?php if ($currentPage !== 'contact'): ?>
+        <?php require __DIR__ . '/../components/cta.php'; ?>
+    <?php endif; ?>
+    
+    <?php require __DIR__ . '/../components/footer.php'; ?>
+
+    <!-- Scroll to Top Button (Pure CSS to avoid Tailwind JIT issues) -->
     <style>
         #scrollToTopBtn {
             position: fixed;
-            bottom: 40px;
-            right: 40px;
+            bottom: 40px; /* Positioned at bottom right, outside the hero image */
+            right: 40px; /* Fully to the right */
             z-index: 99999;
             width: 50px;
             height: 50px;
@@ -152,6 +287,7 @@ $content = $content ?? '';
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             cursor: pointer;
             transition: all 0.3s ease-in-out;
+            /* Always visible */
             opacity: 1;
             visibility: visible;
         }
@@ -168,12 +304,27 @@ $content = $content ?? '';
         #scrollToTopBtn:hover svg {
             transform: translateY(-3px);
         }
+        @media (max-width: 767px) {
+            #scrollToTopBtn {
+                bottom: 16px;
+                right: 16px;
+                width: 40px;
+                height: 40px;
+                border-radius: 10px;
+            }
+            #scrollToTopBtn svg {
+                width: 18px;
+                height: 18px;
+            }
+        }
     </style>
+
     <button id="scrollToTopBtn" aria-label="Scroll to top">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
             <path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
         </svg>
     </button>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const scrollBtn = document.getElementById('scrollToTopBtn');
@@ -187,7 +338,8 @@ $content = $content ?? '';
             }
         });
     </script>
+
     <script src="<?= e(asset_url('assets/js/main.js')) ?>"></script>
-    <?php require __DIR__ . '/../components/cookie-banner.php'; ?>
 </body>
+
 </html>

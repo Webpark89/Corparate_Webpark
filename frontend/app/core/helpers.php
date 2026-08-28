@@ -443,63 +443,14 @@ function partner_logo_url(?string $path): string
 }
 
 /**
- * Generate or get the existing CSRF token from the session.
- */
-function csrf_token(): string
-{
-    if (session_status() === PHP_SESSION_NONE) {
-        @session_start();
-    }
-
-    if (empty($_SESSION['csrf_token']) || !is_string($_SESSION['csrf_token'])) {
-        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
-    }
-
-    return $_SESSION['csrf_token'];
-}
-
-/**
- * Return a hidden HTML input containing the CSRF token.
- */
-function csrf_field(): string
-{
-    return '<input type="hidden" name="csrf_token" value="' . e(csrf_token()) . '">';
-}
-
-/**
- * Verify CSRF token from POST request or HTTP header.
- */
-function verify_csrf_token(?string $token = null): bool
-{
-    if (session_status() === PHP_SESSION_NONE) {
-        @session_start();
-    }
-
-    $sessionToken = $_SESSION['csrf_token'] ?? '';
-    if (!is_string($sessionToken) || $sessionToken === '') {
-        return false;
-    }
-
-    $providedToken = $token ?? ($_POST['csrf_token'] ?? ($_SERVER['HTTP_X_CSRF_TOKEN'] ?? ''));
-    if (!is_string($providedToken) || $providedToken === '') {
-        return false;
-    }
-
-    return hash_equals($sessionToken, $providedToken);
-}
-
-/**
- * Send standard web security headers.
+ * Send standard security headers.
  */
 function send_security_headers(): void
 {
-    if (headers_sent()) {
-        return;
+    if (!headers_sent()) {
+        header('X-Content-Type-Options: nosniff');
+        header('X-Frame-Options: SAMEORIGIN');
+        header('X-XSS-Protection: 1; mode=block');
+        header('Referrer-Policy: strict-origin-when-cross-origin');
     }
-
-    header('X-Content-Type-Options: nosniff');
-    header('X-Frame-Options: SAMEORIGIN');
-    header('X-XSS-Protection: 1; mode=block');
-    header('Referrer-Policy: strict-origin-when-cross-origin');
-    header('Permissions-Policy: geolocation=(), camera=(), microphone=()');
 }

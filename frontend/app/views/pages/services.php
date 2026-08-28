@@ -331,11 +331,17 @@ if (isset($services) && is_array($services)) {
                 gap: 0.5rem !important;
             }
             .ipad-air-services-approach-number { font-size: 1.5rem !important; }
-            .ipad-air-services-approach-title { font-size: 1.15rem !important; line-height: 1.4 !important; }
+            .ipad-air-services-approach-title { 
+                font-size: 1.05rem !important; 
+                line-height: 1.4 !important; 
+                white-space: nowrap !important;
+                letter-spacing: -0.3px !important;
+            }
             .ipad-air-services-approach-desc { font-size: 1.05rem !important; line-height: 1.6 !important; }
             
             /* New grey font size overrides */
             .ipad-air-services-desc { font-size: 1.125rem !important; line-height: 1.7 !important; }
+            .ipad-air-services-subtitle { white-space: normal !important; font-size: 1.5rem !important; }
             .ipad-air-service-card-desc { 
                 font-size: 1.05rem !important; 
                 line-height: 1.6 !important;
@@ -373,6 +379,11 @@ if (isset($services) && is_array($services)) {
         
         /* iPad Mini (768px) specific fixes */
         @media (min-width: 760px) and (max-width: 819px) {
+            .ipad-mini-services-subtitle {
+                white-space: normal !important;
+                font-size: 1.5rem !important;
+            }
+            .ipad-mini-services-approach-section { padding-top: 0 !important; }
             /* General Grey Text Sizes */
             .ipad-mini-services-desc { font-size: 1.15rem !important; line-height: 1.7 !important; }
             .ipad-mini-service-card-desc { 
@@ -462,13 +473,18 @@ if (isset($services) && is_array($services)) {
                 font-size: 4.5rem !important; /* Adjusted to fit on one line */
                 line-height: 1.2 !important;
             }
-            
-            /* Increase font size for Services title section */
+            /* Font size for Services title section matches homepage */
             .ipad-pro-services-h1-text {
-                font-size: 5.5rem !important; /* Larger than 4.5rem/3.75rem */
+                font-size: 2.25rem !important; /* 36px/text-4xl to match home page */
+                line-height: 1 !important;
             }
             .ipad-pro-services-subtitle {
-                font-size: 2.25rem !important; /* Larger than 1.875rem */
+                font-size: 2.05rem !important; /* Slightly reduced to prevent cutoff */
+                letter-spacing: -0.5px !important; /* Tighter letter spacing to fit 'business' */
+            }
+            .ipad-pro-services-header-container {
+                padding-left: 0.5rem !important; /* Shift to the left */
+                padding-right: 0.5rem !important;
             }
             
             .ipad-pro-hero-btn {
@@ -739,6 +755,16 @@ if (isset($services) && is_array($services)) {
                 color: #64748b !important;
             }
         }
+
+        /* Accessibility: เคารพการตั้งค่า Reduce Motion ของผู้ใช้ ลด/ปิด animation แบบ CSS ทั้งหมดในหน้านี้ */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.001ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.001ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
     </style>
     <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8 pt-12 pb-24 lg:pt-28 lg:pb-32 relative z-10 desktop-wide-container-services">
         <!-- Mobile Background Image (Only covers this Hero container) -->
@@ -792,7 +818,7 @@ if (isset($services) && is_array($services)) {
                     <?php endif; ?>
                 </p>
                 <div class="animate-entrance-up delay-400 flex flex-col lg:flex-row items-start gap-4">
-                    <a href="<?= e(route_url('/contact')) ?>" class="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-primary text-white text-base md:text-lg font-semibold rounded-full hover:bg-blue-700 transition-all shadow-md hover:-translate-y-0.5 ipad-pro-hero-btn">
+                    <a href="<?= e(route_url('/contact')) ?>" class="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-primary text-white text-base font-semibold rounded-full hover:bg-blue-700 transition-all shadow-md hover:-translate-y-0.5 whitespace-nowrap ipad-pro-hero-btn">
                         <?= e(getCurrentLang() === 'th' ? 'ปรึกษาผู้เชี่ยวชาญ' : 'Consult an Expert') ?>
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
@@ -813,12 +839,12 @@ if (isset($services) && is_array($services)) {
 </section>
 <section id="our-services" class="bg-white py-8 lg:py-16 font-sans scroll-mt-6">
     <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8 desktop-wide-container-services">
-        <div class="lg:px-12 xl:px-24">
-            <h1 class="text-4xl md:text-6xl lg:text-7xl font-extrabold leading-tight tracking-tight mb-0 md:mb-1 gsap-fade-up ipad-pro-services-h1-text" style="color: #0663F6 !important;">
+        <div class="lg:px-12 xl:px-24 ipad-pro-services-header-container">
+            <h1 class="text-3xl md:text-4xl font-extrabold leading-none tracking-tight mb-0 md:mb-1 gsap-fade-up ipad-pro-services-h1-text" style="color: #0663F6 !important;">
                 <?= e(t('common.nav_services') !== 'common.nav_services' ? t('common.nav_services') : (getCurrentLang() === 'th' ? 'บริการของเรา' : 'Our Services')) ?>
             </h1>
-            <div class="mt-2 mb-4 md:mb-6 gsap-fade-up" style="width: 48px; height: 3px; background-color: #0663F6;"></div>
-            <span class="text-lg sm:text-xl md:text-3xl font-bold gsap-fade-up w-full max-w-none mb-4 block leading-tight tracking-tighter md:tracking-normal whitespace-nowrap ipad-pro-services-subtitle" style="color: #043B94;">
+            <div class="mt-2 mb-4 md:mb-6 gsap-fade-up" style="width: 32px; height: 3px; background-color: #0663F6;"></div>
+            <span class="text-lg sm:text-xl md:text-3xl font-bold gsap-fade-up w-full max-w-none mb-4 block leading-tight tracking-tight md:tracking-normal whitespace-normal md:whitespace-nowrap ipad-pro-services-subtitle ipad-air-services-subtitle ipad-mini-services-subtitle" style="color: #043B94;">
                 <?= getCurrentLang() === 'th' ? 'บริการของเรา ครอบคลุมทุกมิติธุรกิจดิจิทัล' : 'Our services cover every dimension of digital business' ?>
             </span>
             <p class="gsap-fade-up text-slate-500 text-lg md:text-[15px] lg:text-base xl:text-[17px] leading-relaxed w-full max-w-none ipad-pro-services-desc ipad-air-services-desc ipad-mini-services-desc">
@@ -827,6 +853,7 @@ if (isset($services) && is_array($services)) {
         </div>
     </div>
 </section>
+<?php if (!empty($services)): ?>
 <section id="gsap-services-grid" class="bg-white py-8 lg:py-16 font-sans">
     <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8 desktop-wide-container-services">
         <div class="lg:px-12 xl:px-24">
@@ -889,6 +916,7 @@ if (isset($services) && is_array($services)) {
         </div>
     </div>
 </section>
+<?php endif; ?>
 <section class="font-sans pb-12">
     <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8 desktop-wide-container-services">
         <div class="lg:px-12 xl:px-24">
@@ -927,21 +955,26 @@ if (isset($services) && is_array($services)) {
         </div>
     </div>
 </section>
-<section id="our-approach" class="py-16 lg:py-24 ipad-pro-services-approach-section" style="background-color: #f1f5f9;">
+<section id="our-approach" class="py-16 lg:py-24 ipad-pro-services-approach-section ipad-mini-services-approach-section" style="background-color: #f1f5f9;">
     <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8 desktop-wide-container-services">
         <div class="lg:px-12 xl:px-24">
-            <div class="text-left md:text-center mb-10 md:mb-16 flex flex-col items-start md:items-center">
-                <div class="flex flex-col items-start mb-4 md:mb-6">
-                    <span class="text-3xl md:text-4xl font-bold gsap-fade-up mb-1 block ipad-pro-approach-title" style="color: #054FC5 !important; -webkit-text-fill-color: #054FC5 !important; background: none !important;">
+            <div class="text-center md:text-center mb-8 md:mb-16 flex flex-col items-center md:items-center">
+                <div class="inline-flex flex-col items-start mb-3 md:mb-6">
+                    <span class="text-2xl sm:text-3xl md:text-4xl font-bold gsap-fade-up mb-1 block whitespace-nowrap ipad-pro-approach-title" style="color: #054FC5 !important; -webkit-text-fill-color: #054FC5 !important; background: none !important;">
                         <?= getCurrentLang() === 'th' ? 'แนวคิดในการทำงานของเรา' : 'Our Approach' ?>
                     </span>
-                    <div class="mt-1 gsap-fade-up" style="width: 48px; height: 3px; background-color: #0663F6;"></div>
+                    <div class="mt-1 gsap-fade-up" style="width: 32px; height: 3px; background-color: #0663F6;"></div>
                 </div>
-                <p class="text-slate-500 text-lg md:text-xl leading-relaxed max-w-4xl text-left md:text-center mx-0 md:mx-auto desktop-approach-subtitle ipad-pro-approach-desc ipad-mini-approach-desc">
-                    <?= getCurrentLang() === 'th' ? 'กระบวนการทำงานที่เป็นระบบ เพื่อส่งมอบโซลูชันดิจิทัลที่ตอบโจทย์ธุรกิจ <br class="hidden md:block"> และความยั่งยืนของข้อมูลธุรกิจที่องค์กรถือครอง' : 'A systematic work process to deliver digital solutions that meet business needs and ensure the sustainability of business data held by the organization.' ?>
+                <p class="text-slate-500 text-sm sm:text-base md:text-xl leading-relaxed max-w-4xl text-center mx-auto desktop-approach-subtitle ipad-pro-approach-desc ipad-mini-approach-desc">
+                    <?php if (getCurrentLang() === 'th'): ?>
+                        <span class="block">กระบวนการทำงานที่เป็นระบบ เพื่อส่งมอบโซลูชันดิจิทัลที่ตอบ</span>
+                        <span class="block">โจทย์ธุรกิจ และความยั่งยืนของข้อมูลธุรกิจที่องค์กรถือครอง</span>
+                    <?php else: ?>
+                        A systematic work process to deliver digital solutions that meet business needs and ensure the sustainability of business data held by the organization.
+                    <?php endif; ?>
                 </p>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 max-w-5xl mx-auto desktop-approach-container">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 max-w-5xl mx-auto desktop-approach-container">
                 <?php
                 $approachSteps = [
                     [
@@ -971,20 +1004,20 @@ if (isset($services) && is_array($services)) {
                 ];
                 foreach ($approachSteps as $step):
                 ?>
-                <div class="gsap-approach-step flex flex-row items-center md:items-start gap-5 md:gap-6 rounded-3xl border border-blue-50/50 bg-white p-6 md:p-8 transition-all duration-300 opacity-0 translate-y-10 desktop-approach-card ipad-pro-services-approach-card ipad-mini-services-approach-card"
+                <div class="gsap-approach-step flex flex-row items-center md:items-start gap-4 sm:gap-6 rounded-3xl border border-blue-50/50 bg-white p-5 sm:p-6 md:p-8 transition-all duration-300 opacity-0 translate-y-10 desktop-approach-card ipad-pro-services-approach-card ipad-mini-services-approach-card"
                     style="box-shadow: 0 8px 30px -10px rgba(4,59,148,0.08);">
-                    <div class="gsap-approach-icon w-16 h-16 md:w-20 md:h-20 shrink-0 flex items-center justify-center md:pt-1 desktop-approach-icon-wrap ipad-pro-services-approach-icon-wrap ipad-mini-services-approach-icon-wrap">
+                    <div class="gsap-approach-icon w-14 h-14 md:w-20 md:h-20 shrink-0 flex items-center justify-center md:pt-1 desktop-approach-icon-wrap ipad-pro-services-approach-icon-wrap ipad-mini-services-approach-icon-wrap">
                         <img src="<?= e($step['icon']) ?>"
                              alt="<?= e($step['title']) ?>"
-                             class="w-14 h-14 md:w-16 md:h-16 object-contain drop-shadow-sm desktop-approach-icon-img ipad-pro-services-approach-icon-img ipad-mini-services-approach-icon-img"
+                             class="w-12 h-12 md:w-16 md:h-16 object-contain drop-shadow-sm desktop-approach-icon-img ipad-pro-services-approach-icon-img ipad-mini-services-approach-icon-img"
                              onerror="this.onerror=null;this.style.display='none'">
                     </div>
-                    <div class="flex flex-col gap-1 md:gap-1.5 md:pt-1 desktop-approach-content">
+                    <div class="flex flex-col gap-1 md:gap-1.5 md:pt-1 desktop-approach-content flex-1 min-w-0">
                         <div class="desktop-approach-header flex flex-row items-center gap-2 ipad-pro-services-approach-header ipad-air-services-approach-header ipad-mini-services-approach-header">
-                            <span class="gsap-approach-number text-2xl md:text-3xl font-extrabold desktop-approach-number ipad-pro-services-approach-number ipad-air-services-approach-number ipad-mini-services-approach-number" style="color: #043B94;"><?= e($step['number']) ?></span>
-                            <h3 class="text-xl md:text-2xl font-extrabold mb-0 md:mb-1 desktop-approach-title ipad-pro-services-approach-title ipad-air-services-approach-title ipad-mini-services-approach-title mobile-services-approach-title" style="color: #022862;"><?= e($step['title']) ?></h3>
+                            <span class="gsap-approach-number text-xl sm:text-2xl md:text-3xl font-extrabold desktop-approach-number ipad-pro-services-approach-number ipad-air-services-approach-number ipad-mini-services-approach-number" style="color: #043B94;"><?= e($step['number']) ?></span>
+                            <h3 class="text-base sm:text-xl md:text-2xl font-extrabold mb-0 md:mb-1 desktop-approach-title ipad-pro-services-approach-title ipad-air-services-approach-title ipad-mini-services-approach-title mobile-services-approach-title leading-snug" style="color: #022862;"><?= e($step['title']) ?></h3>
                         </div>
-                        <p class="text-slate-600 text-base md:text-lg leading-[1.7] desktop-approach-desc ipad-pro-services-approach-desc ipad-air-services-approach-desc ipad-mini-services-approach-desc"><?= e($step['desc']) ?></p>
+                        <p class="text-slate-600 text-xs sm:text-base md:text-lg leading-relaxed desktop-approach-desc ipad-pro-services-approach-desc ipad-air-services-approach-desc ipad-mini-services-approach-desc"><?= e($step['desc']) ?></p>
                     </div>
                 </div>
                 <?php endforeach; ?>
@@ -998,66 +1031,81 @@ if (isset($services) && is_array($services)) {
     document.addEventListener("DOMContentLoaded", (event) => {
         // ลงทะเบียน ScrollTrigger
         gsap.registerPlugin(ScrollTrigger);
+        // เช็คว่าผู้ใช้ตั้งค่าเครื่องให้ลด Motion ไว้หรือไม่ (Accessibility)
+        // ถ้าใช่ จะข้าม animation ที่เกี่ยวกับการเคลื่อนไหวเยอะๆ (parallax, pin, elastic pop)
+        // และแสดงเนื้อหาแบบปกติทันที โดยยังคง fade เบาๆ ไว้เพื่อไม่ให้กระพริบ
+        const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
         // 0. Parallax รูปพื้นหลัง Hero — รูปเลื่อนช้ากว่าคอนเทนต์เล็กน้อยตอน scroll ผ่าน section
-        gsap.utils.toArray(".hero-parallax-img").forEach((img) => {
-            gsap.to(img, {
-                yPercent: 12,
-                ease: "none",
-                scrollTrigger: {
-                    trigger: "#services-hero",
-                    start: "top top",
-                    end: "bottom top",
-                    scrub: true // ผูกตรงกับตำแหน่ง scroll แบบ real-time ไม่มี delay
-                }
+        if (!prefersReducedMotion) {
+            gsap.utils.toArray(".hero-parallax-img").forEach((img) => {
+                gsap.to(img, {
+                    yPercent: 12,
+                    ease: "none",
+                    scrollTrigger: {
+                        trigger: "#services-hero",
+                        start: "top top",
+                        end: "bottom top",
+                        scrub: true // ผูกตรงกับตำแหน่ง scroll แบบ real-time ไม่มี delay
+                    }
+                });
             });
-        });
-
+        }
         // 1. Animation สำหรับหัวข้อ OUR SERVICES
-        gsap.from(".gsap-fade-up", {
-            scrollTrigger: {
-                trigger: "#our-services",
-                start: "top 85%", // เริ่มเมื่อขอบบนของ section เลื่อนมาถึง 85% ของหน้าจอ
-                toggleActions: "play none none reverse" // เล่นเมื่อเจอ ถอยกลับเมื่อเลื่อนขึ้น
-            },
-            y: 40,
-            opacity: 0,
-            duration: 0.8,
-            stagger: 0.2, // ให้ h1 กับ p ค่อยๆ ขึ้นมาเหลื่อมเวลากันเล็กน้อย
-            ease: "power2.out"
-        });
-
-        // 2. Animation สำหรับการ์ดบริการ — Fade up แยกทีละการ์ดเมื่อเลื่อนหน้าจอมาถึงการ์ดนั้นๆ จริง
-        const serviceCards = gsap.utils.toArray(".gsap-service-card");
-        serviceCards.forEach((card) => {
-            gsap.to(card, {
+        if (prefersReducedMotion) {
+            gsap.set(".gsap-fade-up", { y: 0, opacity: 1 });
+        } else {
+            gsap.from(".gsap-fade-up", {
                 scrollTrigger: {
-                    trigger: card, // ผูก trigger กับแต่ละการ์ดโดยตรง
-                    start: "top 85%", // เริ่ม animate เมื่อขอบบนของการ์ดเลื่อนเข้ามาถึง 85% ของหน้าจอ
-                    toggleActions: "play none none reverse"
+                    trigger: "#our-services",
+                    start: "top 85%", // เริ่มเมื่อขอบบนของ section เลื่อนมาถึง 85% ของหน้าจอ
+                    toggleActions: "play none none reverse" // เล่นเมื่อเจอ ถอยกลับเมื่อเลื่อนขึ้น
                 },
-                y: 0,
-                opacity: 1,
+                y: 40,
+                opacity: 0,
                 duration: 0.8,
-                ease: "power2.out"
-            });
-        });
-
-        // 2.5 Animation สำหรับ CTA Box ท้ายหน้า — fade + slide ขึ้นตอน scroll มาถึง
-        const ctaBox = document.querySelector(".gsap-cta-box");
-        if (ctaBox) {
-            gsap.to(ctaBox, {
-                scrollTrigger: {
-                    trigger: ctaBox,
-                    start: "top 85%",
-                    toggleActions: "play none none reverse"
-                },
-                y: 0,
-                opacity: 1,
-                duration: 0.7,
+                stagger: 0.2, // ให้ h1 กับ p ค่อยๆ ขึ้นมาเหลื่อมเวลากันเล็กน้อย
                 ease: "power2.out"
             });
         }
 
+        // 2. Animation สำหรับการ์ดบริการ — Fade up แยกทีละการ์ดเมื่อเลื่อนหน้าจอมาถึงการ์ดนั้นๆ จริง (ไม่ Pin ไม่ Scrub)
+        const serviceCards = gsap.utils.toArray(".gsap-service-card");
+        if (serviceCards.length && prefersReducedMotion) {
+            gsap.set(serviceCards, { y: 0, opacity: 1 });
+        } else if (serviceCards.length) {
+            serviceCards.forEach((card) => {
+                gsap.to(card, {
+                    scrollTrigger: {
+                        trigger: card, // ผูก trigger กับแต่ละการ์ดโดยตรง
+                        start: "top 85%", // เริ่ม animate เมื่อขอบบนของการ์ดเลื่อนเข้ามาถึง 85% ของหน้าจอ
+                        toggleActions: "play none none reverse"
+                    },
+                    y: 0,
+                    opacity: 1,
+                    duration: 0.8,
+                    ease: "power2.out"
+                });
+            });
+        }
+        // 2.5 Animation สำหรับ CTA Box ท้ายหน้า — fade + slide ขึ้นตอน scroll มาถึง
+        const ctaBox = document.querySelector(".gsap-cta-box");
+        if (ctaBox) {
+            if (prefersReducedMotion) {
+                gsap.set(ctaBox, { y: 0, opacity: 1 });
+            } else {
+                gsap.to(ctaBox, {
+                    scrollTrigger: {
+                        trigger: ctaBox,
+                        start: "top 85%",
+                        toggleActions: "play none none reverse"
+                    },
+                    y: 0,
+                    opacity: 1,
+                    duration: 0.7,
+                    ease: "power2.out"
+                });
+            }
+        }
         // 3. Animation สำหรับ Our Approach
         // การ์ดทั้งใบ fade+slide ขึ้นตามปกติ ส่วนไอคอนกับเลขลำดับ (01-04) จะ "pop" ตามเข้ามาทีหลังเล็กน้อย
         // แบบ elastic ให้ความรู้สึกมีชีวิตชีวา ส่วน hover ของไอคอนคุมด้วย CSS (.gsap-approach-step:hover .gsap-approach-icon)
@@ -1065,7 +1113,12 @@ if (isset($services) && is_array($services)) {
         approachSteps.forEach((step) => {
             const icon = step.querySelector(".gsap-approach-icon");
             const number = step.querySelector(".gsap-approach-number");
-
+            if (prefersReducedMotion) {
+                gsap.set(step, { y: 0, opacity: 1 });
+                if (icon) gsap.set(icon, { clearProps: "opacity,transform" });
+                if (number) gsap.set(number, { clearProps: "opacity,transform" });
+                return;
+            }
             // ตั้งค่าเริ่มต้นของไอคอน/เลข ให้เล็กและโปร่งใสก่อน pop เข้ามา
             if (icon) gsap.set(icon, { opacity: 0, scale: 0.5, rotate: 14 });
             if (number) gsap.set(number, { opacity: 0, scale: 0.3 });

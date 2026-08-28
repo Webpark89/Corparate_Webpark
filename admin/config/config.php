@@ -18,17 +18,14 @@ define('DB_CHARSET', 'utf8mb4');
 define('AUTH_SECRET_KEY', 'wbpk_s3cr3t_k3y_2026_xK9mPqR7nT4vL2wJ');
 
 // ---- Site ----
-$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
-$host = $_SERVER['HTTP_HOST'] ?? 'localhost';
 define('SITE_NAME', 'WEBPARK');
-define('SITE_URL', $protocol . '://' . $host . '/Corparate_Webpark');           // no trailing slash
+define('SITE_URL', 'http://localhost:8080/Corparate_Webpark');           // no trailing slash
 define('ADMIN_URL', SITE_URL . '/admin');
 define('UPLOAD_DIR', __DIR__ . '/../uploads');
 define('UPLOAD_URL', ADMIN_URL . '/uploads');
 
 // ---- Security ----
 define('SESSION_TIMEOUT', 1800); // 30 minutes
-define('REMEMBER_ME_DURATION', 7 * 86400); // 7 days (in seconds)
 define('CSRF_TOKEN_NAME', '_csrf');
 define('LOGIN_MAX_ATTEMPTS', 5); // Max login attempts
 define('LOGIN_ATTEMPT_WINDOW', 600); // 10 minutes in seconds
