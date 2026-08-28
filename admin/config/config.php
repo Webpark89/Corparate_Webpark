@@ -18,8 +18,10 @@ define('DB_CHARSET', 'utf8mb4');
 define('AUTH_SECRET_KEY', 'wbpk_s3cr3t_k3y_2026_xK9mPqR7nT4vL2wJ');
 
 // ---- Site ----
+$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+$host = $_SERVER['HTTP_HOST'] ?? 'localhost';
 define('SITE_NAME', 'WEBPARK');
-define('SITE_URL', 'http://localhost:8080/Corparate_Webpark');           // no trailing slash
+define('SITE_URL', $protocol . '://' . $host . '/Corparate_Webpark');           // no trailing slash
 define('ADMIN_URL', SITE_URL . '/admin');
 define('UPLOAD_DIR', __DIR__ . '/../uploads');
 define('UPLOAD_URL', ADMIN_URL . '/uploads');

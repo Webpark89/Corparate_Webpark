@@ -612,9 +612,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <input type="checkbox" name="remember" style="border-radius: 4px; border: 1px solid #cbd5e1; width: 15px; height: 15px; accent-color: #0f172a;">
                                 <span>Remember me</span>
                             </label>
-                            <a href="change_password.php" style="font-weight: 500; color: #64748b; text-decoration: none; transition: color 0.15s;">
+                            <button type="button" id="open-forgot-pwd-modal" style="font-weight: 500; color: #64748b; background: none; border: none; padding: 0; cursor: pointer; text-decoration: none; font-size: inherit; font-family: inherit; transition: color 0.15s;" onmouseover="this.style.color='#0284c7';" onmouseout="this.style.color='#64748b';">
                                 Forgot password?
-                            </a>
+                            </button>
                         </div>
 
                         <!-- Submit Button -->
@@ -688,6 +688,42 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div style="margin-top: 1.25rem;">
                 <button type="button" id="confirm-close-modal" style="width: 100%; border-radius: 0.75rem; background: #0f172a; color: #ffffff; font-weight: 600; padding: 0.625rem 1rem; font-size: 0.875rem; border: none; cursor: pointer;">
                     ปิดหน้าต่าง
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Forgot Password Modal -->
+    <div id="forgot-pwd-modal" style="display: none; position: fixed; inset: 0; z-index: 60; background: rgba(15, 23, 42, 0.5); backdrop-filter: blur(4px); align-items: center; justify-content: center; padding: 1rem;">
+        <div style="background: #ffffff; width: 100%; max-width: 440px; border-radius: 1.5rem; padding: 1.75rem; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); border: 1px solid #e2e8f0; position: relative;">
+            <button type="button" id="close-forgot-pwd-modal" style="position: absolute; top: 1.25rem; right: 1.25rem; background: #f1f5f9; border: none; border-radius: 9999px; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; color: #64748b; cursor: pointer;">
+                <svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+            <div style="text-align: center; margin-bottom: 1.25rem;">
+                <div style="width: 48px; height: 48px; border-radius: 1rem; background: #eff6ff; color: #2563eb; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 0.75rem;">
+                    <svg style="width: 24px; height: 24px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/></svg>
+                </div>
+                <h3 style="font-size: 1.125rem; font-weight: 700; color: #0f172a; margin: 0 0 0.25rem 0;">ลืมรหัสผ่านเข้าสู่ระบบ?</h3>
+                <p style="font-size: 0.8125rem; color: #64748b; margin: 0;">วิธีขอรีเซ็ตรหัสผ่านใหม่สำหรับผู้ดูแลระบบ</p>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 0.875rem; background: #f8fafc; border-radius: 1rem; padding: 1.125rem; border: 1px solid #e2e8f0; font-size: 0.8125rem; color: #475569; line-height: 1.6;">
+                <p style="margin: 0;">
+                    🛡️ เนื่องจากระบบนี้เป็นระบบบริหารจัดการภายใน เพื่อความปลอดภัยสูงสุด กรุณาติดต่อผู้ดูแลระดับ <strong>Super Admin</strong> ขององค์กรเพื่อทำการรีเซ็ตรหัสผ่านใหม่ให้ท่านในเมนู <strong>"การจัดการผู้ดูแลระบบ (Users & Roles)"</strong>
+                </p>
+                <div style="border-top: 1px solid #e2e8f0; padding-top: 0.75rem; display: flex; flex-direction: column; gap: 0.375rem; font-size: 0.75rem;">
+                    <div style="display: flex; justify-content: space-between;">
+                        <span style="color: #64748b;">อีเมลติดต่อฝ่ายระบบ:</span>
+                        <span style="font-weight: 600; color: #0f172a;">admin@webpark.co.th</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between;">
+                        <span style="color: #64748b;">เบอร์โทรศัพท์:</span>
+                        <span style="font-weight: 600; color: #0f172a;">095 539 2666</span>
+                    </div>
+                </div>
+            </div>
+            <div style="margin-top: 1.25rem;">
+                <button type="button" id="confirm-close-forgot-pwd" style="width: 100%; border-radius: 0.75rem; background: #0f172a; color: #ffffff; font-weight: 600; padding: 0.625rem 1rem; font-size: 0.875rem; border: none; cursor: pointer;">
+                    รับทราบและปิดหน้าต่าง
                 </button>
             </div>
         </div>
@@ -948,6 +984,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 supportModal.addEventListener('click', (e) => {
                     if (e.target === supportModal) {
                         closeModal();
+                    }
+                });
+            }
+
+            // Forgot Password Modal Controls
+            const forgotPwdModal = document.getElementById('forgot-pwd-modal');
+            const openForgotPwdBtn = document.getElementById('open-forgot-pwd-modal');
+            const closeForgotPwdBtn = document.getElementById('close-forgot-pwd-modal');
+            const confirmCloseForgotPwdBtn = document.getElementById('confirm-close-forgot-pwd');
+
+            function openForgotModal() {
+                if (forgotPwdModal) {
+                    forgotPwdModal.style.display = 'flex';
+                }
+            }
+
+            function closeForgotModal() {
+                if (forgotPwdModal) {
+                    forgotPwdModal.style.display = 'none';
+                }
+            }
+
+            if (openForgotPwdBtn) openForgotPwdBtn.addEventListener('click', openForgotModal);
+            if (closeForgotPwdBtn) closeForgotPwdBtn.addEventListener('click', closeForgotModal);
+            if (confirmCloseForgotPwdBtn) confirmCloseForgotPwdBtn.addEventListener('click', closeForgotModal);
+
+            if (forgotPwdModal) {
+                forgotPwdModal.addEventListener('click', (e) => {
+                    if (e.target === forgotPwdModal) {
+                        closeForgotModal();
                     }
                 });
             }

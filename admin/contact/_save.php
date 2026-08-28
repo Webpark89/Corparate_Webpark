@@ -5,6 +5,7 @@
  */
 require_once __DIR__ . '/../includes/functions.php';
 require_login();
+require_super_admin();
 csrf_verify();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['keys'])) {

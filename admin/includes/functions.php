@@ -452,165 +452,138 @@ function can_admin(): bool
 }
 
 /**
- * Sliding-window rate limiter stored in session.
+ * Check if the current logged-in user is a Super Admin.
  */
-function check_rate_limit(string $key, int $maxAttempts = 5, int $windowSeconds = 600): bool
+function is_super_admin(): bool
+{
+    $admin = current_admin();
+    return ($admin['role'] ?? '') === 'super_admin';
+}
+
+/**
+ * Restrict access to Super Admin role only.
+ */
+function require_super_admin(): void
+{
+    require_login();
+    if (!is_super_admin()) {
+        http_response_code(403);
+        exit('Forbidden: Super Admin access required.');
+    }
+}
+
+/**
+ * Rate Limiter Storage (Session + Temp File) to prevent bypassing via cookies/incognito.
+ */
+function get_rate_limit_file_path(string $key): string
+{
+    $tempDir = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'webpark_ratelimit';
+    if (!is_dir($tempDir)) {
+        @mkdir($tempDir, 0755, true);
+    }
+    return $tempDir . DIRECTORY_SEPARATOR . md5($key) . '.json';
+}
+
+function get_rate_limit_data(string $key): array
 {
     $sessionKey = 'ratelimit_' . $key;
-    $now = time();
+    $filePath = get_rate_limit_file_path($key);
 
-    if (!isset($_SESSION[$sessionKey])) {
-        $_SESSION[$sessionKey] = [];
+    $fileData = [];
+    if (file_exists($filePath)) {
+        $content = @file_get_contents($filePath);
+        if ($content) {
+            $decoded = json_decode($content, true);
+            if (is_array($decoded)) {
+                $fileData = $decoded;
+            }
+        }
     }
 
-    $_SESSION[$sessionKey] = array_filter(
-        $_SESSION[$sessionKey],
-        static fn(int $timestamp) => $now - $timestamp < $windowSeconds
-    );
+    $sessionData = $_SESSION[$sessionKey] ?? [];
 
-    if (count($_SESSION[$sessionKey]) >= $maxAttempts) {
-        return false;
+    $failedCount = max((int)($fileData['failed_count'] ?? 0), (int)($sessionData['failed_count'] ?? 0));
+    $lockedUntil = max((int)($fileData['locked_until'] ?? 0), (int)($sessionData['locked_until'] ?? 0));
+
+    // If lock period has expired, reset
+    if ($lockedUntil > 0 && time() >= $lockedUntil) {
+        $failedCount = 0;
+        $lockedUntil = 0;
+        reset_rate_limit($key);
     }
 
-    $_SESSION[$sessionKey][] = $now;
-
-    return true;
-}
-
-function get_rate_limit_remaining(string $key, int $maxAttempts = 5, int $windowSeconds = 600): int
-{
-    $sessionKey = 'ratelimit_' . $key;
-    $now = time();
-
-    if (!isset($_SESSION[$sessionKey])) {
-        return $maxAttempts;
-    }
-
-    $_SESSION[$sessionKey] = array_filter(
-        $_SESSION[$sessionKey],
-        static fn(int $timestamp) => $now - $timestamp < $windowSeconds
-    );
-
-    return max(0, $maxAttempts - count($_SESSION[$sessionKey]));
-}
-
-/**
- * Check remember-me cookie if present.
- */
-function check_remember_me_cookie(): bool
-{
-    if (!empty($_SESSION['admin_logged_in'])) {
-        return true;
-    }
-    $cookie = $_COOKIE['admin_remember_token'] ?? '';
-    if (!$cookie) {
-        return false;
-    }
-    $decoded = base64_decode($cookie, true);
-    if (!$decoded || !str_contains($decoded, ':')) {
-        return false;
-    }
-    [$username, $hash] = explode(':', $decoded, 2);
-    $secret = defined('APP_KEY') ? APP_KEY : 'wp_secret_key_2026';
-    if ($username === ADMIN_USERNAME && hash_equals(hash_hmac('sha256', $username, $secret), $hash)) {
-        session_regenerate_id(true);
-        $_SESSION['admin_logged_in'] = true;
-        $_SESSION['admin_username'] = ADMIN_USERNAME;
-        $_SESSION['admin_full_name'] = 'Administrator';
-        $_SESSION['admin_role'] = 'admin';
-        $_SESSION['last_activity'] = time();
-        return true;
-    }
-    return false;
-}
-
-/**
- * Set remember-me cookie for 7 days.
- */
-function set_remember_me_cookie(string $username): void
-{
-    $secret = defined('APP_KEY') ? APP_KEY : 'wp_secret_key_2026';
-    $hash = hash_hmac('sha256', $username, $secret);
-    $token = base64_encode($username . ':' . $hash);
-    setcookie('admin_remember_token', $token, [
-        'expires' => time() + (86400 * 7),
-        'path' => '/',
-        'httponly' => true,
-        'samesite' => 'Lax',
-    ]);
-}
-
-/**
- * Clear remember-me cookie.
- */
-function clear_remember_me_cookie(): void
-{
-    if (isset($_COOKIE['admin_remember_token'])) {
-        setcookie('admin_remember_token', '', [
-            'expires' => time() - 3600,
-            'path' => '/',
-            'httponly' => true,
-            'samesite' => 'Lax',
-        ]);
-        unset($_COOKIE['admin_remember_token']);
-    }
-}
-
-/**
- * Check if the given key is currently locked out by rate limiting.
- */
-function is_rate_limited(string $key): bool
-{
-    $lockKey = 'lockout_' . $key;
-    return isset($_SESSION[$lockKey]) && $_SESSION[$lockKey] > time();
-}
-
-/**
- * Get remaining lockout seconds for a key.
- */
-function get_rate_limit_lockout_remaining(string $key): int
-{
-    $lockKey = 'lockout_' . $key;
-    if (isset($_SESSION[$lockKey]) && $_SESSION[$lockKey] > time()) {
-        return $_SESSION[$lockKey] - time();
-    }
-    return 0;
-}
-
-/**
- * Reset rate limit and lockout state for a key.
- */
-function reset_rate_limit(string $key): void
-{
-    unset($_SESSION['ratelimit_' . $key], $_SESSION['lockout_' . $key]);
-}
-
-/**
- * Record a failed login attempt and set lockout if threshold is reached.
- *
- * @return array{failed_count: int, is_locked: bool}
- */
-function record_failed_attempt(string $key, int $maxAttempts = 5, int $windowSeconds = 600): array
-{
-    $sessionKey = 'ratelimit_' . $key;
-    $now = time();
-    if (!isset($_SESSION[$sessionKey])) {
-        $_SESSION[$sessionKey] = [];
-    }
-    $_SESSION[$sessionKey] = array_filter(
-        $_SESSION[$sessionKey],
-        static fn(int $timestamp) => $now - $timestamp < $windowSeconds
-    );
-    $_SESSION[$sessionKey][] = $now;
-    $failedCount = count($_SESSION[$sessionKey]);
-    $isLocked = false;
-    if ($failedCount >= $maxAttempts) {
-        $_SESSION['lockout_' . $key] = $now + $windowSeconds;
-        $isLocked = true;
-    }
     return [
         'failed_count' => $failedCount,
-        'is_locked' => $isLocked,
+        'locked_until' => $lockedUntil,
     ];
 }
+
+function save_rate_limit_data(string $key, array $data): void
+{
+    $sessionKey = 'ratelimit_' . $key;
+    $_SESSION[$sessionKey] = $data;
+
+    $filePath = get_rate_limit_file_path($key);
+    @file_put_contents($filePath, json_encode($data));
+}
+
+function is_rate_limited(string $key): bool
+{
+    $data = get_rate_limit_data($key);
+    return time() < ($data['locked_until'] ?? 0);
+}
+
+function get_rate_limit_lockout_remaining(string $key): int
+{
+    $data = get_rate_limit_data($key);
+    return max(0, ($data['locked_until'] ?? 0) - time());
+}
+
+function get_rate_limit_attempts_left(string $key, int $maxAttempts = LOGIN_MAX_ATTEMPTS): int
+{
+    $data = get_rate_limit_data($key);
+    return max(0, $maxAttempts - ($data['failed_count'] ?? 0));
+}
+
+function record_failed_attempt(string $key, int $maxAttempts = LOGIN_MAX_ATTEMPTS, int $baseWindowSeconds = LOGIN_ATTEMPT_WINDOW): array
+{
+    $data = get_rate_limit_data($key);
+    $data['failed_count'] = ($data['failed_count'] ?? 0) + 1;
+    $failedCount = $data['failed_count'];
+
+    if ($failedCount >= $maxAttempts) {
+        $exceededCount = $failedCount - $maxAttempts;
+        $multiplier = (int) pow(2, $exceededCount);
+        $lockoutSeconds = $baseWindowSeconds * $multiplier;
+        $data['locked_until'] = time() + $lockoutSeconds;
+    }
+
+    save_rate_limit_data($key, $data);
+    return $data;
+}
+
+function reset_rate_limit(string $key): void
+{
+    $sessionKey = 'ratelimit_' . $key;
+    unset($_SESSION[$sessionKey]);
+
+    $filePath = get_rate_limit_file_path($key);
+    if (file_exists($filePath)) {
+        @unlink($filePath);
+    }
+}
+
+/**
+ * Backward compatibility wrappers.
+ */
+function check_rate_limit(string $key, int $maxAttempts = LOGIN_MAX_ATTEMPTS, int $windowSeconds = LOGIN_ATTEMPT_WINDOW): bool
+{
+    return !is_rate_limited($key);
+}
+
+function get_rate_limit_remaining(string $key, int $maxAttempts = LOGIN_MAX_ATTEMPTS, int $windowSeconds = LOGIN_ATTEMPT_WINDOW): int
+{
+    return get_rate_limit_attempts_left($key, $maxAttempts);
+}
+
 

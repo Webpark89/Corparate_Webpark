@@ -5,6 +5,7 @@
  */
 require_once __DIR__ . '/../includes/functions.php';
 require_login();
+require_super_admin();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     require __DIR__ . '/_save.php';

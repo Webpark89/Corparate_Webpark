@@ -3,6 +3,9 @@
 /**
  * Admin contact settings list — bulk-edit contact group settings.
  */
+require_once __DIR__ . '/../includes/functions.php';
+require_super_admin();
+
 $pageTitle = 'จัดการข้อมูลติดต่อ';
 $page = 'contact';
 require_once __DIR__ . '/../includes/header.php';
