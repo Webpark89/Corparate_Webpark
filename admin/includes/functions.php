@@ -119,14 +119,56 @@ function csrf_verify(): void
     }
 }
 /**
+ * Find an admin user by username or email from the database.
+ *
+ * @return array|null  The admin row or null if not found.
+ */
+function find_admin_by_login(string $login): ?array
+{
+    $stmt = db()->prepare(
+        'SELECT * FROM admins WHERE username = :login_user OR email = :login_email LIMIT 1'
+    );
+    $stmt->execute(['login_user' => $login, 'login_email' => $login]);
+    $user = $stmt->fetch();
+    return $user ?: null;
+}
+
+/**
+ * Find an admin user by ID from the database.
+ *
+ * @return array|null  The admin row or null if not found.
+ */
+function find_admin_by_id(int $id): ?array
+{
+    $stmt = db()->prepare('SELECT * FROM admins WHERE id = :id LIMIT 1');
+    $stmt->execute(['id' => $id]);
+    $user = $stmt->fetch();
+    return $user ?: null;
+}
+
+/**
+ * Populate session variables from an admin database row.
+ */
+function set_admin_session(array $user): void
+{
+    $_SESSION['admin_logged_in'] = true;
+    $_SESSION['admin_id'] = (int) $user['id'];
+    $_SESSION['admin_username'] = $user['username'];
+    $_SESSION['admin_email'] = $user['email'] ?? '';
+    $_SESSION['admin_full_name'] = $user['full_name'] ?: $user['username'];
+    $_SESSION['admin_role'] = $user['role'] ?? 'admin';
+    $_SESSION['last_activity'] = time();
+}
+
+/**
  * Set secure HMAC remember-me cookie (7 days default).
  */
-function set_remember_me_cookie(string $username): void
+function set_remember_me_cookie(int $adminId): void
 {
     $duration = defined('REMEMBER_ME_DURATION') ? REMEMBER_ME_DURATION : (7 * 86400);
     $expiry = time() + $duration;
-    $signature = hash_hmac('sha256', $username . '|' . $expiry, ADMIN_PASSWORD_HASH);
-    $token = base64_encode($username . '|' . $expiry . '|' . $signature);
+    $signature = hash_hmac('sha256', $adminId . '|' . $expiry, AUTH_SECRET_KEY);
+    $token = base64_encode($adminId . '|' . $expiry . '|' . $signature);
 
     setcookie('admin_remember', $token, [
         'expires'  => $expiry,
@@ -155,7 +197,7 @@ function clear_remember_me_cookie(): void
 }
 
 /**
- * Verify remember-me cookie and restore session if valid.
+ * Verify remember-me cookie and restore session from database if valid.
  */
 function check_remember_me_cookie(): bool
 {
@@ -175,26 +217,29 @@ function check_remember_me_cookie(): bool
         return false;
     }
 
-    [$username, $expiry, $signature] = $parts;
+    [$adminId, $expiry, $signature] = $parts;
 
-    if ($username !== ADMIN_USERNAME || (int) $expiry <= time()) {
+    if ((int) $expiry <= time()) {
         clear_remember_me_cookie();
         return false;
     }
 
-    $expectedSignature = hash_hmac('sha256', $username . '|' . $expiry, ADMIN_PASSWORD_HASH);
+    $expectedSignature = hash_hmac('sha256', $adminId . '|' . $expiry, AUTH_SECRET_KEY);
     if (!hash_equals($expectedSignature, $signature)) {
         clear_remember_me_cookie();
         return false;
     }
 
-    // Valid token! Restore session
+    // Look up user in database
+    $user = find_admin_by_id((int) $adminId);
+    if (!$user) {
+        clear_remember_me_cookie();
+        return false;
+    }
+
+    // Valid token! Restore session from DB
     session_regenerate_id(true);
-    $_SESSION['admin_logged_in'] = true;
-    $_SESSION['admin_username'] = ADMIN_USERNAME;
-    $_SESSION['admin_full_name'] = 'Administrator';
-    $_SESSION['admin_role'] = 'admin';
-    $_SESSION['last_activity'] = time();
+    set_admin_session($user);
     $_SESSION['is_remembered'] = true;
 
     return true;
@@ -229,13 +274,15 @@ function require_login(): void
     $_SESSION['last_activity'] = time();
 }
 /**
- * @return array{username: string, full_name: string, role: string}
+ * @return array{id: int, username: string, email: string, full_name: string, role: string}
  */
 function current_admin(): array
 {
     return [
-        'username' => $_SESSION['admin_username'] ?? ADMIN_USERNAME,
-        'full_name' => $_SESSION['admin_full_name'] ?? 'Administrator',
+        'id' => $_SESSION['admin_id'] ?? 0,
+        'username' => $_SESSION['admin_username'] ?? '',
+        'email' => $_SESSION['admin_email'] ?? '',
+        'full_name' => $_SESSION['admin_full_name'] ?? '',
         'role' => $_SESSION['admin_role'] ?? 'admin',
     ];
 }
@@ -349,12 +396,13 @@ function flash(string $key, ?string $message = null): mixed
     return null;
 }
 /**
- * Restrict access to admin role only.
+ * Restrict access to admin roles (admin or super_admin).
  */
 function require_admin_role(): void
 {
     $admin = current_admin();
-    if (($admin['role'] ?? null) !== 'admin') {
+    $allowedRoles = ['admin', 'super_admin'];
+    if (!in_array($admin['role'] ?? '', $allowedRoles, true)) {
         http_response_code(403);
         exit('Forbidden: Admin access required.');
     }
@@ -362,7 +410,8 @@ function require_admin_role(): void
 function can_admin(): bool
 {
     $admin = current_admin();
-    return ($admin['role'] ?? null) === 'admin';
+    $allowedRoles = ['admin', 'super_admin'];
+    return in_array($admin['role'] ?? '', $allowedRoles, true);
 }/**
  * Rate Limiter Storage (Session + Temp File) to prevent bypassing via cookies/incognito.
  */

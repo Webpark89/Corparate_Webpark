@@ -49,39 +49,48 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if ($username === '' || $password === '') {
             $errorMessage = 'กรุณากรอกข้อมูลให้ครบถ้วน';
-        } elseif ($username === ADMIN_USERNAME && password_verify($password, ADMIN_PASSWORD_HASH)) {
-            // Reset rate limit on successful login
-            reset_rate_limit($rateLimitKey);
-
-            session_regenerate_id(true);
-            $_SESSION['admin_logged_in'] = true;
-            $_SESSION['admin_username'] = ADMIN_USERNAME;
-            $_SESSION['admin_full_name'] = 'Administrator';
-            $_SESSION['admin_role'] = 'admin';
-            $_SESSION['last_activity'] = time();
-
-            // Set or clear Remember Me cookie (7 days)
-            if (!empty($_POST['remember'])) {
-                set_remember_me_cookie(ADMIN_USERNAME);
-            } else {
-                clear_remember_me_cookie();
-            }
-
-            header('Location: ' . ADMIN_URL . '/index.php');
-            exit;
         } else {
-            // Record failed attempt
-            $attemptData = record_failed_attempt($rateLimitKey, LOGIN_MAX_ATTEMPTS, LOGIN_ATTEMPT_WINDOW);
-            $failedCount = $attemptData['failed_count'] ?? 1;
+            // Query the admins table by username or email
+            $user = find_admin_by_login($username);
 
-            if (is_rate_limited($rateLimitKey)) {
-                $isLocked = true;
-                $lockoutSeconds = get_rate_limit_lockout_remaining($rateLimitKey);
-                $lockoutMinutes = (int) max(1, ceil($lockoutSeconds / 60));
-                $errorMessage = 'คุณกรอกข้อมูลผิดเกิน ' . LOGIN_MAX_ATTEMPTS . ' ครั้ง ระบบถูกระงับชั่วคราวเป็นเวลา ' . $lockoutMinutes . ' นาที';
+            if ($user && password_verify($password, $user['password_hash'])) {
+                // Reset rate limit on successful login
+                reset_rate_limit($rateLimitKey);
+
+                session_regenerate_id(true);
+                set_admin_session($user);
+
+                // Update last_login in database
+                try {
+                    $stmt = db()->prepare('UPDATE admins SET last_login = NOW() WHERE id = :id');
+                    $stmt->execute(['id' => $user['id']]);
+                } catch (Exception $e) {
+                    // Non-critical: ignore DB error on last_login update
+                }
+
+                // Set or clear Remember Me cookie (7 days)
+                if (!empty($_POST['remember'])) {
+                    set_remember_me_cookie((int) $user['id']);
+                } else {
+                    clear_remember_me_cookie();
+                }
+
+                header('Location: ' . ADMIN_URL . '/index.php');
+                exit;
             } else {
-                $attemptsLeft = max(0, LOGIN_MAX_ATTEMPTS - $failedCount);
-                $errorMessage = 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง (เหลือโอกาสลองอีก ' . $attemptsLeft . ' ครั้ง)';
+                // Record failed attempt
+                $attemptData = record_failed_attempt($rateLimitKey, LOGIN_MAX_ATTEMPTS, LOGIN_ATTEMPT_WINDOW);
+                $failedCount = $attemptData['failed_count'] ?? 1;
+
+                if (is_rate_limited($rateLimitKey)) {
+                    $isLocked = true;
+                    $lockoutSeconds = get_rate_limit_lockout_remaining($rateLimitKey);
+                    $lockoutMinutes = (int) max(1, ceil($lockoutSeconds / 60));
+                    $errorMessage = 'คุณกรอกข้อมูลผิดเกิน ' . LOGIN_MAX_ATTEMPTS . ' ครั้ง ระบบถูกระงับชั่วคราวเป็นเวลา ' . $lockoutMinutes . ' นาที';
+                } else {
+                    $attemptsLeft = max(0, LOGIN_MAX_ATTEMPTS - $failedCount);
+                    $errorMessage = 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง (เหลือโอกาสลองอีก ' . $attemptsLeft . ' ครั้ง)';
+                }
             }
         }
     }

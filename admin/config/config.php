@@ -13,9 +13,9 @@ define('DB_PASS', '');
 define('DB_PORT', '3306');
 define('DB_CHARSET', 'utf8mb4');
 
-// ---- Admin Login ----
-define('ADMIN_USERNAME', 'admin');
-define('ADMIN_PASSWORD_HASH', '$2y$12$hDzP3bxYxaNrutNUb7qEq.HhRaltcuXAO8KnaZkONMBEq4qPDoY7.');
+// ---- Auth ----
+// Secret key for HMAC signing (Remember-Me cookies). Change this to a random string in production.
+define('AUTH_SECRET_KEY', 'wbpk_s3cr3t_k3y_2026_xK9mPqR7nT4vL2wJ');
 
 // ---- Site ----
 $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
