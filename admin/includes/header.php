@@ -10,6 +10,7 @@ $page = $page ?? 'dashboard';
 $navItems = [
     ['name' => 'แดชบอร์ด', 'url' => '/index.php', 'page' => 'dashboard'],
     ['name' => 'การจัดการบทความ', 'url' => '/article/index.php', 'page' => 'article'],
+    ['name' => 'หมวดหมู่บทความ', 'url' => '/category/index.php', 'page' => 'category'],
     ['name' => 'การจัดการผลงาน', 'url' => '/portfolio/index.php', 'page' => 'portfolio'],
     ['name' => 'การจัดการรีวิว', 'url' => '/review/index.php', 'page' => 'review'],
     ['name' => 'การจัดการลูกค้า', 'url' => '/partners/index.php', 'page' => 'partners'],

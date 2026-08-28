@@ -104,7 +104,7 @@ $top5Rows = db()->query(
     "SELECT id, meta_title, views 
      FROM article 
      WHERE (status = 'published' OR status IS NULL) AND deleted_at IS NULL 
-     ORDER BY views DESC, priority ASC, created_at DESC 
+     ORDER BY views DESC, created_at DESC 
      LIMIT 5"
 )->fetchAll();
 
@@ -125,7 +125,7 @@ $bottom5Rows = db()->query(
     "SELECT id, meta_title, views 
      FROM article 
      WHERE (status = 'published' OR status IS NULL) AND deleted_at IS NULL 
-     ORDER BY views ASC, priority ASC, created_at ASC 
+     ORDER BY views ASC, created_at ASC 
      LIMIT 5"
 )->fetchAll();
 

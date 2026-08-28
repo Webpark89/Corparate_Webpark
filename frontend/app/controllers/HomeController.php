@@ -541,7 +541,7 @@ class HomeController
             $articleCategorySlugs = [];
         }
 
-        $categoryNameBySlug = [];
+        $categories = [];
         try {
             $categoryRows = $articleModel->getCategoryList();
             foreach ($categoryRows as $row) {
@@ -550,43 +550,23 @@ class HomeController
                 if ($slug === '' || $name === '') {
                     continue;
                 }
-                $categoryNameBySlug[$slug] = $name;
+                $categories[] = [
+                    'slug' => $slug,
+                    'name' => $name,
+                ];
             }
         } catch (Throwable $e) {
-            $categoryNameBySlug = [];
+            $categories = [];
         }
 
-        if ($articleCategorySlugs !== []) {
-            $filterKeys = array_fill_keys($articleCategorySlugs, true);
-            $categoryNameBySlug = array_filter(
-                $categoryNameBySlug,
-                static fn($_, string $slug): bool => isset($filterKeys[$slug]),
-                ARRAY_FILTER_USE_BOTH
-            );
-        } else {
-            $categoryNameBySlug = [];
+        if (empty($categories)) {
+            $categories = [
+                ['slug' => 'erp-erm', 'name' => 'ERP / ERM'],
+                ['slug' => 'digital-platform', 'name' => 'Digital Platform'],
+                ['slug' => 'online-marketing', 'name' => 'Online Marketing'],
+                ['slug' => 'creative-design', 'name' => 'Creative / Design'],
+            ];
         }
-
-        $missingSlugs = array_diff($articleCategorySlugs, array_keys($categoryNameBySlug));
-        foreach ($missingSlugs as $slug) {
-            $matches = array_values(array_filter(
-                $articles,
-                static fn(array $article) => ($article['category_slug'] ?? '') === $slug
-            ));
-            $name = trim((string) ($matches[0]['category_name'] ?? ''));
-            if ($name === '') {
-                continue;
-            }
-            $categoryNameBySlug[$slug] = $name;
-        }
-
-        // Hardcoded mockup categories as requested by user
-        $categories = [
-            ['slug' => 'erp-erm', 'name' => 'ERP / ERM'],
-            ['slug' => 'digital-platform', 'name' => 'Digital Platform'],
-            ['slug' => 'online-marketing', 'name' => 'Online Marketing'],
-            ['slug' => 'creative-design', 'name' => 'Creative / Design'],
-        ];
 
         $validSlugs = array_values(array_unique(array_filter(array_merge(
             $articleCategorySlugs,

@@ -330,10 +330,15 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
                 <div class="p-6 space-y-6">
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-end">
                         <div class="w-full">
-                            <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 block">
-                                หมวดหมู่บทความ <span class="text-red-500 ml-0.5">*</span>
-                            </label>
-                            <select name="category_id" class="<?= $inputClass ?> bg-white border-slate-200 h-[46px] py-0" required>
+                            <div class="flex items-center justify-between mb-2">
+                                <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider block">
+                                    หมวดหมู่บทความ <span class="text-red-500 ml-0.5">*</span>
+                                </label>
+                                <button type="button" onclick="openCategoryModal()" class="text-xs font-semibold text-blue-600 hover:text-blue-700 underline cursor-pointer">
+                                    ⚙️ จัดการหมวดหมู่
+                                </button>
+                            </div>
+                            <select name="category_id" id="category_select" class="<?= $inputClass ?> bg-white border-slate-200 h-[46px] py-0" required>
                                 <option value="">เลือกหมวดหมู่ที่ต้องการ...</option>
                                 <?php foreach ($categories as $category): ?>
                                     <option value="<?= (int) $category['id'] ?>"
@@ -341,6 +346,8 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
                                         <?= e($category['name']) ?>
                                     </option>
                                 <?php endforeach; ?>
+                                <option disabled>──────────</option>
+                                <option value="__manage__" class="font-bold text-blue-600 bg-blue-50 py-1">⚙️ จัดการหมวดหมู่ (เพิ่ม / แก้ไข / ลบ)...</option>
                             </select>
                         </div>
                         <div class="w-full">
@@ -484,6 +491,95 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
                 </section>
         </div>
     </form>
+</div>
+
+<!-- Category Manager Modal Popup -->
+<div id="quickCategoryModal" style="position: fixed; inset: 0; z-index: 9999; display: none; align-items: center; justify-content: center; background-color: rgba(15, 23, 42, 0.65); backdrop-filter: blur(4px); padding: 16px;">
+    <div style="background: #ffffff; border-radius: 16px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); max-width: 860px; width: 100%; margin: auto; max-height: 88vh; display: flex; flex-direction: column; overflow: hidden; border: 1px solid #e2e8f0;">
+        <!-- Header -->
+        <div style="padding: 18px 26px; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; justify-content: space-between; background: #f8fafc; flex-shrink: 0;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <div style="width: 38px; height: 38px; border-radius: 10px; background: #eff6ff; color: #2563eb; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: bold; border: 1px solid #dbeafe;">
+                    📁
+                </div>
+                <div>
+                    <h4 style="font-size: 15px; font-weight: bold; color: #1e293b; margin: 0; line-height: 1.3;">การจัดการหมวดหมู่บทความ</h4>
+                    <p style="font-size: 11px; color: #64748b; margin: 0; line-height: 1.2;">เพิ่ม แก้ไขชื่อ หรือลบหมวดหมู่ของบทความ</p>
+                </div>
+            </div>
+            <button type="button" onclick="closeCategoryModal()" style="background: transparent; border: none; padding: 6px; border-radius: 8px; color: #94a3b8; cursor: pointer;">
+                <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+        </div>
+
+        <!-- Body with Scroll -->
+        <div style="padding: 22px 26px; overflow-y: auto; display: flex; flex-direction: column; gap: 20px; flex: 1;">
+            <!-- Add New Category Sub-form -->
+            <div style="padding: 16px; border-radius: 12px; background: #f8fafc; border: 1px solid #e2e8f0; display: flex; flex-direction: column; gap: 12px;">
+                <div style="font-size: 11px; font-weight: bold; color: #1e293b; text-transform: uppercase; letter-spacing: 0.05em; display: flex; align-items: center; gap: 6px;">
+                    <span>➕</span>
+                    <span>เพิ่มหมวดหมู่ใหม่</span>
+                </div>
+                <div style="display: flex; gap: 14px; flex-wrap: wrap; align-items: flex-end; width: 100%;">
+                    <div style="flex: 1 1 280px; min-width: 200px;">
+                        <label style="font-size: 11px; font-weight: 600; color: #334155; display: block; margin-bottom: 4px;">
+                            ชื่อหมวดหมู่ <span style="color: #ef4444;">*</span>
+                        </label>
+                        <input type="text" id="newCategoryName" placeholder="เช่น AI & Automation, Cloud..." 
+                            style="width: 100%; border-radius: 10px; border: 1px solid #cbd5e1; background: #fff; padding: 8px 14px; font-size: 12px; height: 40px; outline: none; box-sizing: border-box;">
+                    </div>
+                    <div style="flex: 1 1 240px; min-width: 180px;">
+                        <label style="font-size: 11px; font-weight: 600; color: #64748b; display: block; margin-bottom: 4px;">URL Slug</label>
+                        <input type="text" id="newCategorySlug" placeholder="เช่น ai-automation" 
+                            style="width: 100%; border-radius: 10px; border: 1px solid #e2e8f0; background: #fff; padding: 8px 14px; font-size: 12px; height: 40px; outline: none; box-sizing: border-box;">
+                    </div>
+                    <div style="flex: 0 0 auto; min-width: 130px;">
+                        <button type="button" id="btnSaveCategory" onclick="submitNewCategory()" 
+                            style="width: 100%; height: 40px; border-radius: 10px; background: #2563eb; color: #fff; font-size: 12px; font-weight: 600; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; padding: 0 20px; box-sizing: border-box;">
+                            <span id="btnSaveCategoryText">+ เพิ่ม</span>
+                            <svg id="btnSaveCategorySpinner" class="hidden animate-spin h-3.5 w-3.5 text-white" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div id="categoryModalError" class="hidden" style="padding: 8px 12px; border-radius: 8px; background: #fff1f2; border: 1px solid #fecdd3; color: #be123c; font-size: 11px; font-weight: 500;"></div>
+            </div>
+
+            <!-- Categories List Table -->
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <span style="font-size: 11px; font-weight: bold; color: #475569; text-transform: uppercase; letter-spacing: 0.05em;">หมวดหมู่ทั้งหมดในระบบ</span>
+                    <span id="modalCatCountBadge" style="font-size: 11px; color: #64748b; font-weight: 500;">กำลังโหลด...</span>
+                </div>
+                <div style="border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden;">
+                    <table style="width: 100%; text-align: left; font-size: 12px; border-collapse: collapse;">
+                        <thead style="background: #f8fafc; font-size: 10px; font-weight: bold; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid #e2e8f0;">
+                            <tr>
+                                <th style="padding: 12px 16px; width: 35%;">ชื่อหมวดหมู่</th>
+                                <th style="padding: 12px 16px; width: 30%;">Slug</th>
+                                <th style="padding: 12px 16px; width: 15%; text-align: center;">บทความ</th>
+                                <th style="padding: 12px 16px; width: 20%; text-align: right;">การจัดการ</th>
+                            </tr>
+                        </thead>
+                        <tbody id="modalCategoryListBody" style="background: #fff;">
+                            <tr>
+                                <td colspan="4" style="padding: 24px; text-align: center; color: #94a3b8;">กำลังโหลดรายการหมวดหมู่...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div style="padding: 14px 26px; background: #f8fafc; border-top: 1px solid #e2e8f0; display: flex; align-items: center; justify-content: flex-end; flex-shrink: 0;">
+            <button type="button" onclick="closeCategoryModal()" style="padding: 8px 20px; font-size: 12px; font-weight: 600; color: #334155; background: #fff; border: 1px solid #cbd5e1; border-radius: 10px; cursor: pointer;">
+                ปิดหน้าต่าง
+            </button>
+        </div>
+    </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/tinymce@6.8.3/tinymce.min.js" referrerpolicy="origin"></script>
 <script src="../assets/js/seo-editor.js?v=1.0.3"></script>
@@ -900,14 +996,320 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
         const currentlyPinnedTitle = <?= json_encode($pinnedArticle['meta_title'] ?? '', JSON_UNESCAPED_UNICODE) ?>;
         const hasOtherPinned = <?= !empty($pinnedArticle) ? 'true' : 'false' ?>;
 
-        if (isPinnedInput) {
-            isPinnedInput.addEventListener('change', function() {
-                if (this.checked && hasOtherPinned) {
-                    const articleName = currentlyPinnedTitle ? `"${currentlyPinnedTitle}"` : 'บทความอื่น';
-                    const confirmReplace = confirm(`ขณะนี้มีบทความ ${articleName} กำลังถูกปักหมุดอยู่แล้ว\n\nคุณต้องการเปลี่ยนการปักหมุดมาเป็นบทความนี้แทนหรือไม่?`);
-                    if (!confirmReplace) {
-                        this.checked = false;
+        // Category Manager Modal Logic
+        const categorySelect = document.getElementById('category_select');
+        const quickCatModal = document.getElementById('quickCategoryModal');
+        const newCatNameInput = document.getElementById('newCategoryName');
+        const newCatSlugInput = document.getElementById('newCategorySlug');
+        const catModalError = document.getElementById('categoryModalError');
+        const btnSaveCategory = document.getElementById('btnSaveCategory');
+        const btnSaveCategoryText = document.getElementById('btnSaveCategoryText');
+        const btnSaveCategorySpinner = document.getElementById('btnSaveCategorySpinner');
+        const modalCatCountBadge = document.getElementById('modalCatCountBadge');
+        const modalCategoryListBody = document.getElementById('modalCategoryListBody');
+        const CATEGORY_API_URL = 'ajax_category_actions.php';
+        let lastSelectedCategory = categorySelect ? categorySelect.value : '';
+
+        if (categorySelect) {
+            categorySelect.addEventListener('change', function() {
+                if (this.value === '__manage__' || this.value === '__new__') {
+                    openCategoryModal();
+                } else {
+                    lastSelectedCategory = this.value;
+                }
+            });
+        }
+
+        window.openCategoryModal = function() {
+            if (!quickCatModal) return;
+            if (newCatNameInput) newCatNameInput.value = '';
+            if (newCatSlugInput) newCatSlugInput.value = '';
+            if (catModalError) {
+                catModalError.classList.add('hidden');
+                catModalError.style.display = 'none';
+                catModalError.textContent = '';
+            }
+            quickCatModal.style.display = 'flex';
+            loadCategoryListInModal();
+            setTimeout(() => {
+                if (newCatNameInput) newCatNameInput.focus();
+            }, 60);
+        };
+
+        window.closeCategoryModal = function() {
+            if (!quickCatModal) return;
+            quickCatModal.style.display = 'none';
+            if (categorySelect && (categorySelect.value === '__manage__' || categorySelect.value === '__new__')) {
+                categorySelect.value = lastSelectedCategory;
+            }
+        };
+
+        function getCsrfToken() {
+            const csrfTokenInput = document.querySelector('input[name="_csrf"]') || document.querySelector('input[name="csrf_token"]');
+            return csrfTokenInput ? csrfTokenInput.value : '<?= csrf_token() ?>';
+        }
+
+        // Fetch and Render Category Table in Modal
+        window.loadCategoryListInModal = async function() {
+            if (!modalCategoryListBody) return;
+            try {
+                const res = await fetch(CATEGORY_API_URL + '?action=list');
+                const data = await res.json();
+                if (data.success && Array.isArray(data.categories)) {
+                    renderModalCategoryTable(data.categories);
+                    syncCategorySelectDropdown(data.categories);
+                } else {
+                    modalCategoryListBody.innerHTML = '<tr><td colspan="4" class="px-4 py-4 text-center text-rose-500 text-xs">ไม่สามารถโหลดรายการหมวดหมู่ได้</td></tr>';
+                }
+            } catch (e) {
+                modalCategoryListBody.innerHTML = '<tr><td colspan="4" class="px-4 py-4 text-center text-rose-500 text-xs">เกิดข้อผิดพลาดในการโหลดข้อมูล</td></tr>';
+            }
+        };
+
+        function renderModalCategoryTable(categories) {
+            if (!modalCategoryListBody) return;
+            if (modalCatCountBadge) {
+                modalCatCountBadge.textContent = `${categories.length} หมวดหมู่`;
+            }
+
+            if (categories.length === 0) {
+                modalCategoryListBody.innerHTML = '<tr><td colspan="4" class="px-4 py-6 text-center text-slate-400 text-xs">ยังไม่มีหมวดหมู่ในระบบ</td></tr>';
+                return;
+            }
+
+            let html = '';
+            categories.forEach(cat => {
+                const id = cat.id;
+                const name = cat.name.replace(/"/g, '&quot;');
+                const slug = cat.slug.replace(/"/g, '&quot;');
+                const count = parseInt(cat.article_count) || 0;
+
+                html += `
+                <tr id="modal-cat-row-${id}" class="hover:bg-slate-50 transition">
+                    <td class="px-4 py-2.5 font-semibold text-slate-900">
+                        <div class="mcat-name-view">${name}</div>
+                        <div class="mcat-name-edit hidden">
+                            <input type="text" class="mcat-input-name w-full rounded-lg border border-blue-400 px-2 py-1 text-xs text-slate-900 focus:outline-none" value="${name}">
+                        </div>
+                    </td>
+                    <td class="px-4 py-2.5 text-slate-500 font-mono text-[11px]">
+                        <div class="mcat-slug-view">${slug}</div>
+                        <div class="mcat-slug-edit hidden">
+                            <input type="text" class="mcat-input-slug w-full rounded-lg border border-slate-300 px-2 py-1 text-xs text-slate-700 focus:outline-none" value="${slug}">
+                        </div>
+                    </td>
+                    <td class="px-4 py-2.5 text-center">
+                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold ${count > 0 ? 'bg-blue-50 text-blue-700 border border-blue-200' : 'bg-slate-100 text-slate-500'}">
+                            ${count} บทความ
+                        </span>
+                    </td>
+                    <td class="px-4 py-3 text-right whitespace-nowrap" style="padding: 12px 16px; text-align: right;">
+                        <div class="mcat-action-view" style="display: inline-flex; border-radius: 10px; border: 1px solid #e2e8f0; overflow: hidden; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);">
+                            <button type="button" onclick="startEditCategoryModal(${id})" style="padding: 6px 15px; font-size: 12px; font-weight: 600; color: #2563eb; background: #fff; border: none; cursor: pointer; display: inline-flex; align-items: center; gap: 4px;">
+                                <span>✏️ แก้ไข</span>
+                            </button>
+                            <button type="button" onclick="deleteCategoryModal(${id}, '${name.replace(/'/g, "\\'")}', ${count})" style="padding: 6px 15px; font-size: 12px; font-weight: 600; color: #e11d48; background: #fff; border: none; border-left: 1px solid #e2e8f0; cursor: pointer; display: inline-flex; align-items: center; gap: 4px;">
+                                <span>🗑️ ลบ</span>
+                            </button>
+                        </div>
+                        <div class="mcat-action-edit hidden" style="display: none; border-radius: 10px; border: 1px solid #e2e8f0; overflow: hidden; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);">
+                            <button type="button" onclick="saveEditCategoryModal(${id})" style="padding: 6px 15px; font-size: 12px; font-weight: 600; color: #fff; background: #059669; border: none; cursor: pointer; display: inline-flex; align-items: center; gap: 4px;">
+                                <span>💾 บันทึก</span>
+                            </button>
+                            <button type="button" onclick="cancelEditCategoryModal(${id})" style="padding: 6px 15px; font-size: 12px; font-weight: 600; color: #475569; background: #fff; border: none; border-left: 1px solid #e2e8f0; cursor: pointer; display: inline-flex; align-items: center; gap: 4px;">
+                                <span>ยกเลิก</span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>`;
+            });
+
+            modalCategoryListBody.innerHTML = html;
+        }
+
+        // Synchronize <select id="category_select"> with latest categories
+        function syncCategorySelectDropdown(categories, selectId = null) {
+            if (!categorySelect) return;
+            const currentVal = selectId !== null ? String(selectId) : categorySelect.value;
+
+            let html = '<option value="">เลือกหมวดหมู่ที่ต้องการ...</option>';
+            categories.forEach(cat => {
+                const isSelected = String(cat.id) === String(currentVal) ? 'selected' : '';
+                html += `<option value="${cat.id}" ${isSelected}>${cat.name}</option>`;
+            });
+            html += '<option disabled>──────────</option>';
+            html += '<option value="__manage__" class="font-bold text-blue-600 bg-blue-50 py-1">⚙️ จัดการหมวดหมู่ (เพิ่ม / แก้ไข / ลบ)...</option>';
+
+            categorySelect.innerHTML = html;
+            if (selectId !== null) {
+                categorySelect.value = String(selectId);
+                lastSelectedCategory = String(selectId);
+            }
+        }
+
+        // Add Category
+        window.submitNewCategory = async function() {
+            if (!newCatNameInput) return;
+            const name = newCatNameInput.value.trim();
+            const slug = newCatSlugInput ? newCatSlugInput.value.trim() : '';
+
+            if (!name) {
+                if (catModalError) {
+                    catModalError.textContent = 'กรุณากรอกชื่อหมวดหมู่';
+                    catModalError.classList.remove('hidden');
+                    catModalError.style.display = 'block';
+                }
+                newCatNameInput.focus();
+                return;
+            }
+
+            if (catModalError) {
+                catModalError.classList.add('hidden');
+                catModalError.style.display = 'none';
+            }
+            if (btnSaveCategory) btnSaveCategory.disabled = true;
+            if (btnSaveCategoryText) btnSaveCategoryText.textContent = 'กำลังเพิ่ม...';
+            if (btnSaveCategorySpinner) btnSaveCategorySpinner.classList.remove('hidden');
+
+            try {
+                const formData = new FormData();
+                formData.append('action', 'create');
+                formData.append('name', name);
+                formData.append('slug', slug);
+                formData.append('_csrf', getCsrfToken());
+
+                const response = await fetch(CATEGORY_API_URL, { method: 'POST', body: formData });
+                const result = await response.json();
+
+                if (result && result.success) {
+                    newCatNameInput.value = '';
+                    if (newCatSlugInput) newCatSlugInput.value = '';
+                    await loadCategoryListInModal();
+                    if (result.id) {
+                        syncCategorySelectDropdown([], result.id);
                     }
+                } else {
+                    if (catModalError) {
+                        catModalError.textContent = result.message || 'ไม่สามารถเพิ่มหมวดหมู่ได้';
+                        catModalError.classList.remove('hidden');
+                        catModalError.style.display = 'block';
+                    }
+                }
+            } catch (err) {
+                if (catModalError) {
+                    catModalError.textContent = 'เกิดข้อผิดพลาดในการเชื่อมต่อเซิร์ฟเวอร์';
+                    catModalError.classList.remove('hidden');
+                    catModalError.style.display = 'block';
+                }
+            } finally {
+                if (btnSaveCategory) btnSaveCategory.disabled = false;
+                if (btnSaveCategoryText) btnSaveCategoryText.textContent = '+ เพิ่ม';
+                if (btnSaveCategorySpinner) btnSaveCategorySpinner.classList.add('hidden');
+            }
+        };
+
+        // Edit Category inline
+        window.startEditCategoryModal = function(id) {
+            const row = document.getElementById('modal-cat-row-' + id);
+            if (!row) return;
+            row.querySelector('.mcat-name-view').classList.add('hidden');
+            row.querySelector('.mcat-name-edit').classList.remove('hidden');
+            row.querySelector('.mcat-slug-view').classList.add('hidden');
+            row.querySelector('.mcat-slug-edit').classList.remove('hidden');
+            row.querySelector('.mcat-action-view').style.display = 'none';
+            row.querySelector('.mcat-action-edit').style.display = 'inline-flex';
+            row.querySelector('.mcat-action-edit').classList.remove('hidden');
+            row.querySelector('.mcat-input-name').focus();
+        };
+
+        window.cancelEditCategoryModal = function(id) {
+            const row = document.getElementById('modal-cat-row-' + id);
+            if (!row) return;
+            row.querySelector('.mcat-name-view').classList.remove('hidden');
+            row.querySelector('.mcat-name-edit').classList.add('hidden');
+            row.querySelector('.mcat-slug-view').classList.remove('hidden');
+            row.querySelector('.mcat-slug-edit').classList.add('hidden');
+            row.querySelector('.mcat-action-view').style.display = 'inline-flex';
+            row.querySelector('.mcat-action-edit').style.display = 'none';
+            row.querySelector('.mcat-action-edit').classList.add('hidden');
+        };
+
+        window.saveEditCategoryModal = async function(id) {
+            const row = document.getElementById('modal-cat-row-' + id);
+            if (!row) return;
+            const name = row.querySelector('.mcat-input-name').value.trim();
+            const slug = row.querySelector('.mcat-input-slug').value.trim();
+
+            if (!name) {
+                alert('กรุณากรอกชื่อหมวดหมู่');
+                return;
+            }
+
+            try {
+                const formData = new FormData();
+                formData.append('action', 'update');
+                formData.append('id', id);
+                formData.append('name', name);
+                formData.append('slug', slug);
+                formData.append('_csrf', getCsrfToken());
+
+                const res = await fetch(CATEGORY_API_URL, { method: 'POST', body: formData });
+                const data = await res.json();
+
+                if (data.success) {
+                    await loadCategoryListInModal();
+                } else {
+                    alert(data.message || 'ไม่สามารถแก้ไขได้');
+                }
+            } catch (e) {
+                alert('เกิดข้อผิดพลาดในการเชื่อมต่อเซิร์ฟเวอร์');
+            }
+        };
+
+        // Delete Category
+        window.deleteCategoryModal = async function(id, name, count) {
+            let msg = `คุณแน่ใจหรือไม่ว่าต้องการลบหมวดหมู่ "${name}"?`;
+            if (count > 0) {
+                msg += `\n\n⚠️ มีบทความ ${count} เรื่องอยู่ในหมวดหมู่นี้ (บทความจะไม่ถูกลบ แต่จะถูกเปลี่ยนเป็น "ไม่มีหมวดหมู่")`;
+            }
+
+            if (!confirm(msg)) return;
+
+            try {
+                const formData = new FormData();
+                formData.append('action', 'delete');
+                formData.append('id', id);
+                formData.append('_csrf', getCsrfToken());
+
+                const res = await fetch(CATEGORY_API_URL, { method: 'POST', body: formData });
+                const data = await res.json();
+
+                if (data.success) {
+                    if (String(categorySelect.value) === String(id)) {
+                        lastSelectedCategory = '';
+                    }
+                    await loadCategoryListInModal();
+                } else {
+                    alert(data.message || 'ไม่สามารถลบได้');
+                }
+            } catch (e) {
+                alert('เกิดข้อผิดพลาดในการเชื่อมต่อเซิร์ฟเวอร์');
+            }
+        };
+
+        if (newCatNameInput) {
+            newCatNameInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    submitNewCategory();
+                }
+            });
+        }
+        if (newCatSlugInput) {
+            newCatSlugInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    submitNewCategory();
                 }
             });
         }
