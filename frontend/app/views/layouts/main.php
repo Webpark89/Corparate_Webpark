@@ -79,11 +79,10 @@ $content = $content ?? '';
     <meta name="twitter:image:alt" content="<?= e($imageAlt) ?>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+Thai:wght@100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+Thai:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
-        /* Prioritize Inter for English characters to fix spacing and improve aesthetics */
-        body, .font-sans {
-            font-family: 'Inter', 'Noto Sans Thai', ui-sans-serif, system-ui, sans-serif !important;
+        *, body, .font-sans, h1, h2, h3, h4, h5, h6, p, span, a, input, textarea, select, button {
+            font-family: 'Noto Sans Thai', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
         }
 
         /* Global Article Format Styling for Tables */

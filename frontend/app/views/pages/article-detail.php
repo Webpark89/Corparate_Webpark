@@ -207,7 +207,7 @@ $shareUrl = urlencode(request_origin_url() . ($_SERVER['REQUEST_URI'] ?? ''));
                     </span>
                 </div>
                 
-                <p class="animate-fade-up delay-400 mt-6 text-[#022862] text-lg md:text-xl leading-relaxed max-w-lg mb-10 font-medium">
+                <p class="animate-fade-up delay-400 mt-6 text-[#022862] text-base md:text-lg lg:text-xl leading-relaxed max-w-2xl mb-10 font-normal">
                     <?= e($summary) ?>
                 </p>
             </div>
@@ -225,16 +225,18 @@ $shareUrl = urlencode(request_origin_url() . ($_SERVER['REQUEST_URI'] ?? ''));
     /* Article Typography */
     .article-format {
         color: #475569; /* slate-600 */
-        font-size: 1rem;
-        line-height: 1.8;
+        font-size: 1.05rem;
+        line-height: 1.85;
+        font-family: 'Noto Sans Thai', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
     }
     .article-format h2 {
-        color: #0663F6; /* Primary Blue */
+        color: #0663F6; /* Primary Blue matching screenshot */
         font-weight: 700;
         margin-top: 2.5rem;
         margin-bottom: 1rem;
         line-height: 1.4;
-        font-size: 1.5rem;
+        font-size: 1.65rem;
+        font-family: 'Noto Sans Thai', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
     }
     .article-format h3 {
         color: #022862; /* Dark Navy */
