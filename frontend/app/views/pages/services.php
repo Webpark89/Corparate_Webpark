@@ -1026,65 +1026,21 @@ if (isset($services) && is_array($services)) {
             ease: "power2.out"
         });
 
-        // 2. Animation สำหรับการ์ดบริการ
-        // Desktop/Tablet (≥768px): Pin ทั้ง section ไว้ แล้วให้การ์ดโผล่ทีละใบตามระยะที่เลื่อน (scrub)
-        //   จนกว่าจะครบ 4 ใบ ถึงจะปลดล็อกให้เลื่อนผ่าน section นี้ไปต่อได้
-        // Mobile (<768px): ใช้แบบเดิม (โผล่ทีละใบเมื่อเลื่อนมาถึง ไม่ pin) เพราะจอเล็ก pin ยาวๆ จะกระทบ UX
-        const serviceCardsWrapper = document.querySelector("#gsap-services-grid");
+        // 2. Animation สำหรับการ์ดบริการ — Fade up แยกทีละการ์ดเมื่อเลื่อนหน้าจอมาถึงการ์ดนั้นๆ จริง
         const serviceCards = gsap.utils.toArray(".gsap-service-card");
-        if (serviceCardsWrapper && serviceCards.length) {
-            ScrollTrigger.matchMedia({
-                // --- Desktop / Tablet: Pin + Scrub ---
-                "(min-width: 768px)": function () {
-                    const cardsTimeline = gsap.timeline({
-                        scrollTrigger: {
-                            trigger: serviceCardsWrapper,
-                            start: "top top+=80", // เผื่อระยะ header/nav ที่ sticky อยู่ด้านบน ปรับเลขนี้ตามความสูง header จริง
-                            end: "+=" + (serviceCards.length * 500), // ระยะ scroll รวม ~500px ต่อการ์ด 1 ใบ ปรับได้ตามความรู้สึก
-                            pin: true,
-                            scrub: 1, // ค่อยๆ ตามการเลื่อน 1 วินาที ให้ความรู้สึกลื่นไหล ไม่กระตุก
-                            anticipatePin: 1,
-                            // markers: true, // เปิดบรรทัดนี้ตอน debug เพื่อดูตำแหน่ง start/end บนจอ
-                        }
-                    });
-                    serviceCards.forEach((card, index) => {
-                        cardsTimeline.to(card, {
-                            y: 0,
-                            opacity: 1,
-                            duration: 1,
-                            ease: "power2.out"
-                        }, index); // แต่ละใบเริ่ม animate เรียงตามลำดับเวลาในไทม์ไลน์ ทำให้โผล่ทีละใบ
-                    });
-                    // ฟังก์ชัน cleanup: เรียกอัตโนมัติเมื่อ media query ไม่ตรงแล้ว (เช่น ย่อจอลงต่ำกว่า 768px)
-                    return () => {
-                        cardsTimeline.scrollTrigger && cardsTimeline.scrollTrigger.kill();
-                        cardsTimeline.kill();
-                    };
+        serviceCards.forEach((card) => {
+            gsap.to(card, {
+                scrollTrigger: {
+                    trigger: card, // ผูก trigger กับแต่ละการ์ดโดยตรง
+                    start: "top 85%", // เริ่ม animate เมื่อขอบบนของการ์ดเลื่อนเข้ามาถึง 85% ของหน้าจอ
+                    toggleActions: "play none none reverse"
                 },
-                // --- Mobile: แบบเดิม ไม่ pin ---
-                "(max-width: 767px)": function () {
-                    const mobileTriggers = serviceCards.map((card) => {
-                        return gsap.to(card, {
-                            scrollTrigger: {
-                                trigger: card,
-                                start: "top 85%",
-                                toggleActions: "play none none reverse"
-                            },
-                            y: 0,
-                            opacity: 1,
-                            duration: 0.6,
-                            ease: "power2.out"
-                        });
-                    });
-                    return () => {
-                        mobileTriggers.forEach((tween) => {
-                            tween.scrollTrigger && tween.scrollTrigger.kill();
-                            tween.kill();
-                        });
-                    };
-                }
+                y: 0,
+                opacity: 1,
+                duration: 0.8,
+                ease: "power2.out"
             });
-        }
+        });
 
         // 2.5 Animation สำหรับ CTA Box ท้ายหน้า — fade + slide ขึ้นตอน scroll มาถึง
         const ctaBox = document.querySelector(".gsap-cta-box");
