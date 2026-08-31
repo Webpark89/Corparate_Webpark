@@ -85,7 +85,11 @@ try {
         $data['cover_image'] = $imagePath;
     }
 } catch (RuntimeException $exception) {
-    flash('error', 'อัปโหลดรูปภาพไม่สำเร็จ: ' . $exception->getMessage());
+    $msg = $exception->getMessage();
+    if ($msg === 'File type not allowed.' || $msg === 'Invalid MIME type.') {
+        $msg = 'ระบบรองรับเฉพาะไฟล์รูปภาพนามสกุล .webp เท่านั้น กรุณาแปลงไฟล์เป็น .webp ก่อนอัปโหลดครับ';
+    }
+    flash('error', 'อัปโหลดรูปภาพไม่สำเร็จ: ' . $msg);
     header('Location: ' . ($id ? 'edit.php?id=' . $id : 'create.php'));
     exit;
 }

@@ -3,7 +3,13 @@
 /**
  * Shared admin helpers: session, security, uploads, CSRF, auth, pagination.
  */
+require_once __DIR__ . '/../config/config.php';
 require_once __DIR__ . '/../config/database.php';
+
+// Safe fallback for AUTH_SECRET_KEY if not defined in older config.php
+if (!defined('AUTH_SECRET_KEY')) {
+    define('AUTH_SECRET_KEY', 'wbpk_s3cr3t_k3y_2026_xK9mPqR7nT4vL2wJ');
+}
 
 if (session_status() === PHP_SESSION_NONE) {
     session_set_cookie_params([
@@ -34,61 +40,107 @@ function e(?string $string): string
 
 /**
  * Whitelist-based sanitizer for WYSIWYG HTML content.
+ * Safely retains rich text elements (span, div, table, styling, etc.) while stripping malicious scripts and attributes.
  */
 function sanitize_html(string $html): string
 {
-    if ($html === '') {
+    if (trim($html) === '') {
         return '';
     }
 
+    // Clean up any legacy XML artifacts
+    $html = preg_replace('/<\?xml[^>]*\?>/i', '', $html);
+    $html = preg_replace('/<!--\?xml[^>]*-->/i', '', $html);
+
     libxml_use_internal_errors(true);
     $document = new DOMDocument();
-    $document->loadHTML('<?xml encoding="utf-8">' . $html, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+    
+    // Load as UTF-8 HTML document with explicit meta charset
+    $document->loadHTML('<!DOCTYPE html><html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"></head><body>' . $html . '</body></html>', LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD | LIBXML_NOERROR | LIBXML_NOWARNING);
+    libxml_clear_errors();
 
     $allowedTags = [
-        'a', 'p', 'br', 'strong', 'b', 'em', 'i', 'ul', 'ol', 'li',
-        'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'blockquote', 'img',
-        'figure', 'figcaption', 'pre', 'code', 'table', 'thead', 'tbody', 'tr', 'th', 'td',
+        'a', 'p', 'br', 'strong', 'b', 'em', 'i', 'u', 's', 'strike', 'del', 'mark', 'sub', 'sup', 'small',
+        'span', 'div', 'blockquote', 'pre', 'code',
+        'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
+        'ul', 'ol', 'li',
+        'img', 'figure', 'figcaption',
+        'table', 'thead', 'tbody', 'tfoot', 'tr', 'th', 'td',
+        'hr', 'iframe', 'video', 'audio', 'source', 'section', 'article'
     ];
-    $allowedAttributes = ['href', 'src', 'alt', 'title', 'width', 'height', 'class', 'id', 'style', 'rel', 'target'];
+    $allowedAttributes = [
+        'href', 'src', 'alt', 'title', 'width', 'height', 'class', 'id', 'style',
+        'target', 'rel', 'allow', 'allowfullscreen', 'frameborder', 'controls', 'poster', 'loading'
+    ];
+
+    $dangerousTags = ['script', 'style', 'applet', 'object', 'embed', 'base', 'meta', 'link'];
 
     $nodes = $document->getElementsByTagName('*');
     for ($index = $nodes->length - 1; $index >= 0; $index--) {
         $node = $nodes->item($index);
-        $nodeName = $node->nodeName;
+        $nodeName = strtolower($node->nodeName);
 
-        if (!in_array($nodeName, $allowedTags, true)) {
-            $node->parentNode->removeChild($node);
+        if (in_array($nodeName, ['html', 'head', 'body', 'meta'], true)) {
             continue;
         }
 
-        if ($node->hasAttributes()) {
-            $attributes = [];
-            foreach ($node->attributes as $attribute) {
-                $attributes[$attribute->name] = $attribute->value;
+        // Dangerous tag: remove entire node including content
+        if (in_array($nodeName, $dangerousTags, true)) {
+            if ($node->parentNode) {
+                $node->parentNode->removeChild($node);
             }
+            continue;
+        }
 
-            foreach ($attributes as $attributeName => $attributeValue) {
-                if (!in_array($attributeName, $allowedAttributes, true)) {
-                    $node->removeAttribute($attributeName);
+        // Unknown tag: unwrap content (keep children) rather than deleting text
+        if (!in_array($nodeName, $allowedTags, true)) {
+            if ($node->parentNode) {
+                while ($node->hasChildNodes()) {
+                    $node->parentNode->insertBefore($node->firstChild, $node);
+                }
+                $node->parentNode->removeChild($node);
+            }
+            continue;
+        }
+
+        // Filter attributes
+        if ($node->hasAttributes()) {
+            $attrsToRemove = [];
+            foreach ($node->attributes as $attribute) {
+                $attrName = strtolower($attribute->name);
+
+                // Strip any on* event handlers (e.g. onload, onerror, onclick)
+                if (str_starts_with($attrName, 'on') || !in_array($attrName, $allowedAttributes, true)) {
+                    $attrsToRemove[] = $attribute->name;
                     continue;
                 }
 
-                if (in_array($attributeName, ['href', 'src'], true)) {
-                    $lowerValue = strtolower(trim($attributeValue));
-                    if (str_starts_with($lowerValue, 'javascript:') || str_starts_with($lowerValue, 'data:text/html')) {
-                        $node->removeAttribute($attributeName);
+                // Check URI schemes for href, src
+                if (in_array($attrName, ['href', 'src'], true)) {
+                    $lowerValue = strtolower(trim($attribute->value));
+                    if (str_starts_with($lowerValue, 'javascript:') || str_starts_with($lowerValue, 'data:text/html') || str_starts_with($lowerValue, 'vbscript:')) {
+                        $attrsToRemove[] = $attribute->name;
                     }
                 }
+            }
+
+            foreach ($attrsToRemove as $attrName) {
+                $node->removeAttribute($attrName);
             }
         }
     }
 
-    $body = $document->saveHTML();
-    $body = preg_replace('/^<!DOCTYPE.+?>/', '', $body) ?? $body;
-    $body = str_replace(['<html>', '</html>', '<body>', '</body>'], '', $body);
+    $body = $document->getElementsByTagName('body')->item(0);
+    if (!$body) {
+        return '';
+    }
 
-    return trim($body);
+    $output = '';
+    foreach ($body->childNodes as $child) {
+        $output .= $document->saveHTML($child);
+    }
+
+    return trim($output);
 }
 
 /**

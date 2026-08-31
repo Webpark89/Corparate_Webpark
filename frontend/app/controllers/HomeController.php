@@ -367,13 +367,20 @@ class HomeController
         ));
     }
 
-    public function article(): void
+    public function article(?string $slug = null): void
     {
         $id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
+        $slug = $slug ?? (isset($_GET['slug']) ? trim((string) $_GET['slug']) : '');
         $articleModel = new Article();
 
+        $row = false;
         if ($id > 0) {
             $row = $articleModel->getById($id);
+        } elseif ($slug !== '') {
+            $row = $articleModel->getBySlug($slug);
+        }
+
+        if ($id > 0 || $slug !== '') {
             $status = strtolower(trim((string) ($row['status'] ?? '')));
 
             if ($row === false || $status === 'draft') {
@@ -471,6 +478,8 @@ class HomeController
                     'content' => $content,
                     'author' => (string) ($row['author'] ?? ''),
                     'created_at' => (string) ($row['created_at'] ?? ''),
+                    'slug' => (string) ($row['slug'] ?? ''),
+                    'slug_en' => (string) ($row['slug_en'] ?? ''),
                     'meta_title_en' => (string) ($row['meta_title_en'] ?? ''),
                     'meta_description_en' => (string) ($row['meta_description_en'] ?? '')
                 ];
@@ -540,16 +549,20 @@ class HomeController
         ]));
     }
 
-    public function portfolio(): void
+    public function portfolio(?string $slug = null): void
     {
-        // If `id` query param exists, show single portfolio detail
         $id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
-
+        $slug = $slug ?? (isset($_GET['slug']) ? trim((string) $_GET['slug']) : '');
         $portfolioModel = new Portfolio();
 
+        $row = false;
         if ($id > 0) {
             $row = $portfolioModel->getById($id);
+        } elseif ($slug !== '') {
+            $row = $portfolioModel->getBySlug($slug);
+        }
 
+        if ($id > 0 || $slug !== '') {
             $status = strtolower(trim((string) ($row['status'] ?? '')));
 
             if ($row === false || $status === 'draft') {
