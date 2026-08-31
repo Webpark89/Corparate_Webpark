@@ -261,7 +261,7 @@ $erpPortfolios = $mockErpPortfolios;
         .animate-scroll:hover { animation-play-state: paused; }
     </style>
 
-    <div class="mx-auto w-full max-w-7xl lg:max-w-[1720px] px-6 sm:px-6 lg:px-10 pt-12 pb-24 lg:pt-40 lg:pb-32 relative z-10">
+    <div class="mx-auto w-full max-w-7xl lg:max-w-[1720px] px-6 sm:px-6 lg:px-10 pt-12 pb-24 lg:pt-28 lg:pb-32 relative z-10">
         <!-- Mobile Background Image (Only covers this Hero container) -->
         <div class="absolute inset-0 z-0 overflow-hidden lg:hidden rounded-2xl">
             <img src="<?= e($heroImage) ?>" alt="WEBPARK Solutions Background" 
