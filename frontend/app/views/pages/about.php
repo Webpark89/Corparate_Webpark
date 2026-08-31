@@ -505,11 +505,11 @@ $contactAddress = $company['contact']['address'] ?? t('footer.office_address');
                 ?>
                 
                 <?php foreach ($services as $item): ?>
-                    <div class="gsap-scroll-card w-[85vw] md:w-auto shrink-0 snap-center bg-white rounded-2xl p-8 border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.03)] opacity-0 translate-y-10 desktop-services-card">
-                        <div class="w-12 h-12 mb-6 desktop-services-icon ipad-air-services-icon">
+                    <div class="gsap-scroll-card w-[85vw] md:w-auto shrink-0 snap-center bg-white rounded-2xl p-8 border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:border-blue-200 hover:shadow-md hover:-translate-y-1 transition-all duration-300 group opacity-0 translate-y-10 desktop-services-card">
+                        <div class="w-12 h-12 mb-6 group-hover:scale-105 transition-transform desktop-services-icon ipad-air-services-icon">
                             <img src="<?= e($item['icon']) ?>" alt="<?= e($item['title']) ?>" class="w-full h-full object-contain">
                         </div>
-                        <h3 class="text-dark font-bold text-lg mb-3 desktop-services-h3 ipad-pro-services-h3 ipad-air-services-h3">
+                        <h3 class="text-dark font-bold text-lg mb-3 group-hover:text-primary transition-colors desktop-services-h3 ipad-pro-services-h3 ipad-air-services-h3">
                             <?= e($item['title']) ?>
                         </h3>
                         <p class="text-slate-500 text-md leading-relaxed desktop-services-p ipad-pro-services-p ipad-air-services-p">

@@ -107,7 +107,7 @@ declare(strict_types=1);
             <!-- Right Column: Image -->
             <div class="animate-fade-up delay-300 relative w-full rounded-[2rem] overflow-hidden shadow-2xl">
                 <img src="<?= e(asset_url('images/erp-system.png')) ?>" alt="ERP System Illustration" 
-                    class="w-full h-auto object-cover aspect-[4/3] hover:scale-105 transition-transform duration-700" onerror="this.src='<?= e(asset_url('images/story.png')) ?>'">
+                    class="w-full h-auto object-cover aspect-[16/9] hover:scale-105 transition-transform duration-700" onerror="this.src='<?= e(asset_url('images/story.png')) ?>'">
             </div>
             
         </div>

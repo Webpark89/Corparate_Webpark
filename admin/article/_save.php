@@ -23,6 +23,14 @@ foreach (['th', 'en'] as $lang) {
         foreach ($sectionsInput[$lang] as $item) {
             $topic = trim($item['topic'] ?? '');
             $body = isset($item['body']) ? sanitize_html($item['body']) : '';
+            if ($body !== '') {
+                $basePath = defined('SITE_URL') ? SITE_URL : '/Corparate_Webpark';
+                $body = preg_replace(
+                    '#src=["\'](?:\.\./)+frontend/public/assets/([^"\']+)["\']#i',
+                    'src="' . $basePath . '/frontend/public/assets/$1"',
+                    $body
+                );
+            }
             if ($topic !== '' || $body !== '') {
                 $finalSections[] = [
                     'lang' => $lang,

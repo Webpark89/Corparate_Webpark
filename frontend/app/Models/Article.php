@@ -44,7 +44,7 @@ class Article
     {
         $stmt = $this->pdo->query(
             'SELECT ' . self::SELECT_COLUMNS . self::FROM_JOIN .
-            " WHERE a.status = 'published' AND (a.deleted_at IS NULL OR a.deleted_at = '') ORDER BY a.id DESC"
+            " WHERE a.status = 'published' AND (a.deleted_at IS NULL OR a.deleted_at = '') ORDER BY a.is_pinned DESC, a.id DESC"
         );
 
         return $stmt->fetchAll();

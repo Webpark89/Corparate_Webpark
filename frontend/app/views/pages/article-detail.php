@@ -56,12 +56,20 @@ if (is_array($decodedSections)) {
         });
     }
     $htmlParts = [];
+    $appBase = app_base_url();
     foreach ($filteredSections as $sec) {
         if (!empty($sec['topic'])) {
             $htmlParts[] = '<h2>' . e($sec['topic']) . '</h2>';
         }
         if (!empty($sec['body'])) {
-            $htmlParts[] = '<div>' . $sec['body'] . '</div>';
+            $bodyHtml = $sec['body'];
+            // Normalize any relative image paths (e.g. ../../frontend/public/assets/) to proper absolute URL
+            $bodyHtml = preg_replace(
+                '#src=["\'](?:\.\./)+frontend/public/assets/([^"\']+)["\']#i',
+                'src="' . $appBase . '/frontend/public/assets/$1"',
+                $bodyHtml
+            );
+            $htmlParts[] = '<div>' . $bodyHtml . '</div>';
         }
     }
     $content = implode("\n", $htmlParts);
@@ -215,7 +223,7 @@ $shareUrl = urlencode(request_origin_url() . ($_SERVER['REQUEST_URI'] ?? ''));
             <!-- Right Column: Image -->
             <div class="animate-fade-up delay-300 relative w-full rounded-[2rem] overflow-hidden shadow-2xl">
                 <img src="<?= e($coverImage) ?>" alt="<?= e($title) ?>" 
-                    class="w-full h-auto object-cover aspect-[4/3] hover:scale-105 transition-transform duration-700" onerror="this.src='<?= e($fallbackImage) ?>'">
+                    class="w-full h-auto object-cover aspect-[16/9] hover:scale-105 transition-transform duration-700" onerror="this.src='<?= e($fallbackImage) ?>'">
             </div>
             
         </div>
