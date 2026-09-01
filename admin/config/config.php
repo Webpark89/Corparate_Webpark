@@ -29,9 +29,16 @@ define('UPLOAD_URL', ADMIN_URL . '/uploads');
 // ---- Security ----
 define('SESSION_TIMEOUT', 1800); // 30 minutes
 define('CSRF_TOKEN_NAME', '_csrf');
-define('LOGIN_MAX_ATTEMPTS', 5); // Max login attempts
-define('LOGIN_ATTEMPT_WINDOW', 600); // 10 minutes in seconds
+define('LOGIN_MAX_ATTEMPTS', 3); // Max login attempts before initial lockout (3 attempts)
+define('LOGIN_ATTEMPT_WINDOW', 360); // 6 minutes base lockout in seconds
 define('SESSION_REGENERATE_INTERVAL', 3600); // Regenerate session every hour
+
+// ---- Mail / SMTP Configuration (Production Ready) ----
+define('MAIL_HOST', getenv('MAIL_HOST') ?: 'smtp.gmail.com');
+define('MAIL_PORT', (int)(getenv('MAIL_PORT') ?: 587));
+define('MAIL_USER', getenv('MAIL_USER') ?: '');
+define('MAIL_PASS', getenv('MAIL_PASS') ?: '');
+define('MAIL_FROM_NAME', getenv('MAIL_FROM_NAME') ?: (defined('SITE_NAME') ? SITE_NAME . ' Security' : 'WEBPARK Security'));
 
 // ---- Errors ----
 ini_set('display_errors', '1');

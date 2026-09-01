@@ -85,12 +85,38 @@ $stmt->bindValue(':offset', (int)$pagination['offset'], PDO::PARAM_INT);
 $stmt->execute();
 $users = $stmt->fetchAll();
 
+// Handle Super Admin clear all rate limit lockouts
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'clear_lockouts') {
+    require_super_admin();
+    csrf_verify();
+    $cleared = clear_all_rate_limits();
+    $_SESSION['flash_success'] = "ปลดล็อกและล้างประวัติการติดล็อกทั้งหมดเรียบร้อยแล้ว ({$cleared} รายการ)";
+    header('Location: ' . ADMIN_URL . '/users/index.php');
+    exit;
+}
+
 $pageTitle = 'การจัดการผู้ดูแลระบบ (Users Management)';
 $page = 'users';
 require_once __DIR__ . '/../includes/header.php';
 ?>
 
 <div class="mx-auto w-full max-w-none px-2 pb-8 pt-1 text-sm md:px-4 lg:px-8 space-y-5">
+    <!-- Flash Notification -->
+    <?php if (!empty($_SESSION['flash_success'])): ?>
+        <div style="border-radius: 1rem; border: 1px solid #bbf7d0; background: #f0fdf4; padding: 0.875rem 1.25rem; display: flex; align-items: center; justify-content: space-between; color: #15803d;">
+            <div style="display: flex; align-items: center; gap: 0.625rem; font-weight: 500; font-size: 0.875rem;">
+                <svg style="width: 20px; height: 20px; color: #16a34a; flex-shrink: 0;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <span><?= e($_SESSION['flash_success']) ?></span>
+            </div>
+            <button type="button" onclick="this.parentElement.remove()" style="background: none; border: none; color: #16a34a; cursor: pointer; padding: 4px;">
+                <svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+        </div>
+        <?php unset($_SESSION['flash_success']); ?>
+    <?php endif; ?>
+
     <!-- Page Header & Action Buttons -->
     <header class="flex flex-col gap-4 border-l-4 border-blue-600 pl-4 md:flex-row md:items-center md:justify-between">
         <div>
@@ -98,6 +124,22 @@ require_once __DIR__ . '/../includes/header.php';
             <p class="mt-1 text-xs text-slate-500">จัดการบัญชีผู้ใช้งาน กำหนดบทบาท และสิทธิ์การเข้าถึงสำหรับผู้ดูแลระบบ</p>
         </div>
         <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 0.625rem;">
+            <?php if (is_super_admin()): ?>
+                <form method="post" onsubmit="return confirm('คุณต้องการปลดล็อกการระงับการเข้าสู่ระบบและรีเซ็ตเวลาของทุกบัญชี/IP ใช่หรือไม่?');" style="margin: 0;">
+                    <?= csrf_field() ?>
+                    <input type="hidden" name="action" value="clear_lockouts">
+                    <button type="submit"
+                        style="display: inline-flex; align-items: center; gap: 0.5rem; height: 38px; padding: 0 1rem; border-radius: 0.75rem; background-color: #fff1f2; color: #e11d48; border: 1px solid #ffe4e6; font-size: 0.75rem; font-weight: 600; cursor: pointer; box-shadow: 0 1px 2px rgba(0,0,0,0.03); transition: all 0.15s;"
+                        onmouseover="this.style.backgroundColor='#ffe4e6';"
+                        onmouseout="this.style.backgroundColor='#fff1f2';">
+                        <svg style="width: 16px; height: 16px; color: #e11d48;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z" />
+                        </svg>
+                        <span>ปลดล็อกระบบทั้งหมด</span>
+                    </button>
+                </form>
+            <?php endif; ?>
+
             <?php if (has_permission('roles.view')): ?>
                 <a href="<?= ADMIN_URL ?>/roles/index.php"
                     style="display: inline-flex; align-items: center; gap: 0.5rem; height: 38px; padding: 0 1rem; border-radius: 0.75rem; background-color: #ffffff; color: #334155; border: 1px solid #e2e8f0; font-size: 0.75rem; font-weight: 600; text-decoration: none; box-shadow: 0 1px 2px rgba(0,0,0,0.03); transition: all 0.15s;"
