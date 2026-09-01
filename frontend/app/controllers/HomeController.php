@@ -910,30 +910,77 @@ class HomeController
         $errors = [];
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            if ($form['name'] === '') {
+            if ($firstName === '' && $form['name'] === '') {
                 $errors[] = 'กรุณากรอกชื่อ';
+            } elseif (preg_match('/\d/', $firstName) || preg_match('/\d/', $lastName)) {
+                $errors[] = 'ชื่อ-นามสกุลต้องเป็นตัวอักษรเท่านั้น (ห้ามมีตัวเลข)';
             }
 
             if ($form['company'] === '') {
                 $errors[] = 'กรุณากรอกชื่อบริษัท (หากไม่มีให้ใส่ -)';
             }
 
-            if (!filter_var($form['email'], FILTER_VALIDATE_EMAIL)) {
-                $errors[] = 'อีเมลไม่ถูกต้อง';
+            if ($form['phone'] === '') {
+                $errors[] = 'กรุณากรอกเบอร์โทรศัพท์';
+            } elseif (!preg_match('/^[0-9]{9,10}$/', $form['phone'])) {
+                $errors[] = 'เบอร์โทรศัพท์ต้องเป็นตัวเลข 9-10 หลัก';
+            }
+
+            if ($form['email'] === '') {
+                $errors[] = 'กรุณากรอกอีเมล';
+            } elseif (!filter_var($form['email'], FILTER_VALIDATE_EMAIL)) {
+                $errors[] = 'รูปแบบอีเมลไม่ถูกต้อง';
             }
 
             $nameLength = function_exists('mb_strlen') ? mb_strlen($form['name']) : strlen($form['name']);
             $emailLength = function_exists('mb_strlen') ? mb_strlen($form['email']) : strlen($form['email']);
+            $msgLength = function_exists('mb_strlen') ? mb_strlen($form['message']) : strlen($form['message']);
 
             if ($nameLength > 100) {
-                $errors[] = 'ชื่อยาวเกินไป';
+                $errors[] = 'ชื่อยาวเกินไป (ไม่เกิน 100 ตัวอักษร)';
             }
 
             if ($emailLength > 255) {
                 $errors[] = 'อีเมลยาวเกินไป';
             }
 
+            if ($msgLength > 250) {
+                $errors[] = 'รายละเอียดข้อความต้องไม่เกิน 250 ตัวอักษร';
+            }
+
             $submitted = $errors === [];
+
+            if ($submitted) {
+                $msgData = [
+                    'company_name' => $form['company'],
+                    'first_name' => $form['firstname'] !== '' ? $form['firstname'] : $form['name'],
+                    'last_name' => $form['lastname'],
+                    'phone' => $form['phone'],
+                    'email' => $form['email'],
+                    'message' => $form['message'] !== '' ? $form['message'] : ($form['inquiry'] ?? 'General Inquiry'),
+                    'pdpa_consent' => 1,
+                    'pdpa_consent_at' => date('Y-m-d H:i:s'),
+                    'status' => 'new',
+                    'ip_address' => $_SERVER['REMOTE_ADDR'] ?? null,
+                    'user_agent' => $_SERVER['HTTP_USER_AGENT'] ?? null,
+                    'source_page' => 'contact',
+                    'email_sent' => 0,
+                ];
+
+                try {
+                    $contactModel = new ContactMessage();
+                    $insertedId = $contactModel->create($msgData);
+
+                    // Send email notification to configured recipient
+                    $allSettings = (new Setting())->all();
+                    $mailSent = Mailer::sendContactNotification($msgData, $allSettings);
+                    if ($mailSent && $insertedId > 0) {
+                        $contactModel->updateEmailSent($insertedId, true);
+                    }
+                } catch (Throwable $e) {
+                    error_log('[Contact Form] Submit Error: ' . $e->getMessage());
+                }
+            }
         }
 
         $this->view('pages/contact.php', array_merge($this->sharedData('contact', 'Contact'), [

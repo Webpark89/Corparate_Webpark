@@ -152,26 +152,26 @@ require_once __DIR__ . '/../includes/header.php';
 
                 <!-- Email -->
                 <div>
-                    <label style="display: block; font-size: 0.75rem; font-weight: 600; color: #334155; margin-bottom: 0.5rem;" for="email">
+                    <label id="label_email" style="display: block; font-size: 0.75rem; font-weight: 600; color: #334155; margin-bottom: 0.5rem; transition: color 0.15s;" for="email">
                         อีเมล (Email) <span style="color: #ef4444;">*</span>
                     </label>
-                    <input type="email" name="email" id="email" required value="<?= e($email) ?>"
+                    <input type="email" name="email" id="email" value="<?= e($email) ?>"
                         placeholder="เช่น somchai@webpark.co.th"
-                        style="width: 100%; height: 42px; padding: 0 1rem; border-radius: 0.75rem; border: 1px solid #cbd5e1; background: #ffffff; font-size: 0.8125rem; color: #0f172a; outline: none; transition: border-color 0.15s;"
-                        onfocus="this.style.borderColor='#0f172a';"
-                        onblur="this.style.borderColor='#cbd5e1';">
+                        class="admin-form-input"
+                        style="width: 100%; height: 42px; padding: 0 1rem; border-radius: 0.75rem; border: 1px solid #cbd5e1; background: #ffffff; font-size: 0.8125rem; color: #0f172a; outline: none; transition: all 0.15s;">
+                    <p id="email_err" class="hidden text-xs font-medium text-red-500 mt-1 pl-1"></p>
                 </div>
 
                 <!-- Username -->
                 <div style="grid-column: 1 / -1;">
-                    <label style="display: block; font-size: 0.75rem; font-weight: 600; color: #334155; margin-bottom: 0.5rem;" for="username">
+                    <label id="label_username" style="display: block; font-size: 0.75rem; font-weight: 600; color: #334155; margin-bottom: 0.5rem; transition: color 0.15s;" for="username">
                         ชื่อผู้ใช้เข้าสู่ระบบ (Username) <span style="color: #ef4444;">*</span>
                     </label>
-                    <input type="text" name="username" id="username" required value="<?= e($username) ?>"
+                    <input type="text" name="username" id="username" value="<?= e($username) ?>"
                         placeholder="เช่น somchai_admin"
-                        style="width: 100%; height: 42px; padding: 0 1rem; border-radius: 0.75rem; border: 1px solid #cbd5e1; background: #ffffff; font-size: 0.8125rem; color: #0f172a; outline: none; transition: border-color 0.15s;"
-                        onfocus="this.style.borderColor='#0f172a';"
-                        onblur="this.style.borderColor='#cbd5e1';">
+                        class="admin-form-input"
+                        style="width: 100%; height: 42px; padding: 0 1rem; border-radius: 0.75rem; border: 1px solid #cbd5e1; background: #ffffff; font-size: 0.8125rem; color: #0f172a; outline: none; transition: all 0.15s;">
+                    <p id="username_err" class="hidden text-xs font-medium text-red-500 mt-1 pl-1"></p>
                 </div>
             </div>
         </div>
@@ -373,6 +373,17 @@ require_once __DIR__ . '/../includes/header.php';
     </form>
 </div>
 
+<style>
+.is-invalid-user {
+    border-color: #ef4444 !important;
+    background-color: #fef2f2 !important;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15) !important;
+}
+.label-invalid-user {
+    color: #ef4444 !important;
+}
+</style>
+
 <script>
 // Role Selection Carousel & Filtering
 function scrollRolesCarousel(offset) {
@@ -455,7 +466,48 @@ function togglePasswordVisibility(inputId, btn) {
 // Live Password Checklist Validator
 const pwdInput = document.getElementById('reg_password');
 const confInput = document.getElementById('reg_confirm_password');
+const pwdErr = document.getElementById('password_err');
+const confErr = document.getElementById('confirm_password_err');
 const checklistContainer = document.getElementById('pwd_checklist');
+
+const usernameInput = document.getElementById('username');
+const emailInput = document.getElementById('email');
+const lblUser = document.getElementById('label_username');
+const lblEmail = document.getElementById('label_email');
+const lblPwd = document.getElementById('label_password');
+const lblConf = document.getElementById('label_confirm_password');
+const userErr = document.getElementById('username_err');
+const emailErr = document.getElementById('email_err');
+
+function setUserError(inputEl, labelEl, errEl, msg) {
+    if (inputEl) inputEl.classList.add('is-invalid-user');
+    if (labelEl) labelEl.classList.add('label-invalid-user');
+    if (errEl) {
+        errEl.textContent = msg;
+        errEl.classList.remove('hidden');
+    }
+}
+
+function clearUserError(inputEl, labelEl, errEl) {
+    if (inputEl) inputEl.classList.remove('is-invalid-user');
+    if (labelEl) labelEl.classList.remove('label-invalid-user');
+    if (errEl) {
+        errEl.textContent = '';
+        errEl.classList.add('hidden');
+    }
+}
+
+if (usernameInput) {
+    usernameInput.addEventListener('input', () => {
+        if (usernameInput.value.trim()) clearUserError(usernameInput, lblUser, userErr);
+    });
+}
+
+if (emailInput) {
+    emailInput.addEventListener('input', () => {
+        if (emailInput.value.trim()) clearUserError(emailInput, lblEmail, emailErr);
+    });
+}
 
 function validatePasswordLive() {
     const val = pwdInput.value;
@@ -477,6 +529,9 @@ function validatePasswordLive() {
     updateCheckItem('rule_lower', 'icon_rule_lower', hasLower);
     updateCheckItem('rule_num', 'icon_rule_num', hasNum);
     updateCheckItem('rule_match', 'icon_rule_match', hasMatch);
+
+    if (hasLen) clearUserError(pwdInput, lblPwd, pwdErr);
+    if (hasMatch) clearUserError(confInput, lblConf, confErr);
 
     return hasLen && hasLower && hasNum && hasMatch;
 }
@@ -505,18 +560,50 @@ pwdInput.addEventListener('input', validatePasswordLive);
 confInput.addEventListener('input', validatePasswordLive);
 
 document.getElementById('createAdminForm').addEventListener('submit', function(e) {
-    const usernameInput = document.getElementById('username');
-    const emailInput = document.getElementById('email');
+    let isValid = true;
+    let firstInp = null;
 
-    if (!usernameInput.value.trim() || !emailInput.value.trim()) {
-        alert('กรุณากรอกชื่อผู้ใช้และอีเมลให้ครบถ้วน');
-        e.preventDefault();
-        return;
+    if (!usernameInput.value.trim()) {
+        setUserError(usernameInput, lblUser, userErr, 'กรุณากรอกชื่อผู้ใช้เข้าสู่ระบบ');
+        isValid = false;
+        if (!firstInp) firstInp = usernameInput;
     }
 
-    if (!validatePasswordLive()) {
-        alert('กรุณากรอกรหัสผ่านให้ถูกต้องครบถ้วนตามข้อกำหนดความปลอดภัย');
+    const emailVal = emailInput.value.trim();
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailVal) {
+        setUserError(emailInput, lblEmail, emailErr, 'กรุณากรอกอีเมล');
+        isValid = false;
+        if (!firstInp) firstInp = emailInput;
+    } else if (!emailRegex.test(emailVal)) {
+        setUserError(emailInput, lblEmail, emailErr, 'รูปแบบอีเมลไม่ถูกต้อง');
+        isValid = false;
+        if (!firstInp) firstInp = emailInput;
+    }
+
+    if (!pwdInput.value) {
+        setUserError(pwdInput, lblPwd, pwdErr, 'กรุณากรอกรหัสผ่าน');
+        isValid = false;
+        if (!firstInp) firstInp = pwdInput;
+    } else if (pwdInput.value.length < 6) {
+        setUserError(pwdInput, lblPwd, pwdErr, 'รหัสผ่านต้องมีความยาวอย่างน้อย 6 ตัวอักษร');
+        isValid = false;
+        if (!firstInp) firstInp = pwdInput;
+    }
+
+    if (!confInput.value) {
+        setUserError(confInput, lblConf, confErr, 'กรุณายืนยันรหัสผ่าน');
+        isValid = false;
+        if (!firstInp) firstInp = confInput;
+    } else if (confInput.value !== pwdInput.value) {
+        setUserError(confInput, lblConf, confErr, 'รหัสผ่านทั้ง 2 ช่องไม่ตรงกัน');
+        isValid = false;
+        if (!firstInp) firstInp = confInput;
+    }
+
+    if (!isValid) {
         e.preventDefault();
+        if (firstInp) firstInp.focus();
     }
 });
 </script>

@@ -185,6 +185,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $user) {
             box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
         }
 
+        .input-field.is-invalid {
+            border-color: #ef4444 !important;
+            background-color: #fef2f2 !important;
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15) !important;
+        }
+
+        .label-invalid {
+            color: #ef4444 !important;
+        }
+
+        .inline-error-msg {
+            display: none;
+            align-items: center;
+            gap: 0.375rem;
+            font-size: 0.75rem;
+            color: #ef4444;
+            font-weight: 500;
+            margin-top: 0.35rem;
+        }
+
         .btn-submit {
             width: 100%;
             height: 44px;
@@ -269,33 +289,67 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $user) {
                 </div>
             <?php endif; ?>
 
-            <form method="post" action="reset_password.php" autocomplete="off">
+            <form id="reset-pwd-form" method="post" action="reset_password.php" autocomplete="off" novalidate>
                 <?= csrf_field() ?>
                 <input type="hidden" name="token" value="<?= e($token) ?>">
 
                 <div class="input-group">
-                    <label for="password" class="label">รหัสผ่านใหม่</label>
-                    <input
-                        type="password"
-                        id="password"
-                        name="password"
-                        required
-                        minlength="6"
-                        autofocus
-                        placeholder="อย่างน้อย 6 ตัวอักษร"
-                        class="input-field">
+                    <label id="label_pwd" for="password" class="label">รหัสผ่านใหม่</label>
+                    <div style="position: relative;">
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            autofocus
+                            placeholder="อย่างน้อย 6 ตัวอักษร"
+                            class="input-field"
+                            style="padding-right: 2.75rem;">
+                        <button
+                            type="button"
+                            id="toggle_pwd_btn"
+                            aria-label="Toggle password"
+                            style="position: absolute; top: 0; bottom: 0; right: 0; display: flex; align-items: center; padding-right: 0.875rem; color: #94a3b8; background: none; border: none; cursor: pointer; transition: color 0.15s ease;"
+                            onmouseover="this.style.color='#0f172a'"
+                            onmouseout="this.style.color='#94a3b8'">
+                            <svg id="eye_open_1" style="width: 18px; height: 18px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                            <svg id="eye_closed_1" style="width: 18px; height: 18px; display: none;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/><path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/><line x1="2" x2="22" y1="2" y2="22"/></svg>
+                        </button>
+                    </div>
+                    <div id="pwd_err" class="inline-error-msg">
+                        <svg style="width: 14px; height: 14px; flex-shrink: 0;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <span class="err-text">กรุณากรอกรหัสผ่านใหม่ (อย่างน้อย 6 ตัวอักษร)</span>
+                    </div>
                 </div>
 
                 <div class="input-group">
-                    <label for="confirm_password" class="label">ยืนยันรหัสผ่านใหม่</label>
-                    <input
-                        type="password"
-                        id="confirm_password"
-                        name="confirm_password"
-                        required
-                        minlength="6"
-                        placeholder="กรอกรหัสผ่านใหม่อีกครั้ง"
-                        class="input-field">
+                    <label id="label_conf" for="confirm_password" class="label">ยืนยันรหัสผ่านใหม่</label>
+                    <div style="position: relative;">
+                        <input
+                            type="password"
+                            id="confirm_password"
+                            name="confirm_password"
+                            placeholder="กรอกรหัสผ่านใหม่อีกครั้ง"
+                            class="input-field"
+                            style="padding-right: 2.75rem;">
+                        <button
+                            type="button"
+                            id="toggle_conf_btn"
+                            aria-label="Toggle confirm password"
+                            style="position: absolute; top: 0; bottom: 0; right: 0; display: flex; align-items: center; padding-right: 0.875rem; color: #94a3b8; background: none; border: none; cursor: pointer; transition: color 0.15s ease;"
+                            onmouseover="this.style.color='#0f172a'"
+                            onmouseout="this.style.color='#94a3b8'">
+                            <svg id="eye_open_2" style="width: 18px; height: 18px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                            <svg id="eye_closed_2" style="width: 18px; height: 18px; display: none;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/><path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/><line x1="2" x2="22" y1="2" y2="22"/></svg>
+                        </button>
+                    </div>
+                    <div id="conf_err" class="inline-error-msg">
+                        <svg style="width: 14px; height: 14px; flex-shrink: 0;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <span class="err-text">รหัสผ่านใหม่และการยืนยันรหัสผ่านไม่ตรงกัน</span>
+                    </div>
                 </div>
 
                 <button type="submit" class="btn-submit">
@@ -305,6 +359,112 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $user) {
                     </svg>
                 </button>
             </form>
+
+            <script>
+                document.addEventListener('DOMContentLoaded', () => {
+                    const form = document.getElementById('reset-pwd-form');
+                    const pwdInp = document.getElementById('password');
+                    const confInp = document.getElementById('confirm_password');
+                    const lblPwd = document.getElementById('label_pwd');
+                    const lblConf = document.getElementById('label_conf');
+                    const errPwd = document.getElementById('pwd_err');
+                    const errConf = document.getElementById('conf_err');
+
+                    const btnTogglePwd = document.getElementById('toggle_pwd_btn');
+                    const eyeOpen1 = document.getElementById('eye_open_1');
+                    const eyeClosed1 = document.getElementById('eye_closed_1');
+
+                    const btnToggleConf = document.getElementById('toggle_conf_btn');
+                    const eyeOpen2 = document.getElementById('eye_open_2');
+                    const eyeClosed2 = document.getElementById('eye_closed_2');
+
+                    if (btnTogglePwd && pwdInp) {
+                        btnTogglePwd.addEventListener('click', () => {
+                            const isPass = pwdInp.type === 'password';
+                            pwdInp.type = isPass ? 'text' : 'password';
+                            if (eyeOpen1 && eyeClosed1) {
+                                eyeOpen1.style.display = isPass ? 'none' : 'block';
+                                eyeClosed1.style.display = isPass ? 'block' : 'none';
+                            }
+                        });
+                    }
+
+                    if (btnToggleConf && confInp) {
+                        btnToggleConf.addEventListener('click', () => {
+                            const isPass = confInp.type === 'password';
+                            confInp.type = isPass ? 'text' : 'password';
+                            if (eyeOpen2 && eyeClosed2) {
+                                eyeOpen2.style.display = isPass ? 'none' : 'block';
+                                eyeClosed2.style.display = isPass ? 'block' : 'none';
+                            }
+                        });
+                    }
+
+                    function setErr(inp, lbl, errBox, msg) {
+                        if (inp) inp.classList.add('is-invalid');
+                        if (lbl) lbl.classList.add('label-invalid');
+                        if (errBox) {
+                            if (msg) {
+                                const span = errBox.querySelector('.err-text');
+                                if (span) span.textContent = msg;
+                            }
+                            errBox.style.display = 'flex';
+                        }
+                    }
+
+                    function clearErr(inp, lbl, errBox) {
+                        if (inp) inp.classList.remove('is-invalid');
+                        if (lbl) lbl.classList.remove('label-invalid');
+                        if (errBox) errBox.style.display = 'none';
+                    }
+
+                    if (pwdInp) {
+                        pwdInp.addEventListener('input', () => {
+                            if (pwdInp.value.length >= 6) clearErr(pwdInp, lblPwd, errPwd);
+                        });
+                    }
+
+                    if (confInp) {
+                        confInp.addEventListener('input', () => {
+                            if (confInp.value === pwdInp.value && confInp.value !== '') clearErr(confInp, lblConf, errConf);
+                        });
+                    }
+
+                    if (form) {
+                        form.addEventListener('submit', (e) => {
+                            let hasErr = false;
+                            if (!pwdInp.value) {
+                                e.preventDefault();
+                                setErr(pwdInp, lblPwd, errPwd, 'กรุณากรอกรหัสผ่านใหม่');
+                                hasErr = true;
+                            } else if (pwdInp.value.length < 6) {
+                                e.preventDefault();
+                                setErr(pwdInp, lblPwd, errPwd, 'รหัสผ่านต้องมีความยาวอย่างน้อย 6 ตัวอักษร');
+                                hasErr = true;
+                            } else {
+                                clearErr(pwdInp, lblPwd, errPwd);
+                            }
+
+                            if (!confInp.value) {
+                                e.preventDefault();
+                                setErr(confInp, lblConf, errConf, 'กรุณายืนยันรหัสผ่านใหม่อีกครั้ง');
+                                hasErr = true;
+                            } else if (confInp.value !== pwdInp.value) {
+                                e.preventDefault();
+                                setErr(confInp, lblConf, errConf, 'รหัสผ่านใหม่และการยืนยันรหัสผ่านไม่ตรงกัน');
+                                hasErr = true;
+                            } else {
+                                clearErr(confInp, lblConf, errConf);
+                            }
+
+                            if (hasErr) {
+                                if (pwdInp.value.length < 6) pwdInp.focus();
+                                else confInp.focus();
+                            }
+                        });
+                    }
+                });
+            </script>
         <?php else: ?>
             <div class="icon-wrapper error">
                 <svg style="width: 28px; height: 28px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">

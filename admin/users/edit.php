@@ -240,25 +240,25 @@ require_once __DIR__ . '/../includes/header.php';
 
                 <!-- Email -->
                 <div>
-                    <label style="display: block; font-size: 0.75rem; font-weight: 600; color: #334155; margin-bottom: 0.5rem;" for="email">
+                    <label id="label_email" style="display: block; font-size: 0.75rem; font-weight: 600; color: #334155; margin-bottom: 0.5rem; transition: color 0.15s;" for="email">
                         อีเมล (Email) <span style="color: #ef4444;">*</span>
                     </label>
-                    <input type="email" name="email" id="email" required value="<?= e($email) ?>"
+                    <input type="email" name="email" id="email" value="<?= e($email) ?>"
                         placeholder="เช่น somchai@webpark.co.th"
-                        style="width: 100%; height: 42px; padding: 0 1rem; border-radius: 0.75rem; border: 1px solid #cbd5e1; background: #ffffff; font-size: 0.8125rem; color: #0f172a; outline: none; transition: border-color 0.15s;"
-                        onfocus="this.style.borderColor='#0f172a';"
-                        onblur="this.style.borderColor='#cbd5e1';">
+                        class="admin-form-input"
+                        style="width: 100%; height: 42px; padding: 0 1rem; border-radius: 0.75rem; border: 1px solid #cbd5e1; background: #ffffff; font-size: 0.8125rem; color: #0f172a; outline: none; transition: all 0.15s;">
+                    <p id="email_err" class="hidden text-xs font-medium text-red-500 mt-1 pl-1"></p>
                 </div>
 
                 <!-- Username -->
                 <div style="grid-column: 1 / -1;">
-                    <label style="display: block; font-size: 0.75rem; font-weight: 600; color: #334155; margin-bottom: 0.5rem;" for="username">
+                    <label id="label_username" style="display: block; font-size: 0.75rem; font-weight: 600; color: #334155; margin-bottom: 0.5rem; transition: color 0.15s;" for="username">
                         ชื่อผู้ใช้เข้าสู่ระบบ (Username) <span style="color: #ef4444;">*</span>
                     </label>
-                    <input type="text" name="username" id="username" required value="<?= e($username) ?>"
-                        style="width: 100%; height: 42px; padding: 0 1rem; border-radius: 0.75rem; border: 1px solid #cbd5e1; background: #ffffff; font-size: 0.8125rem; color: #0f172a; outline: none; transition: border-color 0.15s;"
-                        onfocus="this.style.borderColor='#0f172a';"
-                        onblur="this.style.borderColor='#cbd5e1';">
+                    <input type="text" name="username" id="username" value="<?= e($username) ?>"
+                        class="admin-form-input"
+                        style="width: 100%; height: 42px; padding: 0 1rem; border-radius: 0.75rem; border: 1px solid #cbd5e1; background: #ffffff; font-size: 0.8125rem; color: #0f172a; outline: none; transition: all 0.15s;">
+                    <p id="username_err" class="hidden text-xs font-medium text-red-500 mt-1 pl-1"></p>
                 </div>
             </div>
         </div>
@@ -367,15 +367,14 @@ require_once __DIR__ . '/../includes/header.php';
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem;">
                 <!-- New Password -->
                 <div>
-                    <label style="display: block; font-size: 0.75rem; font-weight: 600; color: #334155; margin-bottom: 0.5rem;" for="edit_password">
+                    <label id="label_edit_password" style="display: block; font-size: 0.75rem; font-weight: 600; color: #334155; margin-bottom: 0.5rem; transition: color 0.15s;" for="edit_password">
                         รหัสผ่านใหม่ (New Password)
                     </label>
                     <div style="position: relative; display: flex; align-items: center;">
                         <input type="password" name="password" id="edit_password"
                             placeholder="เว้นว่างไว้ถ้าไม่ต้องการเปลี่ยน"
-                            style="width: 100%; height: 42px; padding: 0 2.5rem 0 1rem; border-radius: 0.75rem; border: 1px solid #cbd5e1; background: #ffffff; font-size: 0.8125rem; color: #0f172a; outline: none; transition: border-color 0.15s;"
-                            onfocus="this.style.borderColor='#0f172a';"
-                            onblur="this.style.borderColor='#cbd5e1';">
+                            class="admin-form-input"
+                            style="width: 100%; height: 42px; padding: 0 2.5rem 0 1rem; border-radius: 0.75rem; border: 1px solid #cbd5e1; background: #ffffff; font-size: 0.8125rem; color: #0f172a; outline: none; transition: all 0.15s;">
                         <button type="button" onclick="togglePasswordVisibility('edit_password', this)"
                             style="position: absolute; right: 0.75rem; background: none; border: none; padding: 0.25rem; color: #94a3b8; cursor: pointer; display: flex; align-items: center;">
                             <svg style="width: 16px; height: 16px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -384,19 +383,19 @@ require_once __DIR__ . '/../includes/header.php';
                             </svg>
                         </button>
                     </div>
+                    <p id="edit_password_err" class="hidden text-xs font-medium text-red-500 mt-1 pl-1"></p>
                 </div>
 
                 <!-- Confirm New Password -->
                 <div>
-                    <label style="display: block; font-size: 0.75rem; font-weight: 600; color: #334155; margin-bottom: 0.5rem;" for="edit_confirm_password">
+                    <label id="label_edit_confirm_password" style="display: block; font-size: 0.75rem; font-weight: 600; color: #334155; margin-bottom: 0.5rem; transition: color 0.15s;" for="edit_confirm_password">
                         ยืนยันรหัสผ่านใหม่ (Confirm Password)
                     </label>
                     <div style="position: relative; display: flex; align-items: center;">
                         <input type="password" name="confirm_password" id="edit_confirm_password"
                             placeholder="กรอกรหัสผ่านใหม่อีกครั้ง"
-                            style="width: 100%; height: 42px; padding: 0 2.5rem 0 1rem; border-radius: 0.75rem; border: 1px solid #cbd5e1; background: #ffffff; font-size: 0.8125rem; color: #0f172a; outline: none; transition: border-color 0.15s;"
-                            onfocus="this.style.borderColor='#0f172a';"
-                            onblur="this.style.borderColor='#cbd5e1';">
+                            class="admin-form-input"
+                            style="width: 100%; height: 42px; padding: 0 2.5rem 0 1rem; border-radius: 0.75rem; border: 1px solid #cbd5e1; background: #ffffff; font-size: 0.8125rem; color: #0f172a; outline: none; transition: all 0.15s;">
                         <button type="button" onclick="togglePasswordVisibility('edit_confirm_password', this)"
                             style="position: absolute; right: 0.75rem; background: none; border: none; padding: 0.25rem; color: #94a3b8; cursor: pointer; display: flex; align-items: center;">
                             <svg style="width: 16px; height: 16px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -405,6 +404,7 @@ require_once __DIR__ . '/../includes/header.php';
                             </svg>
                         </button>
                     </div>
+                    <p id="edit_confirm_password_err" class="hidden text-xs font-medium text-red-500 mt-1 pl-1"></p>
                 </div>
             </div>
 
@@ -539,10 +539,62 @@ function togglePasswordVisibility(inputId, btn) {
     }
 }
 
+<style>
+.is-invalid-user {
+    border-color: #ef4444 !important;
+    background-color: #fef2f2 !important;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15) !important;
+}
+.label-invalid-user {
+    color: #ef4444 !important;
+}
+</style>
+
 // Live Password Checklist Validator for Edit page
 const editPwdInput = document.getElementById('edit_password');
 const editConfInput = document.getElementById('edit_confirm_password');
+const editPwdErr = document.getElementById('edit_password_err');
+const editConfErr = document.getElementById('edit_confirm_password_err');
 const checklistContainer = document.getElementById('edit_pwd_checklist');
+
+const usernameInput = document.getElementById('username');
+const emailInput = document.getElementById('email');
+const lblUser = document.getElementById('label_username');
+const lblEmail = document.getElementById('label_email');
+const lblEditPwd = document.getElementById('label_edit_password');
+const lblEditConf = document.getElementById('label_edit_confirm_password');
+const userErr = document.getElementById('username_err');
+const emailErr = document.getElementById('email_err');
+
+function setUserError(inputEl, labelEl, errEl, msg) {
+    if (inputEl) inputEl.classList.add('is-invalid-user');
+    if (labelEl) labelEl.classList.add('label-invalid-user');
+    if (errEl) {
+        errEl.textContent = msg;
+        errEl.classList.remove('hidden');
+    }
+}
+
+function clearUserError(inputEl, labelEl, errEl) {
+    if (inputEl) inputEl.classList.remove('is-invalid-user');
+    if (labelEl) labelEl.classList.remove('label-invalid-user');
+    if (errEl) {
+        errEl.textContent = '';
+        errEl.classList.add('hidden');
+    }
+}
+
+if (usernameInput) {
+    usernameInput.addEventListener('input', () => {
+        if (usernameInput.value.trim()) clearUserError(usernameInput, lblUser, userErr);
+    });
+}
+
+if (emailInput) {
+    emailInput.addEventListener('input', () => {
+        if (emailInput.value.trim()) clearUserError(emailInput, lblEmail, emailErr);
+    });
+}
 
 function validateEditPasswordLive() {
     const val = editPwdInput.value;
@@ -550,6 +602,8 @@ function validateEditPasswordLive() {
 
     if (!val && !confVal) {
         checklistContainer.style.display = 'none';
+        clearUserError(editPwdInput, lblEditPwd, editPwdErr);
+        clearUserError(editConfInput, lblEditConf, editConfErr);
         return true;
     }
 
@@ -564,6 +618,9 @@ function validateEditPasswordLive() {
     updateCheckItem('edit_rule_lower', 'icon_edit_rule_lower', hasLower);
     updateCheckItem('edit_rule_num', 'icon_edit_rule_num', hasNum);
     updateCheckItem('edit_rule_match', 'icon_edit_rule_match', hasMatch);
+
+    if (hasLen) clearUserError(editPwdInput, lblEditPwd, editPwdErr);
+    if (hasMatch) clearUserError(editConfInput, lblEditConf, editConfErr);
 
     return hasLen && hasLower && hasNum && hasMatch;
 }
@@ -592,20 +649,52 @@ editPwdInput.addEventListener('input', validateEditPasswordLive);
 editConfInput.addEventListener('input', validateEditPasswordLive);
 
 document.getElementById('editAdminForm').addEventListener('submit', function(e) {
-    const usernameInput = document.getElementById('username');
-    const emailInput = document.getElementById('email');
+    let isValid = true;
+    let firstInp = null;
 
-    if (!usernameInput.value.trim() || !emailInput.value.trim()) {
-        alert('กรุณากรอกชื่อผู้ใช้และอีเมลให้ครบถ้วน');
-        e.preventDefault();
-        return;
+    if (!usernameInput.value.trim()) {
+        setUserError(usernameInput, lblUser, userErr, 'กรุณากรอกชื่อผู้ใช้เข้าสู่ระบบ');
+        isValid = false;
+        if (!firstInp) firstInp = usernameInput;
+    }
+
+    const emailVal = emailInput.value.trim();
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailVal) {
+        setUserError(emailInput, lblEmail, emailErr, 'กรุณากรอกอีเมล');
+        isValid = false;
+        if (!firstInp) firstInp = emailInput;
+    } else if (!emailRegex.test(emailVal)) {
+        setUserError(emailInput, lblEmail, emailErr, 'รูปแบบอีเมลไม่ถูกต้อง');
+        isValid = false;
+        if (!firstInp) firstInp = emailInput;
     }
 
     if (editPwdInput.value || editConfInput.value) {
-        if (!validateEditPasswordLive()) {
-            alert('กรุณากรอกรหัสผ่านใหม่ให้ถูกต้องครบถ้วนตามข้อกำหนดความปลอดภัย');
-            e.preventDefault();
+        if (!editPwdInput.value) {
+            setUserError(editPwdInput, lblEditPwd, editPwdErr, 'กรุณากรอกรหัสผ่านใหม่');
+            isValid = false;
+            if (!firstInp) firstInp = editPwdInput;
+        } else if (editPwdInput.value.length < 6) {
+            setUserError(editPwdInput, lblEditPwd, editPwdErr, 'รหัสผ่านต้องมีความยาวอย่างน้อย 6 ตัวอักษร');
+            isValid = false;
+            if (!firstInp) firstInp = editPwdInput;
         }
+
+        if (!editConfInput.value) {
+            setUserError(editConfInput, lblEditConf, editConfErr, 'กรุณายืนยันรหัสผ่านใหม่');
+            isValid = false;
+            if (!firstInp) firstInp = editConfInput;
+        } else if (editConfInput.value !== editPwdInput.value) {
+            setUserError(editConfInput, lblEditConf, editConfErr, 'รหัสผ่านทั้ง 2 ช่องไม่ตรงกัน');
+            isValid = false;
+            if (!firstInp) firstInp = editConfInput;
+        }
+    }
+
+    if (!isValid) {
+        e.preventDefault();
+        if (firstInp) firstInp.focus();
     }
 });
 
