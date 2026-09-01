@@ -5,6 +5,7 @@
 $pageTitle = 'Article Management';
 $page = 'article';
 require_once __DIR__ . '/../includes/header.php';
+require_permission('article.view');
 $search = trim($_GET['search'] ?? '');
 $categoryFilter = $_GET['category_id'] ?? '';
 $statusFilter = $_GET['status'] ?? '';
@@ -64,10 +65,12 @@ $categories = db()->query('SELECT id, name FROM categories ORDER BY name')->fetc
             <h2 class="text-lg font-bold text-slate-900">การจัดการบทความ</h2>
             <p class="mt-1 text-xs text-slate-500">รายการบทความทั้งหมดในระบบ อัปเดตล่าสุดปี 2026</p>
         </div>
-        <a href="create.php"
-            class="inline-flex h-9 items-center rounded-xl bg-blue-600 px-4 text-xs font-semibold text-white transition hover:bg-blue-300 shadow-sm shadow-blue-500/10">
-            + สร้างบทความใหม่
-        </a>
+        <?php if (has_permission('article.create')): ?>
+            <a href="create.php"
+                class="inline-flex h-9 items-center rounded-xl bg-blue-600 px-4 text-xs font-semibold text-white transition hover:bg-blue-700 shadow-sm shadow-blue-500/10">
+                + สร้างบทความใหม่
+            </a>
+        <?php endif; ?>
     </header>
     <section class="mb-5 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
         <div class="p-4">

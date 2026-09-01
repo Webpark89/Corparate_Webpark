@@ -4,8 +4,7 @@
  * Bulk-save contact settings from the index form.
  */
 require_once __DIR__ . '/../includes/functions.php';
-require_login();
-require_super_admin();
+require_permission('contact.edit');
 csrf_verify();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['keys'])) {

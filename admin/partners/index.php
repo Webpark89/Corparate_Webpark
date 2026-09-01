@@ -6,6 +6,7 @@
 $pageTitle = 'Partners Management';
 $page = 'partners';
 require_once __DIR__ . '/../includes/header.php';
+require_permission('partners.view');
 
 $categories = db()->query('SELECT * FROM partner_categories ORDER BY sort_order ASC')->fetchAll();
 

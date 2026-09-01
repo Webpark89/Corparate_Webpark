@@ -454,3 +454,66 @@ function send_security_headers(): void
         header('Referrer-Policy: strict-origin-when-cross-origin');
     }
 }
+
+/**
+ * Check if the currently active session belongs to a Super-Admin.
+ */
+function is_super_admin_session(): bool
+{
+    if (session_status() === PHP_SESSION_NONE && !headers_sent()) {
+        session_start();
+    }
+
+    if (empty($_SESSION['admin_logged_in'])) {
+        return false;
+    }
+
+    $roleSlug = $_SESSION['admin_role_slug'] ?? ($_SESSION['admin_role'] ?? '');
+    return $roleSlug === 'super_admin';
+}
+
+/**
+ * Record traffic analytics for the site (Pageviews & Daily Unique Visitors).
+ * Excludes Super-Admin sessions while counting all other visitors and roles.
+ */
+function track_site_traffic(): void
+{
+    if (is_super_admin_session()) {
+        // Exclude Super-Admin from site traffic analytics
+        return;
+    }
+
+    try {
+        $pdo = Database::getInstance();
+        $today = date('Y-m-d');
+        $ip = $_SERVER['REMOTE_ADDR'] ?? '127.0.0.1';
+        $ua = $_SERVER['HTTP_USER_AGENT'] ?? 'Unknown';
+        $visitorHash = hash('sha256', $ip . '|' . $ua . '|' . $today);
+
+        // Check/Insert unique visitor log
+        $stmt = $pdo->prepare('INSERT IGNORE INTO daily_visitor_logs (date, visitor_hash) VALUES (?, ?)');
+        $stmt->execute([$today, $visitorHash]);
+        $isNewVisitor = ($stmt->rowCount() > 0);
+
+        if ($isNewVisitor) {
+            $stmtTraffic = $pdo->prepare('
+                INSERT INTO daily_traffic (date, pageviews, unique_visitors)
+                VALUES (?, 1, 1)
+                ON DUPLICATE KEY UPDATE
+                    pageviews = pageviews + 1,
+                    unique_visitors = unique_visitors + 1
+            ');
+        } else {
+            $stmtTraffic = $pdo->prepare('
+                INSERT INTO daily_traffic (date, pageviews, unique_visitors)
+                VALUES (?, 1, 0)
+                ON DUPLICATE KEY UPDATE
+                    pageviews = pageviews + 1
+            ');
+        }
+        $stmtTraffic->execute([$today]);
+    } catch (\Throwable $e) {
+        // Silently ignore to avoid interrupting page delivery
+        error_log('Traffic tracking error: ' . $e->getMessage());
+    }
+}

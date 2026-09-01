@@ -1,9 +1,10 @@
 <?php
 /**
- * Edit Admin User & Reset Password (Super Admin only).
+ * Edit Admin User & Reset Password
+ * Pixel-perfect responsive UI with Horizontal Carousel and Live Role Search.
  */
 require_once __DIR__ . '/../includes/functions.php';
-require_super_admin();
+require_permission('users.edit');
 
 $id = (int)($_GET['id'] ?? 0);
 if ($id <= 0) {
@@ -26,10 +27,27 @@ $error = '';
 $username = $user['username'];
 $email = $user['email'];
 $fullName = $user['full_name'] ?? '';
-$role = $user['role'] ?? 'admin';
+$selectedRoleId = (int)($user['role_id'] ?? 0);
+
+// Fetch all available roles
+$allRoles = db()->query('SELECT * FROM roles ORDER BY is_system DESC, id ASC')->fetchAll();
+
+// If user's role_id is not set, find by role slug
+if ($selectedRoleId === 0 && !empty($user['role'])) {
+    foreach ($allRoles as $r) {
+        if ($r['slug'] === $user['role']) {
+            $selectedRoleId = (int)$r['id'];
+            break;
+        }
+    }
+}
 
 // Count total super admins in system
-$totalSuperAdmins = (int) db()->query("SELECT COUNT(*) FROM admins WHERE role = 'super_admin'")->fetchColumn();
+$totalSuperAdmins = (int) db()->query("
+    SELECT COUNT(*) FROM admins a
+    LEFT JOIN roles r ON a.role_id = r.id
+    WHERE r.slug = 'super_admin' OR (a.role_id IS NULL AND a.role = 'super_admin')
+")->fetchColumn();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     csrf_verify();
@@ -37,20 +55,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = trim($_POST['username'] ?? '');
     $email = trim($_POST['email'] ?? '');
     $fullName = trim($_POST['full_name'] ?? '');
-    $role = trim($_POST['role'] ?? 'admin');
+    $newRoleId = (int)($_POST['role_id'] ?? 0);
     $password = (string)($_POST['password'] ?? '');
     $confirmPassword = (string)($_POST['confirm_password'] ?? '');
 
+    // Find selected role
+    $newRole = null;
+    foreach ($allRoles as $r) {
+        if ((int)$r['id'] === $newRoleId) {
+            $newRole = $r;
+            break;
+        }
+    }
+
+    $isTargetCurrentSuper = ($user['role_slug'] === 'super_admin' || $user['role'] === 'super_admin');
+    $isNewRoleSuper = ($newRole && $newRole['slug'] === 'super_admin');
+
     // Validation
-    if ($username === '' || $email === '') {
-        $error = 'กรุณากรอกชื่อผู้ใช้และอีเมล';
+    if ($username === '' || $email === '' || !$newRole) {
+        $error = 'กรุณากรอกชื่อผู้ใช้ อีเมล และเลือกบทบาทที่ถูกต้อง';
     } elseif (!preg_match('/^[a-zA-Z0-9_.-]{3,50}$/', $username)) {
         $error = 'ชื่อผู้ใช้ (Username) ต้องเป็นภาษาอังกฤษ ตัวเลข หรือ _ . - และมีความยาว 3-50 ตัวอักษร';
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $error = 'รูปแบบอีเมลไม่ถูกต้อง';
-    } elseif (!in_array($role, ['super_admin', 'admin'], true)) {
-        $error = 'บทบาท (Role) ที่เลือกไม่ถูกต้อง';
-    } elseif ($user['role'] === 'super_admin' && $role !== 'super_admin' && $totalSuperAdmins <= 1) {
+    } elseif ($isTargetCurrentSuper && !$isNewRoleSuper && $totalSuperAdmins <= 1) {
         $error = 'ไม่สามารถลดระดับสิทธิ์ของ Super Admin คนสุดท้ายในระบบได้ (ต้องมี Super Admin อย่างน้อย 1 คนเสมอ)';
     } elseif ($password !== '' && strlen($password) < 6) {
         $error = 'รหัสผ่านใหม่ต้องมีความยาวอย่างน้อย 6 ตัวอักษร';
@@ -71,33 +99,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             try {
                 if ($password !== '') {
-                    // Update with new password
                     $passwordHash = password_hash($password, PASSWORD_DEFAULT);
                     $updateStmt = db()->prepare(
                         'UPDATE admins 
-                         SET username = :username, email = :email, full_name = :full_name, role = :role, password_hash = :hash, updated_at = NOW() 
+                         SET username = :username, email = :email, full_name = :full_name, role = :role, role_id = :role_id, password_hash = :hash, updated_at = NOW() 
                          WHERE id = :id'
                     );
                     $updateStmt->execute([
                         'username'  => $username,
                         'email'     => $email,
                         'full_name' => $fullName ?: null,
-                        'role'      => $role,
+                        'role'      => $newRole['slug'],
+                        'role_id'   => $newRole['id'],
                         'hash'      => $passwordHash,
                         'id'        => $id,
                     ]);
                 } else {
-                    // Update without changing password
                     $updateStmt = db()->prepare(
                         'UPDATE admins 
-                         SET username = :username, email = :email, full_name = :full_name, role = :role, updated_at = NOW() 
+                         SET username = :username, email = :email, full_name = :full_name, role = :role, role_id = :role_id, updated_at = NOW() 
                          WHERE id = :id'
                     );
                     $updateStmt->execute([
                         'username'  => $username,
                         'email'     => $email,
                         'full_name' => $fullName ?: null,
-                        'role'      => $role,
+                        'role'      => $newRole['slug'],
+                        'role_id'   => $newRole['id'],
                         'id'        => $id,
                     ]);
                 }
@@ -121,36 +149,50 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 // Render HTML Header only after POST handling
-$pageTitle = 'แก้ไขข้อมูลผู้ดูแลระบบ';
+$pageTitle = 'แก้ไขข้อมูลผู้ดูแลระบบ: ' . $user['username'];
 $page = 'users';
 require_once __DIR__ . '/../includes/header.php';
 ?>
 
-<div class="mx-auto w-full max-w-6xl px-2 pb-8 pt-1 text-sm md:px-4 lg:px-8">
+<style>
+/* Custom Scrollbar for horizontal role carousel */
+.roles-carousel::-webkit-scrollbar {
+    height: 6px;
+}
+.roles-carousel::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 9999px;
+}
+.roles-carousel::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 9999px;
+}
+.roles-carousel::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+</style>
+
+<div class="mx-auto w-full max-w-none px-2 pb-8 pt-1 text-sm md:px-4 lg:px-8 space-y-6">
     <!-- Breadcrumb & Header Title -->
-    <div class="mb-5 flex flex-col gap-3 border-l-4 border-blue-500 pl-4 md:flex-row md:items-center md:justify-between">
-        <div>
-            <div class="flex items-center gap-2 text-xs text-slate-400 mb-1">
-                <a href="index.php" class="hover:text-blue-600 transition">การจัดการผู้ดูแลระบบ</a>
-                <span>/</span>
-                <span class="text-slate-600 font-medium">แก้ไขข้อมูลผู้ดูแลระบบ</span>
-            </div>
-            <h2 class="text-lg font-bold text-slate-900">
-                แก้ไขข้อมูลผู้ดูแลระบบ: <?= e($user['username']) ?>
-                <?php if ($isSelf): ?>
-                    <span class="ml-2 rounded-lg bg-emerald-100 px-2 py-0.5 text-xs font-semibold text-emerald-800">บัญชีของคุณ</span>
-                <?php endif; ?>
-            </h2>
+    <header class="border-l-4 border-blue-600 pl-4 flex flex-col gap-1">
+        <div style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; color: #94a3b8; margin-bottom: 0.25rem;">
+            <a href="index.php" style="color: #64748b; text-decoration: none;">การจัดการผู้ดูแลระบบ</a>
+            <span>/</span>
+            <span style="color: #334155; font-weight: 500;">แก้ไขข้อมูลผู้ดูแลระบบ</span>
         </div>
-        <a href="index.php"
-            class="inline-flex h-9 items-center rounded-xl border border-slate-200 bg-white px-4 text-xs font-semibold text-slate-600 transition hover:bg-slate-50 shadow-sm">
-            ← ย้อนกลับ
-        </a>
-    </div>
+        <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem;">
+            <h1 style="font-size: 1.25rem; font-weight: 700; color: #0f172a; margin: 0; display: flex; align-items: center; gap: 0.75rem;">
+                <span>แก้ไขผู้ดูแลระบบ: <?= e($user['username']) ?></span>
+                <?php if ($isSelf): ?>
+                    <span style="padding: 0.25rem 0.625rem; border-radius: 0.5rem; background-color: #ecfdf5; color: #047857; font-size: 0.75rem; font-weight: 700; border: 1px solid #a7f3d0;">บัญชีของคุณ</span>
+                <?php endif; ?>
+            </h1>
+        </div>
+    </header>
 
     <?php if ($error): ?>
-        <div class="mb-5 p-4 text-xs text-red-800 rounded-2xl bg-red-50 border border-red-200 flex items-center gap-2">
-            <svg class="w-4 h-4 shrink-0 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div style="padding: 1rem 1.25rem; border-radius: 1rem; background-color: #fef2f2; border: 1px solid #fecaca; color: #991b1b; font-size: 0.75rem; display: flex; align-items: center; gap: 0.75rem;">
+            <svg style="width: 20px; height: 20px; color: #ef4444; flex-shrink: 0;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
             <span><?= e($error) ?></span>
@@ -158,230 +200,329 @@ require_once __DIR__ . '/../includes/header.php';
     <?php endif; ?>
 
     <!-- User Meta Info Card -->
-    <div class="mb-5 rounded-2xl border border-slate-200 bg-slate-50/50 p-4 text-xs text-slate-500 flex flex-wrap items-center justify-between gap-4">
-        <div class="flex items-center gap-2">
-            <span class="font-semibold text-slate-700">รหัสผู้ใช้ ID:</span>
-            <span class="font-mono bg-white px-2 py-0.5 rounded-lg border border-slate-200 text-slate-800 font-bold">#<?= (int)$user['id'] ?></span>
+    <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; padding: 1rem 1.25rem; border-radius: 1rem; border: 1px solid #e2e8f0; background: #ffffff; font-size: 0.75rem; box-shadow: 0 1px 2px rgba(0,0,0,0.02);">
+        <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <span style="font-weight: 600; color: #334155;">รหัสผู้ใช้ ID:</span>
+            <span style="font-family: monospace; background: #f1f5f9; padding: 0.125rem 0.5rem; border-radius: 0.375rem; border: 1px solid #e2e8f0; color: #0f172a; font-weight: 700;">#<?= (int)$user['id'] ?></span>
         </div>
-        <div class="flex items-center gap-4">
+        <div style="display: flex; align-items: center; gap: 1.5rem; color: #64748b;">
             <div>
-                <span class="text-slate-400">สร้างเมื่อ:</span>
-                <span class="text-slate-700 font-medium"><?= date('d/m/Y H:i', strtotime($user['created_at'])) ?></span>
+                <span>สร้างเมื่อ:</span>
+                <span style="color: #0f172a; font-weight: 600; margin-left: 0.25rem;"><?= date('d/m/Y H:i', strtotime($user['created_at'])) ?></span>
             </div>
             <div>
-                <span class="text-slate-400">ล็อกอินล่าสุด:</span>
-                <span class="text-slate-700 font-medium"><?= $user['last_login'] ? date('d/m/Y H:i', strtotime($user['last_login'])) : 'ยังไม่เคยเข้าใช้งาน' ?></span>
+                <span>ล็อกอินล่าสุด:</span>
+                <span style="color: #0f172a; font-weight: 600; margin-left: 0.25rem;"><?= $user['last_login'] ? date('d/m/Y H:i', strtotime($user['last_login'])) : 'ยังไม่เคยเข้าใช้งาน' ?></span>
             </div>
         </div>
     </div>
 
-    <!-- Edit Form Card -->
-    <form id="editAdminForm" method="post" action="edit.php?id=<?= (int)$user['id'] ?>" novalidate class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+    <!-- Edit Form -->
+    <form id="editAdminForm" method="post" action="edit.php?id=<?= (int)$user['id'] ?>" novalidate style="display: flex; flex-direction: column; gap: 1.5rem;">
         <?= csrf_field() ?>
 
-        <div class="p-6 space-y-6">
-            <!-- Basic Information Section -->
-            <div>
-                <h3 class="text-sm font-bold text-slate-800 border-b border-slate-100 pb-2 mb-4 flex items-center gap-2">
-                    <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                    </svg>
-                    ข้อมูลบัญชีผู้ใช้งาน
-                </h3>
+        <!-- Section 1: General Info -->
+        <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 1rem; padding: 1.5rem 1.75rem; box-shadow: 0 1px 2px rgba(0,0,0,0.02);">
+            <h2 style="font-size: 1rem; font-weight: 700; color: #0f172a; margin: 0 0 1.25rem 0;">ข้อมูลทั่วไป (General Info)</h2>
 
-                <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-700 mb-1.5">
-                            ชื่อผู้ใช้ (Username) <span class="text-red-500">*</span>
-                        </label>
-                        <input type="text" name="username" id="username" required value="<?= e($username) ?>"
-                            class="w-full rounded-xl border border-slate-200 bg-slate-50/50 px-3.5 py-2.5 text-xs text-slate-800 placeholder:text-slate-400 focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 focus:outline-none transition">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem;">
+                <!-- Full Name -->
+                <div>
+                    <label style="display: block; font-size: 0.75rem; font-weight: 600; color: #334155; margin-bottom: 0.5rem;" for="full_name">
+                        ชื่อ-นามสกุล (Full Name)
+                    </label>
+                    <input type="text" name="full_name" id="full_name" value="<?= e($fullName) ?>"
+                        placeholder="เช่น สมชาย ใจดี"
+                        style="width: 100%; height: 42px; padding: 0 1rem; border-radius: 0.75rem; border: 1px solid #cbd5e1; background: #ffffff; font-size: 0.8125rem; color: #0f172a; outline: none; transition: border-color 0.15s;"
+                        onfocus="this.style.borderColor='#0f172a';"
+                        onblur="this.style.borderColor='#cbd5e1';">
+                </div>
+
+                <!-- Email -->
+                <div>
+                    <label style="display: block; font-size: 0.75rem; font-weight: 600; color: #334155; margin-bottom: 0.5rem;" for="email">
+                        อีเมล (Email) <span style="color: #ef4444;">*</span>
+                    </label>
+                    <input type="email" name="email" id="email" required value="<?= e($email) ?>"
+                        placeholder="เช่น somchai@webpark.co.th"
+                        style="width: 100%; height: 42px; padding: 0 1rem; border-radius: 0.75rem; border: 1px solid #cbd5e1; background: #ffffff; font-size: 0.8125rem; color: #0f172a; outline: none; transition: border-color 0.15s;"
+                        onfocus="this.style.borderColor='#0f172a';"
+                        onblur="this.style.borderColor='#cbd5e1';">
+                </div>
+
+                <!-- Username -->
+                <div style="grid-column: 1 / -1;">
+                    <label style="display: block; font-size: 0.75rem; font-weight: 600; color: #334155; margin-bottom: 0.5rem;" for="username">
+                        ชื่อผู้ใช้เข้าสู่ระบบ (Username) <span style="color: #ef4444;">*</span>
+                    </label>
+                    <input type="text" name="username" id="username" required value="<?= e($username) ?>"
+                        style="width: 100%; height: 42px; padding: 0 1rem; border-radius: 0.75rem; border: 1px solid #cbd5e1; background: #ffffff; font-size: 0.8125rem; color: #0f172a; outline: none; transition: border-color 0.15s;"
+                        onfocus="this.style.borderColor='#0f172a';"
+                        onblur="this.style.borderColor='#cbd5e1';">
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 2: Role Selection with Horizontal Carousel & Search -->
+        <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 1rem; padding: 1.5rem 1.75rem; box-shadow: 0 1px 2px rgba(0,0,0,0.02);">
+            <!-- Top Bar: Header & Controls (Search & Scroll Arrows) -->
+            <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1.25rem;">
+                <div>
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <h2 style="font-size: 1rem; font-weight: 700; color: #0f172a; margin: 0;">กำหนดบทบาทและสิทธิ์ (Role & Access)</h2>
+                        <span id="role_count_badge" style="font-size: 0.6875rem; font-weight: 600; background-color: #f1f5f9; color: #475569; padding: 0.125rem 0.5rem; border-radius: 9999px; border: 1px solid #e2e8f0;">
+                            <?= count($allRoles) ?> บทบาท
+                        </span>
+                    </div>
+                    <p style="font-size: 0.75rem; color: #94a3b8; margin: 0.25rem 0 0 0;">เลือกบทบาทที่ต้องการมอบหมายให้กับผู้ดูแลระบบคนนี้ (เลื่อนซ้าย-ขวา เพื่อดูทั้งหมด)</p>
+                </div>
+
+                <!-- Controls: Search Input & Carousel Navigation Buttons -->
+                <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+                    <!-- Instant Search Input -->
+                    <div style="display: flex; align-items: center; height: 34px; border: 1px solid #cbd5e1; border-radius: 0.5rem; background: #ffffff; padding: 0 0.5rem; width: 190px;">
+                        <svg style="width: 14px; height: 14px; color: #94a3b8; flex-shrink: 0;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                        <input type="text" id="role_search_input" placeholder="ค้นหาบทบาท..." oninput="filterRoleCards(this.value)"
+                            style="border: none; background: transparent; outline: none; padding: 0 0.375rem; font-size: 0.75rem; color: #0f172a; width: 100%;">
                     </div>
 
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-700 mb-1.5">
-                            อีเมล (Email) <span class="text-red-500">*</span>
-                        </label>
-                        <input type="email" name="email" id="email" required value="<?= e($email) ?>"
-                            class="w-full rounded-xl border border-slate-200 bg-slate-50/50 px-3.5 py-2.5 text-xs text-slate-800 placeholder:text-slate-400 focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 focus:outline-none transition">
+                    <!-- Carousel Navigation Arrows -->
+                    <div style="display: flex; align-items: center; gap: 0.25rem;">
+                        <button type="button" onclick="scrollRolesCarousel(-320)" title="เลื่อนซ้าย"
+                            style="display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 0.5rem; border: 1px solid #e2e8f0; background: #ffffff; color: #334155; cursor: pointer; transition: all 0.15s;"
+                            onmouseover="this.style.backgroundColor='#f8fafc'; this.style.borderColor='#cbd5e1';"
+                            onmouseout="this.style.backgroundColor='#ffffff'; this.style.borderColor='#e2e8f0';">
+                            <svg style="width: 16px; height: 16px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                            </svg>
+                        </button>
+                        <button type="button" onclick="scrollRolesCarousel(320)" title="เลื่อนขวา"
+                            style="display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 0.5rem; border: 1px solid #e2e8f0; background: #ffffff; color: #334155; cursor: pointer; transition: all 0.15s;"
+                            onmouseover="this.style.backgroundColor='#f8fafc'; this.style.borderColor='#cbd5e1';"
+                            onmouseout="this.style.backgroundColor='#ffffff'; this.style.borderColor='#e2e8f0';">
+                            <svg style="width: 16px; height: 16px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                            </svg>
+                        </button>
                     </div>
 
-                    <div class="md:col-span-2">
-                        <label class="block text-xs font-semibold text-slate-700 mb-1.5">
-                            ชื่อ-นามสกุลจริง (Full Name)
-                        </label>
-                        <input type="text" name="full_name" value="<?= e($fullName) ?>"
-                            placeholder="เช่น นายสมชาย ใจดี"
-                            class="w-full rounded-xl border border-slate-200 bg-slate-50/50 px-3.5 py-2.5 text-xs text-slate-800 placeholder:text-slate-400 focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 focus:outline-none transition">
-                    </div>
+                    <?php if (has_permission('roles.view')): ?>
+                        <a href="<?= ADMIN_URL ?>/roles/index.php" target="_blank"
+                            style="display: inline-flex; align-items: center; height: 34px; padding: 0 0.75rem; border-radius: 0.5rem; border: 1px solid #e2e8f0; background: #ffffff; font-size: 0.75rem; font-weight: 600; color: #0f172a; text-decoration: none; transition: all 0.15s;"
+                            onmouseover="this.style.backgroundColor='#f8fafc';"
+                            onmouseout="this.style.backgroundColor='#ffffff';">
+                            จัดการบทบาท →
+                        </a>
+                    <?php endif; ?>
                 </div>
             </div>
 
-            <!-- Role Selection Section -->
-            <div>
-                <h3 class="text-sm font-bold text-slate-800 border-b border-slate-100 pb-2 mb-4 flex items-center gap-2">
-                    <svg class="w-4 h-4 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                    </svg>
-                    บทบาทและสิทธิ์การใช้งาน (Role)
-                </h3>
-
-                <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-                    <label class="relative flex cursor-pointer rounded-2xl border p-4 transition-all hover:bg-slate-50/50 <?= $role === 'admin' ? 'border-blue-500 bg-blue-50/20 ring-2 ring-blue-500/20' : 'border-slate-200' ?>">
-                        <input type="radio" name="role" value="admin" <?= $role === 'admin' ? 'checked' : '' ?> class="sr-only" onchange="updateRoleCards()">
-                        <div class="flex items-start gap-3">
-                            <div class="w-4 h-4 mt-0.5 rounded-full border flex items-center justify-center <?= $role === 'admin' ? 'border-blue-600 bg-blue-600' : 'border-slate-300' ?>" id="radio-admin">
-                                <div class="w-1.5 h-1.5 rounded-full bg-white <?= $role === 'admin' ? '' : 'hidden' ?>" id="dot-admin"></div>
+            <!-- Horizontal Scrollable Cards Track -->
+            <div id="rolesCarouselTrack" class="roles-carousel" style="display: flex; gap: 1rem; overflow-x: auto; scroll-snap-type: x mandatory; padding: 0.25rem 0.25rem 0.75rem 0.25rem; scroll-behavior: smooth;">
+                <?php foreach ($allRoles as $r): 
+                    $isSelected = ($selectedRoleId === (int)$r['id']);
+                    $isSuper = ($r['slug'] === 'super_admin');
+                ?>
+                    <label class="role-card-item" data-role-name="<?= e(mb_strtolower($r['name'], 'UTF-8')) ?>" data-role-slug="<?= e(mb_strtolower($r['slug'], 'UTF-8')) ?>" data-role-desc="<?= e(mb_strtolower($r['description'] ?? '', 'UTF-8')) ?>"
+                        style="position: relative; display: flex; flex: 0 0 290px; min-width: 290px; max-width: 290px; scroll-snap-align: start; cursor: pointer; border-radius: 0.875rem; padding: 1.125rem; border: 1px solid <?= $isSelected ? ($isSuper ? '#9333ea' : '#0f172a') : '#e2e8f0' ?>; background-color: <?= $isSelected ? ($isSuper ? '#faf5ff' : '#f8fafc') : '#ffffff' ?>; box-shadow: <?= $isSelected ? '0 4px 6px -1px rgba(0,0,0,0.05)' : '0 1px 2px rgba(0,0,0,0.02)' ?>; transition: all 0.15s;">
+                        <input type="radio" name="role_id" value="<?= (int)$r['id'] ?>" <?= $isSelected ? 'checked' : '' ?> style="position: absolute; opacity: 0; width: 0; height: 0;" onchange="updateRoleSelection(this, <?= $isSuper ? 'true' : 'false' ?>)">
+                        <div style="display: flex; align-items: flex-start; gap: 0.75rem; width: 100%;">
+                            <div class="radio-circle" style="width: 18px; height: 18px; margin-top: 2px; border-radius: 9999px; border: 1px solid <?= $isSelected ? ($isSuper ? '#9333ea' : '#0f172a') : '#cbd5e1' ?>; background-color: <?= $isSelected ? ($isSuper ? '#9333ea' : '#0f172a') : 'transparent' ?>; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.15s;">
+                                <div class="radio-dot" style="width: 6px; height: 6px; border-radius: 9999px; background-color: #ffffff; display: <?= $isSelected ? 'block' : 'none' ?>;"></div>
                             </div>
-                            <div>
-                                <span class="block text-xs font-bold text-slate-800">Admin (ผู้ดูแลระบบทั่วไป)</span>
-                                <span class="block mt-1 text-[11px] text-slate-500 leading-relaxed">
-                                    จัดการเนื้อหาเว็บไซต์ได้ทั้งหมด แต่ไม่มีสิทธิ์จัดการผู้ใช้งานคนอื่น
+                            <div style="flex: 1; min-width: 0;">
+                                <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; margin-bottom: 0.25rem;">
+                                    <span style="font-size: 0.8125rem; font-weight: 700; color: <?= $isSuper ? '#581c87' : '#0f172a' ?>; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="<?= e($r['name']) ?>">
+                                        <?= e($r['name']) ?>
+                                    </span>
+                                    <?php if ($r['is_system']): ?>
+                                        <span style="font-size: 0.625rem; font-weight: 700; color: #7e22ce; background-color: #f3e8ff; padding: 0.125rem 0.5rem; border-radius: 9999px; flex-shrink: 0;">System</span>
+                                    <?php endif; ?>
+                                </div>
+                                <div style="font-family: monospace; font-size: 0.6875rem; color: #64748b; margin-bottom: 0.375rem;">
+                                    @<?= e($r['slug']) ?>
+                                </div>
+                                <span style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; font-size: 0.6875rem; color: #64748b; line-height: 1.4;" title="<?= e($r['description'] ?: 'ไม่มีคำอธิบายเพิ่มเติม') ?>">
+                                    <?= e($r['description'] ?: 'ไม่มีคำอธิบายเพิ่มเติม') ?>
                                 </span>
                             </div>
                         </div>
                     </label>
+                <?php endforeach; ?>
 
-                    <label class="relative flex cursor-pointer rounded-2xl border p-4 transition-all hover:bg-slate-50/50 <?= $role === 'super_admin' ? 'border-purple-500 bg-purple-50/20 ring-2 ring-purple-500/20' : 'border-slate-200' ?>">
-                        <input type="radio" name="role" value="super_admin" <?= $role === 'super_admin' ? 'checked' : '' ?> class="sr-only" onchange="updateRoleCards()">
-                        <div class="flex items-start gap-3">
-                            <div class="w-4 h-4 mt-0.5 rounded-full border flex items-center justify-center <?= $role === 'super_admin' ? 'border-purple-600 bg-purple-600' : 'border-slate-300' ?>" id="radio-super_admin">
-                                <div class="w-1.5 h-1.5 rounded-full bg-white <?= $role === 'super_admin' ? '' : 'hidden' ?>" id="dot-super_admin"></div>
-                            </div>
-                            <div>
-                                <span class="block text-xs font-bold text-purple-900">Super Admin (ผู้ดูแลระบบสูงสุด)</span>
-                                <span class="block mt-1 text-[11px] text-slate-500 leading-relaxed">
-                                    สิทธิ์สูงสุด สามารถเพิ่ม/แก้ไข/ลบผู้ดูแลระบบคนอื่นได้
-                                </span>
-                            </div>
-                        </div>
+                <!-- Empty Search Result -->
+                <div id="rolesEmptySearch" style="display: none; padding: 2rem; text-align: center; color: #94a3b8; font-size: 0.75rem; width: 100%;">
+                    ไม่พบบทบาทที่ตรงกับคำค้นหา
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 3: Password Reset -->
+        <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 1rem; padding: 1.5rem 1.75rem; box-shadow: 0 1px 2px rgba(0,0,0,0.02);">
+            <h2 style="font-size: 1rem; font-weight: 700; color: #0f172a; margin: 0 0 0.25rem 0;">เปลี่ยนรหัสผ่านใหม่ (Reset Password)</h2>
+            <p style="font-size: 0.75rem; color: #94a3b8; margin: 0 0 1.25rem 0;">เว้นว่างทั้งสองช่องไว้ หากไม่ต้องการเปลี่ยนรหัสผ่านเดิม</p>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem;">
+                <!-- New Password -->
+                <div>
+                    <label style="display: block; font-size: 0.75rem; font-weight: 600; color: #334155; margin-bottom: 0.5rem;" for="edit_password">
+                        รหัสผ่านใหม่ (New Password)
                     </label>
+                    <div style="position: relative; display: flex; align-items: center;">
+                        <input type="password" name="password" id="edit_password"
+                            placeholder="เว้นว่างไว้ถ้าไม่ต้องการเปลี่ยน"
+                            style="width: 100%; height: 42px; padding: 0 2.5rem 0 1rem; border-radius: 0.75rem; border: 1px solid #cbd5e1; background: #ffffff; font-size: 0.8125rem; color: #0f172a; outline: none; transition: border-color 0.15s;"
+                            onfocus="this.style.borderColor='#0f172a';"
+                            onblur="this.style.borderColor='#cbd5e1';">
+                        <button type="button" onclick="togglePasswordVisibility('edit_password', this)"
+                            style="position: absolute; right: 0.75rem; background: none; border: none; padding: 0.25rem; color: #94a3b8; cursor: pointer; display: flex; align-items: center;">
+                            <svg style="width: 16px; height: 16px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Confirm New Password -->
+                <div>
+                    <label style="display: block; font-size: 0.75rem; font-weight: 600; color: #334155; margin-bottom: 0.5rem;" for="edit_confirm_password">
+                        ยืนยันรหัสผ่านใหม่ (Confirm Password)
+                    </label>
+                    <div style="position: relative; display: flex; align-items: center;">
+                        <input type="password" name="confirm_password" id="edit_confirm_password"
+                            placeholder="กรอกรหัสผ่านใหม่อีกครั้ง"
+                            style="width: 100%; height: 42px; padding: 0 2.5rem 0 1rem; border-radius: 0.75rem; border: 1px solid #cbd5e1; background: #ffffff; font-size: 0.8125rem; color: #0f172a; outline: none; transition: border-color 0.15s;"
+                            onfocus="this.style.borderColor='#0f172a';"
+                            onblur="this.style.borderColor='#cbd5e1';">
+                        <button type="button" onclick="togglePasswordVisibility('edit_confirm_password', this)"
+                            style="position: absolute; right: 0.75rem; background: none; border: none; padding: 0.25rem; color: #94a3b8; cursor: pointer; display: flex; align-items: center;">
+                            <svg style="width: 16px; height: 16px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                            </svg>
+                        </button>
+                    </div>
                 </div>
             </div>
 
-            <!-- Password Reset Section with Eye Toggle & Live Checklist -->
-            <div>
-                <h3 class="text-sm font-bold text-slate-800 border-b border-slate-100 pb-2 mb-2 flex items-center gap-2">
-                    <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                    </svg>
-                    เปลี่ยนรหัสผ่านใหม่ (Reset Password)
-                </h3>
-                <p class="text-[11px] text-slate-400 mb-4">เว้นว่างทั้งสองช่องไว้ หากไม่ต้องการเปลี่ยนรหัสผ่านเดิม</p>
-
-                <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-700 mb-1.5">
-                            รหัสผ่านใหม่ (New Password)
-                        </label>
-                        <div class="relative flex items-center">
-                            <input type="password" name="password" id="edit_password"
-                                placeholder="เว้นว่างไว้ถ้าไม่ต้องการเปลี่ยน"
-                                class="w-full rounded-xl border border-slate-200 bg-slate-50/50 px-3.5 py-2.5 pr-11 text-xs text-slate-800 placeholder:text-slate-400 focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 focus:outline-none transition">
-                            <button type="button" onclick="togglePasswordVisibility('edit_password', this)"
-                                style="position: absolute; right: 0.625rem; top: 50%; transform: translateY(-50%); background: none; border: none; padding: 0.25rem; color: #94a3b8; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: color 0.15s;"
-                                onmouseover="this.style.color='#475569';"
-                                onmouseout="this.style.color='#94a3b8';"
-                                title="แสดง/ซ่อนรหัสผ่าน">
-                                <svg style="width: 18px; height: 18px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                </svg>
-                            </button>
-                        </div>
+            <!-- Password Requirements Checklist -->
+            <div id="edit_pwd_checklist" style="display: none; margin-top: 1.25rem; padding: 1rem; border-radius: 0.75rem; background-color: #f8fafc; border: 1px solid #e2e8f0;">
+                <div style="font-size: 0.75rem; font-weight: 700; color: #334155; margin-bottom: 0.5rem;">ข้อกำหนดความปลอดภัยของรหัสผ่าน:</div>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.5rem; font-size: 0.75rem;">
+                    <div id="edit_rule_len" style="display: flex; align-items: center; gap: 0.5rem; color: #94a3b8;">
+                        <span id="icon_edit_rule_len">✕</span>
+                        <span>ความยาวอย่างน้อย 6 ตัวอักษร</span>
                     </div>
-
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-700 mb-1.5">
-                            ยืนยันรหัสผ่านใหม่ (Confirm Password)
-                        </label>
-                        <div class="relative flex items-center">
-                            <input type="password" name="confirm_password" id="edit_confirm_password"
-                                placeholder="กรอกรหัสผ่านใหม่อีกครั้ง"
-                                class="w-full rounded-xl border border-slate-200 bg-slate-50/50 px-3.5 py-2.5 pr-11 text-xs text-slate-800 placeholder:text-slate-400 focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 focus:outline-none transition">
-                            <button type="button" onclick="togglePasswordVisibility('edit_confirm_password', this)"
-                                style="position: absolute; right: 0.625rem; top: 50%; transform: translateY(-50%); background: none; border: none; padding: 0.25rem; color: #94a3b8; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: color 0.15s;"
-                                onmouseover="this.style.color='#475569';"
-                                onmouseout="this.style.color='#94a3b8';"
-                                title="แสดง/ซ่อนรหัสผ่าน">
-                                <svg style="width: 18px; height: 18px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                </svg>
-                            </button>
-                        </div>
+                    <div id="edit_rule_lower" style="display: flex; align-items: center; gap: 0.5rem; color: #94a3b8;">
+                        <span id="icon_edit_rule_lower">✕</span>
+                        <span>มีตัวพิมพ์เล็ก (a-z) อย่างน้อย 1 ตัว</span>
                     </div>
-                </div>
-
-                <!-- Live Password Requirements Checklist (Image 2 style) -->
-                <div id="edit_pwd_checklist" style="display: none; margin-top: 1rem; padding: 1rem; border-radius: 1rem; background-color: #f8fafc; border: 1px solid #e2e8f0;">
-                    <div style="font-size: 0.75rem; font-weight: 700; color: #334155; margin-bottom: 0.625rem;">
-                        ข้อกำหนดความปลอดภัยของรหัสผ่าน:
+                    <div id="edit_rule_num" style="display: flex; align-items: center; gap: 0.5rem; color: #94a3b8;">
+                        <span id="icon_edit_rule_num">✕</span>
+                        <span>มีตัวเลข (0-9) อย่างน้อย 1 ตัว</span>
                     </div>
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0.5rem; font-size: 0.75rem;">
-                        <div id="edit_rule_len" style="display: flex; align-items: center; gap: 0.5rem; color: #94a3b8; transition: all 0.2s;">
-                            <span id="icon_edit_rule_len">✕</span>
-                            <span>ความยาวอย่างน้อย 6 ตัวอักษร</span>
-                        </div>
-                        <div id="edit_rule_lower" style="display: flex; align-items: center; gap: 0.5rem; color: #94a3b8; transition: all 0.2s;">
-                            <span id="icon_edit_rule_lower">✕</span>
-                            <span>มีตัวพิมพ์เล็ก (a-z) อย่างน้อย 1 ตัว</span>
-                        </div>
-                        <div id="edit_rule_num" style="display: flex; align-items: center; gap: 0.5rem; color: #94a3b8; transition: all 0.2s;">
-                            <span id="icon_edit_rule_num">✕</span>
-                            <span>มีตัวเลข (0-9) อย่างน้อย 1 ตัว</span>
-                        </div>
-                        <div id="edit_rule_match" style="display: flex; align-items: center; gap: 0.5rem; color: #94a3b8; transition: all 0.2s;">
-                            <span id="icon_edit_rule_match">✕</span>
-                            <span>รหัสผ่านทั้ง 2 ช่องตรงกัน</span>
-                        </div>
+                    <div id="edit_rule_match" style="display: flex; align-items: center; gap: 0.5rem; color: #94a3b8;">
+                        <span id="icon_edit_rule_match">✕</span>
+                        <span>รหัสผ่านทั้ง 2 ช่องตรงกัน</span>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Form Actions Footer -->
-        <div class="flex items-center justify-end gap-3 border-t border-slate-100 bg-slate-50/50 px-6 py-5">
+        <!-- Footer Actions Bar -->
+        <div style="display: flex; align-items: center; justify-content: space-between; padding-top: 1rem; border-top: 1px solid #e2e8f0;">
             <a href="index.php"
-                style="display: inline-flex; align-items: center; justify-content: center; padding: 0.625rem 1.25rem; font-size: 0.8125rem; font-weight: 600; border-radius: 0.75rem; background-color: #ffffff; color: #475569; border: 1px solid #e2e8f0; text-decoration: none; transition: all 0.15s;"
-                onmouseover="this.style.backgroundColor='#f8fafc';"
-                onmouseout="this.style.backgroundColor='#ffffff';">
-                ยกเลิก
-            </a>
-            <button type="submit"
-                style="display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.625rem 1.75rem; font-size: 0.8125rem; font-weight: 600; border-radius: 0.75rem; background-color: #2563eb; color: #ffffff; border: none; cursor: pointer; white-space: nowrap; box-shadow: 0 1px 2px rgba(0,0,0,0.05); transition: all 0.15s;"
-                onmouseover="this.style.backgroundColor='#1d4ed8';"
-                onmouseout="this.style.backgroundColor='#2563eb';">
-                <svg style="width: 16px; height: 16px; flex-shrink: 0;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                style="display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; font-weight: 600; color: #475569; text-decoration: none;">
+                <svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                 </svg>
-                <span>บันทึกการเปลี่ยนแปลง</span>
-            </button>
+                <span>ย้อนกลับ (Back)</span>
+            </a>
+
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+                <a href="index.php"
+                    style="display: inline-flex; align-items: center; justify-content: center; height: 40px; padding: 0 1.25rem; border-radius: 0.75rem; border: 1px solid #e2e8f0; background-color: #ffffff; font-size: 0.75rem; font-weight: 600; color: #334155; text-decoration: none; cursor: pointer; transition: all 0.15s;"
+                    onmouseover="this.style.backgroundColor='#f8fafc';"
+                    onmouseout="this.style.backgroundColor='#ffffff';">
+                    ยกเลิก (Cancel)
+                </a>
+                <button type="submit"
+                    style="display: inline-flex; align-items: center; justify-content: center; height: 40px; padding: 0 1.75rem; border-radius: 0.75rem; background-color: #0f172a; font-size: 0.75rem; font-weight: 600; color: #ffffff; border: none; cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.1); transition: all 0.15s;"
+                    onmouseover="this.style.backgroundColor='#1e293b';"
+                    onmouseout="this.style.backgroundColor='#0f172a';">
+                    บันทึกการเปลี่ยนแปลง (Save)
+                </button>
+            </div>
         </div>
     </form>
 </div>
 
 <script>
-function updateRoleCards() {
-    const radios = document.querySelectorAll('input[name="role"]');
-    radios.forEach(radio => {
-        const card = radio.closest('label');
-        const dot = document.getElementById('dot-' + radio.value);
-        const radioCircle = document.getElementById('radio-' + radio.value);
+// Role Selection Carousel & Filtering
+function scrollRolesCarousel(offset) {
+    const track = document.getElementById('rolesCarouselTrack');
+    if (track) {
+        track.scrollBy({ left: offset, behavior: 'smooth' });
+    }
+}
 
-        if (radio.checked) {
-            if (radio.value === 'super_admin') {
-                card.className = 'relative flex cursor-pointer rounded-2xl border p-4 transition-all border-purple-500 bg-purple-50/20 ring-2 ring-purple-500/20';
-                radioCircle.className = 'w-4 h-4 mt-0.5 rounded-full border flex items-center justify-center border-purple-600 bg-purple-600';
-            } else {
-                card.className = 'relative flex cursor-pointer rounded-2xl border p-4 transition-all border-blue-500 bg-blue-50/20 ring-2 ring-blue-500/20';
-                radioCircle.className = 'w-4 h-4 mt-0.5 rounded-full border flex items-center justify-center border-blue-600 bg-blue-600';
-            }
-            if (dot) dot.classList.remove('hidden');
+function filterRoleCards(query) {
+    query = query.trim().toLowerCase();
+    const cards = document.querySelectorAll('.role-card-item');
+    const emptyMsg = document.getElementById('rolesEmptySearch');
+    let visibleCount = 0;
+
+    cards.forEach(card => {
+        const name = card.dataset.roleName || '';
+        const slug = card.dataset.roleSlug || '';
+        const desc = card.dataset.roleDesc || '';
+
+        if (!query || name.includes(query) || slug.includes(query) || desc.includes(query)) {
+            card.style.display = 'flex';
+            visibleCount++;
         } else {
-            card.className = 'relative flex cursor-pointer rounded-2xl border p-4 transition-all border-slate-200 hover:bg-slate-50/50';
-            radioCircle.className = 'w-4 h-4 mt-0.5 rounded-full border flex items-center justify-center border-slate-300';
-            if (dot) dot.classList.add('hidden');
+            card.style.display = 'none';
+        }
+    });
+
+    if (emptyMsg) {
+        emptyMsg.style.display = (visibleCount === 0) ? 'block' : 'none';
+    }
+
+    const badge = document.getElementById('role_count_badge');
+    if (badge) {
+        badge.textContent = visibleCount + ' บทบาท' + (query ? ' (พบ)' : '');
+    }
+}
+
+function updateRoleSelection(radio, isSuper) {
+    document.querySelectorAll('input[name="role_id"]').forEach(r => {
+        const card = r.closest('label');
+        const dot = card.querySelector('.radio-dot');
+        const circle = card.querySelector('.radio-circle');
+
+        if (r.checked) {
+            if (isSuper) {
+                card.style.borderColor = '#9333ea';
+                card.style.backgroundColor = '#faf5ff';
+                circle.style.borderColor = '#9333ea';
+                circle.style.backgroundColor = '#9333ea';
+            } else {
+                card.style.borderColor = '#0f172a';
+                card.style.backgroundColor = '#f8fafc';
+                circle.style.borderColor = '#0f172a';
+                circle.style.backgroundColor = '#0f172a';
+            }
+            if (dot) dot.style.display = 'block';
+        } else {
+            card.style.borderColor = '#e2e8f0';
+            card.style.backgroundColor = '#ffffff';
+            circle.style.borderColor = '#cbd5e1';
+            circle.style.backgroundColor = 'transparent';
+            if (dot) dot.style.display = 'none';
         }
     });
 }
@@ -391,11 +532,9 @@ function togglePasswordVisibility(inputId, btn) {
     if (!input) return;
     if (input.type === 'password') {
         input.type = 'text';
-        btn.innerHTML = '<svg style="width: 18px; height: 18px;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.542 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" /></svg>';
-        btn.style.color = '#2563eb';
+        btn.style.color = '#0f172a';
     } else {
         input.type = 'password';
-        btn.innerHTML = '<svg style="width: 18px; height: 18px;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>';
         btn.style.color = '#94a3b8';
     }
 }
@@ -421,28 +560,28 @@ function validateEditPasswordLive() {
     const hasNum = /[0-9]/.test(val);
     const hasMatch = Boolean(val && confVal && val === confVal);
 
-    updateCheckItem('edit_rule_len', 'icon_edit_rule_len', hasLen, 'ความยาวอย่างน้อย 6 ตัวอักษร');
-    updateCheckItem('edit_rule_lower', 'icon_edit_rule_lower', hasLower, 'มีตัวพิมพ์เล็ก (a-z) อย่างน้อย 1 ตัว');
-    updateCheckItem('edit_rule_num', 'icon_edit_rule_num', hasNum, 'มีตัวเลข (0-9) อย่างน้อย 1 ตัว');
-    updateCheckItem('edit_rule_match', 'icon_edit_rule_match', hasMatch, 'รหัสผ่านทั้ง 2 ช่องตรงกัน');
+    updateCheckItem('edit_rule_len', 'icon_edit_rule_len', hasLen);
+    updateCheckItem('edit_rule_lower', 'icon_edit_rule_lower', hasLower);
+    updateCheckItem('edit_rule_num', 'icon_edit_rule_num', hasNum);
+    updateCheckItem('edit_rule_match', 'icon_edit_rule_match', hasMatch);
 
     return hasLen && hasLower && hasNum && hasMatch;
 }
 
-function updateCheckItem(ruleId, iconId, isValid, text) {
+function updateCheckItem(ruleId, iconId, isValid) {
     const item = document.getElementById(ruleId);
     const icon = document.getElementById(iconId);
     if (!item || !icon) return;
 
     if (isValid) {
-        item.style.color = '#15803d';
+        item.style.color = '#047857';
         item.style.fontWeight = '600';
         icon.innerHTML = '✓';
-        icon.style.color = '#16a34a';
+        icon.style.color = '#059669';
         icon.style.fontWeight = '700';
     } else {
         item.style.color = '#94a3b8';
-        item.style.fontWeight = '500';
+        item.style.fontWeight = '400';
         icon.innerHTML = '✕';
         icon.style.color = '#94a3b8';
         icon.style.fontWeight = '400';
@@ -466,6 +605,17 @@ document.getElementById('editAdminForm').addEventListener('submit', function(e) 
         if (!validateEditPasswordLive()) {
             alert('กรุณากรอกรหัสผ่านใหม่ให้ถูกต้องครบถ้วนตามข้อกำหนดความปลอดภัย');
             e.preventDefault();
+        }
+    }
+});
+
+// Auto-scroll selected card into view on page load
+document.addEventListener('DOMContentLoaded', () => {
+    const selectedRadio = document.querySelector('input[name="role_id"]:checked');
+    if (selectedRadio) {
+        const card = selectedRadio.closest('label');
+        if (card) {
+            card.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
         }
     }
 });

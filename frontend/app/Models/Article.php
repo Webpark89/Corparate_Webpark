@@ -251,6 +251,16 @@ class Article
         return $stmt->execute($values);
     }
 
+    public function incrementViews(int $id): bool
+    {
+        try {
+            $stmt = $this->pdo->prepare('UPDATE article SET views = views + 1 WHERE id = ?');
+            return $stmt->execute([$id]);
+        } catch (\Throwable $e) {
+            return false;
+        }
+    }
+
     public function delete(int $id): bool
     {
         $stmt = $this->pdo->prepare('DELETE FROM article WHERE id = ?');

@@ -18,6 +18,18 @@ if (file_exists(__DIR__ . '/../../admin/config/config.php')) {
     require_once __DIR__ . '/../../admin/config/config.php';
 }
 
+if (session_status() === PHP_SESSION_NONE && !headers_sent()) {
+    session_set_cookie_params([
+        'lifetime' => 0,
+        'path' => '/',
+        'domain' => '',
+        'secure' => !empty($_SERVER['HTTPS']),
+        'httponly' => true,
+        'samesite' => 'Strict',
+    ]);
+    session_start();
+}
+
 // DB constants fallback for frontend models
 if (!defined('DB_HOST')) define('DB_HOST', '127.0.0.1');
 if (!defined('DB_NAME')) define('DB_NAME', 'corparate_webpark');

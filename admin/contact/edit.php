@@ -4,6 +4,7 @@
  * AJAX endpoint — fetch a single setting record by config_key.
  */
 require_once __DIR__ . '/../includes/functions.php';
+require_permission('contact.view');
 
 if (isset($_GET['ajax']) && isset($_GET['key'])) {
     $statement = db()->prepare('SELECT * FROM settings WHERE config_key = ?');

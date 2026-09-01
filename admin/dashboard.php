@@ -453,10 +453,19 @@ $traffic365Unique = array_column(array_values($last12Months), 'unique');
         }
     };
 
-    const getOptimalMax = (datasets) => {
+    const getOptimalMax = (chartOrDatasets) => {
         let maxVal = 0;
-        if (Array.isArray(datasets)) {
-            datasets.forEach(ds => {
+        if (chartOrDatasets && typeof chartOrDatasets.isDatasetVisible === 'function') {
+            // Chart instance passed
+            chartOrDatasets.data.datasets.forEach((ds, index) => {
+                if (chartOrDatasets.isDatasetVisible(index) && Array.isArray(ds.data)) {
+                    const m = Math.max(...ds.data, 0);
+                    if (m > maxVal) maxVal = m;
+                }
+            });
+        } else if (Array.isArray(chartOrDatasets)) {
+            // Datasets array passed
+            chartOrDatasets.forEach(ds => {
                 if (Array.isArray(ds.data)) {
                     const m = Math.max(...ds.data, 0);
                     if (m > maxVal) maxVal = m;
@@ -480,13 +489,23 @@ $traffic365Unique = array_column(array_values($last12Months), 'unique');
                     display: true,
                     position: 'top',
                     align: 'end',
+                    onClick: function(e, legendItem, legend) {
+                        // Call default Chart.js legend toggle behavior
+                        Chart.defaults.plugins.legend.onClick.call(this, e, legendItem, legend);
+                        
+                        // Dynamically update Y-axis scale to match visible datasets
+                        const chart = legend.chart;
+                        chart.options.scales.y.suggestedMax = getOptimalMax(chart);
+                        chart.update();
+                    },
                     labels: {
                         boxWidth: 12,
                         usePointStyle: true,
                         pointStyle: 'circle',
                         font: { family: 'sans-serif', size: 12, weight: '500' },
                         padding: 16,
-                        color: '#475569'
+                        color: '#475569',
+                        cursor: 'pointer'
                     }
                 },
                 tooltip: {
@@ -532,7 +551,7 @@ $traffic365Unique = array_column(array_values($last12Months), 'unique');
         if (!selected) return;
         trafficChart.data.labels = selected.labels;
         trafficChart.data.datasets = selected.datasets.map(ds => ({ ...ds }));
-        trafficChart.options.scales.y.suggestedMax = getOptimalMax(selected.datasets);
+        trafficChart.options.scales.y.suggestedMax = getOptimalMax(trafficChart);
         trafficChart.update();
     });
 

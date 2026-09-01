@@ -6,6 +6,7 @@
 $pageTitle = 'Portfolio Management';
 $page = 'portfolio';
 require_once __DIR__ . '/../includes/header.php';
+require_permission('portfolio.view');
 
 $search = trim($_GET['search'] ?? '');
 $categoryFilter = $_GET['category_id'] ?? '';

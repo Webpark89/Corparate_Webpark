@@ -7,23 +7,25 @@ require_login();
 require_admin_role();
 $me = current_admin();
 $page = $page ?? 'dashboard';
-$navItems = [
-    ['name' => 'แดชบอร์ด', 'url' => '/index.php', 'page' => 'dashboard'],
-    ['name' => 'การจัดการบทความ', 'url' => '/article/index.php', 'page' => 'article'],
-    ['name' => 'หมวดหมู่บทความ', 'url' => '/category/index.php', 'page' => 'category'],
-    ['name' => 'การจัดการผลงาน', 'url' => '/portfolio/index.php', 'page' => 'portfolio'],
-    ['name' => 'การจัดการรีวิว', 'url' => '/review/index.php', 'page' => 'review'],
-    ['name' => 'การจัดการลูกค้า', 'url' => '/partners/index.php', 'page' => 'partners'],
-    ['name' => 'การจัดการบริการ', 'url' => '/service/index.php', 'page' => 'service'],
-    ['name' => 'ข้อความจากลูกค้า', 'url' => '/contact_inbox/index.php', 'page' => 'contact_inbox'],
+
+$rawNavItems = [
+    ['name' => 'แดชบอร์ด', 'url' => '/index.php', 'page' => 'dashboard', 'perm' => null],
+    ['name' => 'การจัดการบทความ', 'url' => '/article/index.php', 'page' => 'article', 'perm' => 'article.view'],
+    ['name' => 'หมวดหมู่บทความ', 'url' => '/category/index.php', 'page' => 'category', 'perm' => 'category.view'],
+    ['name' => 'การจัดการผลงาน', 'url' => '/portfolio/index.php', 'page' => 'portfolio', 'perm' => 'portfolio.view'],
+    ['name' => 'การจัดการรีวิว', 'url' => '/review/index.php', 'page' => 'review', 'perm' => 'review.view'],
+    ['name' => 'การจัดการลูกค้า', 'url' => '/partners/index.php', 'page' => 'partners', 'perm' => 'partners.view'],
+    ['name' => 'การจัดการบริการ', 'url' => '/service/index.php', 'page' => 'service', 'perm' => 'service.view'],
+    ['name' => 'ข้อความจากลูกค้า', 'url' => '/contact_inbox/index.php', 'page' => 'contact_inbox', 'perm' => 'inbox.view'],
+    ['name' => 'การตั้งค่าการติดต่อ', 'url' => '/contact/index.php', 'page' => 'contact', 'perm' => 'contact.view'],
+    ['name' => 'จัดการผู้ดูแลระบบ', 'url' => '/users/index.php', 'page' => 'users', 'perm' => 'users.view'],
+    ['name' => 'จัดการบทบาทและสิทธิ์', 'url' => '/roles/index.php', 'page' => 'roles', 'perm' => 'roles.view'],
+    ['name' => 'เปลี่ยนรหัสผ่าน', 'url' => '/change_password.php', 'page' => 'change_password', 'perm' => null],
 ];
 
-if (is_super_admin()) {
-    $navItems[] = ['name' => 'การตั้งค่าการติดต่อ', 'url' => '/contact/index.php', 'page' => 'contact'];
-    $navItems[] = ['name' => 'จัดการผู้ดูแลระบบ', 'url' => '/users/index.php', 'page' => 'users'];
-}
-
-$navItems[] = ['name' => 'เปลี่ยนรหัสผ่าน', 'url' => '/change_password.php', 'page' => 'change_password'];
+$navItems = array_filter($rawNavItems, function ($item) {
+    return empty($item['perm']) || has_permission($item['perm']);
+});
 ?>
 <!doctype html>
 <html lang="th">
@@ -121,15 +123,15 @@ $navItems[] = ['name' => 'เปลี่ยนรหัสผ่าน', 'url' 
                     </div>
 
                     <!-- Role Badge -->
-                    <?php if (($me['role'] ?? '') === 'super_admin'): ?>
-                        <span style="display: inline-flex; align-items: center; gap: 0.25rem; border-radius: 9999px; background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%); color: #7c3aed; padding: 0.25rem 0.625rem; font-size: 0.6875rem; font-weight: 700; border: 1px solid #ddd6fe; box-shadow: 0 1px 2px rgba(124,58,237,0.08);">
+                    <?php if (is_super_admin()): ?>
+                        <span style="display: inline-flex; align-items: center; gap: 0.35rem; border-radius: 9999px; background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%); color: #7c3aed; padding: 0.25rem 0.65rem; font-size: 0.6875rem; font-weight: 700; border: 1px solid #ddd6fe; box-shadow: 0 1px 2px rgba(124,58,237,0.08);">
                             <span style="width: 6px; height: 6px; border-radius: 9999px; background-color: #9333ea;"></span>
-                            <span>Super Admin</span>
+                            <span><?= e($me['role_name'] ?? 'Super Admin') ?></span>
                         </span>
                     <?php else: ?>
-                        <span style="display: inline-flex; align-items: center; gap: 0.25rem; border-radius: 9999px; background-color: #eff6ff; color: #2563eb; padding: 0.25rem 0.625rem; font-size: 0.6875rem; font-weight: 600; border: 1px solid #bfdbfe;">
+                        <span style="display: inline-flex; align-items: center; gap: 0.35rem; border-radius: 9999px; background-color: #eff6ff; color: #2563eb; padding: 0.25rem 0.65rem; font-size: 0.6875rem; font-weight: 600; border: 1px solid #bfdbfe;">
                             <span style="width: 6px; height: 6px; border-radius: 9999px; background-color: #2563eb;"></span>
-                            <span>Admin</span>
+                            <span><?= e($me['role_name'] ?? 'ผู้ดูแลระบบ') ?></span>
                         </span>
                     <?php endif; ?>
                 </div>

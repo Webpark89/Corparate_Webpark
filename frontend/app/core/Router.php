@@ -25,6 +25,11 @@ class Router
     {
         $requestPath = $this->resolveRequestPath($requestUri);
 
+        // Record traffic analytics (auto excludes Super-Admin)
+        if (function_exists('track_site_traffic')) {
+            track_site_traffic();
+        }
+
         if ($this->dispatchExactRoute($requestPath)) {
             return;
         }

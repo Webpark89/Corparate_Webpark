@@ -4,7 +4,7 @@
  * Edit an existing service — loads record, renders form, delegates POST to _save.php.
  */
 require_once __DIR__ . '/../includes/functions.php';
-require_login();
+require_permission('service.edit');
 
 $id = (int) ($_GET['id'] ?? 0);
 

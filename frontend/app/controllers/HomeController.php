@@ -388,6 +388,11 @@ class HomeController
                 return;
             }
 
+            // Increment article views (exclude super admin)
+            if (!empty($row['id']) && function_exists('is_super_admin_session') && !is_super_admin_session()) {
+                $articleModel->incrementViews((int) $row['id']);
+            }
+
             $lang = getCurrentLang();
             
             $metaTitle = (string) ($row['meta_title'] ?? '');

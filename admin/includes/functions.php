@@ -198,7 +198,10 @@ function csrf_verify(): void
 function find_admin_by_login(string $login): ?array
 {
     $stmt = db()->prepare(
-        'SELECT * FROM admins WHERE username = :login_user OR email = :login_email LIMIT 1'
+        'SELECT a.*, r.name AS role_name, r.slug AS role_slug, r.is_system AS role_is_system
+         FROM admins a
+         LEFT JOIN roles r ON a.role_id = r.id
+         WHERE a.username = :login_user OR a.email = :login_email LIMIT 1'
     );
     $stmt->execute(['login_user' => $login, 'login_email' => $login]);
     $user = $stmt->fetch();
@@ -212,10 +215,39 @@ function find_admin_by_login(string $login): ?array
  */
 function find_admin_by_id(int $id): ?array
 {
-    $stmt = db()->prepare('SELECT * FROM admins WHERE id = :id LIMIT 1');
+    $stmt = db()->prepare(
+        'SELECT a.*, r.name AS role_name, r.slug AS role_slug, r.is_system AS role_is_system
+         FROM admins a
+         LEFT JOIN roles r ON a.role_id = r.id
+         WHERE a.id = :id LIMIT 1'
+    );
     $stmt->execute(['id' => $id]);
     $user = $stmt->fetch();
     return $user ?: null;
+}
+
+/**
+ * Reload permissions for the current active session role.
+ */
+function refresh_current_admin_permissions(?int $roleId = null): void
+{
+    $roleId = $roleId ?? (!empty($_SESSION['admin_role_id']) ? (int)$_SESSION['admin_role_id'] : null);
+    if (!$roleId) {
+        $_SESSION['admin_permissions'] = [];
+        return;
+    }
+    try {
+        $stmt = db()->prepare('
+            SELECT p.code 
+            FROM permissions p
+            JOIN role_permissions rp ON p.id = rp.permission_id
+            WHERE rp.role_id = :role_id
+        ');
+        $stmt->execute(['role_id' => $roleId]);
+        $_SESSION['admin_permissions'] = $stmt->fetchAll(PDO::FETCH_COLUMN) ?: [];
+    } catch (Exception $e) {
+        $_SESSION['admin_permissions'] = [];
+    }
 }
 
 /**
@@ -227,9 +259,14 @@ function set_admin_session(array $user): void
     $_SESSION['admin_id'] = (int) $user['id'];
     $_SESSION['admin_username'] = $user['username'];
     $_SESSION['admin_email'] = $user['email'] ?? '';
-    $_SESSION['admin_full_name'] = $user['full_name'] ?: $user['username'];
-    $_SESSION['admin_role'] = $user['role'] ?? 'admin';
+    $_SESSION['admin_full_name'] = !empty($user['full_name']) ? $user['full_name'] : $user['username'];
+    $_SESSION['admin_role_id'] = !empty($user['role_id']) ? (int)$user['role_id'] : null;
+    $_SESSION['admin_role_slug'] = $user['role_slug'] ?? ($user['role'] ?? 'admin');
+    $_SESSION['admin_role_name'] = $user['role_name'] ?? ($user['role'] === 'super_admin' ? 'ผู้ดูแลระบบสูงสุด' : 'ผู้ดูแลระบบ');
+    $_SESSION['admin_role'] = $_SESSION['admin_role_slug'];
     $_SESSION['last_activity'] = time();
+
+    refresh_current_admin_permissions($_SESSION['admin_role_id']);
 }
 
 /**
@@ -341,7 +378,7 @@ function require_login(): void
 }
 
 /**
- * @return array{id: int, username: string, email: string, full_name: string, role: string}
+ * @return array{id: int, username: string, email: string, full_name: string, role: string, role_id: ?int, role_slug: string, role_name: string, permissions: array<string>}
  */
 function current_admin(): array
 {
@@ -351,6 +388,10 @@ function current_admin(): array
         'email' => $_SESSION['admin_email'] ?? '',
         'full_name' => $_SESSION['admin_full_name'] ?? '',
         'role' => $_SESSION['admin_role'] ?? 'admin',
+        'role_id' => $_SESSION['admin_role_id'] ?? null,
+        'role_slug' => $_SESSION['admin_role_slug'] ?? ($_SESSION['admin_role'] ?? 'admin'),
+        'role_name' => $_SESSION['admin_role_name'] ?? 'ผู้ดูแลระบบ',
+        'permissions' => $_SESSION['admin_permissions'] ?? [],
     ];
 }
 
@@ -484,23 +525,16 @@ function flash(string $key, ?string $message = null): mixed
 }
 
 /**
- * Restrict access to admin roles (admin or super_admin).
+ * Restrict access to authenticated users.
  */
 function require_admin_role(): void
 {
-    $admin = current_admin();
-    $allowedRoles = ['admin', 'super_admin'];
-    if (!in_array($admin['role'] ?? '', $allowedRoles, true)) {
-        http_response_code(403);
-        exit('Forbidden: Admin access required.');
-    }
+    require_login();
 }
 
 function can_admin(): bool
 {
-    $admin = current_admin();
-    $allowedRoles = ['admin', 'super_admin'];
-    return in_array($admin['role'] ?? '', $allowedRoles, true);
+    return !empty($_SESSION['admin_logged_in']);
 }
 
 /**
@@ -509,7 +543,7 @@ function can_admin(): bool
 function is_super_admin(): bool
 {
     $admin = current_admin();
-    return ($admin['role'] ?? '') === 'super_admin';
+    return ($admin['role_slug'] ?? ($admin['role'] ?? '')) === 'super_admin';
 }
 
 /**
@@ -520,7 +554,63 @@ function require_super_admin(): void
     require_login();
     if (!is_super_admin()) {
         http_response_code(403);
-        exit('Forbidden: Super Admin access required.');
+        $errorMessage = 'หน้านี้สงวนสิทธิ์เฉพาะผู้ดูแลระบบสูงสุด (Super Admin) เท่านั้น';
+        $requiredPermission = 'roles.manage';
+        if (file_exists(__DIR__ . '/../errors/403.php')) {
+            include __DIR__ . '/../errors/403.php';
+        } else {
+            exit('Forbidden: Super Admin access required.');
+        }
+        exit;
+    }
+}
+
+/**
+ * Check if the current logged-in user has a specific permission code.
+ * Super Admin bypasses all checks and has all permissions.
+ */
+function has_permission(string $code): bool
+{
+    if (is_super_admin()) {
+        return true;
+    }
+    $permissions = $_SESSION['admin_permissions'] ?? [];
+    return in_array($code, $permissions, true);
+}
+
+/**
+ * Check if the user has any of the supplied permission codes.
+ */
+function has_any_permission(array $codes): bool
+{
+    if (is_super_admin()) {
+        return true;
+    }
+    $permissions = $_SESSION['admin_permissions'] ?? [];
+    foreach ($codes as $code) {
+        if (in_array($code, $permissions, true)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+/**
+ * Enforce permission on a page/action; renders 403 error page if not allowed.
+ */
+function require_permission(string $code): void
+{
+    require_login();
+    if (!has_permission($code)) {
+        http_response_code(403);
+        $errorMessage = 'คุณไม่มีสิทธิ์ในการเข้าถึงหรือดำเนินการในส่วนนี้ (' . e($code) . ')';
+        $requiredPermission = $code;
+        if (file_exists(__DIR__ . '/../errors/403.php')) {
+            include __DIR__ . '/../errors/403.php';
+        } else {
+            exit('Forbidden: You do not have permission to access this page.');
+        }
+        exit;
     }
 }
 

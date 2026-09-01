@@ -4,8 +4,7 @@
  * Delete a contact setting by config_key via GET or POST.
  */
 require_once __DIR__ . '/../includes/functions.php';
-require_login();
-require_super_admin();
+require_permission('contact.edit');
 
 if (!isset($_GET['key']) && $_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);

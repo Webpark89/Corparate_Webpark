@@ -1,18 +1,19 @@
 <?php
 /**
- * Delete Admin User (Super Admin only).
+ * Delete Admin User.
  */
 require_once __DIR__ . '/../includes/functions.php';
-require_super_admin();
+require_permission('users.delete');
 
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+$submittedToken = $_GET[CSRF_TOKEN_NAME] ?? ($_POST[CSRF_TOKEN_NAME] ?? '');
+if (!hash_equals($_SESSION[CSRF_TOKEN_NAME] ?? '', (string) $submittedToken)) {
+    http_response_code(419);
+    flash('error', 'Invalid CSRF token.');
     header('Location: index.php');
     exit;
 }
 
-csrf_verify();
-
-$id = (int)($_POST['id'] ?? 0);
+$id = (int)($_POST['id'] ?? ($_GET['id'] ?? 0));
 $currentAdminId = (int)($_SESSION['admin_id'] ?? 0);
 
 if ($id <= 0) {
@@ -36,8 +37,13 @@ if (!$user) {
 }
 
 // Guard 2: Prevent deleting the last remaining Super Admin
-if ($user['role'] === 'super_admin') {
-    $totalSuperAdmins = (int) db()->query("SELECT COUNT(*) FROM admins WHERE role = 'super_admin'")->fetchColumn();
+if ($user['role_slug'] === 'super_admin' || $user['role'] === 'super_admin') {
+    $totalSuperAdmins = (int) db()->query("
+        SELECT COUNT(*) FROM admins a
+        LEFT JOIN roles r ON a.role_id = r.id
+        WHERE r.slug = 'super_admin' OR (a.role_id IS NULL AND a.role = 'super_admin')
+    ")->fetchColumn();
+
     if ($totalSuperAdmins <= 1) {
         flash('error', 'ไม่สามารถลบ Super Admin คนสุดท้ายในระบบได้ (ต้องมี Super Admin อย่างน้อย 1 คนเสมอ)');
         header('Location: index.php');

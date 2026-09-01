@@ -6,6 +6,7 @@
 $pageTitle = 'Reviews Management';
 $page = 'review';
 require_once __DIR__ . '/../includes/header.php';
+require_permission('review.view');
 
 $search = trim($_GET['search'] ?? '');
 $ratingFilter = $_GET['rating'] ?? '';
