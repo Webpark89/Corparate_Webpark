@@ -74,8 +74,22 @@ function convert_plain_bullets_to_html(string $html): string
         return '';
     }
 
+    // Step 1: ตรวจจับและแปลงโค้ดพิเศษของ Microsoft Word
+    $isWordList = (strpos($html, 'supportLists') !== false || strpos($html, 'mso-list') !== false || strpos($html, 'MsoListParagraph') !== false);
+    if ($isWordList) {
+        $html = preg_replace('/<!--\s*\[if\s+!supportLists\][\s\S]*?<!--\s*\[endif\]\s*-->/i', '• ', $html);
+        $html = preg_replace('/<span[^>]*style="[^"]*mso-list:\s*Ignore[^"]*"[^>]*>[\s\S]*?<\/span>/i', '• ', $html);
+    }
+
+    // ลบ HTML comments ทั่วไป
+    $html = preg_replace('/<!--[\s\S]*?-->/', '', $html);
+
     // ตรวจสอบเบื้องต้นว่ามีสัญลักษณ์ Bullet หรือ Number List หรือไม่
-    if (!preg_match('/[•⁃▪▫◦·\x{2022}\x{2043}\x{25AA}\x{25AB}\x{25E6}\x{00B7}]|&bull;|&#8226;|&#x2022;/u', $html) && !preg_match('/(?:^|<p[^>]*>|<br\s*\/?>)[\s\x{00A0}]*[-\*]\s+/u', $html)) {
+    $hasBullets = preg_match('/[•⁃▪▫◦·\x{2022}\x{2043}\x{25AA}\x{25AB}\x{25E6}\x{00B7}]|&bull;|&#8226;|&#x2022;/u', $html);
+    $hasDashes = preg_match('/(?:^|<p[^>]*>|<br\s*\/?>)[\s\x{00A0}]*[-\*]\s+/u', $html);
+    $hasNumbers = preg_match('/(?:^|<p[^>]*>|<br\s*\/?>)[\s\x{00A0}]*\d+[\.\)][\s\x{00A0}]+/u', $html);
+
+    if (!$hasBullets && !$hasDashes && !$hasNumbers) {
         return $html;
     }
 
@@ -95,7 +109,7 @@ function convert_plain_bullets_to_html(string $html): string
 
     foreach ($lines as $line) {
         $trimmed = trim($line);
-        if ($trimmed === '') {
+        if ($trimmed === '' || $trimmed === '&nbsp;') {
             if (!empty($currentList)) {
                 $output[] = "<{$currentType}><li>" . implode('</li><li>', $currentList) . "</li></{$currentType}>";
                 $currentList = [];
@@ -113,28 +127,33 @@ function convert_plain_bullets_to_html(string $html): string
             continue;
         }
 
+        $cleanText = trim(strip_tags($trimmed));
+        if ($cleanText === '') {
+            continue;
+        }
+
         // Check for bullet character •, ⁃, ▪, etc.
-        if (preg_match('/^[•⁃▪▫◦·\x{2022}\x{2043}\x{25AA}\x{25AB}\x{25E6}\x{00B7}][\s\x{00A0}]*(.*)$/u', $trimmed, $m)) {
+        if (preg_match('/^[•⁃▪▫◦·\x{2022}\x{2043}\x{25AA}\x{25AB}\x{25E6}\x{00B7}][\s\x{00A0}]*(.*)$/u', $cleanText)) {
             if ($currentType !== 'ul' && !empty($currentList)) {
                 $output[] = "<{$currentType}><li>" . implode('</li><li>', $currentList) . "</li></{$currentType}>";
                 $currentList = [];
             }
             $currentType = 'ul';
-            $currentList[] = $m[1];
-        } elseif (preg_match('/^([-\*])[\s\x{00A0}]+(.*)$/u', $trimmed, $m)) {
+            $currentList[] = preg_replace('/^(\s*<[^>]+>)*\s*[•⁃▪▫◦·\x{2022}\x{2043}\x{25AA}\x{25AB}\x{25E6}\x{00B7}][\s\x{00A0}]*/u', '', $trimmed);
+        } elseif (preg_match('/^([-\*])[\s\x{00A0}]+(.*)$/u', $cleanText)) {
             if ($currentType !== 'ul' && !empty($currentList)) {
                 $output[] = "<{$currentType}><li>" . implode('</li><li>', $currentList) . "</li></{$currentType}>";
                 $currentList = [];
             }
             $currentType = 'ul';
-            $currentList[] = $m[2];
-        } elseif (preg_match('/^(\d+)[\.\)][\s\x{00A0}]+(.*)$/u', $trimmed, $m)) {
+            $currentList[] = preg_replace('/^(\s*<[^>]+>)*\s*([-\*])[\s\x{00A0}]+/u', '', $trimmed);
+        } elseif (preg_match('/^(\d+)[\.\)][\s\x{00A0}]+(.*)$/u', $cleanText)) {
             if ($currentType !== 'ol' && !empty($currentList)) {
                 $output[] = "<{$currentType}><li>" . implode('</li><li>', $currentList) . "</li></{$currentType}>";
                 $currentList = [];
             }
             $currentType = 'ol';
-            $currentList[] = $m[2];
+            $currentList[] = preg_replace('/^(\s*<[^>]+>)*\s*(\d+)[\.\)][\s\x{00A0}]+/u', '', $trimmed);
         } else {
             if (!empty($currentList)) {
                 $output[] = "<{$currentType}><li>" . implode('</li><li>', $currentList) . "</li></{$currentType}>";

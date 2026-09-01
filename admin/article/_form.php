@@ -809,21 +809,34 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
 
     /**
      * แปลงข้อความที่มีสัญลักษณ์ Bullet (•, ⁃, ▪, -, *) หรือตัวเลขรายการ (1., 1)) 
+     * และรองรับโค้ดพิเศษจาก Microsoft Word (MsoListParagraph / supportLists)
      * ให้กลายเป็นแท็ก <ul><li> หรือ <ol><li> อัตโนมัติเมื่อวางเนื้อหา (Auto-convert on Paste)
      */
     function autoConvertBullets(input) {
         if (!input || typeof input !== 'string') return input;
 
+        // ตรวจจับโค้ด List รูปแบบเฉพาะของ Microsoft Word
+        const isWordList = input.includes('supportLists') || input.includes('mso-list') || input.includes('MsoListParagraph');
+        let str = input;
+
+        if (isWordList) {
+            str = str.replace(/<!--\s*\[if\s+!supportLists\][\s\S]*?<!--\s*\[endif\]\s*-->/gi, '• ');
+            str = str.replace(/<span[^>]*style="[^"]*mso-list:\s*Ignore[^"]*"[^>]*>[\s\S]*?<\/span>/gi, '• ');
+        }
+
+        // ลบ HTML comments ทั่วไป
+        str = str.replace(/<!--[\s\S]*?-->/g, '');
+
         // ตรวจสอบเบื้องต้นว่ามีสัญลักษณ์ Bullet หรือ Number List หรือไม่
         const hasBulletPattern = /[•⁃▪▫◦·\u2022\u2043\u25AA\u25AB\u25E6\u00B7]|&bull;|&#8226;|&#x2022;|^[\s\u00A0]*[-\*]\s+|[\r\n<][\s\u00A0]*[-\*]\s+/i;
         const hasNumberPattern = /(?:^|[\r\n<])[\s\u00A0]*\d+[\.\)][\s\u00A0]+/i;
 
-        if (!hasBulletPattern.test(input) && !hasNumberPattern.test(input)) {
+        if (!hasBulletPattern.test(str) && !hasNumberPattern.test(str)) {
             return input;
         }
 
         // แปลง Entities ของ Bullet ให้อยู่ในรูปตัวอักษรมาตรฐาน
-        let str = input
+        str = str
             .replace(/&bull;|&#8226;|&#x2022;/gi, '•')
             .replace(/&nbsp;/gi, ' ');
 
@@ -844,17 +857,17 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
             if (!cleanText) return null;
 
             if (/^[•⁃▪▫◦·\u2022\u2043\u25AA\u25AB\u25E6\u00B7]/.test(cleanText)) {
-                const content = line.trim().replace(/^[•⁃▪▫◦·\u2022\u2043\u25AA\u25AB\u25E6\u00B7][\s\u00A0]*/, '');
+                const content = line.trim().replace(/^(\s*<[^>]+>)*\s*[•⁃▪▫◦·\u2022\u2043\u25AA\u25AB\u25E6\u00B7][\s\u00A0]*/i, '');
                 return { type: 'ul', content: content };
             }
 
             if (/^([-\*])[\s\u00A0]+/.test(cleanText)) {
-                const content = line.trim().replace(/^([-\*])[\s\u00A0]+/, '');
+                const content = line.trim().replace(/^(\s*<[^>]+>)*\s*([-\*])[\s\u00A0]+/i, '');
                 return { type: 'ul', content: content };
             }
 
             if (/^\d+[\.\)][\s\u00A0]+/.test(cleanText)) {
-                const content = line.trim().replace(/^\d+[\.\)][\s\u00A0]+/, '');
+                const content = line.trim().replace(/^(\s*<[^>]+>)*\s*(\d+)[\.\)][\s\u00A0]+/i, '');
                 return { type: 'ol', content: content };
             }
 
@@ -872,7 +885,7 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
 
         rawLines.forEach(line => {
             const trimmed = line.trim();
-            if (!trimmed) {
+            if (!trimmed || trimmed === '&nbsp;') {
                 flushList();
                 return;
             }
@@ -989,7 +1002,7 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
             relative_urls: false,
             remove_script_host: false,
             convert_urls: false,
-            content_style: 'body { font-family: "Noto Sans Thai", Inter, ui-sans-serif, system-ui, sans-serif; font-size: 16px; line-height: 1.75; color: #475569; } p, span, li, div { font-size: 16px !important; line-height: 1.75 !important; } ul { list-style-type: disc; padding-left: 1.5rem; margin-bottom: 1.5rem; } ul li { margin-bottom: 0.5rem; } ul li::marker { color: #0d6efd; font-weight: bold; }',
+            content_style: 'body { font-family: "Noto Sans Thai", Inter, ui-sans-serif, system-ui, sans-serif; font-size: 16px; line-height: 1.75; color: #475569; } p, span, li, div { font-size: 16px !important; line-height: 1.75 !important; } ul { list-style: none !important; padding-left: 0 !important; margin-bottom: 1.5rem; } ul li { position: relative; padding-left: 1.5rem; margin-bottom: 0.5rem; line-height: 1.75; } ul li::before { content: ""; position: absolute; left: 0.35rem; top: 0.65rem; width: 7px; height: 7px; border-radius: 50%; background-color: #0663F6; }',
             images_upload_handler: tinymceImageUploadHandler,
             paste_preprocess: function (plugin, args) {
                 args.content = autoConvertBullets(args.content);
