@@ -6,7 +6,7 @@ $articles = is_array($articles ?? null) ? $articles : [];
 $categories = is_array($categories ?? null) ? $categories : [];
 $activeCategorySlug = (string) ($activeCategorySlug ?? 'all');
 $fallbackImage = asset_url('images/story.png');
-$heroImage = asset_url('images/bg-7.png');
+$heroImage = asset_url('images/article-hero-bg.png');
 $ctaImage = asset_url('images/bg-cta.jpg');
 ?>
 
@@ -39,15 +39,14 @@ $ctaImage = asset_url('images/bg-cta.jpg');
     .delay-400 { animation-delay: 400ms; }
     /* บังคับตำแหน่งรูปภาพและ Overlay ด้วย CSS โดยตรง เพื่อเลี่ยงปัญหา Tailwind ไม่คอมไพล์ */
     .hero-bg-img {
-        /* ปรับตำแหน่งรูปให้อยู่ล่างขวาเพื่อไม่ให้ทับกับข้อความ */
-        object-position: 95% bottom !important;
+        object-position: 85% bottom !important;
+        filter: contrast(1.15) saturate(1.22) brightness(0.98);
     }
     .hero-overlay-mobile {
-        /* ปรับ Gradient ให้สีขาวสว่างชัดเจน ไม่กลืนกับตัวหนังสือ */
-        background: linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, rgba(255, 255, 255, 0.88) 55%, rgba(255, 255, 255, 0.2) 100%) !important;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.90) 0%, rgba(255, 255, 255, 0.70) 55%, rgba(255, 255, 255, 0.2) 100%) !important;
     }
     .hero-overlay-gradient {
-        background: transparent !important; /* ยกเลิก gradient ซ้ำซ้อนบนมือถือ */
+        background: transparent !important;
     }
     @media (min-width: 768px) {
         .hero-bg-img {
@@ -57,12 +56,12 @@ $ctaImage = asset_url('images/bg-cta.jpg');
             background: transparent !important;
         }
         .hero-overlay-gradient {
-            background: linear-gradient(to right, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.9) 60%, rgba(255, 255, 255, 0.1) 100%) !important;
+            background: linear-gradient(to right, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.75) 55%, rgba(255, 255, 255, 0.05) 100%) !important;
         }
     }
 
     .hero-parallax-img {
-        transform: scale(1.12);
+        transform: none !important;
         will-change: transform;
     }
     @media (prefers-reduced-motion: reduce) {
@@ -102,7 +101,7 @@ $ctaImage = asset_url('images/bg-cta.jpg');
 <section id="article-hero" class="relative overflow-hidden font-sans bg-white border-none">
     <div class="absolute inset-0 z-0">
         <img src="<?= e($heroImage) ?>" alt="WEBPARK Solutions Background" 
-            class="hero-parallax-img w-full h-full object-cover md:object-contain hero-bg-img opacity-100">
+            class="w-full h-full object-cover hero-bg-img opacity-100">
             
         <div class="absolute inset-0 hero-overlay-mobile"></div>
         <div class="absolute inset-0 hero-overlay-gradient"></div>

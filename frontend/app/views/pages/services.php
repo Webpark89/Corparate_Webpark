@@ -3,7 +3,7 @@ declare(strict_types=1);
 $categories = is_array($categories ?? null) ? $categories : [];
 $activeCategorySlug = (string) ($activeCategorySlug ?? 'all');
 $fallbackImage = asset_url('images/story.png');
-$heroImage = asset_url('images/bg-6.png');
+$heroImage = asset_url('images/services-hero-bg.png');
 $ctaImage = asset_url('images/bg-cta.jpg');
 /**
  * Services listing page — grid 2-column card layout.
@@ -225,10 +225,12 @@ if (isset($services) && is_array($services)) {
 </style>
 <section id="services-hero" class="relative font-sans bg-[#f7faff] overflow-hidden mt-0 mx-4 mb-4 sm:mt-0 sm:mx-6 sm:mb-6 rounded-t-none rounded-b-[2rem] lg:m-0 lg:rounded-none">
     <!-- Desktop Background Image -->
-    <div class="absolute inset-0 z-0 hidden lg:block">
-        <img src="<?= e($heroImage) ?>" alt="bg" class="hero-parallax-img w-full h-full object-cover object-[75%_center] opacity-100 mix-blend-screen">
-        <div class="absolute inset-0 bg-gradient-to-r from-white via-white/80 to-white/5"></div>
-        <div class="absolute inset-x-0 bottom-0 h-[30%] bg-gradient-to-t from-white to-transparent z-10"></div>
+    <div class="absolute inset-0 z-0 hidden lg:block overflow-hidden">
+        <img src="<?= e($heroImage) ?>" alt="WEBPARK Services Background" 
+            class="w-full h-full object-cover object-[right_center]"
+            style="filter: contrast(1.15) saturate(1.22) brightness(0.98);">
+        <div class="absolute inset-0 bg-gradient-to-r from-white via-white/70 to-transparent"></div>
+        <div class="absolute inset-x-0 bottom-0 h-[25%] bg-gradient-to-t from-white to-transparent z-10"></div>
     </div>
     <style>
         @keyframes fadeSlideUp {
@@ -318,6 +320,9 @@ if (isset($services) && is_array($services)) {
         
         /* iPad Mini (768px) specific fixes */
         @media (min-width: 760px) and (max-width: 819px) {
+            .ipad-mini-hero-br {
+                display: block !important;
+            }
             .ipad-mini-services-subtitle {
                 white-space: normal !important;
                 font-size: 1.5rem !important;
@@ -708,10 +713,11 @@ if (isset($services) && is_array($services)) {
     <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8 pt-12 pb-24 lg:pt-28 lg:pb-32 relative z-10 desktop-wide-container-services">
         <!-- Mobile Background Image (Only covers this Hero container) -->
         <div class="absolute inset-0 z-0 overflow-hidden lg:hidden rounded-2xl">
-            <img src="<?= e($heroImage) ?>" alt="WEBPARK Solutions Background" 
-                class="hero-parallax-img w-full h-full object-cover object-[75%_center] opacity-100 mix-blend-screen">
-            <div class="absolute inset-0 bg-gradient-to-b from-white/90 via-white/70 to-white/40"></div>
-            <div class="absolute inset-x-0 bottom-0 h-[30%] bg-gradient-to-t from-white to-transparent"></div>
+            <img src="<?= e($heroImage) ?>" alt="WEBPARK Services Background" 
+                class="w-full h-full object-cover object-[75%_center] md:object-[right_center]"
+                style="filter: contrast(1.15) saturate(1.22) brightness(0.98);">
+            <div class="absolute inset-0 bg-gradient-to-r from-white/95 via-white/70 to-transparent"></div>
+            <div class="absolute inset-x-0 bottom-0 h-[25%] bg-gradient-to-t from-white to-transparent"></div>
         </div>
         <div class="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-12 lg:gap-20 items-center relative z-10">
             <div class="max-w-2xl lg:ml-12 xl:ml-24 ipad-pro-services-hero-content">
@@ -750,7 +756,7 @@ if (isset($services) && is_array($services)) {
                         <span class="hidden sm:block">
                             มากกว่า 20 ปี ที่เราสร้างสรรค์โซลูชันดิจิทัลครบวงจร<br class="ipad-pro-hidden">
                             ผสานเทคโนโลยี ความเชี่ยวชาญ และความเข้าใจธุรกิจ<br class="ipad-pro-hidden">
-                            เพื่อเพิ่มประสิทธิภาพ สร้างการเติบโต และยกระดับองค์กรสู่อนาคตอย่างยั่งยืน
+                            เพื่อเพิ่มประสิทธิภาพ สร้างการเติบโต<br class="hidden ipad-mini-hero-br"> และยกระดับองค์กรสู่อนาคตอย่างยั่งยืน
                         </span>
                     <?php else: ?>
                         Over 20 years of creating comprehensive digital solutions. We combine technology, expertise, and business understanding to help organizations increase efficiency and elevate into the future.

@@ -9,7 +9,7 @@ declare(strict_types=1);
 $values = $values ?? [];
 $timeline = $timeline ?? [];
 $team = $team ?? [];
-$heroImage = asset_url('images/bg-6.png');
+$heroImage = asset_url('images/about-hero-bg.png');
 $partners = $partners ?? [];
 $trustLogos = $trustLogos ?? [];
 $company = $company ?? [];
@@ -61,14 +61,13 @@ $contactAddress = $company['contact']['address'] ?? t('footer.office_address');
         scrollbar-width: none;  /* สำหรับ Firefox */
     }
 
-    /* Parallax: ขยายรูปเผื่อไว้ล่วงหน้า เพื่อไม่ให้เห็นขอบโหว่ตอนรูปเลื่อนตาม scroll */
     .hero-parallax-img {
-        transform: scale(1.15);
+        transform: none !important;
         will-change: transform;
     }
     @media (min-width: 1025px) {
         .hero-parallax-img {
-            transform: scale(1.6) translate(-2%, -5%) !important;
+            transform: none !important;
         }
         .desktop-about-hero-h1 {
             font-size: 5.5rem !important;
@@ -83,7 +82,7 @@ $contactAddress = $company['contact']['address'] ?? t('footer.office_address');
     }
     @media (min-width: 1536px) {
         .hero-parallax-img {
-            transform: scale(1.8) translate(-2%, -2%) !important;
+            transform: none !important;
         }
     }
     
@@ -233,18 +232,21 @@ $contactAddress = $company['contact']['address'] ?? t('footer.office_address');
 </style>
 
 <section id="about-hero" class="relative font-sans bg-[#f7faff] overflow-hidden mt-0 mx-4 mb-4 sm:mt-0 sm:mx-6 sm:mb-6 rounded-t-none rounded-b-[2rem] lg:m-0 lg:rounded-none">
-    <div class="absolute inset-0 z-0">
-        <img src="<?= e($heroImage) ?>" alt="WEBPARK Solutions Background" class="hero-parallax-img w-full h-full object-cover object-center opacity-70 mix-blend-screen">
-        <div class="absolute inset-0 bg-gradient-to-r from-white to-white/5"></div>
-        <div class="absolute inset-x-0 bottom-0 h-[30%] bg-gradient-to-t from-white to-transparent z-10"></div>
+    <div class="absolute inset-0 z-0 hidden lg:block overflow-hidden">
+        <img src="<?= e($heroImage) ?>" alt="WEBPARK About Background" 
+            class="w-full h-full object-cover object-[right_center]"
+            style="filter: contrast(1.15) saturate(1.22) brightness(0.98);">
+        <div class="absolute inset-0 bg-gradient-to-r from-white via-white/70 to-transparent"></div>
+        <div class="absolute inset-x-0 bottom-0 h-[25%] bg-gradient-to-t from-white to-transparent z-10"></div>
     </div>
 
     <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8 pt-12 pb-16 lg:pt-28 lg:pb-16 relative z-10 desktop-wide-container-about">
         <div class="absolute inset-0 z-0 overflow-hidden lg:hidden rounded-2xl">
-            <img src="<?= e($heroImage) ?>" alt="WEBPARK Solutions Background" 
-                class="hero-parallax-img w-full h-full object-cover object-[75%_center] opacity-100 mix-blend-screen">
-            <div class="absolute inset-0 bg-gradient-to-b from-white/90 via-white/70 to-white/40"></div>
-            <div class="absolute inset-x-0 bottom-0 h-[30%] bg-gradient-to-t from-white to-transparent"></div>
+            <img src="<?= e($heroImage) ?>" alt="WEBPARK About Background" 
+                class="w-full h-full object-cover object-[85%_bottom]"
+                style="filter: contrast(1.15) saturate(1.22) brightness(0.98);">
+            <div class="absolute inset-0 bg-gradient-to-b from-white/90 via-white/70 to-white/30"></div>
+            <div class="absolute inset-x-0 bottom-0 h-[25%] bg-gradient-to-t from-white to-transparent"></div>
         </div>
         
         <div class="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-12 lg:gap-20 items-center relative z-10">
@@ -410,16 +412,16 @@ $contactAddress = $company['contact']['address'] ?? t('footer.office_address');
         <div class="lg:px-12 xl:px-24">
             <div class="grid grid-cols-1 lg:grid-cols-[40%_55%] gap-12 lg:gap-16 justify-between items-start">
                 
-                <div class="lg:top-8 self-start ipad-pro-approach-left-col text-center lg:text-left">
-                    <div class="inline-flex flex-col items-center lg:items-start mb-3">
-                        <h2 class="text-3xl md:text-4xl text-center lg:text-left font-bold leading-tight ipad-mini-concept-title" style="color: #054FC5;">
+                <div class="lg:top-8 self-start ipad-pro-approach-left-col text-left flex flex-col items-center lg:items-start">
+                    <div class="inline-flex flex-col items-start mb-3 mx-auto lg:mx-0 translate-x-2 sm:translate-x-0">
+                        <h2 class="text-2xl sm:text-3xl md:text-4xl text-left font-bold leading-tight whitespace-nowrap ipad-mini-concept-title" style="color: #054FC5;">
                             <?= getCurrentLang() === 'th' ? 'แนวคิดในการทำงานของเรา' : 'Our Approach' ?>
                         </h2>
                         <div class="w-8 h-[3px] bg-primary mt-2"></div>
                     </div>
                     <p class="text-center lg:text-left text-slate-500 text-sm sm:text-base md:text-lg leading-relaxed max-w-2xl lg:max-w-md mx-auto lg:mx-0 desktop-concept-p ipad-pro-concept-p ipad-mini-concept-desc">
                         <?php if (getCurrentLang() === 'th'): ?>
-                            เราเชื่อว่าการพัฒนาระบบและโซลูชันดิจิทัลที่ดี ไม่ได้เริ่มจากเทคโนโลยีเพียงอย่างเดียว แต่เริ่มจากความเข้าใจธุรกิจของคุณ เราทำงานแบบพาร์ทเนอร์ร่วมคิด ร่วมสร้าง เพื่อให้ทุกโซลูชันที่เราส่งมอบสามารถใช้งานได้จริง สร้างคุณค่า และช่วยให้ธุรกิจของคุณเติบโตได้อย่างยั่งยืน
+                            เราเชื่อว่าการพัฒนาระบบและโซลูชันดิจิทัลที่ดี ไม่ได้เริ่มจากเทคโนโลยีเพียงอย่างเดียว แต่เริ่มจากความเข้าใจธุรกิจของคุณ เราทำงานแบบ<span class="inline-block">พาร์ทเนอร์</span>ร่วมคิด ร่วมสร้าง เพื่อให้ทุกโซลูชันที่เราส่งมอบสามารถใช้งานได้จริง สร้างคุณค่า และช่วยให้ธุรกิจของคุณเติบโตได้อย่างยั่งยืน
                         <?php else: ?>
                             We believe that developing great digital systems and solutions doesn't start with technology alone, but with understanding your business. We work as a partner to co-think and co-create, ensuring every solution we deliver is practical, creates value, and helps your business grow sustainably.
                         <?php endif; ?>
@@ -492,6 +494,22 @@ $contactAddress = $company['contact']['address'] ?? t('footer.office_address');
                 <?= getCurrentLang() === 'th' ? 'ระบบที่ช่วยพัฒนาโซลูชันดิจิทัลที่ช่วยให้ธุรกิจเติบโตอย่างยั่งยืน' : 'Systems that help develop digital solutions to help your business grow sustainably.' ?>
             </p>
 
+            <style>
+                @media (max-width: 767px) {
+                    #about-services-scroll .gsap-scroll-card {
+                        background-color: #ffffff !important;
+                        -webkit-tap-highlight-color: transparent !important;
+                        user-select: none;
+                    }
+                    #about-services-scroll .gsap-scroll-card h3 {
+                        color: #022862 !important;
+                    }
+                    #about-services-scroll .gsap-scroll-card p {
+                        color: #64748b !important;
+                    }
+                }
+            </style>
+
             <div id="service-scroll-container" class="flex overflow-x-auto snap-x snap-mandatory scrollbar-none gap-6 pb-6 -mx-4 px-4 md:mx-0 md:px-0 md:grid md:grid-cols-2 lg:grid-cols-3 md:overflow-visible md:snap-none">
                 <?php
                 $services = [
@@ -505,14 +523,14 @@ $contactAddress = $company['contact']['address'] ?? t('footer.office_address');
                 ?>
                 
                 <?php foreach ($services as $item): ?>
-                    <div class="gsap-scroll-card w-[85vw] md:w-auto shrink-0 snap-center bg-white rounded-2xl p-8 border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:-translate-y-1 hover:shadow-lg transition-all duration-300 group cursor-pointer hover:bg-primary opacity-0 translate-y-10 desktop-services-card">
-                        <div class="w-12 h-12 mb-6 group-hover:scale-110 transition-transform desktop-services-icon ipad-air-services-icon">
+                    <div class="gsap-scroll-card w-[85vw] md:w-auto shrink-0 snap-center bg-white rounded-2xl p-8 border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.03)] md:hover:-translate-y-1 md:hover:shadow-lg transition-all duration-300 group cursor-default md:cursor-pointer md:hover:bg-primary opacity-0 translate-y-10 desktop-services-card">
+                        <div class="w-12 h-12 mb-6 md:group-hover:scale-110 transition-transform desktop-services-icon ipad-air-services-icon">
                             <img src="<?= e($item['icon']) ?>" alt="<?= e($item['title']) ?>" class="w-full h-full object-contain">
                         </div>
-                        <h3 class="text-dark font-bold text-lg mb-3 group-hover:text-white transition-colors desktop-services-h3 ipad-pro-services-h3 ipad-air-services-h3">
+                        <h3 class="text-dark font-bold text-lg mb-3 md:group-hover:text-white transition-colors desktop-services-h3 ipad-pro-services-h3 ipad-air-services-h3">
                             <?= e($item['title']) ?>
                         </h3>
-                        <p class="text-slate-500 text-md leading-relaxed group-hover:text-white transition-colors desktop-services-p ipad-pro-services-p ipad-air-services-p">
+                        <p class="text-slate-500 text-md leading-relaxed md:group-hover:text-white transition-colors desktop-services-p ipad-pro-services-p ipad-air-services-p">
                             <?= $item['desc'] ?>
                         </p>
                         

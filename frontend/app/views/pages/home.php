@@ -93,7 +93,7 @@ if (!empty($partners) && is_array($partners)) {
                         <?= getCurrentLang() === 'th' ? 'ผู้ให้บริการพัฒนา Digital Platform<br>และระบบ AI ที่ช่วยให้ธุรกิจไทย<br>ก้าวไปข้างหน้า ด้วยเทคโนโลยี<br>ที่ใช้งานได้จริง' : 'Digital Platform and AI system<br>development provider helping Thai businesses<br>move forward with practical technology.' ?>
                     </span>
                     <span class="hidden md:inline">
-                        <?= getCurrentLang() === 'th' ? 'ผู้ให้บริการพัฒนา Digital Platform<br class="hidden ipad-air-br"> และระบบ AI <br class="ipad-air-hidden">ที่ช่วยให้ธุรกิจไทยก้าวไปข้างหน้า<br class="hidden ipad-pro-strict-inline ipad-air-br ipad-mini-br">ด้วยเทคโนโลยีที่ใช้งานได้จริง' : 'Digital Platform and AI system<br class="hidden ipad-pro-strict-inline"> development provider helping<br class="hidden ipad-pro-strict-inline"> Thai businesses move forward<br class="hidden ipad-pro-strict-inline"> with practical technology.' ?>
+                        <?= getCurrentLang() === 'th' ? 'ผู้ให้บริการพัฒนา Digital Platform<br class="hidden ipad-air-br ipad-mini-br"> และระบบ AI <br class="ipad-air-hidden ipad-mini-hidden">ที่ช่วยให้ธุรกิจไทยก้าวไปข้างหน้า<br class="hidden ipad-pro-strict-inline ipad-air-br ipad-mini-br">ด้วยเทคโนโลยีที่ใช้งานได้จริง' : 'Digital Platform and AI system<br class="hidden ipad-pro-strict-inline"> development provider helping<br class="hidden ipad-pro-strict-inline"> Thai businesses move forward<br class="hidden ipad-pro-strict-inline"> with practical technology.' ?>
                     </span>
                 </p>
                 <div class="animate-entrance-up delay-400 flex flex-col items-start self-start md:self-auto md:flex-row md:justify-start gap-3 md:gap-4 ipad-air-hero-btn-container ipad-mini-hero-btn-container">
@@ -202,8 +202,8 @@ if (!empty($partners) && is_array($partners)) {
                 .mobile-br { display: initial !important; }
             }
             
-            /* iPad Mini (768px) specific fixes */
-            @media (min-width: 768px) and (max-width: 768px) {
+            /* iPad Mini (768px - 819px) specific fixes */
+            @media (min-width: 768px) and (max-width: 819px) {
                 .ipad-mini-br {
                     display: initial !important;
                 }
@@ -832,14 +832,15 @@ $totalReviews = count($reviews);
             </a>
         </div>
         <div class="lg:hidden mb-6 flex flex-col items-start text-left pl-1 ipad-pro-flex-visible">
-            <h2 class="text-primary font-black text-3xl md:text-2xl tracking-normal mb-2 pb-1 inline-block border-b-[3px] border-primary ipad-pro-article-h2 ipad-air-article-h2">
+            <h2 class="text-primary font-black text-3xl md:text-2xl tracking-normal m-0 inline-block ipad-pro-article-h2 ipad-air-article-h2">
                 <?= getCurrentLang() === 'th' ? 'บทความ' : 'Articles' ?>
             </h2>
+            <div class="w-14 h-[3.5px] bg-primary mt-1.5 mb-3 rounded-full"></div>
             <h3 class="text-dark font-black text-2xl md:text-xl mb-3 mt-1 tracking-tight ipad-pro-article-h3 ipad-air-article-h3">
                 <?= getCurrentLang() === 'th' ? 'สาระน่ารู้จาก WEBPARK' : 'Knowledge from WEBPARK' ?>
             </h3>
             <p class="text-slate-600 text-sm md:text-[0.8rem] leading-[1.6] font-medium ipad-pro-article-desc ipad-air-article-desc">
-                <?= getCurrentLang() === 'th' ? 'รวมบทความสาระน่ารู้ ที่จะช่วยต่อยอดแบรนด์<br>และพาธุรกิจสู่ดิจิทัลที่ช่วยให้ธุรกิจเติบโตได้อย่างยั่งยืน' : 'A collection of informative articles to help elevate your brand <br class="mobile-hidden">and guide your business into the digital era for sustainable growth.' ?>
+                <?= getCurrentLang() === 'th' ? 'รวมบทความสาระน่ารู้ ที่จะช่วยต่อยอดแบรนด์<br>และพาธุรกิจสู่วิถีดิจิทัลที่ช่วยให้ธุรกิจเติบโตได้อย่างยั่งยืน' : 'A collection of informative articles to help elevate your brand <br class="mobile-hidden">and guide your business into the digital era for sustainable growth.' ?>
             </p>
         </div>
         <div id="knowledge-slider" class="flex lg:grid overflow-x-auto lg:overflow-visible snap-x snap-mandatory flex-nowrap lg:flex-wrap lg:grid-cols-3 gap-8 pt-2 pb-6 hide-scrollbar ipad-pro-articles-slider lg:ml-12 ipad-pro-ml-0 xl:ml-24 lg:mr-12 xl:mr-24">

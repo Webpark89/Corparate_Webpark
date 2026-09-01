@@ -5,7 +5,7 @@ declare(strict_types=1);
 $categories = is_array($categories ?? null) ? $categories : [];
 $activeCategorySlug = (string) ($activeCategorySlug ?? 'all');
 $fallbackImage = asset_url('images/story.png');
-$heroImage = asset_url('images/bg-6.png');
+$heroImage = asset_url('images/erp-hero-bg.png');
 $ctaImage = asset_url('images/bg-cta.jpg');
 
 /**
@@ -235,10 +235,11 @@ $erpPortfolios = $mockErpPortfolios;
 <section id="erp-hero" class="relative font-sans bg-[#f7faff] overflow-hidden mt-0 mx-4 mb-4 sm:mt-0 sm:mx-6 sm:mb-6 rounded-t-none rounded-b-[2rem] lg:m-0 lg:rounded-none">
     <div class="hidden lg:block absolute inset-0 z-0 overflow-hidden">
         <img src="<?= e($heroImage) ?>" alt="WEBPARK Solutions Background" 
-            class="hero-parallax-img w-full h-full object-cover object-center opacity-100 mix-blend-screen">
+            class="w-full h-full object-cover object-[right_center]"
+            style="filter: contrast(1.18) saturate(1.25) brightness(0.97);">
             
-        <div class="absolute inset-0 bg-gradient-to-r from-white via-white/70 to-white/5"></div>
-        <div class="absolute inset-x-0 bottom-0 h-[30%] bg-gradient-to-t from-white to-transparent z-10"></div>
+        <div class="absolute inset-0 bg-gradient-to-r from-white via-white/70 to-transparent"></div>
+        <div class="absolute inset-x-0 bottom-0 h-[20%] bg-gradient-to-t from-white to-transparent z-10"></div>
     </div>
     <style>
         @keyframes fadeSlideUp {
@@ -265,9 +266,10 @@ $erpPortfolios = $mockErpPortfolios;
         <!-- Mobile Background Image (Only covers this Hero container) -->
         <div class="absolute inset-0 z-0 overflow-hidden lg:hidden rounded-2xl">
             <img src="<?= e($heroImage) ?>" alt="WEBPARK Solutions Background" 
-                class="hero-parallax-img w-full h-full object-cover object-[75%_center] opacity-100 mix-blend-screen">
-            <div class="absolute inset-0 bg-gradient-to-b from-white/90 via-white/70 to-white/40"></div>
-            <div class="absolute inset-x-0 bottom-0 h-[30%] bg-gradient-to-t from-white to-transparent"></div>
+                class="w-full h-full object-cover object-[75%_center] md:object-[right_center]"
+                style="filter: contrast(1.18) saturate(1.25) brightness(0.97);">
+            <div class="absolute inset-0 bg-gradient-to-r from-white/95 via-white/70 to-transparent"></div>
+            <div class="absolute inset-x-0 bottom-0 h-[20%] bg-gradient-to-t from-white to-transparent"></div>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-12 lg:gap-20 items-center relative z-10">
@@ -375,6 +377,13 @@ $erpPortfolios = $mockErpPortfolios;
 </section>
 
 <style>
+    @media (min-width: 760px) and (max-width: 819px) {
+        .ipad-mini-erp-desc {
+            font-size: 1.15rem !important;
+            line-height: 1.75 !important;
+            max-width: 100% !important;
+        }
+    }
     @media (min-width: 1280px) {
         .erp-left-col { flex: none !important; width: 440px !important; max-width: 440px !important; }
         .erp-right-col { flex: 1 !important; width: auto !important; }
@@ -398,7 +407,7 @@ $erpPortfolios = $mockErpPortfolios;
                     <h2 class="text-[#043B94] text-2xl lg:text-3xl font-bold leading-tight mb-4 transition-colors duration-300">
                         <?= getCurrentLang() === 'th' ? 'ระบบ ERP คืออะไร' : 'What is an ERP System?' ?>
                     </h2>
-                    <p class="text-slate-500 text-sm lg:text-[15px] leading-relaxed max-w-md">
+                    <p class="text-slate-500 text-sm lg:text-[15px] leading-relaxed max-w-md ipad-mini-erp-desc">
                         <?= getCurrentLang() === 'th' 
                             ? 'ERP คือ ระบบที่รวบรวมและเชื่อมโยงกระบวนการทำงานหลักขององค์กร ไม่ว่าจะเป็น การขาย การจัดซื้อ คลังสินค้า การเงิน การผลิต ทรัพยากรบุคคล และงานอื่น ๆ ให้ทำงานร่วมกันบนฐานข้อมูลเดียวแบบเรียลไทม์ ช่วยให้ผู้บริหารมองเห็นภาพรวม ตัดสินใจได้แม่นยำ และตอบสนองต่อการเปลี่ยนแปลงได้อย่างรวดเร็ว' 
                             : 'ERP is a system that integrates core business processes—such as sales, procurement, inventory, finance, manufacturing, and HR—to work together on a single real-time database. It helps executives see the big picture, make accurate decisions, and respond swiftly to changes.' 
