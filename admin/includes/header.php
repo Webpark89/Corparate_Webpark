@@ -1,66 +1,85 @@
 <?php
-
 /**
  * Admin layout header — auth gate, sidebar navigation, flash messages, and page shell.
  */
 require_once __DIR__ . '/functions.php';
 require_login();
 require_admin_role();
-
 $me = current_admin();
 $page = $page ?? 'dashboard';
-
 $navItems = [
     ['name' => 'แดชบอร์ด', 'url' => '/index.php', 'page' => 'dashboard'],
     ['name' => 'การจัดการบทความ', 'url' => '/article/index.php', 'page' => 'article'],
+    ['name' => 'หมวดหมู่บทความ', 'url' => '/category/index.php', 'page' => 'category'],
     ['name' => 'การจัดการผลงาน', 'url' => '/portfolio/index.php', 'page' => 'portfolio'],
     ['name' => 'การจัดการรีวิว', 'url' => '/review/index.php', 'page' => 'review'],
     ['name' => 'การจัดการลูกค้า', 'url' => '/partners/index.php', 'page' => 'partners'],
     ['name' => 'การจัดการบริการ', 'url' => '/service/index.php', 'page' => 'service'],
+    ['name' => 'ข้อความจากลูกค้า', 'url' => '/contact_inbox/index.php', 'page' => 'contact_inbox'],
     ['name' => 'การตั้งค่าการติดต่อ', 'url' => '/contact/index.php', 'page' => 'contact'],
+    ['name' => 'เปลี่ยนรหัสผ่าน', 'url' => '/change_password.php', 'page' => 'change_password'],
 ];
 ?>
 <!doctype html>
 <html lang="th">
-
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title><?= e($pageTitle ?? 'ผู้ดูแลระบบ') ?> | <?= e(SITE_NAME) ?></title>
+    <link rel="icon" type="image/png" href="<?= ADMIN_URL ?>/assets/images/logo.png">
+    <link rel="apple-touch-icon" href="<?= ADMIN_URL ?>/assets/images/logo.png">
+    <link href="<?= ADMIN_URL ?>/assets/css/dist/tailwind.css?v=<?= file_exists(__DIR__ . '/../assets/css/dist/tailwind.css') ? filemtime(__DIR__ . '/../assets/css/dist/tailwind.css') : '1.0' ?>" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+Thai:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@100..900&display=swap" rel="stylesheet">
     <style>
-        *, body, .admin-body, .font-sans, h1, h2, h3, h4, h5, h6, p, span, a, input, textarea, select, button, table, th, td, .ck, .ck-content {
-            font-family: 'Noto Sans Thai', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
+        html, body {
+            width: 100% !important;
+            max-width: 100% !important;
+            overflow-x: hidden !important;
+            position: relative;
+            margin: 0;
+            padding: 0;
+            touch-action: pan-y;
+        }
+        .admin-layout, #adminMain, section.content {
+            max-width: 100% !important;
+            overflow-x: hidden !important;
+        }
+        * {
+            box-sizing: border-box !important;
         }
     </style>
 </head>
-
-<body class="admin-body bg-slate-50 font-sans antialiased text-slate-800">
+<body class="admin-body bg-slate-50 font-sans antialiased text-slate-800 overflow-x-hidden relative w-full max-w-full">
+    <div class="admin-wrapper overflow-x-hidden relative w-full max-w-full min-h-screen">
     <div id="sidebarOverlay" class="fixed inset-0 bg-black/50 z-40 hidden md:hidden"></div>
-
     <div class="admin-layout">
         <aside id="adminSidebar" class="fixed left-0 top-0 h-screen w-[260px] bg-white border-r border-gray-200 flex flex-col z-50 transition-transform duration-300 -translate-x-full md:translate-x-0">
-            <div class="flex items-center h-16 px-6 font-bold text-lg border-b border-gray-200 flex-shrink-0 text-[#48cae4]">
+            <div class="flex items-center h-16 px-6 font-bold text-lg border-b border-gray-200 flex-shrink-0 text-[#0663F6]">
                 <img src="<?= ADMIN_URL ?>/assets/images/logo.png" alt="Logo" class="h-8 mr-3">
             </div>
-
             <nav class="flex-1 py-6 overflow-y-auto">
                 <?php foreach ($navItems as $item):
                     $isActive = ($page === $item['page']);
-                    $classes = $isActive
-                        ? 'bg-[rgba(72,202,228,0.1)] text-black border-l-4 border-cyan-400 pl-5 font-semibold'
-                        : 'text-black/70 hover:bg-[rgba(72,202,228,0.08)] hover:text-black';
+                    $baseClasses = 'px-6 py-3 text-base flex items-center gap-3 transition-colors';
+                    if ($isActive) {
+                        $classes = $baseClasses . ' border-l-4 pl-5 font-semibold';
+                        $style = 'background-color: rgba(6, 99, 246, 0.1); color: #0663F6; border-color: #0663F6;';
+                    } else {
+                        $classes = $baseClasses . ' text-black/70 hover:font-semibold';
+                        $style = '';
+                    }
                 ?>
-                    <a href="<?= ADMIN_URL . $item['url'] ?>" class="px-6 py-3 text-sm flex items-center gap-3 <?= $classes ?>">
+                    <a href="<?= ADMIN_URL . $item['url'] ?>" class="<?= $classes ?>" style="<?= $style ?>" 
+                       onmouseover="if(!<?= $isActive ? 'true' : 'false' ?>) { this.style.backgroundColor = 'rgba(6, 99, 246, 0.05)'; this.style.color = '#0663F6'; }" 
+                       onmouseout="if(!<?= $isActive ? 'true' : 'false' ?>) { this.style.backgroundColor = 'transparent'; this.style.color = 'inherit'; }">
                         <?= e($item['name']) ?>
                     </a>
                 <?php endforeach; ?>
             </nav>
-
             <div class="border-t border-gray-200 py-4 flex-shrink-0">
-                <a href="<?= ADMIN_URL ?>/logout.php" class="px-6 py-3 text-sm text-red-500 hover:bg-red-50 hover:text-red-600 flex items-center gap-3 transition-colors">
+                <a href="<?= ADMIN_URL ?>/logout.php" class="px-6 py-3 text-base text-red-500 hover:bg-red-50 hover:text-red-600 flex items-center gap-3 transition-colors">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                     </svg>
@@ -68,7 +87,6 @@ $navItems = [
                 </a>
             </div>
         </aside>
-
         <main id="adminMain" class="md:ml-[260px] flex-1 min-w-0 transition-all duration-300">
             <header class="sticky top-0 h-16 bg-white/80 backdrop-blur-sm shadow-sm px-4 md:px-6 flex items-center gap-4 z-30">
                 <button id="sidebarToggle" class="md:hidden p-2 rounded-md text-slate-600 hover:bg-slate-100">
@@ -78,7 +96,6 @@ $navItems = [
                 </button>
                 <h1 class="text-lg md:text-xl font-semibold"><?= e($pageTitle ?? 'แผงควบคุม') ?></h1>
             </header>
-
             <section class="content p-4 md:p-6">
                 <?php if ($msg = flash('success')): ?>
                     <div class="p-4 mb-4 text-sm text-emerald-800 rounded-xl bg-emerald-50 border border-emerald-200"><?= e($msg) ?></div>
@@ -86,18 +103,15 @@ $navItems = [
                 <?php if ($msg = flash('error')): ?>
                     <div class="p-4 mb-4 text-sm text-red-800 rounded-xl bg-red-50 border border-red-200"><?= e($msg) ?></div>
                 <?php endif; ?>
-
                 <script>
                     const toggle = document.getElementById('sidebarToggle');
                     const sidebar = document.getElementById('adminSidebar');
                     const overlay = document.getElementById('sidebarOverlay');
-
                     function toggleMenu() {
                         sidebar.classList.toggle('-translate-x-full');
                         sidebar.classList.toggle('translate-x-0');
                         overlay.classList.toggle('hidden');
                     }
-
                     toggle.addEventListener('click', toggleMenu);
                     overlay.addEventListener('click', toggleMenu);
                 </script>

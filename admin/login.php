@@ -94,6 +94,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Sign in | <?= e(SITE_NAME) ?></title>
+    <link rel="icon" type="image/png" href="<?= ADMIN_URL ?>/assets/images/logo.png">
+    <link rel="apple-touch-icon" href="<?= ADMIN_URL ?>/assets/images/logo.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -500,7 +502,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div style="text-align: center;">
                         <div style="display: flex; justify-content: center; margin-bottom: 0.75rem;">
                             <!-- Logo -->
-                            <img src="/Corparate_Webpark/frontend/public/assets/images/logo.png" alt="<?= e(SITE_NAME) ?>" style="width: 52px; height: 52px; object-fit: contain;">
+                            <img src="<?= ADMIN_URL ?>/assets/images/logo.png" alt="<?= e(SITE_NAME) ?>" style="width: 52px; height: 52px; object-fit: contain;">
                         </div>
 
                         <h1 style="font-size: 1.75rem; line-height: 2rem; font-weight: 700; letter-spacing: -0.025em; color: #0f172a; margin: 0 0 0.25rem 0;">

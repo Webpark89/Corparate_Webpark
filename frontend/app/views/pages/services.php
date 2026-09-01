@@ -21,18 +21,18 @@ $ctaImage = asset_url('images/bg-cta.jpg');
         'image_placeholder' => 'images/erp.png',
         'dropdown_title'    => 'ERP / ERM / HR',
         'subcategories'     => [
-            ['label' => 'ERP System',           'href' => route_url('/erp')],
-            ['label' => 'Accounting & Finance', 'href' => route_url('/article', ['id' => 39])],
-            ['label' => 'Sales / Purchase',     'href' => route_url('/article', ['id' => 40])],
-            ['label' => 'Inventory / Warehouse','href' => route_url('/article', ['id' => 41])],
-            ['label' => 'Customer Management',  'href' => route_url('/article', ['id' => 42])],
-            ['label' => 'Lead Management',      'href' => '#'],
-            ['label' => 'Customer Service',     'href' => route_url('/article', ['id' => 29])],
-            ['label' => 'Partner / Supplier Management', 'href' => route_url('/article', ['id' => 30])],
-            ['label' => 'HRM System',           'href' => route_url('/article', ['id' => 31])],
-            ['label' => 'Attendance / Leave',   'href' => route_url('/article', ['id' => 32])],
-            ['label' => 'Payroll',              'href' => route_url('/article', ['id' => 14])],
-            ['label' => 'Workflow Approval',    'href' => route_url('/article', ['id' => 34])],
+            ['label' => 'ERP System',                    'href' => route_url('/erp')],
+            ['label' => 'Accounting & Finance',          'href' => route_url('/article/accounting-and-finance')],
+            ['label' => 'Sales / Purchase',              'href' => route_url('/article/sales-and-purchase')],
+            ['label' => 'Inventory / Warehouse',         'href' => route_url('/article/inventory-and-warehouse')],
+            ['label' => 'Customer Management',           'href' => route_url('/article/customer-management')],
+            ['label' => 'Lead Management',               'href' => route_url('/article/lead-management')],
+            ['label' => 'Customer Service',              'href' => route_url('/article/customer-service')],
+            ['label' => 'Partner / Supplier Management',  'href' => route_url('/article/partner-supplier-management')],
+            ['label' => 'HRM System',                    'href' => route_url('/article/hrm-system')],
+            ['label' => 'Attendance / Leave',            'href' => route_url('/article/attendance-and-leave')],
+            ['label' => 'Payroll',                       'href' => route_url('/article/payroll-system')],
+            ['label' => 'Workflow Approval',             'href' => route_url('/article/workflow-approval')],
         ],
     ],
     [
@@ -43,19 +43,19 @@ $ctaImage = asset_url('images/bg-cta.jpg');
         'image_placeholder' => 'images/bg-cta.jpg',
         'dropdown_title'    => 'Platform / Communication / Data',
         'subcategories'     => [
-            ['label' => 'Website / Responsive / CMS',    'href' => route_url('/article', ['id' => 35])],
-            ['label' => 'Mobile App / Mobile Site',      'href' => route_url('/article', ['id' => 36])],
-            ['label' => 'E-commerce',                    'href' => route_url('/article', ['id' => 37])],
-            ['label' => 'Custom Web Application',        'href' => '#'],
-            ['label' => 'Membership / Portal System',    'href' => '#'],
-            ['label' => 'SMS Service',                   'href' => '#'],
-            ['label' => 'Email Marketing',               'href' => '#'],
-            ['label' => 'Chatbot / Live Chat',           'href' => '#'],
-            ['label' => 'Game / Interactive Campaign',   'href' => '#'],
-            ['label' => 'Big Data',                      'href' => '#'],
-            ['label' => 'E-learning',                    'href' => '#'],
-            ['label' => 'Dashboard',                     'href' => '#'],
-            ['label' => 'Data Management',               'href' => '#'],
+            ['label' => 'Website / Responsive / CMS',    'href' => route_url('/article/website-responsive-cms')],
+            ['label' => 'Mobile App / Mobile Site',      'href' => route_url('/article/mobile-app-development')],
+            ['label' => 'E-commerce',                    'href' => route_url('/article/ecommerce-solutions')],
+            ['label' => 'Custom Web Application',        'href' => route_url('/article/custom-web-application')],
+            ['label' => 'Membership / Portal System',    'href' => route_url('/article/membership-portal-system')],
+            ['label' => 'SMS Service',                   'href' => route_url('/article/sms-service')],
+            ['label' => 'Email Marketing',               'href' => route_url('/article/email-marketing')],
+            ['label' => 'Chatbot / Live Chat',           'href' => route_url('/article/chatbot-live-chat')],
+            ['label' => 'Game / Interactive Campaign',   'href' => route_url('/article/interactive-game-campaign')],
+            ['label' => 'Big Data',                      'href' => route_url('/article/big-data-analytics')],
+            ['label' => 'E-learning',                    'href' => route_url('/article/elearning-platform')],
+            ['label' => 'Dashboard',                     'href' => route_url('/article/business-dashboard')],
+            ['label' => 'Data Management',               'href' => route_url('/article/data-management-system')],
         ],
     ],
     [
@@ -66,19 +66,19 @@ $ctaImage = asset_url('images/bg-cta.jpg');
         'image_placeholder' => 'images/bg-hand.jpg',
         'dropdown_title'    => 'Strategy / Performance / Content',
         'subcategories'     => [
-            ['label' => 'Digital Marketing Consultant',  'href' => '#'],
-            ['label' => 'Media Planner / PR & Media Strategy', 'href' => '#'],
-            ['label' => 'SEO',                           'href' => route_url('/article-detail-mockup')],
-            ['label' => 'Social Network',                'href' => '#'],
-            ['label' => 'Online Campaign',               'href' => '#'],
-            ['label' => 'Monitoring & Analysis',         'href' => '#'],
-            ['label' => 'Campaign Performance Report',   'href' => '#'],
-            ['label' => 'Return on Investment (ROI)',    'href' => '#'],
-            ['label' => 'Productivity Analysis',         'href' => '#'],
-            ['label' => 'Content Strategy',              'href' => '#'],
-            ['label' => 'Ads Management',                'href' => '#'],
-            ['label' => 'Social Media Content',          'href' => '#'],
-            ['label' => 'Search Engine Marketing',       'href' => '#'],
+            ['label' => 'Digital Marketing Consultant',  'href' => route_url('/article/digital-marketing-consultant')],
+            ['label' => 'Media Planner / PR & Media Strategy', 'href' => route_url('/article/media-planner-pr-strategy')],
+            ['label' => 'SEO',                           'href' => route_url('/article/search-engine-optimization-seo')],
+            ['label' => 'Social Network',                'href' => route_url('/article/social-network-marketing')],
+            ['label' => 'Online Campaign',               'href' => route_url('/article/online-campaign')],
+            ['label' => 'Monitoring & Analysis',         'href' => route_url('/article/monitoring-and-analysis')],
+            ['label' => 'Campaign Performance Report',   'href' => route_url('/article/campaign-performance-report')],
+            ['label' => 'Return on Investment (ROI)',    'href' => route_url('/article/return-on-investment-roi')],
+            ['label' => 'Productivity Analysis',         'href' => route_url('/article/productivity-analysis')],
+            ['label' => 'Content Strategy',              'href' => route_url('/article/content-strategy')],
+            ['label' => 'Ads Management',                'href' => route_url('/article/ads-management')],
+            ['label' => 'Social Media Content',          'href' => route_url('/article/social-media-content')],
+            ['label' => 'Search Engine Marketing',       'href' => route_url('/article/search-engine-marketing-sem')],
         ],
     ],
     [
@@ -89,71 +89,132 @@ $ctaImage = asset_url('images/bg-cta.jpg');
         'image_placeholder' => 'images/women-office.jpg',
         'dropdown_title'    => 'Design / Motion / Media',
         'subcategories'     => [
-            ['label' => 'Web Design',                    'href' => '#'],
-            ['label' => 'UX/UI Design',                  'href' => '#'],
-            ['label' => 'Cartoon & Character Design',    'href' => '#'],
-            ['label' => 'Infographic',                   'href' => '#'],
-            ['label' => 'Animation TV & YouTube Online', 'href' => '#'],
-            ['label' => 'Motion VDO',                    'href' => route_url('/article', ['id' => 14])],
-            ['label' => 'Video Editing',                 'href' => '#'],
-            ['label' => 'Presentation Video',            'href' => '#'],
-            ['label' => 'E-Magazine',                    'href' => '#'],
-            ['label' => 'Print Ads',                     'href' => '#'],
-            ['label' => 'Online Banner',                 'href' => '#'],
-            ['label' => 'Key Visual Design',             'href' => '#'],
+            ['label' => 'Web Design',                    'href' => route_url('/article/web-design')],
+            ['label' => 'UX/UI Design',                  'href' => route_url('/article/ux-ui-design')],
+            ['label' => 'Cartoon & Character Design',    'href' => route_url('/article/cartoon-character-design')],
+            ['label' => 'Infographic',                   'href' => route_url('/article/infographic-design')],
+            ['label' => 'Animation TV & YouTube Online', 'href' => route_url('/article/animation-tv-youtube')],
+            ['label' => 'Motion VDO',                    'href' => route_url('/article/motion-vdo')],
+            ['label' => 'Video Editing',                 'href' => route_url('/article/video-editing')],
+            ['label' => 'Presentation Video',            'href' => route_url('/article/presentation-video')],
+            ['label' => 'E-Magazine',                    'href' => route_url('/article/e-magazine')],
+            ['label' => 'Print Ads',                     'href' => route_url('/article/print-ads')],
+            ['label' => 'Online Banner',                 'href' => route_url('/article/online-banner')],
+            ['label' => 'Key Visual Design',             'href' => route_url('/article/key-visual-design')],
         ],
     ],
 ];
+// Feature to article slug map
+$featureSlugMap = [
+    'ERP System' => route_url('/erp'),
+    'Accounting & Finance' => route_url('/article/accounting-and-finance'),
+    'Sales / Purchase' => route_url('/article/sales-and-purchase'),
+    'Inventory / Warehouse' => route_url('/article/inventory-and-warehouse'),
+    'Customer Management' => route_url('/article/customer-management'),
+    'Lead Management' => route_url('/article/lead-management'),
+    'Customer Service' => route_url('/article/customer-service'),
+    'Partner / Supplier Management' => route_url('/article/partner-supplier-management'),
+    'HRM System' => route_url('/article/hrm-system'),
+    'Attendance / Leave' => route_url('/article/attendance-and-leave'),
+    'Payroll' => route_url('/article/payroll-system'),
+    'Workflow Approval' => route_url('/article/workflow-approval'),
+
+    'Website / Responsive / CMS' => route_url('/article/website-responsive-cms'),
+    'Mobile App / Mobile Site' => route_url('/article/mobile-app-development'),
+    'E-commerce' => route_url('/article/ecommerce-solutions'),
+    'Custom Web Application' => route_url('/article/custom-web-application'),
+    'Membership / Portal System' => route_url('/article/membership-portal-system'),
+    'SMS Service' => route_url('/article/sms-service'),
+    'Email Marketing' => route_url('/article/email-marketing'),
+    'Chatbot / Live Chat' => route_url('/article/chatbot-live-chat'),
+    'Game / Interactive Campaign' => route_url('/article/interactive-game-campaign'),
+    'Big Data' => route_url('/article/big-data-analytics'),
+    'E-learning' => route_url('/article/elearning-platform'),
+    'Dashboard' => route_url('/article/business-dashboard'),
+    'Data Management' => route_url('/article/data-management-system'),
+
+    'Digital Marketing Consultant' => route_url('/article/digital-marketing-consultant'),
+    'Media Planner / PR & Media Strategy' => route_url('/article/media-planner-pr-strategy'),
+    'SEO' => route_url('/article/search-engine-optimization-seo'),
+    'Social Network' => route_url('/article/social-network-marketing'),
+    'Online Campaign' => route_url('/article/online-campaign'),
+    'Monitoring & Analysis' => route_url('/article/monitoring-and-analysis'),
+    'Campaign Performance Report' => route_url('/article/campaign-performance-report'),
+    'Return on Investment (ROI)' => route_url('/article/return-on-investment-roi'),
+    'Productivity Analysis' => route_url('/article/productivity-analysis'),
+    'Content Strategy' => route_url('/article/content-strategy'),
+    'Ads Management' => route_url('/article/ads-management'),
+    'Social Media Content' => route_url('/article/social-media-content'),
+    'Search Engine Marketing' => route_url('/article/search-engine-marketing-sem'),
+
+    'Web Design' => route_url('/article/web-design'),
+    'UX/UI Design' => route_url('/article/ux-ui-design'),
+    'Cartoon & Character Design' => route_url('/article/cartoon-character-design'),
+    'Infographic' => route_url('/article/infographic-design'),
+    'Animation TV & YouTube Online' => route_url('/article/animation-tv-youtube'),
+    'Motion VDO' => route_url('/article/motion-vdo'),
+    'Video Editing' => route_url('/article/video-editing'),
+    'Presentation Video' => route_url('/article/presentation-video'),
+    'E-Magazine' => route_url('/article/e-magazine'),
+    'Print Ads' => route_url('/article/print-ads'),
+    'Online Banner' => route_url('/article/online-banner'),
+    'Key Visual Design' => route_url('/article/key-visual-design'),
+];
+
 // Merge database services with mock subcategories
 if (isset($services) && is_array($services)) {
     $mergedServices = [];
     foreach ($services as $dbService) {
-        $slug = $dbService['slug'];
+        $slug = $dbService['slug'] ?? '';
         $mockMatch = null;
-        if ($slug === 'erp-erm' || str_contains(strtolower($dbService['title']), 'erp')) {
+        if ($slug === 'erp-erm' || str_contains(strtolower((string)$dbService['title']), 'erp')) {
             $mockMatch = $mockServices[0];
-        } elseif ($slug === 'digital-platform' || str_contains(strtolower($dbService['title']), 'digital')) {
+        } elseif ($slug === 'digital-platform' || str_contains(strtolower((string)$dbService['title']), 'digital')) {
             $mockMatch = $mockServices[1];
-        } elseif ($slug === 'online-marketing' || str_contains(strtolower($dbService['title']), 'marketing')) {
+        } elseif ($slug === 'online-marketing' || str_contains(strtolower((string)$dbService['title']), 'marketing')) {
             $mockMatch = $mockServices[2];
-        } elseif ($slug === 'creative-design' || str_contains(strtolower($dbService['title']), 'creative')) {
+        } elseif ($slug === 'creative-design' || str_contains(strtolower((string)$dbService['title']), 'creative')) {
             $mockMatch = $mockServices[3];
         } else {
             $mockMatch = $mockServices[0];
         }
+
         // Get features from the model which now loads from service_features table
         $dbFeatures = $dbService['features'] ?? [];
         $mappedSubcategories = [];
         if (!empty($dbFeatures)) {
             foreach ($dbFeatures as $feature) {
-                if (empty(trim($feature))) continue;
-                // Keep the ERP link for ERP System, else use #
-                $href = ($slug === 'erp-erm' && $feature === 'ERP System') ? route_url('/erp') : '#';
-                // --- ONLINE MARKETING ---
-                if (str_contains(strtolower($feature), 'seo')) $href = route_url('/article-detail-mockup');
-                if (str_contains(strtolower($feature), 'payroll')) $href = route_url('/article', ['id' => 14]);
-                if (str_contains(strtolower($feature), 'motion')) $href = route_url('/article', ['id' => 14]);
-                // --- ERP / ERM / HR ---
-                if (str_contains(strtolower($feature), 'customer service')) $href = route_url('/article', ['id' => 29]);
-                if (str_contains(strtolower($feature), 'partner')) $href = route_url('/article', ['id' => 30]);
-                if (str_contains(strtolower($feature), 'hrm')) $href = route_url('/article', ['id' => 31]);
-                if (str_contains(strtolower($feature), 'attendance')) $href = route_url('/article', ['id' => 32]);
-                if (str_contains(strtolower($feature), 'workflow')) $href = route_url('/article', ['id' => 34]);
-                if (str_contains(strtolower($feature), 'accounting')) $href = route_url('/article', ['id' => 39]);
-                if (str_contains(strtolower($feature), 'sales')) $href = route_url('/article', ['id' => 40]);
-                if (str_contains(strtolower($feature), 'inventory')) $href = route_url('/article', ['id' => 41]);
-                if (str_contains(strtolower($feature), 'customer management')) $href = route_url('/article', ['id' => 42]);
-                // --- DIGITAL PLATFORMS ---
-                if (str_contains(strtolower($feature), 'website')) $href = route_url('/article', ['id' => 35]);
-                if (str_contains(strtolower($feature), 'mobile')) $href = route_url('/article', ['id' => 36]);
-                if (str_contains(strtolower($feature), 'e-commerce') || str_contains(strtolower($feature), 'ecommerce')) $href = route_url('/article', ['id' => 37]);
+                $trimmedFeature = trim((string)$feature);
+                if ($trimmedFeature === '') continue;
+
+                if (isset($featureSlugMap[$trimmedFeature])) {
+                    $href = $featureSlugMap[$trimmedFeature];
+                } else {
+                    // Fallback to match mock subcategories
+                    $matchedMockHref = null;
+                    if (isset($mockMatch['subcategories'])) {
+                        foreach ($mockMatch['subcategories'] as $mockSub) {
+                            if (strcasecmp((string)$mockSub['label'], $trimmedFeature) === 0) {
+                                $matchedMockHref = $mockSub['href'];
+                                break;
+                            }
+                        }
+                    }
+                    if ($matchedMockHref !== null) {
+                        $href = $matchedMockHref;
+                    } else {
+                        $generatedSlug = function_exists('slugify') ? slugify($trimmedFeature) : strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $trimmedFeature), '-'));
+                        $href = route_url('/article/' . $generatedSlug);
+                    }
+                }
+
                 $mappedSubcategories[] = [
-                    'label' => $feature,
+                    'label' => $trimmedFeature,
                     'href' => $href
                 ];
             }
         }
-        // Fallback to mock data if database features are empty or corrupted by invalid JSON
+        // Fallback to mock data if database features are empty
         if (empty($mappedSubcategories)) {
             $mappedSubcategories = $mockMatch['subcategories'] ?? [];
         }
@@ -162,14 +223,14 @@ if (isset($services) && is_array($services)) {
             'icon_emoji' => $mockMatch['icon_emoji'] ?? '⚙️',
             'title' => getCurrentLang() === 'en' ? ($mockMatch['title_en'] ?? $mockMatch['title'] ?? $dbService['title']) : $dbService['title'],
             'summary' => getCurrentLang() === 'en' ? ($mockMatch['summary_en'] ?? $mockMatch['summary'] ?? $dbService['summary']) : $dbService['summary'],
-            'image_placeholder' => $dbService['image'] ? 'uploads/' . $dbService['image'] : $mockMatch['image_placeholder'],
+            'image_placeholder' => !empty($dbService['image']) ? 'uploads/' . $dbService['image'] : $mockMatch['image_placeholder'],
             'dropdown_title' => !empty($dbService['details']['dropdown_title']) ? $dbService['details']['dropdown_title'] : $mockMatch['dropdown_title'],
             'subcategories' => $mappedSubcategories,
         ];
     }
     $services = $mergedServices;
 } else {
-    // Fallback to mock data if database is empty or still has old data
+    // Fallback to mock data if database is empty
     $services = $mockServices;
 }
 ?>

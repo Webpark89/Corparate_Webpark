@@ -51,6 +51,8 @@ $content = $content ?? '';
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <title><?= e($title) ?></title>
+    <link rel="icon" type="image/png" href="<?= e(asset_url('images/logo.png')) ?>">
+    <link rel="apple-touch-icon" href="<?= e(asset_url('images/logo.png')) ?>">
     <meta name="description" content="<?= e($metaDescription) ?>">
     <meta name="robots" content="<?= e($robots) ?>">
     <link rel="canonical" href="<?= e($canonicalUrl) ?>">
