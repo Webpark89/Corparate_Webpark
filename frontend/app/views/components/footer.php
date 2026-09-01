@@ -40,28 +40,28 @@ $structuredSitemap = [
             [
                 'title' => 'ERP & Business Management',
                 'items' => [
-                    ['label' => 'ERP System',                    'href' => route_url('/erp#erp-system')],
-                    ['label' => 'Accounting & Finance',          'href' => route_url('/article/accounting-and-finance')],
-                    ['label' => 'Sales / Purchase',              'href' => route_url('/article/sales-and-purchase')],
-                    ['label' => 'Inventory / Warehouse',         'href' => route_url('/article/inventory-and-warehouse')],
+                    ['label' => 'ERP System', 'href' => route_url('/erp#erp-system')],
+                    ['label' => 'Accounting & Finance', 'href' => route_url('/article', ['id' => 39])],
+                    ['label' => 'Sales / Purchase', 'href' => route_url('/article', ['id' => 40])],
+                    ['label' => 'Inventory / Warehouse', 'href' => route_url('/article', ['id' => 41])],
                 ],
             ],
             [
                 'title' => 'ERM & CRM Systems',
                 'items' => [
-                    ['label' => 'Customer Management',           'href' => route_url('/article/customer-management')],
-                    ['label' => 'Lead Management',               'href' => route_url('/article/lead-management')],
-                    ['label' => 'Customer Service',              'href' => route_url('/article/customer-service')],
-                    ['label' => 'Partner / Supplier Management',  'href' => route_url('/article/partner-supplier-management')],
+                    ['label' => 'Customer Management', 'href' => route_url('/article', ['id' => 42])],
+                    ['label' => 'Lead Management', 'href' => route_url('/erp#lead-management')],
+                    ['label' => 'Customer Service', 'href' => route_url('/article', ['id' => 29])],
+                    ['label' => 'Partner / Supplier Management', 'href' => route_url('/article', ['id' => 30])],
                 ],
             ],
             [
                 'title' => 'HR & Workflow Systems',
                 'items' => [
-                    ['label' => 'HRM System',                    'href' => route_url('/article/hrm-system')],
-                    ['label' => 'Attendance / Leave',            'href' => route_url('/article/attendance-and-leave')],
-                    ['label' => 'Payroll',                       'href' => route_url('/article/payroll-system')],
-                    ['label' => 'Workflow Approval',             'href' => route_url('/article/workflow-approval')],
+                    ['label' => 'HRM System', 'href' => route_url('/article', ['id' => 31])],
+                    ['label' => 'Attendance / Leave', 'href' => route_url('/article', ['id' => 32])],
+                    ['label' => 'Payroll', 'href' => route_url('/article', ['id' => 14])],
+                    ['label' => 'Workflow Approval', 'href' => route_url('/article', ['id' => 34])],
                 ],
             ],
         ],
@@ -71,29 +71,29 @@ $structuredSitemap = [
             [
                 'title' => 'Digital Platforms & Business Systems',
                 'items' => [
-                    ['label' => 'Website / Responsive / CMS',    'href' => route_url('/article/website-responsive-cms')],
-                    ['label' => 'Mobile App / Mobile Site',      'href' => route_url('/article/mobile-app-development')],
-                    ['label' => 'E-commerce',                    'href' => route_url('/article/ecommerce-solutions')],
-                    ['label' => 'Custom Web Application',        'href' => route_url('/article/custom-web-application')],
-                    ['label' => 'Membership / Portal System',    'href' => route_url('/article/membership-portal-system')],
+                    ['label' => 'Website / Responsive / CMS', 'href' => route_url('/article', ['id' => 35])],
+                    ['label' => 'Mobile App / Mobile Site', 'href' => route_url('/article', ['id' => 36])],
+                    ['label' => 'E-commerce', 'href' => route_url('/article', ['id' => 37])],
+                    ['label' => 'Custom Web Application', 'href' => route_url('/services/digital-platform#custom-web')],
+                    ['label' => 'Membership / Portal System', 'href' => route_url('/services/digital-platform#membership')],
                 ],
             ],
             [
                 'title' => 'Communication & Engagement',
                 'items' => [
-                    ['label' => 'SMS Service',                   'href' => route_url('/article/sms-service')],
-                    ['label' => 'Email Marketing',               'href' => route_url('/article/email-marketing')],
-                    ['label' => 'Chatbot / Live Chat',           'href' => route_url('/article/chatbot-live-chat')],
-                    ['label' => 'Game / Interactive Campaign',   'href' => route_url('/article/interactive-game-campaign')],
+                    ['label' => 'SMS Service', 'href' => route_url('/services/digital-platform#sms')],
+                    ['label' => 'Email Marketing', 'href' => route_url('/services/digital-platform#email')],
+                    ['label' => 'Chatbot / Live Chat', 'href' => route_url('/services/digital-platform#chatbot')],
+                    ['label' => 'Game / Interactive Campaign', 'href' => route_url('/services/digital-platform#game')],
                 ],
             ],
             [
                 'title' => 'Data & Learning Systems',
                 'items' => [
-                    ['label' => 'Big Data',                      'href' => route_url('/article/big-data-analytics')],
-                    ['label' => 'E-learning',                    'href' => route_url('/article/elearning-platform')],
-                    ['label' => 'Dashboard',                     'href' => route_url('/article/business-dashboard')],
-                    ['label' => 'Data Management',               'href' => route_url('/article/data-management-system')],
+                    ['label' => 'Big Data', 'href' => route_url('/services/digital-platform#bigdata')],
+                    ['label' => 'E-learning', 'href' => route_url('/services/digital-platform#elearning')],
+                    ['label' => 'Dashboard', 'href' => route_url('/services/digital-platform#dashboard')],
+                    ['label' => 'Data Management', 'href' => route_url('/services/digital-platform#data-management')],
                 ],
             ],
         ],
@@ -103,29 +103,29 @@ $structuredSitemap = [
             [
                 'title' => 'Strategy & Growth',
                 'items' => [
-                    ['label' => 'Digital Marketing Consultant',  'href' => route_url('/article/digital-marketing-consultant')],
-                    ['label' => 'Media Planner / PR & Media Strategy', 'href' => route_url('/article/media-planner-pr-strategy')],
-                    ['label' => 'SEO',                           'href' => route_url('/article/search-engine-optimization-seo')],
-                    ['label' => 'Social Network',                'href' => route_url('/article/social-network-marketing')],
-                    ['label' => 'Online Campaign',               'href' => route_url('/article/online-campaign')],
+                    ['label' => 'Digital Marketing Consultant', 'href' => route_url('/services/online-marketing#consultant')],
+                    ['label' => 'Media Planner / PR & Media Strategy', 'href' => route_url('/services/online-marketing#media-planner')],
+                    ['label' => 'SEO', 'href' => route_url('/article-detail-mockup')],
+                    ['label' => 'Social Network', 'href' => route_url('/services/online-marketing#social')],
+                    ['label' => 'Online Campaign', 'href' => route_url('/services/online-marketing#campaign')],
                 ],
             ],
             [
                 'title' => 'Performance & Analytics',
                 'items' => [
-                    ['label' => 'Monitoring & Analysis',         'href' => route_url('/article/monitoring-and-analysis')],
-                    ['label' => 'Campaign Performance Report',   'href' => route_url('/article/campaign-performance-report')],
-                    ['label' => 'Return on Investment (ROI)',    'href' => route_url('/article/return-on-investment-roi')],
-                    ['label' => 'Productivity Analysis',         'href' => route_url('/article/productivity-analysis')],
+                    ['label' => 'Monitoring & Analysis', 'href' => route_url('/services/online-marketing#monitoring')],
+                    ['label' => 'Campaign Performance Report', 'href' => route_url('/services/online-marketing#report')],
+                    ['label' => 'Return on Investment (ROI)', 'href' => route_url('/services/online-marketing#roi')],
+                    ['label' => 'Productivity Analysis', 'href' => route_url('/services/online-marketing#productivity')],
                 ],
             ],
             [
                 'title' => 'Content & Advertising',
                 'items' => [
-                    ['label' => 'Content Strategy',              'href' => route_url('/article/content-strategy')],
-                    ['label' => 'Ads Management',                'href' => route_url('/article/ads-management')],
-                    ['label' => 'Social Media Content',          'href' => route_url('/article/social-media-content')],
-                    ['label' => 'Search Engine Marketing',       'href' => route_url('/article/search-engine-marketing-sem')],
+                    ['label' => 'Content Strategy', 'href' => route_url('/services/online-marketing#content-strategy')],
+                    ['label' => 'Ads Management', 'href' => route_url('/services/online-marketing#ads')],
+                    ['label' => 'Social Media Content', 'href' => route_url('/services/online-marketing#social-content')],
+                    ['label' => 'Search Engine Marketing', 'href' => route_url('/services/online-marketing#sem')],
                 ],
             ],
         ],
@@ -135,28 +135,28 @@ $structuredSitemap = [
             [
                 'title' => 'Design & Digital Experience',
                 'items' => [
-                    ['label' => 'Web Design',                    'href' => route_url('/article/web-design')],
-                    ['label' => 'UX/UI Design',                  'href' => route_url('/article/ux-ui-design')],
-                    ['label' => 'Cartoon & Character Design',    'href' => route_url('/article/cartoon-character-design')],
-                    ['label' => 'Infographic',                   'href' => route_url('/article/infographic-design')],
+                    ['label' => 'Web Design', 'href' => route_url('/services/creative-design#web-design')],
+                    ['label' => 'UX/UI Design', 'href' => route_url('/services/creative-design#ux-ui')],
+                    ['label' => 'Cartoon & Character Design', 'href' => route_url('/services/creative-design#cartoon')],
+                    ['label' => 'Infographic', 'href' => route_url('/services/creative-design#infographic')],
                 ],
             ],
             [
                 'title' => 'Motion & Video Production',
                 'items' => [
-                    ['label' => 'Animation TV & YouTube Online', 'href' => route_url('/article/animation-tv-youtube')],
-                    ['label' => 'Motion VDO',                    'href' => route_url('/article/motion-vdo')],
-                    ['label' => 'Video Editing',                 'href' => route_url('/article/video-editing')],
-                    ['label' => 'Presentation Video',            'href' => route_url('/article/presentation-video')],
+                    ['label' => 'Animation TV & YouTube Online', 'href' => route_url('/services/creative-design#animation')],
+                    ['label' => 'Motion VDO', 'href' => route_url('/article', ['id' => 14])],
+                    ['label' => 'Video Editing', 'href' => route_url('/services/creative-design#video-editing')],
+                    ['label' => 'Presentation Video', 'href' => route_url('/services/creative-design#presentation')],
                 ],
             ],
             [
                 'title' => 'Media & Publishing',
                 'items' => [
-                    ['label' => 'E-Magazine',                    'href' => route_url('/article/e-magazine')],
-                    ['label' => 'Print Ads',                     'href' => route_url('/article/print-ads')],
-                    ['label' => 'Online Banner',                 'href' => route_url('/article/online-banner')],
-                    ['label' => 'Key Visual Design',             'href' => route_url('/article/key-visual-design')],
+                    ['label' => 'E-Magazine', 'href' => route_url('/services/creative-design#emagazine')],
+                    ['label' => 'Print Ads', 'href' => route_url('/services/creative-design#print-ads')],
+                    ['label' => 'Online Banner', 'href' => route_url('/services/creative-design#online-banner')],
+                    ['label' => 'Key Visual Design', 'href' => route_url('/services/creative-design#key-visual')],
                 ],
             ],
         ],
@@ -263,14 +263,15 @@ $socialLinks = [
             .address-text { white-space: nowrap !important; }
         }
         @media (min-width: 1024px) {
-            .dt-sitemap-grid { grid-template-columns: repeat(5, minmax(0, 1fr)) !important; gap: 1rem !important; }
-            .dt-sitemap-title { font-size: 14.5px !important; font-weight: 700 !important; white-space: nowrap !important; border-bottom: none !important; margin-bottom: 0.5rem !important; padding-bottom: 0 !important; color: #043B94 !important; }
+            #footerSitemapLabel { font-size: 32px !important; font-weight: 800 !important; }
+            .dt-sitemap-grid { grid-template-columns: repeat(5, minmax(0, 1fr)) !important; gap: 1.5rem !important; }
+            .dt-sitemap-title { font-size: 1.35rem !important; font-weight: 800 !important; white-space: nowrap !important; border-bottom: none !important; margin-bottom: 1rem !important; padding-bottom: 0 !important; color: #043B94 !important; }
             .dt-sitemap-groups { gap: 0 !important; }
-            .dt-sitemap-list { border-left: 1px solid #94a3b8 !important; padding-left: 8px !important; margin-top: 0 !important; margin-bottom: 0 !important; padding-top: 4px !important; padding-bottom: 4px !important; gap: 8px !important; display: flex !important; flex-direction: column !important; }
-            .dt-sitemap-list > li { margin: 0 !important; }
-            .dt-sitemap-link { font-size: 12.5px !important; font-weight: 500 !important; color: #043B94 !important; line-height: 1.3 !important; }
+            .dt-sitemap-list { border-left: 2px solid #94a3b8 !important; padding-left: 12px !important; margin-top: 0 !important; margin-bottom: 0 !important; padding-top: 4px !important; padding-bottom: 4px !important; gap: 12px !important; display: flex !important; flex-direction: column !important; }
+            .dt-sitemap-list > li { margin: 0 !important; display: flex !important; align-items: center !important; min-height: 36px !important; }
+            .dt-sitemap-link { font-size: 1.15rem !important; font-weight: 600 !important; color: #043B94 !important; line-height: 1.5 !important; padding: 4px 0 !important; }
             .dt-sitemap-link:hover { color: #0663F6 !important; }
-            .dt-sitemap-bullet { font-size: 16px !important; color: #043B94 !important; }
+            .dt-sitemap-bullet { font-size: 22px !important; margin-right: 4px !important; color: #043B94 !important; }
         }
         /* Responsiveness for iPad Mini / Tablets (768px - 1023px) */
         @media (min-width: 768px) and (max-width: 1023px) {

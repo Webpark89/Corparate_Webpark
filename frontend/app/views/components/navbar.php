@@ -15,35 +15,85 @@ $currentLang = getCurrentLang();
 ?>
 
 <header class="sticky top-0 z-[1000] border-b border-slate-200 bg-white backdrop-blur">
-    <div class="mx-auto flex h-16 w-full items-center justify-between px-4 md:px-8 lg:px-12">
+    <div class="mx-auto flex h-16 w-full items-center justify-between px-4 md:px-8 lg:px-12 navbar-container">
 
         <!-- Logo -->
         <a class="flex items-center gap-3" href="<?= e(route_url('/')) ?>">
-            <img class="h-10 w-auto object-contain" src="<?= e(asset_url('images/logo.png')) ?>" alt="WEBPARK logo" style="border: none; outline: none;">
+            <img class="h-10 w-auto object-contain navbar-logo-img" src="<?= e(asset_url('images/logo.png')) ?>" alt="WEBPARK logo" style="border: none; outline: none;">
         </a>
 
         <!-- Desktop Navigation -->
         <style>
             .desktop-nav-link {
                 color: #022862;
+                font-size: 1rem;
+                font-weight: 600;
             }
             .desktop-nav-link:hover {
                 color: #0663F6;
             }
             .desktop-nav-link.active {
                 color: #0663F6;
-                font-weight: 600;
+                font-weight: 700;
+            }
+            
+            /* iPad Mini Landscape (1024px) Compact Navigation */
+            @media (min-width: 1024px) and (max-width: 1024px) {
+                .navbar-container {
+                    height: 4.15rem !important;
+                }
+                .navbar-logo-img {
+                    height: 2.15rem !important;
+                }
+                .desktop-nav-link {
+                    font-size: 1rem !important;
+                    font-weight: 600 !important;
+                    padding-left: 0.35rem !important;
+                    padding-right: 0.35rem !important;
+                }
+                .desktop-nav-dot {
+                    font-size: 0.75rem !important;
+                    margin-left: 0.25rem !important;
+                    margin-right: 0.25rem !important;
+                }
+                .desktop-lang-switcher {
+                    font-size: 1rem !important;
+                }
+            }
+
+            /* iPad Pro & Desktop Navigation Scale (1025px+) */
+            @media (min-width: 1025px) {
+                .navbar-container {
+                    height: 4.75rem !important;
+                }
+                .navbar-logo-img {
+                    height: 2.75rem !important;
+                }
+                .desktop-nav-link {
+                    font-size: 1.2rem !important;
+                    font-weight: 600 !important;
+                    padding-left: 0.5rem !important;
+                    padding-right: 0.5rem !important;
+                }
+                .desktop-nav-dot {
+                    font-size: 0.85rem !important;
+                    margin-left: 0.35rem !important;
+                    margin-right: 0.35rem !important;
+                }
+                .desktop-lang-switcher {
+                    font-size: 1.2rem !important;
+                }
             }
         </style>
         <nav class="hidden lg:flex items-center gap-2" aria-label="Primary Navigation">
             <?php foreach ($navItems as $index => $item): ?>
                 <a href="<?= e(route_url($item['path'])) ?>"
-                   class="desktop-nav-link relative py-2 text-sm transition-colors <?= $currentPage === $item['page'] ? 'active' : 'font-medium' ?>"
+                   class="desktop-nav-link relative py-2 transition-colors <?= $currentPage === $item['page'] ? 'active' : 'font-medium' ?>"
                    <?= $currentPage === $item['page'] ? 'aria-current="page"' : '' ?>>
                    <?= e($item['label']) ?>
                 </a>
                 <?php if ($index < count($navItems) - 1): ?>
-                    <span class="mx-2 text-xs opacity-60" style="color: #011431;">•</span>
+                    <span class="mx-2 text-xs opacity-60 desktop-nav-dot" style="color: #011431;">•</span>
                 <?php endif; ?>
             <?php endforeach; ?>
         </nav>
@@ -51,7 +101,7 @@ $currentLang = getCurrentLang();
         <!-- Right Section -->
         <div class="flex items-center gap-4">
             <!-- Language Switcher -->
-            <div class="hidden lg:flex items-center text-[15px] font-bold transition-colors">
+            <div class="hidden lg:flex items-center text-[15px] font-bold transition-colors desktop-lang-switcher">
                 <a href="<?= e(current_url_with_lang('th')) ?>" style="<?= $currentLang === 'th' ? 'color: #0663F6;' : 'color: #011431;' ?>" class="hover:opacity-80">TH</a>
                 <span style="color: #011431;" class="mx-1">|</span>
                 <a href="<?= e(current_url_with_lang('en')) ?>" style="<?= $currentLang === 'en' ? 'color: #0663F6;' : 'color: #011431;' ?>" class="hover:opacity-80">EN</a>

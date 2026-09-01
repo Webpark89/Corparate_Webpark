@@ -72,7 +72,7 @@ $ctaImage = asset_url('images/bg-cta.jpg');
             scroll-behavior: auto !important;
         }
     }
-    @media (min-width: 768px) and (max-width: 1023px) {
+    @media (min-width: 768px) and (max-width: 1180px) {
         .article-filter-btn {
             padding-left: 0.85rem !important;
             padding-right: 0.85rem !important;
@@ -82,7 +82,7 @@ $ctaImage = asset_url('images/bg-cta.jpg');
             gap: 0.5rem !important;
         }
     }
-    @media (min-width: 1024px) {
+    @media (min-width: 1181px) {
         .article-filter-track {
             justify-content: center !important;
             gap: 1rem !important;
@@ -108,10 +108,10 @@ $ctaImage = asset_url('images/bg-cta.jpg');
         <div class="absolute inset-x-0 bottom-0 h-[30%] bg-gradient-to-t from-white/50 to-transparent z-10"></div>
     </div>
 
-    <div class="mx-auto w-full max-w-[1720px] px-4 sm:px-6 lg:px-10 pt-12 pb-24 lg:pt-28 lg:pb-32 relative z-10 desktop-wide-container-article">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+    <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 pt-12 pb-24 lg:pt-28 lg:pb-32 relative z-10 desktop-wide-container-article">
+        <div class="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-12 lg:gap-20 items-center relative z-10">
             
-            <div class="max-w-3xl lg:max-w-none text-left mx-0 lg:ml-12 ipad-pro-ml-0 xl:ml-24">
+            <div class="max-w-3xl lg:max-w-none text-left mx-0 lg:ml-12 ipad-pro-ml-0 xl:ml-24 article-hero-left-col">
                 <nav aria-label="Breadcrumb" class="hidden md:block animate-fade-up delay-100 mb-6">
                     <ol class="inline-flex items-center text-sm md:text-base font-medium text-slate-500">
                         <li>
@@ -138,14 +138,43 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                         font-size: 22px !important;
                         line-height: 1.65;
                     }
-                    @media (min-width: 768px) {
-                        .hero-title-text { font-size: 3.5rem; line-height: 1.2; }
-                        .hero-desc-text { font-size: 24px !important; line-height: 1.7; }
+                    /* iPad (760px - 1366px) All Orientations */
+                    @media (min-width: 760px) and (max-width: 1366px) {
+                        .article-hero-left-col {
+                            max-width: 100% !important;
+                            margin-left: 0 !important;
+                        }
+                        .hero-title-text,
+                        .desktop-article-hero-h1 {
+                            font-size: 4.25rem !important;
+                            font-weight: 900 !important;
+                            line-height: 1.15 !important;
+                            margin-top: 0px !important;
+                            padding-top: 0px !important;
+                            padding-bottom: 0px !important;
+                        }
+                        .desktop-article-hero-p,
+                        .ipad-mini-hero-desc {
+                            font-size: 1.25rem !important;
+                            line-height: 1.75 !important;
+                            font-weight: 600 !important;
+                            color: #0b1b42 !important;
+                            max-width: 48rem !important;
+                        }
                     }
-                    @media (min-width: 768px) and (max-width: 1023px) {
-                        .ipad-mini-hero-desc { max-width: 450px !important; }
+                    /* iPad Mini (760px - 1024px) Font Scaling */
+                    @media (min-width: 760px) and (max-width: 1024px) {
+                        .hero-title-text,
+                        .desktop-article-hero-h1 {
+                            font-size: 2.75rem !important;
+                        }
+                        .desktop-article-hero-p,
+                        .ipad-mini-hero-desc {
+                            font-size: 0.95rem !important;
+                            line-height: 1.55 !important;
+                        }
                     }
-                    @media (min-width: 1025px) {
+                    @media (min-width: 1367px) {
                         .desktop-wide-container-article {
                             max-width: 1720px !important;
                             padding-left: 2.5rem !important;
@@ -163,11 +192,11 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                         }
                     }
                 </style>
-                <h1 class="animate-fade-up delay-200 tracking-tight mb-2 leading-[1.1]">
-                    <span class="hero-title-text font-bold bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block py-2 md:py-2.5 whitespace-nowrap desktop-article-hero-h1">
+                <h1 class="animate-fade-up delay-200 tracking-tight mb-2 leading-tight flex flex-col items-start">
+                    <span class="bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block py-1 md:py-2 whitespace-nowrap desktop-article-hero-h1">
                         <?= e(getCurrentLang() === 'th' ? 'บทความความรู้' : 'Knowledge Articles') ?>
-                    </span><br>
-                    <span class="hero-title-text font-bold bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block py-1 md:py-2 -mt-1 md:-mt-2 lg:-mt-2 whitespace-nowrap desktop-article-hero-h1" style="animation-delay: -3s;">
+                    </span>
+                    <span class="bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block py-1 md:py-2 whitespace-nowrap desktop-article-hero-h1" style="animation-delay: -3s;">
                         <?= e(getCurrentLang() === 'th' ? 'และอัพเดต' : '& Updates') ?>
                     </span>
                 </h1>
@@ -179,19 +208,17 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                     $mobile_desc = "Knowledge articles, tech, and innovation covering ERP systems, digital business, online marketing, AI, and solutions to sustainably grow your organization.";
                 }
                 ?>
-                <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-lg md:text-xl leading-relaxed max-w-lg mb-10 font-medium ipad-mini-hero-desc desktop-article-hero-p">
+                <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-base md:text-lg lg:text-xl leading-relaxed max-w-2xl mb-10 font-bold md:font-semibold ipad-mini-hero-desc desktop-article-hero-p">
                     <span class="block md:hidden leading-[1.75]">
                         <?= $mobile_desc ?>
                     </span>
                     <span class="hidden md:block leading-relaxed">
                         <?php if (getCurrentLang() === 'th'): ?>
-                            <?= e(t('common.articles_knowledge_summary')) ?> <br>
-                            ครอบคลุม ERP ระบบธุรกิจดิจิทัล การตลาดออนไลน์ AI และโซลูชัน<br>
-                            <?= e(t('common.articles_growth_summary')) ?>
+                            <span class="inline-block whitespace-nowrap">รวบรวมบทความรู้ เทคโนโลยี นวัตกรรม และแนวทางการทำธุรกิจ</span><br class="hidden md:inline">
+                            <span class="inline-block whitespace-nowrap">ครอบคลุม ERP ระบบดิจิทัล และ AI ที่ช่วยยกระดับองค์กรสู่ความสำเร็จ</span>
                         <?php else: ?>
-                            A collection of articles on technology, innovation,<br class="hidden lg:block">
-                            and business strategy covering ERP systems, digital business, online marketing,<br class="hidden lg:block">
-                            AI, and solutions that help organizations grow sustainably.
+                            <span class="inline-block whitespace-nowrap">A collection of articles on technology, innovation, and business strategy</span><br class="hidden md:inline">
+                            <span class="inline-block whitespace-nowrap">covering ERP systems, digital solutions, and AI to help your organization grow.</span>
                         <?php endif; ?>
                     </span>
                 </p>

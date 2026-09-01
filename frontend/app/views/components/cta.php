@@ -40,30 +40,30 @@ $contactButtonUrl = $cbuttonUrl ?? '/contact';
 <section class="bg-white py-10 lg:py-10 font-sans">
     <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
 
-        <div class="relative w-full rounded-[2rem] p-8 md:p-12 lg:p-14 grid grid-cols-1 lg:grid-cols-12 gap-10 items-start overflow-hidden shadow-xl">
+        <div class="relative w-full rounded-[2rem] p-8 md:p-12 lg:p-14 grid grid-cols-1 lg:grid-cols-12 gap-10 items-start overflow-hidden shadow-xl cta-main-container">
             <div class="absolute inset-0 z-0 rounded-[2rem] overflow-hidden">
                 <img src="<?= e(asset_url('images/bg-cta.jpg')) ?>" alt="City Network Overlay" class="w-full h-full opacity-80 object-cover">
                 <div class="absolute inset-0 z-0" style="background: linear-gradient(135deg, rgba(1, 47, 122, 0.95) 0%, rgba(0, 79, 207, 0.6) 100%);"></div>
             </div>
 
-            <div class="relative z-10 lg:col-span-5 flex flex-col items-start text-left lg:pt-2">
+            <div class="relative z-10 lg:col-span-5 flex flex-col items-start text-left lg:pt-2 cta-left-col">
                 <div class="mb-4 relative">
-                    <span class="text-white font-black text-4xl md:text-5xl lg:text-[3rem] tracking-tight block">
+                    <span class="text-white font-black text-4xl md:text-5xl lg:text-[3rem] tracking-tight block cta-main-title">
                         <?= e(t('common.nav_contact')) ?>
                     </span>
                     <div class="w-12 h-[3px] bg-white mt-3"></div>
                 </div>
-                    <span class="mt-4 text-white text-base md:text-lg leading-relaxed font-medium">
+                    <span class="mt-4 text-white text-base md:text-lg leading-relaxed font-medium cta-main-subtitle">
                         <?= e($contactTitle) ?>
                     </span>
                 
-                <p class="mt-4 text-white text-base md:text-lg leading-relaxed font-medium">
+                <p class="mt-4 text-white text-base md:text-lg leading-relaxed font-medium cta-main-subtitle">
                     <?= $contactSubtitle ?>
                 </p>
             </div>
 
             <div class="relative z-10 lg:col-span-7 w-full">
-                <div class="rounded-3xl bg-white p-6 md:p-8 shadow-2xl border border-slate-50">
+                <div class="rounded-3xl bg-white p-6 md:p-8 shadow-2xl border border-slate-50 cta-white-card">
                     
                     <?php if ($submitted): ?>
                         <div class="text-center py-12">
@@ -79,38 +79,96 @@ $contactButtonUrl = $cbuttonUrl ?? '/contact';
                                 color: #043B94 !important;
                                 opacity: 0.9;
                             }
+                            
+                            /* iPad Mini (760px - 1024px) Compact Scaling for CTA Consultation Section */
+                            @media (min-width: 760px) and (max-width: 1024px) {
+                                .cta-main-container {
+                                    padding: 2rem 2rem !important;
+                                    gap: 1.5rem !important;
+                                }
+                                .cta-main-title {
+                                    font-size: 2.25rem !important;
+                                }
+                                .cta-main-subtitle {
+                                    font-size: 0.95rem !important;
+                                    line-height: 1.45 !important;
+                                }
+                                .cta-white-card {
+                                    padding: 1.25rem 1.5rem !important;
+                                    border-radius: 1.5rem !important;
+                                }
+                                .cta-form {
+                                    gap: 0.5rem !important;
+                                }
+                                .cta-input {
+                                    padding: 0.5rem 0.75rem !important;
+                                    font-size: 0.85rem !important;
+                                    border-radius: 0.65rem !important;
+                                }
+                                .cta-textarea {
+                                    padding: 0.5rem 0.75rem !important;
+                                    font-size: 0.85rem !important;
+                                    border-radius: 0.65rem !important;
+                                    min-height: 3.25rem !important;
+                                    max-height: 4rem !important;
+                                    rows: 2 !important;
+                                }
+                                .cta-pdpa-box {
+                                    max-height: 5rem !important;
+                                    padding: 0.5rem 0.75rem !important;
+                                    font-size: 0.725rem !important;
+                                    line-height: 1.4 !important;
+                                    margin-top: 0.35rem !important;
+                                    margin-bottom: 0.25rem !important;
+                                }
+                                .cta-consent-label {
+                                    font-size: 0.75rem !important;
+                                    line-height: 1.35 !important;
+                                }
+                                .cta-recaptcha-wrap {
+                                    transform: scale(0.82);
+                                    transform-origin: left center;
+                                    padding-top: 0.25rem !important;
+                                    padding-bottom: 0 !important;
+                                    margin-bottom: -0.5rem !important;
+                                }
+                                .cta-submit-btn {
+                                    padding: 0.5rem 1.75rem !important;
+                                    font-size: 0.875rem !important;
+                                }
+                            }
                         </style>
-                        <form method="post" class="space-y-4">
+                        <form method="post" class="space-y-4 cta-form">
                             
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <input type="text" id="contact_firstname_cta" name="firstname" placeholder="<?= e(t('common.form_label_firstname')) ?>" value="<?= e($form['firstname'] ?? '') ?>" required
-                                    class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base text-slate-900 outline-none transition custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary">
+                                    class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base text-slate-900 outline-none transition custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary cta-input">
 
                                 <input type="text" id="contact_lastname_cta" name="lastname" placeholder="<?= e(t('common.form_label_lastname')) ?>" value="<?= e($form['lastname'] ?? '') ?>" required
-                                    class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base text-slate-900 outline-none transition custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary">
+                                    class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base text-slate-900 outline-none transition custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary cta-input">
                             </div>
 
                             <div>
                                 <input type="text" id="contact_company_cta" name="company" placeholder="<?= e(t('common.form_label_company_optional')) ?>" value="<?= e($form['company'] ?? '') ?>" required maxlength="100"
-                                    class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base text-slate-900 outline-none transition custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary">
+                                    class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base text-slate-900 outline-none transition custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary cta-input">
                             </div>
 
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <input type="text" inputmode="numeric" name="phone" placeholder="<?= e(t('common.form_label_phone')) ?>" value="<?= e($form['phone'] ?? '') ?>" required maxlength="10" pattern="\d{9,10}"
                                     oninput="this.value = this.value.replace(/[^0-9]/g, '');"
-                                    class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base text-slate-900 outline-none transition custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary">
+                                    class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base text-slate-900 outline-none transition custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary cta-input">
 
                                 <input type="email" name="email" placeholder="<?= e(t('common.form_label_email')) ?>" value="<?= e($form['email'] ?? '') ?>" required
-                                    class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base text-slate-900 outline-none transition custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary">
+                                    class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base text-slate-900 outline-none transition custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary cta-input">
                             </div>
 
                             <div>
                                 <textarea name="message" rows="4" placeholder="<?= e(t('common.form_label_details')) ?>" required
-                                    class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base text-slate-900 outline-none transition custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary resize-none"><?= e($form['message'] ?? '') ?></textarea>
+                                    class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base text-slate-900 outline-none transition custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary resize-none cta-textarea"><?= e($form['message'] ?? '') ?></textarea>
                             </div>
 
                             <!-- Privacy Policy Scrollable Box -->
-                            <div id="privacy_policy_box_cta" class="mt-4 mb-2 p-4 md:p-5 rounded-xl border border-slate-200 bg-slate-50 overflow-y-auto max-h-48 text-sm text-slate-600 leading-relaxed custom-scrollbar shadow-inner text-left">
+                            <div id="privacy_policy_box_cta" class="mt-4 mb-2 p-4 md:p-5 rounded-xl border border-slate-200 bg-slate-50 overflow-y-auto max-h-48 text-sm text-slate-600 leading-relaxed custom-scrollbar shadow-inner text-left cta-pdpa-box">
                                 <h4 class="font-bold text-slate-800 mb-2">นโยบายความเป็นส่วนตัว (Privacy Policy)</h4>
                                 <p class="mb-4">
                                     WEBPARK Co., Ltd. ("เรา" หรือ "WebPark") ในฐานะผู้ควบคุมข้อมูลส่วนบุคคล (Data Controller) ตระหนักและให้ความสำคัญอย่างยิ่งต่อการคุ้มครองข้อมูลส่วนบุคคลและสิทธิความเป็นส่วนตัวของท่าน นโยบายฉบับนี้จัดทำขึ้นตามพระราชบัญญัติคุ้มครองข้อมูลส่วนบุคคล พ.ศ. 2562 (PDPA) เพื่อชี้แจงรายละเอียดเกี่ยวกับการเก็บรวบรวม ใช้ เปิดเผยข้อมูล และการใช้คุกกี้ บนเว็บไซต์ webpark.co.th ทั้งหมด
@@ -173,13 +231,13 @@ $contactButtonUrl = $cbuttonUrl ?? '/contact';
                             <!-- PDPA Consent Checkbox -->
                             <div class="flex items-start gap-3 pt-2">
                                 <input type="checkbox" id="privacy_consent_checkbox_cta" name="pdpa_agreed" value="1" required class="mt-1 w-4 h-4 rounded border-slate-300 text-primary focus:ring-primary cursor-pointer transition-all duration-200">
-                                <label for="privacy_consent_checkbox_cta" class="text-sm md:text-base leading-relaxed cursor-pointer select-none text-left">
+                                <label for="privacy_consent_checkbox_cta" class="text-sm md:text-base leading-relaxed cursor-pointer select-none text-left cta-consent-label">
                                     <span style="color: #022862;"><?= e(t('common.form_consent_prefix')) ?></span> <a href="#" id="ctaPrivacyModalTrigger" style="color: #0663F6;" class="hover:underline transition-colors duration-200"><?= e(t('common.form_consent_privacy_policy')) ?></a> <span style="color: #0663F6;"><?= e(t('common.form_consent_terms_suffix')) ?></span>
                                 </label>
                             </div>
 
                             <!-- Google reCAPTCHA v2 Widget -->
-                            <div class="pt-2 pb-1 flex justify-center sm:justify-start">
+                            <div class="pt-2 pb-1 flex justify-center sm:justify-start cta-recaptcha-wrap">
                                 <div class="g-recaptcha" data-sitekey="<?= e($recaptchaSiteKey) ?>"></div>
                             </div>
 
@@ -191,7 +249,7 @@ $contactButtonUrl = $cbuttonUrl ?? '/contact';
                                 @media (min-width: 768px) { .desktop-btn-left { justify-content: flex-start !important; } }
                             </style>
                             <div class="pt-2 flex justify-center desktop-btn-left">
-                                <button type="submit" id="cta_submit_btn" disabled class="px-8 py-3.5 bg-primary hover:bg-blue-600 text-white font-bold text-base rounded-full flex items-center justify-center gap-2 shadow-lg shadow-blue-500/10 transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none">
+                                <button type="submit" id="cta_submit_btn" disabled class="px-8 py-3.5 bg-primary hover:bg-blue-600 text-white font-bold text-base rounded-full flex items-center justify-center gap-2 shadow-lg shadow-blue-500/10 transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none cta-submit-btn">
                                     <?= e(t('erp.cta_submit') !== 'erp.cta_submit' ? t('erp.cta_submit') : (getCurrentLang() === 'th' ? 'ส่งข้อมูล' : 'Submit')) ?>
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />

@@ -21,18 +21,18 @@ $ctaImage = asset_url('images/bg-cta.jpg');
         'image_placeholder' => 'images/erp.png',
         'dropdown_title'    => 'ERP / ERM / HR',
         'subcategories'     => [
-            ['label' => 'ERP System',                    'href' => route_url('/erp')],
-            ['label' => 'Accounting & Finance',          'href' => route_url('/article/accounting-and-finance')],
-            ['label' => 'Sales / Purchase',              'href' => route_url('/article/sales-and-purchase')],
-            ['label' => 'Inventory / Warehouse',         'href' => route_url('/article/inventory-and-warehouse')],
-            ['label' => 'Customer Management',           'href' => route_url('/article/customer-management')],
-            ['label' => 'Lead Management',               'href' => route_url('/article/lead-management')],
-            ['label' => 'Customer Service',              'href' => route_url('/article/customer-service')],
-            ['label' => 'Partner / Supplier Management',  'href' => route_url('/article/partner-supplier-management')],
-            ['label' => 'HRM System',                    'href' => route_url('/article/hrm-system')],
-            ['label' => 'Attendance / Leave',            'href' => route_url('/article/attendance-and-leave')],
-            ['label' => 'Payroll',                       'href' => route_url('/article/payroll-system')],
-            ['label' => 'Workflow Approval',             'href' => route_url('/article/workflow-approval')],
+            ['label' => 'ERP System',           'href' => route_url('/erp')],
+            ['label' => 'Accounting & Finance', 'href' => route_url('/article', ['id' => 39])],
+            ['label' => 'Sales / Purchase',     'href' => route_url('/article', ['id' => 40])],
+            ['label' => 'Inventory / Warehouse','href' => route_url('/article', ['id' => 41])],
+            ['label' => 'Customer Management',  'href' => route_url('/article', ['id' => 42])],
+            ['label' => 'Lead Management',      'href' => '#'],
+            ['label' => 'Customer Service',     'href' => route_url('/article', ['id' => 29])],
+            ['label' => 'Partner / Supplier Management', 'href' => route_url('/article', ['id' => 30])],
+            ['label' => 'HRM System',           'href' => route_url('/article', ['id' => 31])],
+            ['label' => 'Attendance / Leave',   'href' => route_url('/article', ['id' => 32])],
+            ['label' => 'Payroll',              'href' => route_url('/article', ['id' => 14])],
+            ['label' => 'Workflow Approval',    'href' => route_url('/article', ['id' => 34])],
         ],
     ],
     [
@@ -43,19 +43,19 @@ $ctaImage = asset_url('images/bg-cta.jpg');
         'image_placeholder' => 'images/bg-cta.jpg',
         'dropdown_title'    => 'Platform / Communication / Data',
         'subcategories'     => [
-            ['label' => 'Website / Responsive / CMS',    'href' => route_url('/article/website-responsive-cms')],
-            ['label' => 'Mobile App / Mobile Site',      'href' => route_url('/article/mobile-app-development')],
-            ['label' => 'E-commerce',                    'href' => route_url('/article/ecommerce-solutions')],
-            ['label' => 'Custom Web Application',        'href' => route_url('/article/custom-web-application')],
-            ['label' => 'Membership / Portal System',    'href' => route_url('/article/membership-portal-system')],
-            ['label' => 'SMS Service',                   'href' => route_url('/article/sms-service')],
-            ['label' => 'Email Marketing',               'href' => route_url('/article/email-marketing')],
-            ['label' => 'Chatbot / Live Chat',           'href' => route_url('/article/chatbot-live-chat')],
-            ['label' => 'Game / Interactive Campaign',   'href' => route_url('/article/interactive-game-campaign')],
-            ['label' => 'Big Data',                      'href' => route_url('/article/big-data-analytics')],
-            ['label' => 'E-learning',                    'href' => route_url('/article/elearning-platform')],
-            ['label' => 'Dashboard',                     'href' => route_url('/article/business-dashboard')],
-            ['label' => 'Data Management',               'href' => route_url('/article/data-management-system')],
+            ['label' => 'Website / Responsive / CMS',    'href' => route_url('/article', ['id' => 35])],
+            ['label' => 'Mobile App / Mobile Site',      'href' => route_url('/article', ['id' => 36])],
+            ['label' => 'E-commerce',                    'href' => route_url('/article', ['id' => 37])],
+            ['label' => 'Custom Web Application',        'href' => '#'],
+            ['label' => 'Membership / Portal System',    'href' => '#'],
+            ['label' => 'SMS Service',                   'href' => '#'],
+            ['label' => 'Email Marketing',               'href' => '#'],
+            ['label' => 'Chatbot / Live Chat',           'href' => '#'],
+            ['label' => 'Game / Interactive Campaign',   'href' => '#'],
+            ['label' => 'Big Data',                      'href' => '#'],
+            ['label' => 'E-learning',                    'href' => '#'],
+            ['label' => 'Dashboard',                     'href' => '#'],
+            ['label' => 'Data Management',               'href' => '#'],
         ],
     ],
     [
@@ -66,19 +66,19 @@ $ctaImage = asset_url('images/bg-cta.jpg');
         'image_placeholder' => 'images/bg-hand.jpg',
         'dropdown_title'    => 'Strategy / Performance / Content',
         'subcategories'     => [
-            ['label' => 'Digital Marketing Consultant',  'href' => route_url('/article/digital-marketing-consultant')],
-            ['label' => 'Media Planner / PR & Media Strategy', 'href' => route_url('/article/media-planner-pr-strategy')],
-            ['label' => 'SEO',                           'href' => route_url('/article/search-engine-optimization-seo')],
-            ['label' => 'Social Network',                'href' => route_url('/article/social-network-marketing')],
-            ['label' => 'Online Campaign',               'href' => route_url('/article/online-campaign')],
-            ['label' => 'Monitoring & Analysis',         'href' => route_url('/article/monitoring-and-analysis')],
-            ['label' => 'Campaign Performance Report',   'href' => route_url('/article/campaign-performance-report')],
-            ['label' => 'Return on Investment (ROI)',    'href' => route_url('/article/return-on-investment-roi')],
-            ['label' => 'Productivity Analysis',         'href' => route_url('/article/productivity-analysis')],
-            ['label' => 'Content Strategy',              'href' => route_url('/article/content-strategy')],
-            ['label' => 'Ads Management',                'href' => route_url('/article/ads-management')],
-            ['label' => 'Social Media Content',          'href' => route_url('/article/social-media-content')],
-            ['label' => 'Search Engine Marketing',       'href' => route_url('/article/search-engine-marketing-sem')],
+            ['label' => 'Digital Marketing Consultant',  'href' => '#'],
+            ['label' => 'Media Planner / PR & Media Strategy', 'href' => '#'],
+            ['label' => 'SEO',                           'href' => route_url('/article-detail-mockup')],
+            ['label' => 'Social Network',                'href' => '#'],
+            ['label' => 'Online Campaign',               'href' => '#'],
+            ['label' => 'Monitoring & Analysis',         'href' => '#'],
+            ['label' => 'Campaign Performance Report',   'href' => '#'],
+            ['label' => 'Return on Investment (ROI)',    'href' => '#'],
+            ['label' => 'Productivity Analysis',         'href' => '#'],
+            ['label' => 'Content Strategy',              'href' => '#'],
+            ['label' => 'Ads Management',                'href' => '#'],
+            ['label' => 'Social Media Content',          'href' => '#'],
+            ['label' => 'Search Engine Marketing',       'href' => '#'],
         ],
     ],
     [
@@ -89,132 +89,71 @@ $ctaImage = asset_url('images/bg-cta.jpg');
         'image_placeholder' => 'images/women-office.jpg',
         'dropdown_title'    => 'Design / Motion / Media',
         'subcategories'     => [
-            ['label' => 'Web Design',                    'href' => route_url('/article/web-design')],
-            ['label' => 'UX/UI Design',                  'href' => route_url('/article/ux-ui-design')],
-            ['label' => 'Cartoon & Character Design',    'href' => route_url('/article/cartoon-character-design')],
-            ['label' => 'Infographic',                   'href' => route_url('/article/infographic-design')],
-            ['label' => 'Animation TV & YouTube Online', 'href' => route_url('/article/animation-tv-youtube')],
-            ['label' => 'Motion VDO',                    'href' => route_url('/article/motion-vdo')],
-            ['label' => 'Video Editing',                 'href' => route_url('/article/video-editing')],
-            ['label' => 'Presentation Video',            'href' => route_url('/article/presentation-video')],
-            ['label' => 'E-Magazine',                    'href' => route_url('/article/e-magazine')],
-            ['label' => 'Print Ads',                     'href' => route_url('/article/print-ads')],
-            ['label' => 'Online Banner',                 'href' => route_url('/article/online-banner')],
-            ['label' => 'Key Visual Design',             'href' => route_url('/article/key-visual-design')],
+            ['label' => 'Web Design',                    'href' => '#'],
+            ['label' => 'UX/UI Design',                  'href' => '#'],
+            ['label' => 'Cartoon & Character Design',    'href' => '#'],
+            ['label' => 'Infographic',                   'href' => '#'],
+            ['label' => 'Animation TV & YouTube Online', 'href' => '#'],
+            ['label' => 'Motion VDO',                    'href' => route_url('/article', ['id' => 14])],
+            ['label' => 'Video Editing',                 'href' => '#'],
+            ['label' => 'Presentation Video',            'href' => '#'],
+            ['label' => 'E-Magazine',                    'href' => '#'],
+            ['label' => 'Print Ads',                     'href' => '#'],
+            ['label' => 'Online Banner',                 'href' => '#'],
+            ['label' => 'Key Visual Design',             'href' => '#'],
         ],
     ],
 ];
-// Feature to article slug map
-$featureSlugMap = [
-    'ERP System' => route_url('/erp'),
-    'Accounting & Finance' => route_url('/article/accounting-and-finance'),
-    'Sales / Purchase' => route_url('/article/sales-and-purchase'),
-    'Inventory / Warehouse' => route_url('/article/inventory-and-warehouse'),
-    'Customer Management' => route_url('/article/customer-management'),
-    'Lead Management' => route_url('/article/lead-management'),
-    'Customer Service' => route_url('/article/customer-service'),
-    'Partner / Supplier Management' => route_url('/article/partner-supplier-management'),
-    'HRM System' => route_url('/article/hrm-system'),
-    'Attendance / Leave' => route_url('/article/attendance-and-leave'),
-    'Payroll' => route_url('/article/payroll-system'),
-    'Workflow Approval' => route_url('/article/workflow-approval'),
-
-    'Website / Responsive / CMS' => route_url('/article/website-responsive-cms'),
-    'Mobile App / Mobile Site' => route_url('/article/mobile-app-development'),
-    'E-commerce' => route_url('/article/ecommerce-solutions'),
-    'Custom Web Application' => route_url('/article/custom-web-application'),
-    'Membership / Portal System' => route_url('/article/membership-portal-system'),
-    'SMS Service' => route_url('/article/sms-service'),
-    'Email Marketing' => route_url('/article/email-marketing'),
-    'Chatbot / Live Chat' => route_url('/article/chatbot-live-chat'),
-    'Game / Interactive Campaign' => route_url('/article/interactive-game-campaign'),
-    'Big Data' => route_url('/article/big-data-analytics'),
-    'E-learning' => route_url('/article/elearning-platform'),
-    'Dashboard' => route_url('/article/business-dashboard'),
-    'Data Management' => route_url('/article/data-management-system'),
-
-    'Digital Marketing Consultant' => route_url('/article/digital-marketing-consultant'),
-    'Media Planner / PR & Media Strategy' => route_url('/article/media-planner-pr-strategy'),
-    'SEO' => route_url('/article/search-engine-optimization-seo'),
-    'Social Network' => route_url('/article/social-network-marketing'),
-    'Online Campaign' => route_url('/article/online-campaign'),
-    'Monitoring & Analysis' => route_url('/article/monitoring-and-analysis'),
-    'Campaign Performance Report' => route_url('/article/campaign-performance-report'),
-    'Return on Investment (ROI)' => route_url('/article/return-on-investment-roi'),
-    'Productivity Analysis' => route_url('/article/productivity-analysis'),
-    'Content Strategy' => route_url('/article/content-strategy'),
-    'Ads Management' => route_url('/article/ads-management'),
-    'Social Media Content' => route_url('/article/social-media-content'),
-    'Search Engine Marketing' => route_url('/article/search-engine-marketing-sem'),
-
-    'Web Design' => route_url('/article/web-design'),
-    'UX/UI Design' => route_url('/article/ux-ui-design'),
-    'Cartoon & Character Design' => route_url('/article/cartoon-character-design'),
-    'Infographic' => route_url('/article/infographic-design'),
-    'Animation TV & YouTube Online' => route_url('/article/animation-tv-youtube'),
-    'Motion VDO' => route_url('/article/motion-vdo'),
-    'Video Editing' => route_url('/article/video-editing'),
-    'Presentation Video' => route_url('/article/presentation-video'),
-    'E-Magazine' => route_url('/article/e-magazine'),
-    'Print Ads' => route_url('/article/print-ads'),
-    'Online Banner' => route_url('/article/online-banner'),
-    'Key Visual Design' => route_url('/article/key-visual-design'),
-];
-
 // Merge database services with mock subcategories
 if (isset($services) && is_array($services)) {
     $mergedServices = [];
     foreach ($services as $dbService) {
-        $slug = $dbService['slug'] ?? '';
+        $slug = $dbService['slug'];
         $mockMatch = null;
-        if ($slug === 'erp-erm' || str_contains(strtolower((string)$dbService['title']), 'erp')) {
+        if ($slug === 'erp-erm' || str_contains(strtolower($dbService['title']), 'erp')) {
             $mockMatch = $mockServices[0];
-        } elseif ($slug === 'digital-platform' || str_contains(strtolower((string)$dbService['title']), 'digital')) {
+        } elseif ($slug === 'digital-platform' || str_contains(strtolower($dbService['title']), 'digital')) {
             $mockMatch = $mockServices[1];
-        } elseif ($slug === 'online-marketing' || str_contains(strtolower((string)$dbService['title']), 'marketing')) {
+        } elseif ($slug === 'online-marketing' || str_contains(strtolower($dbService['title']), 'marketing')) {
             $mockMatch = $mockServices[2];
-        } elseif ($slug === 'creative-design' || str_contains(strtolower((string)$dbService['title']), 'creative')) {
+        } elseif ($slug === 'creative-design' || str_contains(strtolower($dbService['title']), 'creative')) {
             $mockMatch = $mockServices[3];
         } else {
             $mockMatch = $mockServices[0];
         }
-
         // Get features from the model which now loads from service_features table
         $dbFeatures = $dbService['features'] ?? [];
         $mappedSubcategories = [];
         if (!empty($dbFeatures)) {
             foreach ($dbFeatures as $feature) {
-                $trimmedFeature = trim((string)$feature);
-                if ($trimmedFeature === '') continue;
-
-                if (isset($featureSlugMap[$trimmedFeature])) {
-                    $href = $featureSlugMap[$trimmedFeature];
-                } else {
-                    // Fallback to match mock subcategories
-                    $matchedMockHref = null;
-                    if (isset($mockMatch['subcategories'])) {
-                        foreach ($mockMatch['subcategories'] as $mockSub) {
-                            if (strcasecmp((string)$mockSub['label'], $trimmedFeature) === 0) {
-                                $matchedMockHref = $mockSub['href'];
-                                break;
-                            }
-                        }
-                    }
-                    if ($matchedMockHref !== null) {
-                        $href = $matchedMockHref;
-                    } else {
-                        $generatedSlug = function_exists('slugify') ? slugify($trimmedFeature) : strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $trimmedFeature), '-'));
-                        $href = route_url('/article/' . $generatedSlug);
-                    }
-                }
-
+                if (empty(trim($feature))) continue;
+                // Keep the ERP link for ERP System, else use #
+                $href = ($slug === 'erp-erm' && $feature === 'ERP System') ? route_url('/erp') : '#';
+                // --- ONLINE MARKETING ---
+                if (str_contains(strtolower($feature), 'seo')) $href = route_url('/article-detail-mockup');
+                if (str_contains(strtolower($feature), 'payroll')) $href = route_url('/article', ['id' => 14]);
+                if (str_contains(strtolower($feature), 'motion')) $href = route_url('/article', ['id' => 14]);
+                // --- ERP / ERM / HR ---
+                if (str_contains(strtolower($feature), 'customer service')) $href = route_url('/article', ['id' => 29]);
+                if (str_contains(strtolower($feature), 'partner')) $href = route_url('/article', ['id' => 30]);
+                if (str_contains(strtolower($feature), 'hrm')) $href = route_url('/article', ['id' => 31]);
+                if (str_contains(strtolower($feature), 'attendance')) $href = route_url('/article', ['id' => 32]);
+                if (str_contains(strtolower($feature), 'workflow')) $href = route_url('/article', ['id' => 34]);
+                if (str_contains(strtolower($feature), 'accounting')) $href = route_url('/article', ['id' => 39]);
+                if (str_contains(strtolower($feature), 'sales')) $href = route_url('/article', ['id' => 40]);
+                if (str_contains(strtolower($feature), 'inventory')) $href = route_url('/article', ['id' => 41]);
+                if (str_contains(strtolower($feature), 'customer management')) $href = route_url('/article', ['id' => 42]);
+                // --- DIGITAL PLATFORMS ---
+                if (str_contains(strtolower($feature), 'website')) $href = route_url('/article', ['id' => 35]);
+                if (str_contains(strtolower($feature), 'mobile')) $href = route_url('/article', ['id' => 36]);
+                if (str_contains(strtolower($feature), 'e-commerce') || str_contains(strtolower($feature), 'ecommerce')) $href = route_url('/article', ['id' => 37]);
                 $mappedSubcategories[] = [
-                    'label' => $trimmedFeature,
+                    'label' => $feature,
                     'href' => $href
                 ];
             }
         }
-        // Fallback to mock data if database features are empty
+        // Fallback to mock data if database features are empty or corrupted by invalid JSON
         if (empty($mappedSubcategories)) {
             $mappedSubcategories = $mockMatch['subcategories'] ?? [];
         }
@@ -223,14 +162,14 @@ if (isset($services) && is_array($services)) {
             'icon_emoji' => $mockMatch['icon_emoji'] ?? '⚙️',
             'title' => getCurrentLang() === 'en' ? ($mockMatch['title_en'] ?? $mockMatch['title'] ?? $dbService['title']) : $dbService['title'],
             'summary' => getCurrentLang() === 'en' ? ($mockMatch['summary_en'] ?? $mockMatch['summary'] ?? $dbService['summary']) : $dbService['summary'],
-            'image_placeholder' => !empty($dbService['image']) ? 'uploads/' . $dbService['image'] : $mockMatch['image_placeholder'],
+            'image_placeholder' => $dbService['image'] ? 'uploads/' . $dbService['image'] : $mockMatch['image_placeholder'],
             'dropdown_title' => !empty($dbService['details']['dropdown_title']) ? $dbService['details']['dropdown_title'] : $mockMatch['dropdown_title'],
             'subcategories' => $mappedSubcategories,
         ];
     }
     $services = $mergedServices;
 } else {
-    // Fallback to mock data if database is empty
+    // Fallback to mock data if database is empty or still has old data
     $services = $mockServices;
 }
 ?>
@@ -325,8 +264,33 @@ if (isset($services) && is_array($services)) {
             .ipad-pro-services-approach-desc { font-size: 1.125rem !important; line-height: 1.6 !important; }
         }
 
-        /* iPad Air (820px) Overrides */
-        @media (min-width: 820px) and (max-width: 820px) {
+        /* iPad (760px - 1366px) All Orientations */
+        @media (min-width: 760px) and (max-width: 1366px) {
+            .ipad-pro-services-hero-content {
+                max-width: 100% !important;
+                margin-left: 0 !important;
+            }
+            .ipad-pro-services-text-1,
+            .ipad-pro-services-text-2 {
+                font-size: 4.25rem !important;
+                font-weight: 900 !important;
+                line-height: 1.15 !important;
+                white-space: nowrap !important;
+                margin-top: 0px !important;
+                padding-top: 0px !important;
+                padding-bottom: 0px !important;
+            }
+            .ipad-pro-services-hero-p {
+                font-size: 1.25rem !important;
+                line-height: 1.75 !important;
+                font-weight: 600 !important;
+                color: #0b1b42 !important;
+                max-width: 38rem !important;
+            }
+        }
+
+        /* iPad Air (820px - 1180px) Overrides */
+        @media (min-width: 820px) and (max-width: 1180px) {
             .ipad-air-services-approach-header {
                 flex-direction: row !important;
                 align-items: baseline !important;
@@ -463,29 +427,28 @@ if (isset($services) && is_array($services)) {
             display: inline-block;
         }
 
-        /* Custom Layout for iPad Pro Portrait (1024px - 1279px) */
-        @media (min-width: 1024px) and (max-width: 1279px) {
+        /* Custom Layout for all iPads (760px - 1366px) */
+        @media (min-width: 760px) and (max-width: 1366px) {
             .ipad-pro-services-h1 {
-                flex-direction: row !important;
-                flex-wrap: wrap !important;
-                align-items: baseline !important;
-                gap: 1rem !important;
+                flex-direction: column !important;
+                align-items: flex-start !important;
             }
             .ipad-pro-services-text-1, .ipad-pro-services-text-2 {
                 margin-top: 0 !important;
                 padding-top: 0 !important;
                 padding-bottom: 0 !important;
-                font-size: 4.5rem !important; /* Adjusted to fit on one line */
-                line-height: 1.2 !important;
+                font-size: 4.25rem !important;
+                line-height: 1.15 !important;
+                white-space: nowrap !important;
             }
             /* Font size for Services title section matches homepage */
             .ipad-pro-services-h1-text {
-                font-size: 2.25rem !important; /* 36px/text-4xl to match home page */
+                font-size: 2.5rem !important;
                 line-height: 1 !important;
             }
             .ipad-pro-services-subtitle {
-                font-size: 2.05rem !important; /* Slightly reduced to prevent cutoff */
-                letter-spacing: -0.5px !important; /* Tighter letter spacing to fit 'business' */
+                font-size: 2.25rem !important;
+                letter-spacing: -0.5px !important;
             }
             .ipad-pro-services-header-container {
                 padding-left: 0.5rem !important; /* Shift to the left */
@@ -517,6 +480,8 @@ if (isset($services) && is_array($services)) {
                 -webkit-line-clamp: 2 !important;
                 -webkit-box-orient: vertical !important;
                 overflow: hidden !important;
+                text-overflow: ellipsis !important;
+                line-height: 1.55 !important;
             }
             .ipad-pro-service-card-dropdown {
                 font-size: 1.5rem !important;
@@ -539,46 +504,49 @@ if (isset($services) && is_array($services)) {
                 padding-bottom: 3rem !important;
             }
             .ipad-pro-approach-title {
-                font-size: 3rem !important;
+                font-size: 2.35rem !important;
                 line-height: 1.2 !important;
             }
             .ipad-pro-approach-desc {
-                font-size: 1.4rem !important;
+                font-size: 1.05rem !important;
                 line-height: 1.6 !important;
             }
             
-            /* Our Approach blocks on iPad Pro */
+            /* Our Approach blocks on iPad */
             .ipad-pro-services-approach-card {
-                padding: 1.5rem !important;
-                gap: 1.25rem !important;
+                padding: 1.25rem 1.5rem !important;
+                gap: 1rem !important;
             }
             .ipad-pro-services-approach-header {
                 flex-direction: row !important;
-                align-items: center !important;
-                gap: 0.75rem !important;
+                align-items: baseline !important;
+                gap: 0.5rem !important;
+                flex-wrap: wrap !important;
             }
             .ipad-pro-services-approach-icon-wrap {
-                width: 4rem !important;
-                height: 4rem !important;
-            }
-            .ipad-pro-services-approach-icon-img {
                 width: 3.5rem !important;
                 height: 3.5rem !important;
             }
+            .ipad-pro-services-approach-icon-img {
+                width: 3rem !important;
+                height: 3rem !important;
+            }
             .ipad-pro-services-approach-number {
-                font-size: 1.75rem !important;
+                font-size: 1.35rem !important;
+                font-weight: 800 !important;
             }
             .ipad-pro-services-approach-title {
-                font-size: 1.5rem !important;
+                font-size: 1.2rem !important;
+                font-weight: 700 !important;
                 margin-bottom: 0 !important;
             }
             .ipad-pro-services-approach-desc {
-                font-size: 1.25rem !important;
-                line-height: 1.6 !important;
-                margin-top: 0.5rem !important;
+                font-size: 0.95rem !important;
+                line-height: 1.55 !important;
+                margin-top: 0.35rem !important;
             }
             .ipad-pro-services-hero-p {
-                margin-top: -1rem !important; /* Reduce gap further */
+                margin-top: 1.5rem !important;
             }
             .ipad-pro-services-hero-content {
                 margin-left: 0 !important;
@@ -591,11 +559,57 @@ if (isset($services) && is_array($services)) {
             }
             .ipad-pro-services-text-2 {
                 padding-top: 0 !important;
-                margin-top: -1.5rem !important;
+                margin-top: 0 !important;
             }
         }
         
-        /* สไตล์พิเศษสำหรับหน้าจอ Desktop (ใหญ่กว่า iPad Pro) */
+        /* iPad Mini (760px - 1024px) Font Scaling */
+        @media (min-width: 760px) and (max-width: 1024px) {
+            .ipad-pro-services-text-1, .ipad-pro-services-text-2 {
+                font-size: 2.75rem !important;
+            }
+            .ipad-pro-services-h1-text {
+                font-size: 1.85rem !important;
+            }
+            .ipad-pro-services-subtitle {
+                font-size: 1.5rem !important;
+            }
+            .ipad-pro-services-desc {
+                font-size: 0.95rem !important;
+                line-height: 1.55 !important;
+            }
+            .ipad-pro-service-card-title {
+                font-size: 1.15rem !important;
+                min-height: 2.75rem !important;
+            }
+            .ipad-pro-service-card-desc {
+                font-size: 0.85rem !important;
+                min-height: 2.75rem !important;
+            }
+            .ipad-pro-service-card-dropdown {
+                font-size: 0.975rem !important;
+                min-height: 3.25rem !important;
+            }
+            .ipad-pro-dropdown-item {
+                font-size: 0.9rem !important;
+            }
+            .ipad-pro-approach-title {
+                font-size: 2rem !important;
+            }
+            .ipad-pro-approach-desc {
+                font-size: 0.95rem !important;
+            }
+            .ipad-pro-services-approach-number {
+                font-size: 1.2rem !important;
+            }
+            .ipad-pro-services-approach-title {
+                font-size: 1.05rem !important;
+            }
+            .ipad-pro-services-approach-desc {
+                font-size: 0.85rem !important;
+            }
+        }
+        
         @media (min-width: 1025px) {
             .desktop-wide-container-services {
                 max-width: 1720px !important;
@@ -640,6 +654,13 @@ if (isset($services) && is_array($services)) {
             .desktop-service-desc {
                 font-size: 1.05rem !important; /* ขยายขนาดข้อความสีเทาตามที่ลูกค้าต้องการ */
                 margin-bottom: 0 !important;
+                display: -webkit-box !important;
+                -webkit-line-clamp: 2 !important;
+                -webkit-box-orient: vertical !important;
+                overflow: hidden !important;
+                text-overflow: ellipsis !important;
+                min-height: 3.25rem !important;
+                line-height: 1.55 !important;
             }
             .desktop-service-details-wrap {
                 border-top: none !important;
@@ -797,27 +818,25 @@ if (isset($services) && is_array($services)) {
                             </li>
                         </ol>
                     </nav>
-                <h1 class="animate-fade-up delay-200 mb-2 tracking-tighter flex flex-col items-start leading-[1.1] ipad-pro-services-h1">
-                    <span class="text-5xl md:text-6xl lg:text-8xl font-bold bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block py-2 md:py-2.5 desktop-services-hero-h1 desktop-services-hero-text-1 ipad-pro-services-text-1">
+                <h1 class="animate-fade-up delay-200 mb-2 tracking-tighter text-5xl md:text-7xl lg:text-8xl font-black leading-tight flex flex-col items-start ipad-pro-services-h1">
+                    <span class="bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block py-1 md:py-2 desktop-services-hero-h1 desktop-services-hero-text-1 ipad-pro-services-text-1">
                         <?= getCurrentLang() === 'th' ? 'ความเชี่ยวชาญ' : 'Expertise' ?>
                     </span>
-                    <span class="text-5xl md:text-6xl lg:text-8xl font-bold bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block py-1 md:py-2 -mt-1 md:-mt-2 lg:-mt-2 desktop-services-hero-h1 desktop-services-hero-text-2 ipad-pro-services-text-2" style="animation-delay: -3s;">
+                    <span class="bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block py-1 md:py-2 desktop-services-hero-h1 desktop-services-hero-text-2 ipad-pro-services-text-2" style="animation-delay: -3s;">
                         <?= getCurrentLang() === 'th' ? 'และจุดเด่น' : '& Strengths' ?>
                     </span>
                 </h1>
-                <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-base sm:text-lg md:text-xl leading-relaxed max-w-lg mb-10 font-medium desktop-services-hero-p ipad-pro-services-hero-p">
+                <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-base md:text-lg lg:text-xl leading-relaxed max-w-2xl mb-10 font-bold md:font-semibold desktop-services-hero-p ipad-pro-services-hero-p">
                     <?php if (getCurrentLang() === 'th'): ?>
-                        <span class="block sm:hidden leading-relaxed">
+                        <span class="block md:hidden leading-relaxed">
                             มากกว่า 20 ปี ที่เราสร้างสรรค์โซลูชันดิจิทัล<br>
                             ครบวงจร ผสานเทคโนโลยี ความเชี่ยวชาญ<br>
                             และความเข้าใจธุรกิจ เพื่อเพิ่มประสิทธิภาพ<br>
-                            สร้างการเติบโต และยกระดับองค์กร<br>
-                            สู่อนาคตอย่างยั่งยืน
+                            สร้างการเติบโต และยกระดับองค์กรสู่อนาคตอย่างยั่งยืน
                         </span>
-                        <span class="hidden sm:block">
-                            มากกว่า 20 ปี ที่เราสร้างสรรค์โซลูชันดิจิทัลครบวงจร<br class="ipad-pro-hidden">
-                            ผสานเทคโนโลยี ความเชี่ยวชาญ และความเข้าใจธุรกิจ<br class="ipad-pro-hidden">
-                            เพื่อเพิ่มประสิทธิภาพ สร้างการเติบโต<br class="hidden ipad-mini-hero-br"> และยกระดับองค์กรสู่อนาคตอย่างยั่งยืน
+                        <span class="hidden md:block leading-relaxed">
+                            มากกว่า 20 ปี ที่เราสร้างสรรค์โซลูชันดิจิทัลและ AI ครบวงจร<br>
+                            เพื่อเพิ่มประสิทธิภาพ สร้างการเติบโต และยกระดับองค์กรสู่อนาคต
                         </span>
                     <?php else: ?>
                         Over 20 years of creating comprehensive digital solutions. We combine technology, expertise, and business understanding to help organizations increase efficiency and elevate into the future.

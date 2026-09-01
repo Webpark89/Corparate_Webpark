@@ -43,8 +43,8 @@ $recaptchaSiteKey = '6Lcf_pAtAAAAAOVhatPPwrHSYXeb_0J4yXf5BrRO';
         <div class="absolute inset-x-0 bottom-0 h-[25%] bg-gradient-to-t from-white to-transparent z-10"></div>
     </div>
     <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 pt-12 pb-10 lg:pt-28 lg:pb-32 relative z-10 desktop-wide-container-contact">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-            <div class="max-w-2xl px-4 md:px-0 lg:ml-12 ipad-pro-ml-0 xl:ml-24">
+        <div class="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-12 lg:gap-20 items-center relative z-10">
+            <div class="max-w-2xl px-4 md:px-0 lg:ml-12 ipad-pro-ml-0 xl:ml-24 contact-hero-left-col">
                 <nav aria-label="Breadcrumb" class="hidden md:block animate-fade-up delay-100 mb-6">
                     <ol class="inline-flex items-center text-sm md:text-base font-medium text-slate-500">
                         <li>
@@ -69,19 +69,32 @@ $recaptchaSiteKey = '6Lcf_pAtAAAAAOVhatPPwrHSYXeb_0J4yXf5BrRO';
                         font-size: 17px;
                         line-height: 1.65;
                     }
-                    @media (min-width: 768px) {
-                        .hero-title-text { font-size: 3.5rem; line-height: 1.2; }
-                        .hero-desc-text { font-size: 21px; line-height: 1.7; }
+                    /* iPad (760px - 1366px) All Orientations */
+                    @media (min-width: 760px) and (max-width: 1366px) {
+                        .contact-hero-left-col {
+                            max-width: 100% !important;
+                            margin-left: 0 !important;
+                        }
+                        .hero-title-text,
+                        .desktop-contact-hero-h1 {
+                            font-size: 4.25rem !important;
+                            font-weight: 900 !important;
+                            line-height: 1.15 !important;
+                            margin-top: 0px !important;
+                            padding-top: 0px !important;
+                            padding-bottom: 0px !important;
+                        }
+                        .hero-desc-text,
+                        .desktop-contact-hero-p {
+                            font-size: 1.25rem !important;
+                            line-height: 1.75 !important;
+                            font-weight: 600 !important;
+                            color: #0b1b42 !important;
+                            max-width: 48rem !important;
+                        }
                     }
-                    @media (min-width: 1024px) {
+                    @media (min-width: 1367px) {
                         .hero-title-text { font-size: 5.5rem; line-height: 1.2; }
-                    }
-                    @media (min-width: 1280px) {
-                        .hero-title-text { font-size: 7rem; line-height: 1.2; }
-                    }
-                    
-                    /* สไตล์พิเศษสำหรับหน้าจอ Desktop (ใหญ่กว่า iPad Pro) */
-                    @media (min-width: 1025px) {
                         .desktop-wide-container-contact {
                             max-width: 1720px !important;
                             padding-left: 2.5rem !important;
@@ -98,10 +111,26 @@ $recaptchaSiteKey = '6Lcf_pAtAAAAAOVhatPPwrHSYXeb_0J4yXf5BrRO';
                         }
                     }
 
-                    @media (min-width: 1024px) and (max-width: 1279px) {
+                    @media (min-width: 760px) and (max-width: 1366px) {
                         .ipad-pro-strict-nowrap {
                             white-space: nowrap !important;
                             font-size: 1.15rem !important;
+                        }
+                    }
+
+                    /* iPad Mini (760px - 1024px) Font Scaling */
+                    @media (min-width: 760px) and (max-width: 1024px) {
+                        .desktop-contact-hero-h1,
+                        .hero-title-text {
+                            font-size: 2.75rem !important;
+                        }
+                        .desktop-contact-hero-p,
+                        .hero-desc-text {
+                            font-size: 0.95rem !important;
+                            line-height: 1.55 !important;
+                        }
+                        .ipad-pro-strict-nowrap {
+                            font-size: 0.95rem !important;
                         }
                     }
 
@@ -115,9 +144,9 @@ $recaptchaSiteKey = '6Lcf_pAtAAAAAOVhatPPwrHSYXeb_0J4yXf5BrRO';
                         animation: text-gradient-pan 6s linear infinite;
                     }
                 </style>
-                <h1 class="animate-fade-up delay-200 tracking-tight mb-2 leading-[1.1]">
-                    <span class="hero-title-text font-bold bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block py-2 md:py-2.5 whitespace-nowrap desktop-contact-hero-h1"><?= e(t('contact.hero_title')) ?></span><br>
-                    <span class="hero-title-text font-bold bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block py-1 md:py-2 -mt-1 md:-mt-2 lg:-mt-2 whitespace-nowrap desktop-contact-hero-h1" style="animation-delay: -3s;">WEBPARK</span>
+                <h1 class="animate-fade-up delay-200 tracking-tight mb-2 text-5xl md:text-7xl lg:text-8xl font-black leading-tight flex flex-col items-start">
+                    <span class="bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block py-1 md:py-2 whitespace-nowrap desktop-contact-hero-h1"><?= e(t('contact.hero_title')) ?></span>
+                    <span class="bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block py-1 md:py-2 whitespace-nowrap desktop-contact-hero-h1" style="animation-delay: -3s;">WEBPARK</span>
                 </h1>
                 <?php
                 if (getCurrentLang() === 'th') {
@@ -126,12 +155,12 @@ $recaptchaSiteKey = '6Lcf_pAtAAAAAOVhatPPwrHSYXeb_0J4yXf5BrRO';
                     $mobile_desc = "Let's talk about your project, system, website, or ERP/ERM and digital solutions for your business.";
                 }
                 ?>
-                <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-lg md:text-xl leading-relaxed max-w-lg mb-10 font-medium desktop-contact-hero-p">
+                <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-base md:text-lg lg:text-xl leading-relaxed max-w-2xl mb-10 font-bold md:font-semibold desktop-contact-hero-p">
                     <span class="block md:hidden leading-[1.75]">
                         <?= $mobile_desc ?>
                     </span>
                     <span class="hidden md:block leading-relaxed ipad-pro-strict-nowrap">
-                        <?= e(getCurrentLang() === 'th' ? 'พูดคุยและปรึกษาเกี่ยวกับโปรเจกต์ ระบบ เว็บไซต์' : 'Let\'s talk about your project, system, website,') ?><br>
+                        <?= e(getCurrentLang() === 'th' ? 'พูดคุยและปรึกษาเกี่ยวกับโปรเจกต์ ระบบ เว็บไซต์' : 'Let\'s talk about your project, system, website,') ?><br class="hidden md:inline">
                         <?= e(getCurrentLang() === 'th' ? 'ERP / ERM และโซลูชันดิจิทัลเพื่อธุรกิจของคุณ' : 'or ERP/ERM and digital solutions for your business.') ?>
                     </span>
                 </p>
