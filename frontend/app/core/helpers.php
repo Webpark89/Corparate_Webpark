@@ -65,6 +65,93 @@ function normalize_text(mixed $value): string
 }
 
 /**
+ * แปลงบรรทัดหรือย่อหน้าที่ขึ้นต้นด้วยสัญลักษณ์ Bullet (•, ⁃, ▪, -, *) หรือตัวเลขรายการ (1., 1))
+ * ให้เป็น <ul><li> หรือ <ol><li> แท้ เพื่อให้แสดงผลจุดสีฟ้าถูกต้อง
+ */
+function convert_plain_bullets_to_html(string $html): string
+{
+    if (trim($html) === '') {
+        return '';
+    }
+
+    // ตรวจสอบเบื้องต้นว่ามีสัญลักษณ์ Bullet หรือ Number List หรือไม่
+    if (!preg_match('/[•⁃▪▫◦·\x{2022}\x{2043}\x{25AA}\x{25AB}\x{25E6}\x{00B7}]|&bull;|&#8226;|&#x2022;/u', $html) && !preg_match('/(?:^|<p[^>]*>|<br\s*\/?>)[\s\x{00A0}]*[-\*]\s+/u', $html)) {
+        return $html;
+    }
+
+    $normalized = str_replace(['&bull;', '&#8226;', '&#x2022;'], '•', $html);
+
+    // Normalize breaks and paragraph ends to newlines
+    $str = preg_replace('/<br\s*\/?>/i', "\n", $normalized);
+    $str = preg_replace('/<\/p>/i', "\n", $str);
+    $str = preg_replace('/<\/div>/i', "\n", $str);
+    $str = preg_replace('/<p[^>]*>/i', '', $str);
+    $str = preg_replace('/<div[^>]*>/i', '', $str);
+
+    $lines = preg_split('/\r?\n/', $str);
+    $output = [];
+    $currentList = [];
+    $currentType = 'ul';
+
+    foreach ($lines as $line) {
+        $trimmed = trim($line);
+        if ($trimmed === '') {
+            if (!empty($currentList)) {
+                $output[] = "<{$currentType}><li>" . implode('</li><li>', $currentList) . "</li></{$currentType}>";
+                $currentList = [];
+            }
+            continue;
+        }
+
+        // If line is already an HTML block element
+        if (preg_match('/^<(h[1-6]|table|thead|tbody|tfoot|tr|th|td|blockquote|pre|figure|img|ul|ol|li)/i', $trimmed)) {
+            if (!empty($currentList)) {
+                $output[] = "<{$currentType}><li>" . implode('</li><li>', $currentList) . "</li></{$currentType}>";
+                $currentList = [];
+            }
+            $output[] = $trimmed;
+            continue;
+        }
+
+        // Check for bullet character •, ⁃, ▪, etc.
+        if (preg_match('/^[•⁃▪▫◦·\x{2022}\x{2043}\x{25AA}\x{25AB}\x{25E6}\x{00B7}][\s\x{00A0}]*(.*)$/u', $trimmed, $m)) {
+            if ($currentType !== 'ul' && !empty($currentList)) {
+                $output[] = "<{$currentType}><li>" . implode('</li><li>', $currentList) . "</li></{$currentType}>";
+                $currentList = [];
+            }
+            $currentType = 'ul';
+            $currentList[] = $m[1];
+        } elseif (preg_match('/^([-\*])[\s\x{00A0}]+(.*)$/u', $trimmed, $m)) {
+            if ($currentType !== 'ul' && !empty($currentList)) {
+                $output[] = "<{$currentType}><li>" . implode('</li><li>', $currentList) . "</li></{$currentType}>";
+                $currentList = [];
+            }
+            $currentType = 'ul';
+            $currentList[] = $m[2];
+        } elseif (preg_match('/^(\d+)[\.\)][\s\x{00A0}]+(.*)$/u', $trimmed, $m)) {
+            if ($currentType !== 'ol' && !empty($currentList)) {
+                $output[] = "<{$currentType}><li>" . implode('</li><li>', $currentList) . "</li></{$currentType}>";
+                $currentList = [];
+            }
+            $currentType = 'ol';
+            $currentList[] = $m[2];
+        } else {
+            if (!empty($currentList)) {
+                $output[] = "<{$currentType}><li>" . implode('</li><li>', $currentList) . "</li></{$currentType}>";
+                $currentList = [];
+            }
+            $output[] = '<p>' . $trimmed . '</p>';
+        }
+    }
+
+    if (!empty($currentList)) {
+        $output[] = "<{$currentType}><li>" . implode('</li><li>', $currentList) . "</li></{$currentType}>";
+    }
+
+    return implode('', $output);
+}
+
+/**
  * Extract clean plain text summary from article content (which can be HTML or JSON).
  */
 function get_article_summary_text(string $content, string $lang = 'th'): string

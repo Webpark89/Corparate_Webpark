@@ -62,7 +62,7 @@ if (is_array($decodedSections)) {
             $htmlParts[] = '<h2>' . e($sec['topic']) . '</h2>';
         }
         if (!empty($sec['body'])) {
-            $bodyHtml = $sec['body'];
+            $bodyHtml = convert_plain_bullets_to_html($sec['body']);
             // Normalize any relative image paths (e.g. ../../frontend/public/assets/) to proper absolute URL
             $bodyHtml = preg_replace(
                 '#src=["\'](?:\.\./)+frontend/public/assets/([^"\']+)["\']#i',

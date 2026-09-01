@@ -806,6 +806,101 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
             .replace(/"/g, '&quot;')
             .replace(/'/g, '&#039;');
     }
+
+    /**
+     * แปลงข้อความที่มีสัญลักษณ์ Bullet (•, ⁃, ▪, -, *) หรือตัวเลขรายการ (1., 1)) 
+     * ให้กลายเป็นแท็ก <ul><li> หรือ <ol><li> อัตโนมัติเมื่อวางเนื้อหา (Auto-convert on Paste)
+     */
+    function autoConvertBullets(input) {
+        if (!input || typeof input !== 'string') return input;
+
+        // ตรวจสอบเบื้องต้นว่ามีสัญลักษณ์ Bullet หรือ Number List หรือไม่
+        const hasBulletPattern = /[•⁃▪▫◦·\u2022\u2043\u25AA\u25AB\u25E6\u00B7]|&bull;|&#8226;|&#x2022;|^[\s\u00A0]*[-\*]\s+|[\r\n<][\s\u00A0]*[-\*]\s+/i;
+        const hasNumberPattern = /(?:^|[\r\n<])[\s\u00A0]*\d+[\.\)][\s\u00A0]+/i;
+
+        if (!hasBulletPattern.test(input) && !hasNumberPattern.test(input)) {
+            return input;
+        }
+
+        // แปลง Entities ของ Bullet ให้อยู่ในรูปตัวอักษรมาตรฐาน
+        let str = input
+            .replace(/&bull;|&#8226;|&#x2022;/gi, '•')
+            .replace(/&nbsp;/gi, ' ');
+
+        // แปลงแท็กบล็อกและตัวตัดบรรทัดให้อยู่ในรูป newline
+        str = str.replace(/<br\s*\/?>/gi, '\n');
+        str = str.replace(/<\/p>/gi, '\n');
+        str = str.replace(/<\/div>/gi, '\n');
+        str = str.replace(/<p[^>]*>/gi, '');
+        str = str.replace(/<div[^>]*>/gi, '');
+
+        const rawLines = str.split(/\r?\n/);
+        const resultBlocks = [];
+        let currentList = null; // { type: 'ul'|'ol', items: [] }
+
+        function getLineBullet(line) {
+            if (!line) return null;
+            const cleanText = line.replace(/<[^>]+>/g, '').trim();
+            if (!cleanText) return null;
+
+            if (/^[•⁃▪▫◦·\u2022\u2043\u25AA\u25AB\u25E6\u00B7]/.test(cleanText)) {
+                const content = line.trim().replace(/^[•⁃▪▫◦·\u2022\u2043\u25AA\u25AB\u25E6\u00B7][\s\u00A0]*/, '');
+                return { type: 'ul', content: content };
+            }
+
+            if (/^([-\*])[\s\u00A0]+/.test(cleanText)) {
+                const content = line.trim().replace(/^([-\*])[\s\u00A0]+/, '');
+                return { type: 'ul', content: content };
+            }
+
+            if (/^\d+[\.\)][\s\u00A0]+/.test(cleanText)) {
+                const content = line.trim().replace(/^\d+[\.\)][\s\u00A0]+/, '');
+                return { type: 'ol', content: content };
+            }
+
+            return null;
+        }
+
+        function flushList() {
+            if (currentList && currentList.items.length > 0) {
+                const tag = currentList.type;
+                const itemsHtml = currentList.items.map(item => `<li>${item}</li>`).join('');
+                resultBlocks.push(`<${tag}>${itemsHtml}</${tag}>`);
+                currentList = null;
+            }
+        }
+
+        rawLines.forEach(line => {
+            const trimmed = line.trim();
+            if (!trimmed) {
+                flushList();
+                return;
+            }
+
+            if (/^<(h[1-6]|table|thead|tbody|tfoot|tr|th|td|blockquote|pre|figure|img|ul|ol|li)/i.test(trimmed)) {
+                flushList();
+                resultBlocks.push(trimmed);
+                return;
+            }
+
+            const bullet = getLineBullet(line);
+            if (bullet) {
+                if (!currentList || currentList.type !== bullet.type) {
+                    flushList();
+                    currentList = { type: bullet.type, items: [] };
+                }
+                currentList.items.push(bullet.content);
+            } else {
+                flushList();
+                resultBlocks.push(`<p>${trimmed}</p>`);
+            }
+        });
+
+        flushList();
+
+        return resultBlocks.join('');
+    }
+
     function tinymceImageUploadHandler(blobInfo, progress) {
         return new Promise((resolve, reject) => {
             const xhr = new XMLHttpRequest();
@@ -860,7 +955,7 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
                 <div>
                     <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider block mb-1.5">เนื้อหาหลักของบทความ (${lang.toUpperCase()}) <span class="text-red-500">*</span></label>
                     <div class="editor-frame rounded-xl border border-slate-300 overflow-hidden">
-                        <textarea id="${id}" name="sections[${lang}][${index}][body]" class="w-full min-h-[150px]">${escapeHtml(bodyVal)}</textarea>
+                        <textarea id="${id}" name="sections[${lang}][${index}][body]" class="w-full min-h-[150px]">${escapeHtml(autoConvertBullets(bodyVal))}</textarea>
                     </div>
                     <p class="text-[11px] text-slate-500 flex items-center gap-1 mt-1.5">
                         <span>💡</span>
@@ -894,10 +989,32 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
             relative_urls: false,
             remove_script_host: false,
             convert_urls: false,
-            content_style: 'body { font-family: "Noto Sans Thai", Inter, ui-sans-serif, system-ui, sans-serif; font-size: 16px; line-height: 1.75; color: #475569; } p, span, li, div { font-size: 16px !important; line-height: 1.75 !important; }',
+            content_style: 'body { font-family: "Noto Sans Thai", Inter, ui-sans-serif, system-ui, sans-serif; font-size: 16px; line-height: 1.75; color: #475569; } p, span, li, div { font-size: 16px !important; line-height: 1.75 !important; } ul { list-style-type: disc; padding-left: 1.5rem; margin-bottom: 1.5rem; } ul li { margin-bottom: 0.5rem; } ul li::marker { color: #0d6efd; font-weight: bold; }',
             images_upload_handler: tinymceImageUploadHandler,
+            paste_preprocess: function (plugin, args) {
+                args.content = autoConvertBullets(args.content);
+            },
             setup: function (editor) {
                 editors[id] = editor;
+                editor.on('PastePreProcess', function (e) {
+                    e.content = autoConvertBullets(e.content);
+                });
+                editor.on('paste', function () {
+                    setTimeout(function () {
+                        const raw = editor.getContent();
+                        const converted = autoConvertBullets(raw);
+                        if (converted !== raw) {
+                            editor.setContent(converted);
+                        }
+                    }, 50);
+                });
+                editor.on('blur change', function () {
+                    const raw = editor.getContent();
+                    const converted = autoConvertBullets(raw);
+                    if (converted !== raw) {
+                        editor.setContent(converted);
+                    }
+                });
                 editor.addShortcut('ctrl+q', 'Apply Primary Color', function () {
                     editor.execCommand('ForeColor', false, '#0663F6');
                 });
@@ -1004,6 +1121,15 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
         const form = document.querySelector('#unifiedForm');
         if (form) {
             form.addEventListener('submit', () => {
+                for (const id in editors) {
+                    if (editors.hasOwnProperty(id) && editors[id]) {
+                        const raw = editors[id].getContent();
+                        const converted = autoConvertBullets(raw);
+                        if (converted !== raw) {
+                            editors[id].setContent(converted);
+                        }
+                    }
+                }
                 if (window.tinymce && typeof tinymce.triggerSave === 'function') {
                     tinymce.triggerSave();
                 }

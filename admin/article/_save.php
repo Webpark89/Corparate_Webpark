@@ -22,7 +22,7 @@ foreach (['th', 'en'] as $lang) {
     if (isset($sectionsInput[$lang]) && is_array($sectionsInput[$lang])) {
         foreach ($sectionsInput[$lang] as $item) {
             $topic = trim($item['topic'] ?? '');
-            $body = isset($item['body']) ? sanitize_html($item['body']) : '';
+            $body = isset($item['body']) ? sanitize_html(convert_plain_bullets_to_html($item['body'])) : '';
             if ($body !== '') {
                 $basePath = defined('SITE_URL') ? SITE_URL : '/Corparate_Webpark';
                 $body = preg_replace(
