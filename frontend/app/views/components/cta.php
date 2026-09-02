@@ -80,8 +80,8 @@ $contactButtonUrl = $cbuttonUrl ?? '/contact';
                                 opacity: 0.9;
                             }
                             
-                            /* iPad Mini (760px - 1024px) Compact Scaling for CTA Consultation Section */
-                            @media (min-width: 760px) and (max-width: 1024px) {
+                            /* iPad Mini (760px - 1024px Landscape / Small Tablets) Compact Scaling for CTA Consultation Section */
+                            @media (min-width: 760px) and (max-width: 1024px) and (orientation: landscape) {
                                 .cta-main-container {
                                     padding: 2rem 2rem !important;
                                     gap: 1.5rem !important;
@@ -135,6 +135,65 @@ $contactButtonUrl = $cbuttonUrl ?? '/contact';
                                 .cta-submit-btn {
                                     padding: 0.5rem 1.75rem !important;
                                     font-size: 0.875rem !important;
+                                }
+                            }
+
+                            /* Dedicated Large Scale for iPad Pro Portrait (821px - 1366px Portrait) */
+                            @media (min-width: 821px) and (max-width: 1366px) and (orientation: portrait) {
+                                .cta-main-container {
+                                    padding: 3rem 2.5rem !important;
+                                    gap: 2.5rem !important;
+                                }
+                                .cta-main-title {
+                                    font-size: 3.5rem !important;
+                                    line-height: 1.15 !important;
+                                }
+                                .cta-main-subtitle {
+                                    font-size: 1.35rem !important;
+                                    line-height: 2.1rem !important;
+                                }
+                                .cta-white-card {
+                                    padding: 2.25rem 2.25rem !important;
+                                    border-radius: 2rem !important;
+                                }
+                                .cta-form {
+                                    gap: 1.25rem !important;
+                                }
+                                .cta-input {
+                                    padding: 0.85rem 1.25rem !important;
+                                    font-size: 1.15rem !important;
+                                    border-radius: 1rem !important;
+                                }
+                                .cta-textarea {
+                                    padding: 0.85rem 1.25rem !important;
+                                    font-size: 1.15rem !important;
+                                    border-radius: 1rem !important;
+                                    min-height: 6rem !important;
+                                    max-height: 8rem !important;
+                                }
+                                .cta-pdpa-box {
+                                    max-height: 8.5rem !important;
+                                    padding: 0.85rem 1.25rem !important;
+                                    font-size: 0.95rem !important;
+                                    line-height: 1.6 !important;
+                                    margin-top: 0.75rem !important;
+                                    margin-bottom: 0.5rem !important;
+                                }
+                                .cta-consent-label {
+                                    font-size: 1.05rem !important;
+                                    line-height: 1.6 !important;
+                                }
+                                .cta-recaptcha-wrap {
+                                    transform: scale(1);
+                                    transform-origin: left center;
+                                    padding-top: 0.5rem !important;
+                                    padding-bottom: 0.5rem !important;
+                                    margin-bottom: 0 !important;
+                                }
+                                .cta-submit-btn {
+                                    padding: 0.85rem 3rem !important;
+                                    font-size: 1.2rem !important;
+                                    font-weight: 700 !important;
                                 }
                             }
                         </style>

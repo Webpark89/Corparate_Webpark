@@ -162,16 +162,37 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                             max-width: 48rem !important;
                         }
                     }
-                    /* iPad Mini (760px - 1024px) Font Scaling */
-                    @media (min-width: 760px) and (max-width: 1024px) {
+                    /* Dedicated Large Font Scale for iPad Pro Landscape */
+                    @media (min-width: 1024px) and (max-width: 1366px) {
                         .hero-title-text,
                         .desktop-article-hero-h1 {
-                            font-size: 2.75rem !important;
+                            font-size: 4.5rem !important;
+                            font-weight: 900 !important;
+                            line-height: 1.15 !important;
                         }
                         .desktop-article-hero-p,
                         .ipad-mini-hero-desc {
-                            font-size: 0.95rem !important;
-                            line-height: 1.55 !important;
+                            font-size: 1.35rem !important;
+                            line-height: 2.1rem !important;
+                            max-width: 580px !important;
+                        }
+                        .article-filter-btn {
+                            font-size: 1.15rem !important;
+                            padding: 0.6rem 1.5rem !important;
+                        }
+                    }
+                    /* Dedicated Large Font Scale for iPad Pro Portrait */
+                    @media (min-width: 821px) and (max-width: 1366px) and (orientation: portrait) {
+                        .hero-title-text,
+                        .desktop-article-hero-h1 {
+                            font-size: 4.25rem !important;
+                            line-height: 1.15 !important;
+                        }
+                        .desktop-article-hero-p,
+                        .ipad-mini-hero-desc {
+                            font-size: 1.35rem !important;
+                            line-height: 2.1rem !important;
+                            max-width: 580px !important;
                         }
                     }
                     @media (min-width: 1367px) {

@@ -563,8 +563,8 @@ if (isset($services) && is_array($services)) {
             }
         }
         
-        /* iPad Mini (760px - 1024px) Font Scaling */
-        @media (min-width: 760px) and (max-width: 1024px) {
+        /* iPad Mini Portrait (760px - 820px) Font Scaling */
+        @media (min-width: 760px) and (max-width: 820px) {
             .ipad-pro-services-text-1, .ipad-pro-services-text-2 {
                 font-size: 2.75rem !important;
             }
@@ -609,6 +609,152 @@ if (isset($services) && is_array($services)) {
                 font-size: 0.85rem !important;
             }
         }
+
+        /* Dedicated Large Font Scale for iPad Pro Landscape (1024px - 1366px) */
+        @media (min-width: 1024px) and (max-width: 1366px) {
+            .ipad-pro-services-text-1, .ipad-pro-services-text-2 {
+                font-size: 4.5rem !important;
+                line-height: 1.15 !important;
+            }
+            .ipad-pro-services-h1-text {
+                font-size: 2.75rem !important;
+            }
+            .ipad-pro-services-subtitle {
+                font-size: 2.5rem !important;
+            }
+            .ipad-pro-services-desc {
+                font-size: 1.35rem !important;
+                line-height: 2.1rem !important;
+            }
+            .ipad-pro-service-card-title {
+                font-size: 1.85rem !important;
+                min-height: 4.5rem !important;
+            }
+            .ipad-pro-service-card-desc {
+                font-size: 1.2rem !important;
+                line-height: 1.7 !important;
+                min-height: 4rem !important;
+            }
+            .ipad-pro-service-card-dropdown {
+                font-size: 1.55rem !important;
+                line-height: 1.4 !important;
+            }
+            .ipad-pro-dropdown-item {
+                font-size: 1.3rem !important;
+                padding: 0.5rem 0 !important;
+            }
+            .ipad-pro-approach-title {
+                font-size: 2.5rem !important;
+            }
+            .ipad-pro-approach-desc {
+                font-size: 1.25rem !important;
+                line-height: 2.0rem !important;
+            }
+            .ipad-pro-services-approach-number {
+                font-size: 2.0rem !important;
+                font-weight: 800 !important;
+            }
+            .ipad-pro-services-approach-title {
+                font-size: 1.45rem !important;
+            }
+            .ipad-pro-services-approach-desc {
+                font-size: 1.15rem !important;
+                line-height: 1.7 !important;
+            }
+        }
+        
+        /* Dedicated Large Font Scale for iPad Pro Portrait */
+        @media (min-width: 821px) and (max-width: 1366px) and (orientation: portrait) {
+            .ipad-pro-services-text-1, .ipad-pro-services-text-2 {
+                font-size: 4.25rem !important;
+                line-height: 1.15 !important;
+            }
+            .ipad-pro-services-h1-text {
+                font-size: 2.75rem !important;
+            }
+            .ipad-pro-services-subtitle {
+                font-size: 2.25rem !important;
+            }
+            .ipad-pro-services-desc {
+                font-size: 1.35rem !important;
+                line-height: 2.1rem !important;
+            }
+            .ipad-pro-service-grid {
+                display: grid !important;
+                grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+                align-items: stretch !important;
+            }
+            .gsap-service-card {
+                height: 100% !important;
+                display: flex !important;
+                flex-direction: column !important;
+                justify-content: space-between !important;
+            }
+            .desktop-service-card-inner {
+                display: flex !important;
+                flex-direction: column !important;
+                justify-content: space-between !important;
+                flex: 1 1 auto !important;
+            }
+            .desktop-service-emoji {
+                display: inline-block !important;
+                font-size: 1.75rem !important;
+                margin-right: 0.5rem !important;
+            }
+            .ipad-pro-service-card-title {
+                font-size: 1.75rem !important;
+                min-height: 2.5rem !important;
+                color: #022862 !important;
+                font-weight: 800 !important;
+            }
+            .ipad-pro-service-card-desc {
+                font-size: 1.15rem !important;
+                line-height: 1.65rem !important;
+                height: 3.35rem !important;
+                min-height: 3.35rem !important;
+                max-height: 3.35rem !important;
+                display: -webkit-box !important;
+                -webkit-line-clamp: 2 !important;
+                -webkit-box-orient: vertical !important;
+                overflow: hidden !important;
+                text-overflow: ellipsis !important;
+                margin-bottom: 0.75rem !important;
+            }
+            .ipad-pro-service-card-dropdown {
+                font-size: 1.35rem !important;
+                min-height: 3.5rem !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: space-between !important;
+            }
+            .desktop-service-summary-text {
+                display: inline-block !important;
+                font-size: 1.25rem !important;
+                font-weight: 700 !important;
+                color: #022862 !important;
+                line-height: 1.4 !important;
+            }
+            .ipad-pro-dropdown-item {
+                font-size: 1.2rem !important;
+            }
+            .ipad-pro-approach-title {
+                font-size: 3rem !important;
+            }
+            .ipad-pro-approach-desc {
+                font-size: 1.35rem !important;
+                line-height: 1.9rem !important;
+            }
+            .ipad-pro-services-approach-number {
+                font-size: 1.75rem !important;
+            }
+            .ipad-pro-services-approach-title {
+                font-size: 1.5rem !important;
+            }
+            .ipad-pro-services-approach-desc {
+                font-size: 1.15rem !important;
+                line-height: 1.8rem !important;
+            }
+        }
         
         @media (min-width: 1025px) {
             .desktop-wide-container-services {
@@ -645,41 +791,48 @@ if (isset($services) && is_array($services)) {
                 flex: 1 0 auto !important; /* แก้ปัญหา height ไม่ยอมขยายตามเนื้อหา */
             }
             .desktop-service-emoji {
-                display: none !important;
+                display: inline-block !important;
+                font-size: 1.5rem !important;
+                margin-right: 0.35rem !important;
             }
             .desktop-service-title {
-                color: #0663F6 !important;
-                font-size: 1.45rem !important; /* ขยายขนาดหัวข้อสีน้ำเงินตามที่ลูกค้าต้องการ */
+                color: #022862 !important;
+                font-size: 1.6rem !important;
+                font-weight: 800 !important;
             }
             .desktop-service-desc {
-                font-size: 1.05rem !important; /* ขยายขนาดข้อความสีเทาตามที่ลูกค้าต้องการ */
-                margin-bottom: 0 !important;
+                font-size: 1.05rem !important;
+                margin-bottom: 0.75rem !important;
                 display: -webkit-box !important;
                 -webkit-line-clamp: 2 !important;
                 -webkit-box-orient: vertical !important;
                 overflow: hidden !important;
                 text-overflow: ellipsis !important;
-                min-height: 3.25rem !important;
-                line-height: 1.55 !important;
+                height: 3.35rem !important;
+                min-height: 3.35rem !important;
+                max-height: 3.35rem !important;
+                line-height: 1.65rem !important;
             }
             .desktop-service-details-wrap {
-                border-top: none !important;
-                padding-top: 0 !important;
+                border-top: 1px solid #f1f5f9 !important;
+                padding-top: 0.5rem !important;
             }
             .desktop-service-summary {
-                padding: 0 !important;
-                justify-content: flex-end !important;
-                margin-top: -1.5rem !important; /* ดึงลูกศรขึ้นไปให้อยู่บรรทัดเดียวกับ desc */
+                padding: 0.25rem 0 !important;
+                justify-content: space-between !important;
+                margin-top: 0 !important;
             }
             .desktop-service-summary-text {
-                display: none !important;
+                display: inline-block !important;
+                font-size: 1.15rem !important;
+                font-weight: 700 !important;
+                color: #022862 !important;
             }
             .desktop-service-arrow {
-                color: #0663F6 !important;
-                width: 1.5rem !important;
-                height: 1.5rem !important;
-                background-color: white !important; /* พื้นหลังสีขาวเพื่อทับข้อความถ้ายาวเกิน */
-                border-radius: 50% !important;
+                color: #64748b !important;
+                width: 1.25rem !important;
+                height: 1.25rem !important;
+                background-color: transparent !important;
             }
             .desktop-service-dropdown-content {
                 margin-top: 1.5rem !important;
@@ -729,14 +882,14 @@ if (isset($services) && is_array($services)) {
             }
 
             /* Our Approach (Desktop) */
-            .desktop-approach-container {
-                max-width: 1600px !important;
-            }
             .desktop-approach-subtitle {
-                max-width: none !important;
+                max-width: 900px !important;
+                margin-left: auto !important;
+                margin-right: auto !important;
+                text-align: center !important;
             }
-            .desktop-approach-subtitle br {
-                display: none !important; /* ซ่อน <br> เพื่อให้อยู่บรรทัดเดียว */
+            .desktop-approach-subtitle span.block {
+                display: block !important;
             }
             .desktop-approach-card {
                 padding: 2.5rem 3.5rem !important;
@@ -992,8 +1145,8 @@ if (isset($services) && is_array($services)) {
                 </div>
                 <p class="text-slate-500 text-sm sm:text-base md:text-xl leading-relaxed max-w-4xl text-center mx-auto desktop-approach-subtitle ipad-pro-approach-desc ipad-mini-approach-desc">
                     <?php if (getCurrentLang() === 'th'): ?>
-                        <span class="block">กระบวนการทำงานที่เป็นระบบ เพื่อส่งมอบโซลูชันดิจิทัลที่ตอบ</span>
-                        <span class="block">โจทย์ธุรกิจ และความยั่งยืนของข้อมูลธุรกิจที่องค์กรถือครอง</span>
+                        <span class="block">กระบวนการทำงานที่เป็นระบบ เพื่อส่งมอบโซลูชันดิจิทัลที่ตอบโจทย์ธุรกิจ</span>
+                        <span class="block">และความยั่งยืนของข้อมูลธุรกิจที่องค์กรถือครอง</span>
                     <?php else: ?>
                         A systematic work process to deliver digital solutions that meet business needs and ensure the sustainability of business data held by the organization.
                     <?php endif; ?>

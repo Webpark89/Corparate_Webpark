@@ -267,12 +267,37 @@ $socialLinks = [
             .dt-sitemap-grid { grid-template-columns: repeat(5, minmax(0, 1fr)) !important; gap: 1.5rem !important; }
             .dt-sitemap-title { font-size: 1.35rem !important; font-weight: 800 !important; white-space: nowrap !important; border-bottom: none !important; margin-bottom: 1rem !important; padding-bottom: 0 !important; color: #043B94 !important; }
             .dt-sitemap-groups { gap: 0 !important; }
-            .dt-sitemap-list { border-left: 2px solid #94a3b8 !important; padding-left: 12px !important; margin-top: 0 !important; margin-bottom: 0 !important; padding-top: 4px !important; padding-bottom: 4px !important; gap: 12px !important; display: flex !important; flex-direction: column !important; }
-            .dt-sitemap-list > li { margin: 0 !important; display: flex !important; align-items: center !important; min-height: 36px !important; }
-            .dt-sitemap-link { font-size: 1.15rem !important; font-weight: 600 !important; color: #043B94 !important; line-height: 1.5 !important; padding: 4px 0 !important; }
+            .dt-sitemap-list { border-left: 2px solid #94a3b8 !important; padding-left: 12px !important; margin-top: 0 !important; margin-bottom: 0 !important; padding-top: 4px !important; padding-bottom: 4px !important; gap: 10px !important; display: flex !important; flex-direction: column !important; }
+            .dt-sitemap-list > li { margin: 0 !important; display: flex !important; align-items: flex-start !important; min-height: auto !important; height: auto !important; }
+            .dt-sitemap-link { font-size: 1.15rem !important; font-weight: 600 !important; color: #043B94 !important; line-height: 1.45 !important; padding: 2px 0 !important; word-break: break-word !important; }
             .dt-sitemap-link:hover { color: #0663F6 !important; }
-            .dt-sitemap-bullet { font-size: 22px !important; margin-right: 4px !important; color: #043B94 !important; }
+            .dt-sitemap-bullet { font-size: 20px !important; line-height: 1.45 !important; margin-right: 6px !important; color: #043B94 !important; margin-top: 1px !important; }
         }
+
+        /* Dedicated iPad Pro Portrait (821px - 1366px Portrait) - Top 2, Bottom 3 Sitemap Layout */
+        @media (min-width: 821px) and (max-width: 1366px) and (orientation: portrait) {
+            #footerSitemapLabel { font-size: 30px !important; }
+            .dt-sitemap-grid { 
+                display: grid !important;
+                grid-template-columns: repeat(6, 1fr) !important; 
+                gap: 2.5rem 2rem !important; 
+            }
+            /* Row 1: PAGE (Left 50%) & ERP / ERM (Right 50%) */
+            .dt-sitemap-grid > section:nth-child(1) { grid-column: span 3 !important; }
+            .dt-sitemap-grid > section:nth-child(2) { grid-column: span 3 !important; }
+            
+            /* Row 2: DIGITAL PLATFORM (Left 33.3%), ONLINE MARKETING (Center 33.3%), CREATIVE / DESIGN (Right 33.3%) */
+            .dt-sitemap-grid > section:nth-child(3) { grid-column: span 2 !important; }
+            .dt-sitemap-grid > section:nth-child(4) { grid-column: span 2 !important; }
+            .dt-sitemap-grid > section:nth-child(5) { grid-column: span 2 !important; }
+
+            .dt-sitemap-title { font-size: 1.3rem !important; font-weight: 800 !important; margin-bottom: 1rem !important; }
+            .dt-sitemap-list { gap: 0.75rem !important; padding-left: 14px !important; }
+            .dt-sitemap-list > li { min-height: auto !important; height: auto !important; align-items: flex-start !important; margin-bottom: 0.35rem !important; }
+            .dt-sitemap-link { font-size: 1.05rem !important; line-height: 1.5 !important; padding: 0 !important; word-break: break-word !important; }
+            .dt-sitemap-bullet { font-size: 18px !important; margin-right: 6px !important; margin-top: 1px !important; }
+        }
+
         /* Responsiveness for iPad Mini / Tablets (768px - 1023px) */
         @media (min-width: 768px) and (max-width: 1023px) {
             #footerInfoGrid { grid-template-columns: 1fr 1.8fr 1.5fr !important; gap: 1rem !important; }

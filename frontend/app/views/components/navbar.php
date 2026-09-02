@@ -26,8 +26,9 @@ $currentLang = getCurrentLang();
         <style>
             .desktop-nav-link {
                 color: #022862;
-                font-size: 1rem;
+                font-size: 1.05rem;
                 font-weight: 600;
+                white-space: nowrap !important;
             }
             .desktop-nav-link:hover {
                 color: #0663F6;
@@ -37,51 +38,30 @@ $currentLang = getCurrentLang();
                 font-weight: 700;
             }
             
-            /* iPad Mini Landscape (1024px) Compact Navigation */
-            @media (min-width: 1024px) and (max-width: 1024px) {
-                .navbar-container {
-                    height: 4.15rem !important;
-                }
-                .navbar-logo-img {
-                    height: 2.15rem !important;
-                }
-                .desktop-nav-link {
-                    font-size: 1rem !important;
-                    font-weight: 600 !important;
-                    padding-left: 0.35rem !important;
-                    padding-right: 0.35rem !important;
-                }
-                .desktop-nav-dot {
-                    font-size: 0.75rem !important;
-                    margin-left: 0.25rem !important;
-                    margin-right: 0.25rem !important;
-                }
-                .desktop-lang-switcher {
-                    font-size: 1rem !important;
-                }
-            }
-
-            /* iPad Pro & Desktop Navigation Scale (1025px+) */
-            @media (min-width: 1025px) {
+            /* iPad Pro & Large Screen Navigation Scale (1024px+) */
+            @media (min-width: 1024px) {
                 .navbar-container {
                     height: 4.75rem !important;
                 }
                 .navbar-logo-img {
-                    height: 2.75rem !important;
+                    height: 2.55rem !important;
                 }
                 .desktop-nav-link {
-                    font-size: 1.2rem !important;
+                    font-size: 1.15rem !important;
                     font-weight: 600 !important;
-                    padding-left: 0.5rem !important;
-                    padding-right: 0.5rem !important;
+                    padding-left: 0.4rem !important;
+                    padding-right: 0.4rem !important;
+                    white-space: nowrap !important;
                 }
                 .desktop-nav-dot {
                     font-size: 0.85rem !important;
-                    margin-left: 0.35rem !important;
-                    margin-right: 0.35rem !important;
+                    margin-left: 0.25rem !important;
+                    margin-right: 0.25rem !important;
                 }
                 .desktop-lang-switcher {
-                    font-size: 1.2rem !important;
+                    font-size: 1.15rem !important;
+                    font-weight: 700 !important;
+                    white-space: nowrap !important;
                 }
             }
         </style>

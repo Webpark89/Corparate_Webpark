@@ -25,6 +25,9 @@ $tailwindCssVersion = $tailwindCssFile !== false ? filemtime($tailwindCssFile) :
 
 if (!headers_sent()) {
     header('Content-Type: text/html; charset=UTF-8');
+    header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+    header('Pragma: no-cache');
+    header('Expires: 0');
 }
 
 if ($jsonLd !== []) {
@@ -52,6 +55,7 @@ $content = $content ?? '';
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <title><?= e($title) ?></title>
     <link rel="icon" type="image/png" href="<?= e(asset_url('images/logo.png')) ?>">
+    <link rel="shortcut icon" type="image/png" href="<?= e(asset_url('images/logo.png')) ?>">
     <link rel="apple-touch-icon" href="<?= e(asset_url('images/logo.png')) ?>">
     <meta name="description" content="<?= e($metaDescription) ?>">
     <meta name="robots" content="<?= e($robots) ?>">

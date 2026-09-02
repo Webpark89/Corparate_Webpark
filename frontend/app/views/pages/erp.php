@@ -473,8 +473,8 @@ $erpPortfolios = $mockErpPortfolios;
         }
     }
 
-    /* iPad Mini (760px - 1024px) Font Scaling */
-    @media (min-width: 760px) and (max-width: 1024px) {
+    /* iPad Mini Portrait (760px - 820px) Font Scaling */
+    @media (min-width: 760px) and (max-width: 820px) {
         .ipad-pro-erp-hero-h1 {
             font-size: 2.75rem !important;
         }
@@ -497,6 +497,62 @@ $erpPortfolios = $mockErpPortfolios;
         .erp-intro-desc {
             font-size: 0.925rem !important;
             line-height: 1.55 !important;
+        }
+    }
+
+    /* Dedicated Large Font Scale for iPad Pro Landscape (1024px - 1366px) */
+    @media (min-width: 1024px) and (max-width: 1366px) {
+        .ipad-pro-erp-hero-h1 {
+            font-size: 4.5rem !important;
+            line-height: 1.15 !important;
+        }
+        .desktop-erp-hero-p {
+            font-size: 1.35rem !important;
+            line-height: 2.1rem !important;
+            max-width: 580px !important;
+        }
+        .erp-intro-title {
+            font-size: 2.25rem !important;
+        }
+        .erp-intro-desc {
+            font-size: 1.3rem !important;
+            line-height: 2.1rem !important;
+        }
+        .gsap-erp-about-card h3 {
+            font-size: 1.45rem !important;
+            min-height: 3.25rem !important;
+        }
+        .gsap-erp-about-card p {
+            font-size: 1.15rem !important;
+            line-height: 1.75rem !important;
+        }
+    }
+
+    /* Dedicated Large Font Scale for iPad Pro Portrait */
+    @media (min-width: 821px) and (max-width: 1366px) and (orientation: portrait) {
+        .ipad-pro-erp-hero-h1 {
+            font-size: 4.25rem !important;
+            line-height: 1.15 !important;
+        }
+        .desktop-erp-hero-p {
+            font-size: 1.35rem !important;
+            line-height: 2.1rem !important;
+            max-width: 580px !important;
+        }
+        .erp-intro-title {
+            font-size: 2rem !important;
+        }
+        .erp-intro-desc {
+            font-size: 1.25rem !important;
+            line-height: 2rem !important;
+        }
+        .gsap-erp-about-card h3 {
+            font-size: 1.35rem !important;
+            min-height: 3.25rem !important;
+        }
+        .gsap-erp-about-card p {
+            font-size: 1.05rem !important;
+            line-height: 1.6rem !important;
         }
     }
     .ipad-mini-erp-desc,

@@ -118,19 +118,41 @@ $recaptchaSiteKey = '6Lcf_pAtAAAAAOVhatPPwrHSYXeb_0J4yXf5BrRO';
                         }
                     }
 
-                    /* iPad Mini (760px - 1024px) Font Scaling */
-                    @media (min-width: 760px) and (max-width: 1024px) {
+                    /* Dedicated Large Font Scale for iPad Pro Landscape */
+                    @media (min-width: 1024px) and (max-width: 1366px) {
                         .desktop-contact-hero-h1,
                         .hero-title-text {
-                            font-size: 2.75rem !important;
+                            font-size: 4.5rem !important;
+                            line-height: 1.15 !important;
                         }
                         .desktop-contact-hero-p,
                         .hero-desc-text {
-                            font-size: 0.95rem !important;
-                            line-height: 1.55 !important;
+                            font-size: 1.35rem !important;
+                            line-height: 2.1rem !important;
+                            max-width: 580px !important;
                         }
                         .ipad-pro-strict-nowrap {
-                            font-size: 0.95rem !important;
+                            font-size: 1.35rem !important;
+                            white-space: normal !important;
+                        }
+                    }
+
+                    /* Dedicated Large Font Scale for iPad Pro Portrait */
+                    @media (min-width: 821px) and (max-width: 1366px) and (orientation: portrait) {
+                        .desktop-contact-hero-h1,
+                        .hero-title-text {
+                            font-size: 4.25rem !important;
+                            line-height: 1.15 !important;
+                        }
+                        .desktop-contact-hero-p,
+                        .hero-desc-text {
+                            font-size: 1.35rem !important;
+                            line-height: 2.1rem !important;
+                            max-width: 580px !important;
+                        }
+                        .ipad-pro-strict-nowrap {
+                            font-size: 1.35rem !important;
+                            white-space: normal !important;
                         }
                     }
 

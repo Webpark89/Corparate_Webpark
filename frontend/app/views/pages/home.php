@@ -202,8 +202,8 @@ if (!empty($partners) && is_array($partners)) {
                 .mobile-br { display: initial !important; }
             }
             
-            /* iPad Mini (760px - 1024px) specific fixes & compact font scale */
-            @media (min-width: 760px) and (max-width: 1024px) {
+            /* iPad Mini Portrait (760px - 820px) specific fixes & compact font scale */
+            @media (min-width: 760px) and (max-width: 820px) {
                 .ipad-mini-br {
                     display: initial !important;
                 }
@@ -268,25 +268,23 @@ if (!empty($partners) && is_array($partners)) {
     </div>
 </section>
 <style>
-/* iPad Pro (1024px - 1366px) and iPad Air (1180px) override to keep the layout stacked */
-@media (max-width: 1366px) {
-    .ipad-pro-stack-override { flex-direction: column !important; background: transparent !important; border: none !important; box-shadow: none !important; gap: 1rem !important; overflow: visible !important; }
+/* Stacked 2-Part Layout for iPad Pro, iPad Air & Mobile (Both Portrait and Landscape up to 1440px) */
+@media (max-width: 1440px) {
+    .ipad-pro-stack-override { flex-direction: column !important; background: transparent !important; border: none !important; box-shadow: none !important; gap: 1.5rem !important; overflow: visible !important; }
     .ipad-pro-hidden { display: none !important; }
-    .ipad-pro-w-full-override { max-width: 100% !important; border-right: none !important; border-radius: 0 0 2rem 2rem !important; border: 1px solid #f3f4f6 !important; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important; }
+    .ipad-pro-w-full-override { max-width: 100% !important; width: 100% !important; border-right: none !important; border-radius: 2rem !important; border: 1px solid #f3f4f6 !important; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important; background: white !important; padding: 2rem 2.5rem !important; }
     .ipad-pro-flex-visible { display: flex !important; }
-    .ipad-pro-grid-2-override { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; border-radius: 2rem !important; border: 1px solid #f3f4f6 !important; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important; }
+    .ipad-pro-display-grid { display: grid !important; grid-template-columns: repeat(2, minmax(0, 1fr)) !important; align-items: center !important; gap: 2.5rem !important; }
+    .ipad-pro-display-block { display: block !important; }
+    .ipad-pro-display-flex { display: flex !important; flex-direction: column !important; justify-content: space-between !important; height: 100% !important; }
+    .ipad-pro-grid-2-override { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; border-radius: 2rem !important; border: 1px solid #f3f4f6 !important; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important; background: white !important; }
+    .ipad-pro-border-br { border-right: 1px solid #f3f4f6 !important; border-bottom: 1px solid #f3f4f6 !important; }
     .ipad-pro-border-b { border-bottom: 1px solid #f3f4f6 !important; border-right: none !important; }
     .ipad-pro-border-r { border-right: 1px solid #f3f4f6 !important; border-bottom: none !important; }
-    .ipad-pro-border-br { border-right: 1px solid #f3f4f6 !important; border-bottom: 1px solid #f3f4f6 !important; }
     .ipad-pro-border-none { border: none !important; }
-    .ipad-pro-p-6 { padding: 1.5rem !important; }
+    .ipad-pro-p-6 { padding: 2.25rem 2rem !important; }
     
-    /* Overrides for About Us inner layout */
-    .ipad-pro-display-grid { display: grid !important; }
-    .ipad-pro-display-block { display: block !important; }
-    .ipad-pro-display-flex { display: flex !important; }
-    
-    /* Overrides for Articles layout */
+    /* Overrides for Articles layout on tablets */
     .ipad-pro-articles-slider {
         display: flex !important;
         flex-wrap: nowrap !important;
@@ -308,11 +306,23 @@ if (!empty($partners) && is_array($partners)) {
     }
 }
 
-/* Strict override for iPad Pro (1024px - 1366px) */
-@media (min-width: 1024px) and (max-width: 1366px) {
+/* Dedicated Large Font Scale for iPad Pro Landscape (1024px - 1366px Landscape) */
+@media (min-width: 1024px) and (max-width: 1366px) and (orientation: landscape) {
     .ipad-pro-strict-hidden { display: none !important; }
     .ipad-pro-strict-inline { display: inline !important; }
-    .ipad-pro-hero-desc { font-size: 1.375rem !important; line-height: 2.25rem !important; width: 520px !important; max-width: 520px !important; padding-right: 0; }
+    
+    .desktop-hero-h1 {
+        font-size: 4.5rem !important;
+        line-height: 1.15 !important;
+    }
+    .ipad-pro-hero-desc,
+    .desktop-hero-desc {
+        font-size: 1.35rem !important;
+        line-height: 2.1rem !important;
+        width: 540px !important;
+        max-width: 540px !important;
+        padding-right: 0 !important;
+    }
     
     .desktop-hero-woman {
         top: auto !important;
@@ -343,27 +353,39 @@ if (!empty($partners) && is_array($partners)) {
     }
     
     /* iPad Pro Font Size Overrides */
-    .ipad-pro-font-about-tag { font-size: 1rem !important; line-height: 1.4rem !important; font-weight: 700 !important; }
-    .ipad-pro-font-about-h2 { font-size: 1.5rem !important; line-height: 1.85rem !important; font-weight: 800 !important; }
+    .ipad-pro-about-br { display: inline !important; }
+    .ipad-pro-font-about-tag { font-size: 2.25rem !important; line-height: 2.5rem !important; font-weight: 900 !important; color: #0663F6 !important; }
+    .ipad-pro-about-bar { width: 5.5rem !important; height: 5px !important; margin-top: 0.4rem !important; margin-bottom: 0.75rem !important; background-color: #0663F6 !important; }
+    .ipad-pro-font-about-h2 { font-size: 1.6rem !important; line-height: 2rem !important; font-weight: 800 !important; min-height: 4rem !important; margin-bottom: 0.75rem !important; color: #043B94 !important; }
     .ipad-pro-font-title {
-        font-size: 1.15rem !important;
-        line-height: 1.45rem !important;
+        font-size: 1.45rem !important;
+        line-height: 1.85rem !important;
         font-weight: 700 !important;
-        min-height: 3rem !important;
+        min-height: 4rem !important;
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
         text-align: center !important;
         white-space: normal !important;
+        margin-bottom: 0.75rem !important;
+    }
+    .ipad-pro-about-card-desc {
+        font-size: 1.15rem !important;
+        line-height: 1.85rem !important;
+        min-height: 9.5rem !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        color: #6b7280 !important;
     }
     .ipad-pro-font-desc {
-        font-size: 0.925rem !important;
-        line-height: 1.55rem !important;
-        min-height: 6.5rem !important;
+        font-size: 1.1rem !important;
+        line-height: 1.8rem !important;
+        min-height: 9.5rem !important;
+        color: #6b7280 !important;
     }
     .ipad-pro-font-link {
-        font-size: 0.95rem !important;
-        line-height: 1.5rem !important;
+        font-size: 1.1rem !important;
+        line-height: 1.6rem !important;
         font-weight: 600 !important;
     }
     .ipad-pro-font-h2 { font-size: 3.25rem !important; line-height: 1.1 !important; }
@@ -377,6 +399,35 @@ if (!empty($partners) && is_array($partners)) {
     .ipad-pro-card-desc { font-size: 1.3rem !important; line-height: 1.7rem !important; }
     .ipad-pro-card-link { font-size: 1.15rem !important; line-height: 1.55 !important; }
     .ipad-pro-card-badge { font-size: 1.05rem !important; padding: 0.4rem 0.85rem !important; }
+}
+
+/* Dedicated Large Font Scale for iPad Pro Portrait */
+@media (min-width: 821px) and (max-width: 1366px) and (orientation: portrait) {
+    .desktop-hero-h1 {
+        font-size: 4.25rem !important;
+        line-height: 1.15 !important;
+    }
+    .ipad-pro-hero-desc,
+    .desktop-hero-desc {
+        font-size: 1.35rem !important;
+        line-height: 2.1rem !important;
+        width: 100% !important;
+        max-width: 580px !important;
+    }
+    .ipad-pro-font-about-tag, .ipad-air-font-about-tag { font-size: 1.15rem !important; }
+    .ipad-pro-font-about-h2, .ipad-air-font-about-h2 { font-size: 1.85rem !important; line-height: 2.25rem !important; }
+    .ipad-pro-font-title, .ipad-air-font-title { font-size: 1.45rem !important; line-height: 1.75rem !important; min-height: 3.5rem !important; }
+    .ipad-pro-font-desc, .ipad-air-font-desc { font-size: 1.15rem !important; line-height: 1.75rem !important; min-height: 6rem !important; }
+    .ipad-pro-font-link, .ipad-air-font-link { font-size: 1.05rem !important; line-height: 1.55rem !important; }
+    .ipad-pro-font-h2 { font-size: 3rem !important; line-height: 1.15 !important; }
+    .ipad-pro-font-subtitle { font-size: 2.25rem !important; line-height: 2.6rem !important; }
+    .ipad-pro-article-h2, .ipad-air-article-h2 { font-size: 2.5rem !important; line-height: 1.2 !important; }
+    .ipad-pro-article-h3, .ipad-air-article-h3 { font-size: 1.75rem !important; line-height: 1.35 !important; }
+    .ipad-pro-article-desc, .ipad-air-article-desc { font-size: 1.25rem !important; line-height: 1.75rem !important; }
+    .ipad-pro-card-title, .ipad-air-card-title { font-size: 1.5rem !important; line-height: 1.45 !important; }
+    .ipad-pro-card-desc, .ipad-air-card-desc { font-size: 1.15rem !important; line-height: 1.65 !important; }
+    .ipad-pro-card-link, .ipad-air-card-link { font-size: 1.05rem !important; line-height: 1.55 !important; }
+    .ipad-pro-card-badge, .ipad-air-card-badge { font-size: 0.95rem !important; padding: 0.35rem 0.75rem !important; }
 }
 </style>
 <section class="relative bg-white z-20 mt-0 md:mt-0 lg:-mt-1 pb-6 lg:pb-6 overflow-hidden">
@@ -395,16 +446,21 @@ if (!empty($partners) && is_array($partners)) {
                             <div>
                                 <div class="text-left w-full mb-3">
                                     <span class="text-primary font-bold text-lg md:text-sm tracking-wide inline-block mx-0 ipad-pro-font-about-tag ipad-air-font-about-tag"><?= e(t('common.about_us_heading')) ?></span>
-                                    <div class="w-8 h-[3px] bg-primary mt-1"></div>
+                                    <div class="w-8 h-[3px] bg-primary mt-1 ipad-pro-about-bar"></div>
                                 </div>
                                 <h2 class="text-[#043B94] text-xl xl:text-2xl font-bold leading-tight mb-3 ipad-pro-font-about-h2 ipad-air-font-about-h2">
                                     <?= e(t('common.we_are_partner')) ?><br class="hidden lg:inline"><?= e(t('common.in_technology')) ?>
                                 </h2>
-                                <p class="text-gray-500 text-[0.8rem] md:text-sm leading-relaxed mb-4 ipad-pro-font-desc ipad-air-font-desc">
+                                <p class="text-gray-500 text-[0.8rem] md:text-sm leading-relaxed mb-4 ipad-pro-font-desc ipad-air-font-desc ipad-pro-about-card-desc">
                                     <?= e(t('common.partner_description')) ?>
                                 </p>
                             </div>
-
+                            <a href="<?= e(route_url('/about')) ?>" class="inline-flex items-center text-primary text-sm font-medium transition-colors duration-300 group-hover:text-blue-700 w-max mt-auto ipad-pro-font-link ipad-air-font-link">
+                                <?= e(t('common.cta_read_more')) ?>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1.5 transition-transform duration-300 ease-out group-hover:translate-x-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                                </svg>
+                            </a>
                         </div>
                     </div>
                 </div>
