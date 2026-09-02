@@ -367,18 +367,30 @@ class HomeController
         ));
     }
 
-    public function article(): void
+    public function article(?string $slug = null): void
     {
         $id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
+        $slug = $slug ?? (isset($_GET['slug']) ? trim((string) $_GET['slug']) : '');
         $articleModel = new Article();
 
+        $row = false;
         if ($id > 0) {
             $row = $articleModel->getById($id);
+        } elseif ($slug !== '') {
+            $row = $articleModel->getBySlug($slug);
+        }
+
+        if ($id > 0 || $slug !== '') {
             $status = strtolower(trim((string) ($row['status'] ?? '')));
 
             if ($row === false || $status === 'draft') {
                 $this->notFound();
                 return;
+            }
+
+            // Increment article views (exclude super admin)
+            if (!empty($row['id']) && function_exists('is_super_admin_session') && !is_super_admin_session()) {
+                $articleModel->incrementViews((int) $row['id']);
             }
 
             $lang = getCurrentLang();
@@ -471,6 +483,8 @@ class HomeController
                     'content' => $content,
                     'author' => (string) ($row['author'] ?? ''),
                     'created_at' => (string) ($row['created_at'] ?? ''),
+                    'slug' => (string) ($row['slug'] ?? ''),
+                    'slug_en' => (string) ($row['slug_en'] ?? ''),
                     'meta_title_en' => (string) ($row['meta_title_en'] ?? ''),
                     'meta_description_en' => (string) ($row['meta_description_en'] ?? '')
                 ];
@@ -540,16 +554,20 @@ class HomeController
         ]));
     }
 
-    public function portfolio(): void
+    public function portfolio(?string $slug = null): void
     {
-        // If `id` query param exists, show single portfolio detail
         $id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
-
+        $slug = $slug ?? (isset($_GET['slug']) ? trim((string) $_GET['slug']) : '');
         $portfolioModel = new Portfolio();
 
+        $row = false;
         if ($id > 0) {
             $row = $portfolioModel->getById($id);
+        } elseif ($slug !== '') {
+            $row = $portfolioModel->getBySlug($slug);
+        }
 
+        if ($id > 0 || $slug !== '') {
             $status = strtolower(trim((string) ($row['status'] ?? '')));
 
             if ($row === false || $status === 'draft') {
@@ -892,30 +910,77 @@ class HomeController
         $errors = [];
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            if ($form['name'] === '') {
+            if ($firstName === '' && $form['name'] === '') {
                 $errors[] = 'กรุณากรอกชื่อ';
+            } elseif (preg_match('/\d/', $firstName) || preg_match('/\d/', $lastName)) {
+                $errors[] = 'ชื่อ-นามสกุลต้องเป็นตัวอักษรเท่านั้น (ห้ามมีตัวเลข)';
             }
 
             if ($form['company'] === '') {
                 $errors[] = 'กรุณากรอกชื่อบริษัท (หากไม่มีให้ใส่ -)';
             }
 
-            if (!filter_var($form['email'], FILTER_VALIDATE_EMAIL)) {
-                $errors[] = 'อีเมลไม่ถูกต้อง';
+            if ($form['phone'] === '') {
+                $errors[] = 'กรุณากรอกเบอร์โทรศัพท์';
+            } elseif (!preg_match('/^[0-9]{9,10}$/', $form['phone'])) {
+                $errors[] = 'เบอร์โทรศัพท์ต้องเป็นตัวเลข 9-10 หลัก';
+            }
+
+            if ($form['email'] === '') {
+                $errors[] = 'กรุณากรอกอีเมล';
+            } elseif (!filter_var($form['email'], FILTER_VALIDATE_EMAIL)) {
+                $errors[] = 'รูปแบบอีเมลไม่ถูกต้อง';
             }
 
             $nameLength = function_exists('mb_strlen') ? mb_strlen($form['name']) : strlen($form['name']);
             $emailLength = function_exists('mb_strlen') ? mb_strlen($form['email']) : strlen($form['email']);
+            $msgLength = function_exists('mb_strlen') ? mb_strlen($form['message']) : strlen($form['message']);
 
             if ($nameLength > 100) {
-                $errors[] = 'ชื่อยาวเกินไป';
+                $errors[] = 'ชื่อยาวเกินไป (ไม่เกิน 100 ตัวอักษร)';
             }
 
             if ($emailLength > 255) {
                 $errors[] = 'อีเมลยาวเกินไป';
             }
 
+            if ($msgLength > 250) {
+                $errors[] = 'รายละเอียดข้อความต้องไม่เกิน 250 ตัวอักษร';
+            }
+
             $submitted = $errors === [];
+
+            if ($submitted) {
+                $msgData = [
+                    'company_name' => $form['company'],
+                    'first_name' => $form['firstname'] !== '' ? $form['firstname'] : $form['name'],
+                    'last_name' => $form['lastname'],
+                    'phone' => $form['phone'],
+                    'email' => $form['email'],
+                    'message' => $form['message'] !== '' ? $form['message'] : ($form['inquiry'] ?? 'General Inquiry'),
+                    'pdpa_consent' => 1,
+                    'pdpa_consent_at' => date('Y-m-d H:i:s'),
+                    'status' => 'new',
+                    'ip_address' => $_SERVER['REMOTE_ADDR'] ?? null,
+                    'user_agent' => $_SERVER['HTTP_USER_AGENT'] ?? null,
+                    'source_page' => 'contact',
+                    'email_sent' => 0,
+                ];
+
+                try {
+                    $contactModel = new ContactMessage();
+                    $insertedId = $contactModel->create($msgData);
+
+                    // Send email notification to configured recipient
+                    $allSettings = (new Setting())->all();
+                    $mailSent = Mailer::sendContactNotification($msgData, $allSettings);
+                    if ($mailSent && $insertedId > 0) {
+                        $contactModel->updateEmailSent($insertedId, true);
+                    }
+                } catch (Throwable $e) {
+                    error_log('[Contact Form] Submit Error: ' . $e->getMessage());
+                }
+            }
         }
 
         $this->view('pages/contact.php', array_merge($this->sharedData('contact', 'Contact'), [

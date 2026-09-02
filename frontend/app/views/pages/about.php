@@ -9,7 +9,7 @@ declare(strict_types=1);
 $values = $values ?? [];
 $timeline = $timeline ?? [];
 $team = $team ?? [];
-$heroImage = asset_url('images/about-hero-bg.png');
+$heroImage = asset_url('images/bg-6.png');
 $partners = $partners ?? [];
 $trustLogos = $trustLogos ?? [];
 $company = $company ?? [];
@@ -61,13 +61,14 @@ $contactAddress = $company['contact']['address'] ?? t('footer.office_address');
         scrollbar-width: none;  /* สำหรับ Firefox */
     }
 
+    /* Parallax: ขยายรูปเผื่อไว้ล่วงหน้า เพื่อไม่ให้เห็นขอบโหว่ตอนรูปเลื่อนตาม scroll */
     .hero-parallax-img {
-        transform: none !important;
+        transform: scale(1.15);
         will-change: transform;
     }
-    @media (min-width: 1181px) {
+    @media (min-width: 1025px) {
         .hero-parallax-img {
-            transform: none !important;
+            transform: scale(1.6) translate(-2%, -5%) !important;
         }
         .desktop-about-hero-h1 {
             font-size: 5.5rem !important;
@@ -82,12 +83,12 @@ $contactAddress = $company['contact']['address'] ?? t('footer.office_address');
     }
     @media (min-width: 1536px) {
         .hero-parallax-img {
-            transform: none !important;
+            transform: scale(1.8) translate(-2%, -2%) !important;
         }
     }
     
-    /* iPad Pro and iPad Air Landscape Overrides (2-Column Side-by-Side Layout) */
-    @media (min-width: 1024px) and (max-width: 1366px) and (orientation: landscape) {
+    /* iPad Pro (1024px) Overrides */
+    @media (min-width: 1024px) and (max-width: 1024px) {
         .ipad-pro-about-process-header {
             flex-direction: row !important;
             align-items: baseline !important;
@@ -96,120 +97,66 @@ $contactAddress = $company['contact']['address'] ?? t('footer.office_address');
         .ipad-pro-about-process-step { font-size: 1.75rem !important; }
         .ipad-pro-about-process-title { font-size: 1.5rem !important; }
         .ipad-pro-about-process-desc { font-size: 1.125rem !important; line-height: 1.6 !important; }
-        
-        .ipad-pro-concept-grid-container {
-            display: grid !important;
-            grid-template-columns: 38% 58% !important;
-            justify-content: space-between !important;
-            align-items: start !important;
-            gap: 2.5rem !important;
-        }
-        .ipad-pro-concept-grid-container .ipad-pro-approach-left-col {
-            max-width: 100% !important;
-            width: 100% !important;
-            align-items: flex-start !important;
-            text-align: left !important;
-            margin-left: 0 !important;
-        }
-        .ipad-pro-concept-grid-container .ipad-pro-concept-p {
-            font-size: 1.15rem !important;
-            line-height: 1.85rem !important;
-            max-width: 100% !important;
-            width: 100% !important;
-            text-align: left !important;
-            margin-left: 0 !important;
-        }
-        .ipad-pro-concept-grid-container .ipad-pro-concept-heading-wrap {
-            margin-left: 0 !important;
-            align-items: flex-start !important;
-        }
     }
 
-    /* iPad (760px - 1366px) All Orientations */
-    @media (min-width: 760px) and (max-width: 1366px) {
-        .desktop-about-hero-content-wrapper {
-            max-width: 100% !important;
-            margin-left: 0 !important;
-        }
-        .ipad-pro-about-hero-span1,
-        .ipad-pro-about-hero-span2 {
-            font-size: 4.25rem !important;
-            font-weight: 900 !important;
-            line-height: 1.15 !important;
-            white-space: nowrap !important;
-            margin-top: 0px !important;
-            padding-top: 0px !important;
-            padding-bottom: 0px !important;
-        }
-        .ipad-pro-about-hero-p {
-            font-size: 1.25rem !important;
-            line-height: 1.75 !important;
-            font-weight: 600 !important;
-            color: #0b1b42 !important;
-            max-width: 48rem !important;
-        }
-    }
-
-    /* iPad Air (820px - 1366px) Overrides */
-    @media (min-width: 820px) and (max-width: 1366px) {
+    /* iPad Air (820px) Overrides */
+    @media (min-width: 820px) and (max-width: 820px) {
         .ipad-air-about-process-header {
             flex-direction: row !important;
             align-items: baseline !important;
             gap: 0.75rem !important;
         }
-        .ipad-air-about-process-step { font-size: 2rem !important; }
-        .ipad-air-about-process-title { font-size: 1.75rem !important; }
-        .ipad-air-about-process-desc { font-size: 1.25rem !important; line-height: 1.6 !important; }
+        .ipad-air-about-process-step { font-size: 1.75rem !important; }
+        .ipad-air-about-process-title { font-size: 1.5rem !important; }
+        .ipad-air-about-process-desc { font-size: 1.125rem !important; line-height: 1.6 !important; }
 
         /* Comprehensive Services section for iPad Air */
-        .ipad-air-services-h3 { font-size: 1.45rem !important; margin-bottom: 0.75rem !important; }
-        .ipad-air-services-p { font-size: 1.1rem !important; line-height: 1.6 !important; }
+        .ipad-air-services-h3 { font-size: 1.35rem !important; margin-bottom: 0.75rem !important; }
+        .ipad-air-services-p { font-size: 1rem !important; line-height: 1.6 !important; }
         .ipad-air-services-icon { width: 3.5rem !important; height: 3.5rem !important; }
         .ipad-air-hidden-br { display: none !important; }
     }
     
     /* Mobile (< 760px) Overrides */
     @media (max-width: 759px) {
-        .mobile-about-process-step {
-            font-size: 1.5rem !important;
-        }
         .mobile-about-process-title {
-            font-size: 1.35rem !important;
-            line-height: 1.3 !important;
+            white-space: nowrap !important;
+            font-size: 1.15rem !important;
+            letter-spacing: -0.3px !important;
         }
         .mobile-about-process-desc {
             font-size: 1.05rem !important;
         }
     }
     
-    /* Unified Tablet (iPad Mini, iPad Air, iPad Pro) (760px - 1366px) */
-    @media (min-width: 760px) and (max-width: 1366px) {
-        .ipad-mini-br-and { display: inline !important; }
+    /* iPad Mini (768px - 819px) Overrides */
+    @media (min-width: 760px) and (max-width: 819px) {
+        .ipad-mini-about-process-desc { font-size: 1.05rem !important; line-height: 1.6 !important; }
+        .ipad-mini-services-desc { font-size: 1.15rem !important; line-height: 1.7 !important; }
+        .ipad-mini-concept-title { text-align: center !important; }
+        .ipad-mini-concept-desc { text-align: center !important; margin-left: auto !important; margin-right: auto !important; }
+    }
+
+    /* Custom Layout for iPad Pro Portrait (1024px - 1279px) */
+    @media (min-width: 1024px) and (max-width: 1279px) {
         .ipad-pro-strict-hidden { display: none !important; }
         .ipad-pro-strict-inline { display: inline !important; }
         .ipad-pro-about-hero-span1 {
-            white-space: nowrap !important;
-            font-size: 3.25rem !important;
-            font-weight: 900 !important;
-            line-height: 1.15 !important;
+            white-space: nowrap !important; /* Force to stay on one line */
+            font-size: 4rem !important; /* Make Service Provider for larger */
             padding-bottom: 0 !important;
-            margin-bottom: 0.25rem !important;
+            margin-bottom: -1rem !important; /* Pull the next line closer */
             display: inline-block !important;
         }
         .ipad-pro-about-hero-span2 {
-            white-space: nowrap !important;
-            font-size: 3.25rem !important;
-            font-weight: 900 !important;
+            font-size: 3.5rem !important; /* Keep ERP/ERM at its previous size */
             display: inline-block !important;
-            line-height: 1.15 !important;
-            margin-top: 0 !important;
+            line-height: 0.9 !important;
         }
         .ipad-pro-about-hero-p {
-            font-size: 1.25rem !important;
-            line-height: 1.75 !important;
-            max-width: 580px !important;
+            max-width: 580px !important; /* Adjust wrapping */
             padding-right: 0 !important;
-            margin-top: 0.75rem !important;
+            margin-top: 0.75rem !important; /* Reduce vertical gap below header */
         }
         
         .ipad-pro-about-intro-p {
@@ -218,49 +165,39 @@ $contactAddress = $company['contact']['address'] ?? t('footer.office_address');
         }
         
         .ipad-pro-approach-left-col {
-            margin-left: 0 !important;
-            padding-right: 0 !important;
+            margin-left: 2.5rem !important; /* Shift Our Approach to the right slightly */
         }
         
-        /* Unified Our Approach Section for all iPads */
-        .ipad-pro-about-process-header,
-        .ipad-air-about-process-header {
+        /* Increase font size for Our Approach on iPad Pro */
+        .ipad-pro-about-process-header {
             flex-direction: row !important;
-            align-items: baseline !important;
-            gap: 0.5rem !important;
+            align-items: center !important;
+            gap: 1rem !important;
             margin-bottom: 0.5rem !important;
-            flex-wrap: wrap !important;
         }
-        .ipad-pro-about-process-step,
-        .ipad-air-about-process-step {
-            font-size: 1.35rem !important;
-            font-weight: 800 !important;
+        .ipad-pro-about-process-step {
+            font-size: 1.75rem !important;
             margin-bottom: 0 !important;
         }
-        .ipad-pro-about-process-title,
-        .ipad-air-about-process-title {
-            font-size: 1.2rem !important;
-            font-weight: 700 !important;
+        .ipad-pro-about-process-title {
+            font-size: 1.5rem !important;
             margin-bottom: 0 !important;
         }
-        .ipad-pro-about-process-desc,
-        .ipad-air-about-process-desc,
-        .ipad-mini-about-process-desc {
-            font-size: 0.95rem !important;
-            line-height: 1.55 !important;
-        }
-        .ipad-pro-concept-p {
+        .ipad-pro-about-process-desc {
             font-size: 1.25rem !important;
             line-height: 2rem !important;
+        }
+        .ipad-pro-concept-p {
+            font-size: 1.375rem !important;
+            line-height: 2.25rem !important;
             max-width: 100% !important;
         }
         .ipad-pro-services-h3 {
             font-size: 1.5rem !important;
         }
-        .ipad-pro-services-p,
-        .ipad-mini-services-desc {
-            font-size: 1.15rem !important;
-            line-height: 1.8rem !important;
+        .ipad-pro-services-p {
+            font-size: 1.25rem !important;
+            line-height: 2rem !important;
         }
         .ipad-pro-services-section {
             padding-bottom: 2rem !important;
@@ -268,193 +205,9 @@ $contactAddress = $company['contact']['address'] ?? t('footer.office_address');
         .ipad-pro-stats-section {
             padding-top: 1rem !important;
         }
+        /* Hide specific br tags on iPad Pro to fix word wrapping */
         .ipad-pro-hidden-br {
             display: none !important;
-        }
-    }
-
-    /* iPad Mini Portrait (760px - 820px) Font Scaling */
-    @media (min-width: 760px) and (max-width: 820px) {
-        .ipad-pro-about-hero-span1,
-        .ipad-pro-about-hero-span2 {
-            font-size: 2.75rem !important;
-        }
-        .ipad-pro-about-hero-p {
-            font-size: 0.95rem !important;
-            line-height: 1.55 !important;
-            max-width: 440px !important;
-        }
-        .ipad-pro-about-intro-p {
-            font-size: 0.95rem !important;
-            line-height: 1.65 !important;
-        }
-        .ipad-pro-concept-p {
-            font-size: 0.95rem !important;
-            line-height: 1.65 !important;
-        }
-        .ipad-pro-services-h3 {
-            font-size: 1.15rem !important;
-        }
-        .ipad-pro-services-p,
-        .ipad-mini-services-desc {
-            font-size: 0.85rem !important;
-            line-height: 1.5 !important;
-        }
-        .ipad-pro-about-process-step,
-        .ipad-air-about-process-step {
-            font-size: 1.2rem !important;
-        }
-        .ipad-pro-about-process-title,
-        .ipad-air-about-process-title {
-            font-size: 1.05rem !important;
-        }
-        .ipad-pro-about-process-desc,
-        .ipad-air-about-process-desc,
-        .ipad-mini-about-process-desc {
-            font-size: 0.85rem !important;
-            line-height: 1.45 !important;
-        }
-    }
-
-    /* Dedicated Large Font Scale for iPad Pro Landscape (1024px - 1366px) */
-    @media (min-width: 1024px) and (max-width: 1366px) {
-        .ipad-pro-about-hero-span1,
-        .ipad-pro-about-hero-span2 {
-            font-size: 4.25rem !important;
-            line-height: 1.15 !important;
-            white-space: nowrap !important;
-        }
-        .ipad-pro-about-hero-p {
-            font-size: 1.35rem !important;
-            line-height: 2.1rem !important;
-            max-width: 580px !important;
-        }
-        .ipad-pro-about-intro-p {
-            font-size: 1.3rem !important;
-            line-height: 2.1rem !important;
-        }
-        .ipad-pro-concept-p {
-            font-size: 1.25rem !important;
-            line-height: 2.05rem !important;
-            max-width: 100% !important;
-        }
-        .ipad-pro-services-h3 {
-            font-size: 1.55rem !important;
-        }
-        .ipad-pro-services-p,
-        .ipad-mini-services-desc {
-            font-size: 1.2rem !important;
-            line-height: 1.9rem !important;
-        }
-        .ipad-pro-about-process-step,
-        .ipad-air-about-process-step {
-            font-size: 1.75rem !important;
-            font-weight: 800 !important;
-        }
-        .ipad-pro-about-process-title,
-        .ipad-air-about-process-title {
-            font-size: 1.5rem !important;
-            font-weight: 700 !important;
-        }
-        .ipad-pro-about-process-desc,
-        .ipad-air-about-process-desc,
-        .ipad-mini-about-process-desc {
-            font-size: 1.15rem !important;
-            line-height: 1.8rem !important;
-        }
-    }
-
-    /* Dedicated Large Font Scale and Stacked Layout for iPad Pro Portrait (1024px Portrait) */
-    @media (max-width: 1024px) and (orientation: portrait), (max-width: 834px) {
-        .ipad-pro-about-hero-grid {
-            grid-template-columns: 1fr !important;
-            gap: 2.5rem !important;
-        }
-        .ipad-pro-about-intro-container {
-            grid-template-columns: 1fr !important;
-            gap: 3rem !important;
-        }
-        .about-intro-text {
-            max-width: 100% !important;
-            width: 100% !important;
-        }
-        .about-intro-grid {
-            max-width: 100% !important;
-            width: 100% !important;
-        }
-        .ipad-pro-about-hero-span1,
-        .ipad-pro-about-hero-span2 {
-            font-size: 3.75rem !important;
-            line-height: 1.15 !important;
-        }
-        .ipad-pro-about-hero-p {
-            font-size: 1.2rem !important;
-            line-height: 1.95rem !important;
-            max-width: 100% !important;
-        }
-        .ipad-pro-about-intro-p {
-            font-size: 1.15rem !important;
-            line-height: 1.9rem !important;
-        }
-        .ipad-pro-concept-grid-container {
-            grid-template-columns: 1fr !important;
-            gap: 3rem !important;
-        }
-        .ipad-pro-concept-grid-container .ipad-pro-approach-left-col {
-            max-width: 100% !important;
-            width: 100% !important;
-            align-items: flex-start !important;
-            text-align: left !important;
-            margin-left: 0 !important;
-        }
-        .ipad-pro-concept-p {
-            font-size: 1.25rem !important;
-            line-height: 2.05rem !important;
-            max-width: 100% !important;
-            width: 100% !important;
-            text-align: left !important;
-            margin-left: 0 !important;
-        }
-            padding-right: 0 !important;
-            margin-left: 0 !important;
-            max-width: 100% !important;
-            width: 100% !important;
-            text-align: left !important;
-        }
-        .ipad-pro-concept-heading-wrap {
-            margin-left: 0 !important;
-            transform: none !important;
-        }
-        .ipad-pro-approach-left-col {
-            margin-left: -1rem !important;
-            padding-left: 0 !important;
-            padding-right: 0 !important;
-            align-items: flex-start !important;
-            text-align: left !important;
-        }
-        .ipad-pro-services-h3 {
-            font-size: 1.55rem !important;
-        }
-        .ipad-pro-services-p,
-        .ipad-mini-services-desc {
-            font-size: 1.2rem !important;
-            line-height: 1.9rem !important;
-        }
-        .ipad-pro-about-process-step,
-        .ipad-air-about-process-step {
-            font-size: 1.75rem !important;
-            font-weight: 800 !important;
-        }
-        .ipad-pro-about-process-title,
-        .ipad-air-about-process-title {
-            font-size: 1.5rem !important;
-            font-weight: 700 !important;
-        }
-        .ipad-pro-about-process-desc,
-        .ipad-air-about-process-desc,
-        .ipad-mini-about-process-desc {
-            font-size: 1.15rem !important;
-            line-height: 1.8rem !important;
         }
     }
 
@@ -480,24 +233,21 @@ $contactAddress = $company['contact']['address'] ?? t('footer.office_address');
 </style>
 
 <section id="about-hero" class="relative font-sans bg-[#f7faff] overflow-hidden mt-0 mx-4 mb-4 sm:mt-0 sm:mx-6 sm:mb-6 rounded-t-none rounded-b-[2rem] lg:m-0 lg:rounded-none">
-    <div class="absolute inset-0 z-0 hidden lg:block overflow-hidden">
-        <img src="<?= e($heroImage) ?>" alt="WEBPARK About Background" 
-            class="w-full h-full object-cover object-[right_center]"
-            style="filter: contrast(1.15) saturate(1.22) brightness(0.98);">
-        <div class="absolute inset-0 bg-gradient-to-r from-white via-white/70 to-transparent"></div>
-        <div class="absolute inset-x-0 bottom-0 h-[25%] bg-gradient-to-t from-white to-transparent z-10"></div>
+    <div class="absolute inset-0 z-0">
+        <img src="<?= e($heroImage) ?>" alt="WEBPARK Solutions Background" class="hero-parallax-img w-full h-full object-cover object-center opacity-70 mix-blend-screen">
+        <div class="absolute inset-0 bg-gradient-to-r from-white to-white/5"></div>
+        <div class="absolute inset-x-0 bottom-0 h-[30%] bg-gradient-to-t from-white to-transparent z-10"></div>
     </div>
 
     <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8 pt-12 pb-16 lg:pt-28 lg:pb-16 relative z-10 desktop-wide-container-about">
         <div class="absolute inset-0 z-0 overflow-hidden lg:hidden rounded-2xl">
-            <img src="<?= e($heroImage) ?>" alt="WEBPARK About Background" 
-                class="w-full h-full object-cover object-[85%_bottom]"
-                style="filter: contrast(1.15) saturate(1.22) brightness(0.98);">
-            <div class="absolute inset-0 bg-gradient-to-b from-white/90 via-white/70 to-white/30"></div>
-            <div class="absolute inset-x-0 bottom-0 h-[25%] bg-gradient-to-t from-white to-transparent"></div>
+            <img src="<?= e($heroImage) ?>" alt="WEBPARK Solutions Background" 
+                class="hero-parallax-img w-full h-full object-cover object-[75%_center] opacity-100 mix-blend-screen">
+            <div class="absolute inset-0 bg-gradient-to-b from-white/90 via-white/70 to-white/40"></div>
+            <div class="absolute inset-x-0 bottom-0 h-[30%] bg-gradient-to-t from-white to-transparent"></div>
         </div>
         
-        <div class="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-12 lg:gap-20 items-center relative z-10 ipad-pro-about-hero-grid">
+        <div class="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-12 lg:gap-20 items-center relative z-10">
             <div class="max-w-2xl lg:ml-12 ipad-pro-ml-0 xl:ml-24 desktop-about-hero-content-wrapper">
                 <nav aria-label="Breadcrumb" class="animate-fade-up delay-100 mb-6 hidden sm:block">
                     <ol class="inline-flex items-center text-sm md:text-base font-medium text-slate-500">
@@ -517,20 +267,13 @@ $contactAddress = $company['contact']['address'] ?? t('footer.office_address');
                     </ol>
                 </nav>
                     
-                <h1 class="animate-fade-up delay-200 text-5xl md:text-7xl lg:text-8xl font-black leading-tight mb-2 tracking-tighter flex flex-col items-start">
-                    <span class="bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block py-1 md:py-2 whitespace-nowrap desktop-about-hero-h1 ipad-pro-about-hero-span1"><?= e(getCurrentLang() === 'th' ? 'ผู้ให้บริการด้าน' : 'Service Provider for') ?></span>
-                    <span class="bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block py-1 md:py-2 whitespace-nowrap desktop-about-hero-h1 ipad-pro-about-hero-span2" style="animation-delay: -3s;">ERP / ERM</span>
+                <h1 class="animate-fade-up delay-200 leading-[1.15] mb-2 tracking-tighter">
+                    <span class="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-bold bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block py-1 md:py-2.5 desktop-about-hero-h1 ipad-pro-about-hero-span1"><?= e(getCurrentLang() === 'th' ? 'ผู้ให้บริการด้าน' : 'Service Provider for') ?></span><br>
+                    <span class="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-bold bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block py-1 md:py-2 -mt-1 md:-mt-2 lg:-mt-2 desktop-about-hero-h1 ipad-pro-about-hero-span2" style="animation-delay: -3s;">ERP / ERM</span>
                 </h1>
 
-                <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-base md:text-lg lg:text-xl leading-relaxed max-w-2xl mb-10 font-bold md:font-semibold desktop-about-hero-p ipad-pro-about-hero-p">
-                    <?php if (getCurrentLang() === 'th'): ?>
-                        <span class="inline-block whitespace-nowrap">WEBPARK ผู้เชี่ยวชาญด้าน ERP/ERM และระบบดิจิทัลครบวงจร</span><br class="hidden md:inline">
-                        <span class="inline-block whitespace-nowrap">ช่วยยกระดับองค์กรสู่ความสำเร็จ ด้วยเทคโนโลยีและ AI ที่ใช้งานได้จริง</span>
-                    <?php else: ?>
-                        <span class="inline-block whitespace-nowrap">WEBPARK, expert in ERP/ERM</span><br class="hidden ipad-mini-br-and">
-                        <span class="inline-block whitespace-nowrap">and comprehensive digital systems.</span><br class="hidden md:inline">
-                        <span class="inline-block">We help your organization work smartly with cutting-edge platforms and AI for sustainable growth.</span>
-                    <?php endif; ?>
+                <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-lg md:text-xl leading-relaxed max-w-lg mb-10 font-medium desktop-about-hero-p ipad-pro-about-hero-p">
+                    <?= getCurrentLang() === 'th' ? 'WEBPARK ผู้เชี่ยวชาญด้าน ERP/ERM และระบบดิจิทัล<br class="hidden sm:inline ipad-air-hidden-br">ครบวงจร เราช่วยให้องค์กรของคุณทำงานอย่างชาญฉลาด<br class="hidden sm:inline ipad-air-hidden-br">ด้วยเทคโนโลยีล้ำสมัยแพลตฟอร์มดจิทัลและ AI <br class="hidden sm:inline ipad-air-hidden-br">เพื่อการเติบโตที่ยั่งยืนในยุคดิจิทัล' : 'WEBPARK, expert in ERP/ERM<br class="hidden ipad-pro-strict-inline"> and comprehensive<br class="hidden sm:inline ipad-pro-strict-hidden ipad-air-hidden-br"> digital systems.<br class="hidden ipad-pro-strict-inline"> We help your organization work smartly<br class="hidden sm:inline ipad-pro-strict-hidden ipad-air-hidden-br"> with<br class="hidden ipad-pro-strict-hidden ipad-air-hidden-br"> cutting-edge digital platforms and AI<br class="hidden sm:inline ipad-pro-strict-hidden ipad-air-hidden-br"><br class="hidden ipad-pro-strict-inline"> for sustainable growth in the digital era.' ?>
                 </p>
 
                 <div class="animate-entrance-up delay-400 flex flex-col sm:flex-row items-start gap-4">
@@ -561,7 +304,7 @@ $contactAddress = $company['contact']['address'] ?? t('footer.office_address');
 <section class="bg-white pt-10 pb-8 lg:pt-20 lg:pb-24">
     <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8 desktop-wide-container-about">
         <div class="lg:px-12 xl:px-24">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center ipad-pro-about-intro-container">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
                 
                 <div class="about-intro-text max-w-xl opacity-0 translate-y-10">
                     <h2 class="text-3xl md:text-4xl lg:text-[2.75rem] font-bold leading-normal py-2 mb-0 lg:mb-1" style="color: #0663F6;">
@@ -665,18 +408,18 @@ $contactAddress = $company['contact']['address'] ?? t('footer.office_address');
 <section class="bg-white py-8 lg:py-24 font-sans">
     <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8 desktop-wide-container-about"> 
         <div class="lg:px-12 xl:px-24">
-            <div class="grid grid-cols-1 lg:grid-cols-[40%_55%] gap-12 lg:gap-16 justify-between items-start ipad-pro-concept-grid-container">
+            <div class="grid grid-cols-1 lg:grid-cols-[40%_55%] gap-12 lg:gap-16 justify-between items-start">
                 
-                <div class="lg:top-8 self-start ipad-pro-approach-left-col text-left flex flex-col items-center lg:items-start">
-                    <div class="inline-flex flex-col items-start mb-3 mx-auto lg:mx-0 ipad-pro-concept-heading-wrap">
-                        <h2 class="text-2xl sm:text-3xl md:text-4xl text-left font-bold leading-tight whitespace-nowrap ipad-mini-concept-title" style="color: #054FC5;">
+                <div class="lg:top-8 self-start ipad-pro-approach-left-col text-center lg:text-left">
+                    <div class="inline-flex flex-col items-center lg:items-start mb-3">
+                        <h2 class="text-3xl md:text-4xl text-center lg:text-left font-bold leading-tight ipad-mini-concept-title" style="color: #054FC5;">
                             <?= getCurrentLang() === 'th' ? 'แนวคิดในการทำงานของเรา' : 'Our Approach' ?>
                         </h2>
                         <div class="w-8 h-[3px] bg-primary mt-2"></div>
                     </div>
                     <p class="text-center lg:text-left text-slate-500 text-sm sm:text-base md:text-lg leading-relaxed max-w-2xl lg:max-w-md mx-auto lg:mx-0 desktop-concept-p ipad-pro-concept-p ipad-mini-concept-desc">
                         <?php if (getCurrentLang() === 'th'): ?>
-                            เราเชื่อว่าการพัฒนาระบบและโซลูชันดิจิทัลที่ดี ไม่ได้เริ่มจากเทคโนโลยีเพียงอย่างเดียว แต่เริ่มจากความเข้าใจธุรกิจของคุณ เราทำงานแบบ<span class="inline-block">พาร์ทเนอร์</span>ร่วมคิด ร่วมสร้าง เพื่อให้ทุกโซลูชันที่เราส่งมอบสามารถใช้งานได้จริง สร้างคุณค่า และช่วยให้ธุรกิจของคุณเติบโตได้อย่างยั่งยืน
+                            เราเชื่อว่าการพัฒนาระบบและโซลูชันดิจิทัลที่ดี ไม่ได้เริ่มจากเทคโนโลยีเพียงอย่างเดียว แต่เริ่มจากความเข้าใจธุรกิจของคุณ เราทำงานแบบพาร์ทเนอร์ร่วมคิด ร่วมสร้าง เพื่อให้ทุกโซลูชันที่เราส่งมอบสามารถใช้งานได้จริง สร้างคุณค่า และช่วยให้ธุรกิจของคุณเติบโตได้อย่างยั่งยืน
                         <?php else: ?>
                             We believe that developing great digital systems and solutions doesn't start with technology alone, but with understanding your business. We work as a partner to co-think and co-create, ensuring every solution we deliver is practical, creates value, and helps your business grow sustainably.
                         <?php endif; ?>
@@ -749,22 +492,6 @@ $contactAddress = $company['contact']['address'] ?? t('footer.office_address');
                 <?= getCurrentLang() === 'th' ? 'ระบบที่ช่วยพัฒนาโซลูชันดิจิทัลที่ช่วยให้ธุรกิจเติบโตอย่างยั่งยืน' : 'Systems that help develop digital solutions to help your business grow sustainably.' ?>
             </p>
 
-            <style>
-                @media (max-width: 767px) {
-                    #about-services-scroll .gsap-scroll-card {
-                        background-color: #ffffff !important;
-                        -webkit-tap-highlight-color: transparent !important;
-                        user-select: none;
-                    }
-                    #about-services-scroll .gsap-scroll-card h3 {
-                        color: #022862 !important;
-                    }
-                    #about-services-scroll .gsap-scroll-card p {
-                        color: #64748b !important;
-                    }
-                }
-            </style>
-
             <div id="service-scroll-container" class="flex overflow-x-auto snap-x snap-mandatory scrollbar-none gap-6 pb-6 -mx-4 px-4 md:mx-0 md:px-0 md:grid md:grid-cols-2 lg:grid-cols-3 md:overflow-visible md:snap-none">
                 <?php
                 $services = [
@@ -778,17 +505,16 @@ $contactAddress = $company['contact']['address'] ?? t('footer.office_address');
                 ?>
                 
                 <?php foreach ($services as $item): ?>
-                    <div class="gsap-scroll-card w-[85vw] md:w-auto shrink-0 snap-center bg-white rounded-2xl p-8 border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.03)] md:hover:-translate-y-1 md:hover:shadow-lg transition-all duration-300 group cursor-default md:cursor-pointer md:hover:bg-primary opacity-0 translate-y-10 desktop-services-card">
-                        <div class="w-12 h-12 mb-6 md:group-hover:scale-110 transition-transform desktop-services-icon ipad-air-services-icon">
+                    <div class="gsap-scroll-card w-[85vw] md:w-auto shrink-0 snap-center bg-white rounded-2xl p-8 border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:border-blue-200 hover:shadow-md hover:-translate-y-1 transition-all duration-300 group opacity-0 translate-y-10 desktop-services-card">
+                        <div class="w-12 h-12 mb-6 group-hover:scale-105 transition-transform desktop-services-icon ipad-air-services-icon">
                             <img src="<?= e($item['icon']) ?>" alt="<?= e($item['title']) ?>" class="w-full h-full object-contain">
                         </div>
-                        <h3 class="text-dark font-bold text-lg mb-3 md:group-hover:text-white transition-colors desktop-services-h3 ipad-pro-services-h3 ipad-air-services-h3">
+                        <h3 class="text-dark font-bold text-lg mb-3 group-hover:text-primary transition-colors desktop-services-h3 ipad-pro-services-h3 ipad-air-services-h3">
                             <?= e($item['title']) ?>
                         </h3>
-                        <p class="text-slate-500 text-md leading-relaxed md:group-hover:text-white transition-colors desktop-services-p ipad-pro-services-p ipad-air-services-p">
+                        <p class="text-slate-500 text-md leading-relaxed desktop-services-p ipad-pro-services-p ipad-air-services-p">
                             <?= $item['desc'] ?>
                         </p>
-                        
                     </div>
                 <?php endforeach; ?>
             </div>

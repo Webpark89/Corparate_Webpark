@@ -327,10 +327,11 @@ $ctaImage = asset_url('images/bg-cta.jpg');
         <div id="article-grid" class="article-grid article-grid-container gap-6 hide-scroll scroll-smooth" style="-ms-overflow-style: none; scrollbar-width: none;">
             <?php 
             foreach ($articles as $article):
-                $detailUrl = route_url('/article', ['id' => (int) ($article['id'] ?? 0)]);
+                $itemLang = getCurrentLang();
+                $slugToUse = ($itemLang === 'en' && !empty($article['slug_en'])) ? $article['slug_en'] : ($article['slug'] ?? '');
+                $detailUrl = $slugToUse !== '' ? route_url('/article/' . $slugToUse) : route_url('/article', ['id' => (int) ($article['id'] ?? 0)]);
                 $categoryName = trim((string) ($article['category_name'] ?? ''));
                 $categorySlug = trim((string) ($article['category_slug'] ?? ''));
-                $itemLang = getCurrentLang();
                 $articleTitle = (string) ($article['title'] ?? t('article_list.page_title'));
                 if ($itemLang === 'en' && !empty($article['meta_title_en'])) {
                     $articleTitle = $article['meta_title_en'];

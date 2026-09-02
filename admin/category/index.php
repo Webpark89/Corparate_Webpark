@@ -10,6 +10,7 @@ $pageTitle = 'การจัดการหมวดหมู่บทควา
 $page = 'category';
 
 require_once __DIR__ . '/../includes/header.php';
+require_permission('category.view');
 
 $pdo = db();
 $stmt = $pdo->query('

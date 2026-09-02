@@ -5,6 +5,7 @@
 $pageTitle = 'ข้อความจากลูกค้า';
 $page = 'contact_inbox';
 require_once __DIR__ . '/../includes/header.php';
+require_permission('inbox.view');
 
 $search = trim($_GET['search'] ?? '');
 $statusFilter = trim($_GET['status'] ?? '');

@@ -4,7 +4,7 @@
  * Edit an existing partner — loads record, renders form, delegates POST to _save.php.
  */
 require_once __DIR__ . '/../includes/functions.php';
-require_login();
+require_permission('partners.edit');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     require __DIR__ . '/_save.php';

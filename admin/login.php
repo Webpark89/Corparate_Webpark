@@ -30,58 +30,92 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 }
 
 $isLocked = is_rate_limited($rateLimitKey);
+$isPermanent = is_permanent_rate_limited($rateLimitKey);
 $lockoutSeconds = get_rate_limit_lockout_remaining($rateLimitKey);
-$lockoutMinutes = (int) max(1, ceil($lockoutSeconds / 60));
-$errorMessage = null;
+$rateLimitData = get_rate_limit_data($rateLimitKey);
+$failedCount = $rateLimitData['failed_count'] ?? 0;
 
-if ($isLocked) {
-    $errorMessage = 'คุณกรอกข้อมูลผิดเกิน ' . LOGIN_MAX_ATTEMPTS . ' ครั้ง ระบบถูกระงับชั่วคราวเป็นเวลา ' . $lockoutMinutes . ' นาที';
+// Retrieve flash messages if available
+$errorMessage = $_SESSION['login_error_flash'] ?? null;
+unset($_SESSION['login_error_flash']);
+
+$successMessage = $_SESSION['login_success_flash'] ?? null;
+unset($_SESSION['login_success_flash']);
+
+if (!$errorMessage && !$successMessage) {
+    if ($isPermanent) {
+        $isLocked = true;
+        $errorMessage = 'คุณกรอกรหัสผ่านผิดเกินจำนวนครั้งสูงสุด ระบบถูกระงับการใช้งานถาวร กรุณาติดต่อเจ้าหน้าที่หรือผู้ดูแลระบบ (Super Admin)';
+    } elseif ($isLocked && $lockoutSeconds > 0) {
+        $errorMessage = 'คุณกรอกข้อมูลผิดเกินกำหนด ระบบถูกระงับชั่วคราว';
+    }
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     csrf_verify();
 
     if ($isLocked) {
-        $errorMessage = 'คุณกรอกข้อมูลผิดเกิน ' . LOGIN_MAX_ATTEMPTS . ' ครั้ง ระบบถูกระงับชั่วคราวเป็นเวลา ' . $lockoutMinutes . ' นาที';
+        if ($isPermanent) {
+            $_SESSION['login_error_flash'] = 'คุณกรอกรหัสผ่านผิดเกินจำนวนครั้งสูงสุด ระบบถูกระงับการใช้งานถาวร กรุณาติดต่อเจ้าหน้าที่หรือผู้ดูแลระบบ (Super Admin)';
+        } else {
+            $_SESSION['login_error_flash'] = 'คุณกรอกข้อมูลผิดเกินกำหนด ระบบถูกระงับชั่วคราว';
+        }
+        header('Location: ' . ADMIN_URL . '/login.php');
+        exit;
     } else {
         $username = trim($_POST['username'] ?? '');
         $password = (string) ($_POST['password'] ?? '');
 
         if ($username === '' || $password === '') {
-            $errorMessage = 'กรุณากรอกข้อมูลให้ครบถ้วน';
-        } elseif ($username === ADMIN_USERNAME && password_verify($password, ADMIN_PASSWORD_HASH)) {
-            // Reset rate limit on successful login
-            reset_rate_limit($rateLimitKey);
-
-            session_regenerate_id(true);
-            $_SESSION['admin_logged_in'] = true;
-            $_SESSION['admin_username'] = ADMIN_USERNAME;
-            $_SESSION['admin_full_name'] = 'Administrator';
-            $_SESSION['admin_role'] = 'admin';
-            $_SESSION['last_activity'] = time();
-
-            // Set or clear Remember Me cookie (7 days)
-            if (!empty($_POST['remember'])) {
-                set_remember_me_cookie(ADMIN_USERNAME);
-            } else {
-                clear_remember_me_cookie();
-            }
-
-            header('Location: ' . ADMIN_URL . '/index.php');
+            $_SESSION['login_error_flash'] = 'กรุณากรอกข้อมูลให้ครบถ้วน';
+            header('Location: ' . ADMIN_URL . '/login.php');
             exit;
         } else {
-            // Record failed attempt
-            $attemptData = record_failed_attempt($rateLimitKey, LOGIN_MAX_ATTEMPTS, LOGIN_ATTEMPT_WINDOW);
-            $failedCount = $attemptData['failed_count'] ?? 1;
+            // Query the admins table by username or email
+            $user = find_admin_by_login($username);
 
-            if (is_rate_limited($rateLimitKey)) {
-                $isLocked = true;
-                $lockoutSeconds = get_rate_limit_lockout_remaining($rateLimitKey);
-                $lockoutMinutes = (int) max(1, ceil($lockoutSeconds / 60));
-                $errorMessage = 'คุณกรอกข้อมูลผิดเกิน ' . LOGIN_MAX_ATTEMPTS . ' ครั้ง ระบบถูกระงับชั่วคราวเป็นเวลา ' . $lockoutMinutes . ' นาที';
+            if ($user && password_verify($password, $user['password_hash'])) {
+                // Reset rate limit on successful login
+                reset_rate_limit($rateLimitKey);
+
+                session_regenerate_id(true);
+                set_admin_session($user);
+
+                // Update last_login in database
+                try {
+                    $stmt = db()->prepare('UPDATE admins SET last_login = NOW() WHERE id = :id');
+                    $stmt->execute(['id' => $user['id']]);
+                } catch (Exception $e) {
+                    // Non-critical: ignore DB error on last_login update
+                }
+
+                // Set or clear Remember Me cookie (7 days)
+                if (!empty($_POST['remember'])) {
+                    set_remember_me_cookie((int) $user['id']);
+                } else {
+                    clear_remember_me_cookie();
+                }
+
+                header('Location: ' . ADMIN_URL . '/index.php');
+                exit;
             } else {
-                $attemptsLeft = max(0, LOGIN_MAX_ATTEMPTS - $failedCount);
-                $errorMessage = 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง (เหลือโอกาสลองอีก ' . $attemptsLeft . ' ครั้ง)';
+                // Record failed attempt
+                $attemptData = record_failed_attempt($rateLimitKey, LOGIN_MAX_ATTEMPTS, LOGIN_ATTEMPT_WINDOW);
+                $failedCount = $attemptData['failed_count'] ?? 1;
+                $isLocked = is_rate_limited($rateLimitKey);
+                $isPermanent = is_permanent_rate_limited($rateLimitKey);
+
+                if ($isPermanent) {
+                    $_SESSION['login_error_flash'] = 'คุณกรอกรหัสผ่านผิดเกินจำนวนครั้งสูงสุด ระบบถูกระงับการใช้งานถาวร กรุณาติดต่อเจ้าหน้าที่หรือผู้ดูแลระบบ (Super Admin)';
+                } elseif ($isLocked) {
+                    $_SESSION['login_error_flash'] = 'คุณกรอกข้อมูลผิดเกินกำหนด ระบบถูกระงับชั่วคราว';
+                } else {
+                    $attemptsLeft = max(0, 3 - $failedCount);
+                    $_SESSION['login_error_flash'] = 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง (เหลือโอกาสลองอีก ' . $attemptsLeft . ' ครั้ง)';
+                }
+
+                header('Location: ' . ADMIN_URL . '/login.php');
+                exit;
             }
         }
     }
@@ -513,16 +547,61 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </p>
                     </div>
 
-                    <!-- Alert Message (Error / Timeout / Rate Limit) -->
-                    <?php if ($errorMessage || !empty($_GET['timeout'])): ?>
-                        <div id="login-alert" class="shake-animation" style="border-radius: 1rem; border: 1px solid #fecaca; background: #fef2f2; padding: 0.875rem 1rem; display: flex; align-items: flex-start; gap: 0.625rem;">
-                            <svg style="width: 20px; height: 20px; min-width: 20px; color: #ef4444; flex-shrink: 0; margin-top: 2px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                    <!-- Success Message Flash -->
+                    <?php if (!empty($successMessage)): ?>
+                        <div style="border-radius: 1rem; border: 1px solid #bbf7d0; background: #f0fdf4; padding: 0.875rem 1rem; display: flex; align-items: flex-start; gap: 0.625rem;">
+                            <svg style="width: 20px; height: 20px; min-width: 20px; color: #16a34a; flex-shrink: 0; margin-top: 2px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                             </svg>
-                            <div style="font-size: 0.8125rem; line-height: 1.45; color: #b91c1c; font-weight: 500;">
-                                <?= e($errorMessage ?: 'Session หมดอายุ กรุณาเข้าสู่ระบบใหม่อีกครั้ง') ?>
+                            <div style="font-size: 0.8125rem; line-height: 1.45; color: #15803d; font-weight: 500;">
+                                <?= e($successMessage) ?>
                             </div>
                         </div>
+                    <?php endif; ?>
+
+                    <!-- Alert Message (Error / Timeout / Rate Limit) -->
+                    <?php if ($errorMessage || !empty($_GET['timeout'])): ?>
+                        <?php if ($isPermanent): ?>
+                            <div id="login-alert" class="shake-animation" style="border-radius: 1rem; border: 1px solid #fca5a5; background: #fef2f2; padding: 0.875rem 1rem; display: flex; align-items: flex-start; gap: 0.625rem;">
+                                <svg style="width: 20px; height: 20px; min-width: 20px; color: #dc2626; flex-shrink: 0; margin-top: 2px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                                </svg>
+                                <div style="font-size: 0.8125rem; line-height: 1.45; color: #991b1b; font-weight: 500; flex: 1;">
+                                    <div style="font-weight: 700; color: #b91c1c; margin-bottom: 2px;">ระบบระงับการใช้งานถาวร</div>
+                                    <div><?= e($errorMessage) ?></div>
+                                    <div style="margin-top: 8px;">
+                                        <button type="button" onclick="document.getElementById('open-support-modal').click()" style="display: inline-flex; align-items: center; gap: 4px; font-size: 0.75rem; font-weight: 600; color: #ffffff; background: #dc2626; border: none; padding: 5px 12px; border-radius: 6px; cursor: pointer; transition: background 0.15s;" onmouseover="this.style.background='#b91c1c'" onmouseout="this.style.background='#dc2626'">
+                                            <svg style="width: 14px; height: 14px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                                            ติดต่อฝ่ายดูแลระบบ (Super Admin)
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php elseif ($isLocked && $lockoutSeconds > 0): ?>
+                            <div id="login-alert" class="shake-animation" data-lockout-seconds="<?= (int)$lockoutSeconds ?>" style="border-radius: 1rem; border: 1px solid #fecaca; background: #fef2f2; padding: 0.875rem 1rem; display: flex; align-items: flex-start; gap: 0.625rem; transition: all 0.3s ease;">
+                                <svg id="alert-icon" style="width: 20px; height: 20px; min-width: 20px; color: #ef4444; flex-shrink: 0; margin-top: 2px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                <div id="alert-text-wrapper" style="font-size: 0.8125rem; line-height: 1.45; color: #b91c1c; font-weight: 500; flex: 1;">
+                                    <div id="alert-title" style="font-weight: 600;">คุณกรอกข้อมูลผิดเกินกำหนด ระบบถูกระงับชั่วคราว</div>
+                                    <div style="margin-top: 4px; display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
+                                        <span id="countdown-label">สามารถลองใหม่อีกครั้งใน:</span>
+                                        <span id="countdown-timer" style="font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.875rem; font-weight: 700; background: #fee2e2; color: #991b1b; padding: 2px 8px; border-radius: 6px; border: 1px solid #fca5a5; display: inline-flex; align-items: center; letter-spacing: 0.05em;">
+                                            --:--
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php else: ?>
+                            <div id="login-alert" class="shake-animation" style="border-radius: 1rem; border: 1px solid #fecaca; background: #fef2f2; padding: 0.875rem 1rem; display: flex; align-items: flex-start; gap: 0.625rem;">
+                                <svg style="width: 20px; height: 20px; min-width: 20px; color: #ef4444; flex-shrink: 0; margin-top: 2px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                                </svg>
+                                <div style="font-size: 0.8125rem; line-height: 1.45; color: #b91c1c; font-weight: 500;">
+                                    <?= e($errorMessage ?: 'Session หมดอายุ กรุณาเข้าสู่ระบบใหม่อีกครั้ง') ?>
+                                </div>
+                            </div>
+                        <?php endif; ?>
                     <?php endif; ?>
 
                     <!-- Login Form -->
@@ -603,9 +682,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <input type="checkbox" name="remember" style="border-radius: 4px; border: 1px solid #cbd5e1; width: 15px; height: 15px; accent-color: #0f172a;">
                                 <span>Remember me</span>
                             </label>
-                            <a href="change_password.php" style="font-weight: 500; color: #64748b; text-decoration: none; transition: color 0.15s;">
+                            <button type="button" id="open-forgot-pwd-modal" style="font-weight: 500; color: #64748b; background: none; border: none; padding: 0; cursor: pointer; text-decoration: none; font-size: inherit; font-family: inherit; transition: color 0.15s;" onmouseover="this.style.color='#0284c7';" onmouseout="this.style.color='#64748b';">
                                 Forgot password?
-                            </a>
+                            </button>
                         </div>
 
                         <!-- Submit Button -->
@@ -679,6 +758,50 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div style="margin-top: 1.25rem;">
                 <button type="button" id="confirm-close-modal" style="width: 100%; border-radius: 0.75rem; background: #0f172a; color: #ffffff; font-weight: 600; padding: 0.625rem 1rem; font-size: 0.875rem; border: none; cursor: pointer;">
                     ปิดหน้าต่าง
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Forgot Password Modal -->
+    <div id="forgot-pwd-modal" style="display: none; position: fixed; inset: 0; z-index: 60; background: rgba(15, 23, 42, 0.5); backdrop-filter: blur(4px); align-items: center; justify-content: center; padding: 1rem;">
+        <div style="background: #ffffff; width: 100%; max-width: 440px; border-radius: 1.5rem; padding: 1.75rem; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); border: 1px solid #e2e8f0; position: relative;">
+            <button type="button" id="close-forgot-pwd-modal" style="position: absolute; top: 1.25rem; right: 1.25rem; background: #f1f5f9; border: none; border-radius: 9999px; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; color: #64748b; cursor: pointer;">
+                <svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+            <div style="text-align: center; margin-bottom: 1.25rem;">
+                <div style="width: 48px; height: 48px; border-radius: 1rem; background: #eff6ff; color: #2563eb; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 0.75rem;">
+                    <svg style="width: 24px; height: 24px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/></svg>
+                </div>
+                <h3 style="font-size: 1.125rem; font-weight: 700; color: #0f172a; margin: 0 0 0.25rem 0;">ลืมรหัสผ่านเข้าสู่ระบบ?</h3>
+                <p style="font-size: 0.8125rem; color: #64748b; margin: 0;">กรอก Email หรือ Username เพื่อรับลิงก์ตั้งรหัสผ่านใหม่และปลดล็อกระบบ</p>
+            </div>
+            
+            <form method="post" action="<?= ADMIN_URL ?>/forgot_password.php" style="display: flex; flex-direction: column; gap: 1rem; margin: 0;">
+                <?= csrf_field() ?>
+                <div style="text-align: left;">
+                    <label for="modal_login_input" style="display: block; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #475569; margin-bottom: 0.375rem;">
+                        Email หรือ Username
+                    </label>
+                    <input
+                        type="text"
+                        id="modal_login_input"
+                        name="login_input"
+                        required
+                        placeholder="เช่น admin@webpark.co.th หรือ admin_webpark"
+                        class="input-futuristic"
+                        style="padding-left: 1rem;">
+                </div>
+
+                <button type="submit" style="width: 100%; border-radius: 0.75rem; background: #0f172a; color: #ffffff; font-weight: 600; padding: 0.75rem 1rem; font-size: 0.875rem; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.5rem; transition: background 0.15s;" onmouseover="this.style.background='#1e293b'" onmouseout="this.style.background='#0f172a'">
+                    <span>ขอลิงก์รีเซ็ตรหัสผ่าน</span>
+                    <svg style="width: 15px; height: 15px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                </button>
+            </form>
+
+            <div style="margin-top: 1rem; text-align: center;">
+                <button type="button" id="confirm-close-forgot-pwd" style="background: none; border: none; font-size: 0.75rem; color: #64748b; cursor: pointer; text-decoration: underline;">
+                    ยกเลิกและปิดหน้าต่าง
                 </button>
             </div>
         </div>
@@ -941,6 +1064,125 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         closeModal();
                     }
                 });
+            }
+
+            // Forgot Password Modal Controls
+            const forgotPwdModal = document.getElementById('forgot-pwd-modal');
+            const openForgotPwdBtn = document.getElementById('open-forgot-pwd-modal');
+            const closeForgotPwdBtn = document.getElementById('close-forgot-pwd-modal');
+            const confirmCloseForgotPwdBtn = document.getElementById('confirm-close-forgot-pwd');
+
+            function openForgotModal() {
+                if (forgotPwdModal) {
+                    forgotPwdModal.style.display = 'flex';
+                }
+            }
+
+            function closeForgotModal() {
+                if (forgotPwdModal) {
+                    forgotPwdModal.style.display = 'none';
+                }
+            }
+
+            if (openForgotPwdBtn) openForgotPwdBtn.addEventListener('click', openForgotModal);
+            if (closeForgotPwdBtn) closeForgotPwdBtn.addEventListener('click', closeForgotModal);
+            if (confirmCloseForgotPwdBtn) confirmCloseForgotPwdBtn.addEventListener('click', closeForgotModal);
+
+            if (forgotPwdModal) {
+                forgotPwdModal.addEventListener('click', (e) => {
+                    if (e.target === forgotPwdModal) {
+                        closeForgotModal();
+                    }
+                });
+            }
+
+            // Real-Time Countdown Timer for Rate Limit Lockout (Timestamp-based to prevent background tab throttling)
+            const loginAlert = document.getElementById('login-alert');
+            const countdownTimer = document.getElementById('countdown-timer');
+
+            if (loginAlert && countdownTimer && loginAlert.dataset.lockoutSeconds) {
+                const initialSeconds = parseInt(loginAlert.dataset.lockoutSeconds, 10) || 0;
+                // Calculate absolute target timestamp in milliseconds
+                const targetEndTime = Date.now() + (initialSeconds * 1000);
+
+                function formatTime(totalSeconds) {
+                    const m = Math.floor(totalSeconds / 60);
+                    const s = totalSeconds % 60;
+                    return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+                }
+
+                function updateCountdown() {
+                    const now = Date.now();
+                    const remainingSec = Math.max(0, Math.ceil((targetEndTime - now) / 1000));
+
+                    if (remainingSec <= 0) {
+                        clearInterval(timerInterval);
+                        countdownTimer.textContent = '00:00';
+
+                        // Transition alert to Unlocked / Ready state
+                        loginAlert.style.borderColor = '#bbf7d0';
+                        loginAlert.style.background = '#f0fdf4';
+
+                        const alertIcon = document.getElementById('alert-icon');
+                        if (alertIcon) {
+                            alertIcon.style.color = '#16a34a';
+                            alertIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>';
+                        }
+
+                        const alertTitle = document.getElementById('alert-title');
+                        if (alertTitle) {
+                            alertTitle.style.color = '#15803d';
+                            alertTitle.textContent = 'ครบกำหนดเวลาระงับแล้ว';
+                        }
+
+                        const countdownLabel = document.getElementById('countdown-label');
+                        if (countdownLabel) {
+                            countdownLabel.textContent = 'คุณสามารถลองเข้าสู่ระบบใหม่ได้ทันที';
+                            countdownLabel.style.color = '#166534';
+                        }
+
+                        countdownTimer.style.display = 'none';
+
+                        // Auto-enable inputs and submit button
+                        if (usernameInput) {
+                            usernameInput.disabled = false;
+                            usernameInput.style.cursor = 'text';
+                            usernameInput.style.opacity = '1';
+                            usernameInput.style.backgroundColor = '#ffffff';
+                        }
+                        if (passwordInput) {
+                            passwordInput.disabled = false;
+                            passwordInput.style.cursor = 'text';
+                            passwordInput.style.opacity = '1';
+                            passwordInput.style.backgroundColor = '#ffffff';
+                            passwordInput.focus();
+                        }
+                        if (submitBtn) {
+                            submitBtn.disabled = false;
+                            submitBtn.style.cursor = 'pointer';
+                            submitBtn.style.opacity = '1';
+                            submitBtn.style.background = '#0f172a';
+                            const btnTextEl = document.getElementById('btn-text');
+                            if (btnTextEl) {
+                                btnTextEl.innerHTML = '<span>Sign in</span><svg style="width: 15px; height: 15px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>';
+                            }
+                        }
+                        return;
+                    }
+
+                    countdownTimer.textContent = formatTime(remainingSec);
+                }
+
+                updateCountdown();
+                const timerInterval = setInterval(updateCountdown, 1000);
+
+                // Instantly sync time when switching back from another browser tab or unlocking device
+                document.addEventListener('visibilitychange', () => {
+                    if (!document.hidden) {
+                        updateCountdown();
+                    }
+                });
+                window.addEventListener('focus', updateCountdown);
             }
         });
     </script>

@@ -22,7 +22,15 @@ foreach (['th', 'en'] as $lang) {
     if (isset($sectionsInput[$lang]) && is_array($sectionsInput[$lang])) {
         foreach ($sectionsInput[$lang] as $item) {
             $topic = trim($item['topic'] ?? '');
-            $body = isset($item['body']) ? sanitize_html($item['body']) : '';
+            $body = isset($item['body']) ? sanitize_html(convert_plain_bullets_to_html($item['body'])) : '';
+            if ($body !== '') {
+                $basePath = defined('SITE_URL') ? SITE_URL : '/Corparate_Webpark';
+                $body = preg_replace(
+                    '#src=["\'](?:\.\./)+frontend/public/assets/([^"\']+)["\']#i',
+                    'src="' . $basePath . '/frontend/public/assets/$1"',
+                    $body
+                );
+            }
             if ($topic !== '' || $body !== '') {
                 $finalSections[] = [
                     'lang' => $lang,
@@ -85,7 +93,11 @@ try {
         $data['cover_image'] = $imagePath;
     }
 } catch (RuntimeException $exception) {
-    flash('error', 'อัปโหลดรูปภาพไม่สำเร็จ: ' . $exception->getMessage());
+    $msg = $exception->getMessage();
+    if ($msg === 'File type not allowed.' || $msg === 'Invalid MIME type.') {
+        $msg = 'ระบบรองรับเฉพาะไฟล์รูปภาพนามสกุล .webp เท่านั้น กรุณาแปลงไฟล์เป็น .webp ก่อนอัปโหลดครับ';
+    }
+    flash('error', 'อัปโหลดรูปภาพไม่สำเร็จ: ' . $msg);
     header('Location: ' . ($id ? 'edit.php?id=' . $id : 'create.php'));
     exit;
 }

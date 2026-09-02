@@ -75,6 +75,32 @@ class Portfolio
     }
 
     /**
+     * @return array<string, mixed>|false
+     */
+    public function getBySlug(string $slug): array|false
+    {
+        $raw = trim($slug);
+        $decoded = rawurldecode($raw);
+
+        $stmt = $this->pdo->prepare(
+            'SELECT ' . self::SELECT_COLUMNS . self::FROM_JOIN . ' WHERE (p.slug = ? OR p.slug = ?) AND p.status = \'published\' AND p.deleted_at IS NULL LIMIT 1'
+        );
+        $stmt->execute([$raw, $decoded]);
+        $res = $stmt->fetch();
+        if ($res) {
+            return $res;
+        }
+
+        // Fuzzy match
+        $stmt = $this->pdo->prepare(
+            'SELECT ' . self::SELECT_COLUMNS . self::FROM_JOIN . ' WHERE (p.slug LIKE ? OR p.meta_title LIKE ?) AND p.status = \'published\' AND p.deleted_at IS NULL ORDER BY p.id DESC LIMIT 1'
+        );
+        $stmt->execute(['%' . $decoded . '%', '%' . $decoded . '%']);
+
+        return $stmt->fetch();
+    }
+
+    /**
      * @return array<int, array<string, mixed>>
      */
     public function getByCategoryId(int $categoryId): array

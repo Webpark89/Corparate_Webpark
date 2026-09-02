@@ -3,7 +3,7 @@
  * Show all reviews via POST with CSRF verification.
  */
 require_once __DIR__ . '/../includes/functions.php';
-require_login();
+require_permission('review.edit');
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);

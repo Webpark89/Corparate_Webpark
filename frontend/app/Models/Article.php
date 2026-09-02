@@ -11,30 +11,13 @@ class Article
 
     /** Shared SELECT columns for list/detail queries. */
     private const SELECT_COLUMNS = '
-        a.id,
-        a.priority,
-        a.slug,
-        a.slug_en,
-        a.meta_title,
-        a.meta_title_en,
-        a.meta_description,
-        a.meta_description_en,
-        a.meta_keywords,
-        a.meta_keywords_en,
+        a.*,
         a.meta_title AS title,
         a.meta_description AS description,
-        a.source_url,
-        a.category_id,
+        a.cover_image AS image_path,
         c.name AS category,
         c.slug AS category_slug,
-        a.cover_image AS image_path,
-        a.cover_image_alt,
-        a.content,
-        a.author_id,
-        COALESCE(au.display_name, \'\') AS author,
-        a.status,
-        a.created_at,
-        a.updated_at';
+        COALESCE(au.display_name, \'\') AS author';
 
     private const FROM_JOIN = '
         FROM article a
@@ -61,7 +44,7 @@ class Article
     {
         $stmt = $this->pdo->query(
             'SELECT ' . self::SELECT_COLUMNS . self::FROM_JOIN .
-            " WHERE a.status = 'published' AND a.deleted_at IS NULL ORDER BY a.priority ASC, a.created_at DESC"
+            " WHERE a.status = 'published' AND (a.deleted_at IS NULL OR a.deleted_at = '') ORDER BY a.is_pinned DESC, a.id DESC"
         );
 
         return $stmt->fetchAll();
@@ -73,11 +56,59 @@ class Article
     public function getById(int $id): array|false
     {
         $stmt = $this->pdo->prepare(
-            'SELECT ' . self::SELECT_COLUMNS . self::FROM_JOIN . ' WHERE a.id = ? AND a.status = \'published\' AND a.deleted_at IS NULL'
+            'SELECT ' . self::SELECT_COLUMNS . self::FROM_JOIN . ' WHERE a.id = ? AND a.status = \'published\' AND (a.deleted_at IS NULL OR a.deleted_at = \'\')'
         );
         $stmt->execute([$id]);
 
         return $stmt->fetch();
+    }
+
+    /**
+     * @return array<string, mixed>|false
+     */
+    public function getBySlug(string $slug): array|false
+    {
+        $raw = trim($slug);
+        $decoded = rawurldecode($raw);
+
+        // 1. Exact match (slug, slug_en, URL-encoded or decoded)
+        $stmt = $this->pdo->prepare(
+            'SELECT ' . self::SELECT_COLUMNS . self::FROM_JOIN . ' WHERE (a.slug = ? OR a.slug = ? OR a.slug_en = ? OR a.slug_en = ?) AND a.status = \'published\' AND (a.deleted_at IS NULL OR a.deleted_at = \'\') LIMIT 1'
+        );
+        $stmt->execute([$raw, $decoded, $raw, $decoded]);
+        $res = $stmt->fetch();
+        if ($res) {
+            return $res;
+        }
+
+        // 2. Robust keyword search fallback for slight typos in slugs
+        $cleanSlug = str_replace(['-', '_'], ' ', $decoded);
+        $words = array_values(array_filter(explode(' ', $cleanSlug), static fn(string $w): bool => mb_strlen($w) >= 3));
+
+        if (!empty($words)) {
+            $likeConditions = [];
+            $params = [];
+            foreach ($words as $w) {
+                if (preg_match('/^[a-zA-Z0-9]+$/', $w) && strlen($w) >= 4) {
+                    $likeConditions[] = '(a.slug LIKE ? OR a.meta_title LIKE ?)';
+                    $params[] = '%' . $w . '%';
+                    $params[] = '%' . $w . '%';
+                }
+            }
+
+            if (!empty($likeConditions)) {
+                $sql = 'SELECT ' . self::SELECT_COLUMNS . self::FROM_JOIN 
+                     . ' WHERE (' . implode(' AND ', $likeConditions) . ') AND a.status = \'published\' AND (a.deleted_at IS NULL OR a.deleted_at = \'\') ORDER BY a.id DESC LIMIT 1';
+                $stmt = $this->pdo->prepare($sql);
+                $stmt->execute($params);
+                $res = $stmt->fetch();
+                if ($res) {
+                    return $res;
+                }
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -101,8 +132,8 @@ class Article
     {
         $stmt = $this->pdo->prepare(
             'SELECT ' . self::SELECT_COLUMNS . self::FROM_JOIN
-            . ' WHERE a.category_id = ? AND a.id <> ? AND a.status = ? AND a.deleted_at IS NULL'
-            . ' ORDER BY a.priority ASC, a.created_at DESC LIMIT ?'
+            . ' WHERE a.category_id = ? AND a.id <> ? AND a.status = ? AND (a.deleted_at IS NULL OR a.deleted_at = \'\')'
+            . ' ORDER BY a.id DESC LIMIT ?'
         );
         $stmt->execute([$categoryId, $excludeId, 'published', $limit]);
 
@@ -121,7 +152,7 @@ class Article
              FROM categories c
              JOIN article a ON a.category_id = c.id
                 AND a.status = ?
-                AND a.deleted_at IS NULL
+                AND (a.deleted_at IS NULL OR a.deleted_at = \'\')
              GROUP BY c.id, c.slug, c.name
              HAVING COUNT(a.id) > 0
              ORDER BY COUNT(a.id) DESC, c.name ASC
@@ -218,6 +249,16 @@ class Article
         );
 
         return $stmt->execute($values);
+    }
+
+    public function incrementViews(int $id): bool
+    {
+        try {
+            $stmt = $this->pdo->prepare('UPDATE article SET views = views + 1 WHERE id = ?');
+            return $stmt->execute([$id]);
+        } catch (\Throwable $e) {
+            return false;
+        }
     }
 
     public function delete(int $id): bool

@@ -1,8 +1,9 @@
 <?php
 /**
- * Admin change password page (standalone, no login required for demo).
+ * Admin change password page — requires login, updates password in database.
  */
 require_once __DIR__ . '/includes/functions.php';
+require_login();
 
 $success = false;
 $error = '';
@@ -14,9 +15,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $newPassword = (string) ($_POST['new_password'] ?? '');
     $confirmPassword = (string) ($_POST['confirm_password'] ?? '');
     
+    $adminId = $_SESSION['admin_id'] ?? 0;
+    $admin = find_admin_by_id($adminId);
+
     if ($currentPassword === '' || $newPassword === '' || $confirmPassword === '') {
         $error = 'กรุณากรอกข้อมูลให้ครบทุกช่อง';
-    } elseif (!password_verify($currentPassword, ADMIN_PASSWORD_HASH)) {
+    } elseif (!$admin) {
+        $error = 'ไม่พบข้อมูลผู้ใช้งานในระบบ';
+    } elseif (!password_verify($currentPassword, $admin['password_hash'])) {
         $error = 'รหัสผ่านปัจจุบันไม่ถูกต้อง';
     } elseif ($newPassword !== $confirmPassword) {
         $error = 'รหัสผ่านใหม่และการยืนยันรหัสผ่านไม่ตรงกัน';
@@ -25,36 +31,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         $newHash = password_hash($newPassword, PASSWORD_DEFAULT);
         
-        $configFile = __DIR__ . '/config/config.php';
-        if (is_writable($configFile)) {
-            $configContent = file_get_contents($configFile);
-            $pattern = "/define\('ADMIN_PASSWORD_HASH',\s*'.*?'\);/";
-            
-            if (preg_match($pattern, $configContent)) {
-                $newConfigContent = preg_replace_callback($pattern, function($matches) use ($newHash) {
-                    return "define('ADMIN_PASSWORD_HASH', '" . addcslashes($newHash, "'\\") . "');";
-                }, $configContent);
-                if (file_put_contents($configFile, $newConfigContent)) {
-                    // Update the database admins table for the user's reference (plain text as requested + updated_at)
-                    try {
-                        $db = Database::conn();
-                        $stmt = $db->prepare("UPDATE admins SET password_hash = :plain, updated_at = NOW() WHERE id = 1");
-                        $stmt->execute(['plain' => 'Plaintext: ' . $newPassword]);
-                    } catch (Exception $e) {
-                        // ignore db errors
-                    }
+        try {
+            $stmt = db()->prepare('UPDATE admins SET password_hash = :hash, updated_at = NOW() WHERE id = :id');
+            $stmt->execute(['hash' => $newHash, 'id' => $adminId]);
 
-                    // Redirect to login page on success
-                    header('Location: login.php?password_changed=1');
-                    exit;
-                } else {
-                    $error = 'ไม่สามารถบันทึกข้อมูลลงไฟล์ config.php ได้';
-                }
-            } else {
-                $error = 'ไม่พบค่า ADMIN_PASSWORD_HASH ในไฟล์ config.php';
-            }
-        } else {
-            $error = 'ไฟล์ config.php ไม่สามารถเขียนได้';
+            // Redirect to login page on success
+            header('Location: login.php?password_changed=1');
+            exit;
+        } catch (Exception $e) {
+            $error = 'ไม่สามารถบันทึกรหัสผ่านใหม่ได้: ' . $e->getMessage();
         }
     }
 }

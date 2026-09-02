@@ -1,5 +1,35 @@
-/* global CKEDITOR */
-(function () {
+    function applyFieldStatus(input, counter, len, minOpt, maxOpt, maxLimit, optLabel, isThai = true) {
+        if (!input || !counter) return;
+
+        if (len === 0) {
+            counter.textContent = `0 / ${maxLimit} (${optLabel})`;
+            counter.style.cssText = 'color: #64748b; background: transparent; border: none; font-weight: 500;';
+            input.style.cssText = '';
+            return;
+        }
+
+        if (len >= maxLimit) {
+            const msg = isThai ? `⛔ ครบกำหนดสูงสุด ${maxLimit} ตัวอักษรแล้ว` : `⛔ Max limit ${maxLimit} reached`;
+            counter.textContent = `${len} / ${maxLimit} (${msg})`;
+            counter.style.cssText = 'color: #b91c1c !important; background-color: #fee2e2 !important; border: 1px solid #f87171 !important; font-weight: 700 !important; padding: 2px 8px; border-radius: 6px;';
+            input.style.cssText = 'border-color: #ef4444 !important; background-color: #fef2f2 !important; box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.25) !important;';
+        } else if (len > maxOpt) {
+            const msg = isThai ? `⚠️ เกินคำแนะนำ ${minOpt}-${maxOpt} ตัวอักษร` : `⚠️ Exceeds recommended ${minOpt}-${maxOpt} chars`;
+            counter.textContent = `${len} / ${maxLimit} (${msg})`;
+            counter.style.cssText = 'color: #92400e !important; background-color: #fef3c7 !important; border: 1px solid #fcd34d !important; font-weight: 700 !important; padding: 2px 8px; border-radius: 6px;';
+            input.style.cssText = 'border-color: #f59e0b !important; background-color: #fffdf5 !important; box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.25) !important;';
+        } else if (len >= minOpt && len <= maxOpt) {
+            const msg = isThai ? `✅ เหมาะสมที่สุด` : `✅ Optimal length`;
+            counter.textContent = `${len} / ${maxLimit} (${optLabel}) ${msg}`;
+            counter.style.cssText = 'color: #047857 !important; background-color: #ecfdf5 !important; border: 1px solid #6ee7b7 !important; font-weight: 700 !important; padding: 2px 8px; border-radius: 6px;';
+            input.style.cssText = 'border-color: #10b981 !important; background-color: #f0fdf4 !important; box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.2) !important;';
+        } else {
+            counter.textContent = `${len} / ${maxLimit} (${optLabel})`;
+            counter.style.cssText = 'color: #334155; background: #f1f5f9; border: 1px solid #cbd5e1; font-weight: 600; padding: 2px 8px; border-radius: 6px;';
+            input.style.cssText = '';
+        }
+    }
+
     function syncSeoCounters(elements) {
         try {
             if (!elements.titleInput || !elements.titleCounter || !elements.descInput || !elements.descCounter) {
@@ -9,27 +39,8 @@
             const titleLen = elements.titleInput.value ? elements.titleInput.value.length : 0;
             const descLen = elements.descInput.value ? elements.descInput.value.length : 0;
 
-            elements.titleCounter.textContent = `${titleLen} / 120`;
-            elements.titleCounter.className = `text-xs font-medium ${titleLen > 120 ? 'text-rose-600' : 'text-slate-500'}`;
-
-            if (titleLen > 120) {
-                elements.titleInput.classList.add('border-rose-500', 'focus:border-rose-500', 'focus:ring-rose-500/10');
-                elements.titleInput.classList.remove('border-slate-300', 'focus:border-blue-500', 'focus:ring-blue-500/10');
-            } else {
-                elements.titleInput.classList.remove('border-rose-500', 'focus:border-rose-500', 'focus:ring-rose-500/10');
-                elements.titleInput.classList.add('border-slate-300', 'focus:border-blue-500', 'focus:ring-blue-500/10');
-            }
-
-            elements.descCounter.textContent = `${descLen} / 200`;
-            elements.descCounter.className = `text-xs font-medium ${descLen > 200 ? 'text-rose-600' : 'text-slate-500'}`;
-
-            if (descLen > 200) {
-                elements.descInput.classList.add('border-rose-500', 'focus:border-rose-500', 'focus:ring-rose-500/10');
-                elements.descInput.classList.remove('border-slate-300', 'focus:border-blue-500', 'focus:ring-blue-500/10');
-            } else {
-                elements.descInput.classList.remove('border-rose-500', 'focus:border-rose-500', 'focus:ring-rose-500/10');
-                elements.descInput.classList.add('border-slate-300', 'focus:border-blue-500', 'focus:ring-blue-500/10');
-            }
+            applyFieldStatus(elements.titleInput, elements.titleCounter, titleLen, 50, 60, 120, 'แนะนำ 50-60 ตัวอักษร', true);
+            applyFieldStatus(elements.descInput, elements.descCounter, descLen, 120, 160, 200, 'แนะนำ 120-160 ตัวอักษร', true);
         } catch (e) {
             console.error("Error syncing SEO counters:", e);
         }

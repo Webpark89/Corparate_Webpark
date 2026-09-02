@@ -4,7 +4,7 @@
  * Admin service list — browse and manage website service entries.
  */
 require_once __DIR__ . '/../includes/functions.php';
-require_login();
+require_permission('service.view');
 
 $pageTitle = 'การจัดการบริการ';
 $page = 'services';

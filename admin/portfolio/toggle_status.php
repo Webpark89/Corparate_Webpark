@@ -8,7 +8,7 @@
  *   status (string) – current status before toggle
  */
 require_once __DIR__ . '/../includes/functions.php';
-require_login();
+require_permission('portfolio.edit');
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);

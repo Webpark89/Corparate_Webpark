@@ -39,9 +39,10 @@ if (!is_dir($uploadDir)) {
 $destination = $uploadDir . $filename;
 
 if (move_uploaded_file($file['tmp_name'], $destination)) {
-    // Return the URL that can be accessed by the browser
-    // Using asset_url if it works, otherwise a hardcoded relative path based on ROOT_URL
-    $url = defined('ROOT_URL') ? ROOT_URL . '/frontend/public/assets/images/uploads/' . $filename : '/Corparate_Webpark/frontend/public/assets/images/uploads/' . $filename;
+    $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+    $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
+    $baseUrl = defined('SITE_URL') ? SITE_URL : ($protocol . '://' . $host . '/Corparate_Webpark');
+    $url = $baseUrl . '/frontend/public/assets/images/uploads/' . $filename;
     
     echo json_encode([
         'url' => $url

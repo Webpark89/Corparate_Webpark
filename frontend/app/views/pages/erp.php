@@ -5,7 +5,7 @@ declare(strict_types=1);
 $categories = is_array($categories ?? null) ? $categories : [];
 $activeCategorySlug = (string) ($activeCategorySlug ?? 'all');
 $fallbackImage = asset_url('images/story.png');
-$heroImage = asset_url('images/erp-hero-bg.png');
+$heroImage = asset_url('images/bg-6.png');
 $ctaImage = asset_url('images/bg-cta.jpg');
 
 /**
@@ -235,11 +235,10 @@ $erpPortfolios = $mockErpPortfolios;
 <section id="erp-hero" class="relative font-sans bg-[#f7faff] overflow-hidden mt-0 mx-4 mb-4 sm:mt-0 sm:mx-6 sm:mb-6 rounded-t-none rounded-b-[2rem] lg:m-0 lg:rounded-none">
     <div class="hidden lg:block absolute inset-0 z-0 overflow-hidden">
         <img src="<?= e($heroImage) ?>" alt="WEBPARK Solutions Background" 
-            class="w-full h-full object-cover object-[right_center]"
-            style="filter: contrast(1.18) saturate(1.25) brightness(0.97);">
+            class="hero-parallax-img w-full h-full object-cover object-center opacity-100 mix-blend-screen">
             
-        <div class="absolute inset-0 bg-gradient-to-r from-white via-white/70 to-transparent"></div>
-        <div class="absolute inset-x-0 bottom-0 h-[20%] bg-gradient-to-t from-white to-transparent z-10"></div>
+        <div class="absolute inset-0 bg-gradient-to-r from-white via-white/70 to-white/5"></div>
+        <div class="absolute inset-x-0 bottom-0 h-[30%] bg-gradient-to-t from-white to-transparent z-10"></div>
     </div>
     <style>
         @keyframes fadeSlideUp {
@@ -262,19 +261,18 @@ $erpPortfolios = $mockErpPortfolios;
         .animate-scroll:hover { animation-play-state: paused; }
     </style>
 
-    <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8 pt-12 pb-24 lg:pt-28 lg:pb-32 relative z-10 desktop-wide-container-erp erp-hero-container">
+    <div class="mx-auto w-full max-w-7xl lg:max-w-[1720px] px-6 sm:px-6 lg:px-10 pt-12 pb-24 lg:pt-28 lg:pb-32 relative z-10">
         <!-- Mobile Background Image (Only covers this Hero container) -->
         <div class="absolute inset-0 z-0 overflow-hidden lg:hidden rounded-2xl">
             <img src="<?= e($heroImage) ?>" alt="WEBPARK Solutions Background" 
-                class="w-full h-full object-cover object-[75%_center] md:object-[right_center]"
-                style="filter: contrast(1.18) saturate(1.25) brightness(0.97);">
-            <div class="absolute inset-0 bg-gradient-to-r from-white/95 via-white/70 to-transparent"></div>
-            <div class="absolute inset-x-0 bottom-0 h-[20%] bg-gradient-to-t from-white to-transparent"></div>
+                class="hero-parallax-img w-full h-full object-cover object-[75%_center] opacity-100 mix-blend-screen">
+            <div class="absolute inset-0 bg-gradient-to-b from-white/90 via-white/70 to-white/40"></div>
+            <div class="absolute inset-x-0 bottom-0 h-[30%] bg-gradient-to-t from-white to-transparent"></div>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-12 lg:gap-20 items-center relative z-10">
             
-            <div class="max-w-2xl lg:ml-12 xl:ml-24 erp-hero-left-col">
+            <div class="max-w-2xl lg:ml-12 xl:ml-24">
                 <nav aria-label="Breadcrumb" class="animate-fade-up delay-100 mb-6 hidden sm:block">
                         <ol class="inline-flex items-center text-sm md:text-base font-medium text-slate-500">
                             <li>
@@ -336,21 +334,22 @@ $erpPortfolios = $mockErpPortfolios;
 
                 <!-- Desktop Only Hero Content -->
                 <div class="hidden md:block">
-                    <h1 class="animate-fade-up delay-200 mb-2 tracking-tighter leading-tight flex flex-row items-baseline flex-wrap gap-2 md:gap-3 ipad-pro-erp-hero-h1-wrapper">
-                        <span class="bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block py-1 md:py-2 desktop-erp-hero-h1 ipad-pro-erp-hero-h1"><?= getCurrentLang() === 'th' ? 'ระบบ' : 'ERP' ?></span>
-                        <span class="bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block py-1 md:py-2 desktop-erp-hero-h1 ipad-pro-erp-hero-h1" style="animation-delay: -3s;"><?= getCurrentLang() === 'th' ? 'ERP' : 'Systems' ?></span>
-                    </h1>
+                    <h1 class="animate-fade-up delay-200 leading-[1.1] mb-2 tracking-tighter ipad-pro-erp-hero-h1-wrapper"><span class="text-4xl md:text-6xl lg:text-8xl font-bold bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block pb-0 pt-2 desktop-erp-hero-h1 ipad-pro-erp-hero-h1"><?= getCurrentLang() === 'th' ? 'ระบบ' : 'ERP' ?></span><span class="text-4xl md:text-6xl lg:text-8xl font-bold bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block pb-0 pt-2 ml-1 lg:ml-2 desktop-erp-hero-h1 ipad-pro-erp-hero-h1"><?= getCurrentLang() === 'th' ? 'ERP' : 'Systems' ?></span><br><span class="text-xl md:text-2xl lg:text-4xl font-medium leading-snug bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block mt-0 pb-3 pt-1 ipad-pro-erp-hero-subtitle" style="animation-delay: -3s;"><?= getCurrentLang() === 'th' ? 'เชื่อมต่อทุกกระบวนการธุรกิจ<br>แบบครบวงจรในแพลตฟอร์มเดียว' : 'Connecting every business process<br>end-to-end on a single platform' ?></span></h1>
 
-                    <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-base md:text-lg lg:text-xl leading-relaxed max-w-2xl mb-10 font-bold md:font-semibold desktop-erp-hero-p">
+                    <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-lg md:text-xl leading-relaxed max-w-lg mb-10 font-medium desktop-erp-hero-p">
                         <?php if (getCurrentLang() === 'th'): ?>
-                            <span class="inline-block whitespace-nowrap">เชื่อมต่อทุกกระบวนการธุรกิจ แบบครบวงจรในแพลตฟอร์มเดียว</span><br class="hidden md:inline">
-                            <span class="inline-block whitespace-nowrap">ลดงานซ้ำซ้อน เพิ่มประสิทธิภาพการทำงาน และขับเคลื่อนธุรกิจสู่อนาคต</span>
+                            รวบรวมบทความรู้ เทคโนโลยี นวัตกรรม และแนวทางการทำธุรกิจ<br>ครอบคลุม ERP ระบบธุรกิจดิจิทัล การตลาดออนไลน์ AI<br>และโซลูชัน ที่ช่วยพัฒนาองค์กรให้เติบโตได้อย่างยั่งยืน
                         <?php else: ?>
-                            <span class="inline-block whitespace-nowrap">Connecting every business process end-to-end on a single platform,</span><br class="hidden md:inline">
-                            <span class="inline-block whitespace-nowrap">eliminating duplicate work and driving your business toward the digital future.</span>
+                            <?php 
+                                $en_knowledge = e(t('common.articles_knowledge_summary'));
+                                $en_knowledge = str_replace(', and business strategy', ',<br class="hidden lg:block"> and business strategy', $en_knowledge);
+                                echo $en_knowledge;
+                            ?> <br class="hidden xl:block">
+                            <?= e(t('common.articles_coverage_summary')) ?><br class="hidden xl:block">
+                            <?= e(t('common.articles_growth_summary')) ?>
                         <?php endif; ?>
                     </p>
-                    <div class="animate-entrance-up delay-400 flex flex-col sm:flex-row items-start gap-4 erp-hero-btn-container">
+                    <div class="animate-entrance-up delay-400 flex flex-col sm:flex-row items-start gap-4">
                         <a href="<?= e(route_url('/contact')) ?>" class="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-primary text-white text-base font-semibold rounded-full hover:bg-blue-700 transition-all shadow-md hover:-translate-y-0.5 whitespace-nowrap">
                             <?= getCurrentLang() === 'th' ? 'ปรึกษาผู้เชี่ยวชาญ' : 'Consult an Expert' ?>
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
@@ -376,255 +375,68 @@ $erpPortfolios = $mockErpPortfolios;
 </section>
 
 <style>
-    /* iPad (760px - 1366px) All Orientations */
-    @media (min-width: 760px) and (max-width: 1400px) {
-        .erp-hero-container {
-            padding-top: 7rem !important;
-            padding-bottom: 6rem !important;
-        }
-        .erp-hero-left-col {
-            max-width: 100% !important;
-            margin-left: 0 !important;
-        }
-        .erp-hero-btn-container {
-            flex-direction: column !important;
-            align-items: flex-start !important;
-            gap: 1.25rem !important;
-        }
-        .ipad-pro-erp-hero-h1-wrapper {
-            flex-direction: row !important;
-            align-items: baseline !important;
-            flex-wrap: nowrap !important;
-            gap: 0.75rem !important;
-        }
-        .ipad-pro-erp-hero-h1 {
-            font-size: 4.25rem !important;
-            font-weight: 900 !important;
-            line-height: 1.15 !important;
-            white-space: nowrap !important;
-        }
-        .desktop-erp-hero-p {
-            font-size: 1.08rem !important;
-            line-height: 1.75 !important;
-            font-weight: 600 !important;
-            color: #0b1b42 !important;
-            max-width: 100% !important;
-        }
-        .erp-intro-section {
-            padding-top: 0px !important;
-            padding-bottom: 0px !important;
-            margin-bottom: 0px !important;
-        }
-        .erp-intro-card-container {
-            padding-bottom: 0px !important;
-            margin-bottom: 0px !important;
-        }
-        .erp-modules-section {
-            padding-top: 1.25rem !important;
-            padding-bottom: 2rem !important;
-        }
-        .erp-modules-header {
-            margin-bottom: 1.25rem !important;
-        }
-        .erp-modules-header h2 {
-            margin-bottom: 0.25rem !important;
-        }
-        .erp-modules-header span {
-            margin-bottom: 0px !important;
-        }
-        .erp-intro-main-card {
-            flex-direction: column !important;
-        }
-        .erp-left-col {
-            width: 100% !important;
-            max-width: 100% !important;
-            flex: none !important;
-            border-bottom: 1px solid #f1f5f9 !important;
-            border-right: none !important;
-            padding: 2.25rem 2.5rem 1.75rem !important;
-        }
-        .erp-right-col {
-            width: 100% !important;
-            flex: none !important;
-            display: grid !important;
-            grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
-        }
-        .gsap-erp-about-card {
-            padding: 2rem 1.25rem !important;
-            border-bottom: none !important;
-            border-right: 1px solid #f1f5f9 !important;
-        }
-        .gsap-erp-about-card:last-child {
-            border-right: none !important;
-        }
-        .gsap-erp-about-card h3 {
-            font-size: 1.15rem !important;
-            line-height: 1.4 !important;
-            min-height: 2.75rem !important;
-            display: flex !important;
-            align-items: center !important;
-            justify-content: center !important;
-            text-align: center !important;
-            margin-bottom: 0.35rem !important;
-        }
-        .gsap-erp-about-card p {
-            font-size: 0.925rem !important;
-            line-height: 1.45 !important;
-        }
+    @media (min-width: 1280px) {
+        .erp-left-col { flex: none !important; width: 440px !important; max-width: 440px !important; }
+        .erp-right-col { flex: 1 !important; width: auto !important; }
     }
-
-    /* iPad Mini Portrait (760px - 820px) Font Scaling */
-    @media (min-width: 760px) and (max-width: 820px) {
-        .ipad-pro-erp-hero-h1 {
-            font-size: 2.75rem !important;
-        }
-        .desktop-erp-hero-p {
-            font-size: 0.925rem !important;
-            line-height: 1.55 !important;
-        }
-        .gsap-erp-about-card h3 {
-            font-size: 0.975rem !important;
-            min-height: 2.25rem !important;
-        }
-        .gsap-erp-about-card p {
-            font-size: 0.8rem !important;
-            line-height: 1.35 !important;
-        }
-        .erp-intro-title {
-            font-size: 1.35rem !important;
-        }
-        .ipad-mini-erp-desc,
-        .erp-intro-desc {
-            font-size: 0.925rem !important;
-            line-height: 1.55 !important;
-        }
-    }
-
-    /* Dedicated Large Font Scale for iPad Pro Landscape (1024px - 1366px) */
-    @media (min-width: 1024px) and (max-width: 1366px) {
-        .ipad-pro-erp-hero-h1 {
-            font-size: 4.5rem !important;
-            line-height: 1.15 !important;
-        }
-        .desktop-erp-hero-p {
-            font-size: 1.35rem !important;
-            line-height: 2.1rem !important;
-            max-width: 580px !important;
-        }
-        .erp-intro-title {
-            font-size: 2.25rem !important;
-        }
-        .erp-intro-desc {
-            font-size: 1.3rem !important;
-            line-height: 2.1rem !important;
-        }
-        .gsap-erp-about-card h3 {
-            font-size: 1.45rem !important;
-            min-height: 3.25rem !important;
-        }
-        .gsap-erp-about-card p {
-            font-size: 1.15rem !important;
-            line-height: 1.75rem !important;
-        }
-    }
-
-    /* Dedicated Large Font Scale for iPad Pro Portrait */
-    @media (min-width: 821px) and (max-width: 1366px) and (orientation: portrait) {
-        .ipad-pro-erp-hero-h1 {
-            font-size: 4.25rem !important;
-            line-height: 1.15 !important;
-        }
-        .desktop-erp-hero-p {
-            font-size: 1.35rem !important;
-            line-height: 2.1rem !important;
-            max-width: 580px !important;
-        }
-        .erp-intro-title {
-            font-size: 2rem !important;
-        }
-        .erp-intro-desc {
-            font-size: 1.25rem !important;
-            line-height: 2rem !important;
-        }
-        .gsap-erp-about-card h3 {
-            font-size: 1.35rem !important;
-            min-height: 3.25rem !important;
-        }
-        .gsap-erp-about-card p {
-            font-size: 1.05rem !important;
-            line-height: 1.6rem !important;
-        }
-    }
-    .ipad-mini-erp-desc,
-    .erp-intro-desc {
-        font-size: 1.05rem !important;
-        line-height: 1.65 !important;
-        max-width: 100% !important;
-        width: 100% !important;
-    }
-    @media (min-width: 1025px) {
-        .desktop-wide-container-erp {
-            max-width: 1720px !important;
-            padding-left: 2.5rem !important;
-            padding-right: 2.5rem !important;
-        }
+    @media (min-width: 1536px) {
+        .erp-left-col { width: 460px !important; max-width: 460px !important; }
     }
 </style>
-<section class="bg-white pt-8 pb-0 lg:pt-24 lg:pb-0 erp-intro-section">
-    <div class="mx-auto w-full max-w-[1720px] px-4 sm:px-6 lg:px-10 relative z-20 -mt-10 lg:-mt-18 pb-0 lg:pb-0 overflow-hidden erp-intro-card-container">
-        <div class="w-full rounded-2xl lg:rounded-3xl bg-white flex flex-col 2xl:flex-row items-stretch shadow-[0_4px_25px_rgba(0,0,0,0.06)] border border-slate-100 overflow-hidden erp-intro-main-card">
+<section class="bg-white pt-8 pb-4 lg:pt-24 lg:pb-8">
+    <div class="mx-auto w-full max-w-[1720px] px-4 sm:px-6 lg:px-10 relative z-20 -mt-10 lg:-mt-18 pb-6 lg:pb-16 overflow-hidden">
+        <div class="w-full rounded-2xl lg:rounded-3xl bg-white flex flex-col xl:flex-row items-stretch shadow-[0_4px_25px_rgba(0,0,0,0.06)] border border-slate-100 overflow-hidden">
 
-            <div class="erp-left-col gsap-erp-about-left group flex-1 flex flex-col justify-center p-6 lg:p-8 2xl:p-10 border-b 2xl:border-b-0 2xl:border-r border-slate-100 shrink-0 bg-white transition-all duration-300 opacity-0 translate-y-10">
+            <div class="erp-left-col gsap-erp-about-left group flex-1 flex flex-col justify-center p-8 lg:p-10 xl:p-12 border-b xl:border-b-0 xl:border-r border-slate-100 shrink-0 bg-white transition-all duration-300 opacity-0 translate-y-10">
                 <div>
-                    <div class="inline-flex flex-col items-start mb-2">
-                        <span class="text-primary font-extrabold text-xl lg:text-2xl tracking-tight uppercase">
+                    <div class="inline-flex flex-col items-start mb-3">
+                        <span class="text-primary font-extrabold text-2xl lg:text-3xl tracking-tight uppercase">
                             ERP SYSTEM
                         </span>
-                        <div class="w-8 h-[3px] bg-primary mt-1"></div>
+                        <div class="w-10 h-[3px] bg-primary mt-1.5"></div>
                     </div>
-                    <h2 class="text-[#043B94] text-xl lg:text-2xl font-bold leading-tight mb-3 transition-colors duration-300">
+                    <h2 class="text-[#043B94] text-2xl lg:text-3xl font-bold leading-tight mb-4 transition-colors duration-300">
                         <?= getCurrentLang() === 'th' ? 'ระบบ ERP คืออะไร' : 'What is an ERP System?' ?>
                     </h2>
-                    <p class="text-slate-500 text-sm md:text-base leading-relaxed max-w-none erp-intro-desc">
-                        <?php if (getCurrentLang() === 'th'): ?>
-                            ERP คือ ระบบที่รวมและเชื่อมโยงข้อมูลทุกฝ่าย เช่น ขาย จัดซื้อ คลัง บัญชี และบุคคล ไว้บนฐานข้อมูลเดียวแบบเรียลไทม์ เพื่อให้ผู้บริหารมองเห็นภาพรวมและตัดสินใจได้อย่างแม่นยำ
-                        <?php else: ?>
-                            ERP is a system that integrates core business processes—such as sales, procurement, inventory, finance, and HR—into a single real-time platform to help executives make fast, accurate decisions.
-                        <?php endif; ?>
+                    <p class="text-slate-500 text-sm lg:text-[15px] leading-relaxed max-w-md">
+                        <?= getCurrentLang() === 'th' 
+                            ? 'ERP คือ ระบบที่รวบรวมและเชื่อมโยงกระบวนการทำงานหลักขององค์กร ไม่ว่าจะเป็น การขาย การจัดซื้อ คลังสินค้า การเงิน การผลิต ทรัพยากรบุคคล และงานอื่น ๆ ให้ทำงานร่วมกันบนฐานข้อมูลเดียวแบบเรียลไทม์ ช่วยให้ผู้บริหารมองเห็นภาพรวม ตัดสินใจได้แม่นยำ และตอบสนองต่อการเปลี่ยนแปลงได้อย่างรวดเร็ว' 
+                            : 'ERP is a system that integrates core business processes—such as sales, procurement, inventory, finance, manufacturing, and HR—to work together on a single real-time database. It helps executives see the big picture, make accurate decisions, and respond swiftly to changes.' 
+                        ?>
                     </p>
                 </div>
             </div>
 
-            <div class="erp-right-col gsap-erp-about-right flex-[4] grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 w-full opacity-0 translate-y-10">
+            <div class="erp-right-col gsap-erp-about-right flex-[4] grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 w-full opacity-0 translate-y-10">
                 <?php
                 $serviceCards = [
                     [
                         'icon' => asset_url('images/ERP_1.svg'),
                         'title_th' => "ข้อมูลเชื่อมต่อ<br>ครบทุกแผนก",
-                        'title_en' => "Connected Data",
+                        'title_en' => "Connected Data<br>Across Departments",
                         'desc_th' => "ข้อมูลเป็นหนึ่งเดียว<br>ไม่ต้องทำงานซ้ำ",
-                        'desc_en' => "Single source of truth,<br>no duplicate work",
+                        'desc_en' => "Single source of truth<br>No duplicate work",
                     ],
                     [
                         'icon' => asset_url('images/ERP_2.svg'),
                         'title_th' => "ทำงานอัตโนมัติ<br>ลดความผิดพลาด",
-                        'title_en' => "Automated Workflow",
+                        'title_en' => "Automated Workflow<br>Reduced Errors",
                         'desc_th' => "ลดขั้นตอนงานเอกสาร<br>เพิ่มความแม่นยำ",
-                        'desc_en' => "Minimize paperwork<br>and increase accuracy",
+                        'desc_en' => "Minimize paperwork<br>Increase accuracy",
                     ],
                     [
                         'icon' => asset_url('images/ERP_3.svg'),
                         'title_th' => "มองเห็นแบบเรียลไทม์<br>ตัดสินใจได้ไว",
-                        'title_en' => "Real-time Visibility",
+                        'title_en' => "Real-time Visibility<br>Fast Decisions",
                         'desc_th' => "รายงานและ Dashboard<br>อัปเดตตลอดเวลา",
-                        'desc_en' => "Always-updated reports<br>and dashboards",
+                        'desc_en' => "Always-updated reports<br>and Dashboards",
                     ],
                     [
                         'icon' => asset_url('images/ERP_4.svg'),
                         'title_th' => "รองรับการเติบโต<br>ของธุรกิจ",
-                        'title_en' => "Supports Growth",
+                        'title_en' => "Supports Growth<br>of Your Business",
                         'desc_th' => "ขยายระบบได้ตามความต้องการ<br>พร้อมเติบโตในอนาคต",
-                        'desc_en' => "Scalable system<br>ready for future growth",
+                        'desc_en' => "Scalable system<br>ready for future",
                     ],
                 ];
                 $lastIdx = count($serviceCards) - 1;
@@ -650,15 +462,15 @@ $erpPortfolios = $mockErpPortfolios;
                         $borderClass .= ' lg:border-r-0';
                     }
                 ?>
-                    <div class="gsap-erp-about-card relative group flex flex-col justify-center p-4 sm:p-5 lg:p-6 <?= $borderClass ?> border-slate-100 bg-white transition-all duration-300 ease-out hover:shadow-[0_0_30px_rgba(0,0,0,0.06)] hover:-translate-y-1 hover:z-10 opacity-0 translate-y-10">
+                    <div class="gsap-erp-about-card relative group flex flex-col justify-center p-4 sm:p-6 lg:p-8 xl:p-10 <?= $borderClass ?> border-slate-100 bg-white transition-all duration-300 ease-out hover:shadow-[0_0_30px_rgba(0,0,0,0.06)] hover:-translate-y-1 hover:z-10 opacity-0 translate-y-10">
                          <div class="flex flex-col items-center justify-center text-center">
-                             <div class="h-12 w-12 sm:h-14 sm:w-14 mx-auto mb-3 flex items-center justify-center transition-all duration-300 group-hover:scale-110">
+                             <div class="h-12 w-12 sm:h-16 sm:w-16 lg:h-20 lg:w-20 mx-auto mb-3 sm:mb-5 flex items-center justify-center transition-all duration-300 group-hover:scale-110">
                                  <img src="<?= e($card['icon']) ?>" alt="" class="h-full w-full object-contain">
                              </div>
-                             <h3 class="text-[#043B94] font-bold text-sm sm:text-base lg:text-base text-center mb-1.5 leading-snug transition-colors duration-300 group-hover:text-blue-600">
+                             <h3 class="text-[#043B94] font-bold text-sm sm:text-base lg:text-lg xl:text-xl text-center mb-2 sm:mb-3 leading-snug transition-colors duration-300 group-hover:text-blue-600">
                                  <?= getCurrentLang() === 'th' ? $card['title_th'] : $card['title_en'] ?>
                              </h3>
-                             <p class="text-slate-500 text-xs sm:text-xs leading-relaxed text-center font-normal transition-colors duration-300">
+                             <p class="text-slate-500 text-[11px] sm:text-xs lg:text-sm leading-relaxed text-center font-normal transition-colors duration-300">
                                  <?= getCurrentLang() === 'th' ? $card['desc_th'] : $card['desc_en'] ?>
                              </p>
                         </div>
@@ -671,10 +483,10 @@ $erpPortfolios = $mockErpPortfolios;
 
 
 
-<section id="modules" class="bg-slate-50 pt-4 pb-8 lg:pt-6 lg:pb-10 font-sans border-t border-slate-100 erp-modules-section">
+<section id="modules" class="bg-slate-50 py-10 lg:py-12 font-sans border-t border-slate-100">
     <div class="mx-auto max-w-7xl px-6 sm:px-6 lg:px-8">
         
-        <div class="text-center max-w-3xl mx-auto mb-6 lg:mb-8 erp-modules-header">
+        <div class="text-center max-w-3xl mx-auto mb-10 lg:mb-16">
             <h2 class="text-3xl md:text-4xl font-extrabold text-blue-600 tracking-tight mb-4">
                 <span class="lg:hidden">ERP modules</span>
                 <span class="hidden lg:inline uppercase">ERP MODULE</span>

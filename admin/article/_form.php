@@ -10,17 +10,30 @@ $status = isset($_POST['status']) && in_array($_POST['status'], ['published', 'd
     : ($data['status'] ?? 'draft');
 $categories = db()->query('SELECT id, name FROM categories ORDER BY name')->fetchAll();
 $authors = db()->query('SELECT id, display_name FROM authors ORDER BY display_name')->fetchAll();
+$currentArticleId = (int)($data['id'] ?? 0);
+$pinnedArticle = null;
+try {
+    $stmt = db()->prepare('SELECT id, meta_title FROM article WHERE is_pinned = 1 AND id != ? LIMIT 1');
+    $stmt->execute([$currentArticleId]);
+    $pinnedArticle = $stmt->fetch();
+} catch (Exception $e) {
+    $pinnedArticle = null;
+}
+$isPinned = !empty($data['is_pinned']);
 $sections = [];
 if (!empty($data['content'])) {
     $rawContent = (string)$data['content'];
-    $decoded = json_decode($rawContent, true);
+    $cleanRaw = preg_replace('/<\?xml[^>]*\?>/i', '', $rawContent);
+    $cleanRaw = preg_replace('/<!--\?xml[^>]*-->/i', '', $cleanRaw);
+
+    $decoded = json_decode($cleanRaw, true);
     if (!is_array($decoded)) {
-        $decoded = json_decode(stripslashes($rawContent), true);
+        $decoded = json_decode(stripslashes($cleanRaw), true);
     }
     if (!is_array($decoded)) {
         // Regex fallback for malformed JSON strings in database
         $decoded = [];
-        preg_match_all('/\{\s*"lang"\s*:\s*"(th|en)"\s*,\s*"topic"\s*:\s*"(.*?)"\s*,\s*"body"\s*:\s*"(.*?)"\s*\}/s', $rawContent, $matches, PREG_SET_ORDER);
+        preg_match_all('/\{\s*"lang"\s*:\s*"(th|en)"\s*,\s*"topic"\s*:\s*"(.*?)"\s*,\s*"body"\s*:\s*"(.*?)"\s*\}/s', $cleanRaw, $matches, PREG_SET_ORDER);
         if (!empty($matches)) {
             foreach ($matches as $m) {
                 $decoded[] = [
@@ -34,18 +47,20 @@ if (!empty($data['content'])) {
     if (is_array($decoded) && !empty($decoded)) {
         foreach ($decoded as &$sec) {
             if (isset($sec['body'])) {
-                $sec['body'] = str_replace(['\r\n', '\n', '\r', '\t', '<\/', '\"', '\/', '<\span>', '<\p>', '<\strong>', '<\h2>', '<\h3>', '<\div>', '§', '&sect;'], [' ', ' ', ' ', ' ', '</', '"', '/', '</span>', '</p>', '</strong>', '</h2>', '</h3>', '</div>', '', ''], $sec['body']);
+                $sec['body'] = preg_replace('/<\?xml[^>]*\?>/i', '', (string)$sec['body']);
+                $sec['body'] = preg_replace('/<!--\?xml[^>]*-->/i', '', (string)$sec['body']);
+                $sec['body'] = str_replace(['<\/', '\"', '\/', '<\span>', '<\p>', '<\strong>', '<\h2>', '<\h3>', '<\div>', '§', '&sect;'], ['</', '"', '/', '</span>', '</p>', '</strong>', '</h2>', '</h3>', '</div>', '', ''], $sec['body']);
+                $sec['body'] = trim($sec['body']);
             }
             if (isset($sec['topic'])) {
-                $sec['topic'] = str_replace(['\r\n', '\n', '\r', '\t', '<\/', '\"', '\/', '§', '&sect;'], [' ', ' ', ' ', ' ', '</', '"', '/', '', ''], $sec['topic']);
+                $sec['topic'] = trim((string)$sec['topic']);
             }
         }
         unset($sec);
         $sections = $decoded;
     } else {
-        $cleanBody = str_replace(['\r\n', '\n', '\r', '\t', '<\/', '\"', '\/', '<\span>', '<\p>', '<\strong>', '<\h2>', '<\h3>', '<\div>', '§', '&sect;'], [' ', ' ', ' ', ' ', '</', '"', '/', '</span>', '</p>', '</strong>', '</h2>', '</h3>', '</div>', '', ''], $rawContent);
         $sections = [
-            ['lang' => 'th', 'topic' => 'เนื้อหาบทความ', 'body' => $cleanBody]
+            ['lang' => 'th', 'topic' => 'เนื้อหาบทความ', 'body' => trim($cleanRaw)]
         ];
     }
 }
@@ -107,9 +122,9 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
                 <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="flex flex-col">
                         <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 block">
-                            ตัวอย่างรูปภาพ
+                            ตัวอย่างรูปภาพหน้าปก
                         </label>
-                        <div class="w-full h-64 rounded-xl border border-slate-200 bg-slate-50 p-2 flex items-center justify-center overflow-hidden">
+                        <div class="w-full h-64 rounded-xl border border-slate-200 bg-slate-50 p-2 flex items-center justify-center overflow-hidden" id="coverImagePreviewContainer">
                             <?php if (!empty($data['cover_image'])): ?>
                                 <img src="<?= e(resolve_admin_image_url($data['cover_image'])) ?>"
                                     onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
@@ -135,32 +150,80 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
                             <?php endif; ?>
                         </div>
                     </div>
-                    <div class="flex flex-col justify-center space-y-5">
-                        <div class="space-y-2">
+                    <div class="flex flex-col justify-center space-y-4">
+                        <div class="space-y-3">
                             <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider block">
-                                อัปโหลดไฟล์ใหม่
-                                <?php if ($action === 'create'): ?>
-                                    <span class="text-red-500 ml-0.5">*</span>
-                                <?php endif; ?>
+                                เลือกไฟล์รูปภาพใหม่ <?php if ($action === 'create' && empty($data['cover_image'])): ?><span class="text-red-500 ml-0.5">*</span><?php endif; ?>
                             </label>
-                            <div class="relative group border border-slate-200 rounded-xl bg-slate-50/50 p-3 hover:bg-slate-50 transition-colors">
+                            <style>
+                                #coverImageInput::file-selector-button,
+                                #coverImageInput::-webkit-file-upload-button {
+                                    background-color: #f1f5f9 !important;
+                                    color: #0f172a !important;
+                                    border: 1px solid #cbd5e1 !important;
+                                    font-weight: 600 !important;
+                                    font-size: 13px !important;
+                                    padding: 8px 16px !important;
+                                    border-radius: 10px !important;
+                                    cursor: pointer !important;
+                                    margin-right: 12px !important;
+                                    transition: all 0.15s ease-in-out !important;
+                                }
+                                #coverImageInput::file-selector-button:hover,
+                                #coverImageInput::-webkit-file-upload-button:hover {
+                                    background-color: #e2e8f0 !important;
+                                    color: #000000 !important;
+                                    border-color: #94a3b8 !important;
+                                }
+                            </style>
+                            <div style="border: 1px solid #e2e8f0; border-radius: 12px; background-color: #f8faff; padding: 12px 14px;">
                                 <input type="file"
+                                    id="coverImageInput"
                                     name="image_file"
-                                    class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 transition-all cursor-pointer">
+                                    accept=".webp,image/webp"
+                                    class="w-full text-sm text-slate-600 transition-all cursor-pointer">
                             </div>
-                            <p class="text-[11px] text-slate-400 px-1">
-                                * รองรับไฟล์นามสกุล: JPEG, JPG, PNG, WEBP, GIF (ขนาดสูงสุดไม่เกิน 8MB)
-                            </p>
+                            <!-- Guidance Box exactly matching Target Design -->
+                            <div style="border: 1px solid #dbeafe; border-radius: 16px; background-color: #ffffff; padding: 20px; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.02);" class="space-y-3.5">
+                                <div style="display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 13px; color: #0f172a;">
+                                    <svg style="width: 18px; height: 18px; color: #2563eb; flex-shrink: 0;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <line x1="12" y1="16" x2="12" y2="12"></line>
+                                        <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                                    </svg>
+                                    <span>ข้อกำหนดและขนาดภาพหน้าปกที่แนะนำ (SEO & SPEED)</span>
+                                </div>
+                                <div style="font-size: 12px; line-height: 1.6;">
+                                    <div style="font-weight: 700; color: #1e293b;">นามสกุลไฟล์ที่รองรับ:</div>
+                                    <div style="color: #64748b;">รองรับเฉพาะไฟล์ <strong style="color: #1e293b; font-weight: 700;">.webp</strong> เท่านั้น</div>
+                                </div>
+                                <div style="border-top: 1px solid #f1f5f9; margin-top: 10px; margin-bottom: 10px;"></div>
+                                <div style="display: flex; align-items: center; justify-content: space-between; font-size: 12px;">
+                                    <span style="font-weight: 700; color: #1e293b;">ขนาดไฟล์:</span>
+                                    <span style="background-color: #d1fae5; color: #065f46; padding: 4px 14px; border-radius: 9999px; font-size: 11px; font-weight: 700; letter-spacing: -0.01em;">
+                                        ไม่เกิน 1 MB (แนะนำ 150 – 350 KB)
+                                    </span>
+                                </div>
+                                <div style="border-top: 1px solid #f1f5f9; margin-top: 10px; margin-bottom: 10px;"></div>
+                                <div style="font-size: 12px; line-height: 1.6;">
+                                    <div style="font-weight: 700; color: #1e293b; margin-bottom: 2px;">สัดส่วนและขนาดภาพที่เหมาะสม:</div>
+                                    <div style="color: #1e293b;"><strong style="font-weight: 700;">แนะนำ: 1280 × 720 px</strong> <span style="color: #64748b;">(สัดส่วน 16:9)</span></div>
+                                    <div style="color: #64748b;">ขนาดขั้นต่ำ: 800 × 450 px</div>
+                                </div>
+                            </div>
                         </div>
                         <div class="space-y-2">
                             <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider block">
-                                ข้อความอธิบายรูปภาพ (SEO Alt Text) <span class="text-red-500 ml-0.5">*</span>
+                                ข้อความอธิบายรูปภาพ (SEO ALT TEXT) <span class="text-red-500 ml-0.5">*</span>
                             </label>
                             <input name="cover_image_alt"
                                 value="<?= e($data['cover_image_alt'] ?? '') ?>"
-                                placeholder="ตัวอย่างเช่น 'โต๊ะทำงานดีไซน์มินิมอล' - ข้อความนี้ช่วยให้ Google Images ค้นพบเซกชันนี้ได้ง่ายขึ้น"
+                                placeholder="ตัวอย่าง: 'หน้าจอระบบบริหารจัดการ ERP บัญชีสำหรับองค์กรธุรกิจและโรงงาน'"
                                 class="w-full rounded-xl border border-slate-200 bg-slate-50/50 px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/5 outline-none transition-all duration-200"
                                 required>
+                            <p class="text-[11px] text-slate-500 leading-relaxed mt-1.5">
+                                💡 <strong>คำแนะนำ SEO:</strong> อธิบายสิ่งที่อยู่ในภาพ + ใส่คำค้นหา เพื่อให้ติดอันดับ <strong>Google Image Search</strong> ( <span class="text-amber-600 font-medium">⚠️ หลีกเลี่ยงการใส่ตัวเลขสั้นๆ เช่น 01 หรือ image1</span> )
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -174,32 +237,40 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
                     <!-- Thai SEO Fields -->
                     <div class="lang-group lang-th-group space-y-5">
                         <div>
-                            <div class="flex justify-between mb-2">
+                            <div class="flex justify-between items-center mb-2">
                                 <label class="text-sm font-medium text-slate-700">
                                     หัวข้อบทความ (Article Title) <span class="text-red-500 ml-0.5">*</span>
                                 </label>
-                                <span id="titleCount" class="text-xs text-slate-500">0 / 120</span>
+                                <span id="titleCount" class="text-xs font-semibold text-slate-500 px-2 py-0.5 rounded transition-all duration-200">0 / 120 (แนะนำ 50-60 ตัวอักษร)</span>
                             </div>
                             <input id="mainTitle"
                                 name="meta_title"
+                                maxlength="120"
                                 value="<?= e($data['meta_title'] ?? '') ?>"
                                 placeholder="ระบุหัวข้อบทความหลัก..."
                                 class="<?= $inputClass ?>"
                                 required>
+                            <p class="text-[11px] text-slate-500 leading-relaxed mt-1.5">
+                                💡 <strong>เคล็ดลับ Title:</strong> วางคำค้นหาสำคัญ (Keyword) ไว้ <strong>50–60 ตัวอักษรแรก</strong> เพื่อให้แสดงผลครบถ้วนบนหน้าค้นหา Google
+                            </p>
                         </div>
                         <div>
-                            <div class="flex justify-between mb-2">
+                            <div class="flex justify-between items-center mb-2">
                                 <label class="text-sm font-medium text-slate-700">
                                     คำอธิบายสรุปบทความ (Article Summary) <span class="text-red-500 ml-0.5">*</span>
                                 </label>
-                                <span id="descCount" class="text-xs text-slate-500">0 / 200</span>
+                                <span id="descCount" class="text-xs font-semibold text-slate-500 px-2 py-0.5 rounded transition-all duration-200">0 / 200 (แนะนำ 120-160 ตัวอักษร)</span>
                             </div>
                             <textarea id="metaDesc"
                                 name="meta_description"
+                                maxlength="200"
                                 rows="4"
                                 placeholder="เขียนคำอธิบายสั้น ๆ สรุปเนื้อหาบทความ..."
                                 class="<?= $inputClass ?>"
                                 required><?= e($data['meta_description'] ?? '') ?></textarea>
+                            <p class="text-[11px] text-slate-500 leading-relaxed mt-1.5">
+                                💡 <strong>เคล็ดลับ Meta Description:</strong> ความยาวที่เหมาะสมที่สุดคือ <strong>120–160 ตัวอักษร</strong> สรุปเนื้อหาและมีคำกระตุ้นให้คลิก ช่วยเพิ่มอัตราการคลิกเข้าชม (CTR)
+                            </p>
                         </div>
                         <div>
                             <label class="text-sm font-medium mb-2 block text-slate-700">
@@ -210,35 +281,46 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
                                 placeholder="ระบุคำค้นหา เช่น เว็บดีไซน์, ความรู้คู่ระบบ, เทคโนโลยี (คั่นด้วยเครื่องหมายจุลภาค , )"
                                 class="<?= $inputClass ?>"
                                 required>
+                            <p class="text-[11px] text-slate-500 leading-relaxed mt-1.5">
+                                💡 <strong>คำแนะนำ Keywords:</strong> ระบุคำค้นหาหลักที่เกี่ยวข้อง คั่นด้วยเครื่องหมายจุลภาค <code>,</code> (แท็ก <code>&lt;meta name="keywords"&gt;</code> ในโค้ดหน้าเว็บ)
+                            </p>
                         </div>
                     </div>
                     <!-- English SEO Fields -->
                     <div class="lang-group lang-en-group space-y-5 hidden">
                         <div>
-                            <div class="flex justify-between mb-2">
+                            <div class="flex justify-between items-center mb-2">
                                 <label class="text-sm font-medium text-slate-700">
                                     หัวข้อบทความ (EN) <span class="text-red-500 ml-0.5">*</span>
                                 </label>
-                                <span id="titleCountEn" class="text-xs text-slate-500">0 / 120</span>
+                                <span id="titleCountEn" class="text-xs font-semibold text-slate-500 px-2 py-0.5 rounded transition-all duration-200">0 / 120 (Recommended 50-60 chars)</span>
                             </div>
                             <input id="mainTitleEn"
                                 name="meta_title_en"
+                                maxlength="120"
                                 value="<?= e($data['meta_title_en'] ?? '') ?>"
                                 placeholder="Enter English SEO Title..."
                                 class="<?= $inputClass ?>">
+                            <p class="text-[11px] text-slate-500 leading-relaxed mt-1.5">
+                                💡 <strong>SEO Title (EN):</strong> Place main keywords within the first <strong>50–60 characters</strong> for complete visibility on Google Search.
+                            </p>
                         </div>
                         <div>
-                            <div class="flex justify-between mb-2">
+                            <div class="flex justify-between items-center mb-2">
                                 <label class="text-sm font-medium text-slate-700">
                                     SEO Description (English) <span class="text-red-500 ml-0.5">*</span>
                                 </label>
-                                <span id="descCountEn" class="text-xs text-slate-500">0 / 200</span>
+                                <span id="descCountEn" class="text-xs font-semibold text-slate-500 px-2 py-0.5 rounded transition-all duration-200">0 / 200 (Recommended 120-160 chars)</span>
                             </div>
                             <textarea id="metaDescEn"
                                 name="meta_description_en"
+                                maxlength="200"
                                 rows="4"
                                 placeholder="Enter English SEO Description..."
                                 class="<?= $inputClass ?>"><?= e($data['meta_description_en'] ?? '') ?></textarea>
+                            <p class="text-[11px] text-slate-500 leading-relaxed mt-1.5">
+                                💡 <strong>Meta Description Tip:</strong> Optimal length is <strong>120–160 characters</strong> to summarize content and improve CTR.
+                            </p>
                         </div>
                         <div>
                             <label class="text-sm font-medium mb-2 block text-slate-700">
@@ -248,6 +330,9 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
                                 value="<?= e($data['meta_keywords_en'] ?? '') ?>"
                                 placeholder="Enter keywords separated by commas..."
                                 class="<?= $inputClass ?>">
+                            <p class="text-[11px] text-slate-500 leading-relaxed mt-1.5">
+                                💡 <strong>SEO Keywords (EN):</strong> Enter relevant search terms separated by commas <code>,</code>
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -258,14 +343,14 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
                     <p class="text-xs text-slate-500 mt-0.5">จัดการเขียนบทความหลักและกำหนดสถานะการเปิดเผยข้อมูลบนเว็บไซต์</p>
                 </div>
                 <div class="p-6 space-y-6">
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-end">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
                         <div class="w-full">
                             <div class="flex items-center justify-between mb-2">
                                 <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider block">
                                     หมวดหมู่บทความ <span class="text-red-500 ml-0.5">*</span>
                                 </label>
-                                <button type="button" onclick="openCategoryModal()" class="text-xs font-semibold text-blue-600 hover:text-blue-700 underline cursor-pointer">
-                                    ⚙️ จัดการหมวดหมู่
+                                <button type="button" onclick="openCategoryModal()" class="text-xs font-semibold text-blue-600 hover:text-blue-700 underline cursor-pointer inline-flex items-center gap-1">
+                                    <span>⚙️</span> จัดการหมวดหมู่
                                 </button>
                             </div>
                             <select name="category_id" id="category_select" class="<?= $inputClass ?> bg-white border-slate-200 h-[46px] py-0" required>
@@ -279,30 +364,54 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
                                 <option disabled>──────────</option>
                                 <option value="__manage__" class="font-bold text-blue-600 bg-blue-50 py-1">⚙️ จัดการหมวดหมู่ (เพิ่ม / แก้ไข / ลบ)...</option>
                             </select>
+                            <p class="text-[11px] text-slate-500 flex items-center gap-1 mt-1.5">
+                                <span>💡</span>
+                                <strong>คำแนะนำ:</strong> เลือกหมวดหมู่ที่ตรงกับเนื้อหา หรือคลิก <strong>จัดการหมวดหมู่</strong> เพื่อสร้างใหม่
+                            </p>
                         </div>
                         <div class="w-full">
                             <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 block">
                                 วันที่เผยแพร่บทความ <span class="text-red-500 ml-0.5">*</span>
                             </label>
-                            <input type="datetime-local" name="created_at"
-                                value="<?= isset($data['created_at']) ? date('Y-m-d\TH:i', strtotime($data['created_at'])) : date('Y-m-d\TH:i') ?>"
+                            <input type="date" name="created_at"
+                                value="<?= isset($data['created_at']) ? date('Y-m-d', strtotime($data['created_at'])) : date('Y-m-d') ?>"
                                 class="<?= $inputClass ?> bg-white h-[46px]" required>
+                            <p class="text-[11px] text-slate-500 flex items-center gap-1 mt-1.5">
+                                <span>💡</span>
+                                <strong>คำแนะนำ:</strong> กำหนดวันที่ที่ต้องการให้แสดงผลเป็นวันเผยแพร่บนเว็บไซต์
+                            </p>
                         </div>
                         <div class="w-full">
-                            <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 block">
-                                ลำดับความสำคัญ (Priority) <span class="text-slate-400 ml-0.5">(ไม่บังคับ)</span>
+                            <div class="flex items-center justify-between mb-2">
+                                <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider block">
+                                    การปักหมุดบทความ
+                                </label>
+                                <span class="text-[11px] text-amber-600 font-medium">จำกัด 1 บทความ</span>
+                            </div>
+                            <label class="flex items-center gap-3 px-4 rounded-xl border border-slate-300 bg-slate-50 hover:bg-slate-100/80 cursor-pointer h-[46px] transition select-none">
+                                <input type="hidden" name="is_pinned" value="0">
+                                <input type="checkbox" id="is_pinned_input" name="is_pinned" value="1"
+                                    <?= $isPinned ? 'checked' : '' ?>
+                                    class="w-4 h-4 text-blue-600 rounded border-slate-300 focus:ring-blue-500 cursor-pointer">
+                                <span class="text-xs font-semibold text-slate-700 flex items-center gap-1.5">
+                                    <span>📌</span>
+                                    <span>ปักหมุดแสดงเป็นบทความแรกสุด</span>
+                                </span>
                             </label>
-                            <input type="number" name="priority"
-                                value="<?= e(isset($data['priority']) && $data['priority'] !== 999 ? str_pad((string)$data['priority'], 2, '0', STR_PAD_LEFT) : '') ?>"
-                                placeholder="เช่น 01, 02 (เว้นว่างไว้หากไม่ระบุ)"
-                                class="<?= $inputClass ?> bg-white h-[46px]">
+                            <p class="text-[11px] text-slate-500 flex items-center gap-1 mt-1.5">
+                                <span>💡</span>
+                                <strong>คำแนะนำ:</strong> ปักหมุดบทความนี้ให้อยู่ลำดับแรกสุดในหน้าเว็บ (ระบบจำกัด 1 บทความ)
+                            </p>
                         </div>
                     </div>
                     <div class="lang-group lang-th-group space-y-6">
                         <div>
-                            <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 block">
-                                ลิงก์บทความ (URL Slug) <span class="text-red-500 ml-0.5">*</span>
-                            </label>
+                            <div class="flex items-center justify-between mb-2">
+                                <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider block">
+                                    ลิงก์บทความ (URL SLUG) <span class="text-red-500 ml-0.5">*</span>
+                                </label>
+                                <span class="text-xs text-slate-400">ภาษาอังกฤษตัวพิมพ์เล็ก คั่นด้วยขีดกลาง (-)</span>
+                            </div>
                             <div class="flex overflow-hidden rounded-xl border border-slate-200 bg-slate-50 focus-within:border-blue-500 focus-within:ring-4 focus-within:ring-blue-500/5 transition-all">
                                 <span class="flex items-center px-4 bg-slate-100 text-sm text-slate-500 border-r border-slate-200 select-none">
                                     /article/
@@ -310,7 +419,7 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
                                 <input id="slug"
                                     name="slug"
                                     value="<?= e($data['slug'] ?? '') ?>"
-                                    placeholder="ชื่อเนื้อหาภาษาอังกฤษหรือไทยเพื่อเป็นลิงก์ถาวร"
+                                    placeholder="เช่น erp-accounting-guide-2026"
                                     class="flex-1 bg-transparent px-4 py-3 text-sm outline-none"
                                     required>
                             </div>
@@ -318,9 +427,12 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
                     </div>
                     <div class="lang-group lang-en-group space-y-6 hidden">
                         <div>
-                            <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 block">
-                                URL Slug (English)
-                            </label>
+                            <div class="flex items-center justify-between mb-2">
+                                <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider block">
+                                    URL SLUG (ENGLISH)
+                                </label>
+                                <span class="text-xs text-slate-400">Lowercase English letters separated by hyphens (-)</span>
+                            </div>
                             <div class="flex overflow-hidden rounded-xl border border-slate-200 bg-slate-50 focus-within:border-blue-500 focus-within:ring-4 focus-within:ring-blue-500/5 transition-all">
                                 <span class="flex items-center px-4 bg-slate-100 text-sm text-slate-500 border-r border-slate-200 select-none">
                                     /en/article/
@@ -328,7 +440,7 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
                                 <input id="slug_en"
                                     name="slug_en"
                                     value="<?= e($data['slug_en'] ?? '') ?>"
-                                    placeholder="English URL slug"
+                                    placeholder="e.g. erp-accounting-guide-2026"
                                     class="flex-1 bg-transparent px-4 py-3 text-sm outline-none">
                             </div>
                         </div>
@@ -342,6 +454,10 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
                             value="<?= e($data['source_url'] ?? '') ?>"
                             placeholder="เช่น https://www.example.com/original-post หรือ ชื่อผู้แต่ง/หนังสืออ้างอิง"
                             class="<?= $inputClass ?>">
+                        <p class="text-[11px] text-slate-500 flex items-center gap-1 mt-1.5">
+                            <span>💡</span>
+                            <strong>คำแนะนำ:</strong> ระบุลิงก์แหล่งที่มาของข้อมูล หรือชื่อผู้แต่ง/เอกสารอ้างอิง (ถ้ามี)
+                        </p>
                     </div>
                     <div class="space-y-4">
                         <!-- Dummy fields to keep WEBPARKSeoEditor happy without modifying shared assets -->
@@ -500,53 +616,119 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
     </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/tinymce@6.8.3/tinymce.min.js" referrerpolicy="origin"></script>
-<script src="../assets/js/seo-editor.js?v=1.0.3"></script>
+<script src="../assets/js/seo-editor.js?v=<?= time() ?>"></script>
 <script>
-    window.WEBPARKSeoEditor.init({
-        formSelector: '#unifiedForm',
-        editorSelector: '#mainEditor',
-        contentSelector: '#mainEditorData',
-        titleSelector: '#mainTitle',
-        descSelector: '#metaDesc',
-        slugSelector: '#slug',
-        titleCounterSelector: '#titleCount',
-        descCounterSelector: '#descCount',
-        placeholder: 'เริ่มต้นเขียนเนื้อหาที่น่าสนใจของคุณตรงนี้ได้เลย...'
-    });
-    // English SEO Counters (Standalone)
+    function updateLiveSeoFieldStatus(input, counter, len, minOpt, maxOpt, maxLimit, optLabel, isThai = true) {
+        if (!input || !counter) return;
+
+        if (len === 0) {
+            counter.textContent = `0 / ${maxLimit} (${optLabel})`;
+            counter.style.cssText = 'color: #64748b; background: transparent; border: none; font-weight: 500; padding: 2px 4px;';
+            input.style.borderColor = '';
+            input.style.backgroundColor = '';
+            input.style.boxShadow = '';
+            return;
+        }
+
+        if (len >= maxLimit) {
+            const msg = isThai ? `⛔ ครบกำหนดสูงสุด ${maxLimit} ตัวอักษรแล้ว` : `⛔ Max limit ${maxLimit} reached`;
+            counter.textContent = `${len} / ${maxLimit} (${msg})`;
+            counter.style.cssText = 'color: #b91c1c !important; background-color: #fee2e2 !important; border: 1px solid #f87171 !important; font-weight: 700 !important; padding: 2px 8px; border-radius: 6px;';
+            input.style.cssText = 'border-color: #ef4444 !important; background-color: #fef2f2 !important; box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.25) !important;';
+        } else if (len > maxOpt) {
+            const msg = isThai ? `⚠️ เกินคำแนะนำ ${minOpt}-${maxOpt} ตัวอักษร` : `⚠️ Exceeds recommended ${minOpt}-${maxOpt} chars`;
+            counter.textContent = `${len} / ${maxLimit} (${msg})`;
+            counter.style.cssText = 'color: #92400e !important; background-color: #fef3c7 !important; border: 1px solid #fcd34d !important; font-weight: 700 !important; padding: 2px 8px; border-radius: 6px;';
+            input.style.cssText = 'border-color: #f59e0b !important; background-color: #fffdf5 !important; box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.25) !important;';
+        } else if (len >= minOpt && len <= maxOpt) {
+            const msg = isThai ? `✅ เหมาะสมที่สุด` : `✅ Optimal length`;
+            counter.textContent = `${len} / ${maxLimit} (${optLabel}) ${msg}`;
+            counter.style.cssText = 'color: #047857 !important; background-color: #ecfdf5 !important; border: 1px solid #6ee7b7 !important; font-weight: 700 !important; padding: 2px 8px; border-radius: 6px;';
+            input.style.cssText = 'border-color: #10b981 !important; background-color: #f0fdf4 !important; box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.2) !important;';
+        } else {
+            counter.textContent = `${len} / ${maxLimit} (${optLabel})`;
+            counter.style.cssText = 'color: #334155; background: #f1f5f9; border: 1px solid #cbd5e1; font-weight: 600; padding: 2px 8px; border-radius: 6px;';
+            input.style.borderColor = '';
+            input.style.backgroundColor = '';
+            input.style.boxShadow = '';
+        }
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
+        // Thai Fields
+        const titleTh = document.getElementById('mainTitle');
+        const descTh = document.getElementById('metaDesc');
+        const titleCountTh = document.getElementById('titleCount');
+        const descCountTh = document.getElementById('descCount');
+        const slugTh = document.getElementById('slug');
+
+        function updateThaiCounters() {
+            if (titleTh && titleCountTh) {
+                updateLiveSeoFieldStatus(titleTh, titleCountTh, titleTh.value.length, 50, 60, 120, 'แนะนำ 50-60 ตัวอักษร', true);
+            }
+            if (descTh && descCountTh) {
+                updateLiveSeoFieldStatus(descTh, descCountTh, descTh.value.length, 120, 160, 200, 'แนะนำ 120-160 ตัวอักษร', true);
+            }
+        }
+
+        if (titleTh) {
+            ['input', 'keyup', 'change', 'paste', 'focus', 'blur'].forEach(evt => {
+                titleTh.addEventListener(evt, () => {
+                    updateThaiCounters();
+                    if (slugTh && (!slugTh.value || slugTh.dataset.autoSlug !== 'false')) {
+                        slugTh.value = titleTh.value.toLowerCase().replace(/[^a-z0-9\u0E00-\u0E7F]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
+                    }
+                });
+            });
+        }
+        if (descTh) {
+            ['input', 'keyup', 'change', 'paste', 'focus', 'blur'].forEach(evt => {
+                descTh.addEventListener(evt, updateThaiCounters);
+            });
+        }
+        if (slugTh) {
+            slugTh.addEventListener('input', () => {
+                slugTh.dataset.autoSlug = 'false';
+            });
+        }
+        updateThaiCounters();
+
+        // English Fields
         const titleEn = document.getElementById('mainTitleEn');
         const descEn = document.getElementById('metaDescEn');
         const titleCountEn = document.getElementById('titleCountEn');
         const descCountEn = document.getElementById('descCountEn');
+        const slugEn = document.getElementById('slug_en');
+
         function updateEnCounters() {
             if (titleEn && titleCountEn) {
-                const len = titleEn.value.length;
-                titleCountEn.textContent = `${len} / 120`;
-                titleCountEn.className = `text-xs font-medium ${len > 120 ? 'text-rose-600' : 'text-slate-500'}`;
-                if (len > 120) {
-                    titleEn.classList.add('border-rose-500', 'focus:border-rose-500', 'focus:ring-rose-500/10');
-                    titleEn.classList.remove('border-slate-300', 'focus:border-blue-500', 'focus:ring-blue-500/10');
-                } else {
-                    titleEn.classList.remove('border-rose-500', 'focus:border-rose-500', 'focus:ring-rose-500/10');
-                    titleEn.classList.add('border-slate-300', 'focus:border-blue-500', 'focus:ring-blue-500/10');
-                }
+                updateLiveSeoFieldStatus(titleEn, titleCountEn, titleEn.value.length, 50, 60, 120, 'Recommended 50-60 chars', false);
             }
             if (descEn && descCountEn) {
-                const len = descEn.value.length;
-                descCountEn.textContent = `${len} / 200`;
-                descCountEn.className = `text-xs font-medium ${len > 200 ? 'text-rose-600' : 'text-slate-500'}`;
-                if (len > 200) {
-                    descEn.classList.add('border-rose-500', 'focus:border-rose-500', 'focus:ring-rose-500/10');
-                    descEn.classList.remove('border-slate-300', 'focus:border-blue-500', 'focus:ring-blue-500/10');
-                } else {
-                    descEn.classList.remove('border-rose-500', 'focus:border-rose-500', 'focus:ring-rose-500/10');
-                    descEn.classList.add('border-slate-300', 'focus:border-blue-500', 'focus:ring-blue-500/10');
-                }
+                updateLiveSeoFieldStatus(descEn, descCountEn, descEn.value.length, 120, 160, 200, 'Recommended 120-160 chars', false);
             }
         }
-        if (titleEn) titleEn.addEventListener('input', updateEnCounters);
-        if (descEn) descEn.addEventListener('input', updateEnCounters);
+
+        if (titleEn) {
+            ['input', 'keyup', 'change', 'paste', 'focus', 'blur'].forEach(evt => {
+                titleEn.addEventListener(evt, () => {
+                    updateEnCounters();
+                    if (slugEn && (!slugEn.value || slugEn.dataset.autoSlug !== 'false')) {
+                        slugEn.value = titleEn.value.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
+                    }
+                });
+            });
+        }
+        if (descEn) {
+            ['input', 'keyup', 'change', 'paste', 'focus', 'blur'].forEach(evt => {
+                descEn.addEventListener(evt, updateEnCounters);
+            });
+        }
+        if (slugEn) {
+            slugEn.addEventListener('input', () => {
+                slugEn.dataset.autoSlug = 'false';
+            });
+        }
         updateEnCounters();
 
         // Prevent Form Submission if over limits
@@ -624,6 +806,114 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
             .replace(/"/g, '&quot;')
             .replace(/'/g, '&#039;');
     }
+
+    /**
+     * แปลงข้อความที่มีสัญลักษณ์ Bullet (•, ⁃, ▪, -, *) หรือตัวเลขรายการ (1., 1)) 
+     * และรองรับโค้ดพิเศษจาก Microsoft Word (MsoListParagraph / supportLists)
+     * ให้กลายเป็นแท็ก <ul><li> หรือ <ol><li> อัตโนมัติเมื่อวางเนื้อหา (Auto-convert on Paste)
+     */
+    function autoConvertBullets(input) {
+        if (!input || typeof input !== 'string') return input;
+
+        // ตรวจจับโค้ด List รูปแบบเฉพาะของ Microsoft Word
+        const isWordList = input.includes('supportLists') || input.includes('mso-list') || input.includes('MsoListParagraph');
+        let str = input;
+
+        if (isWordList) {
+            str = str.replace(/<!--\s*\[if\s+!supportLists\][\s\S]*?<!--\s*\[endif\]\s*-->/gi, '• ');
+            str = str.replace(/<span[^>]*style="[^"]*mso-list:\s*Ignore[^"]*"[^>]*>[\s\S]*?<\/span>/gi, '• ');
+        }
+
+        // ลบ HTML comments ทั่วไป
+        str = str.replace(/<!--[\s\S]*?-->/g, '');
+
+        // ตรวจสอบเบื้องต้นว่ามีสัญลักษณ์ Bullet หรือ Number List หรือไม่
+        const hasBulletPattern = /[•⁃▪▫◦·\u2022\u2043\u25AA\u25AB\u25E6\u00B7]|&bull;|&#8226;|&#x2022;|^[\s\u00A0]*[-\*]\s+|[\r\n<][\s\u00A0]*[-\*]\s+/i;
+        const hasNumberPattern = /(?:^|[\r\n<])[\s\u00A0]*\d+[\.\)][\s\u00A0]+/i;
+
+        if (!hasBulletPattern.test(str) && !hasNumberPattern.test(str)) {
+            return input;
+        }
+
+        // แปลง Entities ของ Bullet ให้อยู่ในรูปตัวอักษรมาตรฐาน
+        str = str
+            .replace(/&bull;|&#8226;|&#x2022;/gi, '•')
+            .replace(/&nbsp;/gi, ' ');
+
+        // แปลงแท็กบล็อกและตัวตัดบรรทัดให้อยู่ในรูป newline
+        str = str.replace(/<br\s*\/?>/gi, '\n');
+        str = str.replace(/<\/p>/gi, '\n');
+        str = str.replace(/<\/div>/gi, '\n');
+        str = str.replace(/<p[^>]*>/gi, '');
+        str = str.replace(/<div[^>]*>/gi, '');
+
+        const rawLines = str.split(/\r?\n/);
+        const resultBlocks = [];
+        let currentList = null; // { type: 'ul'|'ol', items: [] }
+
+        function getLineBullet(line) {
+            if (!line) return null;
+            const cleanText = line.replace(/<[^>]+>/g, '').trim();
+            if (!cleanText) return null;
+
+            if (/^[•⁃▪▫◦·\u2022\u2043\u25AA\u25AB\u25E6\u00B7]/.test(cleanText)) {
+                const content = line.trim().replace(/^(\s*<[^>]+>)*\s*[•⁃▪▫◦·\u2022\u2043\u25AA\u25AB\u25E6\u00B7][\s\u00A0]*/i, '');
+                return { type: 'ul', content: content };
+            }
+
+            if (/^([-\*])[\s\u00A0]+/.test(cleanText)) {
+                const content = line.trim().replace(/^(\s*<[^>]+>)*\s*([-\*])[\s\u00A0]+/i, '');
+                return { type: 'ul', content: content };
+            }
+
+            if (/^\d+[\.\)][\s\u00A0]+/.test(cleanText)) {
+                const content = line.trim().replace(/^(\s*<[^>]+>)*\s*(\d+)[\.\)][\s\u00A0]+/i, '');
+                return { type: 'ol', content: content };
+            }
+
+            return null;
+        }
+
+        function flushList() {
+            if (currentList && currentList.items.length > 0) {
+                const tag = currentList.type;
+                const itemsHtml = currentList.items.map(item => `<li>${item}</li>`).join('');
+                resultBlocks.push(`<${tag}>${itemsHtml}</${tag}>`);
+                currentList = null;
+            }
+        }
+
+        rawLines.forEach(line => {
+            const trimmed = line.trim();
+            if (!trimmed || trimmed === '&nbsp;') {
+                flushList();
+                return;
+            }
+
+            if (/^<(h[1-6]|table|thead|tbody|tfoot|tr|th|td|blockquote|pre|figure|img|ul|ol|li)/i.test(trimmed)) {
+                flushList();
+                resultBlocks.push(trimmed);
+                return;
+            }
+
+            const bullet = getLineBullet(line);
+            if (bullet) {
+                if (!currentList || currentList.type !== bullet.type) {
+                    flushList();
+                    currentList = { type: bullet.type, items: [] };
+                }
+                currentList.items.push(bullet.content);
+            } else {
+                flushList();
+                resultBlocks.push(`<p>${trimmed}</p>`);
+            }
+        });
+
+        flushList();
+
+        return resultBlocks.join('');
+    }
+
     function tinymceImageUploadHandler(blobInfo, progress) {
         return new Promise((resolve, reject) => {
             const xhr = new XMLHttpRequest();
@@ -669,13 +959,21 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
             </div>
             <div class="p-6 space-y-4">
                 <div>
-                    <input type="text" name="sections[${lang}][${index}][topic]" value="${escapeHtml(topicVal)}" class="w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm text-slate-900 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition" required>
+                    <input type="text" name="sections[${lang}][${index}][topic]" value="${escapeHtml(topicVal)}" placeholder="ระบุชื่อหัวข้อย่อย..." class="w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm text-slate-900 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition" required>
+                    <p class="text-[11px] text-slate-500 flex items-center gap-1 mt-1.5">
+                        <span>💡</span>
+                        <strong>คำแนะนำ:</strong> ชื่อหัวข้อย่อยหรือประเด็นหลักของแต่ละ Section (หัวข้อรอง &lt;h2&gt; ภายในหน้าบทความ)
+                    </p>
                 </div>
                 <div>
                     <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider block mb-1.5">เนื้อหาหลักของบทความ (${lang.toUpperCase()}) <span class="text-red-500">*</span></label>
                     <div class="editor-frame rounded-xl border border-slate-300 overflow-hidden">
-                        <textarea id="${id}" name="sections[${lang}][${index}][body]" class="w-full min-h-[150px]">${escapeHtml(bodyVal)}</textarea>
+                        <textarea id="${id}" name="sections[${lang}][${index}][body]" class="w-full min-h-[150px]">${escapeHtml(autoConvertBullets(bodyVal))}</textarea>
                     </div>
+                    <p class="text-[11px] text-slate-500 flex items-center gap-1 mt-1.5">
+                        <span>💡</span>
+                        <strong>คำแนะนำ:</strong> พิมพ์เนื้อหาบทความ จัดตัวหนา ลิสต์รายการ ใส่รูปภาพ หรือแปะลิงก์ เป็นส่วนที่ผู้อ่านและ Google ใช้ประเมินคุณภาพของเนื้อหา
+                    </p>
                 </div>
             </div>
         `;
@@ -701,10 +999,35 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
             min_height: 250,
             max_height: 800,
             autoresize_bottom_margin: 20,
-            content_style: 'body { font-family: "Noto Sans Thai", Inter, ui-sans-serif, system-ui, sans-serif; font-size: 16px; line-height: 1.75; color: #475569; } p, span, li, div { font-size: 16px !important; line-height: 1.75 !important; }',
+            relative_urls: false,
+            remove_script_host: false,
+            convert_urls: false,
+            content_style: 'body { font-family: "Noto Sans Thai", Inter, ui-sans-serif, system-ui, sans-serif; font-size: 16px; line-height: 1.75; color: #475569; } p, span, li, div { font-size: 16px !important; line-height: 1.75 !important; } ul { list-style: none !important; padding-left: 0 !important; margin-bottom: 1.5rem; } ul li { position: relative; padding-left: 1.5rem; margin-bottom: 0.5rem; line-height: 1.75; } ul li::before { content: ""; position: absolute; left: 0.35rem; top: 0.65rem; width: 7px; height: 7px; border-radius: 50%; background-color: #0663F6; }',
             images_upload_handler: tinymceImageUploadHandler,
+            paste_preprocess: function (plugin, args) {
+                args.content = autoConvertBullets(args.content);
+            },
             setup: function (editor) {
                 editors[id] = editor;
+                editor.on('PastePreProcess', function (e) {
+                    e.content = autoConvertBullets(e.content);
+                });
+                editor.on('paste', function () {
+                    setTimeout(function () {
+                        const raw = editor.getContent();
+                        const converted = autoConvertBullets(raw);
+                        if (converted !== raw) {
+                            editor.setContent(converted);
+                        }
+                    }, 50);
+                });
+                editor.on('blur change', function () {
+                    const raw = editor.getContent();
+                    const converted = autoConvertBullets(raw);
+                    if (converted !== raw) {
+                        editor.setContent(converted);
+                    }
+                });
                 editor.addShortcut('ctrl+q', 'Apply Primary Color', function () {
                     editor.execCommand('ForeColor', false, '#0663F6');
                 });
@@ -812,6 +1135,18 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
         if (form) {
             form.addEventListener('submit', () => {
                 for (const id in editors) {
+                    if (editors.hasOwnProperty(id) && editors[id]) {
+                        const raw = editors[id].getContent();
+                        const converted = autoConvertBullets(raw);
+                        if (converted !== raw) {
+                            editors[id].setContent(converted);
+                        }
+                    }
+                }
+                if (window.tinymce && typeof tinymce.triggerSave === 'function') {
+                    tinymce.triggerSave();
+                }
+                for (const id in editors) {
                     if (editors.hasOwnProperty(id)) {
                         const textarea = document.getElementById(id);
                         if (textarea && editors[id] && typeof editors[id].getContent === 'function') {
@@ -825,22 +1160,46 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
 </script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const fileInput = document.querySelector('input[name="image_file"]');
-        const previewContainer = document.querySelector('.w-full.h-64.rounded-xl.border');
+        const fileInput = document.getElementById('coverImageInput') || document.querySelector('input[name="image_file"]');
+        const previewContainer = document.getElementById('coverImagePreviewContainer') || document.querySelector('.w-full.h-64.rounded-xl.border');
+        const initialPreviewHtml = previewContainer ? previewContainer.innerHTML : '';
+
         if (fileInput && previewContainer) {
             fileInput.addEventListener('change', function(event) {
-                const file = event.target.files[0];
-                if (file && file.type.startsWith('image/')) {
-                    const reader = new FileReader();
-                    reader.onload = function(loadEvent) {
-                        previewContainer.innerHTML = '';
-                        const img = document.createElement('img');
-                        img.src = loadEvent.target.result;
-                        img.className = 'w-full h-full object-contain rounded-lg';
-                        previewContainer.appendChild(img);
-                    };
-<<<<<<< HEAD
-                    img.src = e.target.result;
+                const file = event.target.files && event.target.files[0];
+                if (!file) {
+                    return;
+                }
+
+                // Check file extension: Must be .webp
+                const fileName = file.name.toLowerCase();
+                const isWebp = fileName.endsWith('.webp') || file.type === 'image/webp';
+                if (!isWebp) {
+                    alert('⚠️ รูปแบบไฟล์ไม่ถูกต้อง:\n\nระบบรองรับเฉพาะไฟล์รูปภาพนามสกุล .webp เท่านั้นครับ กรุณาแปลงไฟล์รูปภาพเป็น .webp ก่อนทำการอัปโหลด');
+                    fileInput.value = '';
+                    previewContainer.innerHTML = initialPreviewHtml;
+                    return;
+                }
+
+                // Check file size: Maximum 1 MB (1024 * 1024 bytes)
+                const maxBytes = 1024 * 1024;
+                if (file.size > maxBytes) {
+                    const sizeKb = Math.round(file.size / 1024);
+                    alert(`⚠️ ขนาดไฟล์เกินกำหนด:\n\nขนาดไฟล์ของคุณคือ ${sizeKb} KB (เกิน 1,024 KB)\nกรุณาใช้รูปภาพ .webp ขนาดไม่เกิน 1 MB (แนะนำขนาด 150 – 350 KB เพื่อให้เว็บไซต์โหลดเร็วที่สุดครับ)`);
+                    fileInput.value = '';
+                    previewContainer.innerHTML = initialPreviewHtml;
+                    return;
+                }
+
+                // Valid .webp file -> Generate instant image preview
+                const reader = new FileReader();
+                reader.onload = function(loadEvent) {
+                    previewContainer.innerHTML = '';
+                    const img = document.createElement('img');
+                    img.src = loadEvent.target.result;
+                    img.className = 'w-full h-full object-contain rounded-lg shadow-sm transition-transform duration-200 hover:scale-[1.01]';
+                    img.alt = 'Cover Image Preview';
+                    previewContainer.appendChild(img);
                 };
                 reader.readAsDataURL(file);
             });
@@ -1165,9 +1524,6 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
                 if (e.key === 'Enter') {
                     e.preventDefault();
                     submitNewCategory();
-=======
-                    reader.readAsDataURL(file);
->>>>>>> tw
                 }
             });
         }
