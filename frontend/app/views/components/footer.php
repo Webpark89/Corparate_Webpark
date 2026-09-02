@@ -29,7 +29,7 @@ $structuredSitemap = [
                     ['label' => t('common.nav_about'), 'href' => route_url('/about')],
                     ['label' => t('common.nav_services'), 'href' => route_url('/services')],
                     ['label' => t('common.nav_erp'), 'href' => route_url('/erp')],
-                    ['label' => getCurrentLang() === 'th' ? 'ผลงาน' : 'Portfolio', 'href' => route_url('/portfolio')],
+                    ['label' => t('common.nav_articles') !== 'common.nav_articles' ? t('common.nav_articles') : (getCurrentLang() === 'th' ? 'บทความ' : 'Articles'), 'href' => route_url('/article')],
                     ['label' => t('common.nav_contact'), 'href' => route_url('/contact')],
                 ],
             ],
@@ -262,16 +262,62 @@ $socialLinks = [
             .footer-bottom-bar { padding: 0; }
             .address-text { white-space: nowrap !important; }
         }
-        @media (min-width: 1024px) {
+        /* Desktop (1181px+) */
+        @media (min-width: 1181px) {
             #footerSitemapLabel { font-size: 32px !important; font-weight: 800 !important; }
             .dt-sitemap-grid { grid-template-columns: repeat(5, minmax(0, 1fr)) !important; gap: 1.5rem !important; }
-            .dt-sitemap-title { font-size: 1.35rem !important; font-weight: 800 !important; white-space: nowrap !important; border-bottom: none !important; margin-bottom: 1rem !important; padding-bottom: 0 !important; color: #043B94 !important; }
+            .dt-sitemap-title { font-size: 1.25rem !important; font-weight: 800 !important; white-space: nowrap !important; border-bottom: none !important; margin-bottom: 1rem !important; padding-bottom: 0 !important; color: #043B94 !important; }
             .dt-sitemap-groups { gap: 0 !important; }
             .dt-sitemap-list { border-left: 2px solid #94a3b8 !important; padding-left: 12px !important; margin-top: 0 !important; margin-bottom: 0 !important; padding-top: 4px !important; padding-bottom: 4px !important; gap: 10px !important; display: flex !important; flex-direction: column !important; }
             .dt-sitemap-list > li { margin: 0 !important; display: flex !important; align-items: flex-start !important; min-height: auto !important; height: auto !important; }
-            .dt-sitemap-link { font-size: 1.15rem !important; font-weight: 600 !important; color: #043B94 !important; line-height: 1.45 !important; padding: 2px 0 !important; word-break: break-word !important; }
+            .dt-sitemap-link { font-size: 1.05rem !important; font-weight: 600 !important; color: #043B94 !important; line-height: 1.45 !important; padding: 2px 0 !important; word-break: break-word !important; }
             .dt-sitemap-link:hover { color: #0663F6 !important; }
-            .dt-sitemap-bullet { font-size: 20px !important; line-height: 1.45 !important; margin-right: 6px !important; color: #043B94 !important; margin-top: 1px !important; }
+            .dt-sitemap-bullet { font-size: 18px !important; line-height: 1.45 !important; margin-right: 6px !important; color: #043B94 !important; margin-top: 1px !important; }
+        }
+
+        /* Dedicated iPad Air & iPad Mini Landscape Sitemap (768px - 1180px Landscape) */
+        @media (min-width: 768px) and (max-width: 1180px) and (orientation: landscape), (min-width: 1024px) and (max-width: 1180px) {
+            #footerSitemapLabel { font-size: 24px !important; font-weight: 800 !important; }
+            .dt-sitemap-grid { grid-template-columns: repeat(5, minmax(0, 1fr)) !important; gap: 0.75rem !important; }
+            .dt-sitemap-title { 
+                font-size: 0.95rem !important; 
+                font-weight: 800 !important; 
+                letter-spacing: -0.01em !important; 
+                white-space: normal !important; 
+                word-break: break-word !important; 
+                line-height: 1.25 !important; 
+                margin-bottom: 0.75rem !important; 
+                color: #043B94 !important; 
+                min-height: 2.35rem !important;
+                display: flex !important;
+                align-items: flex-end !important;
+            }
+            .dt-sitemap-groups { gap: 0 !important; }
+            .dt-sitemap-list { 
+                border-left: 2px solid #cbd5e1 !important; 
+                padding-left: 8px !important; 
+                margin-top: 0 !important; 
+                margin-bottom: 0 !important; 
+                gap: 6px !important; 
+                display: flex !important; 
+                flex-direction: column !important; 
+            }
+            .dt-sitemap-list > li { margin: 0 !important; display: flex !important; align-items: flex-start !important; }
+            .dt-sitemap-link { 
+                font-size: 0.825rem !important; 
+                line-height: 1.35 !important; 
+                font-weight: 600 !important; 
+                color: #043B94 !important; 
+                word-break: break-word !important; 
+                padding: 1px 0 !important; 
+            }
+            .dt-sitemap-link:hover { color: #0663F6 !important; }
+            .dt-sitemap-bullet { 
+                font-size: 14px !important; 
+                line-height: 1.35 !important; 
+                margin-right: 4px !important; 
+                color: #043B94 !important; 
+            }
         }
 
         /* Dedicated iPad Pro Portrait (821px - 1366px Portrait) - Top 2, Bottom 3 Sitemap Layout */

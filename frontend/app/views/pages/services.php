@@ -223,7 +223,7 @@ if (isset($services) && is_array($services)) {
         }
     }
 </style>
-<section id="services-hero" class="relative font-sans bg-[#f7faff] overflow-hidden mt-0 mx-4 mb-4 sm:mt-0 sm:mx-6 sm:mb-6 rounded-t-none rounded-b-[2rem] lg:m-0 lg:rounded-none">
+<section id="services-hero" class="relative font-sans bg-[#f7faff] overflow-hidden mt-0 mx-0 mb-4 sm:mt-0 sm:mx-6 sm:mb-6 rounded-t-none rounded-b-[2rem] lg:m-0 lg:rounded-none">
     <!-- Desktop Background Image -->
     <div class="absolute inset-0 z-0 hidden lg:block overflow-hidden">
         <img src="<?= e($heroImage) ?>" alt="WEBPARK Services Background" 
@@ -612,9 +612,17 @@ if (isset($services) && is_array($services)) {
 
         /* Dedicated Large Font Scale for iPad Pro Landscape (1024px - 1366px) */
         @media (min-width: 1024px) and (max-width: 1366px) {
-            .ipad-pro-services-text-1, .ipad-pro-services-text-2 {
+            .ipad-pro-services-text-1 {
                 font-size: 4.5rem !important;
-                line-height: 1.15 !important;
+                line-height: 1.35 !important;
+                margin-bottom: 0.75rem !important;
+                display: inline-block !important;
+            }
+            .ipad-pro-services-text-2 {
+                font-size: 4.5rem !important;
+                line-height: 1.35 !important;
+                margin-bottom: 1.5rem !important;
+                display: inline-block !important;
             }
             .ipad-pro-services-h1-text {
                 font-size: 2.75rem !important;
@@ -625,6 +633,7 @@ if (isset($services) && is_array($services)) {
             .ipad-pro-services-desc {
                 font-size: 1.35rem !important;
                 line-height: 2.1rem !important;
+                margin-top: 1rem !important;
             }
             .ipad-pro-service-card-title {
                 font-size: 1.85rem !important;
@@ -636,12 +645,17 @@ if (isset($services) && is_array($services)) {
                 min-height: 4rem !important;
             }
             .ipad-pro-service-card-dropdown {
-                font-size: 1.55rem !important;
-                line-height: 1.4 !important;
+                font-size: 1.45rem !important;
+                min-height: 3.5rem !important;
             }
             .ipad-pro-dropdown-item {
-                font-size: 1.3rem !important;
-                padding: 0.5rem 0 !important;
+                font-size: 1.35rem !important;
+                line-height: 2.0rem !important;
+                padding: 0.6rem 0.75rem !important;
+                min-height: 2.85rem !important;
+                display: flex !important;
+                align-items: center !important;
+                gap: 0.75rem !important;
             }
             .ipad-pro-approach-title {
                 font-size: 2.5rem !important;
@@ -818,27 +832,64 @@ if (isset($services) && is_array($services)) {
                 padding-top: 0.5rem !important;
             }
             .desktop-service-summary {
-                padding: 0.25rem 0 !important;
+                padding: 0.5rem 0 !important;
                 justify-content: space-between !important;
                 margin-top: 0 !important;
+                min-height: 3.25rem !important;
+                display: flex !important;
+                align-items: center !important;
             }
             .desktop-service-summary-text {
                 display: inline-block !important;
-                font-size: 1.15rem !important;
-                font-weight: 700 !important;
+                font-size: 1.35rem !important;
+                font-weight: 800 !important;
                 color: #022862 !important;
             }
             .desktop-service-arrow {
                 color: #64748b !important;
-                width: 1.25rem !important;
-                height: 1.25rem !important;
+                width: 1.5rem !important;
+                height: 1.5rem !important;
                 background-color: transparent !important;
             }
-            .desktop-service-dropdown-content {
-                margin-top: 1.5rem !important;
+            .desktop-service-dropdown-content,
+            .ipad-pro-dropdown-content {
+                margin-top: 0.75rem !important;
                 border-top: 1px solid #f1f5f9 !important;
-                padding-top: 1rem !important;
-                padding-bottom: 2rem !important; /* เพิ่มพื้นที่ด้านล่างให้กล่องขยายเต็มที่ */
+                padding-top: 0.75rem !important;
+                padding-bottom: 1.5rem !important;
+                display: flex !important;
+                flex-direction: column !important;
+                gap: 0.35rem !important;
+            }
+            .desktop-service-dropdown-content a,
+            .ipad-pro-dropdown-item {
+                font-size: 1.3rem !important;
+                line-height: 1.95rem !important;
+                font-weight: 600 !important;
+                color: #334155 !important;
+                padding: 0.6rem 0.85rem !important;
+                border-radius: 0.6rem !important;
+                min-height: 2.85rem !important;
+                display: flex !important;
+                align-items: center !important;
+                gap: 0.75rem !important;
+                background-color: transparent !important;
+                transition: all 0.2s ease !important;
+            }
+            .desktop-service-dropdown-content a:hover,
+            .ipad-pro-dropdown-item:hover {
+                background-color: #f1f5f9 !important;
+                color: #043B94 !important;
+                transform: translateX(4px) !important;
+            }
+            .desktop-service-dropdown-content a span:first-child,
+            .ipad-pro-dropdown-item span:first-child {
+                width: 0.55rem !important;
+                height: 0.55rem !important;
+                min-width: 0.55rem !important;
+                min-height: 0.55rem !important;
+                background-color: #94a3b8 !important;
+                border-radius: 50% !important;
             }
             /* บังคับให้การ์ดและ Grid ขยายตามเนื้อหา Dropdown แน่นอน 100% */
             #gsap-services-grid, 
@@ -883,13 +934,19 @@ if (isset($services) && is_array($services)) {
 
             /* Our Approach (Desktop) */
             .desktop-approach-subtitle {
-                max-width: 900px !important;
+                max-width: 100% !important;
                 margin-left: auto !important;
                 margin-right: auto !important;
                 text-align: center !important;
+                white-space: nowrap !important;
             }
-            .desktop-approach-subtitle span.block {
+            .desktop-approach-subtitle span.block:not(.en-approach-line) {
+                display: inline !important;
+            }
+            .en-approach-line {
                 display: block !important;
+                white-space: normal !important;
+                text-align: center !important;
             }
             .desktop-approach-card {
                 padding: 2.5rem 3.5rem !important;
@@ -1015,7 +1072,7 @@ if (isset($services) && is_array($services)) {
         </div>
     </div>
 </section>
-<section id="our-services" class="bg-white py-8 lg:py-16 font-sans scroll-mt-6">
+<section id="our-services" class="bg-white pt-6 pb-2 lg:pt-8 lg:pb-3 font-sans scroll-mt-6">
     <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8 desktop-wide-container-services">
         <div class="lg:px-12 xl:px-24 ipad-pro-services-header-container">
             <h1 class="text-3xl md:text-4xl font-extrabold leading-none tracking-tight mb-0 md:mb-1 gsap-fade-up ipad-pro-services-h1-text" style="color: #0663F6 !important;">
@@ -1032,7 +1089,7 @@ if (isset($services) && is_array($services)) {
     </div>
 </section>
 <?php if (!empty($services)): ?>
-<section id="gsap-services-grid" class="bg-white py-8 lg:py-16 font-sans">
+<section id="gsap-services-grid" class="bg-white pt-2 pb-6 lg:pt-2 lg:pb-8 font-sans">
     <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8 desktop-wide-container-services">
         <div class="lg:px-12 xl:px-24">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 items-start ipad-pro-service-grid">
@@ -1095,7 +1152,7 @@ if (isset($services) && is_array($services)) {
     </div>
 </section>
 <?php endif; ?>
-<section class="font-sans pb-12">
+<section class="font-sans py-4 lg:py-6">
     <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8 desktop-wide-container-services">
         <div class="lg:px-12 xl:px-24">
             <div class="gsap-cta-box relative rounded-3xl overflow-hidden opacity-0 translate-y-10"
@@ -1133,7 +1190,7 @@ if (isset($services) && is_array($services)) {
         </div>
     </div>
 </section>
-<section id="our-approach" class="py-16 lg:py-24 ipad-pro-services-approach-section ipad-mini-services-approach-section" style="background-color: #f1f5f9;">
+<section id="our-approach" class="py-8 lg:py-12 ipad-pro-services-approach-section ipad-mini-services-approach-section" style="background-color: #f1f5f9;">
     <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8 desktop-wide-container-services">
         <div class="lg:px-12 xl:px-24">
             <div class="text-center md:text-center mb-8 md:mb-16 flex flex-col items-center md:items-center">
@@ -1145,10 +1202,20 @@ if (isset($services) && is_array($services)) {
                 </div>
                 <p class="text-slate-500 text-sm sm:text-base md:text-xl leading-relaxed max-w-4xl text-center mx-auto desktop-approach-subtitle ipad-pro-approach-desc ipad-mini-approach-desc">
                     <?php if (getCurrentLang() === 'th'): ?>
-                        <span class="block">กระบวนการทำงานที่เป็นระบบ เพื่อส่งมอบโซลูชันดิจิทัลที่ตอบโจทย์ธุรกิจ</span>
-                        <span class="block">และความยั่งยืนของข้อมูลธุรกิจที่องค์กรถือครอง</span>
+                        <span class="hidden md:block">
+                            <span class="block lg:inline">กระบวนการทำงานที่เป็นระบบ เพื่อส่งมอบโซลูชันดิจิทัลที่ตอบโจทย์ธุรกิจ</span> <span class="block lg:inline">และความยั่งยืนของข้อมูลธุรกิจที่องค์กรถือครอง</span>
+                        </span>
+                        <span class="block md:hidden text-center text-slate-500 text-[14px] sm:text-base leading-[1.65] max-w-[330px] sm:max-w-md mx-auto" style="text-wrap: balance; overflow-wrap: break-word;">
+                            กระบวนการทำงานที่เป็นระบบ เพื่อส่งมอบโซลูชันดิจิทัลที่ตอบโจทย์ธุรกิจ และความยั่งยืนของข้อมูลธุรกิจที่องค์กรถือครอง
+                        </span>
                     <?php else: ?>
-                        A systematic work process to deliver digital solutions that meet business needs and ensure the sustainability of business data held by the organization.
+                        <span class="hidden md:block">
+                            <span class="block en-approach-line">A systematic work process to deliver digital solutions that meet business needs</span>
+                            <span class="block en-approach-line">and ensure the sustainability of business data held by the organization.</span>
+                        </span>
+                        <span class="block md:hidden text-center text-slate-500 text-[14px] sm:text-base leading-[1.6] max-w-[325px] sm:max-w-md mx-auto" style="text-wrap: balance; overflow-wrap: break-word;">
+                            A systematic work process to deliver digital solutions that meet business needs and ensure the sustainability of business data held by the organization.
+                        </span>
                     <?php endif; ?>
                 </p>
             </div>
@@ -1245,24 +1312,66 @@ if (isset($services) && is_array($services)) {
                 ease: "power2.out"
             });
         }
-
-        // 2. Animation สำหรับการ์ดบริการ — Fade up แยกทีละการ์ดเมื่อเลื่อนหน้าจอมาถึงการ์ดนั้นๆ จริง (ไม่ Pin ไม่ Scrub)
+        // 2. Animation สำหรับการ์ดบริการ
+        // Desktop/Tablet (≥768px): Pin ทั้ง section ไว้ แล้วให้การ์ดโผล่ทีละใบตามระยะที่เลื่อน (scrub)
+        //   จนกว่าจะครบ 4 ใบ ถึงจะปลดล็อกให้เลื่อนผ่าน section นี้ไปต่อได้
+        // Mobile (<768px): ใช้แบบเดิม (โผล่ทีละใบเมื่อเลื่อนมาถึง ไม่ pin) เพราะจอเล็ก pin ยาวๆ จะกระทบ UX
+        const serviceCardsWrapper = document.querySelector("#gsap-services-grid");
         const serviceCards = gsap.utils.toArray(".gsap-service-card");
-        if (serviceCards.length && prefersReducedMotion) {
+        if (serviceCardsWrapper && serviceCards.length && prefersReducedMotion) {
+            // Reduced motion: แสดงการ์ดทั้งหมดทันที ไม่ pin ไม่ scrub
             gsap.set(serviceCards, { y: 0, opacity: 1 });
-        } else if (serviceCards.length) {
-            serviceCards.forEach((card) => {
-                gsap.to(card, {
-                    scrollTrigger: {
-                        trigger: card, // ผูก trigger กับแต่ละการ์ดโดยตรง
-                        start: "top 85%", // เริ่ม animate เมื่อขอบบนของการ์ดเลื่อนเข้ามาถึง 85% ของหน้าจอ
-                        toggleActions: "play none none reverse"
-                    },
-                    y: 0,
-                    opacity: 1,
-                    duration: 0.8,
-                    ease: "power2.out"
-                });
+        } else if (serviceCardsWrapper && serviceCards.length) {
+            ScrollTrigger.matchMedia({
+                // --- Desktop / Tablet: Pin + Scrub ---
+                "(min-width: 768px)": function () {
+                    const cardsTimeline = gsap.timeline({
+                        scrollTrigger: {
+                            trigger: serviceCardsWrapper,
+                            start: "top top+=80", // เผื่อระยะ header/nav ที่ sticky อยู่ด้านบน ปรับเลขนี้ตามความสูง header จริง
+                            end: "+=" + (serviceCards.length * 500), // ระยะ scroll รวม ~500px ต่อการ์ด 1 ใบ ปรับได้ตามความรู้สึก
+                            pin: true,
+                            scrub: 1, // ค่อยๆ ตามการเลื่อน 1 วินาที ให้ความรู้สึกลื่นไหล ไม่กระตุก
+                            anticipatePin: 1,
+                            // markers: true, // เปิดบรรทัดนี้ตอน debug เพื่อดูตำแหน่ง start/end บนจอ
+                        }
+                    });
+                    serviceCards.forEach((card, index) => {
+                        cardsTimeline.to(card, {
+                            y: 0,
+                            opacity: 1,
+                            duration: 1,
+                            ease: "power2.out"
+                        }, index); // แต่ละใบเริ่ม animate เรียงตามลำดับเวลาในไทม์ไลน์ ทำให้โผล่ทีละใบ
+                    });
+                    // ฟังก์ชัน cleanup: เรียกอัตโนมัติเมื่อ media query ไม่ตรงแล้ว (เช่น ย่อจอลงต่ำกว่า 768px)
+                    return () => {
+                        cardsTimeline.scrollTrigger && cardsTimeline.scrollTrigger.kill();
+                        cardsTimeline.kill();
+                    };
+                },
+                // --- Mobile: แบบเดิม ไม่ pin ---
+                "(max-width: 767px)": function () {
+                    const mobileTriggers = serviceCards.map((card) => {
+                        return gsap.to(card, {
+                            scrollTrigger: {
+                                trigger: card,
+                                start: "top 85%",
+                                toggleActions: "play none none reverse"
+                            },
+                            y: 0,
+                            opacity: 1,
+                            duration: 0.6,
+                            ease: "power2.out"
+                        });
+                    });
+                    return () => {
+                        mobileTriggers.forEach((tween) => {
+                            tween.scrollTrigger && tween.scrollTrigger.kill();
+                            tween.kill();
+                        });
+                    };
+                }
             });
         }
         // 2.5 Animation สำหรับ CTA Box ท้ายหน้า — fade + slide ขึ้นตอน scroll มาถึง

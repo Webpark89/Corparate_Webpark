@@ -32,7 +32,7 @@ if (!empty($partners) && is_array($partners)) {
     }
 }
 ?>
-<section class="relative font-sans bg-[#f7faff] overflow-hidden mt-0 mx-4 mb-4 sm:mt-0 sm:mx-6 sm:mb-6 rounded-t-none rounded-b-[2rem] lg:m-0 lg:rounded-none">
+<section class="relative font-sans bg-[#f7faff] overflow-hidden mt-0 mx-0 mb-4 sm:mt-0 sm:mx-6 sm:mb-6 rounded-t-none rounded-b-[2rem] lg:m-0 lg:rounded-none">
     <div class="absolute inset-0 z-0">
         <img src="<?= e(asset_url('images/bg-5.png')) ?>" alt="bg" class="hero-parallax-img w-full h-full object-cover object-center opacity-70 mix-blend-screen">
         <div class="absolute inset-0 bg-gradient-to-r from-white via-white/80 to-white/5"></div>
@@ -73,7 +73,7 @@ if (!empty($partners) && is_array($partners)) {
             }
         }
     </style>
-    <div class="mx-auto w-full max-w-[1720px] px-4 sm:px-6 lg:px-10 pt-8 pb-12 md:pt-12 md:pb-24 lg:pt-28 lg:pb-32 relative z-10 ipad-air-landscape-hero-container">
+    <div class="mx-auto w-full max-w-[1720px] px-5 sm:px-6 lg:px-10 pt-8 pb-12 md:pt-12 md:pb-24 lg:pt-28 lg:pb-32 relative z-10 ipad-air-landscape-hero-container">
         <!-- Mobile Gradient Mask to prevent text overlapping presenter image -->
         <div class="absolute inset-0 bg-gradient-to-r from-white via-white/90 to-white/20 md:hidden z-0 pointer-events-none"></div>
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:pb-12 lg:gap-10 items-center relative z-10">
@@ -514,7 +514,7 @@ if (!empty($partners) && is_array($partners)) {
     </div>
 </section>
 <?php if (!empty($displayPortfolios)): ?>
-<section class="bg-white pt-16 pb-6 lg:pt-20 lg:pb-8 overflow-hidden">
+<section class="bg-white pt-8 pb-4 lg:pt-10 lg:pb-6 overflow-hidden">
     <div class="mx-auto w-full max-w-[1720px] px-4 sm:px-6 lg:px-10">
         <div class="mb-10 lg:ml-12 ipad-pro-ml-0 xl:ml-24 lg:mr-12 xl:mr-24">
             <div class="hidden md:block">
@@ -764,7 +764,7 @@ document.addEventListener('DOMContentLoaded', function () {
 <?php
 $totalReviews = count($reviews);
 ?>
-<section class="relative pt-6 pb-10 lg:pt-10 lg:pb-20 overflow-hidden">
+<section class="relative pt-6 pb-6 lg:pt-8 lg:pb-10 overflow-hidden">
     <div class="absolute inset-0 -z-10 pointer-events-none">
         <img src="<?= e(asset_url('images/bg-hand.jpg')) ?>" alt="bg" class="w-full h-full object-cover object-center opacity-20 mix-blend-screen">
         <div class="absolute inset-0 bg-white/50"></div>
@@ -952,7 +952,7 @@ $totalReviews = count($reviews);
 }
 </style>
 <?php if (count($displayArticles) > 0): ?>
-<section class="bg-slate-50 pt-10 pb-20 lg:py-20 border-t border-slate-100">
+<section class="bg-slate-50 pt-6 pb-10 lg:py-10 border-t border-slate-100">
     <div class="mx-auto w-full max-w-[1720px] px-4 sm:px-6 lg:px-10">
         <div class="hidden lg:flex flex-row items-end justify-between mb-6 ipad-pro-hidden lg:ml-12 ipad-pro-ml-0 xl:ml-24 lg:mr-12 xl:mr-24">
             <div>

@@ -108,7 +108,7 @@ $ctaImage = asset_url('images/bg-cta.jpg');
         <div class="absolute inset-x-0 bottom-0 h-[30%] bg-gradient-to-t from-white/50 to-transparent z-10"></div>
     </div>
 
-    <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 pt-12 pb-24 lg:pt-28 lg:pb-32 relative z-10 desktop-wide-container-article">
+    <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8 pt-12 pb-24 lg:pt-28 lg:pb-32 relative z-10 desktop-wide-container-article">
         <div class="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-12 lg:gap-20 items-center relative z-10">
             
             <div class="max-w-3xl lg:max-w-none text-left mx-0 lg:ml-12 ipad-pro-ml-0 xl:ml-24 article-hero-left-col">
@@ -137,6 +137,14 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                     .hero-desc-text {
                         font-size: 22px !important;
                         line-height: 1.65;
+                    }
+                    /* Mobile (max-width: 759px) */
+                    @media (max-width: 759px) {
+                        .desktop-article-hero-h1 {
+                            font-size: 2.75rem !important;
+                            line-height: 1.2 !important;
+                            font-weight: 900 !important;
+                        }
                     }
                     /* iPad (760px - 1366px) All Orientations */
                     @media (min-width: 760px) and (max-width: 1366px) {
@@ -213,7 +221,7 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                         }
                     }
                 </style>
-                <h1 class="animate-fade-up delay-200 tracking-tight mb-2 leading-tight flex flex-col items-start">
+                <h1 class="animate-fade-up delay-200 tracking-tight mb-2 leading-tight flex flex-col items-start text-5xl md:text-7xl lg:text-8xl font-black">
                     <span class="bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block py-1 md:py-2 whitespace-nowrap desktop-article-hero-h1">
                         <?= e(getCurrentLang() === 'th' ? 'บทความความรู้' : 'Knowledge Articles') ?>
                     </span>
@@ -327,11 +335,10 @@ $ctaImage = asset_url('images/bg-cta.jpg');
         <div id="article-grid" class="article-grid article-grid-container gap-6 hide-scroll scroll-smooth" style="-ms-overflow-style: none; scrollbar-width: none;">
             <?php 
             foreach ($articles as $article):
-                $itemLang = getCurrentLang();
-                $slugToUse = ($itemLang === 'en' && !empty($article['slug_en'])) ? $article['slug_en'] : ($article['slug'] ?? '');
-                $detailUrl = $slugToUse !== '' ? route_url('/article/' . $slugToUse) : route_url('/article', ['id' => (int) ($article['id'] ?? 0)]);
+                $detailUrl = route_url('/article', ['id' => (int) ($article['id'] ?? 0)]);
                 $categoryName = trim((string) ($article['category_name'] ?? ''));
                 $categorySlug = trim((string) ($article['category_slug'] ?? ''));
+                $itemLang = getCurrentLang();
                 $articleTitle = (string) ($article['title'] ?? t('article_list.page_title'));
                 if ($itemLang === 'en' && !empty($article['meta_title_en'])) {
                     $articleTitle = $article['meta_title_en'];

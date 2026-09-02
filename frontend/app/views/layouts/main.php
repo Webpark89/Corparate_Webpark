@@ -182,53 +182,76 @@ $content = $content ?? '';
            ========================================================================= */
         @media (max-width: 767px) {
             html, body {
-                overflow-x: hidden;
-                width: 100%;
+                overflow-x: hidden !important;
+                width: 100% !important;
                 -webkit-text-size-adjust: 100%;
             }
 
-            /* 1. Fluid Mobile Hero Titles H1 (Scales proportionally from 320px to 480px) */
-            .mobile-fluid-h1,
-            h1.text-5xl,
-            h1.text-4xl {
-                font-size: clamp(2.25rem, 8.5vw, 3.25rem) !important;
-                line-height: 1.15 !important;
-                letter-spacing: -0.03em !important;
+            /* 1. Universal Anti-Orphan & Text Flow Rules */
+            h1, h2, h3, h4, h5, h6 {
+                text-wrap: balance !important;
+                overflow-wrap: break-word !important;
+                word-break: break-word !important;
+            }
+            p, span, a, li {
+                overflow-wrap: break-word !important;
+                word-break: break-word !important;
             }
 
-            /* 2. Fluid Section Titles H2 */
+            /* 2. Fluid Mobile Hero Titles H1 (Scales smoothly from 320px to 480px) */
+            .mobile-fluid-h1,
+            h1.text-5xl,
+            h1.text-4xl,
+            .desktop-home-hero-h1,
+            .desktop-about-hero-h1,
+            .desktop-article-hero-h1,
+            .desktop-contact-hero-h1,
+            .desktop-portfolio-hero-h1 {
+                font-size: clamp(2.35rem, 8.5vw, 3.25rem) !important;
+                line-height: 1.18 !important;
+                letter-spacing: -0.03em !important;
+                font-weight: 900 !important;
+            }
+
+            /* 3. Fluid Section Titles H2 */
             .mobile-fluid-h2,
             h2.text-3xl,
-            h2.text-2xl {
+            h2.text-2xl,
+            .desktop-section-h2 {
                 font-size: clamp(1.65rem, 6.2vw, 2.25rem) !important;
                 line-height: 1.25 !important;
                 letter-spacing: -0.02em !important;
+                font-weight: 800 !important;
             }
 
-            /* 3. Fluid Card Titles H3 / H4 */
+            /* 4. Fluid Card Titles H3 / H4 */
             .mobile-fluid-h3,
             h3.text-xl,
             h3.text-lg,
             h4.text-lg {
-                font-size: clamp(1.05rem, 4.2vw, 1.3rem) !important;
+                font-size: clamp(1.1rem, 4.2vw, 1.35rem) !important;
                 line-height: 1.35 !important;
+                font-weight: 700 !important;
             }
 
-            /* 4. Fluid Body Paragraphs */
+            /* 5. Fluid Body Paragraphs */
             .mobile-fluid-p,
             p.text-base,
-            p.text-lg {
-                font-size: clamp(0.925rem, 3.7vw, 1.05rem) !important;
+            p.text-lg,
+            .desktop-home-hero-p,
+            .desktop-about-hero-p,
+            .desktop-article-hero-p {
+                font-size: clamp(0.925rem, 3.6vw, 1.05rem) !important;
                 line-height: 1.65 !important;
-                overflow-wrap: break-word;
+                font-weight: 500 !important;
             }
 
-            /* 5. Fluid Subtitle / Badges */
+            /* 6. Fluid Subtitle / Badges */
             .mobile-fluid-badge {
                 font-size: clamp(0.75rem, 3.2vw, 0.875rem) !important;
             }
 
-            /* 6. Hero Presenter & Description Proportional Scaling */
+            /* 7. Hero Presenter & Description Proportional Scaling */
             .mobile-hero-woman {
                 width: clamp(52%, 58vw, 64%) !important;
                 max-width: clamp(240px, 60vw, 310px) !important;
@@ -248,6 +271,29 @@ $content = $content ?? '';
                 font-size: clamp(0.85rem, 3.6vw, 0.975rem) !important;
                 line-height: 1.55 !important;
                 letter-spacing: -0.2px !important;
+            }
+
+            /* 8. Touch Targets: Minimum 44px for buttons, inputs, links (excluding slider pagination dots) */
+            button:not([class*="dot"]):not([class*="indicator"]):not([class*="bullet"]):not(.article-pagination__dot):not([class*="w-2"]):not([class*="w-3"]):not([class*="w-4"]):not([class*="w-5"]):not([class*="h-2"]):not([class*="h-3"]):not([class*="rounded-full"]),
+            a.inline-flex.rounded-full:not([class*="dot"]):not([class*="p-1"]):not([class*="w-2"]):not([class*="w-3"]),
+            input[type="text"],
+            input[type="email"],
+            input[type="tel"],
+            input[type="password"],
+            select,
+            textarea {
+                min-height: 44px;
+            }
+
+            /* Explicitly ensure all slider/carousel pagination dots remain perfectly round/pill shaped */
+            [id*="dots"] button,
+            [class*="dots"] button,
+            button.slider-dot,
+            .article-pagination__dot {
+                min-height: 0px !important;
+                height: 10px !important;
+                padding: 0 !important;
+                border: none !important;
             }
         }
     </style>

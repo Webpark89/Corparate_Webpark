@@ -73,7 +73,7 @@ $initialProjects = $portfolioTabs[$activeFilter] ?? $portfolioTabs['All'] ?? [];
     }
 </style>
 <section class="border-b border-slate-200 bg-white">
-    <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 pt-20 pb-24 lg:pt-32 lg:pb-32 relative z-10">
+    <div class="mx-auto w-full max-w-7xl px-5 sm:px-6 lg:px-8 pt-20 pb-24 lg:pt-32 lg:pb-32 relative z-10">
         <div class="lg:ml-12 ipad-pro-ml-0 xl:ml-24">
             <p class="text-sm font-semibold uppercase tracking-[0.32em] text-sky-700">Selected Work</p>
             <h1 class="mt-4 text-4xl font-black tracking-tight text-slate-900 sm:text-5xl desktop-portfolio-hero-h1">ผลงานที่วัดผลได้จริงในทุกอุตสาหกรรม</h1>
@@ -82,7 +82,7 @@ $initialProjects = $portfolioTabs[$activeFilter] ?? $portfolioTabs['All'] ?? [];
     </div>
 </section>
 <section class="bg-slate-50 py-16 sm:py-20">
-    <div class="mx-auto w-full max-w-7xl px-4 sm:px-4 lg:px-6"> 
+    <div class="mx-auto w-full max-w-7xl px-5 sm:px-6 lg:px-8"> 
         <div class="relative mx-auto flex max-w-4xl flex-wrap justify-center gap-3 rounded-full border border-slate-200 bg-white/90 p-2 shadow-sm backdrop-blur" id="portfolioSwitcher">
             <span class="pointer-events-none absolute inset-y-1 left-0 w-0 rounded-full bg-sky-600/20 transition-all duration-300 ease-out" id="portfolioIndicator"></span>
             <a href="?category=All"
