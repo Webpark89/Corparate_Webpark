@@ -219,9 +219,14 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                 <div id="category-filters" class="article-filter-track flex gap-3 overflow-x-auto py-1 hide-scroll scroll-smooth" style="-ms-overflow-style: none; scrollbar-width: none;">
                     
                     <!-- ปุ่ม: ทั้งหมด -->
+                    <?php
+                        $allBtnClass = ($activeCategorySlug === 'all')
+                            ? 'border-transparent bg-blue-600 text-white'
+                            : 'border-blue-200 bg-white text-[#1a2b6d] hover:bg-blue-600 hover:text-white hover:border-transparent';
+                    ?>
                     <button type="button"
                             data-filter="all"
-                            class="article-filter-btn whitespace-nowrap rounded-md border px-5 py-2 text-sm font-medium transition-colors <?= $activeCategorySlug === 'all' ? 'border-transparent bg-blue-600 text-white' : 'border-blue-200 bg-white text-[#1a2b6d] hover:bg-blue-600 hover:text-white hover:border-transparent' ?>">
+                            class="article-filter-btn whitespace-nowrap rounded-md border px-5 py-2 text-sm font-medium transition-colors <?= $allBtnClass ?>">
                         <?= e(t('common.cta_view_all')) ?>
                     </button>
 
@@ -234,10 +239,13 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                             continue;
                         }
                         $isActive = $activeCategorySlug === $slug;
+                        $categoryBtnClass = $isActive
+                            ? 'border-transparent bg-blue-600 text-white'
+                            : 'border-blue-200 bg-white text-[#1a2b6d] hover:border-transparent hover:bg-blue-600 hover:text-white';
                     ?>
                         <button type="button"
                                 data-filter="<?= e($slug) ?>"
-                                class="article-filter-btn whitespace-nowrap rounded-md border px-5 py-2 text-sm font-medium transition-colors <?= $isActive ? 'border-transparent bg-blue-600 text-white' : 'border-blue-200 bg-white text-[#1a2b6d] hover:border-transparent hover:bg-blue-600 hover:text-white' ?>">
+                                class="article-filter-btn whitespace-nowrap rounded-md border px-5 py-2 text-sm font-medium transition-colors <?= $categoryBtnClass ?>">
                             <?= e($name) ?>
                         </button>
                     <?php endforeach; ?>
@@ -342,7 +350,7 @@ $ctaImage = asset_url('images/bg-cta.jpg');
             <?php endforeach; ?>
         </div>
 
-        <div id="no-results" class="article-no-results hidden py-14 text-center text-slate-600 flex flex-col items-center justify-center">
+        <div id="no-results" class="article-no-results hidden py-14 text-center text-slate-600 flex-col items-center justify-center">
             <img src="<?= e(asset_url('images/Empty.gif')) ?>" alt="No results" class="w-64 h-auto max-w-full mb-4 object-contain">
             <h3 class="text-lg font-bold text-[#1a2b6d] mb-2"><?= e(t('article_list.empty_state_title')) ?></h3>
             <p class="text-sm text-slate-500"><?= e(t('article_list.empty_state_desc')) ?></p>
@@ -353,6 +361,9 @@ $ctaImage = asset_url('images/bg-cta.jpg');
 </section>
 
 <style>
+.article-no-results:not(.hidden) {
+    display: flex;
+}
 .article-pagination__btn {
     display: flex;
     height: 3rem;
@@ -650,7 +661,9 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        noResults.classList.toggle('hidden', filteredCards.length > 0);
+        const hasResults = filteredCards.length > 0;
+        noResults.classList.toggle('hidden', hasResults);
+        noResults.classList.toggle('flex', !hasResults);
         setTimeout(renderPagination, 100); 
     };
 

@@ -260,13 +260,49 @@ class HomeController
         ]));
     }
 
-    public function serviceDetail(): void
+    public function serviceDigitalPlatform(): void
     {
-        $serviceSlug = (string) ($_GET['service'] ?? '');
+        $this->view('pages/service-digital-platform.php', array_merge($this->sharedData('services', 'Digital Platform'), [
+            'currentPage' => 'services'
+        ]));
+    }
+
+    public function serviceOnlineMarketing(): void
+    {
+        $this->view('pages/service-online-marketing.php', array_merge($this->sharedData('services', 'Online Marketing'), [
+            'currentPage' => 'services'
+        ]));
+    }
+
+    public function serviceCreativeDesign(): void
+    {
+        $this->view('pages/service-creative-design.php', array_merge($this->sharedData('services', 'Creative Design'), [
+            'currentPage' => 'services'
+        ]));
+    }
+
+    public function serviceDetail(?string $serviceSlug = null): void
+    {
+        $serviceSlug = $serviceSlug ?? (string) ($_GET['service'] ?? '');
         $topicSlug = (string) ($_GET['topic'] ?? '');
 
         if ($serviceSlug === '') {
             $this->notFound();
+            return;
+        }
+
+        if ($serviceSlug === 'digital-platform') {
+            $this->serviceDigitalPlatform();
+            return;
+        }
+
+        if ($serviceSlug === 'online-marketing') {
+            $this->serviceOnlineMarketing();
+            return;
+        }
+
+        if ($serviceSlug === 'creative-design') {
+            $this->serviceCreativeDesign();
             return;
         }
 
