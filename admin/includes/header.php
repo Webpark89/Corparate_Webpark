@@ -208,12 +208,18 @@ foreach ($rawNavItems as $entry) {
             }
         }
 
-        /* Inbox Filter Grid */
+        /* Inbox Filter Grid & Container Spacing */
         @media (max-width: 767px) {
+            .filter-pills-container {
+                display: flex !important;
+                flex-direction: column !important;
+                gap: 0.875rem !important;
+                width: 100% !important;
+            }
             .filter-pills-grid {
                 display: grid !important;
                 grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-                gap: 0.5rem !important;
+                gap: 0.625rem !important;
                 width: 100% !important;
             }
             .filter-pills-grid > a {
@@ -226,6 +232,13 @@ foreach ($rawNavItems as $entry) {
             }
         }
         @media (min-width: 768px) {
+            .filter-pills-container {
+                display: flex !important;
+                flex-direction: row !important;
+                align-items: center !important;
+                gap: 0.75rem !important;
+                width: auto !important;
+            }
             .filter-pills-grid {
                 display: flex !important;
                 flex-wrap: wrap !important;
@@ -238,6 +251,43 @@ foreach ($rawNavItems as $entry) {
                 padding-left: 1.5rem !important;
                 padding-right: 1.5rem !important;
             }
+        }
+
+        /* Active filter pill solid colors */
+        .filter-btn-active-new {
+            background-color: #2563eb !important;
+            color: #ffffff !important;
+            border-color: #2563eb !important;
+        }
+        .filter-btn-active-new * {
+            color: #ffffff !important;
+        }
+
+        .filter-btn-active-read {
+            background-color: #d97706 !important;
+            color: #ffffff !important;
+            border-color: #d97706 !important;
+        }
+        .filter-btn-active-read * {
+            color: #ffffff !important;
+        }
+
+        .filter-btn-active-replied {
+            background-color: #059669 !important;
+            color: #ffffff !important;
+            border-color: #059669 !important;
+        }
+        .filter-btn-active-replied * {
+            color: #ffffff !important;
+        }
+
+        .filter-btn-active-archived {
+            background-color: #dc2626 !important;
+            color: #ffffff !important;
+            border-color: #dc2626 !important;
+        }
+        .filter-btn-active-archived * {
+            color: #ffffff !important;
         }
 
         /* User Role Section Card on Mobile */
