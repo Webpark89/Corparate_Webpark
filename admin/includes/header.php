@@ -220,9 +220,9 @@ foreach ($rawNavItems as $entry) {
                 width: 100% !important;
                 display: inline-flex !important;
                 justify-content: space-between !important;
-                padding-left: 0.875rem !important;
-                padding-right: 0.875rem !important;
-                min-height: 38px !important;
+                padding-left: 1.125rem !important;
+                padding-right: 1.125rem !important;
+                min-height: 40px !important;
             }
         }
         @media (min-width: 768px) {
@@ -237,6 +237,13 @@ foreach ($rawNavItems as $entry) {
                 width: auto !important;
                 padding-left: 1.5rem !important;
                 padding-right: 1.5rem !important;
+            }
+        }
+
+        /* User Role Section Card on Mobile */
+        @media (max-width: 767px) {
+            .user-role-section-card {
+                padding: 1.25rem 1rem !important;
             }
         }
 

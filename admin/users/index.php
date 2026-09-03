@@ -120,8 +120,8 @@ require_once __DIR__ . '/../includes/header.php';
     <!-- Page Header & Action Buttons -->
     <header class="flex flex-col gap-4 border-l-4 border-blue-600 pl-4 md:flex-row md:items-center md:justify-between">
         <div>
-            <h1 class="text-xl font-bold text-slate-900">การจัดการผู้ดูแลระบบ (Users Management)</h1>
-            <p class="mt-1 text-xs text-slate-500">จัดการบัญชีผู้ใช้งาน กำหนดบทบาท และสิทธิ์การเข้าถึงสำหรับผู้ดูแลระบบ</p>
+            <h1 class="text-xl font-bold text-slate-900">การจัดการผู้ใช้งาน (Users)</h1>
+            <p class="mt-1 text-xs text-slate-500">จัดการบัญชีผู้ใช้งาน กำหนดบทบาท และสิทธิ์การเข้าถึงระบบ</p>
         </div>
         <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 0.625rem;">
             <?php if (is_super_admin()): ?>

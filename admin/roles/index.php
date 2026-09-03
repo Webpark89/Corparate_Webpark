@@ -62,7 +62,7 @@ require_once __DIR__ . '/../includes/header.php';
     <header class="flex flex-col gap-4 border-l-4 border-blue-600 pl-4 md:flex-row md:items-center md:justify-between">
         <div>
             <h1 class="text-xl font-bold text-slate-900">การจัดการบทบาทและสิทธิ์ (Roles & Permissions)</h1>
-            <p class="mt-1 text-xs text-slate-500">กำหนดกลุ่มผู้ใช้งานและตั้งค่าสิทธิ์การเข้าถึงแบบละเอียด (ดู, เพิ่ม, แก้ไข, ลบ) แยกตามแต่ละโมดูล</p>
+            <p class="mt-1 text-xs text-slate-500">กำหนดกลุ่มผู้ใช้งานและตั้งค่าสิทธิ์การเข้าถึงแบบละเอียด (ดู, เพิ่ม, แก้ไข, ลบ) แยกตามแต่ละเมนูระบบ</p>
         </div>
         <?php if (has_permission('roles.create')): ?>
             <div>

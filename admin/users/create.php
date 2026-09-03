@@ -113,7 +113,7 @@ require_once __DIR__ . '/../includes/header.php';
     <!-- Breadcrumb & Header Title -->
     <header class="border-l-4 border-blue-600 pl-4 flex flex-col gap-1">
         <div style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; color: #94a3b8; margin-bottom: 0.25rem;">
-            <a href="index.php" style="color: #64748b; text-decoration: none;">การจัดการผู้ดูแลระบบ</a>
+            <a href="index.php" style="color: #64748b; text-decoration: none;">การจัดการผู้ใช้งาน</a>
             <span>/</span>
             <span style="color: #334155; font-weight: 500;">เพิ่มผู้ใช้งานใหม่</span>
         </div>
@@ -177,13 +177,16 @@ require_once __DIR__ . '/../includes/header.php';
         </div>
 
         <!-- Section 2: Role Selection with Horizontal Carousel & Search -->
-        <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 1rem; padding: 1.5rem 1.75rem; box-shadow: 0 1px 2px rgba(0,0,0,0.02);">
+        <div class="user-role-section-card" style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 1rem; padding: 1.5rem 1.75rem; box-shadow: 0 1px 2px rgba(0,0,0,0.02);">
             <!-- Top Bar: Header & Controls (Search & Scroll Arrows) -->
             <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1.25rem;">
                 <div>
-                    <div style="display: flex; align-items: center; gap: 0.5rem;">
-                        <h2 style="font-size: 1rem; font-weight: 700; color: #0f172a; margin: 0;">กำหนดบทบาทและสิทธิ์ (Role & Access)</h2>
-                        <span id="role_count_badge" style="font-size: 0.6875rem; font-weight: 600; background-color: #f1f5f9; color: #475569; padding: 0.125rem 0.5rem; border-radius: 9999px; border: 1px solid #e2e8f0;">
+                    <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem;">
+                        <h2 style="font-size: 1rem; font-weight: 700; color: #0f172a; margin: 0; display: inline-flex; flex-wrap: wrap; align-items: center; gap: 0.375rem;">
+                            <span>กำหนดบทบาทและสิทธิ์</span>
+                            <span style="font-size: 0.8125rem; font-weight: 500; color: #64748b; white-space: nowrap;">(Role & Permission)</span>
+                        </h2>
+                        <span id="role_count_badge" style="font-size: 0.6875rem; font-weight: 600; background-color: #f1f5f9; color: #475569; padding: 0.125rem 0.5rem; border-radius: 9999px; border: 1px solid #e2e8f0; white-space: nowrap; flex-shrink: 0;">
                             <?= count($allRoles) ?> บทบาท
                         </span>
                     </div>

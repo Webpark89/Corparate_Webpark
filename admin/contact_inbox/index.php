@@ -102,7 +102,7 @@ $flashError = flash('error');
                 
                 <!-- All -->
                 <a href="?status=&search=<?= urlencode($search) ?>"
-                    class="inline-flex items-center justify-center gap-2 rounded-full px-5 md:px-6 py-2 md:py-2.5 text-xs transition-all <?= $statusFilter === '' ? 'bg-slate-900 text-white font-semibold shadow-sm' : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50 hover:text-slate-900 font-medium' ?>">
+                    class="inline-flex items-center justify-center gap-2 rounded-full px-6 py-2.5 text-xs transition-all <?= $statusFilter === '' ? 'bg-slate-900 text-white font-semibold shadow-sm' : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50 hover:text-slate-900 font-medium' ?>">
                     <span>ทั้งหมด (<?= $countAll ?>)</span>
                 </a>
             </div>
@@ -116,7 +116,7 @@ $flashError = flash('error');
                         <span class="text-xs">📨</span>
                         <span class="truncate">ข้อความใหม่</span>
                     </span>
-                    <span class="inline-flex items-center justify-center min-w-[20px] px-1.5 py-0.5 rounded-full text-[11px] font-bold shrink-0 <?= $statusFilter === 'new' ? 'bg-white/20 text-white' : 'bg-blue-100 text-blue-700' ?>">
+                    <span class="text-xs font-bold shrink-0 <?= $statusFilter === 'new' ? 'text-white' : 'text-blue-600' ?>">
                         <?= $countNew ?>
                     </span>
                 </a>
@@ -128,7 +128,7 @@ $flashError = flash('error');
                         <span class="text-xs">👀</span>
                         <span class="truncate">อ่านแล้ว</span>
                     </span>
-                    <span class="inline-flex items-center justify-center min-w-[20px] px-1.5 py-0.5 rounded-full text-[11px] font-bold shrink-0 <?= $statusFilter === 'read' ? 'bg-white/20 text-white' : 'bg-amber-100 text-amber-700' ?>">
+                    <span class="text-xs font-bold shrink-0 <?= $statusFilter === 'read' ? 'text-white' : 'text-amber-600' ?>">
                         <?= $countRead ?>
                     </span>
                 </a>
@@ -140,7 +140,7 @@ $flashError = flash('error');
                         <span class="text-xs">💬</span>
                         <span class="truncate">ตอบแล้ว</span>
                     </span>
-                    <span class="inline-flex items-center justify-center min-w-[20px] px-1.5 py-0.5 rounded-full text-[11px] font-bold shrink-0 <?= $statusFilter === 'replied' ? 'bg-white/20 text-white' : 'bg-emerald-100 text-emerald-700' ?>">
+                    <span class="text-xs font-bold shrink-0 <?= $statusFilter === 'replied' ? 'text-white' : 'text-emerald-600' ?>">
                         <?= $countReplied ?>
                     </span>
                 </a>
@@ -152,7 +152,7 @@ $flashError = flash('error');
                         <span class="text-xs">📁</span>
                         <span class="truncate">เก็บถาวร</span>
                     </span>
-                    <span class="inline-flex items-center justify-center min-w-[20px] px-1.5 py-0.5 rounded-full text-[11px] font-bold shrink-0 <?= $statusFilter === 'archived' ? 'bg-white/20 text-white' : 'bg-red-100 text-red-700' ?>">
+                    <span class="text-xs font-bold shrink-0 <?= $statusFilter === 'archived' ? 'text-white' : 'text-red-600' ?>">
                         <?= $countArchived ?>
                     </span>
                 </a>

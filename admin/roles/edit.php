@@ -102,23 +102,23 @@ $definedModules = [
         ]
     ],
     'contact' => [
-        'name' => 'ข้อมูลการติดต่อและบริษัท (Contact Info)',
+        'name' => 'ตั้งค่าการติดต่อ (Contact Settings)',
         'actions' => [
             'view' => ['code' => 'contact.view', 'name' => 'ดูข้อมูลติดต่อ', 'col' => 'read'],
             'edit' => ['code' => 'contact.edit', 'name' => 'แก้ไขข้อมูลติดต่อ', 'col' => 'update'],
         ]
     ],
     'users' => [
-        'name' => 'การจัดการผู้ดูแลระบบ (User & Permission)',
+        'name' => 'การจัดการผู้ใช้งาน (Users)',
         'actions' => [
-            'create' => ['code' => 'users.create', 'name' => 'เพิ่มผู้ดูแลระบบ', 'col' => 'create'],
-            'view'   => ['code' => 'users.view', 'name' => 'ดูรายชื่อผู้ดูแล', 'col' => 'read'],
-            'edit'   => ['code' => 'users.edit', 'name' => 'แก้ไขผู้ดูแลระบบ', 'col' => 'update'],
-            'delete' => ['code' => 'users.delete', 'name' => 'ลบผู้ดูแลระบบ', 'col' => 'delete'],
+            'create' => ['code' => 'users.create', 'name' => 'เพิ่มผู้ใช้งาน', 'col' => 'create'],
+            'view'   => ['code' => 'users.view', 'name' => 'ดูรายชื่อผู้ใช้งาน', 'col' => 'read'],
+            'edit'   => ['code' => 'users.edit', 'name' => 'แก้ไขผู้ใช้งาน', 'col' => 'update'],
+            'delete' => ['code' => 'users.delete', 'name' => 'ลบผู้ใช้งาน', 'col' => 'delete'],
         ]
     ],
     'roles' => [
-        'name' => 'การจัดการบทบาทและสิทธิ์ (Roles & Matrix)',
+        'name' => 'การจัดการบทบาทและสิทธิ์ (Roles & Permissions)',
         'actions' => [
             'create' => ['code' => 'roles.create', 'name' => 'สร้างบทบาท', 'col' => 'create'],
             'view'   => ['code' => 'roles.view', 'name' => 'ดูรายการบทบาท', 'col' => 'read'],
@@ -362,8 +362,8 @@ input[type="checkbox"].matrix-checkbox:indeterminate::after {
         <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 1rem; padding: 1.5rem 1.75rem; box-shadow: 0 1px 2px rgba(0,0,0,0.02);">
             <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1.25rem;">
                 <div>
-                    <h2 style="font-size: 1rem; font-weight: 700; color: #0f172a; margin: 0;">สิทธิ์การใช้งานตามโมดูล (Role & Permission)</h2>
-                    <p style="font-size: 0.75rem; color: #94a3b8; margin: 0.25rem 0 0 0;">กำหนดสิทธิ์การดู เพิ่ม แก้ไข และลบข้อมูลในแต่ละโมดูลอย่างละเอียด</p>
+                    <h2 style="font-size: 1rem; font-weight: 700; color: #0f172a; margin: 0;">สิทธิ์การใช้งานตามเมนูระบบ (Role & Permission)</h2>
+                    <p style="font-size: 0.75rem; color: #94a3b8; margin: 0.25rem 0 0 0;">กำหนดสิทธิ์การดู เพิ่ม แก้ไข และลบข้อมูลในแต่ละเมนูระบบอย่างละเอียด</p>
                 </div>
 
                 <!-- Quick Presets -->
@@ -399,7 +399,7 @@ input[type="checkbox"].matrix-checkbox:indeterminate::after {
                             <th style="padding: 0.875rem 1.25rem; width: 40%; min-width: 260px;">
                                 <label style="display: inline-flex; align-items: center; gap: 0.75rem; cursor: pointer; user-select: none;">
                                     <input type="checkbox" id="masterModuleToggle" class="matrix-checkbox" onchange="toggleMasterAll(this)">
-                                    <span style="font-weight: 700; font-size: 0.75rem; color: #0f172a;">โมดูล (Module)</span>
+                                    <span style="font-weight: 700; font-size: 0.75rem; color: #0f172a;">เมนูระบบ (System Menu)</span>
                                 </label>
                             </th>
 
