@@ -247,6 +247,21 @@ foreach ($rawNavItems as $entry) {
             }
         }
 
+        /* Top Navbar User Profile & Role Badge: Visible on Desktop & Laptop, compact on Mobile */
+        .top-nav-role-badge {
+            display: inline-flex !important;
+            align-items: center !important;
+        }
+        .top-nav-full-name {
+            display: inline !important;
+        }
+        @media (max-width: 767px) {
+            .top-nav-role-badge,
+            .top-nav-full-name {
+                display: none !important;
+            }
+        }
+
         /* Category Page - Quick Add Card & Action Buttons */
         .cat-quick-add-card {
             padding: 1.5rem !important;
@@ -510,7 +525,7 @@ foreach ($rawNavItems as $entry) {
                                 <?= e($me['username'] ?? 'Admin') ?>
                             </span>
                             <?php if (!empty($me['full_name'])): ?>
-                                <span class="hidden sm:inline" style="font-size: 0.6875rem; color: #64748b; line-height: 1.2;">
+                                <span class="top-nav-full-name" style="font-size: 0.6875rem; color: #64748b; line-height: 1.2;">
                                     <?= e($me['full_name']) ?>
                                 </span>
                             <?php endif; ?>
@@ -519,12 +534,12 @@ foreach ($rawNavItems as $entry) {
 
                     <!-- Role Badge (Compact on mobile, full on desktop) -->
                     <?php if (is_super_admin()): ?>
-                        <span class="hidden md:inline-flex" style="align-items: center; gap: 0.35rem; border-radius: 9999px; background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%); color: #7c3aed; padding: 0.25rem 0.65rem; font-size: 0.6875rem; font-weight: 700; border: 1px solid #ddd6fe; box-shadow: 0 1px 2px rgba(124,58,237,0.08);">
+                        <span class="top-nav-role-badge" style="align-items: center; gap: 0.35rem; border-radius: 9999px; background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%); color: #7c3aed; padding: 0.25rem 0.65rem; font-size: 0.6875rem; font-weight: 700; border: 1px solid #ddd6fe; box-shadow: 0 1px 2px rgba(124,58,237,0.08);">
                             <span style="width: 6px; height: 6px; border-radius: 9999px; background-color: #9333ea;"></span>
                             <span><?= e($me['role_name'] ?? 'Super Admin') ?></span>
                         </span>
                     <?php else: ?>
-                        <span class="hidden md:inline-flex" style="align-items: center; gap: 0.35rem; border-radius: 9999px; background-color: #eff6ff; color: #2563eb; padding: 0.25rem 0.65rem; font-size: 0.6875rem; font-weight: 600; border: 1px solid #bfdbfe;">
+                        <span class="top-nav-role-badge" style="align-items: center; gap: 0.35rem; border-radius: 9999px; background-color: #eff6ff; color: #2563eb; padding: 0.25rem 0.65rem; font-size: 0.6875rem; font-weight: 600; border: 1px solid #bfdbfe;">
                             <span style="width: 6px; height: 6px; border-radius: 9999px; background-color: #2563eb;"></span>
                             <span><?= e($me['role_name'] ?? 'ผู้ดูแลระบบ') ?></span>
                         </span>
