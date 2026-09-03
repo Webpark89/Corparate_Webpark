@@ -2,7 +2,7 @@
 /**
  * Admin contact inbox — list, filter, inspect, and update customer contact submissions.
  */
-$pageTitle = 'ข้อความจากลูกค้า';
+$pageTitle = 'Inbox';
 $page = 'contact_inbox';
 require_once __DIR__ . '/../includes/header.php';
 require_permission('inbox.view');
@@ -60,14 +60,14 @@ $flashSuccess = flash('success');
 $flashError = flash('error');
 ?>
 
-<div class="mx-auto w-full max-w-none px-2 pb-8 pt-1 text-sm md:px-4 lg:px-8">
+<div class="mx-auto w-full max-w-none px-4 pb-8 pt-1 text-sm md:px-4 lg:px-8">
     <!-- Header -->
     <header class="mb-5 flex flex-col gap-3 border-l-4 border-blue-600 pl-4 md:flex-row md:items-center md:justify-between">
         <div>
-            <div class="flex items-center gap-3">
-                <h2 class="text-lg font-bold text-slate-900">ข้อความจากลูกค้า (Contact Inbox)</h2>
+            <div class="flex flex-wrap items-center gap-2 sm:gap-3">
+                <h2 class="text-base sm:text-lg font-bold text-slate-900">ข้อความจากลูกค้า (Contact Inbox)</h2>
                 <?php if ($countNew > 0): ?>
-                    <span class="inline-flex items-center rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-semibold text-blue-700 animate-pulse">
+                    <span class="inline-flex items-center rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-semibold text-blue-700 animate-pulse whitespace-nowrap shrink-0">
                         <?= $countNew ?> ข้อความใหม่
                     </span>
                 <?php endif; ?>
@@ -95,54 +95,68 @@ $flashError = flash('error');
 
     <!-- Status Tabs & Filter (Matching Reference Design) -->
     <div class="mb-5 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-slate-200 bg-white p-4 md:px-5 shadow-sm">
-        <div class="flex flex-wrap items-center gap-3">
-            <span class="text-xs font-bold text-slate-500 mr-1 select-none">ตัวกรอง:</span>
-            
-            <!-- All -->
-            <a href="?status=&search=<?= urlencode($search) ?>"
-                class="inline-flex items-center gap-2 rounded-full px-6 py-2.5 text-xs transition-all <?= $statusFilter === '' ? 'bg-slate-900 text-white font-semibold shadow-sm' : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50 hover:text-slate-900 font-medium' ?>">
-                <span>ทั้งหมด (<?= $countAll ?>)</span>
-            </a>
+        <div class="flex flex-col md:flex-row md:items-center gap-2.5 md:gap-3 w-full md:w-auto">
+            <!-- Filter Header & All Pill -->
+            <div class="flex items-center gap-2 md:gap-3">
+                <span class="text-xs font-bold text-slate-500 mr-1 select-none whitespace-nowrap">ตัวกรอง:</span>
+                
+                <!-- All -->
+                <a href="?status=&search=<?= urlencode($search) ?>"
+                    class="inline-flex items-center justify-center gap-2 rounded-full px-5 md:px-6 py-2 md:py-2.5 text-xs transition-all <?= $statusFilter === '' ? 'bg-slate-900 text-white font-semibold shadow-sm' : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50 hover:text-slate-900 font-medium' ?>">
+                    <span>ทั้งหมด (<?= $countAll ?>)</span>
+                </a>
+            </div>
 
-            <!-- New (Blue) -->
-            <a href="?status=new&search=<?= urlencode($search) ?>"
-                class="inline-flex items-center gap-2.5 rounded-full px-6 py-2.5 text-xs transition-all <?= $statusFilter === 'new' ? 'bg-blue-600 text-white font-semibold shadow-sm' : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50 hover:text-slate-900 font-medium' ?>">
-                <span class="text-xs">📨</span>
-                <span>ข้อความใหม่</span>
-                <span class="inline-flex items-center justify-center min-w-[20px] px-2 py-0.5 rounded-full text-[11px] font-bold <?= $statusFilter === 'new' ? 'bg-white/20 text-white' : 'bg-blue-100 text-blue-700' ?>">
-                    <?= $countNew ?>
-                </span>
-            </a>
+            <!-- 4 Filter Buttons: Equal width 2x2 grid on mobile, inline-flex on desktop -->
+            <div class="filter-pills-grid grid grid-cols-2 gap-2 w-full md:flex md:items-center md:gap-2.5 md:w-auto">
+                <!-- New (Blue) -->
+                <a href="?status=new&search=<?= urlencode($search) ?>"
+                    class="w-full md:w-auto inline-flex items-center justify-between md:justify-center gap-2 rounded-full px-4 md:px-6 py-2.5 text-xs transition-all <?= $statusFilter === 'new' ? 'bg-blue-600 text-white font-semibold shadow-sm' : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50 hover:text-slate-900 font-medium' ?>">
+                    <span class="inline-flex items-center gap-1.5 truncate">
+                        <span class="text-xs">📨</span>
+                        <span class="truncate">ข้อความใหม่</span>
+                    </span>
+                    <span class="inline-flex items-center justify-center min-w-[20px] px-1.5 py-0.5 rounded-full text-[11px] font-bold shrink-0 <?= $statusFilter === 'new' ? 'bg-white/20 text-white' : 'bg-blue-100 text-blue-700' ?>">
+                        <?= $countNew ?>
+                    </span>
+                </a>
 
-            <!-- Read (Orange / Amber) -->
-            <a href="?status=read&search=<?= urlencode($search) ?>"
-                class="inline-flex items-center gap-2.5 rounded-full px-6 py-2.5 text-xs transition-all <?= $statusFilter === 'read' ? 'bg-amber-500 text-white font-semibold shadow-sm' : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50 hover:text-slate-900 font-medium' ?>">
-                <span class="text-xs">👀</span>
-                <span>อ่านแล้ว</span>
-                <span class="inline-flex items-center justify-center min-w-[20px] px-2 py-0.5 rounded-full text-[11px] font-bold <?= $statusFilter === 'read' ? 'bg-white/20 text-white' : 'bg-amber-100 text-amber-700' ?>">
-                    <?= $countRead ?>
-                </span>
-            </a>
+                <!-- Read (Orange / Amber) -->
+                <a href="?status=read&search=<?= urlencode($search) ?>"
+                    class="w-full md:w-auto inline-flex items-center justify-between md:justify-center gap-2 rounded-full px-4 md:px-6 py-2.5 text-xs transition-all <?= $statusFilter === 'read' ? 'bg-amber-500 text-white font-semibold shadow-sm' : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50 hover:text-slate-900 font-medium' ?>">
+                    <span class="inline-flex items-center gap-1.5 truncate">
+                        <span class="text-xs">👀</span>
+                        <span class="truncate">อ่านแล้ว</span>
+                    </span>
+                    <span class="inline-flex items-center justify-center min-w-[20px] px-1.5 py-0.5 rounded-full text-[11px] font-bold shrink-0 <?= $statusFilter === 'read' ? 'bg-white/20 text-white' : 'bg-amber-100 text-amber-700' ?>">
+                        <?= $countRead ?>
+                    </span>
+                </a>
 
-            <!-- Replied (Green / Emerald) -->
-            <a href="?status=replied&search=<?= urlencode($search) ?>"
-                class="inline-flex items-center gap-2.5 rounded-full px-6 py-2.5 text-xs transition-all <?= $statusFilter === 'replied' ? 'bg-emerald-600 text-white font-semibold shadow-sm' : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50 hover:text-slate-900 font-medium' ?>">
-                <span class="text-xs">💬</span>
-                <span>ตอบแล้ว</span>
-                <span class="inline-flex items-center justify-center min-w-[20px] px-2 py-0.5 rounded-full text-[11px] font-bold <?= $statusFilter === 'replied' ? 'bg-white/20 text-white' : 'bg-emerald-100 text-emerald-700' ?>">
-                    <?= $countReplied ?>
-                </span>
-            </a>
+                <!-- Replied (Green / Emerald) -->
+                <a href="?status=replied&search=<?= urlencode($search) ?>"
+                    class="w-full md:w-auto inline-flex items-center justify-between md:justify-center gap-2 rounded-full px-4 md:px-6 py-2.5 text-xs transition-all <?= $statusFilter === 'replied' ? 'bg-emerald-600 text-white font-semibold shadow-sm' : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50 hover:text-slate-900 font-medium' ?>">
+                    <span class="inline-flex items-center gap-1.5 truncate">
+                        <span class="text-xs">💬</span>
+                        <span class="truncate">ตอบแล้ว</span>
+                    </span>
+                    <span class="inline-flex items-center justify-center min-w-[20px] px-1.5 py-0.5 rounded-full text-[11px] font-bold shrink-0 <?= $statusFilter === 'replied' ? 'bg-white/20 text-white' : 'bg-emerald-100 text-emerald-700' ?>">
+                        <?= $countReplied ?>
+                    </span>
+                </a>
 
-            <!-- Archived (Red) -->
-            <a href="?status=archived&search=<?= urlencode($search) ?>"
-                class="inline-flex items-center gap-2.5 rounded-full px-6 py-2.5 text-xs transition-all <?= $statusFilter === 'archived' ? 'bg-red-600 text-white font-semibold shadow-sm' : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50 hover:text-slate-900 font-medium' ?>">
-                <span class="text-xs">📁</span>
-                <span>เก็บถาวร</span>
-                <span class="inline-flex items-center justify-center min-w-[20px] px-2 py-0.5 rounded-full text-[11px] font-bold <?= $statusFilter === 'archived' ? 'bg-white/20 text-white' : 'bg-red-100 text-red-700' ?>">
-                    <?= $countArchived ?>
-                </span>
-            </a>
+                <!-- Archived (Red) -->
+                <a href="?status=archived&search=<?= urlencode($search) ?>"
+                    class="w-full md:w-auto inline-flex items-center justify-between md:justify-center gap-2 rounded-full px-4 md:px-6 py-2.5 text-xs transition-all <?= $statusFilter === 'archived' ? 'bg-red-600 text-white font-semibold shadow-sm' : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50 hover:text-slate-900 font-medium' ?>">
+                    <span class="inline-flex items-center gap-1.5 truncate">
+                        <span class="text-xs">📁</span>
+                        <span class="truncate">เก็บถาวร</span>
+                    </span>
+                    <span class="inline-flex items-center justify-center min-w-[20px] px-1.5 py-0.5 rounded-full text-[11px] font-bold shrink-0 <?= $statusFilter === 'archived' ? 'bg-white/20 text-white' : 'bg-red-100 text-red-700' ?>">
+                        <?= $countArchived ?>
+                    </span>
+                </a>
+            </div>
         </div>
 
         <!-- Search Form (Spacious Pill Input with Icon) -->

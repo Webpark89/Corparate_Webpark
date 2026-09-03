@@ -90,7 +90,7 @@ $definedModules = [
         ]
     ],
     'users' => [
-        'name' => 'การจัดการผู้ดูแลระบบ (User & Access)',
+        'name' => 'การจัดการผู้ดูแลระบบ (User & Permission)',
         'actions' => [
             'create' => ['code' => 'users.create', 'name' => 'เพิ่มผู้ดูแลระบบ', 'col' => 'create'],
             'view'   => ['code' => 'users.view', 'name' => 'ดูรายชื่อผู้ดูแล', 'col' => 'read'],
@@ -173,7 +173,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-$pageTitle = 'สร้างบทบาทใหม่';
+$pageTitle = 'Create Role';
 $page = 'roles';
 require_once __DIR__ . '/../includes/header.php';
 ?>
@@ -239,7 +239,7 @@ input[type="checkbox"].matrix-checkbox:indeterminate::after {
             <span>/</span>
             <span style="color: #334155; font-weight: 500;">สร้างบทบาทใหม่</span>
         </div>
-        <h1 style="font-size: 1.25rem; font-weight: 700; color: #0f172a; margin: 0;">สร้างบทบาทและกำหนดสิทธิ์ (Add Role & Access)</h1>
+        <h1 style="font-size: 1.25rem; font-weight: 700; color: #0f172a; margin: 0;">สร้างบทบาทและกำหนดสิทธิ์ (Add Role & Permission)</h1>
     </header>
 
     <?php if ($error): ?>
@@ -297,11 +297,11 @@ input[type="checkbox"].matrix-checkbox:indeterminate::after {
             </div>
         </div>
 
-        <!-- Section 2: Role & Access Matrix -->
+        <!-- Section 2: Role & Permission Matrix -->
         <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 1rem; padding: 1.5rem 1.75rem; box-shadow: 0 1px 2px rgba(0,0,0,0.02);">
             <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1.25rem;">
                 <div>
-                    <h2 style="font-size: 1rem; font-weight: 700; color: #0f172a; margin: 0;">สิทธิ์การใช้งานตามโมดูล (Role & Access)</h2>
+                    <h2 style="font-size: 1rem; font-weight: 700; color: #0f172a; margin: 0;">สิทธิ์การใช้งานตามโมดูล (Role & Permission)</h2>
                     <p style="font-size: 0.75rem; color: #94a3b8; margin: 0.25rem 0 0 0;">กำหนดสิทธิ์การดู เพิ่ม แก้ไข และลบข้อมูลในแต่ละโมดูลอย่างละเอียด</p>
                 </div>
 
@@ -317,7 +317,7 @@ input[type="checkbox"].matrix-checkbox:indeterminate::after {
                         style="padding: 0.375rem 0.75rem; border-radius: 0.5rem; font-size: 0.75rem; font-weight: 600; color: #334155; border: none; background: transparent; cursor: pointer; transition: all 0.15s;"
                         onmouseover="this.style.backgroundColor='#ffffff'; this.style.boxShadow='0 1px 2px rgba(0,0,0,0.05)';"
                         onmouseout="this.style.backgroundColor='transparent'; this.style.boxShadow='none';">
-                        ดูอย่างเดียว (Read only)
+                        ดูอย่างเดียว (View only)
                     </button>
                     <button type="button" onclick="setPreset('none')"
                         style="padding: 0.375rem 0.75rem; border-radius: 0.5rem; font-size: 0.75rem; font-weight: 600; color: #64748b; border: none; background: transparent; cursor: pointer; transition: all 0.15s;"
@@ -354,7 +354,7 @@ input[type="checkbox"].matrix-checkbox:indeterminate::after {
                             <th style="padding: 0.875rem 1rem; text-align: center; min-width: 110px;">
                                 <label style="display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; cursor: pointer; user-select: none;">
                                     <input type="checkbox" class="matrix-checkbox column-toggle" data-col="read" onchange="toggleEntireColumn('read', this)">
-                                    <span style="font-weight: 700; font-size: 0.75rem; color: #0f172a;">Read (ดู)</span>
+                                    <span style="font-weight: 700; font-size: 0.75rem; color: #0f172a;">View (ดู)</span>
                                 </label>
                             </th>
 

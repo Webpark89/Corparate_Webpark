@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     require __DIR__ . '/_save.php';
 }
 
-$pageTitle = 'สร้างผลงานใหม่';
+$pageTitle = 'Create Portfolio';
 $page = 'portfolio';
 require_once __DIR__ . '/../includes/header.php';
 

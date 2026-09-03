@@ -6,7 +6,7 @@
 require_once __DIR__ . '/../includes/functions.php';
 require_permission('service.view');
 
-$pageTitle = 'การจัดการบริการ';
+$pageTitle = 'Services';
 $page = 'services';
 
 $services = db()->query('SELECT * FROM service ORDER BY created_at DESC')->fetchAll();

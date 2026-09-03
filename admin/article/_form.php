@@ -501,28 +501,31 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
             </section>
         </div>
         <div class="lg:col-span-12 pt-4">
-            <section class="sticky bottom-0 bg-white/90 backdrop-blur-sm p-4 -m-4 rounded-2xl border border-slate-200 shadow-sm">
-             <div class="flex items-center justify-between">
-            <a href="index.php" class="px-6 h-11 flex items-center justify-center rounded-xl border border-slate-200 text-slate-700 hover:bg-slate-50 transition">
-                ยกเลิก
-            </a>
-            <div class="flex items-center gap-3">
-                <button type="submit" name="status" value="draft" 
-                    class="px-6 h-11 rounded-xl border bg-amber-50 border-amber-300 text-amber-700 font-semibold hover:bg-amber-50 transition">
-                    บันทึกเป็นฉบับร่าง
-                </button>
-                <button type="submit" name="status" value="hidden" 
-                    class="px-6 h-11 rounded-xl border bg-slate-100 border-slate-300 text-slate-600 font-semibold hover:bg-slate-200 transition inline-flex items-center gap-2">
-                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
-                    บันทึกและซ่อน
-                </button>
-                <button type="submit" name="status" value="published" 
-                    class="px-6 h-11 rounded-xl border bg-emerald-50 border-emerald-300 text-emerald-700 font-semibold hover:bg-emerald-50 transition">
-                    บันทึกและเผยแพร่
-                </button>
-                 </div>
+            <section class="sticky bottom-0 bg-white/95 backdrop-blur-sm p-3 sm:p-4 -m-4 rounded-2xl border border-slate-200 shadow-sm z-20">
+                <div class="form-sticky-bar">
+                    <a href="index.php" class="btn-cancel flex items-center justify-center gap-1.5 rounded-xl border border-slate-200 text-slate-700 hover:bg-slate-50 font-medium transition">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="shrink-0 sm:hidden" style="width: 13px; height: 13px;"><path d="M18 6L6 18M6 6l12 12"/></svg>
+                        <span>ยกเลิก</span>
+                    </a>
+                    <div class="actions-group">
+                        <button type="submit" name="status" value="draft" 
+                            class="rounded-xl border bg-amber-50 border-amber-300 text-amber-700 font-semibold hover:bg-amber-100 transition flex items-center justify-center gap-1 sm:gap-2">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" class="shrink-0 sm:hidden" style="width: 13px; height: 13px;"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/></svg>
+                            <span class="hidden sm:inline">บันทึกเป็น</span>ฉบับร่าง
+                        </button>
+                        <button type="submit" name="status" value="hidden" 
+                            class="rounded-xl border bg-slate-100 border-slate-300 text-slate-600 font-semibold hover:bg-slate-200 transition flex items-center justify-center gap-1 sm:gap-2">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" class="shrink-0" style="width: 14px; height: 14px; min-width: 14px; max-width: 14px; max-height: 14px;"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                            <span class="hidden sm:inline">บันทึกและ</span>ซ่อน
+                        </button>
+                        <button type="submit" name="status" value="published" 
+                            class="rounded-xl border bg-emerald-50 border-emerald-300 text-emerald-700 font-semibold hover:bg-emerald-100 transition flex items-center justify-center gap-1 sm:gap-2">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="shrink-0 sm:hidden" style="width: 13px; height: 13px;"><polyline points="20 6 9 17 4 12"/></svg>
+                            <span class="hidden sm:inline">บันทึกและ</span>เผยแพร่
+                        </button>
                     </div>
-                </section>
+                </div>
+            </section>
         </div>
     </form>
 </div>

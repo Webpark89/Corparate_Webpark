@@ -7,7 +7,7 @@ if (!function_exists('e')) {
         return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
     }
 }
-$pageTitle = 'ไม่มีสิทธิ์เข้าถึง (403 Forbidden)';
+$pageTitle = '403 Forbidden';
 $adminUrl = defined('ADMIN_URL') ? ADMIN_URL : '/Corparate_Webpark/admin';
 $siteName = defined('SITE_NAME') ? SITE_NAME : 'Webpark';
 ?>

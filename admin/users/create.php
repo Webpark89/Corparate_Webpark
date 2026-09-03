@@ -86,7 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 // Render HTML Header only after POST handling
-$pageTitle = 'เพิ่มผู้ดูแลระบบใหม่';
+$pageTitle = 'Create User';
 $page = 'users';
 require_once __DIR__ . '/../includes/header.php';
 ?>
@@ -115,9 +115,9 @@ require_once __DIR__ . '/../includes/header.php';
         <div style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; color: #94a3b8; margin-bottom: 0.25rem;">
             <a href="index.php" style="color: #64748b; text-decoration: none;">การจัดการผู้ดูแลระบบ</a>
             <span>/</span>
-            <span style="color: #334155; font-weight: 500;">เพิ่มผู้ดูแลระบบใหม่</span>
+            <span style="color: #334155; font-weight: 500;">เพิ่มผู้ใช้งานใหม่</span>
         </div>
-        <h1 style="font-size: 1.25rem; font-weight: 700; color: #0f172a; margin: 0;">เพิ่มผู้ดูแลระบบใหม่ (Add User)</h1>
+        <h1 style="font-size: 1.25rem; font-weight: 700; color: #0f172a; margin: 0;">เพิ่มผู้ใช้งานใหม่ (Add User)</h1>
     </header>
 
     <?php if ($error): ?>

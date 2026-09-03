@@ -49,7 +49,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>เปลี่ยนรหัสผ่าน | <?= e(SITE_NAME) ?></title>
+    <script>
+        (function() {
+            function enforceMobileTargetViewport() {
+                var targetWidth = 390;
+                var sw = (window.innerWidth && window.innerWidth < 768 && window.screen.width >= 768) ? window.innerWidth : window.screen.width;
+                var vp = document.querySelector('meta[name="viewport"]');
+                if (!vp) return;
+
+                if (sw > 0 && sw < 768) {
+                    var scale = sw / targetWidth;
+                    vp.setAttribute('content', 'width=' + targetWidth + ', initial-scale=' + scale + ', maximum-scale=' + scale + ', user-scalable=no, viewport-fit=cover');
+                } else {
+                    vp.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover');
+                }
+            }
+            enforceMobileTargetViewport();
+            window.addEventListener('resize', enforceMobileTargetViewport);
+            window.addEventListener('orientationchange', enforceMobileTargetViewport);
+        })();
+    </script>
+    <title>Change Password | <?= e(SITE_NAME) ?></title>
     <link rel="icon" type="image/png" href="<?= ADMIN_URL ?>/assets/images/logo.png">
     <link rel="apple-touch-icon" href="<?= ADMIN_URL ?>/assets/images/logo.png">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+Thai:wght@400;600;700&display=swap" rel="stylesheet">
@@ -81,7 +101,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <img src="<?= ADMIN_URL ?>/assets/images/logo.png" alt="Logo" class="h-12 w-auto">
                     </div>
                     <h1 class="text-2xl font-bold text-slate-800 tracking-tight">
-                        เปลี่ยนรหัสผ่าน
+                        Change Password
                     </h1>
                 </div>
 

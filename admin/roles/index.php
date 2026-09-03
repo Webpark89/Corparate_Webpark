@@ -52,7 +52,7 @@ $stmt->bindValue(':offset', (int)$pagination['offset'], PDO::PARAM_INT);
 $stmt->execute();
 $roles = $stmt->fetchAll();
 
-$pageTitle = 'การจัดการบทบาทและสิทธิ์ (Roles & Permissions)';
+$pageTitle = 'Roles & Permissions';
 $page = 'roles';
 require_once __DIR__ . '/../includes/header.php';
 ?>

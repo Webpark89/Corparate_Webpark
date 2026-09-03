@@ -20,7 +20,7 @@ if (!$portfolio) {
     exit('ไม่พบข้อมูลผลงานในระบบ (Portfolio not found.)');
 }
 
-$pageTitle = 'แก้ไขข้อมูลผลงาน';
+$pageTitle = 'Edit Portfolio';
 $page = 'portfolio';
 $action = 'edit';
 $formAction = 'edit.php?id=' . $id;

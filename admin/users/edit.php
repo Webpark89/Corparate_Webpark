@@ -149,7 +149,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 // Render HTML Header only after POST handling
-$pageTitle = 'แก้ไขข้อมูลผู้ดูแลระบบ: ' . $user['username'];
+$pageTitle = 'Edit User: ' . $user['username'];
 $page = 'users';
 require_once __DIR__ . '/../includes/header.php';
 ?>
