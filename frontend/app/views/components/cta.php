@@ -10,23 +10,118 @@ $errors = $errors ?? [];
 $submitted = $submitted ?? false;
 $form = $form ?? [];
 
-$recaptchaSiteKey = '6Lcf_pAtAAAAAOVhatPPwrHSYXeb_0J4yXf5BrRO';
+$recaptchaSiteKey = recaptcha_site_key();
 
-if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST' && (isset($_POST['pdpa_agreed']) || isset($_POST['privacy_agreed']))) {
+if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST' && (isset($_POST['cta_form']) || isset($_POST['pdpa_agreed']) || isset($_POST['privacy_agreed']) || (isset($_POST['firstname']) && isset($_POST['phone'])))) {
+    $firstName = trim((string) ($_POST['firstname'] ?? ''));
+    $lastName = trim((string) ($_POST['lastname'] ?? ''));
+    $postedName = trim((string) ($_POST['name'] ?? ''));
+    $finalName = $postedName;
+    if ($finalName === '' && ($firstName !== '' || $lastName !== '')) {
+        $finalName = trim($firstName . ' ' . $lastName);
+    }
+
     $form = [
-        'name' => trim((string) ($_POST['name'] ?? '')),
-        'firstname' => trim((string) ($_POST['firstname'] ?? '')),
-        'lastname' => trim((string) ($_POST['lastname'] ?? '')),
+        'name' => $finalName,
+        'firstname' => $firstName,
+        'lastname' => $lastName,
+        'company' => trim((string) ($_POST['company'] ?? '')),
         'phone' => trim((string) ($_POST['phone'] ?? '')),
         'email' => trim((string) ($_POST['email'] ?? '')),
         'message' => trim((string) ($_POST['message'] ?? '')),
+        'pdpa_agreed' => !empty($_POST['pdpa_agreed']) || !empty($_POST['privacy_agreed']),
     ];
     
-    $recaptchaResponse = $_POST['g-recaptcha-response'] ?? '';
-    if (empty($recaptchaResponse)) {
-        $errors[] = getCurrentLang() === 'th' ? 'กรุณาเลือกช่องยืนยันตัวตน (I\'m not a robot)' : 'Please verify that you are not a robot';
-    } else {
+    // Security 1: Validate CSRF Token
+    if (!verify_csrf_token()) {
+        $errors[] = getCurrentLang() === 'th' ? 'เซสชันการใช้งานหมดอายุหรือไม่ถูกต้อง กรุณารีเฟรชหน้าเว็บและลองใหม่อีกครั้ง' : 'Session expired or invalid token. Please refresh and try again.';
+    }
+
+    // Security 2: Validate Google reCAPTCHA
+    $recaptchaResponse = (string) ($_POST['g-recaptcha-response'] ?? '');
+    $recaptchaResult = verify_recaptcha($recaptchaResponse, $_SERVER['REMOTE_ADDR'] ?? null);
+    if (!$recaptchaResult['success']) {
+        $errors[] = $recaptchaResult['message'];
+    }
+
+    // Security 3: Validate PDPA Consent
+    if (empty($_POST['pdpa_agreed']) && empty($_POST['privacy_agreed'])) {
+        $errors[] = getCurrentLang() === 'th' ? 'กรุณายอมรับนโยบายความเป็นส่วนตัว' : 'Please accept the privacy policy.';
+    }
+
+    // Field Validations (Same as main contact form)
+    if ($firstName === '' && $form['name'] === '') {
+        $errors[] = getCurrentLang() === 'th' ? 'กรุณากรอกชื่อ' : 'Please enter your first name.';
+    } elseif (preg_match('/\d/', $firstName) || preg_match('/\d/', $lastName)) {
+        $errors[] = getCurrentLang() === 'th' ? 'ชื่อ-นามสกุลต้องเป็นตัวอักษรเท่านั้น (ห้ามมีตัวเลข)' : 'Name must contain only letters.';
+    }
+
+    if ($form['company'] === '') {
+        $errors[] = getCurrentLang() === 'th' ? 'กรุณากรอกชื่อบริษัท (หากไม่มีให้ใส่ -)' : 'Please enter company name.';
+    }
+
+    if ($form['phone'] === '') {
+        $errors[] = getCurrentLang() === 'th' ? 'กรุณากรอกเบอร์โทรศัพท์' : 'Please enter phone number.';
+    } elseif (!preg_match('/^[0-9]{9,10}$/', $form['phone'])) {
+        $errors[] = getCurrentLang() === 'th' ? 'เบอร์โทรศัพท์ต้องเป็นตัวเลข 9-10 หลัก' : 'Phone number must be 9-10 digits.';
+    }
+
+    if ($form['email'] === '') {
+        $errors[] = getCurrentLang() === 'th' ? 'กรุณากรอกอีเมล' : 'Please enter email address.';
+    } elseif (!filter_var($form['email'], FILTER_VALIDATE_EMAIL)) {
+        $errors[] = getCurrentLang() === 'th' ? 'รูปแบบอีเมลไม่ถูกต้อง' : 'Invalid email format.';
+    }
+
+    $nameLength = function_exists('mb_strlen') ? mb_strlen($form['name']) : strlen($form['name']);
+    $emailLength = function_exists('mb_strlen') ? mb_strlen($form['email']) : strlen($form['email']);
+    $msgLength = function_exists('mb_strlen') ? mb_strlen($form['message']) : strlen($form['message']);
+
+    if ($nameLength > 100) {
+        $errors[] = getCurrentLang() === 'th' ? 'ชื่อยาวเกินไป (ไม่เกิน 100 ตัวอักษร)' : 'Name too long (max 100 chars).';
+    }
+
+    if ($emailLength > 255) {
+        $errors[] = getCurrentLang() === 'th' ? 'อีเมลยาวเกินไป' : 'Email too long.';
+    }
+
+    if ($msgLength > 250) {
+        $errors[] = getCurrentLang() === 'th' ? 'รายละเอียดข้อความต้องไม่เกิน 250 ตัวอักษร' : 'Message must not exceed 250 characters.';
+    }
+
+    if ($errors === []) {
         $submitted = true;
+
+        $msgData = [
+            'company_name' => $form['company'],
+            'first_name' => $form['firstname'] !== '' ? $form['firstname'] : $form['name'],
+            'last_name' => $form['lastname'],
+            'phone' => $form['phone'],
+            'email' => $form['email'],
+            'message' => $form['message'] !== '' ? $form['message'] : 'ติดต่อผ่านฟอร์ม CTA',
+            'pdpa_consent' => 1,
+            'pdpa_consent_at' => date('Y-m-d H:i:s'),
+            'status' => 'new',
+            'ip_address' => $_SERVER['REMOTE_ADDR'] ?? null,
+            'user_agent' => $_SERVER['HTTP_USER_AGENT'] ?? null,
+            'source_page' => 'CTA (' . ($_SERVER['REQUEST_URI'] ?? 'inline') . ')',
+            'email_sent' => 0,
+        ];
+
+        try {
+            $contactModel = new ContactMessage();
+            $insertedId = $contactModel->create($msgData);
+
+            // Send email notification to configured recipient
+            $allSettings = (new Setting())->all();
+            $mailSent = Mailer::sendContactNotification($msgData, $allSettings);
+            if ($mailSent && $insertedId > 0) {
+                $contactModel->updateEmailSent($insertedId, true);
+            }
+        } catch (\Throwable $e) {
+            error_log('[CTA Contact Form] Submit Error: ' . $e->getMessage());
+        }
+
+        csrf_token_regenerate();
     }
 }
 
@@ -94,6 +189,8 @@ $contactButtonUrl = $cbuttonUrl ?? '/contact';
                             }
                         </style>
                         <form id="ctaContactForm" method="post" novalidate class="space-y-4">
+                            <?= csrf_field() ?>
+                            <input type="hidden" name="cta_form" value="1">
                             
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
@@ -205,7 +302,7 @@ $contactButtonUrl = $cbuttonUrl ?? '/contact';
                             <!-- PDPA Consent Checkbox -->
                             <div class="pt-2">
                                 <div class="flex items-start gap-3">
-                                    <input type="checkbox" id="privacy_consent_checkbox_cta" name="pdpa_agreed" value="1" class="mt-1 w-4 h-4 rounded border-slate-300 text-primary focus:ring-primary cursor-pointer transition-all duration-200">
+                                    <input type="checkbox" id="privacy_consent_checkbox_cta" name="pdpa_agreed" value="1" <?= !empty($form['pdpa_agreed']) ? 'checked' : '' ?> class="mt-1 w-4 h-4 rounded border-slate-300 text-primary focus:ring-primary cursor-pointer transition-all duration-200">
                                     <label for="privacy_consent_checkbox_cta" class="text-sm md:text-base leading-relaxed cursor-pointer select-none text-left">
                                         <span style="color: #022862;"><?= e(t('common.form_consent_prefix')) ?></span> <a href="#" id="ctaPrivacyModalTrigger" style="color: #0663F6;" class="hover:underline transition-colors duration-200"><?= e(t('common.form_consent_privacy_policy')) ?></a> <span style="color: #0663F6;"><?= e(t('common.form_consent_terms_suffix')) ?></span>
                                     </label>
@@ -214,8 +311,9 @@ $contactButtonUrl = $cbuttonUrl ?? '/contact';
                             </div>
 
                             <!-- Google reCAPTCHA v2 Widget -->
-                            <div class="pt-2 pb-1 flex justify-center sm:justify-start">
-                                <div class="g-recaptcha" data-sitekey="<?= e($recaptchaSiteKey) ?>"></div>
+                            <div class="pt-2 pb-1 flex flex-col items-center sm:items-start">
+                                <div class="g-recaptcha" data-sitekey="<?= e($recaptchaSiteKey) ?>" data-expired-callback="onCtaRecaptchaExpired"></div>
+                                <p id="contact_recaptcha_cta_error" class="hidden cta-error-text mt-1.5"></p>
                             </div>
 
                             <?php if ($errors !== []): ?>
@@ -258,6 +356,7 @@ $contactButtonUrl = $cbuttonUrl ?? '/contact';
                                 const emailCtaErr = document.getElementById('contact_email_cta_error');
                                 const msgCtaErr = document.getElementById('contact_message_cta_error');
                                 const pdpaCtaErr = document.getElementById('contact_pdpa_cta_error');
+                                const recaptchaCtaErr = document.getElementById('contact_recaptcha_cta_error');
 
                                 function setCtaError(inputEl, errorEl, msg) {
                                     if (inputEl) inputEl.classList.add('is-invalid-cta');
@@ -274,6 +373,13 @@ $contactButtonUrl = $cbuttonUrl ?? '/contact';
                                         errorEl.classList.add('hidden');
                                     }
                                 }
+
+                                window.onCtaRecaptchaExpired = function() {
+                                    setCtaError(null, recaptchaCtaErr, 'การยืนยันตัวตน reCAPTCHA หมดอายุ กรุณาติ๊กยืนยันตัวตนใหม่อีกครั้ง');
+                                    if (typeof grecaptcha !== 'undefined') {
+                                        grecaptcha.reset();
+                                    }
+                                };
 
                                 const ctaMsgCounter = document.getElementById('contact_cta_msg_counter');
 
@@ -378,6 +484,17 @@ $contactButtonUrl = $cbuttonUrl ?? '/contact';
                                             setCtaError(null, pdpaCtaErr, 'กรุณายอมรับนโยบายความเป็นส่วนตัว');
                                             isValid = false;
                                             if (!firstInvalid) firstInvalid = privacyCbCta;
+                                        }
+
+                                        if (typeof grecaptcha !== 'undefined') {
+                                            const recaptchaToken = grecaptcha.getResponse();
+                                            if (!recaptchaToken) {
+                                                setCtaError(null, recaptchaCtaErr, 'กรุณายืนยันตัวตนว่าไม่ใช่โปรแกรมอัตโนมัติ (reCAPTCHA)');
+                                                isValid = false;
+                                                if (!firstInvalid) firstInvalid = document.querySelector('#ctaContactForm .g-recaptcha');
+                                            } else {
+                                                clearCtaError(null, recaptchaCtaErr);
+                                            }
                                         }
 
                                         if (!isValid) {

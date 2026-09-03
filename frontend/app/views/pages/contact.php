@@ -5,7 +5,7 @@ declare(strict_types=1);
  */
 $errors = $errors ?? [];
 $submitted = $submitted ?? false;
-$recaptchaSiteKey = '6Lcf_pAtAAAAAOVhatPPwrHSYXeb_0J4yXf5BrRO';
+$recaptchaSiteKey = recaptcha_site_key();
 ?>
 <style>
     /* คงไว้แค่แอนิเมชันตอนโหลดหน้าสไลด์ขึ้น */
@@ -254,6 +254,7 @@ $recaptchaSiteKey = '6Lcf_pAtAAAAAOVhatPPwrHSYXeb_0J4yXf5BrRO';
                             }
                         </style>
                         <form id="contactMainForm" method="post" novalidate class="flex flex-col flex-grow space-y-4">
+                            <?= csrf_field() ?>
                             <!-- Name Fields -->
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
@@ -375,8 +376,9 @@ $recaptchaSiteKey = '6Lcf_pAtAAAAAOVhatPPwrHSYXeb_0J4yXf5BrRO';
                             </div>
 
                             <!-- Google reCAPTCHA v2 Widget -->
-                            <div class="pt-2 pb-1 flex justify-center sm:justify-start">
-                                <div class="g-recaptcha" data-sitekey="<?= e($recaptchaSiteKey) ?>"></div>
+                            <div class="pt-2 pb-1 flex flex-col items-center sm:items-start">
+                                <div class="g-recaptcha" data-sitekey="<?= e($recaptchaSiteKey) ?>" data-expired-callback="onRecaptchaExpired"></div>
+                                <p id="contact_recaptcha_error" class="hidden contact-error-text mt-1.5"></p>
                             </div>
 
                             <!-- Error Message Alerts -->
@@ -423,6 +425,7 @@ $recaptchaSiteKey = '6Lcf_pAtAAAAAOVhatPPwrHSYXeb_0J4yXf5BrRO';
                                 const emailErr = document.getElementById('contact_email_error');
                                 const msgErr = document.getElementById('contact_message_error');
                                 const pdpaErr = document.getElementById('contact_pdpa_error');
+                                const recaptchaErr = document.getElementById('contact_recaptcha_error');
 
                                 function setFieldError(inputEl, errorEl, msg) {
                                     if (inputEl) inputEl.classList.add('is-invalid-contact');
@@ -439,6 +442,13 @@ $recaptchaSiteKey = '6Lcf_pAtAAAAAOVhatPPwrHSYXeb_0J4yXf5BrRO';
                                         errorEl.classList.add('hidden');
                                     }
                                 }
+
+                                window.onRecaptchaExpired = function() {
+                                    setFieldError(null, recaptchaErr, 'การยืนยันตัวตน reCAPTCHA หมดอายุ กรุณาติ๊กยืนยันตัวตนใหม่อีกครั้ง');
+                                    if (typeof grecaptcha !== 'undefined') {
+                                        grecaptcha.reset();
+                                    }
+                                };
 
                                 const msgCounter = document.getElementById('contact_msg_counter');
 
@@ -549,6 +559,17 @@ $recaptchaSiteKey = '6Lcf_pAtAAAAAOVhatPPwrHSYXeb_0J4yXf5BrRO';
                                             setFieldError(null, pdpaErr, 'กรุณายอมรับนโยบายความเป็นส่วนตัว');
                                             isValid = false;
                                             if (!firstInvalid) firstInvalid = privacyCb;
+                                        }
+
+                                        if (typeof grecaptcha !== 'undefined') {
+                                            const recaptchaToken = grecaptcha.getResponse();
+                                            if (!recaptchaToken) {
+                                                setFieldError(null, recaptchaErr, 'กรุณายืนยันตัวตนว่าไม่ใช่โปรแกรมอัตโนมัติ (reCAPTCHA)');
+                                                isValid = false;
+                                                if (!firstInvalid) firstInvalid = document.querySelector('.g-recaptcha');
+                                            } else {
+                                                clearFieldError(null, recaptchaErr);
+                                            }
                                         }
 
                                         if (!isValid) {

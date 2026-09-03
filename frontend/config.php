@@ -28,4 +28,8 @@ return [
         ],
         'hours' => 'จันทร์ – ศุกร์ · 9:00 – 18:00',
     ],
+    'recaptcha' => [
+        'site_key' => getenv('RECAPTCHA_SITE_KEY') ?: '6Lcf_pAtAAAAAOVhatPPwrHSYXeb_0J4yXf5BrRO',
+        'secret_key' => getenv('RECAPTCHA_SECRET_KEY') ?: '',
+    ],
 ];

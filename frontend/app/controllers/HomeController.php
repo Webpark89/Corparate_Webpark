@@ -940,12 +940,30 @@ class HomeController
             'phone' => trim((string) ($_POST['phone'] ?? '')),
             'inquiry' => trim((string) ($_POST['inquiry'] ?? 'Sales')),
             'message' => trim((string) ($_POST['message'] ?? '')),
+            'pdpa_agreed' => !empty($_POST['pdpa_agreed']),
         ];
 
         $submitted = false;
         $errors = [];
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // 1. Security Check: Validate CSRF Token
+            if (!verify_csrf_token()) {
+                $errors[] = 'เซสชันการใช้งานหมดอายุหรือไม่ถูกต้อง กรุณารีเฟรชหน้าเว็บและลองใหม่อีกครั้ง';
+            }
+
+            // 2. Security Check: Validate Google reCAPTCHA v2 (Server-Side)
+            $recaptchaToken = (string) ($_POST['g-recaptcha-response'] ?? '');
+            $recaptchaResult = verify_recaptcha($recaptchaToken, $_SERVER['REMOTE_ADDR'] ?? null);
+            if (!$recaptchaResult['success']) {
+                $errors[] = $recaptchaResult['message'];
+            }
+
+            // 3. Security Check: Validate PDPA Consent
+            if (empty($_POST['pdpa_agreed'])) {
+                $errors[] = 'กรุณายอมรับนโยบายความเป็นส่วนตัว';
+            }
+
             if ($firstName === '' && $form['name'] === '') {
                 $errors[] = 'กรุณากรอกชื่อ';
             } elseif (preg_match('/\d/', $firstName) || preg_match('/\d/', $lastName)) {
@@ -1016,6 +1034,9 @@ class HomeController
                 } catch (Throwable $e) {
                     error_log('[Contact Form] Submit Error: ' . $e->getMessage());
                 }
+
+                // Security: Regenerate CSRF token on successful submission
+                csrf_token_regenerate();
             }
         }
 
