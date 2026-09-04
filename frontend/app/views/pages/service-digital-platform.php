@@ -72,6 +72,17 @@ $heroBgImage = asset_url('images/digital-platform-hero-bg.png');
     @media (max-width: 640px) {
         .dp-intro-right-grid {
             grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
+            border-top: 1.5px solid #cbd5e1 !important;
+        }
+        .dp-intro-pillar-card {
+            border-bottom: 1.5px solid #cbd5e1 !important;
+            padding-top: 2rem !important;
+            padding-bottom: 2rem !important;
+            padding-left: 1.25rem !important;
+            padding-right: 1.25rem !important;
+        }
+        .dp-intro-pillar-card:last-child {
+            border-bottom: none !important;
         }
     }
 
@@ -192,34 +203,41 @@ $heroBgImage = asset_url('images/digital-platform-hero-bg.png');
             grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
         }
         .dp-intro-pillar-card {
-            padding: 1.5rem 0.5rem !important;
+            padding: 1.25rem 0.35rem !important;
             border-bottom: none !important;
-            border-right: 1px solid #f1f5f9 !important;
+            border-right: 1.5px solid #e2e8f0 !important;
             border-top: none !important;
             border-left: none !important;
+            justify-content: flex-start !important;
         }
         .dp-intro-pillar-card:last-child {
             border-right: none !important;
         }
-        .dp-intro-pillar-card h3 {
-            font-size: 0.95rem !important;
-            line-height: 1.35 !important;
-            min-height: 2.5rem !important;
-            display: flex !important;
-            align-items: center !important;
-            justify-content: center !important;
-            text-align: center !important;
+        .dp-intro-pillar-card > div:first-child {
+            width: auto !important;
+            height: auto !important;
+            min-height: 0 !important;
             margin-bottom: 0.35rem !important;
         }
+        .dp-intro-pillar-card svg {
+            width: 3rem !important;
+            height: 3rem !important;
+            margin-bottom: 0 !important;
+        }
+        .dp-intro-pillar-card h3 {
+            font-size: 0.95rem !important;
+            line-height: 1.25 !important;
+            min-height: auto !important;
+            display: block !important;
+            text-align: center !important;
+            margin-bottom: 0.25rem !important;
+        }
         .dp-intro-pillar-card p {
-            font-size: 0.775rem !important;
+            font-size: 0.75rem !important;
             line-height: 1.35 !important;
             text-align: center !important;
-        }
-        .dp-intro-pillar-card svg {
-            width: 3.25rem !important;
-            height: 3.25rem !important;
-            margin-bottom: 0.5rem !important;
+            padding-left: 0.2rem !important;
+            padding-right: 0.2rem !important;
         }
 
         /* Section 3: 10 Solutions Grid (2 columns x 5 rows like landscape) */
@@ -237,22 +255,23 @@ $heroBgImage = asset_url('images/digital-platform-hero-bg.png');
             gap: 1.25rem !important;
         }
         .dp-benefits-grid > div {
-            padding: 2rem 1.5rem !important;
-        }
-        .dp-benefits-grid h3 {
-            font-size: 1.15rem !important;
-            min-height: 2.75rem !important;
-            line-height: 1.35 !important;
-            margin-bottom: 0.5rem !important;
-        }
-        .dp-benefits-grid p {
-            font-size: 0.925rem !important;
-            line-height: 1.55 !important;
+            padding: 1.5rem 1.25rem !important;
         }
         .dp-benefits-grid svg {
-            width: 3.75rem !important;
-            height: 3.75rem !important;
-            margin-bottom: 0.75rem !important;
+            width: 3.25rem !important;
+            height: 3.25rem !important;
+            margin-bottom: 0.35rem !important;
+        }
+        .dp-benefits-grid h3 {
+            font-size: 1.05rem !important;
+            min-height: auto !important;
+            line-height: 1.25 !important;
+            margin-bottom: 0.25rem !important;
+        }
+        .dp-benefits-grid p {
+            font-size: 0.825rem !important;
+            line-height: 1.4 !important;
+            margin-top: 0 !important;
         }
 
         /* Card 5: ล่าง 1 ยาว (Spans 2 columns, wide layout) */
@@ -263,15 +282,15 @@ $heroBgImage = asset_url('images/digital-platform-hero-bg.png');
             flex-direction: row !important;
             align-items: center !important;
             justify-content: center !important;
-            gap: 2rem !important;
-            padding: 2rem 3rem !important;
+            gap: 1.5rem !important;
+            padding: 1.5rem 2.5rem !important;
             text-align: left !important;
         }
         .dp-benefit-card-last svg {
             margin-bottom: 0 !important;
             flex-shrink: 0 !important;
-            width: 4.25rem !important;
-            height: 4.25rem !important;
+            width: 3.5rem !important;
+            height: 3.5rem !important;
         }
         .dp-benefit-card-last .dp-benefit-content {
             align-items: flex-start !important;
@@ -281,12 +300,13 @@ $heroBgImage = asset_url('images/digital-platform-hero-bg.png');
             text-align: left !important;
             justify-content: flex-start !important;
             min-height: auto !important;
-            margin-bottom: 0.25rem !important;
-            font-size: 1.25rem !important;
+            margin-bottom: 0.15rem !important;
+            font-size: 1.15rem !important;
         }
         .dp-benefit-card-last p {
             text-align: left !important;
-            font-size: 0.95rem !important;
+            font-size: 0.85rem !important;
+            margin-top: 0 !important;
         }
 
         /* Section 5: Portfolio Showcase Grid (4 cards in 1 row like landscape) */
@@ -353,22 +373,75 @@ $heroBgImage = asset_url('images/digital-platform-hero-bg.png');
             display: none !important;
         }
         .dp-benefits-grid h3 {
-            font-size: 1.15rem !important;
-            white-space: nowrap !important;
+            font-size: 1.1rem !important;
+            white-space: normal !important;
             min-height: auto !important;
-            margin-bottom: 0.5rem !important;
+            margin-bottom: 0.25rem !important;
         }
         .dp-benefits-grid p {
-            font-size: 0.9rem !important;
-            white-space: nowrap !important;
+            font-size: 0.85rem !important;
+            white-space: normal !important;
+            margin-top: 0 !important;
         }
         .dp-showcase-grid h3 {
             font-size: 0.95rem !important;
         }
+        .dp-intro-pillar-card {
+            padding: 1.25rem 0.35rem !important;
+            justify-content: flex-start !important;
+        }
+        .dp-intro-pillar-card > div:first-child {
+            width: auto !important;
+            height: auto !important;
+            min-height: 0 !important;
+            margin-bottom: 0.35rem !important;
+        }
+        .dp-intro-pillar-card svg {
+            width: 3.25rem !important;
+            height: 3.25rem !important;
+            margin-bottom: 0 !important;
+        }
+        .dp-intro-pillar-card h3 {
+            font-size: 1rem !important;
+            line-height: 1.25 !important;
+            min-height: auto !important;
+            margin-bottom: 0.25rem !important;
+        }
+        .dp-intro-pillar-card p {
+            font-size: 0.825rem !important;
+            line-height: 1.35 !important;
+        }
     }
 
-    /* Mobile & iPad Spacing and 2-2-1 Benefits Layout (Both Mobile and iPad up to 1440px) */
-    @media (max-width: 1440px) {
+    /* Desktop (1025px+) */
+    @media (min-width: 1025px) {
+        .dp-solutions-grid {
+            display: grid !important;
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+            gap: 1.5rem !important;
+        }
+        .dp-benefits-grid {
+            display: grid !important;
+            grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+            gap: 1.25rem !important;
+        }
+        .dp-benefits-grid > div {
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            text-align: center !important;
+            grid-column: auto !important;
+        }
+        .dp-benefits-grid > div.dp-benefit-card-last {
+            grid-column: auto !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            text-align: center !important;
+        }
+    }
+
+    /* Mobile & iPad (<= 1024px): 2-2-1 Benefits Layout */
+    @media (max-width: 1024px) {
         .dp-intro-section {
             padding-bottom: 2rem !important;
             margin-bottom: 0px !important;
@@ -461,22 +534,113 @@ $heroBgImage = asset_url('images/digital-platform-hero-bg.png');
         }
     }
 
-    @media (min-width: 760px) and (max-width: 1440px) {
+    @media (min-width: 1024px) and (max-width: 1280px) {
         .dp-benefits-grid {
-            gap: 1.25rem !important;
+            gap: 0.75rem !important;
         }
         .dp-benefits-grid > div {
-            padding: 2rem 1.5rem !important;
+            padding: 1.5rem 0.65rem !important;
         }
-        .dp-benefits-grid > div.dp-benefit-card-last {
-            gap: 2rem !important;
-            padding: 2rem 3rem !important;
+        .dp-benefits-grid h3 {
+            font-size: clamp(0.85rem, 1.05vw, 1rem) !important;
+            white-space: normal !important;
+            word-break: break-word !important;
+            line-height: 1.3 !important;
+            min-height: auto !important;
+            margin-bottom: 0.25rem !important;
         }
         .dp-benefits-grid p {
-            white-space: nowrap !important;
+            font-size: clamp(0.72rem, 0.9vw, 0.82rem) !important;
+            white-space: normal !important;
+            word-break: break-word !important;
+            line-height: 1.4 !important;
+            margin-top: 0 !important;
         }
         .dp-benefits-grid p br {
-            display: none !important;
+            display: inline !important;
+        }
+    }
+
+    /* iPad Portrait ONLY (All iPads 760px - 1100px Portrait) - Ultra Tight Spacing */
+    @media (min-width: 760px) and (max-width: 1100px) and (orientation: portrait) {
+        .dp-benefits-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+            gap: 1rem !important;
+        }
+        .dp-benefits-grid > div {
+            padding: 1.25rem 1rem !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: center !important;
+            min-height: auto !important;
+        }
+        .dp-benefits-grid svg {
+            width: 3.25rem !important;
+            height: 3.25rem !important;
+            margin-bottom: 0.35rem !important;
+        }
+        .dp-benefits-grid .dp-benefit-content {
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: center !important;
+            margin-top: 0 !important;
+            gap: 0 !important;
+        }
+        .dp-benefits-grid h3 {
+            font-size: 1.05rem !important;
+            min-height: 0 !important;
+            line-height: 1.25 !important;
+            margin-top: 0 !important;
+            margin-bottom: 0.2rem !important;
+            display: block !important;
+            text-align: center !important;
+        }
+        .dp-benefits-grid p {
+            font-size: 0.8rem !important;
+            line-height: 1.35 !important;
+            margin-top: 0 !important;
+            margin-bottom: 0 !important;
+            text-align: center !important;
+        }
+
+        /* Card 5: Full width bottom card */
+        .dp-benefit-card-last {
+            grid-column: span 2 / span 2 !important;
+            width: 100% !important;
+            display: flex !important;
+            flex-direction: row !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 1.25rem !important;
+            padding: 1.25rem 2rem !important;
+            text-align: left !important;
+        }
+        .dp-benefit-card-last svg {
+            margin-bottom: 0 !important;
+            flex-shrink: 0 !important;
+            width: 3.5rem !important;
+            height: 3.5rem !important;
+        }
+        .dp-benefit-card-last .dp-benefit-content {
+            align-items: flex-start !important;
+            text-align: left !important;
+            margin-top: 0 !important;
+            gap: 0 !important;
+        }
+        .dp-benefit-card-last h3 {
+            text-align: left !important;
+            min-height: 0 !important;
+            margin-top: 0 !important;
+            margin-bottom: 0.15rem !important;
+            font-size: 1.1rem !important;
+        }
+        .dp-benefit-card-last p {
+            text-align: left !important;
+            font-size: 0.825rem !important;
+            margin-top: 0 !important;
+            margin-bottom: 0 !important;
         }
     }
 </style>
@@ -486,21 +650,21 @@ $heroBgImage = asset_url('images/digital-platform-hero-bg.png');
 =========================================== -->
 <section id="dp-hero" class="relative font-sans bg-[#f7faff] overflow-hidden pt-8 pb-16 lg:pt-16 lg:pb-28">
     <!-- Desktop Background Banner -->
-    <div class="absolute inset-0 z-0 hidden lg:block overflow-hidden pointer-events-none">
+    <div class="absolute inset-0 z-0 hidden lg:block overflow-hidden pointer-events-none" style="position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0;">
         <img src="<?= e($heroBgImage) ?>" alt="Digital Platform Background" 
-            class="w-full h-full object-cover object-[right_center]"
-            style="filter: contrast(1.04) saturate(1.05);">
-        <div class="absolute inset-0 bg-gradient-to-r from-white/95 via-white/50 to-transparent"></div>
-        <div class="absolute inset-x-0 bottom-0 h-[20%] bg-gradient-to-t from-white to-transparent z-10"></div>
+            class="w-full h-full object-cover"
+            style="width: 100%; height: 100%; object-fit: cover; object-position: right center; filter: contrast(1.04) saturate(1.05);">
+        <div style="position: absolute; inset: 0; background: linear-gradient(to right, rgba(255,255,255,0.96) 0%, rgba(255,255,255,0.65) 50%, rgba(255,255,255,0) 100%);"></div>
+        <div style="position: absolute; left: 0; right: 0; bottom: 0; height: 20%; background: linear-gradient(to top, #ffffff 0%, transparent 100%); z-index: 10;"></div>
     </div>
 
     <!-- Mobile Background Banner -->
-    <div class="absolute inset-0 z-0 lg:hidden overflow-hidden pointer-events-none">
+    <div class="absolute inset-0 z-0 lg:hidden overflow-hidden pointer-events-none" style="position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0;">
         <img src="<?= e($heroBgImage) ?>" alt="Digital Platform Background" 
-            class="w-full h-full object-cover object-[75%_center] dp-hero-bg-img"
-            style="filter: contrast(1.04) saturate(1.05);">
-        <div class="absolute inset-0 bg-gradient-to-r from-white/95 via-white/80 to-white/30"></div>
-        <div class="absolute inset-x-0 bottom-0 h-[20%] bg-gradient-to-t from-white to-transparent"></div>
+            class="w-full h-full object-cover dp-hero-bg-img"
+            style="width: 100%; height: 100%; object-fit: cover; object-position: 85% center; filter: contrast(1.04) saturate(1.05);">
+        <div style="position: absolute; inset: 0; background: linear-gradient(to right, rgba(255,255,255,0.97) 0%, rgba(255,255,255,0.90) 50%, rgba(255,255,255,0.35) 100%);"></div>
+        <div style="position: absolute; left: 0; right: 0; bottom: 0; height: 25%; background: linear-gradient(to top, #ffffff 0%, transparent 100%); z-index: 10;"></div>
     </div>
 
     <div class="mx-auto w-full max-w-7xl px-5 sm:px-6 lg:px-8 relative z-10 dp-hero-container">
@@ -741,11 +905,15 @@ $heroBgImage = asset_url('images/digital-platform-hero-bg.png');
         $solutions = [
             [
                 'title' => 'CORPORATE WEBSITE',
-                'subtitle' => 'เว็บไซต์องค์กรเพื่อการสื่อสารภาพลักษณ์และข้อมูลอย่างมืออาชีพ',
-                'bullets' => [
+                'subtitle' => getCurrentLang() === 'th' ? 'เว็บไซต์องค์กรเพื่อการสื่อสารภาพลักษณ์และข้อมูลอย่างมืออาชีพ' : 'Corporate websites for professional branding and company communication',
+                'bullets' => getCurrentLang() === 'th' ? [
                     'ดีไซน์สวย รองรับทุกอุปกรณ์',
                     'เพิ่มความน่าเชื่อถือให้แบรนด์',
                     'รองรับ SEO และการวัดผลทางข้อมูล'
+                ] : [
+                    'Modern responsive design for all devices',
+                    'Enhance brand credibility and trust',
+                    'SEO-ready with comprehensive analytics'
                 ],
                 'icon_svg' => '
                     <svg class="w-20 h-20 sm:w-24 sm:h-24 drop-shadow-sm shrink-0" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -765,11 +933,15 @@ $heroBgImage = asset_url('images/digital-platform-hero-bg.png');
             ],
             [
                 'title' => 'CUSTOMER PORTAL',
-                'subtitle' => 'พอร์ทัลสำหรับลูกค้า จัดการข้อมูลและบริการได้ด้วยตนเอง',
-                'bullets' => [
+                'subtitle' => getCurrentLang() === 'th' ? 'พอร์ทัลสำหรับลูกค้า จัดการข้อมูลและบริการได้ด้วยตนเอง' : 'Customer self-service portal to manage accounts and requests',
+                'bullets' => getCurrentLang() === 'th' ? [
                     'เข้าดูข้อมูลและประวัติการใช้งาน',
                     'แจ้งปัญหาและติดตามสถานะ',
                     'เพิ่มความพึงพอใจและลดภาระงาน'
+                ] : [
+                    'Access user data and service history',
+                    'Submit inquiries and track real-time status',
+                    'Improve customer satisfaction and reduce staff workload'
                 ],
                 'icon_svg' => '
                     <svg class="w-20 h-20 sm:w-24 sm:h-24 drop-shadow-sm shrink-0" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -795,11 +967,15 @@ $heroBgImage = asset_url('images/digital-platform-hero-bg.png');
             ],
             [
                 'title' => 'E-LEARNING PLATFORM',
-                'subtitle' => 'แพลตฟอร์มการเรียนออนไลน์ครบวงจร',
-                'bullets' => [
+                'subtitle' => getCurrentLang() === 'th' ? 'แพลตฟอร์มการเรียนออนไลน์ครบวงจร' : 'Comprehensive e-learning and corporate training platform',
+                'bullets' => getCurrentLang() === 'th' ? [
                     'จัดการคอร์สและบทเรียนออนไลน์',
                     'ระบบแบบทดสอบและการติดตามผล',
                     'ออกแบบการเรียนรู้แบบออนไลน์'
+                ] : [
+                    'Manage online courses and interactive lessons',
+                    'Quiz, examination, and progress tracking system',
+                    'Customizable online learning journeys'
                 ],
                 'icon_svg' => '
                     <svg class="w-20 h-20 sm:w-24 sm:h-24 drop-shadow-sm shrink-0" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -823,11 +999,15 @@ $heroBgImage = asset_url('images/digital-platform-hero-bg.png');
             ],
             [
                 'title' => 'E-COMMERCE PLATFORM',
-                'subtitle' => 'ร้านค้าออนไลน์ รองรับการขายทุกช่องทาง',
-                'bullets' => [
+                'subtitle' => getCurrentLang() === 'th' ? 'ร้านค้าออนไลน์ รองรับการขายทุกช่องทาง' : 'Omnichannel e-commerce store with seamless checkout',
+                'bullets' => getCurrentLang() === 'th' ? [
                     'จัดการสินค้าและคำสั่งซื้อ',
                     'ระบบชำระเงินและโปรโมชั่น',
                     'เชื่อมต่อขนส่งและสต็อก'
+                ] : [
+                    'Product catalog and order management',
+                    'Secure payments and promotional campaigns',
+                    'Real-time inventory and logistics sync'
                 ],
                 'icon_svg' => '
                     <svg class="w-20 h-20 sm:w-24 sm:h-24 drop-shadow-sm shrink-0" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -847,11 +1027,15 @@ $heroBgImage = asset_url('images/digital-platform-hero-bg.png');
             ],
             [
                 'title' => 'BOOKING / RESERVATION SYSTEM',
-                'subtitle' => 'ระบบจองและนัดหมายอัตโนมัติ',
-                'bullets' => [
+                'subtitle' => getCurrentLang() === 'th' ? 'ระบบจองและนัดหมายอัตโนมัติ' : 'Automated booking and appointment scheduling system',
+                'bullets' => getCurrentLang() === 'th' ? [
                     'จัดการตารางเวลาและคิวแบบเรียลไทม์',
                     'แจ้งเตือนนัดหมายอัตโนมัติ',
                     'ลดความผิดพลาดและซ้ำซ้อน'
+                ] : [
+                    'Real-time calendar and queue management',
+                    'Automated appointment notifications',
+                    'Prevent scheduling conflicts and human errors'
                 ],
                 'icon_svg' => '
                     <svg class="w-20 h-20 sm:w-24 sm:h-24 drop-shadow-sm shrink-0" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -873,11 +1057,15 @@ $heroBgImage = asset_url('images/digital-platform-hero-bg.png');
             ],
             [
                 'title' => 'MEMBERSHIP / LOYALTY SYSTEM',
-                'subtitle' => 'ระบบสมาชิกและสะสมคะแนน',
-                'bullets' => [
+                'subtitle' => getCurrentLang() === 'th' ? 'ระบบสมาชิกและสะสมคะแนน' : 'Membership management and customer loyalty rewards',
+                'bullets' => getCurrentLang() === 'th' ? [
                     'สะสมแต้มและแลกของรางวัล',
                     'จัดการระดับสมาชิกและสิทธิพิเศษ',
                     'สร้างความสัมพันธ์และความภักดีต่อแบรนด์'
+                ] : [
+                    'Point accumulation and reward redemption',
+                    'Tiered membership levels and exclusive perks',
+                    'Build long-term customer engagement and loyalty'
                 ],
                 'icon_svg' => '
                     <svg class="w-20 h-20 sm:w-24 sm:h-24 drop-shadow-sm shrink-0" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -895,11 +1083,15 @@ $heroBgImage = asset_url('images/digital-platform-hero-bg.png');
             ],
             [
                 'title' => 'DASHBOARD & REPORTING',
-                'subtitle' => 'แดชบอร์ดสรุปและวิเคราะห์ข้อมูลธุรกิจ',
-                'bullets' => [
+                'subtitle' => getCurrentLang() === 'th' ? 'แดชบอร์ดสรุปและวิเคราะห์ข้อมูลธุรกิจ' : 'Business intelligence dashboard and real-time analytics',
+                'bullets' => getCurrentLang() === 'th' ? [
                     'รายงานข้อมูลแบบเรียลไทม์',
                     'วิเคราะห์แนวโน้มและสถิติสำคัญ',
                     'สนับสนุนการตัดสินใจของผู้บริหาร'
+                ] : [
+                    'Real-time operational and performance reports',
+                    'Key performance metrics and trend analysis',
+                    'Data-driven decision support for leadership'
                 ],
                 'icon_svg' => '
                     <svg class="w-20 h-20 sm:w-24 sm:h-24 drop-shadow-sm shrink-0" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -919,11 +1111,15 @@ $heroBgImage = asset_url('images/digital-platform-hero-bg.png');
             ],
             [
                 'title' => 'CMS / CONTENT MANAGEMENT',
-                'subtitle' => 'ระบบจัดการเนื้อหาเว็บไซต์อย่างอิสระ',
-                'bullets' => [
+                'subtitle' => getCurrentLang() === 'th' ? 'ระบบจัดการเนื้อหาเว็บไซต์อย่างอิสระ' : 'Intuitive and flexible Content Management System',
+                'bullets' => getCurrentLang() === 'th' ? [
                     'แก้ไขข้อความและรูปภาพได้ง่าย',
                     'จัดการโครงสร้างเว็บและบทความ',
                     'อัปเดตข้อมูลได้เองโดยไม่ต้องเขียนโค้ด'
+                ] : [
+                    'Easy-to-edit text, media, and banners',
+                    'Manage web pages, categories, and articles',
+                    'Self-manage content with zero coding required'
                 ],
                 'icon_svg' => '
                     <svg class="w-20 h-20 sm:w-24 sm:h-24 drop-shadow-sm shrink-0" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -943,11 +1139,15 @@ $heroBgImage = asset_url('images/digital-platform-hero-bg.png');
             ],
             [
                 'title' => 'INTRANET / EMPLOYEE PORTAL',
-                'subtitle' => 'พอร์ทัลบุคลากรและระบบทำงานภายใน',
-                'bullets' => [
+                'subtitle' => getCurrentLang() === 'th' ? 'พอร์ทัลบุคลากรและระบบทำงานภายใน' : 'Employee intranet and internal operations portal',
+                'bullets' => getCurrentLang() === 'th' ? [
                     'ศูนย์รวมข่าวสารและประกาศองค์กร',
                     'ระบบส่งคำร้องและขออนุมัติออนไลน์',
                     'ส่งเสริมการทำงานร่วมกันในทีม'
+                ] : [
+                    'Centralized corporate news and announcements',
+                    'Online e-forms and automated approval workflows',
+                    'Promote seamless teamwork and efficiency'
                 ],
                 'icon_svg' => '
                     <svg class="w-20 h-20 sm:w-24 sm:h-24 drop-shadow-sm shrink-0" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -967,11 +1167,15 @@ $heroBgImage = asset_url('images/digital-platform-hero-bg.png');
             ],
             [
                 'title' => 'API & SYSTEM INTEGRATION',
-                'subtitle' => 'ระบบเชื่อมต่อและผสานรวมข้อมูล API',
-                'bullets' => [
+                'subtitle' => getCurrentLang() === 'th' ? 'ระบบเชื่อมต่อและผสานรวมข้อมูล API' : 'API integration and seamless data synchronization',
+                'bullets' => getCurrentLang() === 'th' ? [
                     'เชื่อมต่อ ERP, CRM และระบบภายนอก',
                     'ถ่ายโอนข้อมูลอัตโนมัติและปลอดภัย',
                     'สถาปัตยกรรมยืดหยุ่น รองรับการขยายตัว'
+                ] : [
+                    'Connect with ERP, CRM, and 3rd-party services',
+                    'Automated and highly secure data exchange',
+                    'Scalable architecture built for future growth'
                 ],
                 'icon_svg' => '
                     <svg class="w-20 h-20 sm:w-24 sm:h-24 drop-shadow-sm shrink-0" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1148,11 +1352,11 @@ $heroBgImage = asset_url('images/digital-platform-hero-bg.png');
         
         <!-- Header (Exact Match to Mockup) -->
         <div class="mb-10 lg:mb-12">
-            <div class="inline-flex flex-col items-start">
-                <h2 class="text-2xl sm:text-3xl font-extrabold text-[#0663F6] tracking-tight">
+            <div class="inline-flex flex-col items-start" style="display: inline-flex; flex-direction: column; align-items: flex-start;">
+                <h2 class="text-2xl sm:text-3xl font-extrabold text-[#0663F6] tracking-tight" style="color: #0663F6; font-size: 1.875rem; font-weight: 800;">
                     <?= getCurrentLang() === 'th' ? 'ตัวอย่างผลงานของเรา' : 'Selected Case Studies' ?>
                 </h2>
-                <div class="w-12 h-[3.5px] bg-[#0663F6] mt-1.5"></div>
+                <div class="w-12 h-[3.5px] bg-[#0663F6] mt-1.5" style="width: 48px; height: 3.5px; background-color: #0663F6; margin-top: 6px;"></div>
             </div>
         </div>
 
@@ -1161,25 +1365,25 @@ $heroBgImage = asset_url('images/digital-platform-hero-bg.png');
             [
                 'title' => 'IPM Club',
                 'category' => 'E-learning',
-                'desc' => 'แพลตฟอร์มการเรียนรู้ออนไลน์และศูนย์รวมหลักสูตรพัฒนาบุคลากร',
+                'desc' => getCurrentLang() === 'th' ? 'แพลตฟอร์มการเรียนรู้ออนไลน์และศูนย์รวมหลักสูตรพัฒนาบุคลากร' : 'Online learning platform and enterprise workforce training hub',
                 'image' => asset_url('images/service-home.png'),
             ],
             [
                 'title' => 'Yamaha RAID',
                 'category' => 'E-commerce',
-                'desc' => 'ระบบจัดการแคตตาล็อกอะไหล่และสั่งซื้อออนไลน์แบบ B2B',
+                'desc' => getCurrentLang() === 'th' ? 'ระบบจัดการแคตตาล็อกอะไหล่และสั่งซื้อออนไลน์แบบ B2B' : 'B2B online spare parts catalog and order management system',
                 'image' => asset_url('images/yamaha.png'),
             ],
             [
                 'title' => 'Plaas1',
                 'category' => 'Intranet',
-                'desc' => 'พอร์ทัลศูนย์กลางข้อมูลและการสื่อสารภายในองค์กรระดับสูง',
+                'desc' => getCurrentLang() === 'th' ? 'พอร์ทัลศูนย์กลางข้อมูลและการสื่อสารภายในองค์กรระดับสูง' : 'Enterprise intranet data portal and corporate communications',
                 'image' => asset_url('images/ab.png'),
             ],
             [
                 'title' => 'RE-Inn',
                 'category' => 'CMS',
-                'desc' => 'ระบบบริหารจัดการเนื้อหาและอสังหาริมทรัพย์ยุคใหม่',
+                'desc' => getCurrentLang() === 'th' ? 'ระบบบริหารจัดการเนื้อหาและอสังหาริมทรัพย์ยุคใหม่' : 'Modern property CMS and real estate management platform',
                 'image' => asset_url('images/story.png'),
             ],
         ];

@@ -72,6 +72,17 @@ $heroBgImage = asset_url('images/online-marketing-hero-bg.png');
     @media (max-width: 640px) {
         .om-intro-right-grid {
             grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
+            border-top: 1.5px solid #cbd5e1 !important;
+        }
+        .om-intro-pillar-card {
+            border-bottom: 1.5px solid #cbd5e1 !important;
+            padding-top: 2rem !important;
+            padding-bottom: 2rem !important;
+            padding-left: 1.25rem !important;
+            padding-right: 1.25rem !important;
+        }
+        .om-intro-pillar-card:last-child {
+            border-bottom: none !important;
         }
     }
 
@@ -173,34 +184,41 @@ $heroBgImage = asset_url('images/online-marketing-hero-bg.png');
             grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
         }
         .om-intro-pillar-card {
-            padding: 1.5rem 0.5rem !important;
+            padding: 1.25rem 0.35rem !important;
             border-bottom: none !important;
-            border-right: 1px solid #f1f5f9 !important;
+            border-right: 1.5px solid #e2e8f0 !important;
             border-top: none !important;
             border-left: none !important;
+            justify-content: flex-start !important;
         }
         .om-intro-pillar-card:last-child {
             border-right: none !important;
         }
-        .om-intro-pillar-card h3 {
-            font-size: 0.95rem !important;
-            line-height: 1.35 !important;
-            min-height: 2.5rem !important;
-            display: flex !important;
-            align-items: center !important;
-            justify-content: center !important;
-            text-align: center !important;
+        .om-intro-pillar-card > div:first-child {
+            width: auto !important;
+            height: auto !important;
+            min-height: 0 !important;
             margin-bottom: 0.35rem !important;
         }
+        .om-intro-pillar-card svg {
+            width: 3rem !important;
+            height: 3rem !important;
+            margin-bottom: 0 !important;
+        }
+        .om-intro-pillar-card h3 {
+            font-size: 0.95rem !important;
+            line-height: 1.25 !important;
+            min-height: auto !important;
+            display: block !important;
+            text-align: center !important;
+            margin-bottom: 0.25rem !important;
+        }
         .om-intro-pillar-card p {
-            font-size: 0.775rem !important;
+            font-size: 0.75rem !important;
             line-height: 1.35 !important;
             text-align: center !important;
-        }
-        .om-intro-pillar-card svg {
-            width: 3.25rem !important;
-            height: 3.25rem !important;
-            margin-bottom: 0.5rem !important;
+            padding-left: 0.2rem !important;
+            padding-right: 0.2rem !important;
         }
 
         /* Section 3: 10 Solutions Grid (2 columns x 5 rows like landscape) */
@@ -218,22 +236,23 @@ $heroBgImage = asset_url('images/online-marketing-hero-bg.png');
             gap: 1.25rem !important;
         }
         .om-benefits-grid > div {
-            padding: 2rem 1.5rem !important;
-        }
-        .om-benefits-grid h3 {
-            font-size: 1.15rem !important;
-            min-height: 2.75rem !important;
-            line-height: 1.35 !important;
-            margin-bottom: 0.5rem !important;
-        }
-        .om-benefits-grid p {
-            font-size: 0.925rem !important;
-            line-height: 1.55 !important;
+            padding: 1.5rem 1.25rem !important;
         }
         .om-benefits-grid svg {
-            width: 3.75rem !important;
-            height: 3.75rem !important;
-            margin-bottom: 0.75rem !important;
+            width: 3.25rem !important;
+            height: 3.25rem !important;
+            margin-bottom: 0.35rem !important;
+        }
+        .om-benefits-grid h3 {
+            font-size: 1.05rem !important;
+            min-height: auto !important;
+            line-height: 1.25 !important;
+            margin-bottom: 0.25rem !important;
+        }
+        .om-benefits-grid p {
+            font-size: 0.825rem !important;
+            line-height: 1.4 !important;
+            margin-top: 0 !important;
         }
 
         /* Card 5: ล่าง 1 ยาว (Spans 2 columns, wide layout) */
@@ -244,15 +263,15 @@ $heroBgImage = asset_url('images/online-marketing-hero-bg.png');
             flex-direction: row !important;
             align-items: center !important;
             justify-content: center !important;
-            gap: 2rem !important;
-            padding: 2rem 3rem !important;
+            gap: 1.5rem !important;
+            padding: 1.5rem 2.5rem !important;
             text-align: left !important;
         }
         .om-benefit-card-last svg {
             margin-bottom: 0 !important;
             flex-shrink: 0 !important;
-            width: 4.25rem !important;
-            height: 4.25rem !important;
+            width: 3.5rem !important;
+            height: 3.5rem !important;
         }
         .om-benefit-card-last .om-benefit-content {
             align-items: flex-start !important;
@@ -262,12 +281,13 @@ $heroBgImage = asset_url('images/online-marketing-hero-bg.png');
             text-align: left !important;
             justify-content: flex-start !important;
             min-height: auto !important;
-            margin-bottom: 0.25rem !important;
-            font-size: 1.25rem !important;
+            margin-bottom: 0.15rem !important;
+            font-size: 1.15rem !important;
         }
         .om-benefit-card-last p {
             text-align: left !important;
-            font-size: 0.95rem !important;
+            font-size: 0.85rem !important;
+            margin-top: 0 !important;
         }
 
         /* Section 5: Portfolio Showcase Grid (4 cards in 1 row like landscape) */
@@ -334,22 +354,75 @@ $heroBgImage = asset_url('images/online-marketing-hero-bg.png');
             display: none !important;
         }
         .om-benefits-grid h3 {
-            font-size: 1.15rem !important;
-            white-space: nowrap !important;
+            font-size: 1.1rem !important;
+            white-space: normal !important;
             min-height: auto !important;
-            margin-bottom: 0.5rem !important;
+            margin-bottom: 0.25rem !important;
         }
         .om-benefits-grid p {
-            font-size: 0.9rem !important;
-            white-space: nowrap !important;
+            font-size: 0.85rem !important;
+            white-space: normal !important;
+            margin-top: 0 !important;
         }
         .om-showcase-grid h3 {
             font-size: 0.95rem !important;
         }
+        .om-intro-pillar-card {
+            padding: 1.25rem 0.35rem !important;
+            justify-content: flex-start !important;
+        }
+        .om-intro-pillar-card > div:first-child {
+            width: auto !important;
+            height: auto !important;
+            min-height: 0 !important;
+            margin-bottom: 0.35rem !important;
+        }
+        .om-intro-pillar-card svg {
+            width: 3.25rem !important;
+            height: 3.25rem !important;
+            margin-bottom: 0 !important;
+        }
+        .om-intro-pillar-card h3 {
+            font-size: 1rem !important;
+            line-height: 1.25 !important;
+            min-height: auto !important;
+            margin-bottom: 0.25rem !important;
+        }
+        .om-intro-pillar-card p {
+            font-size: 0.825rem !important;
+            line-height: 1.35 !important;
+        }
     }
 
-    /* Mobile & iPad Spacing and 2-2-1 Benefits Layout (Both Mobile and iPad up to 1440px) */
-    @media (max-width: 1440px) {
+    /* Desktop (1025px+) */
+    @media (min-width: 1025px) {
+        .om-solutions-grid {
+            display: grid !important;
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+            gap: 1.5rem !important;
+        }
+        .om-benefits-grid {
+            display: grid !important;
+            grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+            gap: 1.25rem !important;
+        }
+        .om-benefits-grid > div {
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            text-align: center !important;
+            grid-column: auto !important;
+        }
+        .om-benefits-grid > div.om-benefit-card-last {
+            grid-column: auto !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            text-align: center !important;
+        }
+    }
+
+    /* Mobile & iPad (<= 1024px): 2-2-1 Benefits Layout */
+    @media (max-width: 1024px) {
         .om-intro-section {
             padding-bottom: 2rem !important;
             margin-bottom: 0px !important;
@@ -442,22 +515,113 @@ $heroBgImage = asset_url('images/online-marketing-hero-bg.png');
         }
     }
 
-    @media (min-width: 760px) and (max-width: 1440px) {
+    @media (min-width: 1024px) and (max-width: 1280px) {
         .om-benefits-grid {
-            gap: 1.25rem !important;
+            gap: 0.75rem !important;
         }
         .om-benefits-grid > div {
-            padding: 2rem 1.5rem !important;
+            padding: 1.5rem 0.65rem !important;
         }
-        .om-benefits-grid > div.om-benefit-card-last {
-            gap: 2rem !important;
-            padding: 2rem 3rem !important;
+        .om-benefits-grid h3 {
+            font-size: clamp(0.85rem, 1.05vw, 1rem) !important;
+            white-space: normal !important;
+            word-break: break-word !important;
+            line-height: 1.3 !important;
+            min-height: auto !important;
+            margin-bottom: 0.25rem !important;
         }
         .om-benefits-grid p {
-            white-space: nowrap !important;
+            font-size: clamp(0.72rem, 0.9vw, 0.82rem) !important;
+            white-space: normal !important;
+            word-break: break-word !important;
+            line-height: 1.4 !important;
+            margin-top: 0 !important;
         }
         .om-benefits-grid p br {
-            display: none !important;
+            display: inline !important;
+        }
+    }
+
+    /* iPad Portrait ONLY (All iPads 760px - 1100px Portrait) - Ultra Tight Spacing */
+    @media (min-width: 760px) and (max-width: 1100px) and (orientation: portrait) {
+        .om-benefits-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+            gap: 1rem !important;
+        }
+        .om-benefits-grid > div {
+            padding: 1.25rem 1rem !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: center !important;
+            min-height: auto !important;
+        }
+        .om-benefits-grid svg {
+            width: 3.25rem !important;
+            height: 3.25rem !important;
+            margin-bottom: 0.35rem !important;
+        }
+        .om-benefits-grid .om-benefit-content {
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: center !important;
+            margin-top: 0 !important;
+            gap: 0 !important;
+        }
+        .om-benefits-grid h3 {
+            font-size: 1.05rem !important;
+            min-height: 0 !important;
+            line-height: 1.25 !important;
+            margin-top: 0 !important;
+            margin-bottom: 0.2rem !important;
+            display: block !important;
+            text-align: center !important;
+        }
+        .om-benefits-grid p {
+            font-size: 0.8rem !important;
+            line-height: 1.35 !important;
+            margin-top: 0 !important;
+            margin-bottom: 0 !important;
+            text-align: center !important;
+        }
+
+        /* Card 5: Full width bottom card */
+        .om-benefit-card-last {
+            grid-column: span 2 / span 2 !important;
+            width: 100% !important;
+            display: flex !important;
+            flex-direction: row !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 1.25rem !important;
+            padding: 1.25rem 2rem !important;
+            text-align: left !important;
+        }
+        .om-benefit-card-last svg {
+            margin-bottom: 0 !important;
+            flex-shrink: 0 !important;
+            width: 3.5rem !important;
+            height: 3.5rem !important;
+        }
+        .om-benefit-card-last .om-benefit-content {
+            align-items: flex-start !important;
+            text-align: left !important;
+            margin-top: 0 !important;
+            gap: 0 !important;
+        }
+        .om-benefit-card-last h3 {
+            text-align: left !important;
+            min-height: 0 !important;
+            margin-top: 0 !important;
+            margin-bottom: 0.15rem !important;
+            font-size: 1.1rem !important;
+        }
+        .om-benefit-card-last p {
+            text-align: left !important;
+            font-size: 0.825rem !important;
+            margin-top: 0 !important;
+            margin-bottom: 0 !important;
         }
     }
 </style>
@@ -467,21 +631,21 @@ $heroBgImage = asset_url('images/online-marketing-hero-bg.png');
 =========================================== -->
 <section id="om-hero" class="relative font-sans bg-[#f7faff] overflow-hidden pt-8 pb-16 lg:pt-16 lg:pb-28">
     <!-- Desktop Background Banner -->
-    <div class="absolute inset-0 z-0 hidden lg:block overflow-hidden pointer-events-none">
+    <div class="absolute inset-0 z-0 hidden lg:block overflow-hidden pointer-events-none" style="position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0;">
         <img src="<?= e($heroBgImage) ?>" alt="Online Marketing Background" 
-            class="w-full h-full object-cover object-[right_center]"
-            style="filter: contrast(1.04) saturate(1.05);">
-        <div class="absolute inset-0 bg-gradient-to-r from-white/95 via-white/50 to-transparent"></div>
-        <div class="absolute inset-x-0 bottom-0 h-[20%] bg-gradient-to-t from-white to-transparent z-10"></div>
+            class="w-full h-full object-cover"
+            style="width: 100%; height: 100%; object-fit: cover; object-position: right center; filter: contrast(1.04) saturate(1.05);">
+        <div style="position: absolute; inset: 0; background: linear-gradient(to right, rgba(255,255,255,0.96) 0%, rgba(255,255,255,0.65) 50%, rgba(255,255,255,0) 100%);"></div>
+        <div style="position: absolute; left: 0; right: 0; bottom: 0; height: 20%; background: linear-gradient(to top, #ffffff 0%, transparent 100%); z-index: 10;"></div>
     </div>
 
     <!-- Mobile Background Banner -->
-    <div class="absolute inset-0 z-0 lg:hidden overflow-hidden pointer-events-none">
+    <div class="absolute inset-0 z-0 lg:hidden overflow-hidden pointer-events-none" style="position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0;">
         <img src="<?= e($heroBgImage) ?>" alt="Online Marketing Background" 
-            class="w-full h-full object-cover object-[75%_center] md:object-[right_center] om-hero-bg-img"
-            style="filter: contrast(1.04) saturate(1.05);">
-        <div class="absolute inset-0 bg-gradient-to-r from-white/95 via-white/80 to-white/30"></div>
-        <div class="absolute inset-x-0 bottom-0 h-[20%] bg-gradient-to-t from-white to-transparent"></div>
+            class="w-full h-full object-cover om-hero-bg-img"
+            style="width: 100%; height: 100%; object-fit: cover; object-position: 85% center; filter: contrast(1.04) saturate(1.05);">
+        <div style="position: absolute; inset: 0; background: linear-gradient(to right, rgba(255,255,255,0.97) 0%, rgba(255,255,255,0.90) 50%, rgba(255,255,255,0.35) 100%);"></div>
+        <div style="position: absolute; left: 0; right: 0; bottom: 0; height: 25%; background: linear-gradient(to top, #ffffff 0%, transparent 100%); z-index: 10;"></div>
     </div>
 
     <div class="mx-auto w-full max-w-7xl px-5 sm:px-6 lg:px-8 relative z-10 om-hero-container">
@@ -1078,11 +1242,11 @@ $heroBgImage = asset_url('images/online-marketing-hero-bg.png');
         
         <!-- Header -->
         <div class="mb-10 lg:mb-12">
-            <div class="inline-flex flex-col items-start">
-                <h2 class="text-2xl sm:text-3xl font-extrabold text-[#0663F6] tracking-tight">
+            <div class="inline-flex flex-col items-start" style="display: inline-flex; flex-direction: column; align-items: flex-start;">
+                <h2 class="text-2xl sm:text-3xl font-extrabold text-[#0663F6] tracking-tight" style="color: #0663F6; font-size: 1.875rem; font-weight: 800;">
                     <?= getCurrentLang() === 'th' ? 'ตัวอย่างผลงานของเรา' : 'Selected Case Studies' ?>
                 </h2>
-                <div class="w-12 h-[3.5px] bg-[#0663F6] mt-1.5"></div>
+                <div class="w-12 h-[3.5px] bg-[#0663F6] mt-1.5" style="width: 48px; height: 3.5px; background-color: #0663F6; margin-top: 6px;"></div>
             </div>
         </div>
 
@@ -1090,79 +1254,65 @@ $heroBgImage = asset_url('images/online-marketing-hero-bg.png');
         $showcases = [
             [
                 'title' => 'KPN Click',
-                'category' => 'SEO',
-                'logo' => asset_url('images/port_logo_kpn.png'),
-                'image' => asset_url('images/port_monitor_1.png'),
+                'category' => 'SEO & SEM',
                 'desc' => getCurrentLang() === 'th'
-                    ? 'เว็บไซต์ที่ออกแบบเพื่อสื่อสารข้อมูลโครงการและบริการของแบรนด์อย่างครบถ้วน รองรับทุกอุปกรณ์ และช่วยให้ผู้ใช้งานเข้าถึงข้อมูลได้ง่าย'
-                    : 'Designed to comprehensively communicate project and brand service information, fully responsive on all devices and user-friendly.',
+                    ? 'การวางกลยุทธ์ค้นหาเพื่อเพิ่มยอดทราฟฟิกและขยายฐานลูกค้าบนดิจิทัล'
+                    : 'Search marketing strategy boosting organic traffic and customer acquisition.',
+                'image' => asset_url('images/service-home.png'),
             ],
             [
                 'title' => 'Yamaha LEAD',
-                'category' => 'Online Campaign',
-                'logo' => asset_url('images/yamaha.png'),
-                'image' => asset_url('images/port_monitor_2.png'),
+                'category' => 'Performance Ads',
                 'desc' => getCurrentLang() === 'th'
-                    ? 'ระบบ ERP สำหรับบริหารข้อมูลและกระบวนการทำงานภายในองค์กร ช่วยลดขั้นตอนซ้ำซ้อนและเพิ่มประสิทธิภาพการจัดการงานอย่างเป็นระบบ'
-                    : 'Comprehensive enterprise ERP optimizing workflows, eliminating redundant tasks, and enhancing operational efficiency.',
+                    ? 'แคมเปญการตลาดออนไลน์แบบวัดผลได้ เพิ่มยอด Conversion และ ROI'
+                    : 'High-conversion performance marketing campaigns driving measurable ROI.',
+                'image' => asset_url('images/yamaha.png'),
             ],
             [
                 'title' => 'Nusasiri',
-                'category' => 'Monitoring & Analysis',
-                'logo' => asset_url('images/port_logo_nusasiri.png'),
-                'image' => asset_url('images/port_monitor_3.png'),
+                'category' => 'Data Analytics',
                 'desc' => getCurrentLang() === 'th'
-                    ? 'ระบบติดตามและวิเคราะห์ข้อมูลการตลาดแบบเรียลไทม์ ช่วยวัดความคุ้มค่าของการลงทุนและปรับแผนกลยุทธ์ได้อย่างแม่นยำ'
-                    : 'Real-time marketing performance tracking and analytics to measure ROI and optimize strategic campaigns with precision.',
+                    ? 'การวิเคราะห์ข้อมูลผู้บริโภคและวางแผนสื่อโฆษณาตรงกลุ่มเป้าหมาย'
+                    : 'Real-time marketing performance tracking and analytics to measure ROI.',
+                'image' => asset_url('images/ab.png'),
             ],
             [
                 'title' => 'NS Gas',
-                'category' => 'Social Media Content',
-                'logo' => asset_url('images/port_logo_nsgas.png'),
-                'image' => asset_url('images/port_monitor_4.png'),
+                'category' => 'Social Media Creative',
                 'desc' => getCurrentLang() === 'th'
-                    ? 'การสร้างสรรค์คอนเทนต์และบริหารจัดการสื่อสังคมออนไลน์ เพื่อสร้างการรับรู้แบรนด์และกระตุ้นยอดขายอย่างมีประสิทธิภาพ'
-                    : 'High-engagement social media content creation and management to elevate brand awareness and drive sales growth.',
+                    ? 'การบริหารจัดการสื่อสังคมออนไลน์เพื่อสร้างการรับรู้แบรนด์และยอดขาย'
+                    : 'High-engagement social media content creation and management.',
+                'image' => asset_url('images/story.png'),
             ],
         ];
         ?>
 
-        <!-- 4 Mockup Showcase Cards Grid (Only the hovered card expands) -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 items-start om-showcase-grid">
+        <!-- 4 Mockup Showcase Cards Grid (Matching Digital Platform Structure) -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 om-showcase-grid">
             <?php foreach ($showcases as $item): ?>
-                <div class="om-port-card group block bg-white rounded-2xl overflow-hidden border border-slate-100 shadow-[0_8px_30px_rgba(4,59,148,0.06)] hover:shadow-2xl transition-all duration-300 hover:-translate-y-1.5 flex flex-col justify-between cursor-pointer" onclick="window.location.href='<?= e(route_url('/portfolio')) ?>'">
-                    <!-- Screen Area -->
-                    <div class="w-full aspect-[4/3.1] overflow-hidden bg-slate-900 relative">
-                        <img src="<?= e($item['image']) ?>" alt="<?= e($item['title']) ?>" class="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105">
+                <div class="om-port-card block bg-white rounded-2xl overflow-hidden border border-slate-100 shadow-sm hover:border-blue-200 group cursor-pointer" onclick="window.location.href='<?= e(route_url('/portfolio')) ?>'">
+                    <!-- Monitor / Device Frame -->
+                    <div class="p-3 bg-slate-50 border-b border-slate-100 flex items-center gap-1.5">
+                        <span class="w-2.5 h-2.5 rounded-full bg-red-400"></span>
+                        <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
+                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
+                        <span class="text-[11px] text-slate-400 font-mono ml-2 truncate">webpark.co.th/case/<?= strtolower(str_replace(' ', '-', $item['title'])) ?></span>
                     </div>
-
-                    <!-- Content Area (Turns Vibrant Blue on Hover) -->
-                    <div class="p-5 sm:p-6 flex flex-col justify-between flex-1 bg-white group-hover:bg-[#0663F6] transition-colors duration-300 min-h-[140px]">
-                        <div>
-                            <!-- Header: Logo & Title -->
-                            <div class="flex items-center gap-3 mb-2.5">
-                                <div class="w-10 h-10 rounded-full bg-slate-100/90 group-hover:bg-white flex items-center justify-center p-1.5 shadow-sm shrink-0 transition-colors duration-300">
-                                    <img src="<?= e($item['logo']) ?>" alt="<?= e($item['title']) ?>" class="max-h-full max-w-full object-contain">
-                                </div>
-                                <h3 class="text-[#043B94] group-hover:text-white font-bold text-lg transition-colors duration-300">
-                                    <?= e($item['title']) ?>
-                                </h3>
-                            </div>
-
-                            <!-- Description (Reveals Smoothly on Hover) -->
-                            <div class="max-h-0 opacity-0 group-hover:max-h-48 group-hover:opacity-100 overflow-hidden transition-all duration-300 ease-out">
-                                <p class="text-white/95 text-xs sm:text-[13px] leading-relaxed font-normal pt-2 pb-1">
-                                    <?= e($item['desc']) ?>
-                                </p>
-                            </div>
-                        </div>
-
-                        <!-- Tag Button (White on hover) -->
-                        <div class="pt-3">
-                            <span class="inline-flex px-4 py-1 rounded-full text-xs font-semibold text-[#0663F6] border border-[#0663F6] group-hover:text-white group-hover:border-white transition-colors duration-300 bg-transparent">
+                    <div class="h-48 overflow-hidden bg-slate-100 relative">
+                        <img src="<?= e($item['image']) ?>" alt="<?= e($item['title']) ?>" class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105" onerror="this.src='<?= e(asset_url('images/erp.png')) ?>';">
+                    </div>
+                    <div class="p-5">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="inline-block px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-blue-50 text-primary border border-blue-100">
                                 <?= e($item['category']) ?>
                             </span>
                         </div>
+                        <h3 class="text-base font-bold text-[#022862] group-hover:text-primary transition-colors mb-1.5">
+                            <?= e($item['title']) ?>
+                        </h3>
+                        <p class="text-xs text-slate-500 line-clamp-2 leading-relaxed">
+                            <?= e($item['desc']) ?>
+                        </p>
                     </div>
                 </div>
             <?php endforeach; ?>
