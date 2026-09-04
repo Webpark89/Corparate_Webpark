@@ -469,7 +469,7 @@ if (!empty($partners) && is_array($partners)) {
                 <?php
                 $serviceCards = [
                     ['icon' => 'icon-3.png', 'title' => getCurrentLang() === 'th' ? 'ระบบ ERP / ERM' : 'ERP / ERM',        'desc' => t('common.solution_org_control'), 'href' => route_url('/erp')],
-                    ['icon' => 'icon-2.png', 'title' => getCurrentLang() === 'th' ? 'แพลตฟอร์มดิจิทัล' : 'Digital Platform', 'desc' => t('common.solution_digital_platform'),              'href' => route_url('/services/digital-platform')],
+                    ['icon' => 'icon-2.png', 'title' => getCurrentLang() === 'th' ? 'แพลตฟอร์มดิจิทัล' : 'Platform Digital', 'desc' => t('common.solution_digital_platform'),              'href' => route_url('/services/digital-platform')],
                     ['icon' => 'icon-4.png', 'title' => getCurrentLang() === 'th' ? 'การตลาดออนไลน์' : 'Online Marketing', 'desc' => t('common.solution_online_marketing'),   'href' => route_url('/services/online-marketing')],
                     ['icon' => 'icon-1.png', 'title' => getCurrentLang() === 'th' ? 'ออกแบบสร้างสรรค์' : 'Creative / Design','desc' => t('common.solution_brand_design'),    'href' => route_url('/services/creative-design')],
                 ];
@@ -489,7 +489,7 @@ if (!empty($partners) && is_array($partners)) {
                         $ipadProBorderClass = 'ipad-pro-border-none';
                     }
                 ?>
-                    <div class="gsap-home-service-card relative group cursor-pointer flex flex-col justify-between p-6 lg:p-8 <?= $borderClass ?> <?= $ipadProBorderClass ?> border-gray-100 bg-white transition-all duration-300 ease-out hover:shadow-[0_0_30px_rgba(0,0,0,0.08)] hover:-translate-y-1 hover:z-10 hover:rounded-xl opacity-0 translate-y-10 ipad-pro-p-6">
+                    <div onclick="window.location.href='<?= e($card['href']) ?>'" class="gsap-home-service-card relative group cursor-pointer flex flex-col justify-between p-6 lg:p-8 <?= $borderClass ?> <?= $ipadProBorderClass ?> border-gray-100 bg-white transition-all duration-300 ease-out hover:shadow-[0_0_30px_rgba(0,0,0,0.08)] hover:-translate-y-1 hover:z-10 hover:rounded-xl opacity-0 translate-y-10 ipad-pro-p-6">
                     <div>
                         <div class="h-14 w-14 mx-auto mb-5 flex items-center justify-center transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:-translate-y-2 group-hover:scale-110">
                             <img src="<?= e(asset_url('images/' . $card['icon'])) ?>" alt="<?= e($card['title']) ?>" class="h-full w-full object-contain">

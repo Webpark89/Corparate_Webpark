@@ -412,7 +412,7 @@ $erpPortfolios = $mockErpPortfolios;
         }
         .erp-intro-section {
             padding-top: 0px !important;
-            padding-bottom: 0px !important;
+            padding-bottom: 2rem !important;
             margin-bottom: 0px !important;
         }
         .erp-intro-card-container {
@@ -420,11 +420,11 @@ $erpPortfolios = $mockErpPortfolios;
             margin-bottom: 0px !important;
         }
         .erp-modules-section {
-            padding-top: 1.25rem !important;
+            padding-top: 4.5rem !important;
             padding-bottom: 2rem !important;
         }
         .erp-modules-header {
-            margin-bottom: 1.25rem !important;
+            margin-bottom: 2.25rem !important;
         }
         .erp-modules-header h2 {
             margin-bottom: 0.25rem !important;

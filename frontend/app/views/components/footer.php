@@ -20,7 +20,7 @@ $officeValue = t('footer.office_address');
 $phoneHref = preg_replace('/[^0-9+]/', '', $phone) ?? '';
 
 $structuredSitemap = [
-    'PAGE' => [
+   'PAGE' => [
         'groups' => [
             [
                 'title' => 'Page',

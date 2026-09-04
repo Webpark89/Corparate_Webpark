@@ -37,12 +37,15 @@ $ctaImage = asset_url('images/bg-cta.jpg');
     ],
     [
         'id'                => 2,
+        'slug'              => 'digital-platform',
+        'detail_url'        => route_url('/services/digital-platform'),
         'icon_emoji'        => '🌐',
-        'title'             => 'Digital Platform',
+        'title'             => getCurrentLang() === 'th' ? 'แพลตฟอร์มดิจิทัล' : 'Platform Digital',
         'summary'           => getCurrentLang() === 'th' ? 'ออกแบบและพัฒนาแพลตฟอร์มดิจิทัล เว็บไซต์ และระบบธุรกิจออนไลน์ที่ใช้งานง่าย ยืดหยุ่น และตอบโจทย์องค์กร' : 'Design and develop digital platforms, websites, and online business systems that are user-friendly, flexible, and meet organizational needs.',
         'image_placeholder' => 'images/bg-cta.jpg',
         'dropdown_title'    => 'Platform / Communication / Data',
         'subcategories'     => [
+            ['label' => getCurrentLang() === 'th' ? 'โซลูชันแพลตฟอร์มดิจิทัลทั้งหมด (10 โซลูชัน)' : 'All 10 Platform Solutions', 'href' => route_url('/services/digital-platform#dp-solutions')],
             ['label' => 'Website / Responsive / CMS',    'href' => route_url('/article', ['id' => 35])],
             ['label' => 'Mobile App / Mobile Site',      'href' => route_url('/article', ['id' => 36])],
             ['label' => 'E-commerce',                    'href' => route_url('/article', ['id' => 37])],
@@ -60,47 +63,53 @@ $ctaImage = asset_url('images/bg-cta.jpg');
     ],
     [
         'id'                => 3,
+        'slug'              => 'online-marketing',
+        'detail_url'        => route_url('/services/online-marketing'),
         'icon_emoji'        => '📣',
-        'title'             => 'Online Marketing',
+        'title'             => getCurrentLang() === 'th' ? 'การตลาดออนไลน์' : 'Online Marketing',
+        'title_en'          => 'Online Marketing',
         'summary'           => getCurrentLang() === 'th' ? 'วางกลยุทธ์การตลาดออนไลน์ เพื่อเพิ่มการมองเห็น สร้างโอกาสทางธุรกิจ และเพิ่มยอดขายได้อย่างวัดผลได้จริง' : 'Plan online marketing strategies to increase visibility, create business opportunities, and measurably increase sales.',
         'image_placeholder' => 'images/bg-hand.jpg',
         'dropdown_title'    => 'Strategy / Performance / Content',
         'subcategories'     => [
-            ['label' => 'Digital Marketing Consultant',  'href' => '#'],
-            ['label' => 'Media Planner / PR & Media Strategy', 'href' => '#'],
-            ['label' => 'SEO',                           'href' => route_url('/article-detail-mockup')],
-            ['label' => 'Social Network',                'href' => '#'],
-            ['label' => 'Online Campaign',               'href' => '#'],
-            ['label' => 'Monitoring & Analysis',         'href' => '#'],
-            ['label' => 'Campaign Performance Report',   'href' => '#'],
-            ['label' => 'Return on Investment (ROI)',    'href' => '#'],
-            ['label' => 'Productivity Analysis',         'href' => '#'],
-            ['label' => 'Content Strategy',              'href' => '#'],
-            ['label' => 'Ads Management',                'href' => '#'],
-            ['label' => 'Social Media Content',          'href' => '#'],
-            ['label' => 'Search Engine Marketing',       'href' => '#'],
+            ['label' => getCurrentLang() === 'th' ? 'โซลูชันการตลาดออนไลน์ทั้งหมด (10 โซลูชัน)' : 'All 10 Marketing Solutions', 'href' => route_url('/services/online-marketing#om-solutions')],
+            ['label' => 'Digital Marketing Consultant',  'href' => route_url('/services/online-marketing#om-solutions')],
+            ['label' => 'Media Planner / PR & Media Strategy', 'href' => route_url('/services/online-marketing#om-solutions')],
+            ['label' => 'SEO',                           'href' => route_url('/services/online-marketing#om-solutions')],
+            ['label' => 'Social Network',                'href' => route_url('/services/online-marketing#om-solutions')],
+            ['label' => 'Online Campaign',               'href' => route_url('/services/online-marketing#om-solutions')],
+            ['label' => 'Monitoring & Analysis',         'href' => route_url('/services/online-marketing#om-solutions')],
+            ['label' => 'Campaign Performance Report',   'href' => route_url('/services/online-marketing#om-solutions')],
+            ['label' => 'Return on Investment (ROI)',    'href' => route_url('/services/online-marketing#om-solutions')],
+            ['label' => 'Productivity Analysis',         'href' => route_url('/services/online-marketing#om-solutions')],
+            ['label' => 'Content Strategy',              'href' => route_url('/services/online-marketing#om-solutions')],
+            ['label' => 'Ads Management',                'href' => route_url('/services/online-marketing#om-solutions')],
+            ['label' => 'Social Media Content',          'href' => route_url('/services/online-marketing#om-solutions')],
+            ['label' => 'Search Engine Marketing',       'href' => route_url('/services/online-marketing#om-solutions')],
         ],
     ],
     [
         'id'                => 4,
+        'slug'              => 'creative-design',
+        'detail_url'        => route_url('/services/creative-design'),
         'icon_emoji'        => '🎨',
-        'title'             => 'Creative / Design',
+        'title'             => getCurrentLang() === 'th' ? 'ออกแบบสร้างสรรค์' : 'Creative / Design',
+        'title_en'          => 'Creative / Design',
         'summary'           => getCurrentLang() === 'th' ? 'สร้างสรรค์งานออกแบบดิจิทัลและคอนเทนต์ที่ช่วยสื่อสารแบรนด์ ทั้ง UI/UX, Graphic, Motion และสื่อสารแบรนด์' : 'Create digital designs and content that help communicate your brand, including UI/UX, Graphic, Motion, and brand communication.',
         'image_placeholder' => 'images/women-office.jpg',
         'dropdown_title'    => 'Design / Motion / Media',
         'subcategories'     => [
-            ['label' => 'Web Design',                    'href' => '#'],
-            ['label' => 'UX/UI Design',                  'href' => '#'],
-            ['label' => 'Cartoon & Character Design',    'href' => '#'],
-            ['label' => 'Infographic',                   'href' => '#'],
-            ['label' => 'Animation TV & YouTube Online', 'href' => '#'],
-            ['label' => 'Motion VDO',                    'href' => route_url('/article', ['id' => 14])],
-            ['label' => 'Video Editing',                 'href' => '#'],
-            ['label' => 'Presentation Video',            'href' => '#'],
-            ['label' => 'E-Magazine',                    'href' => '#'],
-            ['label' => 'Print Ads',                     'href' => '#'],
-            ['label' => 'Online Banner',                 'href' => '#'],
-            ['label' => 'Key Visual Design',             'href' => '#'],
+            ['label' => getCurrentLang() === 'th' ? 'โซลูชันการออกแบบทั้งหมด (10 โซลูชัน)' : 'All 10 Creative Solutions', 'href' => route_url('/services/creative-design#cd-solutions')],
+            ['label' => 'Brand Identity',                'href' => route_url('/services/creative-design#cd-solutions')],
+            ['label' => 'Web Design',                    'href' => route_url('/services/creative-design#cd-solutions')],
+            ['label' => 'UX/UI Design',                  'href' => route_url('/services/creative-design#cd-solutions')],
+            ['label' => 'Graphic Design',                'href' => route_url('/services/creative-design#cd-solutions')],
+            ['label' => 'Social Media Creative',         'href' => route_url('/services/creative-design#cd-solutions')],
+            ['label' => 'Motion Graphic / Video',        'href' => route_url('/services/creative-design#cd-solutions')],
+            ['label' => 'Present & Sales Kit',           'href' => route_url('/services/creative-design#cd-solutions')],
+            ['label' => 'Packaging Design',              'href' => route_url('/services/creative-design#cd-solutions')],
+            ['label' => 'Content Visual System',         'href' => route_url('/services/creative-design#cd-solutions')],
+            ['label' => 'Design System',                 'href' => route_url('/services/creative-design#cd-solutions')],
         ],
     ],
 ];
@@ -147,6 +156,15 @@ if (isset($services) && is_array($services)) {
                 if (str_contains(strtolower($feature), 'website')) $href = route_url('/article', ['id' => 35]);
                 if (str_contains(strtolower($feature), 'mobile')) $href = route_url('/article', ['id' => 36]);
                 if (str_contains(strtolower($feature), 'e-commerce') || str_contains(strtolower($feature), 'ecommerce')) $href = route_url('/article', ['id' => 37]);
+                if (($slug === 'digital-platform' || str_contains(strtolower($dbService['title']), 'digital')) && $href === '#') {
+                    $href = route_url('/services/digital-platform');
+                }
+                if (($slug === 'online-marketing' || str_contains(strtolower($dbService['title']), 'marketing') || str_contains(strtolower($dbService['title']), 'การตลาด') || str_contains(strtolower($dbService['title']), 'online')) && $href === '#') {
+                    $href = route_url('/services/online-marketing#om-solutions');
+                }
+                if (($slug === 'creative-design' || str_contains(strtolower($dbService['title']), 'creative') || str_contains(strtolower($dbService['title']), 'design') || str_contains(strtolower($dbService['title']), 'สร้างสรรค์') || str_contains(strtolower($dbService['title']), 'ออกแบบ')) && $href === '#') {
+                    $href = route_url('/services/creative-design#cd-solutions');
+                }
                 $mappedSubcategories[] = [
                     'label' => $feature,
                     'href' => $href
@@ -157,10 +175,38 @@ if (isset($services) && is_array($services)) {
         if (empty($mappedSubcategories)) {
             $mappedSubcategories = $mockMatch['subcategories'] ?? [];
         }
+        $isDigital = ($slug === 'digital-platform' || str_contains(strtolower($dbService['title']), 'digital') || str_contains(strtolower($dbService['title']), 'แพลตฟอร์ม'));
+        $isMarketing = ($slug === 'online-marketing' || str_contains(strtolower($dbService['title']), 'online') || str_contains(strtolower($dbService['title']), 'marketing') || str_contains(strtolower($dbService['title']), 'การตลาด'));
+        $isCreative = ($slug === 'creative-design' || str_contains(strtolower($dbService['title']), 'creative') || str_contains(strtolower($dbService['title']), 'design') || str_contains(strtolower($dbService['title']), 'สร้างสรรค์') || str_contains(strtolower($dbService['title']), 'ออกแบบ'));
+        
+        $title = $dbService['title'];
+        if ($isDigital) {
+            $title = getCurrentLang() === 'th' ? 'แพลตฟอร์มดิจิทัล' : 'Platform Digital';
+        } elseif ($isMarketing) {
+            $title = getCurrentLang() === 'th' ? 'การตลาดออนไลน์' : 'Online Marketing';
+        } elseif ($isCreative) {
+            $title = getCurrentLang() === 'th' ? 'ออกแบบสร้างสรรค์' : 'Creative / Design';
+        } elseif (getCurrentLang() === 'en') {
+            $title = $mockMatch['title_en'] ?? $mockMatch['title'] ?? $dbService['title'];
+        }
+
+        $detailUrl = '#';
+        if ($isDigital) {
+            $detailUrl = route_url('/services/digital-platform');
+        } elseif ($slug === 'erp-erm' || str_contains(strtolower($dbService['title']), 'erp')) {
+            $detailUrl = route_url('/erp');
+        } elseif ($isMarketing) {
+            $detailUrl = route_url('/services/online-marketing');
+        } elseif ($isCreative) {
+            $detailUrl = route_url('/services/creative-design');
+        }
+
         $mergedServices[] = [
             'id' => $dbService['id'],
+            'slug' => $slug,
+            'detail_url' => $detailUrl,
             'icon_emoji' => $mockMatch['icon_emoji'] ?? '⚙️',
-            'title' => getCurrentLang() === 'en' ? ($mockMatch['title_en'] ?? $mockMatch['title'] ?? $dbService['title']) : $dbService['title'],
+            'title' => $title,
             'summary' => getCurrentLang() === 'en' ? ($mockMatch['summary_en'] ?? $mockMatch['summary'] ?? $dbService['summary']) : $dbService['summary'],
             'image_placeholder' => $dbService['image'] ? 'uploads/' . $dbService['image'] : $mockMatch['image_placeholder'],
             'dropdown_title' => !empty($dbService['details']['dropdown_title']) ? $dbService['details']['dropdown_title'] : $mockMatch['dropdown_title'],
@@ -264,28 +310,69 @@ if (isset($services) && is_array($services)) {
             .ipad-pro-services-approach-desc { font-size: 1.125rem !important; line-height: 1.6 !important; }
         }
 
-        /* iPad (760px - 1366px) All Orientations */
-        @media (min-width: 760px) and (max-width: 1366px) {
+        /* iPad (760px - 1366px) All Orientations & iPad Mini Landscape */
+        @media (min-width: 1024px) and (max-width: 1366px) {
+            .desktop-wide-container-services {
+                padding-top: 7rem !important;
+                padding-bottom: 7rem !important;
+            }
             .ipad-pro-services-hero-content {
                 max-width: 100% !important;
-                margin-left: 0 !important;
+                margin-left: 3rem !important;
+            }
+            .ipad-pro-services-hero-content nav {
+                margin-bottom: 1.5rem !important;
+            }
+            .ipad-pro-services-h1 {
+                margin-bottom: 0.5rem !important;
             }
             .ipad-pro-services-text-1,
             .ipad-pro-services-text-2 {
-                font-size: 4.25rem !important;
+                font-size: 4.5rem !important;
                 font-weight: 900 !important;
                 line-height: 1.15 !important;
                 white-space: nowrap !important;
                 margin-top: 0px !important;
-                padding-top: 0px !important;
-                padding-bottom: 0px !important;
+                margin-bottom: 0px !important;
+                padding-top: 0.25rem !important;
+                padding-bottom: 0.25rem !important;
             }
             .ipad-pro-services-hero-p {
                 font-size: 1.25rem !important;
-                line-height: 1.75 !important;
+                line-height: 1.85 !important;
                 font-weight: 600 !important;
                 color: #0b1b42 !important;
                 max-width: 38rem !important;
+                margin-top: 1.5rem !important;
+                margin-bottom: 2.5rem !important;
+            }
+        }
+
+        /* iPad Portrait (768px - 1023px) */
+        @media (min-width: 760px) and (max-width: 1023px) {
+            .desktop-wide-container-services {
+                padding-top: 3.5rem !important;
+                padding-bottom: 4rem !important;
+            }
+            .ipad-pro-services-hero-content {
+                max-width: 100% !important;
+                margin-left: 0 !important;
+            }
+            .ipad-pro-services-hero-content nav {
+                margin-bottom: 1rem !important;
+            }
+            .ipad-pro-services-text-1,
+            .ipad-pro-services-text-2 {
+                font-size: 3.85rem !important;
+                font-weight: 900 !important;
+                line-height: 1.15 !important;
+                white-space: nowrap !important;
+            }
+            .ipad-pro-services-hero-p {
+                font-size: 1.15rem !important;
+                line-height: 1.75 !important;
+                margin-top: 1rem !important;
+                margin-bottom: 2rem !important;
             }
         }
 
@@ -1097,12 +1184,33 @@ if (isset($services) && is_array($services)) {
                     $sTitle  = (string)($service['title'] ?? '');
                     $sSummary= (string)($service['summary'] ?? '');
                     $sEmoji  = (string)($service['icon_emoji'] ?? '');
+                    $sDetailUrl = (string)($service['detail_url'] ?? '#');
+                    if ($sDetailUrl === '#' && (str_contains(strtolower($sTitle), 'digital') || str_contains(strtolower($sTitle), 'แพลตฟอร์ม'))) {
+                        $sDetailUrl = route_url('/services/digital-platform');
+                    }
+                    if ($sDetailUrl === '#' && (str_contains(strtolower($sTitle), 'marketing') || str_contains(strtolower($sTitle), 'การตลาด') || str_contains(strtolower($sTitle), 'online'))) {
+                        $sDetailUrl = route_url('/services/online-marketing');
+                    }
+                    if ($sDetailUrl === '#' && (str_contains(strtolower($sTitle), 'creative') || str_contains(strtolower($sTitle), 'design') || str_contains(strtolower($sTitle), 'สร้างสรรค์') || str_contains(strtolower($sTitle), 'ออกแบบ'))) {
+                        $sDetailUrl = route_url('/services/creative-design');
+                    }
                     $imgSrc  = resolve_article_image_url($service['image'] ?? $service['image_placeholder'] ?? '', asset_url('images/service-default.png'));
                     $subcats = (array)($service['subcategories'] ?? []);
                     $dropdownText = getCurrentLang() === 'th' ? (string)($service['dropdown_title'] ?? 'ดูหัวข้อย่อย') : (string)($service['dropdown_title'] ?? 'View Subcategories');
                 ?>
                 <div class="gsap-service-card group rounded-2xl border border-slate-100 bg-white overflow-hidden flex flex-col opacity-0 translate-y-10"
                     style="box-shadow: 0 2px 12px 0 rgba(4,59,148,0.07);">
+                    <?php if ($sDetailUrl !== '#'): ?>
+                    <a href="<?= e($sDetailUrl) ?>" class="relative w-full overflow-hidden bg-slate-50 flex items-center justify-center p-4 block group/img" style="aspect-ratio: 16/9;">
+                        <img
+                            src="<?= e($imgSrc) ?>"
+                            alt="<?= e($sTitle) ?>"
+                            class="max-h-full max-w-full w-auto h-auto object-contain transition-transform duration-500 group-hover/img:scale-105"
+                            loading="lazy"
+                            onerror="this.src='<?= e(asset_url('images/service-default.png')) ?>'"
+                        >
+                    </a>
+                    <?php else: ?>
                     <div class="relative w-full overflow-hidden bg-slate-50 flex items-center justify-center p-4" style="aspect-ratio: 16/9;">
                         <img
                             src="<?= e($imgSrc) ?>"
@@ -1112,14 +1220,29 @@ if (isset($services) && is_array($services)) {
                             onerror="this.src='<?= e(asset_url('images/service-default.png')) ?>'"
                         >
                     </div>
+                    <?php endif; ?>
                     <div class="flex flex-col flex-1 p-6 desktop-service-card-inner">
                         <div class="flex items-center gap-2 mb-2">
                             <span class="service-icon-emoji text-2xl leading-none desktop-service-emoji"><?= e($sEmoji) ?></span>
-                            <h2 class="text-xl font-extrabold desktop-service-title ipad-pro-service-card-title" style="color: #022862;"><?= e($sTitle) ?></h2>
+                            <?php if ($sDetailUrl !== '#'): ?>
+                                <a href="<?= e($sDetailUrl) ?>" class="group/title hover:text-primary transition-colors">
+                                    <h2 class="text-xl font-extrabold desktop-service-title ipad-pro-service-card-title group-hover/title:text-primary transition-colors cursor-pointer" style="color: #022862;"><?= e($sTitle) ?></h2>
+                                </a>
+                            <?php else: ?>
+                                <h2 class="text-xl font-extrabold desktop-service-title ipad-pro-service-card-title" style="color: #022862;"><?= e($sTitle) ?></h2>
+                            <?php endif; ?>
                         </div>
                         <p class="text-slate-500 text-sm leading-relaxed mb-4 desktop-service-desc ipad-pro-service-card-desc ipad-air-service-card-desc ipad-mini-service-card-desc">
                             <?= e($sSummary) ?>
                         </p>
+                        <?php if ($sDetailUrl !== '#'): ?>
+                        <div class="mb-4">
+                            <a href="<?= e($sDetailUrl) ?>" class="inline-flex items-center gap-1.5 text-sm font-bold text-[#0663F6] hover:text-blue-700 transition-colors">
+                                <span><?= getCurrentLang() === 'th' ? 'ดูรายละเอียดบริการ' : 'View Service Details' ?></span>
+                                <svg class="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+                            </a>
+                        </div>
+                        <?php endif; ?>
                         <div class="mt-auto border-t border-slate-100 pt-3 desktop-service-details-wrap">
                             <details class="group/details">
                                 <summary class="flex items-center justify-between py-2 rounded-lg text-sm font-bold cursor-pointer transition-colors duration-150 hover:text-[#043B94] text-[#022862] list-none desktop-service-summary ipad-pro-service-card-dropdown">
