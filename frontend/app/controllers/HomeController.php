@@ -64,6 +64,8 @@ class HomeController
                     'date' => (string) ($row['created_at'] ?? ''),
                     'image_path' => (string) ($row['image_path'] ?? $row['cover_image'] ?? ''),
                     'image' => (string) ($row['image_path'] ?? $row['cover_image'] ?? ''),
+                    'slug' => (string) ($row['slug'] ?? ''),
+                    'slug_en' => (string) ($row['slug_en'] ?? ''),
                     'meta_title_en' => (string) ($row['meta_title_en'] ?? ''),
                     'meta_description_en' => (string) ($row['meta_description_en'] ?? '')
                 ];
@@ -412,6 +414,17 @@ class HomeController
         $row = false;
         if ($id > 0) {
             $row = $articleModel->getById($id);
+            if ($row !== false) {
+                $status = strtolower(trim((string) ($row['status'] ?? '')));
+                if ($status === 'published') {
+                    $itemLang = getCurrentLang();
+                    $canonicalSlug = ($itemLang === 'en' && !empty($row['slug_en'])) ? $row['slug_en'] : ($row['slug'] ?? '');
+                    if ($canonicalSlug !== '') {
+                        header('Location: ' . route_url('/article/' . $canonicalSlug), true, 301);
+                        exit;
+                    }
+                }
+            }
         } elseif ($slug !== '') {
             $row = $articleModel->getBySlug($slug);
         }
@@ -1056,6 +1069,41 @@ class HomeController
             'currentPage' => '',
         ]));
     }
+
+    public function serverError(string $message = '', int $statusCode = 500): void
+    {
+        if (!in_array($statusCode, [500, 502, 503, 504], true)) {
+            $statusCode = 500;
+        }
+        http_response_code($statusCode);
+
+        $this->view('pages/error-500.php', array_merge($this->sharedData('error-500', 'Server Error'), [
+            'currentPage' => '',
+            'statusCode' => $statusCode,
+            'errorMessage' => $message,
+        ]));
+    }
+
+    public function serverError500(): void
+    {
+        $this->serverError('', 500);
+    }
+
+    public function serverError502(): void
+    {
+        $this->serverError('', 502);
+    }
+
+    public function serverError503(): void
+    {
+        $this->serverError('', 503);
+    }
+
+    public function serverError504(): void
+    {
+        $this->serverError('', 504);
+    }
+
 
     /**
      * Layout variables shared across every page.

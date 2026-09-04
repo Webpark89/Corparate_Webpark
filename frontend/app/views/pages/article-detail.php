@@ -357,8 +357,12 @@ $shareUrl = urlencode(request_origin_url() . ($_SERVER['REQUEST_URI'] ?? ''));
                         <?= e(getCurrentLang() === 'th' ? 'บทความที่เกี่ยวข้อง' : 'Related Articles') ?>
                     </h4>
                     <div class="space-y-4">
-                        <?php foreach($relatedArticles as $item): ?>
-                            <a href="<?= route_url('/article', ['id' => (int)$item['id']]) ?>" class="block group bg-white border border-slate-100 rounded-[1.25rem] overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                        <?php foreach($relatedArticles as $item): 
+                            $relLang = getCurrentLang();
+                            $relSlug = ($relLang === 'en' && !empty($item['slug_en'])) ? $item['slug_en'] : ($item['slug'] ?? '');
+                            $relUrl = $relSlug !== '' ? route_url('/article/' . $relSlug) : route_url('/article', ['id' => (int)$item['id']]);
+                        ?>
+                            <a href="<?= e($relUrl) ?>" class="block group bg-white border border-slate-100 rounded-[1.25rem] overflow-hidden shadow-sm hover:shadow-md transition-shadow">
                                 <div class="relative w-full overflow-hidden" style="height: 160px;">
                                     <img src="<?= resolve_article_image_url($item['image_path'] ?? '') ?>" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" style="object-position: center 25%;" alt="<?= e($item['title']) ?>">
                                 </div>

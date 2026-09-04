@@ -32,4 +32,10 @@ return [
     '/erp' => [HomeController::class, 'erp'],
     '/about' => [HomeController::class, 'about'],
     '/contact' => [HomeController::class, 'contact'],
+    '/500' => [HomeController::class, 'serverError500'],
+    '/502' => [HomeController::class, 'serverError502'],
+    '/503' => [HomeController::class, 'serverError503'],
+    '/504' => [HomeController::class, 'serverError504'],
+    '/error-500' => [HomeController::class, 'serverError500'],
+    '/error-500.php' => [HomeController::class, 'serverError500'],
 ];
