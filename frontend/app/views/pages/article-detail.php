@@ -57,12 +57,30 @@ if (is_array($decodedSections)) {
     }
     $htmlParts = [];
     $appBase = app_base_url();
+if (!function_exists('convert_plain_bullets_to_html')) {
+    function convert_plain_bullets_to_html(string $html): string
+    {
+        if (trim($html) === '') {
+            return '';
+        }
+        $isWordList = (strpos($html, 'supportLists') !== false || strpos($html, 'mso-list') !== false || strpos($html, 'MsoListParagraph') !== false);
+        if ($isWordList) {
+            $html = preg_replace('/<!--\s*\[if\s+!supportLists\][\s\S]*?<!--\s*\[endif\]\s*-->/i', '• ', $html);
+            $html = preg_replace('/<span[^>]*style="[^"]*mso-list:\s*Ignore[^"]*"[^>]*>[\s\S]*?<\/span>/i', '• ', $html);
+        }
+        $html = preg_replace('/<!--[\s\S]*?-->/', '', $html);
+        return $html;
+    }
+}
+
     foreach ($filteredSections as $sec) {
         if (!empty($sec['topic'])) {
             $htmlParts[] = '<h2>' . e($sec['topic']) . '</h2>';
         }
         if (!empty($sec['body'])) {
-            $bodyHtml = convert_plain_bullets_to_html($sec['body']);
+            $bodyHtml = function_exists('convert_plain_bullets_to_html')
+                ? convert_plain_bullets_to_html($sec['body'])
+                : $sec['body'];
             // Normalize any relative image paths (e.g. ../../frontend/public/assets/) to proper absolute URL
             $bodyHtml = preg_replace(
                 '#src=["\'](?:\.\./)+frontend/public/assets/([^"\']+)["\']#i',
@@ -259,20 +277,20 @@ $shareUrl = urlencode(request_origin_url() . ($_SERVER['REQUEST_URI'] ?? ''));
     }
     .article-format ul {
         list-style: none !important;
-        padding-left: 0 !important;
+        padding-left: 2rem !important;
         margin-bottom: 1.5rem;
     }
     .article-format ul li {
         position: relative;
         padding-left: 1.5rem;
-        margin-bottom: 0.625rem;
+        margin-bottom: 0.65rem;
         line-height: 1.8;
     }
     .article-format ul li::before {
         content: "";
         position: absolute;
         left: 0.35rem;
-        top: 0.68rem;
+        top: 0.72rem;
         width: 7px;
         height: 7px;
         border-radius: 50%;
@@ -281,7 +299,7 @@ $shareUrl = urlencode(request_origin_url() . ($_SERVER['REQUEST_URI'] ?? ''));
     }
     .article-format ol {
         list-style-type: decimal;
-        padding-left: 1.5rem;
+        padding-left: 2.5rem !important;
         margin-bottom: 1.5rem;
         font-weight: 700; /* ทำให้ตัวเลขและหัวข้อหนาตามภาพ */
         color: #022862;

@@ -89,6 +89,11 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
     .editor-frame .ck.ck-focused {
         box-shadow: none !important;
     }
+    /* Make TinyMCE sit flush inside our rounded/bordered frame */
+    .editor-frame .tox-tinymce {
+        border: none !important;
+        border-radius: 0 !important;
+    }
 </style>
 <div class="mx-auto max-w-7xl px-4 py-6 lg:px-8">
     <form method="post"
@@ -811,111 +816,292 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
     }
 
     /**
-     * แปลงข้อความที่มีสัญลักษณ์ Bullet (•, ⁃, ▪, -, *) หรือตัวเลขรายการ (1., 1)) 
-     * และรองรับโค้ดพิเศษจาก Microsoft Word (MsoListParagraph / supportLists)
-     * ให้กลายเป็นแท็ก <ul><li> หรือ <ol><li> อัตโนมัติเมื่อวางเนื้อหา (Auto-convert on Paste)
+     * คลีนสไตล์ขยะของ Microsoft Word โดยตัดเฉพาะ mso-*, line-height บีบแคบ, font-family
+     * แต่คงค่าสำคัญ: color, background-color, font-weight: bold, text-decoration ไว้ครบถ้วน
+     */
+    function cleanWordStyle(styleContent) {
+        if (!styleContent) return '';
+        const decls = styleContent.split(';').map(d => d.trim()).filter(Boolean);
+        const kept = [];
+
+        for (const decl of decls) {
+            const colonIdx = decl.indexOf(':');
+            if (colonIdx === -1) continue;
+            const prop = decl.substring(0, colonIdx).trim().toLowerCase();
+            const val = decl.substring(colonIdx + 1).trim();
+
+            // ตัดฟังก์ชันเฉพาะของ Microsoft Office (mso-*)
+            if (prop.startsWith('mso-')) continue;
+            // ตัด line-height บีบแคบของ Word (เช่น 115%) ที่ทำให้สระ/วรรณยุกต์ภาษาไทยซ้อนทับกัน
+            if (prop === 'line-height' && val.includes('%')) continue;
+            // ตัด font-family เพื่อให้เนื้อหาแสดงผลด้วยฟอนต์ Noto Sans Thai / Inter มาตรฐานของเว็บไซต์
+            if (prop === 'font-family') continue;
+            // ตัดขนาดตัวอักษร pt คงที่ของ Word เพื่อให้ระบบจัดการ Responsive แสดงผลสวยงามทุกหน้าจอ
+            if (prop === 'font-size' && (val.includes('pt') || val === '16px' || val === '14px' || val === '12px')) continue;
+
+            // text-indent ของ Word ถูกแปลงเป็น &emsp;&emsp; ในข้อความแล้ว จึงตัด style นี้ออกเพื่อไม่ให้เกิดการย่อหน้าซ้ำซ้อน
+            if (prop === 'text-indent') {
+                continue;
+            }
+
+            // แปลงระยะเยื้องซ้ายทั้งย่อหน้าของ Word (เช่น margin-left: 36pt -> 2rem)
+            if (prop === 'margin-left') {
+                const num = parseFloat(val);
+                if (num >= 20) {
+                    kept.push('margin-left: 2rem');
+                }
+                continue;
+            }
+
+            kept.push(`${prop}: ${val}`);
+        }
+
+        return kept.join('; ');
+    }
+
+    /**
+     * แปลงและทำความสะอาดเนื้อหาจาก Microsoft Word อย่างสมบูรณ์:
+     * 1. สมานรอยต่อแท็ก HTML ที่โดน Word ตัดขึ้นบรรทัดใหม่ (Hard Line-Wrap) ป้องกันโค้ดแปลกปลอมหลุด (ภาพ 1)
+     * 2. รักษาย่อหน้า (Indent / Tab / 4+ spaces) ให้เป็น &emsp;&emsp; หรือ text-indent: 2rem เหมือนใน Word 100%
+     * 3. กรองโค้ดขยะเฉพาะ Word (mso-*, <o:p>, Comments, lang=TH/EN)
+     * 4. รักษาย่อหน้าให้เป็นก้อนเดียวกัน (ไม่ผ่าเนื้อหาใน <p> ออกเป็นหลายบรรทัด)
+     * 5. คงตัวหนา (Bold), ตัวเอียง (Italic), ขีดเส้นใต้ (Underline), สีข้อความ (Color) ไว้ 100%
+     * 6. แก้ปัญหาตัวเลขหัวข้อรีเซ็ตเป็น 1-1-1 โดยคงตัวเลขเดิมไว้ (ภาพ 2)
+     * 7. จัดกลุ่ม Bullet ให้เป็นแท็ก <ul><li> ที่สวยงามและเยื้องระยะตรงตาม Word (ภาพ 3)
      */
     function autoConvertBullets(input) {
         if (!input || typeof input !== 'string') return input;
 
-        // ตรวจจับโค้ด List รูปแบบเฉพาะของ Microsoft Word
-        const isWordList = input.includes('supportLists') || input.includes('mso-list') || input.includes('MsoListParagraph');
         let str = input;
 
-        if (isWordList) {
-            str = str.replace(/<!--\s*\[if\s+!supportLists\][\s\S]*?<!--\s*\[endif\]\s*-->/gi, '• ');
-            str = str.replace(/<span[^>]*style="[^"]*mso-list:\s*Ignore[^"]*"[^>]*>[\s\S]*?<\/span>/gi, '• ');
-        }
+        // 1. สมานรอยต่อแท็ก HTML ที่ถูก Word ตัดขึ้นบรรทัดใหม่ (Hard Line Folding) ผ่ากลางแท็ก
+        str = str.replace(/<[^>]+>/g, function (tag) {
+            return tag.replace(/[\r\n\t]+/g, ' ');
+        });
+
+        // 2. แปลง text-indent ของ Word บนแท็ก <p> ให้เป็นย่อหน้า &emsp;&emsp; ทันที
+        str = str.replace(/<p\b([^>]*)style=(['"])([\s\S]*?)\2([^>]*)>([\s\S]*?)<\/p>/gi, function(match, pre, q, style, post, inner) {
+            const indentMatch = style.match(/text-indent:\s*([^;]+)/i);
+            if (indentMatch && parseFloat(indentMatch[1]) > 0) {
+                let cleanInner = inner.trim();
+                if (!cleanInner.startsWith('&emsp;')) {
+                    cleanInner = '&emsp;&emsp;' + cleanInner;
+                }
+                return `<p${pre}style=${q}${style}${q}${post}>${cleanInner}</p>`;
+            }
+            return match;
+        });
+
+        // 3. แปลง Tab ของ Word: <span style='mso-tab-count:...'> ให้เป็นย่อหน้า &emsp;&emsp;
+        str = str.replace(/<span[^>]*style=['"][^'"]*mso-tab-count:[^'"]*['"][^>]*>[\s\S]*?<\/span>/gi, '&emsp;&emsp;');
+
+        // 4. แปลงชุดเคาะ Spacebar หลายครั้งของ Word: <span style='mso-spacerun:yes'>
+        str = str.replace(/<span[^>]*style=['"][^'"]*mso-spacerun:[^'"]*['"][^>]*>([\s\S]*?)<\/span>/gi, function(match, spaces) {
+            const raw = spaces.replace(/&nbsp;|\u00A0/gi, ' ');
+            if (raw.length >= 2) {
+                return '&emsp;&emsp;';
+            }
+            return spaces;
+        });
+
+        // 5. แปลงแท็บอักขระจริง \t ให้เป็นย่อหน้า &emsp;&emsp;
+        str = str.replace(/\t+/g, '&emsp;&emsp;');
+
+        // 6. ดึงข้อความ/ตัวเลข/bullet จากโค้ดเฉพาะ supportLists ของ Word
+        str = str.replace(/<!--\s*\[if\s+!supportLists\]([\s\S]*?)<!--\s*\[endif\]\s*-->/gi, function (match, p1) {
+            const clean = p1.replace(/<[^>]+>/g, '').trim();
+            if (/^\d+[\.\)]/.test(clean)) {
+                return clean + ' ';
+            }
+            return '• ';
+        });
 
         // ลบ HTML comments ทั่วไป
         str = str.replace(/<!--[\s\S]*?-->/g, '');
 
-        // ตรวจสอบเบื้องต้นว่ามีสัญลักษณ์ Bullet หรือ Number List หรือไม่
-        const hasBulletPattern = /[•⁃▪▫◦·\u2022\u2043\u25AA\u25AB\u25E6\u00B7]|&bull;|&#8226;|&#x2022;|^[\s\u00A0]*[-\*]\s+|[\r\n<][\s\u00A0]*[-\*]\s+/i;
-        const hasNumberPattern = /(?:^|[\r\n<])[\s\u00A0]*\d+[\.\)][\s\u00A0]+/i;
+        // ลบ Word XML namespaces เช่น <o:p>, <w:WordDocument>
+        str = str.replace(/<\/?\w+:[^>]*>/gi, '');
 
-        if (!hasBulletPattern.test(str) && !hasNumberPattern.test(str)) {
-            return input;
-        }
-
-        // แปลง Entities ของ Bullet ให้อยู่ในรูปตัวอักษรมาตรฐาน
-        str = str
-            .replace(/&bull;|&#8226;|&#x2022;/gi, '•')
-            .replace(/&nbsp;/gi, ' ');
-
-        // แปลงแท็กบล็อกและตัวตัดบรรทัดให้อยู่ในรูป newline
-        str = str.replace(/<br\s*\/?>/gi, '\n');
-        str = str.replace(/<\/p>/gi, '\n');
-        str = str.replace(/<\/div>/gi, '\n');
-        str = str.replace(/<p[^>]*>/gi, '');
-        str = str.replace(/<div[^>]*>/gi, '');
-
-        const rawLines = str.split(/\r?\n/);
-        const resultBlocks = [];
-        let currentList = null; // { type: 'ul'|'ol', items: [] }
-
-        function getLineBullet(line) {
-            if (!line) return null;
-            const cleanText = line.replace(/<[^>]+>/g, '').trim();
-            if (!cleanText) return null;
-
-            if (/^[•⁃▪▫◦·\u2022\u2043\u25AA\u25AB\u25E6\u00B7]/.test(cleanText)) {
-                const content = line.trim().replace(/^(\s*<[^>]+>)*\s*[•⁃▪▫◦·\u2022\u2043\u25AA\u25AB\u25E6\u00B7][\s\u00A0]*/i, '');
-                return { type: 'ul', content: content };
-            }
-
-            if (/^([-\*])[\s\u00A0]+/.test(cleanText)) {
-                const content = line.trim().replace(/^(\s*<[^>]+>)*\s*([-\*])[\s\u00A0]+/i, '');
-                return { type: 'ul', content: content };
-            }
-
-            if (/^\d+[\.\)][\s\u00A0]+/.test(cleanText)) {
-                const content = line.trim().replace(/^(\s*<[^>]+>)*\s*(\d+)[\.\)][\s\u00A0]+/i, '');
-                return { type: 'ol', content: content };
-            }
-
-            return null;
-        }
-
-        function flushList() {
-            if (currentList && currentList.items.length > 0) {
-                const tag = currentList.type;
-                const itemsHtml = currentList.items.map(item => `<li>${item}</li>`).join('');
-                resultBlocks.push(`<${tag}>${itemsHtml}</${tag}>`);
-                currentList = null;
-            }
-        }
-
-        rawLines.forEach(line => {
-            const trimmed = line.trim();
-            if (!trimmed || trimmed === '&nbsp;') {
-                flushList();
-                return;
-            }
-
-            if (/^<(h[1-6]|table|thead|tbody|tfoot|tr|th|td|blockquote|pre|figure|img|ul|ol|li)/i.test(trimmed)) {
-                flushList();
-                resultBlocks.push(trimmed);
-                return;
-            }
-
-            const bullet = getLineBullet(line);
-            if (bullet) {
-                if (!currentList || currentList.type !== bullet.type) {
-                    flushList();
-                    currentList = { type: bullet.type, items: [] };
-                }
-                currentList.items.push(bullet.content);
-            } else {
-                flushList();
-                resultBlocks.push(`<p>${trimmed}</p>`);
-            }
+        // คลีนสแปน ignore ของ Word
+        str = str.replace(/<span[^>]*style=['"][^'"]*mso-list:\s*Ignore[^'"]*['"][^>]*>([\s\S]*?)<\/span>/gi, function (match, p1) {
+            const clean = p1.replace(/<[^>]+>/g, '').trim();
+            if (/^\d+[\.\)]/.test(clean)) return clean + ' ';
+            return '• ';
         });
 
-        flushList();
+        // ลบแอตทริบิวต์ภาษาของ Word (lang=TH / lang=EN)
+        str = str.replace(/\s*lang=['"]?[a-z0-9\-_]+['"]?/gi, '');
+
+        // ลบ class ของ Word (MsoNormal, MsoListParagraph ฯลฯ)
+        str = str.replace(/\s*class=['"]?Mso\w*['"]?/gi, '');
+
+        // คลีน style attributes โดยจับคู่ quotes อย่างถูกต้อง (แก้ปัญหา inner quotes ใน font-family)
+        str = str.replace(/\s*style=(['"])([\s\S]*?)\1/gi, function (match, quote, styleContent) {
+            const cleaned = cleanWordStyle(styleContent);
+            return cleaned ? ` style="${cleaned}"` : '';
+        });
+
+        // ลบแท็ก <span> ที่ว่างเปล่าหรือไม่มีแอตทริบิวต์หลงเหลือ
+        str = str.replace(/<span\s*>([\s\S]*?)<\/span>/gi, '$1');
+
+        // 7. รวมบรรทัด \r\n ภายใน <li>...</li> ให้เป็นบรรทัดเดียวกัน ป้องกันคำในวงเล็บแตกบรรทัด
+        str = str.replace(/<li\b([^>]*)>([\s\S]*?)<\/li>/gi, function (match, attrs, innerText) {
+            const normalized = innerText.replace(/[\r\n]+/g, ' ').trim();
+            return `<li${attrs}>${normalized}</li>`;
+        });
+
+        // 8. รวมบรรทัด \r\n ภายใน <p>...</p> ให้เป็นข้อความต่อเนื่อง พร้อมรักษาย่อหน้า
+        str = str.replace(/<p\b([^>]*)>([\s\S]*?)<\/p>/gi, function (match, attrs, innerText) {
+            let normalizedInner = innerText.replace(/[\r\n]+/g, ' ');
+            // ตรวจจับย่อหน้า: ไม่ว่าจะเริ่มด้วยช่องว่าง/nbsp ทันที หรือมีแท็ก span คั่นอยู่ข้างหน้า
+            normalizedInner = normalizedInner.replace(/(^|(?:<[a-z0-9]+[^>]*>)+)((?:&nbsp;|\s|\u00A0|\t|&emsp;){2,})/i, function(m, p1, p2) {
+                return p1 + '&emsp;&emsp;';
+            });
+            // ถ้าใน attrs มี text-indent ของ Word ให้แปลงเป็น &emsp;&emsp; นำหน้าข้อความทันที
+            if (/text-indent/i.test(attrs)) {
+                const indentVal = (attrs.match(/text-indent:\s*([^;"']+)/i) || [])[1] || '';
+                if (parseFloat(indentVal) > 0) {
+                    if (!normalizedInner.startsWith('&emsp;')) {
+                        normalizedInner = '&emsp;&emsp;' + normalizedInner;
+                    }
+                }
+            }
+            // ตัด whitespace ส่วนเกินที่ต้นและท้าย
+            normalizedInner = normalizedInner.replace(/^[ \t\r\n]+|[ \t\r\n]+$/g, '');
+            return `<p${attrs}>${normalizedInner}</p>`;
+        });
+
+        // ตรวจสอบเบื้องต้นว่ามีสัญลักษณ์ Bullet หรือ Number List ที่ต้องแปลงหรือไม่
+        const hasBulletPattern = /[•⁃▪▫◦·\u2022\u2043\u25AA\u25AB\u25E6\u00B7]|&bull;|&#8226;|&#x2022;|(?:^|[\r\n>]|&gt;)[\s\u00A0]*[-\*]\s+/i;
+        const hasNumberPattern = /(?:^|[\r\n>]|&gt;)[\s\u00A0]*\d+[\.\)][\s\u00A0]+/i;
+
+        // แปลง Entities ของ Bullet ให้อยู่ในรูปตัวอักษรมาตรฐาน (ไม่แตะต้อง &nbsp; ของเนื้อหา)
+        str = str.replace(/&bull;|&#8226;|&#x2022;/gi, '•');
+
+        // ถ้าไม่มี Bullet ในรูปแท็ก <p> หรือข้อความดิบ ให้ return ทันที (ไม่ไปยุ่งกับ <ul><li> ที่มีอยู่แล้ว)
+        if (!hasBulletPattern.test(str) && !hasNumberPattern.test(str)) {
+            return str;
+        }
+
+        // ประมวลผลบล็อก HTML โดยแยกแท็กระดับบล็อก (p, ul, ol, h1-h6, table) ไม่ให้พัง
+        const blocks = [];
+        const blockRegex = /<(p|ul|ol|h[1-6]|table)\b([^>]*)>([\s\S]*?)<\/\1>/gi;
+        let lastIndex = 0;
+        let match;
+
+        function processRawLine(rawLine) {
+            let line = rawLine.replace(/[\r\n]+/g, '');
+            line = line.replace(/^(?:&nbsp;|\u00A0|\t|[ ]){2,}/, '&emsp;&emsp;');
+            return line.trimStart().startsWith('&emsp;') ? line.trimEnd() : line.trim();
+        }
+
+        while ((match = blockRegex.exec(str)) !== null) {
+            const before = str.substring(lastIndex, match.index).trim();
+            if (before) {
+                before.split(/\r?\n/).forEach(line => {
+                    const content = processRawLine(line);
+                    if (content) blocks.push({ tag: 'p', attrs: '', content: content });
+                });
+            }
+            blocks.push({ tag: match[1].toLowerCase(), attrs: match[2], content: match[3].trim(), full: match[0] });
+            lastIndex = match.index + match[0].length;
+        }
+        const remainder = str.substring(lastIndex).trim();
+        if (remainder) {
+            remainder.split(/\r?\n/).forEach(line => {
+                const content = processRawLine(line);
+                if (content) blocks.push({ tag: 'p', attrs: '', content: content });
+            });
+        }
+
+        if (blocks.length === 0) {
+            str.split(/\r?\n/).forEach(line => {
+                const content = processRawLine(line);
+                if (content) blocks.push({ tag: 'p', attrs: '', content: content });
+            });
+        }
+
+        const resultBlocks = [];
+        let currentUl = [];
+        let currentOl = [];
+
+        function flushUl() {
+            if (currentUl.length > 0) {
+                resultBlocks.push(`<ul>${currentUl.map(c => `<li>${c}</li>`).join('')}</ul>`);
+                currentUl = [];
+            }
+        }
+        function flushOl() {
+            if (currentOl.length > 0) {
+                resultBlocks.push(`<ol>${currentOl.map(c => `<li>${c}</li>`).join('')}</ol>`);
+                currentOl = [];
+            }
+        }
+
+        for (let i = 0; i < blocks.length; i++) {
+            const b = blocks[i];
+
+            // ถ้าเป็นบล็อก <ul> หรือ <ol> หรือ <table> หรือ heading อยู่แล้ว ให้รักษาโครงสร้างเดิมไว้สมบูรณ์ 100%
+            if (b.tag === 'ul' || b.tag === 'ol' || b.tag === 'table' || /^h[1-6]$/.test(b.tag)) {
+                flushUl();
+                flushOl();
+                // คลีนเนื้อหาภายใน <li> ให้ไม่มีการตัดบรรทัดแปลกๆ
+                let cleanList = b.full.replace(/<li\b([^>]*)>([\s\S]*?)<\/li>/gi, (m, a, txt) => {
+                    return `<li${a}>${txt.replace(/[\r\n]+/g, ' ').trim()}</li>`;
+                });
+                resultBlocks.push(cleanList);
+                continue;
+            }
+
+            const cleanText = b.content.replace(/&emsp;|&nbsp;|\u00A0/gi, ' ').replace(/<[^>]+>/g, '').trim();
+
+            // ตรวจสอบว่าบล็อกนี้เป็น Bullet หรือไม่
+            const isBullet = /^[•⁃▪▫◦·\u2022\u2043\u25AA\u25AB\u25E6\u00B7]/.test(cleanText) || /^([-\*])[\s\u00A0]+/.test(cleanText);
+            if (isBullet) {
+                flushOl();
+                const content = b.content.replace(/^(\s*<[^>]+>)*\s*([•⁃▪▫◦·\u2022\u2043\u25AA\u25AB\u25E6\u00B7]|[-\*])[\s\u00A0]*/i, '');
+                currentUl.push(content);
+                continue;
+            }
+
+            // ตรวจสอบว่าบล็อกนี้เป็นรายการตัวเลขลำดับหรือไม่
+            const numMatch = cleanText.match(/^(\d+)[\.\)][\s\u00A0]+/);
+            if (numMatch) {
+                const nextClean = (i + 1 < blocks.length) ? blocks[i + 1].content.replace(/&emsp;|&nbsp;|\u00A0/gi, ' ').replace(/<[^>]+>/g, '').trim() : '';
+                const nextIsNum = /^\d+[\.\)][\s\u00A0]+/.test(nextClean);
+
+                if (nextIsNum || currentOl.length > 0) {
+                    flushUl();
+                    const content = b.content.replace(/^(\s*<[^>]+>)*\s*(\d+)[\.\)][\s\u00A0]+/i, '');
+                    currentOl.push(content);
+                    continue;
+                } else {
+                    // หากเป็นหัวข้อเดี่ยวๆ ที่มีเนื้อหา/bullet คั่น (เช่น 1. Accounts Receivable)
+                    // ให้คงตัวเลขเดิมไว้เสมอ และไม่ครอบ <ol> แยก ป้องกันปัญหาตัวเลขกลายเป็น 1-1-1
+                    flushUl();
+                    flushOl();
+                    resultBlocks.push(`<p${b.attrs}>${b.content}</p>`);
+                    continue;
+                }
+            }
+
+            // ย่อหน้าปกติ หรือ บล็อก HTML มาตรฐาน (heading, table ฯลฯ)
+            flushUl();
+            flushOl();
+
+            if (/^<(h[1-6]|table|thead|tbody|tfoot|tr|th|td|blockquote|pre|figure|img|ul|ol|li)/i.test(b.content)) {
+                resultBlocks.push(b.content);
+            } else {
+                resultBlocks.push(`<p${b.attrs}>${b.content}</p>`);
+            }
+        }
+
+        flushUl();
+        flushOl();
 
         return resultBlocks.join('');
     }
+    const cleanAndConvertWordContent = autoConvertBullets;
 
     function tinymceImageUploadHandler(blobInfo, progress) {
         return new Promise((resolve, reject) => {
@@ -984,8 +1170,12 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
         tinymce.init({
             selector: `#${id}`,
             plugins: 'autoresize lists link image code table wordcount',
-            toolbar: 'blocks | bold italic forecolor backcolor | bullist numlist | alignleft aligncenter alignright alignjustify | link image | removeformat',
+            toolbar: 'blocks | bold italic forecolor backcolor | bullist numlist | outdent indent | alignleft aligncenter alignright alignjustify | link image | removeformat',
             menubar: false,
+            extended_valid_elements: 'span[*],p[*],ul[*],ol[*],li[*],strong[*],em[*],b[*],i[*],h1[*],h2[*],h3[*],h4[*]',
+            valid_styles: {
+                '*': 'color,background-color,text-align,text-indent,margin,margin-left,margin-right,margin-top,margin-bottom,padding,padding-left,padding-right,font-weight,font-style,text-decoration'
+            },
             color_map: [
                 '0663F6', 'Primary Blue',
                 '022862', 'Dark Blue',
@@ -1005,30 +1195,72 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
             relative_urls: false,
             remove_script_host: false,
             convert_urls: false,
-            content_style: 'body { font-family: "Noto Sans Thai", Inter, ui-sans-serif, system-ui, sans-serif; font-size: 16px; line-height: 1.75; color: #475569; } p, span, li, div { font-size: 16px !important; line-height: 1.75 !important; } ul { list-style: none !important; padding-left: 0 !important; margin-bottom: 1.5rem; } ul li { position: relative; padding-left: 1.5rem; margin-bottom: 0.5rem; line-height: 1.75; } ul li::before { content: ""; position: absolute; left: 0.35rem; top: 0.65rem; width: 7px; height: 7px; border-radius: 50%; background-color: #0663F6; }',
+            content_style: 'body { font-family: "Noto Sans Thai", Inter, ui-sans-serif, system-ui, sans-serif; font-size: 16px; line-height: 1.75; color: #475569; } p { margin-bottom: 1rem; } h1, h2, h3, h4, h5, h6 { color: #0f172a; font-weight: 700; margin-top: 1.5rem; margin-bottom: 0.75rem; font-family: "Noto Sans Thai", Inter, sans-serif !important; } h1 { font-size: 2rem; line-height: 1.3; } h2 { font-size: 1.5rem; line-height: 1.35; color: #022862; } h3 { font-size: 1.25rem; line-height: 1.4; color: #0663F6; } ul { list-style: none !important; padding-left: 2rem !important; margin-bottom: 1.5rem; } ul li { position: relative; padding-left: 1.5rem; margin-bottom: 0.65rem; line-height: 1.8; } ul li::before { content: ""; position: absolute; left: 0.35rem; top: 0.72rem; width: 7px; height: 7px; border-radius: 50%; background-color: #0663F6; } ol { list-style-type: decimal; padding-left: 2.5rem !important; margin-bottom: 1.5rem; } ol li { margin-bottom: 0.65rem; line-height: 1.8; } strong, b { font-weight: 700; }',
             images_upload_handler: tinymceImageUploadHandler,
             paste_preprocess: function (plugin, args) {
                 args.content = autoConvertBullets(args.content);
             },
             setup: function (editor) {
                 editors[id] = editor;
+
+                let isPastingWord = false;
+                function handleWordPaste(e) {
+                    if (isPastingWord) return;
+                    const clipboardData = e.clipboardData || (e.originalEvent && e.originalEvent.clipboardData) || window.clipboardData;
+                    if (!clipboardData) return;
+
+                    const html = clipboardData.getData('text/html');
+                    if (!html) return;
+
+                    // ตรวจจับว่าเป็นเนื้อหาจาก Microsoft Word หรือมี text-indent ของ Word
+                    const isWord = html.includes('urn:schemas-microsoft-com:office') ||
+                                   html.includes('mso-') ||
+                                   html.includes('MsoNormal') ||
+                                   /class=['"]?Mso/i.test(html) ||
+                                   /text-indent\s*:/i.test(html);
+
+                    if (isWord) {
+                        isPastingWord = true;
+                        setTimeout(() => { isPastingWord = false; }, 300);
+
+                        e.preventDefault();
+                        if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+                        if (e.stopPropagation) e.stopPropagation();
+
+                        const converted = autoConvertBullets(html);
+                        editor.insertContent(converted);
+                        return false;
+                    }
+                }
+
+                // ดักจับ paste ในระดับ TinyMCE event
+                editor.on('paste', handleWordPaste);
+
+                // ดักจับ paste ในระดับ Native DOM Event (Capture Phase) ของ iframe document
+                editor.on('init', function () {
+                    const doc = editor.getDoc();
+                    if (doc) {
+                        doc.addEventListener('paste', handleWordPaste, true);
+                    }
+                    const body = editor.getBody();
+                    if (body) {
+                        body.addEventListener('paste', handleWordPaste, true);
+                    }
+                });
+
+                // Fallback สำหรับการวางข้อความทั่วไป หรือข้อความดิบ (Plain Text)
                 editor.on('PastePreProcess', function (e) {
                     e.content = autoConvertBullets(e.content);
                 });
-                editor.on('paste', function () {
-                    setTimeout(function () {
-                        const raw = editor.getContent();
-                        const converted = autoConvertBullets(raw);
-                        if (converted !== raw) {
-                            editor.setContent(converted);
+                editor.on('keydown', function (e) {
+                    if (e.key === 'Tab' && !e.shiftKey) {
+                        const node = editor.selection.getNode();
+                        if (node && node.closest('li')) {
+                            editor.execCommand('Indent');
+                        } else {
+                            e.preventDefault();
+                            editor.insertContent('&emsp;&emsp;');
                         }
-                    }, 50);
-                });
-                editor.on('blur change', function () {
-                    const raw = editor.getContent();
-                    const converted = autoConvertBullets(raw);
-                    if (converted !== raw) {
-                        editor.setContent(converted);
                     }
                 });
                 editor.addShortcut('ctrl+q', 'Apply Primary Color', function () {
@@ -1137,15 +1369,6 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
         const form = document.querySelector('#unifiedForm');
         if (form) {
             form.addEventListener('submit', () => {
-                for (const id in editors) {
-                    if (editors.hasOwnProperty(id) && editors[id]) {
-                        const raw = editors[id].getContent();
-                        const converted = autoConvertBullets(raw);
-                        if (converted !== raw) {
-                            editors[id].setContent(converted);
-                        }
-                    }
-                }
                 if (window.tinymce && typeof tinymce.triggerSave === 'function') {
                     tinymce.triggerSave();
                 }
