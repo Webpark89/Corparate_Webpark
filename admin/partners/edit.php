@@ -21,7 +21,7 @@ if (!$partner) {
     exit('ไม่พบข้อมูลโลโก้พันธมิตรในระบบ (Partner not found.)');
 }
 
-$pageTitle = 'แก้ไขข้อมูลโลโก้พันธมิตร';
+$pageTitle = 'Edit Partner';
 $page = 'partners';
 $action = 'edit';
 $formAction = 'edit.php?id=' . $id;

@@ -6,7 +6,7 @@ declare(strict_types=1);
  * Admin Category Management page — list, create, edit, delete categories.
  */
 
-$pageTitle = 'การจัดการหมวดหมู่บทความ';
+$pageTitle = 'Categories';
 $page = 'category';
 
 require_once __DIR__ . '/../includes/header.php';
@@ -28,7 +28,7 @@ $stmt = $pdo->query('
 $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
-<div class="mx-auto w-full max-w-none px-2 pb-8 pt-1 text-sm md:px-4 lg:px-8 space-y-5">
+<div class="mx-auto w-full max-w-none px-4 pb-8 pt-1 text-sm md:px-4 lg:px-8 space-y-5 cat-page-container">
     <!-- Page Header -->
     <header class="mb-5 flex flex-col gap-3 border-l-4 border-blue-500 pl-4 md:flex-row md:items-center md:justify-between">
         <div>
@@ -36,16 +36,17 @@ $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <p class="mt-1 text-xs text-slate-500">จัดการ เพิ่ม แก้ไขชื่อ หรือลบหมวดหมู่ของบทความบนเว็บไซต์</p>
         </div>
         <a href="<?= ADMIN_URL ?>/article/index.php" 
-           class="inline-flex h-9 items-center gap-2 px-4 text-xs font-semibold text-slate-700 bg-white border border-slate-200 hover:bg-slate-50 hover:text-blue-600 rounded-xl shadow-xs transition">
+           class="inline-flex h-9 items-center gap-2 px-4 text-xs font-semibold text-slate-700 bg-white border border-slate-200 hover:bg-slate-50 hover:text-blue-600 rounded-xl shadow-xs transition"
+           style="width: fit-content; align-self: flex-start;">
             <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
             <span>กลับหน้ารายการบทความ</span>
         </a>
     </header>
 
     <!-- Quick Add Category Card -->
-    <div class="rounded-2xl border border-slate-200 bg-white p-5 md:p-6 shadow-sm">
-        <div class="flex items-center gap-2 mb-4">
-            <span class="w-6 h-6 rounded-md bg-blue-50 text-blue-600 flex items-center justify-center font-bold text-xs">➕</span>
+    <div class="cat-quick-add-card rounded-2xl border border-slate-200 bg-white shadow-sm">
+        <div class="flex items-center gap-2.5 mb-5">
+            <span class="w-7 h-7 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center font-bold text-xs">➕</span>
             <div>
                 <h3 class="text-xs font-bold uppercase tracking-wider text-slate-700">เพิ่มหมวดหมู่ใหม่</h3>
             </div>
@@ -54,23 +55,23 @@ $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <form id="createCategoryForm" style="display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-end; width: 100%;">
             <input type="hidden" name="_csrf" value="<?= csrf_token() ?>">
             
-            <div style="flex: 1 1 320px; min-width: 240px;">
-                <label class="text-xs font-semibold text-slate-700 block mb-1.5">
+            <div class="cat-form-col-1" style="flex: 1 1 320px; min-width: 240px;">
+                <label class="text-xs font-semibold text-slate-700 block mb-2">
                     ชื่อหมวดหมู่ <span class="text-red-500">*</span>
                 </label>
                 <input type="text" id="catNameInput" name="name" placeholder="เช่น AI & Automation, Cloud Computing..." required
                     class="w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-xs md:text-sm text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition" style="height: 42px;">
             </div>
 
-            <div style="flex: 1 1 260px; min-width: 200px;">
-                <label class="text-xs font-semibold text-slate-500 block mb-1.5">
+            <div class="cat-form-col-2" style="flex: 1 1 260px; min-width: 200px;">
+                <label class="text-xs font-semibold text-slate-500 block mb-2">
                     URL Slug (เว้นว่างให้ระบบสร้างอัตโนมัติ)
                 </label>
                 <input type="text" id="catSlugInput" name="slug" placeholder="เช่น ai-automation"
                     class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-xs text-slate-700 placeholder:text-slate-400 focus:border-blue-500 focus:bg-white outline-none transition" style="height: 42px;">
             </div>
 
-            <div style="flex: 0 0 auto; min-width: 150px;">
+            <div class="cat-form-col-btn" style="flex: 0 0 auto; min-width: 150px;">
                 <button type="submit" id="btnCreateCat"
                     class="w-full rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold shadow-sm transition flex items-center justify-center gap-2 cursor-pointer" style="height: 42px; padding: 0 24px; white-space: nowrap;">
                     <span>+ เพิ่มหมวดหมู่</span>
@@ -92,7 +93,7 @@ $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </div>
 
         <div class="overflow-x-auto">
-            <table class="w-full text-left text-xs text-slate-600">
+            <table class="cat-table w-full text-left text-xs text-slate-600">
                 <thead class="bg-slate-50/70 text-[11px] font-semibold uppercase tracking-wider text-slate-400 border-b border-slate-200">
                     <tr>
                         <th class="px-6 py-3.5" style="width: 35%;">ชื่อหมวดหมู่</th>
@@ -109,26 +110,26 @@ $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <?php else: ?>
                         <?php foreach ($categories as $c): ?>
                             <tr id="cat-row-<?= (int)$c['id'] ?>" class="hover:bg-slate-50/80 transition">
-                                <td class="px-6 py-4 font-semibold text-slate-900 text-sm">
+                                <td class="px-6 py-4 font-semibold text-slate-900 text-sm cat-col-name">
                                     <div class="cat-name-view"><?= e($c['name']) ?></div>
                                     <div class="cat-name-edit hidden">
                                         <input type="text" class="edit-name-input w-full rounded-xl border border-blue-400 px-3 py-2 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20" value="<?= e($c['name']) ?>" style="height: 38px;">
                                     </div>
                                 </td>
-                                <td class="px-6 py-4 text-slate-500">
-                                    <div class="cat-slug-view font-mono text-[11px] bg-slate-100 px-2.5 py-1 rounded-md inline-block border border-slate-200/60">
+                                <td class="px-6 py-4 text-slate-500 cat-col-slug">
+                                    <div class="cat-slug-view font-mono text-[11px] bg-slate-100 px-2.5 py-1 rounded-md inline-block border border-slate-200/60 whitespace-nowrap">
                                         /article?category=<?= e($c['slug']) ?>
                                     </div>
                                     <div class="cat-slug-edit hidden">
                                         <input type="text" class="edit-slug-input w-full rounded-xl border border-slate-300 px-3 py-2 text-xs text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500/20" value="<?= e($c['slug']) ?>" style="height: 38px;">
                                     </div>
                                 </td>
-                                <td class="px-6 py-4 text-center">
+                                <td class="px-6 py-4 text-center cat-col-count">
                                     <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold <?= (int)$c['article_count'] > 0 ? 'bg-blue-50 text-blue-700 border border-blue-200' : 'bg-slate-100 text-slate-500' ?>">
                                         <?= (int)$c['article_count'] ?> บทความ
                                     </span>
                                 </td>
-                                <td class="px-6 py-4 text-right whitespace-nowrap">
+                                <td class="px-6 py-4 text-right whitespace-nowrap cat-col-actions">
                                     <!-- View Actions -->
                                     <div class="cat-action-view inline-flex overflow-hidden rounded-xl border border-slate-200 shadow-xs">
                                         <button type="button" onclick="startEditCategory(<?= (int)$c['id'] ?>)"
@@ -143,11 +144,11 @@ $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                     <!-- Edit Actions -->
                                     <div class="cat-action-edit hidden inline-flex overflow-hidden rounded-xl border border-slate-200 shadow-xs">
                                         <button type="button" onclick="saveEditCategory(<?= (int)$c['id'] ?>)"
-                                            class="bg-emerald-600 px-4 py-2 text-xs font-semibold text-white hover:bg-emerald-700 transition cursor-pointer flex items-center gap-1.5" style="padding: 8px 16px;">
+                                            class="cat-btn-save bg-emerald-500 hover:bg-emerald-600 px-4 py-2 text-xs font-semibold text-white transition cursor-pointer flex items-center gap-1.5 whitespace-nowrap" style="background-color: #059669; color: #ffffff; padding: 8px 16px;">
                                             <span>💾 บันทึก</span>
                                         </button>
                                         <button type="button" onclick="cancelEditCategory(<?= (int)$c['id'] ?>)"
-                                            class="border-l border-slate-200 bg-white px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 transition cursor-pointer" style="padding: 8px 16px;">
+                                            class="border-l border-slate-200 bg-white px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 transition cursor-pointer whitespace-nowrap" style="padding: 8px 16px;">
                                             <span>ยกเลิก</span>
                                         </button>
                                     </div>

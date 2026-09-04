@@ -3,7 +3,7 @@
 /**
  * Admin portfolio list — search, filter, paginate, and manage portfolio entries.
  */
-$pageTitle = 'Portfolio Management';
+$pageTitle = 'Portfolio';
 $page = 'portfolio';
 require_once __DIR__ . '/../includes/header.php';
 require_permission('portfolio.view');

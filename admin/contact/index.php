@@ -6,7 +6,7 @@
 require_once __DIR__ . '/../includes/functions.php';
 require_permission('contact.view');
 
-$pageTitle = 'จัดการข้อมูลติดต่อ';
+$pageTitle = 'Contact Settings';
 $page = 'contact';
 require_once __DIR__ . '/../includes/header.php';
 

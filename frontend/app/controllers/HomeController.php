@@ -260,19 +260,49 @@ class HomeController
         ]));
     }
 
+    public function serviceDigitalPlatform(): void
+    {
+        $this->view('pages/service-digital-platform.php', array_merge($this->sharedData('services', 'Digital Platform'), [
+            'currentPage' => 'services'
+        ]));
+    }
+
+    public function serviceOnlineMarketing(): void
+    {
+        $this->view('pages/service-online-marketing.php', array_merge($this->sharedData('services', 'Online Marketing'), [
+            'currentPage' => 'services'
+        ]));
+    }
+
+    public function serviceCreativeDesign(): void
+    {
+        $this->view('pages/service-creative-design.php', array_merge($this->sharedData('services', 'Creative Design'), [
+            'currentPage' => 'services'
+        ]));
+    }
+
     public function serviceDetail(?string $serviceSlug = null): void
     {
-        $serviceSlug = (string) ($serviceSlug ?: ($_GET['service'] ?? ''));
+        $serviceSlug = $serviceSlug ?? (string) ($_GET['service'] ?? '');
         $topicSlug = (string) ($_GET['topic'] ?? '');
 
         if ($serviceSlug === '') {
-            $this->services();
+            $this->notFound();
             return;
         }
 
-        $viewPath = __DIR__ . '/../views/pages/service-' . $serviceSlug . '.php';
-        if (file_exists($viewPath)) {
-            $this->view('pages/service-' . $serviceSlug . '.php', $this->sharedData('services', 'Services'));
+        if ($serviceSlug === 'digital-platform') {
+            $this->serviceDigitalPlatform();
+            return;
+        }
+
+        if ($serviceSlug === 'online-marketing') {
+            $this->serviceOnlineMarketing();
+            return;
+        }
+
+        if ($serviceSlug === 'creative-design') {
+            $this->serviceCreativeDesign();
             return;
         }
 
@@ -280,14 +310,14 @@ class HomeController
         $service = $serviceModel->getBySlug($serviceSlug);
 
         if ($service === false) {
-            $this->services();
+            $this->notFound();
             return;
         }
 
         $features = $serviceModel->getFeaturesByServiceId($service['id']);
 
         if (empty($features)) {
-            $this->services();
+            $this->notFound();
             return;
         }
 
@@ -373,10 +403,10 @@ class HomeController
         ));
     }
 
-    public function article(string|int|null $idOrSlug = null): void
+    public function article(?string $slug = null): void
     {
-        $id = isset($_GET['id']) ? (int) $_GET['id'] : (is_numeric($idOrSlug) ? (int)$idOrSlug : 0);
-        $slug = isset($_GET['slug']) ? (string)$_GET['slug'] : (!is_numeric($idOrSlug) && is_string($idOrSlug) ? $idOrSlug : '');
+        $id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
+        $slug = $slug ?? (isset($_GET['slug']) ? trim((string) $_GET['slug']) : '');
         $articleModel = new Article();
 
         $row = false;
@@ -384,17 +414,19 @@ class HomeController
             $row = $articleModel->getById($id);
         } elseif ($slug !== '') {
             $row = $articleModel->getBySlug($slug);
-            if ($row === false && is_numeric($slug)) {
-                $row = $articleModel->getById((int)$slug);
-            }
         }
 
-        if ($row !== false) {
+        if ($id > 0 || $slug !== '') {
             $status = strtolower(trim((string) ($row['status'] ?? '')));
 
-            if ($status === 'draft') {
+            if ($row === false || $status === 'draft') {
                 $this->notFound();
                 return;
+            }
+
+            // Increment article views (exclude super admin)
+            if (!empty($row['id']) && function_exists('is_super_admin_session') && !is_super_admin_session()) {
+                $articleModel->incrementViews((int) $row['id']);
             }
 
             $lang = getCurrentLang();
@@ -487,6 +519,8 @@ class HomeController
                     'content' => $content,
                     'author' => (string) ($row['author'] ?? ''),
                     'created_at' => (string) ($row['created_at'] ?? ''),
+                    'slug' => (string) ($row['slug'] ?? ''),
+                    'slug_en' => (string) ($row['slug_en'] ?? ''),
                     'meta_title_en' => (string) ($row['meta_title_en'] ?? ''),
                     'meta_description_en' => (string) ($row['meta_description_en'] ?? '')
                 ];
@@ -501,7 +535,7 @@ class HomeController
             $articleCategorySlugs = [];
         }
 
-        $categoryNameBySlug = [];
+        $categories = [];
         try {
             $categoryRows = $articleModel->getCategoryList();
             foreach ($categoryRows as $row) {
@@ -510,43 +544,23 @@ class HomeController
                 if ($slug === '' || $name === '') {
                     continue;
                 }
-                $categoryNameBySlug[$slug] = $name;
+                $categories[] = [
+                    'slug' => $slug,
+                    'name' => $name,
+                ];
             }
         } catch (Throwable $e) {
-            $categoryNameBySlug = [];
+            $categories = [];
         }
 
-        if ($articleCategorySlugs !== []) {
-            $filterKeys = array_fill_keys($articleCategorySlugs, true);
-            $categoryNameBySlug = array_filter(
-                $categoryNameBySlug,
-                static fn($_, string $slug): bool => isset($filterKeys[$slug]),
-                ARRAY_FILTER_USE_BOTH
-            );
-        } else {
-            $categoryNameBySlug = [];
+        if (empty($categories)) {
+            $categories = [
+                ['slug' => 'erp-erm', 'name' => 'ERP / ERM'],
+                ['slug' => 'digital-platform', 'name' => 'Digital Platform'],
+                ['slug' => 'online-marketing', 'name' => 'Online Marketing'],
+                ['slug' => 'creative-design', 'name' => 'Creative / Design'],
+            ];
         }
-
-        $missingSlugs = array_diff($articleCategorySlugs, array_keys($categoryNameBySlug));
-        foreach ($missingSlugs as $slug) {
-            $matches = array_values(array_filter(
-                $articles,
-                static fn(array $article) => ($article['category_slug'] ?? '') === $slug
-            ));
-            $name = trim((string) ($matches[0]['category_name'] ?? ''));
-            if ($name === '') {
-                continue;
-            }
-            $categoryNameBySlug[$slug] = $name;
-        }
-
-        // Hardcoded mockup categories as requested by user
-        $categories = [
-            ['slug' => 'erp-erm', 'name' => 'ERP / ERM'],
-            ['slug' => 'digital-platform', 'name' => 'Digital Platform'],
-            ['slug' => 'online-marketing', 'name' => 'Online Marketing'],
-            ['slug' => 'creative-design', 'name' => 'Creative / Design'],
-        ];
 
         $validSlugs = array_values(array_unique(array_filter(array_merge(
             $articleCategorySlugs,
@@ -576,16 +590,20 @@ class HomeController
         ]));
     }
 
-    public function portfolio(): void
+    public function portfolio(?string $slug = null): void
     {
-        // If `id` query param exists, show single portfolio detail
         $id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
-
+        $slug = $slug ?? (isset($_GET['slug']) ? trim((string) $_GET['slug']) : '');
         $portfolioModel = new Portfolio();
 
+        $row = false;
         if ($id > 0) {
             $row = $portfolioModel->getById($id);
+        } elseif ($slug !== '') {
+            $row = $portfolioModel->getBySlug($slug);
+        }
 
+        if ($id > 0 || $slug !== '') {
             $status = strtolower(trim((string) ($row['status'] ?? '')));
 
             if ($row === false || $status === 'draft') {
@@ -922,36 +940,104 @@ class HomeController
             'phone' => trim((string) ($_POST['phone'] ?? '')),
             'inquiry' => trim((string) ($_POST['inquiry'] ?? 'Sales')),
             'message' => trim((string) ($_POST['message'] ?? '')),
+            'pdpa_agreed' => !empty($_POST['pdpa_agreed']),
         ];
 
         $submitted = false;
         $errors = [];
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            if ($form['name'] === '') {
+            // 1. Security Check: Validate CSRF Token
+            if (!verify_csrf_token()) {
+                $errors[] = 'เซสชันการใช้งานหมดอายุหรือไม่ถูกต้อง กรุณารีเฟรชหน้าเว็บและลองใหม่อีกครั้ง';
+            }
+
+            // 2. Security Check: Validate Google reCAPTCHA v2 (Server-Side)
+            $recaptchaToken = (string) ($_POST['g-recaptcha-response'] ?? '');
+            $recaptchaResult = verify_recaptcha($recaptchaToken, $_SERVER['REMOTE_ADDR'] ?? null);
+            if (!$recaptchaResult['success']) {
+                $errors[] = $recaptchaResult['message'];
+            }
+
+            // 3. Security Check: Validate PDPA Consent
+            if (empty($_POST['pdpa_agreed'])) {
+                $errors[] = 'กรุณายอมรับนโยบายความเป็นส่วนตัว';
+            }
+
+            if ($firstName === '' && $form['name'] === '') {
                 $errors[] = 'กรุณากรอกชื่อ';
+            } elseif (preg_match('/\d/', $firstName) || preg_match('/\d/', $lastName)) {
+                $errors[] = 'ชื่อ-นามสกุลต้องเป็นตัวอักษรเท่านั้น (ห้ามมีตัวเลข)';
             }
 
             if ($form['company'] === '') {
                 $errors[] = 'กรุณากรอกชื่อบริษัท (หากไม่มีให้ใส่ -)';
             }
 
-            if (!filter_var($form['email'], FILTER_VALIDATE_EMAIL)) {
-                $errors[] = 'อีเมลไม่ถูกต้อง';
+            if ($form['phone'] === '') {
+                $errors[] = 'กรุณากรอกเบอร์โทรศัพท์';
+            } elseif (!preg_match('/^[0-9]{9,10}$/', $form['phone'])) {
+                $errors[] = 'เบอร์โทรศัพท์ต้องเป็นตัวเลข 9-10 หลัก';
+            }
+
+            if ($form['email'] === '') {
+                $errors[] = 'กรุณากรอกอีเมล';
+            } elseif (!filter_var($form['email'], FILTER_VALIDATE_EMAIL)) {
+                $errors[] = 'รูปแบบอีเมลไม่ถูกต้อง';
             }
 
             $nameLength = function_exists('mb_strlen') ? mb_strlen($form['name']) : strlen($form['name']);
             $emailLength = function_exists('mb_strlen') ? mb_strlen($form['email']) : strlen($form['email']);
+            $msgLength = function_exists('mb_strlen') ? mb_strlen($form['message']) : strlen($form['message']);
 
             if ($nameLength > 100) {
-                $errors[] = 'ชื่อยาวเกินไป';
+                $errors[] = 'ชื่อยาวเกินไป (ไม่เกิน 100 ตัวอักษร)';
             }
 
             if ($emailLength > 255) {
                 $errors[] = 'อีเมลยาวเกินไป';
             }
 
+            if ($msgLength > 250) {
+                $errors[] = 'รายละเอียดข้อความต้องไม่เกิน 250 ตัวอักษร';
+            }
+
             $submitted = $errors === [];
+
+            if ($submitted) {
+                $msgData = [
+                    'company_name' => $form['company'],
+                    'first_name' => $form['firstname'] !== '' ? $form['firstname'] : $form['name'],
+                    'last_name' => $form['lastname'],
+                    'phone' => $form['phone'],
+                    'email' => $form['email'],
+                    'message' => $form['message'] !== '' ? $form['message'] : ($form['inquiry'] ?? 'General Inquiry'),
+                    'pdpa_consent' => 1,
+                    'pdpa_consent_at' => date('Y-m-d H:i:s'),
+                    'status' => 'new',
+                    'ip_address' => $_SERVER['REMOTE_ADDR'] ?? null,
+                    'user_agent' => $_SERVER['HTTP_USER_AGENT'] ?? null,
+                    'source_page' => 'contact',
+                    'email_sent' => 0,
+                ];
+
+                try {
+                    $contactModel = new ContactMessage();
+                    $insertedId = $contactModel->create($msgData);
+
+                    // Send email notification to configured recipient
+                    $allSettings = (new Setting())->all();
+                    $mailSent = Mailer::sendContactNotification($msgData, $allSettings);
+                    if ($mailSent && $insertedId > 0) {
+                        $contactModel->updateEmailSent($insertedId, true);
+                    }
+                } catch (Throwable $e) {
+                    error_log('[Contact Form] Submit Error: ' . $e->getMessage());
+                }
+
+                // Security: Regenerate CSRF token on successful submission
+                csrf_token_regenerate();
+            }
         }
 
         $this->view('pages/contact.php', array_merge($this->sharedData('contact', 'Contact'), [

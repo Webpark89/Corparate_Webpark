@@ -9,13 +9,13 @@ declare(strict_types=1);
 
 return [
     'common' => [
-        'nav_home' => 'Home',
-        'nav_about' => 'About Us',
-        'nav_services' => 'Services',
-        'nav_erp' => 'ERP System',
-        'nav_articles' => 'Articles',
-        'nav_contact' => 'Contact',
-        'nav_cta_advice' => 'Get Advice',
+        'nav_home' => 'HOME',
+        'nav_about' => 'ABOUT US',
+        'nav_services' => 'SERVICES',
+        'nav_erp' => 'ERP SYSTEM',
+        'nav_articles' => 'ARTICLES',
+        'nav_contact' => 'CONTACT',
+        'nav_cta_advice' => 'GET ADVICE',
         'cta_consult_expert' => 'Consult an Expert',
         'cta_watch_intro_video' => 'Watch Intro Video',
         'cta_view_services' => 'View Our Services',

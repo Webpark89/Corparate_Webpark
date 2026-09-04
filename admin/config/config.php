@@ -40,6 +40,10 @@ define('MAIL_USER', getenv('MAIL_USER') ?: '');
 define('MAIL_PASS', getenv('MAIL_PASS') ?: '');
 define('MAIL_FROM_NAME', getenv('MAIL_FROM_NAME') ?: (defined('SITE_NAME') ? SITE_NAME . ' Security' : 'WEBPARK Security'));
 
+// ---- Google reCAPTCHA Configuration (Production Ready) ----
+define('RECAPTCHA_SITE_KEY', getenv('RECAPTCHA_SITE_KEY') ?: '6Lcf_pAtAAAAAOVhatPPwrHSYXeb_0J4yXf5BrRO');
+define('RECAPTCHA_SECRET_KEY', getenv('RECAPTCHA_SECRET_KEY') ?: '');
+
 // ---- Errors ----
 ini_set('display_errors', '1');
 error_reporting(E_ALL);

@@ -21,7 +21,7 @@ if (!$review) {
     exit('ไม่พบข้อมูลรีวิวในระบบ (Review not found.)');
 }
 
-$pageTitle = 'แก้ไขข้อมูลรีวิว';
+$pageTitle = 'Edit Review';
 $page = 'review';
 $action = 'edit';
 $formAction = 'edit.php?id=' . $id;

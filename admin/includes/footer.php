@@ -15,32 +15,60 @@
     const toggle = document.getElementById('sidebarToggle');
 
     function openSidebar() {
-        sidebar.classList.remove('translate-x-[-100%]');
-        overlay.classList.remove('hidden');
+        if (!sidebar) return;
+        sidebar.classList.remove('-translate-x-full');
+        sidebar.classList.add('translate-x-0');
+        if (overlay) {
+            overlay.classList.remove('hidden');
+            overlay.style.display = 'block';
+        }
+        document.body.style.overflow = 'hidden';
     }
 
     function closeSidebar() {
-        sidebar.classList.add('translate-x-[-100%]');
-        overlay.classList.add('hidden');
+        if (!sidebar) return;
+        sidebar.classList.add('-translate-x-full');
+        sidebar.classList.remove('translate-x-0');
+        if (overlay) {
+            overlay.classList.add('hidden');
+            overlay.style.display = 'none';
+        }
+        document.body.style.overflow = '';
     }
 
     if (toggle) {
-        toggle.addEventListener('click', () => {
-            if (sidebar.classList.contains('translate-x-[-100%]')) {
-                openSidebar();
-            } else {
+        toggle.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            if (sidebar.classList.contains('translate-x-0')) {
                 closeSidebar();
+            } else {
+                openSidebar();
             }
         });
     }
 
     if (overlay) {
-        overlay.addEventListener('click', closeSidebar);
+        overlay.addEventListener('click', (e) => {
+            e.preventDefault();
+            closeSidebar();
+        });
+    }
+
+    // Auto-close drawer on mobile when clicking any link in the sidebar
+    if (sidebar) {
+        sidebar.querySelectorAll('a').forEach((link) => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth < 768) {
+                    closeSidebar();
+                }
+            });
+        });
     }
 
     window.addEventListener('resize', () => {
-        if (window.innerWidth >= 768 && overlay) {
-            overlay.classList.add('hidden');
+        if (window.innerWidth >= 768) {
+            closeSidebar();
         }
     });
 }

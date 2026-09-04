@@ -15,65 +15,35 @@ $currentLang = getCurrentLang();
 ?>
 
 <header class="sticky top-0 z-[1000] border-b border-slate-200 bg-white backdrop-blur">
-    <div class="mx-auto flex h-16 w-full items-center justify-between px-4 md:px-8 lg:px-12 navbar-container">
+    <div class="mx-auto flex h-16 w-full items-center justify-between px-4 md:px-8 lg:px-12">
 
         <!-- Logo -->
         <a class="flex items-center gap-3" href="<?= e(route_url('/')) ?>">
-            <img class="h-10 w-auto object-contain navbar-logo-img" src="<?= e(asset_url('images/logo.png')) ?>" alt="WEBPARK logo" style="border: none; outline: none;">
+            <img class="h-10 w-auto object-contain" src="<?= e(asset_url('images/logo.png')) ?>" alt="WEBPARK logo" style="border: none; outline: none;">
         </a>
 
         <!-- Desktop Navigation -->
         <style>
             .desktop-nav-link {
                 color: #022862;
-                font-size: 1.05rem;
-                font-weight: 600;
-                white-space: nowrap !important;
             }
             .desktop-nav-link:hover {
                 color: #0663F6;
             }
             .desktop-nav-link.active {
                 color: #0663F6;
-                font-weight: 700;
-            }
-            
-            /* iPad Pro & Large Screen Navigation Scale (1024px+) */
-            @media (min-width: 1024px) {
-                .navbar-container {
-                    height: 4.75rem !important;
-                }
-                .navbar-logo-img {
-                    height: 2.55rem !important;
-                }
-                .desktop-nav-link {
-                    font-size: 1.15rem !important;
-                    font-weight: 600 !important;
-                    padding-left: 0.4rem !important;
-                    padding-right: 0.4rem !important;
-                    white-space: nowrap !important;
-                }
-                .desktop-nav-dot {
-                    font-size: 0.85rem !important;
-                    margin-left: 0.25rem !important;
-                    margin-right: 0.25rem !important;
-                }
-                .desktop-lang-switcher {
-                    font-size: 1.15rem !important;
-                    font-weight: 700 !important;
-                    white-space: nowrap !important;
-                }
+                font-weight: 600;
             }
         </style>
         <nav class="hidden lg:flex items-center gap-2" aria-label="Primary Navigation">
             <?php foreach ($navItems as $index => $item): ?>
                 <a href="<?= e(route_url($item['path'])) ?>"
-                   class="desktop-nav-link relative py-2 transition-colors <?= $currentPage === $item['page'] ? 'active' : 'font-medium' ?>"
+                   class="desktop-nav-link relative py-2 text-sm transition-colors <?= $currentPage === $item['page'] ? 'active' : 'font-medium' ?> <?= $currentLang === 'en' ? 'uppercase' : '' ?>"
                    <?= $currentPage === $item['page'] ? 'aria-current="page"' : '' ?>>
                    <?= e($item['label']) ?>
                 </a>
                 <?php if ($index < count($navItems) - 1): ?>
-                    <span class="mx-2 text-xs opacity-60 desktop-nav-dot" style="color: #011431;">•</span>
+                    <span class="mx-2 text-xs opacity-60" style="color: #011431;">•</span>
                 <?php endif; ?>
             <?php endforeach; ?>
         </nav>
@@ -81,7 +51,7 @@ $currentLang = getCurrentLang();
         <!-- Right Section -->
         <div class="flex items-center gap-4">
             <!-- Language Switcher -->
-            <div class="hidden lg:flex items-center text-[15px] font-bold transition-colors desktop-lang-switcher">
+            <div class="hidden lg:flex items-center text-[15px] font-bold transition-colors">
                 <a href="<?= e(current_url_with_lang('th')) ?>" style="<?= $currentLang === 'th' ? 'color: #0663F6;' : 'color: #011431;' ?>" class="hover:opacity-80">TH</a>
                 <span style="color: #011431;" class="mx-1">|</span>
                 <a href="<?= e(current_url_with_lang('en')) ?>" style="<?= $currentLang === 'en' ? 'color: #0663F6;' : 'color: #011431;' ?>" class="hover:opacity-80">EN</a>
@@ -89,7 +59,7 @@ $currentLang = getCurrentLang();
 
             <!-- CTA Button (Hidden on Desktop as per design) -->
             <a href="<?= e(route_url('/contact')) ?>"
-               class="hidden items-center justify-center px-6 py-2.5 bg-primary text-white text-sm font-semibold rounded-full shadow-md transition hover:bg-blue-700 hover:-translate-y-0.5">
+               class="hidden items-center justify-center px-6 py-2.5 bg-primary text-white text-sm font-semibold rounded-full shadow-md transition hover:bg-blue-700 hover:-translate-y-0.5 <?= $currentLang === 'en' ? 'uppercase' : '' ?>">
                <?= e(t('common.nav_cta_advice')) ?>
             </a>
 
@@ -118,7 +88,7 @@ $currentLang = getCurrentLang();
 
             <?php foreach ($navItems as $item): ?>
                 <a href="<?= e(route_url($item['path'])) ?>"
-                   class="rounded-xl px-4 py-3 transition hover:bg-slate-50 <?= $currentPage === $item['page'] ? 'bg-blue-50 text-primary font-semibold' : 'text-slate-700' ?>">
+                   class="rounded-xl px-4 py-3 transition hover:bg-slate-50 <?= $currentPage === $item['page'] ? 'bg-blue-50 text-primary font-semibold' : 'text-slate-700' ?> <?= $currentLang === 'en' ? 'uppercase' : '' ?>">
                    <?= e($item['label']) ?>
                 </a>
             <?php endforeach; ?>

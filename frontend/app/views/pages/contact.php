@@ -5,7 +5,7 @@ declare(strict_types=1);
  */
 $errors = $errors ?? [];
 $submitted = $submitted ?? false;
-$recaptchaSiteKey = '6Lcf_pAtAAAAAOVhatPPwrHSYXeb_0J4yXf5BrRO';
+$recaptchaSiteKey = recaptcha_site_key();
 ?>
 <style>
     /* คงไว้แค่แอนิเมชันตอนโหลดหน้าสไลด์ขึ้น */
@@ -36,15 +36,13 @@ $recaptchaSiteKey = '6Lcf_pAtAAAAAOVhatPPwrHSYXeb_0J4yXf5BrRO';
 </style>
 <section id="contact-hero" class="relative overflow-hidden font-sans bg-white border-none">
     <div class="absolute inset-0 z-0">
-        <img src="<?= e(asset_url('images/contact-hero-bg.png')) ?>" alt="WEBPARK Solutions Background" 
-            class="w-full h-full object-cover object-[75%_center] md:object-[right_center]"
-            style="filter: contrast(1.15) saturate(1.22) brightness(0.98);">
-        <div class="absolute inset-0 bg-gradient-to-r from-white/95 via-white/70 to-transparent"></div>
-        <div class="absolute inset-x-0 bottom-0 h-[25%] bg-gradient-to-t from-white to-transparent z-10"></div>
+        <img src="<?= e(asset_url('images/bg-5.png')) ?>" alt="WEBPARK Solutions Background" class="hero-parallax-img w-full h-full object-cover object-center opacity-70 mix-blend-screen">
+        <div class="absolute inset-0 bg-gradient-to-r from-white via-white/70 to-white/5"></div>
+        <div class="absolute inset-x-0 bottom-0 h-[30%] bg-gradient-to-t from-white to-transparent z-10"></div>
     </div>
     <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 pt-12 pb-10 lg:pt-28 lg:pb-32 relative z-10 desktop-wide-container-contact">
-        <div class="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-12 lg:gap-20 items-center relative z-10">
-            <div class="max-w-2xl px-4 md:px-0 lg:ml-12 ipad-pro-ml-0 xl:ml-24 contact-hero-left-col">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+            <div class="max-w-2xl px-4 md:px-0 lg:ml-12 ipad-pro-ml-0 xl:ml-24">
                 <nav aria-label="Breadcrumb" class="hidden md:block animate-fade-up delay-100 mb-6">
                     <ol class="inline-flex items-center text-sm md:text-base font-medium text-slate-500">
                         <li>
@@ -69,32 +67,19 @@ $recaptchaSiteKey = '6Lcf_pAtAAAAAOVhatPPwrHSYXeb_0J4yXf5BrRO';
                         font-size: 17px;
                         line-height: 1.65;
                     }
-                    /* iPad (760px - 1366px) All Orientations */
-                    @media (min-width: 760px) and (max-width: 1366px) {
-                        .contact-hero-left-col {
-                            max-width: 100% !important;
-                            margin-left: 0 !important;
-                        }
-                        .hero-title-text,
-                        .desktop-contact-hero-h1 {
-                            font-size: 4.25rem !important;
-                            font-weight: 900 !important;
-                            line-height: 1.15 !important;
-                            margin-top: 0px !important;
-                            padding-top: 0px !important;
-                            padding-bottom: 0px !important;
-                        }
-                        .hero-desc-text,
-                        .desktop-contact-hero-p {
-                            font-size: 1.25rem !important;
-                            line-height: 1.75 !important;
-                            font-weight: 600 !important;
-                            color: #0b1b42 !important;
-                            max-width: 48rem !important;
-                        }
+                    @media (min-width: 768px) {
+                        .hero-title-text { font-size: 3.5rem; line-height: 1.2; }
+                        .hero-desc-text { font-size: 21px; line-height: 1.7; }
                     }
-                    @media (min-width: 1367px) {
+                    @media (min-width: 1024px) {
                         .hero-title-text { font-size: 5.5rem; line-height: 1.2; }
+                    }
+                    @media (min-width: 1280px) {
+                        .hero-title-text { font-size: 7rem; line-height: 1.2; }
+                    }
+                    
+                    /* สไตล์พิเศษสำหรับหน้าจอ Desktop (ใหญ่กว่า iPad Pro) */
+                    @media (min-width: 1025px) {
                         .desktop-wide-container-contact {
                             max-width: 1720px !important;
                             padding-left: 2.5rem !important;
@@ -111,48 +96,10 @@ $recaptchaSiteKey = '6Lcf_pAtAAAAAOVhatPPwrHSYXeb_0J4yXf5BrRO';
                         }
                     }
 
-                    @media (min-width: 760px) and (max-width: 1366px) {
+                    @media (min-width: 1024px) and (max-width: 1279px) {
                         .ipad-pro-strict-nowrap {
                             white-space: nowrap !important;
                             font-size: 1.15rem !important;
-                        }
-                    }
-
-                    /* Dedicated Large Font Scale for iPad Pro Landscape */
-                    @media (min-width: 1024px) and (max-width: 1366px) {
-                        .desktop-contact-hero-h1,
-                        .hero-title-text {
-                            font-size: 4.5rem !important;
-                            line-height: 1.15 !important;
-                        }
-                        .desktop-contact-hero-p,
-                        .hero-desc-text {
-                            font-size: 1.35rem !important;
-                            line-height: 2.1rem !important;
-                            max-width: 580px !important;
-                        }
-                        .ipad-pro-strict-nowrap {
-                            font-size: 1.35rem !important;
-                            white-space: normal !important;
-                        }
-                    }
-
-                    /* Dedicated Large Font Scale for iPad Pro Portrait */
-                    @media (min-width: 821px) and (max-width: 1366px) and (orientation: portrait) {
-                        .desktop-contact-hero-h1,
-                        .hero-title-text {
-                            font-size: 4.25rem !important;
-                            line-height: 1.15 !important;
-                        }
-                        .desktop-contact-hero-p,
-                        .hero-desc-text {
-                            font-size: 1.35rem !important;
-                            line-height: 2.1rem !important;
-                            max-width: 580px !important;
-                        }
-                        .ipad-pro-strict-nowrap {
-                            font-size: 1.35rem !important;
-                            white-space: normal !important;
                         }
                     }
 
@@ -166,9 +113,9 @@ $recaptchaSiteKey = '6Lcf_pAtAAAAAOVhatPPwrHSYXeb_0J4yXf5BrRO';
                         animation: text-gradient-pan 6s linear infinite;
                     }
                 </style>
-                <h1 class="animate-fade-up delay-200 tracking-tight mb-2 text-5xl md:text-7xl lg:text-8xl font-black leading-tight flex flex-col items-start">
-                    <span class="bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block py-1 md:py-2 whitespace-nowrap desktop-contact-hero-h1"><?= e(t('contact.hero_title')) ?></span>
-                    <span class="bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block py-1 md:py-2 whitespace-nowrap desktop-contact-hero-h1" style="animation-delay: -3s;">WEBPARK</span>
+                <h1 class="animate-fade-up delay-200 tracking-tight mb-2 leading-[1.1]">
+                    <span class="hero-title-text font-bold bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block py-2 md:py-2.5 whitespace-nowrap desktop-contact-hero-h1"><?= e(t('contact.hero_title')) ?></span><br>
+                    <span class="hero-title-text font-bold bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block py-1 md:py-2 -mt-1 md:-mt-2 lg:-mt-2 whitespace-nowrap desktop-contact-hero-h1" style="animation-delay: -3s;">WEBPARK</span>
                 </h1>
                 <?php
                 if (getCurrentLang() === 'th') {
@@ -177,12 +124,12 @@ $recaptchaSiteKey = '6Lcf_pAtAAAAAOVhatPPwrHSYXeb_0J4yXf5BrRO';
                     $mobile_desc = "Let's talk about your project, system, website, or ERP/ERM and digital solutions for your business.";
                 }
                 ?>
-                <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-base md:text-lg lg:text-xl leading-relaxed max-w-2xl mb-10 font-bold md:font-semibold desktop-contact-hero-p">
+                <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-lg md:text-xl leading-relaxed max-w-lg mb-10 font-medium desktop-contact-hero-p">
                     <span class="block md:hidden leading-[1.75]">
                         <?= $mobile_desc ?>
                     </span>
                     <span class="hidden md:block leading-relaxed ipad-pro-strict-nowrap">
-                        <?= e(getCurrentLang() === 'th' ? 'พูดคุยและปรึกษาเกี่ยวกับโปรเจกต์ ระบบ เว็บไซต์' : 'Let\'s talk about your project, system, website,') ?><br class="hidden md:inline">
+                        <?= e(getCurrentLang() === 'th' ? 'พูดคุยและปรึกษาเกี่ยวกับโปรเจกต์ ระบบ เว็บไซต์' : 'Let\'s talk about your project, system, website,') ?><br>
                         <?= e(getCurrentLang() === 'th' ? 'ERP / ERM และโซลูชันดิจิทัลเพื่อธุรกิจของคุณ' : 'or ERP/ERM and digital solutions for your business.') ?>
                     </span>
                 </p>
@@ -225,7 +172,7 @@ $recaptchaSiteKey = '6Lcf_pAtAAAAAOVhatPPwrHSYXeb_0J4yXf5BrRO';
     .animation-delay-400 { animation-delay: 0.4s; }
 </style>
 <section id="contact-section" class="bg-white pt-6 pb-16 lg:py-24 font-sans border-none">
-    <div class="mx-auto w-full max-w-7xl px-5 sm:px-6 lg:px-8 desktop-wide-container-contact"> 
+    <div class="mx-auto w-full max-w-7xl px-4 sm:px-4 lg:px-6 desktop-wide-container-contact"> 
         <div class="lg:px-12 xl:px-24">
             <style>
                 @media (min-width: 1024px) {
@@ -293,43 +240,67 @@ $recaptchaSiteKey = '6Lcf_pAtAAAAAOVhatPPwrHSYXeb_0J4yXf5BrRO';
                                 color: #022862 !important;
                                 opacity: 1 !important;
                             }
+                            .is-invalid-contact {
+                                border-color: #ef4444 !important;
+                                background-color: #fef2f2 !important;
+                                box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15) !important;
+                            }
+                            .contact-error-text {
+                                color: #ef4444 !important;
+                                font-size: 0.75rem !important;
+                                font-weight: 500 !important;
+                                margin-top: 0.25rem !important;
+                                padding-left: 0.25rem !important;
+                            }
                         </style>
-                        <form id="contactMainForm" method="post" class="flex flex-col flex-grow space-y-4">
+                        <form id="contactMainForm" method="post" novalidate class="flex flex-col flex-grow space-y-4">
+                            <?= csrf_field() ?>
                             <!-- Name Fields -->
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
-                                    <input type="text" id="contact_firstname" name="firstname" placeholder="<?= e(t('common.form_label_firstname')) ?> *" value="<?= e($form['firstname'] ?? '') ?>" required maxlength="50"
+                                    <input type="text" id="contact_firstname" name="firstname" placeholder="<?= e(t('common.form_label_firstname')) ?> *" value="<?= e($form['firstname'] ?? '') ?>" maxlength="50"
+                                        oninput="this.value = this.value.replace(/[0-9]/g, '');"
                                         class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-base text-slate-900 outline-none transition-all duration-300 custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary focus:shadow-inner">
+                                    <p id="contact_firstname_error" class="hidden contact-error-text"></p>
                                 </div>
                                 <div>
-                                    <input type="text" id="contact_lastname" name="lastname" placeholder="<?= e(t('common.form_label_lastname')) ?> *" value="<?= e($form['lastname'] ?? '') ?>" required maxlength="50"
+                                    <input type="text" id="contact_lastname" name="lastname" placeholder="<?= e(t('common.form_label_lastname')) ?> *" value="<?= e($form['lastname'] ?? '') ?>" maxlength="50"
+                                        oninput="this.value = this.value.replace(/[0-9]/g, '');"
                                         class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-base text-slate-900 outline-none transition-all duration-300 custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary focus:shadow-inner">
+                                    <p id="contact_lastname_error" class="hidden contact-error-text"></p>
                                 </div>
                             </div>
 
                             <!-- Company Name (Mandatory, '-' if none) -->
                             <div>
-                                <input type="text" name="company" placeholder="<?= e(t('common.form_label_company_optional')) ?>" value="<?= e($form['company'] ?? '') ?>" required maxlength="100"
+                                <input type="text" id="contact_company" name="company" placeholder="<?= e(t('common.form_label_company_optional')) ?> *" value="<?= e($form['company'] ?? '') ?>" maxlength="100"
                                     class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-base text-slate-900 outline-none transition-all duration-300 custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary focus:shadow-inner">
+                                <p id="contact_company_error" class="hidden contact-error-text"></p>
                             </div>
 
                             <!-- Phone & Email -->
                             <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
                                 <div>
-                                    <input type="text" inputmode="numeric" name="phone" placeholder="<?= e(t('common.form_label_phone')) ?> *" value="<?= e($form['phone'] ?? '') ?>" required maxlength="10" pattern="\d{9,10}"
-                                        oninput="this.value = this.value.replace(/[^0-9]/g, '');"
+                                    <input type="text" inputmode="numeric" id="contact_phone" name="phone" placeholder="<?= e(t('common.form_label_phone')) ?> *" value="<?= e($form['phone'] ?? '') ?>" maxlength="10"
+                                        oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10);"
                                         class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-base text-slate-900 outline-none transition-all duration-300 custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary focus:shadow-inner">
+                                    <p id="contact_phone_error" class="hidden contact-error-text"></p>
                                 </div>
                                 <div>
-                                    <input type="email" name="email" placeholder="<?= e(t('common.form_label_email')) ?> *" value="<?= e($form['email'] ?? '') ?>" required maxlength="255"
+                                    <input type="email" id="contact_email" name="email" placeholder="<?= e(t('common.form_label_email')) ?> *" value="<?= e($form['email'] ?? '') ?>" maxlength="255"
                                         class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-base text-slate-900 outline-none transition-all duration-300 custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary focus:shadow-inner">
+                                    <p id="contact_email_error" class="hidden contact-error-text"></p>
                                 </div>
                             </div>
 
                             <!-- Message -->
                             <div class="space-y-1">
-                                <textarea id="contact_message_area" name="message" placeholder="<?= e(t('common.form_label_details')) ?> *" required rows="4"
+                                <textarea id="contact_message_area" name="message" placeholder="<?= e(t('common.form_label_details')) ?> *" maxlength="250" rows="4"
                                     class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-base text-slate-900 outline-none transition-all duration-300 custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary resize-none focus:shadow-inner"><?= e($form['message'] ?? '') ?></textarea>
+                                <div style="display: flex; justify-content: space-between; align-items: flex-start; width: 100%; margin-top: 4px; padding: 0 4px;">
+                                    <p id="contact_message_error" class="hidden contact-error-text" style="margin: 0;"></p>
+                                    <span id="contact_msg_counter" style="margin-left: auto; text-align: right; color: #94a3b8; font-size: 0.75rem; white-space: nowrap;">0/250</span>
+                                </div>
                             </div>
 
                             <!-- Privacy Policy Scrollable Box -->
@@ -342,7 +313,7 @@ $recaptchaSiteKey = '6Lcf_pAtAAAAAOVhatPPwrHSYXeb_0J4yXf5BrRO';
                                 <h5 class="font-bold text-slate-800 mt-4 mb-2 flex items-center gap-2">
                                     <span class="w-5 h-5 rounded-full bg-primary text-white flex items-center justify-center text-xs">1</span> 
                                     ขอบเขตข้อมูลส่วนบุคคลที่เราเก็บรวบรวม
-                               </h5>
+                                </h5>
                                 <p class="mb-2">เราเก็บรวบรวมข้อมูลส่วนบุคคลของท่านผ่านการใช้งานเว็บไซต์ในกรณีต่างๆ เท่าที่จำเป็นดังนี้:</p>
                                 <ul class="list-disc pl-5 mb-4 space-y-1">
                                     <li>ชื่อ-นามสกุล, เบอร์โทรศัพท์, และอีเมล ที่ท่านกรอกผ่านแบบฟอร์มติดต่อเรา</li>
@@ -353,7 +324,7 @@ $recaptchaSiteKey = '6Lcf_pAtAAAAAOVhatPPwrHSYXeb_0J4yXf5BrRO';
                                 <h5 class="font-bold text-slate-800 mt-4 mb-2 flex items-center gap-2">
                                     <span class="w-5 h-5 rounded-full bg-primary text-white flex items-center justify-center text-xs">2</span> 
                                     วัตถุประสงค์ในการเก็บรวบรวมข้อมูล
-                               </h5>
+                                </h5>
                                 <p class="mb-4">
                                     ข้อมูลที่ท่านให้จะถูกนำไปใช้เพื่อติดต่อกลับ นำเสนอบริการที่ตรงกับความต้องการของท่าน และปรับปรุงประสิทธิภาพของเว็บไซต์เท่านั้น เราจะไม่มีการเปิดเผยข้อมูลของท่านแก่บุคคลที่สามโดยไม่ได้รับอนุญาต
                                 </p>
@@ -361,7 +332,7 @@ $recaptchaSiteKey = '6Lcf_pAtAAAAAOVhatPPwrHSYXeb_0J4yXf5BrRO';
                                 <h5 class="font-bold text-slate-800 mt-4 mb-2 flex items-center gap-2">
                                     <span class="w-5 h-5 rounded-full bg-primary text-white flex items-center justify-center text-xs">3</span> 
                                     การเปิดเผยข้อมูลแก่บุคคลที่สาม
-                               </h5>
+                                </h5>
                                 <p class="mb-4">
                                     เราจะไม่ขาย ให้เช่า หรือเปิดเผยข้อมูลส่วนบุคคลของท่านให้แก่บุคคลภายนอก เว้นแต่กรณีที่จำเป็นเพื่อการให้บริการแก่ท่าน (เช่น ผู้ให้บริการระบบคลาวด์/เซิร์ฟเวอร์ที่ปลอดภัย หรือผู้ให้บริการจัดส่งเอกสาร) หรือในกรณีที่กฎหมายบังคับให้เปิดเผยเท่านั้น
                                 </p>
@@ -369,7 +340,7 @@ $recaptchaSiteKey = '6Lcf_pAtAAAAAOVhatPPwrHSYXeb_0J4yXf5BrRO';
                                 <h5 class="font-bold text-slate-800 mt-4 mb-2 flex items-center gap-2">
                                     <span class="w-5 h-5 rounded-full bg-primary text-white flex items-center justify-center text-xs">4</span> 
                                     ระยะเวลาจัดเก็บและการรักษาความปลอดภัย
-                               </h5>
+                                </h5>
                                 <p class="mb-4">
                                     เราจะจัดเก็บข้อมูลส่วนบุคคลของท่านไว้เป็นเวลาตลอดระยะเวลาที่ให้บริการ เพื่อบรรลุวัตถุประสงค์ตามที่แจ้งไว้ โดยเราใช้มาตรการรักษาความปลอดภัยทางเทคนิคที่ได้มาตรฐาน (เช่น การเข้ารหัสข้อมูล SSL) เพื่อปกป้องข้อมูลของท่านจากการเข้าถึง แก้ไข หรือเปิดเผยโดยไม่ได้รับอนุญาต
                                 </p>
@@ -377,7 +348,7 @@ $recaptchaSiteKey = '6Lcf_pAtAAAAAOVhatPPwrHSYXeb_0J4yXf5BrRO';
                                 <h5 class="font-bold text-slate-800 mt-4 mb-2 flex items-center gap-2">
                                     <span class="w-5 h-5 rounded-full bg-primary text-white flex items-center justify-center text-xs">5</span> 
                                     สิทธิของเจ้าของข้อมูลและช่องทางการติดต่อ
-                               </h5>
+                                </h5>
                                 <p class="mb-2">
                                     ท่านมีสิทธิ์ตามกฎหมายในการขอเข้าถึง ขอสำเนา ขอแก้ไข หรือขอให้ลบข้อมูลส่วนบุคคลของท่านได้ทุกเมื่อ หากท่านต้องการใช้สิทธิ์ดังกล่าว หรือมีข้อสงสัยเกี่ยวกับนโยบายนี้ สามารถติดต่อเราได้ที่:
                                 </p>
@@ -394,16 +365,20 @@ $recaptchaSiteKey = '6Lcf_pAtAAAAAOVhatPPwrHSYXeb_0J4yXf5BrRO';
                             </style>
 
                             <!-- PDPA Consent Checkbox -->
-                            <div class="flex items-start gap-3 pt-2">
-                                <input type="checkbox" id="privacy_consent_checkbox" name="pdpa_agreed" value="1" <?= !empty($form['pdpa_agreed']) ? 'checked' : '' ?> required class="mt-1 w-4 h-4 rounded border-slate-300 text-primary focus:ring-primary cursor-pointer transition-all duration-200">
-                                <label for="privacy_consent_checkbox" class="text-sm md:text-base leading-relaxed cursor-pointer select-none">
-                                    <span style="color: #022862;"><?= e(t('common.form_consent_prefix')) ?></span> <a href="#" style="color: #0663F6;" class="hover:underline transition-colors duration-200"><?= e(t('common.form_consent_privacy_policy')) ?></a> <span style="color: #0663F6;"><?= e(t('common.form_consent_terms_suffix')) ?></span>
-                                </label>
+                            <div class="pt-2">
+                                <div class="flex items-start gap-3">
+                                    <input type="checkbox" id="privacy_consent_checkbox" name="pdpa_agreed" value="1" <?= !empty($form['pdpa_agreed']) ? 'checked' : '' ?> class="mt-1 w-4 h-4 rounded border-slate-300 text-primary focus:ring-primary cursor-pointer transition-all duration-200">
+                                    <label for="privacy_consent_checkbox" class="text-sm md:text-base leading-relaxed cursor-pointer select-none">
+                                        <span style="color: #022862;"><?= e(t('common.form_consent_prefix')) ?></span> <a href="#" style="color: #0663F6;" class="hover:underline transition-colors duration-200"><?= e(t('common.form_consent_privacy_policy')) ?></a> <span style="color: #0663F6;"><?= e(t('common.form_consent_terms_suffix')) ?></span>
+                                    </label>
+                                </div>
+                                <p id="contact_pdpa_error" class="hidden contact-error-text" style="padding-left: 1.75rem !important;"></p>
                             </div>
 
                             <!-- Google reCAPTCHA v2 Widget -->
-                            <div class="pt-2 pb-1 flex justify-center sm:justify-start">
-                                <div class="g-recaptcha" data-sitekey="<?= e($recaptchaSiteKey) ?>"></div>
+                            <div class="pt-2 pb-1 flex flex-col items-center sm:items-start">
+                                <div class="g-recaptcha" data-sitekey="<?= e($recaptchaSiteKey) ?>" data-expired-callback="onRecaptchaExpired"></div>
+                                <p id="contact_recaptcha_error" class="hidden contact-error-text mt-1.5"></p>
                             </div>
 
                             <!-- Error Message Alerts -->
@@ -431,9 +406,178 @@ $recaptchaSiteKey = '6Lcf_pAtAAAAAOVhatPPwrHSYXeb_0J4yXf5BrRO';
 
                         <script>
                             document.addEventListener('DOMContentLoaded', function () {
+                                const contactForm = document.getElementById('contactMainForm');
                                 const privacyCb = document.getElementById('privacy_consent_checkbox');
                                 const submitBtn = document.getElementById('contact_submit_btn');
                                 const policyBox = document.getElementById('privacy_policy_box');
+
+                                const fnInput = document.getElementById('contact_firstname');
+                                const lnInput = document.getElementById('contact_lastname');
+                                const compInput = document.getElementById('contact_company');
+                                const phoneInput = document.getElementById('contact_phone');
+                                const emailInput = document.getElementById('contact_email');
+                                const msgInput = document.getElementById('contact_message_area');
+
+                                const fnErr = document.getElementById('contact_firstname_error');
+                                const lnErr = document.getElementById('contact_lastname_error');
+                                const compErr = document.getElementById('contact_company_error');
+                                const phoneErr = document.getElementById('contact_phone_error');
+                                const emailErr = document.getElementById('contact_email_error');
+                                const msgErr = document.getElementById('contact_message_error');
+                                const pdpaErr = document.getElementById('contact_pdpa_error');
+                                const recaptchaErr = document.getElementById('contact_recaptcha_error');
+
+                                function setFieldError(inputEl, errorEl, msg) {
+                                    if (inputEl) inputEl.classList.add('is-invalid-contact');
+                                    if (errorEl) {
+                                        errorEl.textContent = msg;
+                                        errorEl.classList.remove('hidden');
+                                    }
+                                }
+
+                                function clearFieldError(inputEl, errorEl) {
+                                    if (inputEl) inputEl.classList.remove('is-invalid-contact');
+                                    if (errorEl) {
+                                        errorEl.textContent = '';
+                                        errorEl.classList.add('hidden');
+                                    }
+                                }
+
+                                window.onRecaptchaExpired = function() {
+                                    setFieldError(null, recaptchaErr, 'การยืนยันตัวตน reCAPTCHA หมดอายุ กรุณาติ๊กยืนยันตัวตนใหม่อีกครั้ง');
+                                    if (typeof grecaptcha !== 'undefined') {
+                                        grecaptcha.reset();
+                                    }
+                                };
+
+                                const msgCounter = document.getElementById('contact_msg_counter');
+
+                                function updateMsgCounter() {
+                                    if (msgInput && msgCounter) {
+                                        msgCounter.textContent = `${msgInput.value.length}/250`;
+                                        if (msgInput.value.length >= 250) {
+                                            msgCounter.classList.add('text-red-500', 'font-bold');
+                                            msgCounter.classList.remove('text-slate-400');
+                                        } else {
+                                            msgCounter.classList.remove('text-red-500', 'font-bold');
+                                            msgCounter.classList.add('text-slate-400');
+                                        }
+                                    }
+                                }
+
+                                if (msgInput) {
+                                    updateMsgCounter();
+                                    msgInput.addEventListener('input', updateMsgCounter);
+                                }
+
+                                [fnInput, lnInput, compInput, phoneInput, emailInput, msgInput].forEach(inp => {
+                                    if (!inp) return;
+                                    inp.addEventListener('input', () => {
+                                        if (inp === fnInput) clearFieldError(fnInput, fnErr);
+                                        if (inp === lnInput) clearFieldError(lnInput, lnErr);
+                                        if (inp === compInput) clearFieldError(compInput, compErr);
+                                        if (inp === phoneInput) clearFieldError(phoneInput, phoneErr);
+                                        if (inp === emailInput) clearFieldError(emailInput, emailErr);
+                                        if (inp === msgInput) clearFieldError(msgInput, msgErr);
+                                    });
+                                });
+
+                                if (privacyCb) {
+                                    privacyCb.addEventListener('change', () => {
+                                        if (privacyCb.checked) clearFieldError(null, pdpaErr);
+                                    });
+                                }
+
+                                if (contactForm) {
+                                    contactForm.addEventListener('submit', function (e) {
+                                        let isValid = true;
+                                        let firstInvalid = null;
+
+                                        const fnVal = fnInput.value.trim();
+                                        if (!fnVal) {
+                                            setFieldError(fnInput, fnErr, 'กรุณากรอกชื่อ');
+                                            isValid = false;
+                                            if (!firstInvalid) firstInvalid = fnInput;
+                                        } else if (/\d/.test(fnVal)) {
+                                            setFieldError(fnInput, fnErr, 'ชื่อต้องเป็นตัวอักษรเท่านั้น (ห้ามมีตัวเลข)');
+                                            isValid = false;
+                                            if (!firstInvalid) firstInvalid = fnInput;
+                                        }
+
+                                        const lnVal = lnInput.value.trim();
+                                        if (!lnVal) {
+                                            setFieldError(lnInput, lnErr, 'กรุณากรอกนามสกุล');
+                                            isValid = false;
+                                            if (!firstInvalid) firstInvalid = lnInput;
+                                        } else if (/\d/.test(lnVal)) {
+                                            setFieldError(lnInput, lnErr, 'นามสกุลต้องเป็นตัวอักษรเท่านั้น (ห้ามมีตัวเลข)');
+                                            isValid = false;
+                                            if (!firstInvalid) firstInvalid = lnInput;
+                                        }
+
+                                        if (!compInput.value.trim()) {
+                                            setFieldError(compInput, compErr, 'กรุณากรอกชื่อบริษัท (หากไม่มีให้ใส่ -)');
+                                            isValid = false;
+                                            if (!firstInvalid) firstInvalid = compInput;
+                                        }
+
+                                        const phoneVal = phoneInput.value.trim();
+                                        if (!phoneVal) {
+                                            setFieldError(phoneInput, phoneErr, 'กรุณากรอกเบอร์โทรศัพท์');
+                                            isValid = false;
+                                            if (!firstInvalid) firstInvalid = phoneInput;
+                                        } else if (phoneVal.length < 9 || phoneVal.length > 10) {
+                                            setFieldError(phoneInput, phoneErr, 'เบอร์โทรศัพท์ต้องเป็นตัวเลข 9-10 หลัก');
+                                            isValid = false;
+                                            if (!firstInvalid) firstInvalid = phoneInput;
+                                        }
+
+                                        const emailVal = emailInput.value.trim();
+                                        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+                                        if (!emailVal) {
+                                            setFieldError(emailInput, emailErr, 'กรุณากรอกอีเมล');
+                                            isValid = false;
+                                            if (!firstInvalid) firstInvalid = emailInput;
+                                        } else if (!emailRegex.test(emailVal)) {
+                                            setFieldError(emailInput, emailErr, 'รูปแบบอีเมลไม่ถูกต้อง (เช่น name@example.com)');
+                                            isValid = false;
+                                            if (!firstInvalid) firstInvalid = emailInput;
+                                        }
+
+                                        const msgVal = msgInput.value.trim();
+                                        if (!msgVal) {
+                                            setFieldError(msgInput, msgErr, 'กรุณากรอกรายละเอียดข้อความ');
+                                            isValid = false;
+                                            if (!firstInvalid) firstInvalid = msgInput;
+                                        } else if (msgVal.length > 250) {
+                                            setFieldError(msgInput, msgErr, 'รายละเอียดข้อความต้องไม่เกิน 250 ตัวอักษร');
+                                            isValid = false;
+                                            if (!firstInvalid) firstInvalid = msgInput;
+                                        }
+
+                                        if (!privacyCb.checked) {
+                                            setFieldError(null, pdpaErr, 'กรุณายอมรับนโยบายความเป็นส่วนตัว');
+                                            isValid = false;
+                                            if (!firstInvalid) firstInvalid = privacyCb;
+                                        }
+
+                                        if (typeof grecaptcha !== 'undefined') {
+                                            const recaptchaToken = grecaptcha.getResponse();
+                                            if (!recaptchaToken) {
+                                                setFieldError(null, recaptchaErr, 'กรุณายืนยันตัวตนว่าไม่ใช่โปรแกรมอัตโนมัติ (reCAPTCHA)');
+                                                isValid = false;
+                                                if (!firstInvalid) firstInvalid = document.querySelector('.g-recaptcha');
+                                            } else {
+                                                clearFieldError(null, recaptchaErr);
+                                            }
+                                        }
+
+                                        if (!isValid) {
+                                            e.preventDefault();
+                                            if (firstInvalid) firstInvalid.focus();
+                                        }
+                                    });
+                                }
 
                                 // 1. Toggle submit button disabled state according to PDPA checkbox
                                 function updateSubmitBtnState() {

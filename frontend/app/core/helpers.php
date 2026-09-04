@@ -65,6 +65,112 @@ function normalize_text(mixed $value): string
 }
 
 /**
+ * แปลงบรรทัดหรือย่อหน้าที่ขึ้นต้นด้วยสัญลักษณ์ Bullet (•, ⁃, ▪, -, *) หรือตัวเลขรายการ (1., 1))
+ * ให้เป็น <ul><li> หรือ <ol><li> แท้ เพื่อให้แสดงผลจุดสีฟ้าถูกต้อง
+ */
+function convert_plain_bullets_to_html(string $html): string
+{
+    if (trim($html) === '') {
+        return '';
+    }
+
+    // Step 1: ตรวจจับและแปลงโค้ดพิเศษของ Microsoft Word
+    $isWordList = (strpos($html, 'supportLists') !== false || strpos($html, 'mso-list') !== false || strpos($html, 'MsoListParagraph') !== false);
+    if ($isWordList) {
+        $html = preg_replace('/<!--\s*\[if\s+!supportLists\][\s\S]*?<!--\s*\[endif\]\s*-->/i', '• ', $html);
+        $html = preg_replace('/<span[^>]*style="[^"]*mso-list:\s*Ignore[^"]*"[^>]*>[\s\S]*?<\/span>/i', '• ', $html);
+    }
+
+    // ลบ HTML comments ทั่วไป
+    $html = preg_replace('/<!--[\s\S]*?-->/', '', $html);
+
+    // ตรวจสอบเบื้องต้นว่ามีสัญลักษณ์ Bullet หรือ Number List หรือไม่
+    $hasBullets = preg_match('/[•⁃▪▫◦·\x{2022}\x{2043}\x{25AA}\x{25AB}\x{25E6}\x{00B7}]|&bull;|&#8226;|&#x2022;/u', $html);
+    $hasDashes = preg_match('/(?:^|<p[^>]*>|<br\s*\/?>)[\s\x{00A0}]*[-\*]\s+/u', $html);
+    $hasNumbers = preg_match('/(?:^|<p[^>]*>|<br\s*\/?>)[\s\x{00A0}]*\d+[\.\)][\s\x{00A0}]+/u', $html);
+
+    if (!$hasBullets && !$hasDashes && !$hasNumbers) {
+        return $html;
+    }
+
+    $normalized = str_replace(['&bull;', '&#8226;', '&#x2022;'], '•', $html);
+
+    // Normalize breaks and paragraph ends to newlines
+    $str = preg_replace('/<br\s*\/?>/i', "\n", $normalized);
+    $str = preg_replace('/<\/p>/i', "\n", $str);
+    $str = preg_replace('/<\/div>/i', "\n", $str);
+    $str = preg_replace('/<p[^>]*>/i', '', $str);
+    $str = preg_replace('/<div[^>]*>/i', '', $str);
+
+    $lines = preg_split('/\r?\n/', $str);
+    $output = [];
+    $currentList = [];
+    $currentType = 'ul';
+
+    foreach ($lines as $line) {
+        $trimmed = trim($line);
+        if ($trimmed === '' || $trimmed === '&nbsp;') {
+            if (!empty($currentList)) {
+                $output[] = "<{$currentType}><li>" . implode('</li><li>', $currentList) . "</li></{$currentType}>";
+                $currentList = [];
+            }
+            continue;
+        }
+
+        // If line is already an HTML block element
+        if (preg_match('/^<(h[1-6]|table|thead|tbody|tfoot|tr|th|td|blockquote|pre|figure|img|ul|ol|li)/i', $trimmed)) {
+            if (!empty($currentList)) {
+                $output[] = "<{$currentType}><li>" . implode('</li><li>', $currentList) . "</li></{$currentType}>";
+                $currentList = [];
+            }
+            $output[] = $trimmed;
+            continue;
+        }
+
+        $cleanText = trim(strip_tags($trimmed));
+        if ($cleanText === '') {
+            continue;
+        }
+
+        // Check for bullet character •, ⁃, ▪, etc.
+        if (preg_match('/^[•⁃▪▫◦·\x{2022}\x{2043}\x{25AA}\x{25AB}\x{25E6}\x{00B7}][\s\x{00A0}]*(.*)$/u', $cleanText)) {
+            if ($currentType !== 'ul' && !empty($currentList)) {
+                $output[] = "<{$currentType}><li>" . implode('</li><li>', $currentList) . "</li></{$currentType}>";
+                $currentList = [];
+            }
+            $currentType = 'ul';
+            $currentList[] = preg_replace('/^(\s*<[^>]+>)*\s*[•⁃▪▫◦·\x{2022}\x{2043}\x{25AA}\x{25AB}\x{25E6}\x{00B7}][\s\x{00A0}]*/u', '', $trimmed);
+        } elseif (preg_match('/^([-\*])[\s\x{00A0}]+(.*)$/u', $cleanText)) {
+            if ($currentType !== 'ul' && !empty($currentList)) {
+                $output[] = "<{$currentType}><li>" . implode('</li><li>', $currentList) . "</li></{$currentType}>";
+                $currentList = [];
+            }
+            $currentType = 'ul';
+            $currentList[] = preg_replace('/^(\s*<[^>]+>)*\s*([-\*])[\s\x{00A0}]+/u', '', $trimmed);
+        } elseif (preg_match('/^(\d+)[\.\)][\s\x{00A0}]+(.*)$/u', $cleanText)) {
+            if ($currentType !== 'ol' && !empty($currentList)) {
+                $output[] = "<{$currentType}><li>" . implode('</li><li>', $currentList) . "</li></{$currentType}>";
+                $currentList = [];
+            }
+            $currentType = 'ol';
+            $currentList[] = preg_replace('/^(\s*<[^>]+>)*\s*(\d+)[\.\)][\s\x{00A0}]+/u', '', $trimmed);
+        } else {
+            if (!empty($currentList)) {
+                $output[] = "<{$currentType}><li>" . implode('</li><li>', $currentList) . "</li></{$currentType}>";
+                $currentList = [];
+            }
+            $output[] = '<p>' . $trimmed . '</p>';
+        }
+    }
+
+    if (!empty($currentList)) {
+        $output[] = "<{$currentType}><li>" . implode('</li><li>', $currentList) . "</li></{$currentType}>";
+    }
+
+    return implode('', $output);
+}
+
+/**
  * Extract clean plain text summary from article content (which can be HTML or JSON).
  */
 function get_article_summary_text(string $content, string $lang = 'th'): string
@@ -456,10 +562,274 @@ function send_security_headers(): void
 }
 
 /**
- * Return the reCAPTCHA site key from config or fallback.
+ * Check if the currently active session belongs to a Super-Admin.
+ */
+function is_super_admin_session(): bool
+{
+    if (session_status() === PHP_SESSION_NONE && !headers_sent()) {
+        session_start();
+    }
+
+    if (empty($_SESSION['admin_logged_in'])) {
+        return false;
+    }
+
+    $roleSlug = $_SESSION['admin_role_slug'] ?? ($_SESSION['admin_role'] ?? '');
+    return $roleSlug === 'super_admin';
+}
+
+/**
+ * Record traffic analytics for the site (Pageviews & Daily Unique Visitors).
+ * Excludes Super-Admin sessions while counting all other visitors and roles.
+ */
+function track_site_traffic(): void
+{
+    if (is_super_admin_session()) {
+        // Exclude Super-Admin from site traffic analytics
+        return;
+    }
+
+    try {
+        $pdo = Database::getInstance();
+        $today = date('Y-m-d');
+        $ip = $_SERVER['REMOTE_ADDR'] ?? '127.0.0.1';
+        $ua = $_SERVER['HTTP_USER_AGENT'] ?? 'Unknown';
+        $visitorHash = hash('sha256', $ip . '|' . $ua . '|' . $today);
+
+        // Check/Insert unique visitor log
+        $stmt = $pdo->prepare('INSERT IGNORE INTO daily_visitor_logs (date, visitor_hash) VALUES (?, ?)');
+        $stmt->execute([$today, $visitorHash]);
+        $isNewVisitor = ($stmt->rowCount() > 0);
+
+        if ($isNewVisitor) {
+            $stmtTraffic = $pdo->prepare('
+                INSERT INTO daily_traffic (date, pageviews, unique_visitors)
+                VALUES (?, 1, 1)
+                ON DUPLICATE KEY UPDATE
+                    pageviews = pageviews + 1,
+                    unique_visitors = unique_visitors + 1
+            ');
+        } else {
+            $stmtTraffic = $pdo->prepare('
+                INSERT INTO daily_traffic (date, pageviews, unique_visitors)
+                VALUES (?, 1, 0)
+                ON DUPLICATE KEY UPDATE
+                    pageviews = pageviews + 1
+            ');
+        }
+        $stmtTraffic->execute([$today]);
+    } catch (\Throwable $e) {
+        // Silently ignore to avoid interrupting page delivery
+        error_log('Traffic tracking error: ' . $e->getMessage());
+    }
+}
+
+/**
+ * Generate or get existing CSRF token for the frontend session.
+ */
+function csrf_token(): string
+{
+    if (session_status() === PHP_SESSION_NONE && !headers_sent()) {
+        session_start();
+    }
+    $tokenName = defined('CSRF_TOKEN_NAME') ? CSRF_TOKEN_NAME : '_csrf';
+    if (empty($_SESSION[$tokenName])) {
+        $_SESSION[$tokenName] = bin2hex(random_bytes(32));
+    }
+    return $_SESSION[$tokenName];
+}
+
+/**
+ * Render a hidden HTML input field for CSRF protection.
+ */
+function csrf_field(): string
+{
+    $tokenName = defined('CSRF_TOKEN_NAME') ? CSRF_TOKEN_NAME : '_csrf';
+    return '<input type="hidden" name="' . e($tokenName) . '" value="' . e(csrf_token()) . '">';
+}
+
+/**
+ * Validate submitted CSRF token against the session token.
+ */
+function verify_csrf_token(?string $token = null): bool
+{
+    if (session_status() === PHP_SESSION_NONE && !headers_sent()) {
+        session_start();
+    }
+    $tokenName = defined('CSRF_TOKEN_NAME') ? CSRF_TOKEN_NAME : '_csrf';
+    $sessionToken = (string) ($_SESSION[$tokenName] ?? '');
+    if ($token === null) {
+        $token = (string) ($_POST[$tokenName] ?? '');
+    }
+    if ($sessionToken === '' || $token === '') {
+        return false;
+    }
+    return hash_equals($sessionToken, $token);
+}
+
+/**
+ * Regenerate CSRF token after successful sensitive operations (prevents replay/duplicate submits).
+ */
+function csrf_token_regenerate(): string
+{
+    if (session_status() === PHP_SESSION_NONE && !headers_sent()) {
+        session_start();
+    }
+    $tokenName = defined('CSRF_TOKEN_NAME') ? CSRF_TOKEN_NAME : '_csrf';
+    $_SESSION[$tokenName] = bin2hex(random_bytes(32));
+    return $_SESSION[$tokenName];
+}
+
+/**
+ * Get Google reCAPTCHA site key with environment and database fallbacks.
  */
 function recaptcha_site_key(): string
 {
-    return (string) config('recaptcha.site_key', '6Lcf_pAtAAAAAOVhatPPwrHSYXeb_0J4yXf5BrRO');
+    if (defined('RECAPTCHA_SITE_KEY') && RECAPTCHA_SITE_KEY !== '') {
+        return RECAPTCHA_SITE_KEY;
+    }
+    $cfg = config('recaptcha.site_key');
+    if (!empty($cfg)) {
+        return (string) $cfg;
+    }
+    return '6Lcf_pAtAAAAAOVhatPPwrHSYXeb_0J4yXf5BrRO';
 }
 
+/**
+ * Verify Google reCAPTCHA v2 response with Google's siteverify API.
+ *
+ * @param string|null $recaptchaResponse The response token from $_POST['g-recaptcha-response']
+ * @param string|null $remoteIp Client IP address
+ * @return array{success: bool, message: string}
+ */
+function verify_recaptcha(?string $recaptchaResponse = null, ?string $remoteIp = null): array
+{
+    if ($recaptchaResponse === null) {
+        $recaptchaResponse = (string) ($_POST['g-recaptcha-response'] ?? '');
+    }
+
+    $token = trim($recaptchaResponse);
+    if ($token === '') {
+        return [
+            'success' => false,
+            'message' => 'กรุณายืนยันตัวตนว่าไม่ใช่โปรแกรมอัตโนมัติ (reCAPTCHA)',
+        ];
+    }
+
+    // 1. Retrieve secret key from environment variable, config, or database settings
+    $secretKey = getenv('RECAPTCHA_SECRET_KEY') ?: '';
+    if ($secretKey === '' && defined('RECAPTCHA_SECRET_KEY')) {
+        $secretKey = (string) RECAPTCHA_SECRET_KEY;
+    }
+    if ($secretKey === '') {
+        $cfg = config('recaptcha.secret_key');
+        if (!empty($cfg)) {
+            $secretKey = (string) $cfg;
+        }
+    }
+    if ($secretKey === '') {
+        try {
+            $settingModel = new Setting();
+            $secretKey = (string) ($settingModel->getByKey('recaptcha_secret_key', '') ?? '');
+        } catch (\Throwable $e) {
+            $secretKey = '';
+        }
+    }
+
+    // 2. Development / Localhost tolerance:
+    // If secret key is not configured and server is localhost/127.0.0.1, log a warning and permit test
+    $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
+    $isLocalhost = in_array(parse_url('http://' . $host, PHP_URL_HOST), ['localhost', '127.0.0.1', '::1'], true);
+
+    if ($secretKey === '') {
+        error_log('[reCAPTCHA Warning] Secret key is not set. Please configure RECAPTCHA_SECRET_KEY in server environment or admin config.');
+        if ($isLocalhost) {
+            return [
+                'success' => true,
+                'message' => 'reCAPTCHA bypassed on localhost because RECAPTCHA_SECRET_KEY is not configured yet.',
+            ];
+        }
+        return [
+            'success' => false,
+            'message' => 'การยืนยันตัวตนไม่สำเร็จ: ยังไม่ได้กำหนด Secret Key บนเซิร์ฟเวอร์',
+        ];
+    }
+
+    // 3. Connect to Google siteverify endpoint
+    $remoteIp = $remoteIp ?? ($_SERVER['REMOTE_ADDR'] ?? '');
+    $verifyUrl = 'https://www.google.com/recaptcha/api/siteverify';
+    $postData = http_build_query([
+        'secret'   => $secretKey,
+        'response' => $token,
+        'remoteip' => $remoteIp,
+    ]);
+
+    $responseJson = false;
+
+    // Prefer cURL
+    if (function_exists('curl_init')) {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $verifyUrl);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 8);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+        $responseJson = curl_exec($ch);
+        $curlErr = curl_error($ch);
+        curl_close($ch);
+
+        if ($responseJson === false && $curlErr !== '') {
+            error_log('[reCAPTCHA cURL Error] ' . $curlErr);
+        }
+    }
+
+    // Fallback to file_get_contents if cURL failed or unavailable
+    if ($responseJson === false && ini_get('allow_url_fopen')) {
+        $context = stream_context_create([
+            'http' => [
+                'method'  => 'POST',
+                'header'  => "Content-Type: application/x-www-form-urlencoded\r\nContent-Length: " . strlen($postData) . "\r\n",
+                'content' => $postData,
+                'timeout' => 8,
+            ],
+        ]);
+        $responseJson = @file_get_contents($verifyUrl, false, $context);
+    }
+
+    if ($responseJson === false || $responseJson === '') {
+        error_log('[reCAPTCHA Error] Could not connect to Google verification server.');
+        return [
+            'success' => false,
+            'message' => 'ไม่สามารถเชื่อมต่อไปยังระบบตรวจสอบ reCAPTCHA ได้ในขณะนี้ กรุณาลองใหม่อีกครั้ง',
+        ];
+    }
+
+    $result = json_decode($responseJson, true);
+    if (!is_array($result) || empty($result['success'])) {
+        $codes = (array) ($result['error-codes'] ?? []);
+        $errorCodes = !empty($codes) ? implode(', ', $codes) : 'unknown';
+        error_log('[reCAPTCHA Failed] Google returned success=false. Error codes: ' . $errorCodes);
+
+        if (in_array('timeout-or-duplicate', $codes, true)) {
+            $msg = getCurrentLang() === 'th'
+                ? 'การยืนยันตัวตน reCAPTCHA หมดอายุ (เกินเวลา) หรือมีการส่งซ้ำ กรุณาติ๊กช่องยืนยันตัวตนใหม่อีกครั้ง'
+                : 'reCAPTCHA token expired or submitted twice. Please re-verify the checkbox.';
+        } else {
+            $msg = getCurrentLang() === 'th'
+                ? 'การยืนยันตัวตนผ่าน reCAPTCHA ไม่ผ่าน กรุณากดช่องยืนยันตัวตนใหม่อีกครั้ง'
+                : 'reCAPTCHA verification failed. Please try again.';
+        }
+
+        return [
+            'success' => false,
+            'message' => $msg,
+        ];
+    }
+
+    return [
+        'success' => true,
+        'message' => 'reCAPTCHA verified successfully.',
+    ];
+}

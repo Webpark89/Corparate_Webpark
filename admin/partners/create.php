@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     require __DIR__ . '/_save.php';
 }
 
-$pageTitle = 'เพิ่มโลโก้พันธมิตรใหม่';
+$pageTitle = 'Add Partner';
 $page = 'partners';
 require_once __DIR__ . '/../includes/header.php';
 

@@ -3,7 +3,7 @@
 /**
  * Admin partners list — search, filter, and manage partner logos.
  */
-$pageTitle = 'Partners Management';
+$pageTitle = 'Partners';
 $page = 'partners';
 require_once __DIR__ . '/../includes/header.php';
 require_permission('partners.view');

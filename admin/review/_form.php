@@ -186,30 +186,26 @@ $inputClass = 'w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text
         </section>
 
         <div class="lg:col-span-12 pt-4">
-            <section class="sticky bottom-0 bg-white/90 backdrop-blur-sm p-4 -m-4 rounded-2xl border border-slate-200 shadow-sm">
-             <div class="flex items-center justify-between">
-            
-            <a href="index.php" class="px-6 h-11 flex items-center justify-center rounded-xl border border-slate-200 text-slate-700 hover:bg-slate-50 transition">
-                ยกเลิก
-            </a>
-
-            <div class="flex items-center gap-3">
-                
-                <button name="is_active"
-                        value="0"
-                    class="px-6 h-11 rounded-xl border bg-amber-50 border-amber-300 text-amber-700 font-semibold hover:bg-amber-50 transition">
-                    บันทึกเป็นฉบับร่าง
-                </button>
-
-                <button name="is_active"
-                        value="1"
-                    class="px-6 h-11 rounded-xl border bg-emerald-50 border-emerald-300 text-emerald-700 font-semibold hover:bg-emerald-50 transition">
-                    บันทึกและเผยแพร่
-                </button>
-
-                 </div>
+            <section class="sticky bottom-0 bg-white/95 backdrop-blur-sm p-3 sm:p-4 -m-4 rounded-2xl border border-slate-200 shadow-sm z-20">
+                <div class="form-sticky-bar">
+                    <a href="index.php" class="btn-cancel flex items-center justify-center gap-1.5 rounded-xl border border-slate-200 text-slate-700 hover:bg-slate-50 font-medium transition">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="shrink-0 sm:hidden" style="width: 13px; height: 13px;"><path d="M18 6L6 18M6 6l12 12"/></svg>
+                        <span>ยกเลิก</span>
+                    </a>
+                    <div class="actions-group">
+                        <button type="submit" name="is_active" value="0"
+                            class="rounded-xl border bg-amber-50 border-amber-300 text-amber-700 font-semibold hover:bg-amber-100 transition flex items-center justify-center gap-1 sm:gap-2">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" class="shrink-0 sm:hidden" style="width: 13px; height: 13px;"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/></svg>
+                            <span class="hidden sm:inline">บันทึกเป็น</span>ฉบับร่าง
+                        </button>
+                        <button type="submit" name="is_active" value="1"
+                            class="rounded-xl border bg-emerald-50 border-emerald-300 text-emerald-700 font-semibold hover:bg-emerald-100 transition flex items-center justify-center gap-1 sm:gap-2">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="shrink-0 sm:hidden" style="width: 13px; height: 13px;"><polyline points="20 6 9 17 4 12"/></svg>
+                            <span class="hidden sm:inline">บันทึกและ</span>เผยแพร่
+                        </button>
                     </div>
-                </section>
+                </div>
+            </section>
         </div>
 
     </form>

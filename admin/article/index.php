@@ -2,7 +2,7 @@
 /**
  * Admin article list — search, filter, and manage articles.
  */
-$pageTitle = 'Article Management';
+$pageTitle = 'Articles';
 $page = 'article';
 require_once __DIR__ . '/../includes/header.php';
 require_permission('article.view');

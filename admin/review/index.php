@@ -3,7 +3,7 @@
 /**
  * Admin review list — search, filter, and manage customer reviews.
  */
-$pageTitle = 'Reviews Management';
+$pageTitle = 'Reviews';
 $page = 'review';
 require_once __DIR__ . '/../includes/header.php';
 require_permission('review.view');
