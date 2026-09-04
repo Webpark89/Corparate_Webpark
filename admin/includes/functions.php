@@ -12,8 +12,10 @@ if (!defined('AUTH_SECRET_KEY')) {
 }
 
 if (session_status() === PHP_SESSION_NONE) {
+    // Ensure PHP garbage collector keeps session active up to SESSION_TIMEOUT (8 hours)
+    ini_set('session.gc_maxlifetime', (string) (defined('SESSION_TIMEOUT') ? SESSION_TIMEOUT : 28800));
     session_set_cookie_params([
-        'lifetime' => 0,
+        'lifetime' => defined('SESSION_TIMEOUT') ? SESSION_TIMEOUT : 28800,
         'path' => '/',
         'domain' => '',
         'secure' => !empty($_SERVER['HTTPS']),

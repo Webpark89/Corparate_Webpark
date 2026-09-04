@@ -27,7 +27,7 @@ define('UPLOAD_DIR', __DIR__ . '/../uploads');
 define('UPLOAD_URL', ADMIN_URL . '/uploads');
 
 // ---- Security ----
-define('SESSION_TIMEOUT', 1800); // 30 minutes
+define('SESSION_TIMEOUT', 28800); // 8 hours (28800 seconds)
 define('CSRF_TOKEN_NAME', '_csrf');
 define('LOGIN_MAX_ATTEMPTS', 3); // Max login attempts before initial lockout (3 attempts)
 define('LOGIN_ATTEMPT_WINDOW', 360); // 6 minutes base lockout in seconds
