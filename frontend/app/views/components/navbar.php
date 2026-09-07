@@ -87,12 +87,6 @@ $currentLang = getCurrentLang();
                 <a href="<?= e(current_url_with_lang('en')) ?>" style="<?= $currentLang === 'en' ? 'color: #0663F6;' : 'color: #011431;' ?>" class="hover:opacity-80">EN</a>
             </div>
 
-            <!-- CTA Button (Hidden on Desktop as per design) -->
-            <a href="<?= e(route_url('/contact')) ?>"
-               class="hidden items-center justify-center px-6 py-2.5 bg-primary text-white text-sm font-semibold rounded-full shadow-md transition hover:bg-blue-700 hover:-translate-y-0.5">
-               <?= e(t('common.nav_cta_advice')) ?>
-            </a>
-
             <!-- Mobile Menu Toggle -->
             <button id="mobileMenuToggle"
                     class="lg:hidden inline-flex h-11 w-11 items-center justify-center rounded-xl border border-slate-200 text-lg font-bold"
@@ -122,13 +116,6 @@ $currentLang = getCurrentLang();
                    <?= e($item['label']) ?>
                 </a>
             <?php endforeach; ?>
-
-
-            <!-- CTA Button -->
-            <a href="<?= e(route_url('/contact')) ?>"
-               class="inline-flex self-start mt-2 items-center justify-center px-6 py-2.5 bg-primary text-white text-sm font-semibold rounded-full shadow-md transition hover:bg-blue-700 hover:-translate-y-0.5">
-               <?= e(t('common.nav_cta_advice')) ?>
-            </a>
         </div>
     </div>
 

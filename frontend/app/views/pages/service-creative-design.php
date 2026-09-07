@@ -33,9 +33,24 @@ $ctaImage    = asset_url('images/bg-cta.jpg');
     /* Mobile (max-width: 759px) */
     @media (max-width: 759px) {
         .cd-hero-h1 {
-            font-size: 2.75rem !important;
-            line-height: 1.2 !important;
+            font-size: 2.45rem !important;
+            line-height: 1.15 !important;
             font-weight: 900 !important;
+        }
+        .cd-hero-p,
+        .cd-hero-p span {
+            font-size: 1.05rem !important;
+            line-height: 1.65 !important;
+            font-weight: 500 !important;
+            color: #1e293b !important;
+        }
+        .cd-hero-btn-container {
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            gap: 1rem !important;
+        }
+        .cd-hero-btn-container a {
+            width: auto !important;
         }
     }
 
@@ -54,7 +69,7 @@ $ctaImage    = asset_url('images/bg-cta.jpg');
         width: 100% !important;
         background-color: #ffffff !important;
     }
-    @media (min-width: 1280px) {
+    @media (min-width: 1441px) {
         .cd-intro-main-card {
             flex-direction: row !important;
         }
@@ -97,13 +112,18 @@ $ctaImage    = asset_url('images/bg-cta.jpg');
        =================================================== */
     @media (min-width: 760px) and (max-width: 1024px) and (orientation: portrait) {
         /* Section 1: Hero Section (2-line title, text on left, 3D graphic on right) */
+        #cd-hero {
+            padding-top: 4.25rem !important;
+            padding-bottom: 5.5rem !important;
+        }
         .cd-hero-container {
-            padding-top: 4.5rem !important;
-            padding-bottom: 5rem !important;
+            padding-top: 0 !important;
+            padding-bottom: 0 !important;
         }
         .cd-hero-left-col {
             max-width: 68% !important;
             margin-left: 0 !important;
+            padding-top: 0 !important;
         }
         .cd-breadcrumb-nav,
         .cd-breadcrumb-list {
@@ -112,7 +132,7 @@ $ctaImage    = asset_url('images/bg-cta.jpg');
             flex-wrap: nowrap !important;
             white-space: nowrap !important;
             align-items: center !important;
-            margin-bottom: 1.5rem !important;
+            margin-bottom: 1.25rem !important;
         }
         .cd-breadcrumb-list li,
         .cd-breadcrumb-list a,
@@ -124,14 +144,18 @@ $ctaImage    = asset_url('images/bg-cta.jpg');
         .cd-hero-h1-wrapper {
             flex-direction: column !important;
             align-items: flex-start !important;
-            gap: 0.25rem !important;
+            margin-bottom: 0.5rem !important;
         }
         .cd-hero-h1 {
             font-size: 3.75rem !important;
             font-weight: 900 !important;
-            line-height: 1.08 !important;
-            display: block !important;
-            white-space: normal !important;
+            line-height: 1.15 !important;
+            display: inline-block !important;
+            white-space: nowrap !important;
+            padding-top: 0.25rem !important;
+            padding-bottom: 0.25rem !important;
+            margin-top: 0 !important;
+            margin-bottom: 0 !important;
         }
         .cd-hero-p {
             font-size: 1.2rem !important;
@@ -139,7 +163,7 @@ $ctaImage    = asset_url('images/bg-cta.jpg');
             font-weight: 600 !important;
             color: #0b1b42 !important;
             max-width: 32rem !important;
-            margin-top: 1.5rem !important;
+            margin-top: 0.75rem !important;
             margin-bottom: 2rem !important;
         }
         .cd-hero-btn-container {
@@ -200,17 +224,28 @@ $ctaImage    = asset_url('images/bg-cta.jpg');
             height: 3rem !important;
             margin-bottom: 0 !important;
         }
+        .cd-intro-card-left h2 {
+            font-size: 1.45rem !important;
+            line-height: 1.35 !important;
+        }
+        .cd-intro-card-left p {
+            font-size: 1.05rem !important;
+            line-height: 1.65 !important;
+            max-width: 100% !important;
+            width: 100% !important;
+        }
         .cd-intro-pillar-card h3 {
-            font-size: 0.95rem !important;
-            line-height: 1.25 !important;
+            font-size: 1.1rem !important;
+            line-height: 1.3 !important;
             min-height: auto !important;
             display: block !important;
             text-align: center !important;
-            margin-bottom: 0.25rem !important;
+            margin-bottom: 0.35rem !important;
+            font-weight: 700 !important;
         }
         .cd-intro-pillar-card p {
-            font-size: 0.75rem !important;
-            line-height: 1.35 !important;
+            font-size: 0.875rem !important;
+            line-height: 1.45 !important;
             text-align: center !important;
             padding-left: 0.2rem !important;
             padding-right: 0.2rem !important;
@@ -222,7 +257,27 @@ $ctaImage    = asset_url('images/bg-cta.jpg');
             gap: 1.25rem !important;
         }
         .cd-solution-card {
-            padding: 1.25rem !important;
+            padding: 1.35rem 1.25rem !important;
+        }
+        .cd-solution-card h3,
+        .cd-solution-title {
+            font-size: 1.15rem !important;
+            line-height: 1.35 !important;
+            margin-bottom: 0.75rem !important;
+            white-space: normal !important;
+            font-weight: 800 !important;
+        }
+        .cd-solution-card ul {
+            font-size: 0.925rem !important;
+            line-height: 1.55 !important;
+        }
+        .cd-solution-card li {
+            font-size: 0.925rem !important;
+            line-height: 1.55 !important;
+        }
+        .cd-solution-card li span {
+            font-size: 0.925rem !important;
+            line-height: 1.55 !important;
         }
 
         /* Section 4: Benefits Grid (บน 2, กลาง 2, ล่าง 1 ยาว) */
@@ -238,14 +293,15 @@ $ctaImage    = asset_url('images/bg-cta.jpg');
             margin-bottom: 0.35rem !important;
         }
         .cd-benefits-grid h3 {
-            font-size: 1.05rem !important;
+            font-size: 1.2rem !important;
             min-height: auto !important;
-            line-height: 1.25 !important;
-            margin-bottom: 0.25rem !important;
+            line-height: 1.3 !important;
+            margin-bottom: 0.35rem !important;
+            font-weight: 800 !important;
         }
         .cd-benefits-grid p {
-            font-size: 0.825rem !important;
-            line-height: 1.4 !important;
+            font-size: 0.925rem !important;
+            line-height: 1.5 !important;
             margin-top: 0 !important;
         }
 
@@ -274,12 +330,13 @@ $ctaImage    = asset_url('images/bg-cta.jpg');
             text-align: left !important;
             justify-content: flex-start !important;
             min-height: auto !important;
-            margin-bottom: 0.15rem !important;
-            font-size: 1.15rem !important;
+            margin-bottom: 0.25rem !important;
+            font-size: 1.25rem !important;
+            font-weight: 800 !important;
         }
         .cd-benefit-card-last p {
             text-align: left !important;
-            font-size: 0.85rem !important;
+            font-size: 0.95rem !important;
             margin-top: 0 !important;
         }
 
@@ -292,29 +349,51 @@ $ctaImage    = asset_url('images/bg-cta.jpg');
             border-radius: 1rem !important;
         }
         .cd-showcase-grid h3 {
-            font-size: 0.9rem !important;
+            font-size: 1.05rem !important;
         }
         .cd-showcase-grid p {
-            font-size: 0.75rem !important;
+            font-size: 0.85rem !important;
         }
         .cd-showcase-grid span {
-            font-size: 0.7rem !important;
+            font-size: 0.8rem !important;
         }
     }
 
     /* iPad Portrait (760px - 834px) Specific Fine-tuning */
     @media (min-width: 760px) and (max-width: 834px) and (orientation: portrait) {
+        .cd-hero-h1-wrapper {
+            margin-bottom: 0.5rem !important;
+        }
         .cd-hero-h1 {
             font-size: 3.75rem !important;
+            line-height: 1.15 !important;
+            padding-top: 0.25rem !important;
+            padding-bottom: 0.25rem !important;
+            margin-top: 0 !important;
+            margin-bottom: 0 !important;
         }
         .cd-hero-left-col {
             max-width: 68% !important;
         }
+        .cd-hero-p {
+            font-size: 1.2rem !important;
+            line-height: 1.85 !important;
+            font-weight: 600 !important;
+            color: #0b1b42 !important;
+            max-width: 32rem !important;
+            margin-top: 0.75rem !important;
+            margin-bottom: 2rem !important;
+        }
+        .cd-hero-btn-container {
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            gap: 0.85rem !important;
+        }
         .cd-benefits-grid h3 {
-            font-size: 1.05rem !important;
+            font-size: 1.2rem !important;
         }
         .cd-benefits-grid p {
-            font-size: 0.85rem !important;
+            font-size: 0.925rem !important;
         }
         .cd-benefit-card-last h3 br,
         .cd-benefit-card-last p br {
@@ -329,17 +408,37 @@ $ctaImage    = asset_url('images/bg-cta.jpg');
             white-space: nowrap !important;
         }
         .cd-showcase-grid h3 {
-            font-size: 0.825rem !important;
+            font-size: 1.05rem !important;
         }
     }
 
-    /* iPad Pro Portrait (821px - 1100px) Specific Fine-tuning */
-    @media (min-width: 821px) and (max-width: 1100px) and (orientation: portrait) {
+    /* iPad Pro Portrait (835px - 1100px) Specific Fine-tuning */
+    @media (min-width: 835px) and (max-width: 1100px) and (orientation: portrait) {
+        .cd-hero-h1-wrapper {
+            margin-bottom: 0.5rem !important;
+        }
         .cd-hero-h1 {
-            font-size: 4rem !important;
+            font-size: 4.25rem !important;
+            line-height: 1.15 !important;
+            padding-top: 0.25rem !important;
+            padding-bottom: 0.25rem !important;
         }
         .cd-hero-left-col {
-            max-width: 65% !important;
+            max-width: 75% !important;
+        }
+        .cd-hero-p {
+            font-size: 1.35rem !important;
+            line-height: 1.9 !important;
+            font-weight: 600 !important;
+            color: #0b1b42 !important;
+            max-width: 35rem !important;
+            margin-top: 0.75rem !important;
+            margin-bottom: 2rem !important;
+        }
+        .cd-hero-btn-container {
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            gap: 0.85rem !important;
         }
         /* Single line text for Benefits cards on iPad Pro Portrait */
         .cd-benefits-grid h3 br,
@@ -347,43 +446,102 @@ $ctaImage    = asset_url('images/bg-cta.jpg');
             display: none !important;
         }
         .cd-benefits-grid h3 {
-            font-size: 1.1rem !important;
+            font-size: 1.45rem !important;
             white-space: normal !important;
             min-height: auto !important;
-            margin-bottom: 0.25rem !important;
+            margin-bottom: 0.35rem !important;
+            font-weight: 800 !important;
+            color: #043B94 !important;
         }
         .cd-benefits-grid p {
-            font-size: 0.85rem !important;
+            font-size: 1.15rem !important;
             white-space: normal !important;
             margin-top: 0 !important;
+            line-height: 1.6 !important;
+            color: #334155 !important;
+            font-weight: 500 !important;
+        }
+        .cd-benefit-card-last h3 {
+            font-size: 1.55rem !important;
+            font-weight: 800 !important;
+            color: #043B94 !important;
+        }
+        .cd-benefit-card-last p {
+            font-size: 1.15rem !important;
+            line-height: 1.6 !important;
+            color: #334155 !important;
+            font-weight: 500 !important;
         }
         .cd-showcase-grid h3 {
+            font-size: 1.25rem !important;
+            font-weight: 700 !important;
+        }
+        .cd-showcase-grid p {
+            font-size: 1.05rem !important;
+            line-height: 1.5 !important;
+            color: #334155 !important;
+            font-weight: 500 !important;
+        }
+        .cd-showcase-grid span {
             font-size: 0.95rem !important;
         }
+        .cd-intro-card-left span {
+            font-size: 2rem !important;
+        }
+        .cd-intro-card-left h2 {
+            font-size: 1.85rem !important;
+            line-height: 1.35 !important;
+            font-weight: 800 !important;
+            margin-bottom: 0.75rem !important;
+        }
+        .cd-intro-card-left p {
+            font-size: 1.25rem !important;
+            line-height: 1.75 !important;
+            font-weight: 500 !important;
+            max-width: 100% !important;
+            width: 100% !important;
+            color: #334155 !important;
+        }
         .cd-intro-pillar-card {
-            padding: 1.25rem 0.35rem !important;
+            padding: 1.5rem 0.5rem !important;
             justify-content: flex-start !important;
         }
         .cd-intro-pillar-card > div:first-child {
             width: auto !important;
             height: auto !important;
             min-height: 0 !important;
-            margin-bottom: 0.35rem !important;
+            margin-bottom: 0.5rem !important;
         }
         .cd-intro-pillar-card svg {
-            width: 3.25rem !important;
-            height: 3.25rem !important;
+            width: 3.75rem !important;
+            height: 3.75rem !important;
             margin-bottom: 0 !important;
         }
         .cd-intro-pillar-card h3 {
-            font-size: 1rem !important;
-            line-height: 1.25 !important;
+            font-size: 1.3rem !important;
+            line-height: 1.35 !important;
             min-height: auto !important;
-            margin-bottom: 0.25rem !important;
+            margin-bottom: 0.35rem !important;
+            font-weight: 800 !important;
+            color: #043B94 !important;
         }
         .cd-intro-pillar-card p {
-            font-size: 0.825rem !important;
-            line-height: 1.35 !important;
+            font-size: 1.05rem !important;
+            line-height: 1.55 !important;
+            color: #334155 !important;
+            font-weight: 500 !important;
+        }
+        .cd-solution-card h3,
+        .cd-solution-title {
+            font-size: 1.35rem !important;
+            font-weight: 800 !important;
+            margin-bottom: 0.75rem !important;
+        }
+        .cd-solution-card ul,
+        .cd-solution-card li,
+        .cd-solution-card li span {
+            font-size: 1.05rem !important;
+            line-height: 1.6 !important;
         }
     }
 
@@ -478,80 +636,498 @@ $ctaImage    = asset_url('images/bg-cta.jpg');
     }
 
     @media (max-width: 640px) {
+        /* Section 2 Intro */
+        .cd-intro-card-left {
+            padding: 1.75rem 1.25rem !important;
+        }
+        .cd-intro-card-left span {
+            font-size: 1.6rem !important;
+        }
+        .cd-intro-card-left h2 {
+            font-size: 1.3rem !important;
+            line-height: 1.35 !important;
+            margin-bottom: 0.5rem !important;
+        }
+        .cd-intro-card-left p {
+            font-size: 0.95rem !important;
+            line-height: 1.65 !important;
+            color: #475569 !important;
+        }
+        .cd-intro-pillar-card {
+            padding: 1.5rem 1rem !important;
+        }
+        .cd-intro-pillar-card h3 {
+            font-size: 1.05rem !important;
+            line-height: 1.35 !important;
+            font-weight: 800 !important;
+            margin-bottom: 0.35rem !important;
+        }
+        .cd-intro-pillar-card p {
+            font-size: 0.875rem !important;
+            line-height: 1.55 !important;
+            color: #64748b !important;
+        }
+
+        /* Section 3 Solutions */
+        #cd-solutions .inline-flex span {
+            font-size: 1.6rem !important;
+        }
+        #cd-solutions h2 {
+            font-size: 1.2rem !important;
+            line-height: 1.4 !important;
+        }
+        .cd-solution-card h3 {
+            font-size: 1.1rem !important;
+            font-weight: 800 !important;
+        }
+        .cd-solution-card ul,
+        .cd-solution-card li,
+        .cd-solution-card li span {
+            font-size: 0.875rem !important;
+            line-height: 1.5 !important;
+        }
+
+        /* Section 4 Benefits */
+        #cd-benefits .inline-flex span {
+            font-size: 1.6rem !important;
+        }
+        #cd-benefits h2 {
+            font-size: 1.2rem !important;
+            line-height: 1.4 !important;
+        }
         .cd-benefits-grid {
-            gap: 0.5rem !important;
+            gap: 0.75rem !important;
         }
         .cd-benefits-grid > div {
-            padding: 1.25rem 0.35rem !important;
+            padding: 1.25rem 0.75rem !important;
+            border-radius: 1rem !important;
         }
         .cd-benefits-grid svg {
-            width: 2.5rem !important;
-            height: 2.5rem !important;
+            width: 2.75rem !important;
+            height: 2.75rem !important;
             margin-bottom: 0.4rem !important;
         }
         .cd-benefits-grid h3 {
-            font-size: clamp(0.65rem, 2.6vw, 0.85rem) !important;
-            white-space: nowrap !important;
-            letter-spacing: -0.01em !important;
+            font-size: 0.95rem !important;
+            font-weight: 800 !important;
+            line-height: 1.3 !important;
+            white-space: normal !important;
+            margin-bottom: 0.35rem !important;
+            min-height: auto !important;
         }
         .cd-benefits-grid p {
-            font-size: 0.62rem !important;
-            white-space: normal !important;
-            line-height: 1.3 !important;
+            font-size: 0.8rem !important;
+            line-height: 1.45 !important;
+            color: #475569 !important;
         }
         .cd-benefits-grid > div.cd-benefit-card-last {
-            gap: 0.75rem !important;
-            padding: 1rem 0.75rem !important;
+            padding: 1.25rem 1rem !important;
+            gap: 1rem !important;
+        }
+        .cd-benefits-grid > div.cd-benefit-card-last h3 {
+            font-size: 1.05rem !important;
+            text-align: left !important;
         }
         .cd-benefits-grid > div.cd-benefit-card-last p {
-            white-space: normal !important;
+            font-size: 0.825rem !important;
+            text-align: left !important;
+        }
+
+        /* Section 5 Showcase */
+        #cd-showcase .inline-flex span {
+            font-size: 1.6rem !important;
+        }
+        #cd-showcase h2 {
+            font-size: 1.2rem !important;
+            line-height: 1.4 !important;
+        }
+        .cd-showcase-grid h3 {
+            font-size: 1.1rem !important;
+        }
+        .cd-showcase-grid p {
+            font-size: 0.875rem !important;
+            line-height: 1.5 !important;
+        }
+        .cd-showcase-grid span {
+            font-size: 0.75rem !important;
         }
     }
 
-    @media (min-width: 1024px) and (max-width: 1280px) {
+    .cd-solution-title {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    /* iPad Pro Landscape & Tablet Landscape (1024px - 1440px) */
+    @media (min-width: 1024px) and (max-width: 1440px) {
+        /* Section 1 Hero */
+        .cd-hero-h1 {
+            font-size: 4rem !important;
+            line-height: 1.15 !important;
+        }
+        .cd-hero-p,
+        .cd-hero-p span {
+            font-size: 1.3rem !important;
+            line-height: 1.85 !important;
+            font-weight: 600 !important;
+        }
+
+        /* Section 2 Intro */
+        .cd-intro-main-card {
+            flex-direction: column !important;
+        }
+        .cd-intro-card-left {
+            width: 100% !important;
+            border-bottom: 1px solid #e2e8f0 !important;
+            border-right: none !important;
+            padding: 2.5rem 3rem !important;
+        }
+        .cd-intro-right-grid {
+            display: grid !important;
+            grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+            width: 100% !important;
+        }
+        .cd-intro-card-left span {
+            font-size: 2.25rem !important;
+        }
+        .cd-intro-card-left h2 {
+            font-size: 1.85rem !important;
+            line-height: 1.35 !important;
+            font-weight: 800 !important;
+        }
+        .cd-intro-card-left p {
+            font-size: 1.2rem !important;
+            line-height: 1.8 !important;
+            font-weight: 500 !important;
+            color: #334155 !important;
+            max-width: 100% !important;
+            width: 100% !important;
+        }
+        .cd-intro-pillar-card {
+            padding: 1.6rem 0.5rem !important;
+        }
+        .cd-intro-pillar-card svg {
+            width: 3.75rem !important;
+            height: 3.75rem !important;
+        }
+        .cd-intro-pillar-card h3,
+        .cd-intro-pillar-card h3 span {
+            font-size: 1.2rem !important;
+            line-height: 1.35 !important;
+            font-weight: 800 !important;
+            margin-bottom: 0.4rem !important;
+            color: #043B94 !important;
+        }
+        .cd-intro-pillar-card p {
+            font-size: 1.02rem !important;
+            line-height: 1.6 !important;
+            color: #334155 !important;
+            font-weight: 500 !important;
+        }
+
+        /* Section 3 Solutions */
+        .cd-solutions-wrapper {
+            margin-left: 0 !important;
+            margin-right: 0 !important;
+            width: 100% !important;
+        }
+        #cd-solutions .inline-flex span {
+            font-size: 2.25rem !important;
+        }
+        #cd-solutions h2 {
+            font-size: 1.45rem !important;
+            line-height: 1.4 !important;
+        }
+        .cd-solutions-grid {
+            gap: 0.75rem !important;
+        }
+        .cd-solution-card {
+            padding: 1.25rem 0.75rem !important;
+        }
+        .cd-solution-title {
+            font-size: 1.05rem !important;
+            font-weight: 800 !important;
+            letter-spacing: -0.015em !important;
+            text-align: center !important;
+            white-space: normal !important;
+            min-height: 2.75rem !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            line-height: 1.25 !important;
+            margin-bottom: 0.75rem !important;
+            overflow: visible !important;
+        }
+        .cd-solution-card ul,
+        .cd-solution-card li,
+        .cd-solution-card li span {
+            font-size: 0.95rem !important;
+            line-height: 1.55 !important;
+            color: #334155 !important;
+            font-weight: 500 !important;
+        }
+
+        /* Section 4 Benefits */
+        #cd-benefits .inline-flex span {
+            font-size: 2.25rem !important;
+        }
+        #cd-benefits h2 {
+            font-size: 1.75rem !important;
+        }
         .cd-benefits-grid {
             gap: 0.75rem !important;
         }
         .cd-benefits-grid > div {
-            padding: 1.5rem 0.65rem !important;
+            padding: 1.75rem 0.65rem !important;
         }
-        .cd-benefits-grid h3 {
-            font-size: clamp(0.85rem, 1.05vw, 1rem) !important;
+        .cd-benefits-grid h3,
+        .cd-benefits-grid h3 span {
+            font-size: 1.2rem !important;
+            font-weight: 800 !important;
             white-space: normal !important;
             word-break: break-word !important;
-            line-height: 1.3 !important;
-            min-height: auto !important;
-            margin-bottom: 0.25rem !important;
+            line-height: 1.35 !important;
+            min-height: 3.25rem !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            text-align: center !important;
+            margin-bottom: 0.4rem !important;
+            color: #043B94 !important;
         }
-        .cd-benefits-grid p {
-            font-size: clamp(0.72rem, 0.9vw, 0.82rem) !important;
+        .cd-benefits-grid p,
+        .cd-benefits-grid p span {
+            font-size: 1rem !important;
             white-space: normal !important;
             word-break: break-word !important;
-            line-height: 1.4 !important;
+            line-height: 1.55 !important;
+            text-align: center !important;
+            color: #334155 !important;
+            font-weight: 500 !important;
             margin-top: 0 !important;
         }
         .cd-benefits-grid p br {
             display: inline !important;
         }
+
+        /* Section 5 Showcase */
+        .cd-showcase-grid h3 {
+            font-size: 1.35rem !important;
+            font-weight: 800 !important;
+            line-height: 1.35 !important;
+        }
+        .cd-showcase-grid p {
+            font-size: 1.1rem !important;
+            line-height: 1.6 !important;
+            color: #334155 !important;
+            font-weight: 500 !important;
+        }
+        .cd-showcase-grid span {
+            font-size: 1rem !important;
+        }
     }
 
-    /* iPad Portrait ONLY (All iPads 760px - 1100px Portrait) - Ultra Tight Spacing */
+    /* iPad Mini Landscape (1024px x 768px) */
+    @media (min-width: 900px) and (max-width: 1024px) and (orientation: landscape), (width: 1024px) and (max-height: 800px) {
+        /* Section 2 Intro */
+        .cd-intro-main-card {
+            flex-direction: column !important;
+        }
+        .cd-intro-card-left {
+            width: 100% !important;
+            border-bottom: 1px solid #e2e8f0 !important;
+            border-right: none !important;
+            padding: 2rem 2.5rem !important;
+        }
+        .cd-intro-card-left span {
+            font-size: 1.75rem !important;
+        }
+        .cd-intro-card-left h2 {
+            font-size: 1.45rem !important;
+            line-height: 1.35 !important;
+            margin-bottom: 0.5rem !important;
+        }
+        .cd-intro-card-left p {
+            font-size: 0.98rem !important;
+            line-height: 1.65 !important;
+            color: #475569 !important;
+            max-width: 100% !important;
+            width: 100% !important;
+        }
+        .cd-intro-right-grid {
+            display: grid !important;
+            grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+            width: 100% !important;
+        }
+        .cd-intro-pillar-card {
+            padding: 1.5rem 0.75rem !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            text-align: center !important;
+            justify-content: flex-start !important;
+        }
+        .cd-intro-pillar-card > div:first-child {
+            height: 3.5rem !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            margin-bottom: 0.65rem !important;
+        }
+        .cd-intro-pillar-card svg {
+            width: 3rem !important;
+            height: 3rem !important;
+        }
+        .cd-intro-pillar-card h3,
+        .cd-intro-pillar-card h3 span {
+            font-size: 0.95rem !important;
+            line-height: 1.35 !important;
+            font-weight: 800 !important;
+            margin-bottom: 0.4rem !important;
+            color: #043B94 !important;
+            min-height: 2.75rem !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            text-align: center !important;
+        }
+        .cd-intro-pillar-card p {
+            font-size: 0.825rem !important;
+            line-height: 1.5 !important;
+            color: #475569 !important;
+            font-weight: 500 !important;
+            text-align: center !important;
+        }
+
+        /* Section 4 Benefits - Tighten gap between title & desc */
+        .cd-benefits-grid {
+            gap: 0.75rem !important;
+        }
+        .cd-benefits-grid > div {
+            padding: 1.25rem 0.85rem !important;
+        }
+        .cd-benefits-grid h3,
+        .cd-benefits-grid h3 span {
+            font-size: 1.05rem !important;
+            line-height: 1.35 !important;
+            font-weight: 800 !important;
+            min-height: auto !important;
+            display: block !important;
+            text-align: center !important;
+            margin-top: 0.45rem !important;
+            margin-bottom: 0.35rem !important;
+            color: #043B94 !important;
+        }
+        .cd-benefits-grid p,
+        .cd-benefits-grid p span {
+            font-size: 0.85rem !important;
+            line-height: 1.45 !important;
+            color: #475569 !important;
+            font-weight: 500 !important;
+            text-align: center !important;
+            margin-top: 0 !important;
+        }
+        .cd-benefits-grid > div.cd-benefit-card-last h3 {
+            margin-top: 0 !important;
+            margin-bottom: 0.25rem !important;
+            text-align: left !important;
+        }
+        .cd-benefits-grid > div.cd-benefit-card-last p {
+            text-align: left !important;
+        }
+    }
+
+    /* iPad Air & iPad Pro Landscape (1025px - 1440px) 2-2-1 Benefits Layout */
+    @media (min-width: 1025px) and (max-width: 1440px) {
+        .cd-benefits-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+            gap: 1.25rem !important;
+            max-width: 1100px !important;
+            margin-left: auto !important;
+            margin-right: auto !important;
+        }
+        .cd-benefits-grid > div {
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            text-align: center !important;
+            padding: 1.6rem 1.25rem !important;
+            border-radius: 1.25rem !important;
+        }
+        .cd-benefits-grid > div.cd-benefit-card-last {
+            grid-column: span 2 / span 2 !important;
+            width: 100% !important;
+            display: flex !important;
+            flex-direction: row !important;
+            align-items: center !important;
+            justify-content: flex-start !important;
+            gap: 1.5rem !important;
+            padding: 1.5rem 2rem !important;
+            text-align: left !important;
+        }
+        .cd-benefits-grid > div.cd-benefit-card-last .cd-benefit-content {
+            align-items: flex-start !important;
+            text-align: left !important;
+        }
+        .cd-benefits-grid > div.cd-benefit-card-last svg {
+            margin-bottom: 0 !important;
+            flex-shrink: 0 !important;
+        }
+        .cd-benefits-grid h3,
+        .cd-benefits-grid h3 span {
+            font-size: 1.15rem !important;
+            line-height: 1.35 !important;
+            font-weight: 800 !important;
+            min-height: auto !important;
+            display: block !important;
+            text-align: center !important;
+            margin-top: 0.5rem !important;
+            margin-bottom: 0.35rem !important;
+            color: #043B94 !important;
+            white-space: normal !important;
+        }
+        .cd-benefits-grid p,
+        .cd-benefits-grid p span {
+            font-size: 0.95rem !important;
+            line-height: 1.55 !important;
+            color: #475569 !important;
+            font-weight: 500 !important;
+            text-align: center !important;
+            margin-top: 0 !important;
+        }
+        .cd-benefits-grid > div.cd-benefit-card-last h3 {
+            margin-top: 0 !important;
+            margin-bottom: 0.25rem !important;
+            text-align: left !important;
+        }
+        .cd-benefits-grid > div.cd-benefit-card-last p {
+            text-align: left !important;
+        }
+    }
+
+    /* iPad Portrait (All iPads 760px - 1100px Portrait) - Large, legible benefits text */
     @media (min-width: 760px) and (max-width: 1100px) and (orientation: portrait) {
         .cd-benefits-grid {
             grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-            gap: 1rem !important;
+            gap: 1.25rem !important;
         }
         .cd-benefits-grid > div {
-            padding: 1.25rem 1rem !important;
+            padding: 1.6rem 1.25rem !important;
             display: flex !important;
             flex-direction: column !important;
             align-items: center !important;
             justify-content: center !important;
             min-height: auto !important;
+            border-radius: 1.25rem !important;
         }
         .cd-benefits-grid .cd-benefit-icon-wrap,
         .cd-benefits-grid .cd-benefit-icon-wrap > div {
-            margin-bottom: 0.35rem !important;
+            margin-bottom: 0.5rem !important;
+        }
+        .cd-benefits-grid svg {
+            width: 3.5rem !important;
+            height: 3.5rem !important;
         }
         .cd-benefits-grid .cd-benefit-content {
             display: flex !important;
@@ -562,20 +1138,24 @@ $ctaImage    = asset_url('images/bg-cta.jpg');
             gap: 0 !important;
         }
         .cd-benefits-grid h3 {
-            font-size: 1.05rem !important;
+            font-size: 1.35rem !important;
+            font-weight: 800 !important;
             min-height: 0 !important;
-            line-height: 1.25 !important;
+            line-height: 1.35 !important;
             margin-top: 0 !important;
-            margin-bottom: 0.2rem !important;
+            margin-bottom: 0.35rem !important;
             display: block !important;
             text-align: center !important;
+            color: #043B94 !important;
         }
         .cd-benefits-grid p {
-            font-size: 0.8rem !important;
-            line-height: 1.35 !important;
+            font-size: 1.12rem !important;
+            line-height: 1.6 !important;
             margin-top: 0 !important;
             margin-bottom: 0 !important;
             text-align: center !important;
+            color: #334155 !important;
+            font-weight: 500 !important;
         }
 
         /* Card 5: Full width bottom card */
@@ -586,14 +1166,18 @@ $ctaImage    = asset_url('images/bg-cta.jpg');
             flex-direction: row !important;
             align-items: center !important;
             justify-content: center !important;
-            gap: 1.25rem !important;
-            padding: 1.25rem 2rem !important;
+            gap: 1.5rem !important;
+            padding: 1.5rem 2.5rem !important;
             text-align: left !important;
         }
         .cd-benefit-card-last .cd-benefit-icon-wrap,
         .cd-benefit-card-last .cd-benefit-icon-wrap > div {
             margin-bottom: 0 !important;
             flex-shrink: 0 !important;
+        }
+        .cd-benefit-card-last svg {
+            width: 3.75rem !important;
+            height: 3.75rem !important;
         }
         .cd-benefit-card-last .cd-benefit-content {
             align-items: flex-start !important;
@@ -605,14 +1189,19 @@ $ctaImage    = asset_url('images/bg-cta.jpg');
             text-align: left !important;
             min-height: 0 !important;
             margin-top: 0 !important;
-            margin-bottom: 0.15rem !important;
-            font-size: 1.1rem !important;
+            margin-bottom: 0.25rem !important;
+            font-size: 1.45rem !important;
+            font-weight: 800 !important;
+            color: #043B94 !important;
         }
         .cd-benefit-card-last p {
             text-align: left !important;
-            font-size: 0.825rem !important;
+            font-size: 1.12rem !important;
+            line-height: 1.6 !important;
             margin-top: 0 !important;
             margin-bottom: 0 !important;
+            color: #334155 !important;
+            font-weight: 500 !important;
         }
     }
     @media (min-width: 1024px) {
@@ -630,9 +1219,9 @@ $ctaImage    = asset_url('images/bg-cta.jpg');
             margin-left: 6rem !important;
         }
     }
-    @media (min-width: 760px) and (max-width: 1024px) and (orientation: portrait) {
+    @media (min-width: 760px) and (max-width: 1100px) and (orientation: portrait) {
         .desktop-service-hero-col {
-            margin-left: 0 !important;
+            margin-left: 2.5rem !important;
         }
     }
 </style>
@@ -643,7 +1232,7 @@ $ctaImage    = asset_url('images/bg-cta.jpg');
 <!-- ==========================================
      SECTION 1: HERO SECTION
 =========================================== -->
-<section id="cd-hero" class="relative overflow-hidden font-sans bg-[#f7faff] pt-8 pb-12 md:pt-12 md:pb-24 lg:pt-28 lg:pb-32">
+<section id="cd-hero" class="relative font-sans bg-[#f7faff] overflow-hidden mt-0 mx-0 mb-4 sm:mt-0 sm:mx-6 sm:mb-6 rounded-t-none rounded-b-[2rem] lg:m-0 lg:rounded-none pt-8 pb-12 md:pt-12 md:pb-24 lg:pt-28 lg:pb-32">
     <!-- Desktop Background Banner (Right Aligned High-Res 3D Graphic) -->
     <div class="absolute inset-0 z-0 hidden lg:block overflow-hidden pointer-events-none" style="position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0;">
         <img src="<?= e($heroBgImage) ?>" alt="Creative & Design Background" 
@@ -711,9 +1300,9 @@ $ctaImage    = asset_url('images/bg-cta.jpg');
                 <!-- Subtitle & Description -->
                 <?php
                 if (getCurrentLang() === 'th') {
-                    $cd_mobile_desc = "ออกแบบอัตลักษณ์แบรนด์ สื่อการตลาด และดิจิทัล<br>มีเดียที่โดดเด่น สื่อสารตัวตนของแบรนด์ได้อย่างชัดเจน<br>สร้างความประทับใจตั้งแต่แรกเห็น";
+                    $cd_mobile_desc = "ออกแบบอัตลักษณ์แบรนด์ สื่อการตลาด<br>และดิจิทัลมีเดียที่โดดเด่น สื่อสารตัวตนชัดเจน<br>สร้างความประทับใจตั้งแต่แรกเห็น";
                 } else {
-                    $cd_mobile_desc = "Design distinctive brand identities, marketing collateral,<br>and digital media that articulate your brand character<br>and inspire lasting impressions.";
+                    $cd_mobile_desc = "Design distinctive brand identities,<br>marketing collateral, and digital media<br>that inspire lasting impressions.";
                 }
                 ?>
                 <p class="animate-entrance-up delay-300 mt-6 text-[#022862] text-base md:text-lg lg:text-xl leading-relaxed max-w-2xl mb-10 font-bold md:font-semibold cd-hero-p">
@@ -722,10 +1311,12 @@ $ctaImage    = asset_url('images/bg-cta.jpg');
                     </span>
                     <span class="hidden md:block leading-relaxed">
                         <?php if (getCurrentLang() === 'th'): ?>
-                            <span class="inline-block whitespace-nowrap">ออกแบบอัตลักษณ์แบรนด์ สื่อการตลาด และดิจิทัลมีเดียที่โดดเด่น</span><br class="hidden md:inline">
-                            <span class="inline-block whitespace-nowrap">สื่อสารตัวตนของแบรนด์ได้อย่างชัดเจน สร้างความประทับใจตั้งแต่แรกเห็น</span>
+                            <span class="inline-block md:whitespace-nowrap">ออกแบบอัตลักษณ์แบรนด์ สื่อการตลาด และดิจิทัลมีเดียที่โดดเด่น</span><br class="hidden md:inline">
+                            <span class="inline-block md:whitespace-nowrap">สื่อสารตัวตนของแบรนด์ได้อย่างชัดเจน สร้างความประทับใจตั้งแต่แรกเห็น</span>
                         <?php else: ?>
-                            Design distinctive brand identities, marketing collateral, and digital media that articulate your brand character and inspire lasting impressions.
+                            <span class="inline-block md:whitespace-nowrap">Design distinctive brand identities, marketing collateral,</span><br class="hidden md:inline">
+                            <span class="inline-block md:whitespace-nowrap">and digital media that articulate your brand character</span><br class="hidden md:inline">
+                            <span class="inline-block">and inspire lasting impressions.</span>
                         <?php endif; ?>
                     </span>
                 </p>
@@ -768,9 +1359,9 @@ $ctaImage    = asset_url('images/bg-cta.jpg');
                     <div class="w-14 h-[3.5px] bg-[#0663F6] mt-1.5 mb-4"></div>
                 </div>
                 <h2 class="text-[#043B94] text-xl lg:text-2xl font-bold leading-tight mb-4">
-                    <?= getCurrentLang() === 'th' ? 'งานออกแบบสร้างสรรค์ คืออะไร' : 'What is Creative / Design' ?>
+                    <?= getCurrentLang() === 'th' ? '<span class="inline-block whitespace-nowrap">งานออกแบบสร้างสรรค์</span> <span class="inline-block whitespace-nowrap">คืออะไร</span>' : 'What is Creative / Design' ?>
                 </h2>
-                <p class="text-slate-600 text-xs sm:text-sm lg:text-[14.5px] leading-relaxed max-w-md">
+                <p class="text-slate-600 text-xs sm:text-sm lg:text-[14.5px] leading-relaxed max-w-none w-full">
                     <?php if (getCurrentLang() === 'th'): ?>
                         การออกแบบและสร้างสรรค์อัตลักษณ์ของแบรนด์ รวมถึงสื่อดิจิทัลทุกรูปแบบ เพื่อให้ธุรกิจของคุณสื่อสารกับกลุ่มเป้าหมายได้อย่างทรงพลังและน่าจดจำ
                     <?php else: ?>
@@ -795,7 +1386,7 @@ $ctaImage    = asset_url('images/bg-cta.jpg');
                         </svg>
                     </div>
                     <h3 class="text-[#043B94] font-bold text-base lg:text-lg mb-1.5 leading-snug">
-                        <?= getCurrentLang() === 'th' ? 'สร้างความน่าเชื่อถือ' : 'Build Brand Credibility' ?>
+                        <?= getCurrentLang() === 'th' ? '<span class="inline-block whitespace-nowrap">สร้าง</span><wbr><span class="inline-block whitespace-nowrap">ความน่าเชื่อถือ</span>' : 'Build Brand Credibility' ?>
                     </h3>
                     <p class="text-slate-500 text-xs sm:text-[13px] leading-relaxed">
                         <?= getCurrentLang() === 'th' ? 'อัตลักษณ์แบรนด์ที่โดดเด่น<br>น่าเชื่อถือ และจดจำง่าย' : 'Distinctive, credible, and memorable brand identity.' ?>
@@ -813,7 +1404,7 @@ $ctaImage    = asset_url('images/bg-cta.jpg');
                         </svg>
                     </div>
                     <h3 class="text-[#043B94] font-bold text-base lg:text-lg mb-1.5 leading-snug">
-                        <?= getCurrentLang() === 'th' ? 'ออกแบบตรงกลุ่มเป้าหมาย' : 'Audience-Centric Design' ?>
+                        <?= getCurrentLang() === 'th' ? '<span class="inline-block whitespace-nowrap">ออกแบบตรงกลุ่ม</span><wbr><span class="inline-block whitespace-nowrap">เป้าหมาย</span>' : 'Audience-Centric Design' ?>
                     </h3>
                     <p class="text-slate-500 text-xs sm:text-[13px] leading-relaxed">
                         <?= getCurrentLang() === 'th' ? 'ดีไซน์ที่ตอบโจทย์<br>เข้าถึงผู้บริโภคยุคใหม่' : 'Tailored designs connecting seamlessly with modern consumers.' ?>
@@ -831,7 +1422,7 @@ $ctaImage    = asset_url('images/bg-cta.jpg');
                         </svg>
                     </div>
                     <h3 class="text-[#043B94] font-bold text-base lg:text-lg mb-1.5 leading-snug">
-                        <?= getCurrentLang() === 'th' ? 'ยกระดับภาพลักษณ์ธุรกิจ' : 'Elevate Corporate Image' ?>
+                        <?= getCurrentLang() === 'th' ? '<span class="inline-block whitespace-nowrap">ยกระดับ</span><wbr><span class="inline-block whitespace-nowrap">ภาพลักษณ์ธุรกิจ</span>' : 'Elevate Corporate Image' ?>
                     </h3>
                     <p class="text-slate-500 text-xs sm:text-[13px] leading-relaxed">
                         <?= getCurrentLang() === 'th' ? 'เพิ่มมูลค่าแบรนด์<br>ผ่านงานดีไซน์ระดับสากล' : 'Increase brand equity through international-standard design.' ?>
@@ -849,7 +1440,7 @@ $ctaImage    = asset_url('images/bg-cta.jpg');
                         </svg>
                     </div>
                     <h3 class="text-[#043B94] font-bold text-base lg:text-lg mb-1.5 leading-snug">
-                        <?= getCurrentLang() === 'th' ? 'ใช้งานได้หลากหลายมิติ' : 'Omni-Channel Versatility' ?>
+                        <?= getCurrentLang() === 'th' ? '<span class="inline-block whitespace-nowrap">ใช้งานได้</span><wbr><span class="inline-block whitespace-nowrap">หลากหลายมิติ</span>' : 'Omni-Channel Versatility' ?>
                     </h3>
                     <p class="text-slate-500 text-xs sm:text-[13px] leading-relaxed">
                         <?= getCurrentLang() === 'th' ? 'ใช้งานได้จริงทั้ง<br>สื่อออฟไลน์และออนไลน์' : 'Practical application across both offline and digital touchpoints.' ?>
@@ -867,10 +1458,10 @@ $ctaImage    = asset_url('images/bg-cta.jpg');
 =========================================== -->
 <section id="cd-solutions" class="bg-white pt-8 lg:pt-14 pb-12 lg:pb-20 font-sans cd-solutions-section">
     <div class="mx-auto w-full max-w-[1720px] px-4 sm:px-6 lg:px-10">
-        <div class="lg:ml-12 ipad-pro-ml-0 xl:ml-24 lg:mr-12 xl:mr-24">
+        <div class="lg:ml-12 ipad-pro-ml-0 xl:ml-24 lg:mr-12 xl:mr-24 cd-solutions-wrapper">
             
             <!-- Header -->
-            <div class="text-center max-w-3xl mx-auto mb-10 lg:mb-12">
+            <div class="text-center max-w-4xl mx-auto mb-10 lg:mb-12">
                 <div class="inline-flex flex-col items-start mb-2">
                     <span class="text-[#0663F6] font-extrabold text-2xl sm:text-3xl tracking-tight uppercase">
                         <?= getCurrentLang() === 'th' ? 'โซลูชันงานออกแบบสร้างสรรค์' : 'CREATIVE / DESIGN SOLUTIONS' ?>
@@ -983,7 +1574,7 @@ $ctaImage    = asset_url('images/bg-cta.jpg');
                     <div class="bg-white rounded-xl border border-slate-200/80 p-4 sm:p-5 flex flex-col justify-between shadow-sm hover:shadow-md hover:border-blue-300 transition-all duration-300 group cd-solution-card">
                         <div>
                             <!-- Title -->
-                            <h3 class="text-[#043B94] font-bold text-[13px] sm:text-sm tracking-tight mb-3 group-hover:text-[#0663F6] transition-colors line-clamp-1">
+                            <h3 class="text-[#043B94] font-bold text-[13px] sm:text-sm tracking-tight mb-3 group-hover:text-[#0663F6] transition-colors cd-solution-title">
                                 <?= e($sol['title']) ?>
                             </h3>
 
@@ -1148,13 +1739,12 @@ $ctaImage    = asset_url('images/bg-cta.jpg');
             <!-- 4 Mockup Showcase Cards Grid -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 cd-showcase-grid">
                 <?php foreach ($showcases as $item): ?>
-                    <div class="cd-port-card block bg-white rounded-2xl overflow-hidden border border-slate-100 shadow-sm hover:border-blue-200 group cursor-pointer" onclick="window.location.href='<?= e(route_url('/portfolio')) ?>'">
+                    <div class="cd-port-card block bg-white rounded-2xl overflow-hidden border border-slate-100 shadow-sm group cursor-default">
                         <!-- Monitor / Device Frame -->
                         <div class="p-3 bg-slate-50 border-b border-slate-100 flex items-center gap-1.5">
                             <span class="w-2.5 h-2.5 rounded-full bg-red-400"></span>
                             <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
                             <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
-                            <span class="text-[11px] text-slate-400 font-mono ml-2 truncate">webpark.co.th/case/<?= strtolower(str_replace(' ', '-', $item['title'])) ?></span>
                         </div>
                         <div class="h-48 overflow-hidden bg-slate-50 relative flex items-center justify-center">
                             <img src="<?= e($item['image']) ?>" alt="<?= e($item['title']) ?>" class="w-full h-full object-cover object-top transition-transform duration-700 ease-out group-hover:scale-105" onerror="this.src='<?= e(asset_url('images/erp.png')) ?>';">

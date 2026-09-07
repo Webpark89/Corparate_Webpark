@@ -190,6 +190,15 @@ $erpPortfolios = $mockErpPortfolios;
             scroll-behavior: auto !important;
         }
     }
+
+    @media (max-width: 767px) {
+        .mobile-erp-hero-h1,
+        .desktop-erp-hero-h1 {
+            font-size: 2.45rem !important;
+            line-height: 1.15 !important;
+            font-weight: 900 !important;
+        }
+    }
     @media (min-width: 1025px) {
         .erp-hero-left-col {
             margin-left: 3rem !important;
@@ -309,10 +318,10 @@ $erpPortfolios = $mockErpPortfolios;
                 <!-- Mobile Only Hero Content -->
                 <div class="block md:hidden">
                     <h1 class="animate-fade-up delay-200 leading-[1.1] mb-2 tracking-tighter">
-                        <span class="text-5xl font-extrabold bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block pb-0 pt-2">
+                        <span class="text-5xl font-extrabold bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block pb-0 pt-2 mobile-erp-hero-h1">
                             <?= getCurrentLang() === 'th' ? 'ระบบ' : 'ERP' ?>
                         </span>
-                        <span class="text-5xl font-extrabold bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block pb-0 pt-2 ml-1">
+                        <span class="text-5xl font-extrabold bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block pb-0 pt-2 ml-1 mobile-erp-hero-h1">
                             <?= getCurrentLang() === 'th' ? 'ERP' : 'Systems' ?>
                         </span><br>
 
@@ -490,16 +499,22 @@ $erpPortfolios = $mockErpPortfolios;
 
     /* iPad Portrait (760px - 834px) Font Scaling & Layout */
     @media (min-width: 760px) and (max-width: 834px) {
+        .erp-hero-container {
+            padding-top: 5.5rem !important;
+            padding-bottom: 6rem !important;
+        }
         .erp-hero-left-col {
             max-width: 68% !important;
             margin-left: 0 !important;
+            padding-top: 1.5rem !important;
         }
         .erp-hero-left-col nav {
-            margin-bottom: 1.5rem !important;
+            margin-bottom: 1.25rem !important;
         }
         .ipad-pro-erp-hero-h1 {
             font-size: 3.75rem !important;
             line-height: 1.15 !important;
+            margin-bottom: 0 !important;
         }
         .desktop-erp-hero-p {
             font-size: 1.2rem !important;
@@ -507,7 +522,7 @@ $erpPortfolios = $mockErpPortfolios;
             font-weight: 600 !important;
             color: #0b1b42 !important;
             max-width: 32rem !important;
-            margin-top: 1.5rem !important;
+            margin-top: 0.75rem !important;
             margin-bottom: 2rem !important;
         }
         .erp-hero-btn-container {

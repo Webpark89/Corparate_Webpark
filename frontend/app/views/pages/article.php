@@ -97,18 +97,26 @@ $ctaImage = asset_url('images/bg-cta.jpg');
     }
 </style>
 
-<!-- นำขอบโค้งและ margin ออก เพื่อให้ชิดขอบจอด้านบนและด้านข้างแบบ Edge-to-Edge -->
-<section id="article-hero" class="relative overflow-hidden font-sans bg-white border-none">
-    <div class="absolute inset-0 z-0">
+<section id="article-hero" class="relative font-sans bg-[#f7faff] overflow-hidden mt-0 mx-0 mb-4 sm:mt-0 sm:mx-6 sm:mb-6 rounded-t-none rounded-b-[2rem] lg:m-0 lg:rounded-none">
+    <!-- Desktop Background Image -->
+    <div class="absolute inset-0 z-0 hidden lg:block overflow-hidden pointer-events-none">
         <img src="<?= e($heroImage) ?>" alt="WEBPARK Solutions Background" 
-            class="w-full h-full object-cover hero-bg-img opacity-100">
-            
-        <div class="absolute inset-0 hero-overlay-mobile"></div>
-        <div class="absolute inset-0 hero-overlay-gradient"></div>
-        <div class="absolute inset-x-0 bottom-0 h-[30%] bg-gradient-to-t from-white/50 to-transparent z-10"></div>
+            class="w-full h-full object-cover object-[right_center] hero-bg-img opacity-100"
+            style="filter: contrast(1.12) saturate(1.30) brightness(1.02);">
+        <div class="absolute inset-0 bg-gradient-to-r from-[#f7faff] via-[#f7faff]/65 to-transparent"></div>
+        <div class="absolute inset-x-0 bottom-0 h-[25%] bg-gradient-to-t from-white to-transparent z-10"></div>
     </div>
 
-    <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8 pt-12 pb-24 lg:pt-28 lg:pb-32 relative z-10 desktop-wide-container-article">
+    <!-- Mobile / Tablet Background Image -->
+    <div class="absolute inset-0 z-0 lg:hidden overflow-hidden pointer-events-none">
+        <img src="<?= e($heroImage) ?>" alt="WEBPARK Solutions Background" 
+            class="w-full h-full object-cover object-[75%_center] md:object-[right_center] opacity-85"
+            style="filter: contrast(1.12) saturate(1.25) brightness(1.02);">
+        <div class="absolute inset-0 bg-gradient-to-r from-white/95 via-white/85 to-white/40 md:from-white/95 md:via-white/70 md:to-transparent"></div>
+        <div class="absolute inset-x-0 bottom-0 h-[25%] bg-gradient-to-t from-[#f7faff] to-transparent"></div>
+    </div>
+
+    <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 pt-12 pb-24 lg:pt-28 lg:pb-32 relative z-10 desktop-wide-container-article">
         <div class="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-12 lg:gap-20 items-center relative z-10">
             
             <div class="max-w-3xl lg:max-w-none text-left mx-0 lg:ml-12 xl:ml-24 article-hero-left-col">
@@ -141,19 +149,24 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                     /* Mobile (max-width: 759px) */
                     @media (max-width: 759px) {
                         .desktop-article-hero-h1 {
-                            font-size: 2.75rem !important;
-                            line-height: 1.2 !important;
+                            font-size: 2.45rem !important;
+                            line-height: 1.15 !important;
                             font-weight: 900 !important;
                         }
                     }
                     /* iPad (760px - 834px) Portrait */
                     @media (min-width: 760px) and (max-width: 834px) {
+                        #article-hero .desktop-wide-container-article {
+                            padding-top: 5.5rem !important;
+                            padding-bottom: 6rem !important;
+                        }
                         .article-hero-left-col {
-                            max-width: 65% !important;
+                            max-width: 68% !important;
                             margin-left: 0 !important;
+                            padding-top: 1.5rem !important;
                         }
                         .article-hero-left-col nav {
-                            margin-bottom: 1.5rem !important;
+                            margin-bottom: 1.25rem !important;
                         }
                         .hero-title-text,
                         .desktop-article-hero-h1 {
@@ -161,6 +174,7 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                             font-weight: 900 !important;
                             line-height: 1.15 !important;
                             margin-top: 0px !important;
+                            margin-bottom: 0px !important;
                             padding-top: 0px !important;
                             padding-bottom: 0px !important;
                         }
@@ -171,7 +185,7 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                             font-weight: 600 !important;
                             color: #0b1b42 !important;
                             max-width: 32rem !important;
-                            margin-top: 1.5rem !important;
+                            margin-top: 0.75rem !important;
                             margin-bottom: 2rem !important;
                         }
                     }

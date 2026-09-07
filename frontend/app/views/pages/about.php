@@ -65,6 +65,13 @@ $contactAddress = $company['contact']['address'] ?? t('footer.office_address');
         transform: none !important;
         will-change: transform;
     }
+    @media (max-width: 767px) {
+        .desktop-about-hero-h1 {
+            font-size: 2.45rem !important;
+            line-height: 1.15 !important;
+            font-weight: 900 !important;
+        }
+    }
     @media (min-width: 1025px) {
         .desktop-about-hero-col,
         .about-hero-left-col {
@@ -288,7 +295,7 @@ $contactAddress = $company['contact']['address'] ?? t('footer.office_address');
         }
         .desktop-about-hero-col,
         .about-hero-left-col {
-            margin-left: 0 !important;
+            margin-left: 2rem !important;
             max-width: 68% !important;
             padding-top: 1.5rem !important;
         }
@@ -516,10 +523,10 @@ $contactAddress = $company['contact']['address'] ?? t('footer.office_address');
             margin-left: 6rem !important;
         }
     }
-    @media (min-width: 760px) and (max-width: 1024px) and (orientation: portrait) {
+    @media (min-width: 760px) and (max-width: 1100px) and (orientation: portrait) {
         .desktop-about-hero-col,
         .desktop-about-hero-content-wrapper {
-            margin-left: 0 !important;
+            margin-left: 3rem !important;
         }
     }
 

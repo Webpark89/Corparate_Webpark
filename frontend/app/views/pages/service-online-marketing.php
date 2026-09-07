@@ -42,9 +42,24 @@ $heroBgImage = asset_url('images/online-marketing-hero-bg.png');
     /* Mobile (max-width: 759px) */
     @media (max-width: 759px) {
         .om-hero-h1 {
-            font-size: 2.75rem !important;
-            line-height: 1.2 !important;
+            font-size: 2.45rem !important;
+            line-height: 1.15 !important;
             font-weight: 900 !important;
+        }
+        .om-hero-p,
+        .om-hero-p span {
+            font-size: 1.05rem !important;
+            line-height: 1.65 !important;
+            font-weight: 500 !important;
+            color: #1e293b !important;
+        }
+        .om-hero-btn-container {
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            gap: 1rem !important;
+        }
+        .om-hero-btn-container a {
+            width: auto !important;
         }
     }
 
@@ -69,7 +84,7 @@ $heroBgImage = asset_url('images/online-marketing-hero-bg.png');
         width: 100% !important;
         background-color: #ffffff !important;
     }
-    @media (min-width: 1280px) {
+    @media (min-width: 1441px) {
         .om-intro-main-card {
             flex-direction: row !important;
         }
@@ -123,13 +138,18 @@ $heroBgImage = asset_url('images/online-marketing-hero-bg.png');
        =================================================== */
     @media (min-width: 760px) and (max-width: 1024px) and (orientation: portrait) {
         /* Section 1: Hero Section (2-line title, text on left, 3D graphic on right) */
+        #om-hero {
+            padding-top: 4.25rem !important;
+            padding-bottom: 5.5rem !important;
+        }
         .om-hero-container {
-            padding-top: 4.5rem !important;
-            padding-bottom: 5rem !important;
+            padding-top: 0 !important;
+            padding-bottom: 0 !important;
         }
         .om-hero-left-col {
             max-width: 68% !important;
             margin-left: 0 !important;
+            padding-top: 0 !important;
         }
         .om-breadcrumb-nav,
         .om-breadcrumb-list {
@@ -138,7 +158,7 @@ $heroBgImage = asset_url('images/online-marketing-hero-bg.png');
             flex-wrap: nowrap !important;
             white-space: nowrap !important;
             align-items: center !important;
-            margin-bottom: 1.5rem !important;
+            margin-bottom: 1.25rem !important;
         }
         .om-breadcrumb-list li,
         .om-breadcrumb-list a,
@@ -150,14 +170,18 @@ $heroBgImage = asset_url('images/online-marketing-hero-bg.png');
         .om-hero-h1-wrapper {
             flex-direction: column !important;
             align-items: flex-start !important;
-            gap: 0.25rem !important;
+            margin-bottom: 0.5rem !important;
         }
         .om-hero-h1 {
             font-size: 3.75rem !important;
             font-weight: 900 !important;
-            line-height: 1.08 !important;
-            display: block !important;
-            white-space: normal !important;
+            line-height: 1.15 !important;
+            display: inline-block !important;
+            white-space: nowrap !important;
+            padding-top: 0.25rem !important;
+            padding-bottom: 0.25rem !important;
+            margin-top: 0 !important;
+            margin-bottom: 0 !important;
         }
         .om-hero-p {
             font-size: 1.2rem !important;
@@ -165,7 +189,7 @@ $heroBgImage = asset_url('images/online-marketing-hero-bg.png');
             font-weight: 600 !important;
             color: #0b1b42 !important;
             max-width: 32rem !important;
-            margin-top: 1.5rem !important;
+            margin-top: 0.75rem !important;
             margin-bottom: 2rem !important;
         }
         .om-hero-btn-container {
@@ -226,17 +250,28 @@ $heroBgImage = asset_url('images/online-marketing-hero-bg.png');
             height: 3rem !important;
             margin-bottom: 0 !important;
         }
+        .om-intro-card-left h2 {
+            font-size: 1.45rem !important;
+            line-height: 1.35 !important;
+        }
+        .om-intro-card-left p {
+            font-size: 1.05rem !important;
+            line-height: 1.65 !important;
+            max-width: 100% !important;
+            width: 100% !important;
+        }
         .om-intro-pillar-card h3 {
-            font-size: 0.95rem !important;
-            line-height: 1.25 !important;
+            font-size: 1.1rem !important;
+            line-height: 1.3 !important;
             min-height: auto !important;
             display: block !important;
             text-align: center !important;
-            margin-bottom: 0.25rem !important;
+            margin-bottom: 0.35rem !important;
+            font-weight: 700 !important;
         }
         .om-intro-pillar-card p {
-            font-size: 0.75rem !important;
-            line-height: 1.35 !important;
+            font-size: 0.875rem !important;
+            line-height: 1.45 !important;
             text-align: center !important;
             padding-left: 0.2rem !important;
             padding-right: 0.2rem !important;
@@ -248,7 +283,29 @@ $heroBgImage = asset_url('images/online-marketing-hero-bg.png');
             gap: 1.25rem !important;
         }
         .om-solution-card {
-            padding: 1.25rem !important;
+            padding: 1.35rem 1.25rem !important;
+        }
+        .om-solution-card h3 {
+            font-size: 1.15rem !important;
+            line-height: 1.35 !important;
+            margin-bottom: 0.35rem !important;
+            font-weight: 800 !important;
+        }
+        .om-solution-card p {
+            font-size: 0.925rem !important;
+            line-height: 1.5 !important;
+        }
+        .om-solution-card ul {
+            font-size: 0.925rem !important;
+            line-height: 1.55 !important;
+        }
+        .om-solution-card li {
+            font-size: 0.925rem !important;
+            line-height: 1.55 !important;
+        }
+        .om-solution-card li span {
+            font-size: 0.925rem !important;
+            line-height: 1.55 !important;
         }
 
         /* Section 4: Benefits Grid (บน 2, กลาง 2, ล่าง 1 ยาว) */
@@ -265,14 +322,15 @@ $heroBgImage = asset_url('images/online-marketing-hero-bg.png');
             margin-bottom: 0.35rem !important;
         }
         .om-benefits-grid h3 {
-            font-size: 1.05rem !important;
+            font-size: 1.2rem !important;
             min-height: auto !important;
-            line-height: 1.25 !important;
-            margin-bottom: 0.25rem !important;
+            line-height: 1.3 !important;
+            margin-bottom: 0.35rem !important;
+            font-weight: 800 !important;
         }
         .om-benefits-grid p {
-            font-size: 0.825rem !important;
-            line-height: 1.4 !important;
+            font-size: 0.925rem !important;
+            line-height: 1.5 !important;
             margin-top: 0 !important;
         }
 
@@ -302,12 +360,13 @@ $heroBgImage = asset_url('images/online-marketing-hero-bg.png');
             text-align: left !important;
             justify-content: flex-start !important;
             min-height: auto !important;
-            margin-bottom: 0.15rem !important;
-            font-size: 1.15rem !important;
+            margin-bottom: 0.25rem !important;
+            font-size: 1.25rem !important;
+            font-weight: 800 !important;
         }
         .om-benefit-card-last p {
             text-align: left !important;
-            font-size: 0.85rem !important;
+            font-size: 0.95rem !important;
             margin-top: 0 !important;
         }
 
@@ -320,29 +379,51 @@ $heroBgImage = asset_url('images/online-marketing-hero-bg.png');
             border-radius: 1rem !important;
         }
         .om-showcase-grid h3 {
-            font-size: 0.9rem !important;
+            font-size: 1.05rem !important;
         }
         .om-showcase-grid p {
-            font-size: 0.75rem !important;
+            font-size: 0.85rem !important;
         }
         .om-showcase-grid span {
-            font-size: 0.7rem !important;
+            font-size: 0.8rem !important;
         }
     }
 
     /* iPad Portrait (760px - 834px) Specific Fine-tuning */
     @media (min-width: 760px) and (max-width: 834px) and (orientation: portrait) {
+        .om-hero-h1-wrapper {
+            margin-bottom: 0.5rem !important;
+        }
         .om-hero-h1 {
             font-size: 3.75rem !important;
+            line-height: 1.15 !important;
+            padding-top: 0.25rem !important;
+            padding-bottom: 0.25rem !important;
+            margin-top: 0 !important;
+            margin-bottom: 0 !important;
         }
         .om-hero-left-col {
             max-width: 68% !important;
         }
+        .om-hero-p {
+            font-size: 1.2rem !important;
+            line-height: 1.85 !important;
+            font-weight: 600 !important;
+            color: #0b1b42 !important;
+            max-width: 32rem !important;
+            margin-top: 0.75rem !important;
+            margin-bottom: 2rem !important;
+        }
+        .om-hero-btn-container {
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            gap: 0.85rem !important;
+        }
         .om-benefits-grid h3 {
-            font-size: 1.05rem !important;
+            font-size: 1.2rem !important;
         }
         .om-benefits-grid p {
-            font-size: 0.85rem !important;
+            font-size: 0.925rem !important;
         }
         .om-benefit-card-last h3 br,
         .om-benefit-card-last p br {
@@ -357,17 +438,37 @@ $heroBgImage = asset_url('images/online-marketing-hero-bg.png');
             white-space: nowrap !important;
         }
         .om-showcase-grid h3 {
-            font-size: 0.825rem !important;
+            font-size: 1.05rem !important;
         }
     }
 
-    /* iPad Pro Portrait (821px - 1100px) Specific Fine-tuning */
-    @media (min-width: 821px) and (max-width: 1100px) and (orientation: portrait) {
+    /* iPad Pro Portrait (835px - 1100px) Specific Fine-tuning */
+    @media (min-width: 835px) and (max-width: 1100px) and (orientation: portrait) {
+        .om-hero-h1-wrapper {
+            margin-bottom: 0.5rem !important;
+        }
         .om-hero-h1 {
-            font-size: 4rem !important;
+            font-size: 4.25rem !important;
+            line-height: 1.15 !important;
+            padding-top: 0.25rem !important;
+            padding-bottom: 0.25rem !important;
         }
         .om-hero-left-col {
-            max-width: 55% !important;
+            max-width: 75% !important;
+        }
+        .om-hero-p {
+            font-size: 1.35rem !important;
+            line-height: 1.9 !important;
+            font-weight: 600 !important;
+            color: #0b1b42 !important;
+            max-width: 35rem !important;
+            margin-top: 0.75rem !important;
+            margin-bottom: 2rem !important;
+        }
+        .om-hero-btn-container {
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            gap: 0.85rem !important;
         }
         /* Single line text for Benefits cards on iPad Pro Portrait */
         .om-benefits-grid h3 br,
@@ -375,43 +476,108 @@ $heroBgImage = asset_url('images/online-marketing-hero-bg.png');
             display: none !important;
         }
         .om-benefits-grid h3 {
-            font-size: 1.1rem !important;
+            font-size: 1.45rem !important;
             white-space: normal !important;
             min-height: auto !important;
-            margin-bottom: 0.25rem !important;
+            margin-bottom: 0.35rem !important;
+            font-weight: 800 !important;
+            color: #043B94 !important;
         }
         .om-benefits-grid p {
-            font-size: 0.85rem !important;
+            font-size: 1.15rem !important;
             white-space: normal !important;
             margin-top: 0 !important;
+            line-height: 1.6 !important;
+            color: #334155 !important;
+            font-weight: 500 !important;
+        }
+        .om-benefit-card-last h3 {
+            font-size: 1.55rem !important;
+            font-weight: 800 !important;
+            color: #043B94 !important;
+        }
+        .om-benefit-card-last p {
+            font-size: 1.15rem !important;
+            line-height: 1.6 !important;
+            color: #334155 !important;
+            font-weight: 500 !important;
         }
         .om-showcase-grid h3 {
+            font-size: 1.25rem !important;
+            font-weight: 700 !important;
+        }
+        .om-showcase-grid p {
+            font-size: 1.05rem !important;
+            line-height: 1.5 !important;
+            color: #334155 !important;
+            font-weight: 500 !important;
+        }
+        .om-showcase-grid span {
             font-size: 0.95rem !important;
         }
+        .om-intro-card-left span {
+            font-size: 2rem !important;
+        }
+        .om-intro-card-left h2 {
+            font-size: 1.85rem !important;
+            line-height: 1.35 !important;
+            font-weight: 800 !important;
+            margin-bottom: 0.75rem !important;
+        }
+        .om-intro-card-left p {
+            font-size: 1.25rem !important;
+            line-height: 1.75 !important;
+            font-weight: 500 !important;
+            max-width: 100% !important;
+            width: 100% !important;
+            color: #334155 !important;
+        }
+        .om-intro-ipadpro-br {
+            display: inline !important;
+        }
         .om-intro-pillar-card {
-            padding: 1.25rem 0.35rem !important;
+            padding: 1.5rem 0.5rem !important;
             justify-content: flex-start !important;
         }
         .om-intro-pillar-card > div:first-child {
             width: auto !important;
             height: auto !important;
             min-height: 0 !important;
-            margin-bottom: 0.35rem !important;
+            margin-bottom: 0.5rem !important;
         }
         .om-intro-pillar-card svg {
-            width: 3.25rem !important;
-            height: 3.25rem !important;
+            width: 3.75rem !important;
+            height: 3.75rem !important;
             margin-bottom: 0 !important;
         }
         .om-intro-pillar-card h3 {
-            font-size: 1rem !important;
-            line-height: 1.25 !important;
+            font-size: 1.3rem !important;
+            line-height: 1.35 !important;
             min-height: auto !important;
-            margin-bottom: 0.25rem !important;
+            margin-bottom: 0.35rem !important;
+            font-weight: 800 !important;
+            color: #043B94 !important;
         }
         .om-intro-pillar-card p {
-            font-size: 0.825rem !important;
-            line-height: 1.35 !important;
+            font-size: 1.05rem !important;
+            line-height: 1.55 !important;
+            color: #334155 !important;
+            font-weight: 500 !important;
+        }
+        .om-solution-card h3 {
+            font-size: 1.35rem !important;
+            font-weight: 800 !important;
+            margin-bottom: 0.35rem !important;
+        }
+        .om-solution-card p {
+            font-size: 1.05rem !important;
+            line-height: 1.55 !important;
+        }
+        .om-solution-card ul,
+        .om-solution-card li,
+        .om-solution-card li span {
+            font-size: 1.05rem !important;
+            line-height: 1.6 !important;
         }
     }
 
@@ -506,81 +672,483 @@ $heroBgImage = asset_url('images/online-marketing-hero-bg.png');
     }
 
     @media (max-width: 640px) {
+        /* Section 2 Intro */
+        .om-intro-card-left {
+            padding: 1.75rem 1.25rem !important;
+        }
+        .om-intro-card-left span {
+            font-size: 1.6rem !important;
+        }
+        .om-intro-card-left h2 {
+            font-size: 1.3rem !important;
+            line-height: 1.35 !important;
+            margin-bottom: 0.5rem !important;
+        }
+        .om-intro-card-left p {
+            font-size: 0.95rem !important;
+            line-height: 1.65 !important;
+            color: #475569 !important;
+        }
+        .om-intro-pillar-card {
+            padding: 1.5rem 1rem !important;
+        }
+        .om-intro-pillar-card h3 {
+            font-size: 1.05rem !important;
+            line-height: 1.35 !important;
+            font-weight: 800 !important;
+            margin-bottom: 0.35rem !important;
+        }
+        .om-intro-pillar-card p {
+            font-size: 0.875rem !important;
+            line-height: 1.55 !important;
+            color: #64748b !important;
+        }
+
+        /* Section 3 Solutions */
+        #om-solutions .inline-flex span {
+            font-size: 1.6rem !important;
+        }
+        #om-solutions h2 {
+            font-size: 1.2rem !important;
+            line-height: 1.4 !important;
+        }
+        .om-solution-card h3 {
+            font-size: 1.1rem !important;
+            font-weight: 800 !important;
+        }
+        .om-solution-card ul,
+        .om-solution-card li,
+        .om-solution-card li span {
+            font-size: 0.875rem !important;
+            line-height: 1.5 !important;
+        }
+
+        /* Section 4 Benefits */
+        #om-benefits .inline-flex span {
+            font-size: 1.6rem !important;
+        }
+        #om-benefits h2 {
+            font-size: 1.2rem !important;
+            line-height: 1.4 !important;
+        }
         .om-benefits-grid {
-            gap: 0.5rem !important;
+            gap: 0.75rem !important;
         }
         .om-benefits-grid > div {
-            padding: 1.25rem 0.35rem !important;
+            padding: 1.25rem 0.75rem !important;
+            border-radius: 1rem !important;
         }
         .om-benefits-grid svg {
-            width: 2.5rem !important;
-            height: 2.5rem !important;
+            width: 2.75rem !important;
+            height: 2.75rem !important;
             margin-bottom: 0.4rem !important;
         }
         .om-benefits-grid h3 {
-            font-size: clamp(0.65rem, 2.6vw, 0.85rem) !important;
-            white-space: nowrap !important;
-            letter-spacing: -0.01em !important;
+            font-size: 0.95rem !important;
+            font-weight: 800 !important;
+            line-height: 1.3 !important;
+            white-space: normal !important;
+            margin-bottom: 0.35rem !important;
+            min-height: auto !important;
         }
         .om-benefits-grid p {
-            font-size: 0.62rem !important;
-            white-space: normal !important;
-            line-height: 1.3 !important;
+            font-size: 0.8rem !important;
+            line-height: 1.45 !important;
+            color: #475569 !important;
         }
         .om-benefits-grid > div.om-benefit-card-last {
-            gap: 0.75rem !important;
-            padding: 1rem 0.75rem !important;
+            padding: 1.25rem 1rem !important;
+            gap: 1rem !important;
+        }
+        .om-benefits-grid > div.om-benefit-card-last h3 {
+            font-size: 1.05rem !important;
+            text-align: left !important;
         }
         .om-benefits-grid > div.om-benefit-card-last p {
-            white-space: normal !important;
+            font-size: 0.825rem !important;
+            text-align: left !important;
+        }
+
+        /* Section 5 Showcase */
+        #om-showcase .inline-flex span {
+            font-size: 1.6rem !important;
+        }
+        #om-showcase h2 {
+            font-size: 1.2rem !important;
+            line-height: 1.4 !important;
+        }
+        .om-showcase-grid h3 {
+            font-size: 1.1rem !important;
+        }
+        .om-showcase-grid p {
+            font-size: 0.875rem !important;
+            line-height: 1.5 !important;
+        }
+        .om-showcase-grid span {
+            font-size: 0.75rem !important;
         }
     }
 
-    @media (min-width: 1024px) and (max-width: 1280px) {
+    /* iPad Pro Landscape & Tablet Landscape (1024px - 1440px) */
+    @media (min-width: 1024px) and (max-width: 1440px) {
+        /* Section 1 Hero */
+        .om-hero-h1 {
+            font-size: 4rem !important;
+            line-height: 1.15 !important;
+        }
+        .om-hero-p,
+        .om-hero-p span {
+            font-size: 1.3rem !important;
+            line-height: 1.85 !important;
+            font-weight: 600 !important;
+        }
+
+        /* Section 2 Intro */
+        .om-intro-main-card {
+            flex-direction: column !important;
+        }
+        .om-intro-card-left {
+            width: 100% !important;
+            border-bottom: 1px solid #e2e8f0 !important;
+            border-right: none !important;
+            padding: 2.5rem 3rem !important;
+        }
+        .om-intro-right-grid {
+            display: grid !important;
+            grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+            width: 100% !important;
+        }
+        .om-intro-card-left span {
+            font-size: 2.25rem !important;
+        }
+        .om-intro-card-left h2 {
+            font-size: 1.85rem !important;
+            line-height: 1.35 !important;
+            font-weight: 800 !important;
+        }
+        .om-intro-card-left p {
+            font-size: 1.2rem !important;
+            line-height: 1.8 !important;
+            font-weight: 500 !important;
+            color: #334155 !important;
+            max-width: 100% !important;
+            width: 100% !important;
+        }
+        .om-intro-pillar-card {
+            padding: 1.6rem 0.5rem !important;
+        }
+        .om-intro-pillar-card svg {
+            width: 3.75rem !important;
+            height: 3.75rem !important;
+        }
+        .om-intro-pillar-card h3,
+        .om-intro-pillar-card h3 span {
+            font-size: 1.2rem !important;
+            line-height: 1.35 !important;
+            font-weight: 800 !important;
+            margin-bottom: 0.4rem !important;
+            color: #043B94 !important;
+        }
+        .om-intro-pillar-card p {
+            font-size: 1.02rem !important;
+            line-height: 1.6 !important;
+            color: #334155 !important;
+            font-weight: 500 !important;
+        }
+
+        /* Section 3 Solutions */
+        #om-solutions .inline-flex span {
+            font-size: 2.25rem !important;
+        }
+        #om-solutions h2 {
+            font-size: 1.45rem !important;
+            line-height: 1.4 !important;
+        }
+        .om-solutions-grid {
+            gap: 1.25rem !important;
+        }
+        .om-solution-card {
+            padding: 2rem 1.75rem !important;
+        }
+        .om-solution-card h3 {
+            font-size: 1.45rem !important;
+            font-weight: 800 !important;
+            line-height: 1.35 !important;
+            margin-bottom: 0.75rem !important;
+        }
+        .om-solution-card p {
+            font-size: 1.15rem !important;
+            line-height: 1.7 !important;
+            color: #334155 !important;
+            font-weight: 500 !important;
+            margin-bottom: 1rem !important;
+        }
+        .om-solution-card ul,
+        .om-solution-card li,
+        .om-solution-card li span {
+            font-size: 1.02rem !important;
+            line-height: 1.65 !important;
+            color: #334155 !important;
+            font-weight: 500 !important;
+        }
+
+        /* Section 4 Benefits */
+        #om-benefits .inline-flex span {
+            font-size: 2.25rem !important;
+        }
+        #om-benefits h2 {
+            font-size: 1.75rem !important;
+        }
         .om-benefits-grid {
             gap: 0.75rem !important;
         }
         .om-benefits-grid > div {
-            padding: 1.5rem 0.65rem !important;
+            padding: 1.75rem 0.65rem !important;
         }
-        .om-benefits-grid h3 {
-            font-size: clamp(0.85rem, 1.05vw, 1rem) !important;
+        .om-benefits-grid h3,
+        .om-benefits-grid h3 span {
+            font-size: 1.2rem !important;
+            font-weight: 800 !important;
             white-space: normal !important;
             word-break: break-word !important;
-            line-height: 1.3 !important;
-            min-height: auto !important;
-            margin-bottom: 0.25rem !important;
+            line-height: 1.35 !important;
+            min-height: 3.25rem !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            text-align: center !important;
+            margin-bottom: 0.4rem !important;
+            color: #043B94 !important;
         }
-        .om-benefits-grid p {
-            font-size: clamp(0.72rem, 0.9vw, 0.82rem) !important;
+        .om-benefits-grid p,
+        .om-benefits-grid p span {
+            font-size: 1rem !important;
             white-space: normal !important;
             word-break: break-word !important;
-            line-height: 1.4 !important;
+            line-height: 1.55 !important;
+            text-align: center !important;
+            color: #334155 !important;
+            font-weight: 500 !important;
             margin-top: 0 !important;
         }
         .om-benefits-grid p br {
             display: inline !important;
         }
+
+        /* Section 5 Showcase */
+        .om-showcase-grid h3 {
+            font-size: 1.35rem !important;
+            font-weight: 800 !important;
+            line-height: 1.35 !important;
+        }
+        .om-showcase-grid p {
+            font-size: 1.1rem !important;
+            line-height: 1.6 !important;
+            color: #334155 !important;
+            font-weight: 500 !important;
+        }
+        .om-showcase-grid span {
+            font-size: 1rem !important;
+        }
     }
 
-    /* iPad Portrait ONLY (All iPads 760px - 1100px Portrait) - Ultra Tight Spacing */
+    /* iPad Mini Landscape (1024px x 768px) */
+    @media (min-width: 900px) and (max-width: 1024px) and (orientation: landscape), (width: 1024px) and (max-height: 800px) {
+        /* Section 2 Intro */
+        .om-intro-main-card {
+            flex-direction: column !important;
+        }
+        .om-intro-card-left {
+            width: 100% !important;
+            border-bottom: 1px solid #e2e8f0 !important;
+            border-right: none !important;
+            padding: 2rem 2.5rem !important;
+        }
+        .om-intro-card-left span {
+            font-size: 1.75rem !important;
+        }
+        .om-intro-card-left h2 {
+            font-size: 1.45rem !important;
+            line-height: 1.35 !important;
+            margin-bottom: 0.5rem !important;
+        }
+        .om-intro-card-left p {
+            font-size: 0.98rem !important;
+            line-height: 1.65 !important;
+            color: #475569 !important;
+            max-width: 100% !important;
+            width: 100% !important;
+        }
+        .om-intro-right-grid {
+            display: grid !important;
+            grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+            width: 100% !important;
+        }
+        .om-intro-pillar-card {
+            padding: 1.5rem 0.75rem !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            text-align: center !important;
+            justify-content: flex-start !important;
+        }
+        .om-intro-pillar-card > div:first-child {
+            height: 3.5rem !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            margin-bottom: 0.65rem !important;
+        }
+        .om-intro-pillar-card svg {
+            width: 3rem !important;
+            height: 3rem !important;
+        }
+        .om-intro-pillar-card h3,
+        .om-intro-pillar-card h3 span {
+            font-size: 0.95rem !important;
+            line-height: 1.35 !important;
+            font-weight: 800 !important;
+            margin-bottom: 0.4rem !important;
+            color: #043B94 !important;
+            min-height: 2.75rem !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            text-align: center !important;
+        }
+        .om-intro-pillar-card p {
+            font-size: 0.825rem !important;
+            line-height: 1.5 !important;
+            color: #475569 !important;
+            font-weight: 500 !important;
+            text-align: center !important;
+        }
+
+        /* Section 4 Benefits - Tighten gap between title & desc */
+        .om-benefits-grid {
+            gap: 0.75rem !important;
+        }
+        .om-benefits-grid > div {
+            padding: 1.25rem 0.85rem !important;
+        }
+        .om-benefits-grid h3,
+        .om-benefits-grid h3 span {
+            font-size: 1.05rem !important;
+            line-height: 1.35 !important;
+            font-weight: 800 !important;
+            min-height: auto !important;
+            display: block !important;
+            text-align: center !important;
+            margin-top: 0.45rem !important;
+            margin-bottom: 0.35rem !important;
+            color: #043B94 !important;
+        }
+        .om-benefits-grid p,
+        .om-benefits-grid p span {
+            font-size: 0.85rem !important;
+            line-height: 1.45 !important;
+            color: #475569 !important;
+            font-weight: 500 !important;
+            text-align: center !important;
+            margin-top: 0 !important;
+        }
+        .om-benefits-grid > div.om-benefit-card-last h3 {
+            margin-top: 0 !important;
+            margin-bottom: 0.25rem !important;
+            text-align: left !important;
+        }
+        .om-benefits-grid > div.om-benefit-card-last p {
+            text-align: left !important;
+        }
+    }
+
+    /* iPad Air & iPad Pro Landscape (1025px - 1440px) 2-2-1 Benefits Layout */
+    @media (min-width: 1025px) and (max-width: 1440px) {
+        .om-benefits-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+            gap: 1.25rem !important;
+            max-width: 1100px !important;
+            margin-left: auto !important;
+            margin-right: auto !important;
+        }
+        .om-benefits-grid > div {
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            text-align: center !important;
+            padding: 1.6rem 1.25rem !important;
+            border-radius: 1.25rem !important;
+        }
+        .om-benefits-grid > div.om-benefit-card-last {
+            grid-column: span 2 / span 2 !important;
+            width: 100% !important;
+            display: flex !important;
+            flex-direction: row !important;
+            align-items: center !important;
+            justify-content: flex-start !important;
+            gap: 1.5rem !important;
+            padding: 1.5rem 2rem !important;
+            text-align: left !important;
+        }
+        .om-benefits-grid > div.om-benefit-card-last .om-benefit-content {
+            align-items: flex-start !important;
+            text-align: left !important;
+        }
+        .om-benefits-grid > div.om-benefit-card-last svg {
+            margin-bottom: 0 !important;
+            flex-shrink: 0 !important;
+        }
+        .om-benefits-grid h3,
+        .om-benefits-grid h3 span {
+            font-size: 1.15rem !important;
+            line-height: 1.35 !important;
+            font-weight: 800 !important;
+            min-height: auto !important;
+            display: block !important;
+            text-align: center !important;
+            margin-top: 0.5rem !important;
+            margin-bottom: 0.35rem !important;
+            color: #043B94 !important;
+            white-space: normal !important;
+        }
+        .om-benefits-grid p,
+        .om-benefits-grid p span {
+            font-size: 0.95rem !important;
+            line-height: 1.55 !important;
+            color: #475569 !important;
+            font-weight: 500 !important;
+            text-align: center !important;
+            margin-top: 0 !important;
+        }
+        .om-benefits-grid > div.om-benefit-card-last h3 {
+            margin-top: 0 !important;
+            margin-bottom: 0.25rem !important;
+            text-align: left !important;
+        }
+        .om-benefits-grid > div.om-benefit-card-last p {
+            text-align: left !important;
+        }
+    }
+
+    /* iPad Portrait (All iPads 760px - 1100px Portrait) - Large, legible benefits text */
     @media (min-width: 760px) and (max-width: 1100px) and (orientation: portrait) {
         .om-benefits-grid {
             grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-            gap: 1rem !important;
+            gap: 1.25rem !important;
         }
         .om-benefits-grid > div {
-            padding: 1.25rem 1rem !important;
+            padding: 1.6rem 1.25rem !important;
             display: flex !important;
             flex-direction: column !important;
             align-items: center !important;
             justify-content: center !important;
             min-height: auto !important;
+            border-radius: 1.25rem !important;
         }
         .om-benefits-grid svg {
-            width: 3.25rem !important;
-            height: 3.25rem !important;
-            margin-bottom: 0.35rem !important;
+            width: 3.5rem !important;
+            height: 3.5rem !important;
+            margin-bottom: 0.5rem !important;
         }
         .om-benefits-grid .om-benefit-content {
             display: flex !important;
@@ -591,20 +1159,24 @@ $heroBgImage = asset_url('images/online-marketing-hero-bg.png');
             gap: 0 !important;
         }
         .om-benefits-grid h3 {
-            font-size: 1.05rem !important;
+            font-size: 1.35rem !important;
+            font-weight: 800 !important;
             min-height: 0 !important;
-            line-height: 1.25 !important;
+            line-height: 1.35 !important;
             margin-top: 0 !important;
-            margin-bottom: 0.2rem !important;
+            margin-bottom: 0.35rem !important;
             display: block !important;
             text-align: center !important;
+            color: #043B94 !important;
         }
         .om-benefits-grid p {
-            font-size: 0.8rem !important;
-            line-height: 1.35 !important;
+            font-size: 1.12rem !important;
+            line-height: 1.6 !important;
             margin-top: 0 !important;
             margin-bottom: 0 !important;
             text-align: center !important;
+            color: #334155 !important;
+            font-weight: 500 !important;
         }
 
         /* Card 5: Full width bottom card */
@@ -615,15 +1187,15 @@ $heroBgImage = asset_url('images/online-marketing-hero-bg.png');
             flex-direction: row !important;
             align-items: center !important;
             justify-content: center !important;
-            gap: 1.25rem !important;
-            padding: 1.25rem 2rem !important;
+            gap: 1.5rem !important;
+            padding: 1.5rem 2.5rem !important;
             text-align: left !important;
         }
         .om-benefit-card-last svg {
             margin-bottom: 0 !important;
             flex-shrink: 0 !important;
-            width: 3.5rem !important;
-            height: 3.5rem !important;
+            width: 3.75rem !important;
+            height: 3.75rem !important;
         }
         .om-benefit-card-last .om-benefit-content {
             align-items: flex-start !important;
@@ -635,14 +1207,19 @@ $heroBgImage = asset_url('images/online-marketing-hero-bg.png');
             text-align: left !important;
             min-height: 0 !important;
             margin-top: 0 !important;
-            margin-bottom: 0.15rem !important;
-            font-size: 1.1rem !important;
+            margin-bottom: 0.25rem !important;
+            font-size: 1.45rem !important;
+            font-weight: 800 !important;
+            color: #043B94 !important;
         }
         .om-benefit-card-last p {
             text-align: left !important;
-            font-size: 0.825rem !important;
+            font-size: 1.12rem !important;
+            line-height: 1.6 !important;
             margin-top: 0 !important;
             margin-bottom: 0 !important;
+            color: #334155 !important;
+            font-weight: 500 !important;
         }
     }
     /* Desktop Left Margin Alignment matching Homepage (.desktop-home-hero-col) */
@@ -661,9 +1238,9 @@ $heroBgImage = asset_url('images/online-marketing-hero-bg.png');
             margin-left: 6rem !important;
         }
     }
-    @media (min-width: 760px) and (max-width: 1024px) and (orientation: portrait) {
+    @media (min-width: 760px) and (max-width: 1100px) and (orientation: portrait) {
         .desktop-service-hero-col {
-            margin-left: 0 !important;
+            margin-left: 2.5rem !important;
         }
     }
 </style>
@@ -671,7 +1248,7 @@ $heroBgImage = asset_url('images/online-marketing-hero-bg.png');
 <!-- ==========================================
      SECTION 1: HERO SECTION
 =========================================== -->
-<section id="om-hero" class="relative font-sans bg-[#f7faff] overflow-hidden pt-8 pb-12 md:pt-12 md:pb-24 lg:pt-28 lg:pb-32">
+<section id="om-hero" class="relative font-sans bg-[#f7faff] overflow-hidden mt-0 mx-0 mb-4 sm:mt-0 sm:mx-6 sm:mb-6 rounded-t-none rounded-b-[2rem] lg:m-0 lg:rounded-none pt-8 pb-12 md:pt-12 md:pb-24 lg:pt-28 lg:pb-32">
     <!-- Desktop Background Banner -->
     <div class="absolute inset-0 z-0 hidden lg:block overflow-hidden pointer-events-none" style="position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0;">
         <img src="<?= e($heroBgImage) ?>" alt="Online Marketing Background" 
@@ -738,9 +1315,9 @@ $heroBgImage = asset_url('images/online-marketing-hero-bg.png');
                 <!-- Hero Subtitle & Description -->
                 <?php
                 if (getCurrentLang() === 'th') {
-                    $om_mobile_desc = "บริการวางแผนและทำการตลาดออนไลน์แบบครบวงจร<br>ที่มุ่งเน้นการเติบโตของธุรกิจ เพิ่มยอดขาย ขยายฐาน<br>ลูกค้า และสร้างการรับรู้แบรนด์อย่างมีประสิทธิภาพ<br>วัดผลได้จริงในทุกขั้นตอน";
+                    $om_mobile_desc = "บริการวางแผนและทำการตลาดออนไลน์ครบวงจร<br>มุ่งเน้นการเติบโตของธุรกิจ เพิ่มยอดขาย<br>ขยายฐานลูกค้า และสร้างผลลัพธ์ที่คุ้มค่า";
                 } else {
-                    $om_mobile_desc = "Comprehensive online marketing strategy and digital<br>campaign management focused on business growth—driving<br>sales, expanding customers, and measurable ROI.";
+                    $om_mobile_desc = "Comprehensive online marketing strategy<br>and digital campaigns focused on driving sales,<br>expanding customers, and delivering ROI.";
                 }
                 ?>
                 <p class="animate-entrance-up delay-300 mt-6 text-[#022862] text-base md:text-lg lg:text-xl leading-relaxed max-w-2xl mb-10 font-bold md:font-semibold om-hero-p">
@@ -749,10 +1326,12 @@ $heroBgImage = asset_url('images/online-marketing-hero-bg.png');
                     </span>
                     <span class="hidden md:block leading-relaxed">
                         <?php if (getCurrentLang() === 'th'): ?>
-                            <span class="inline-block whitespace-nowrap">บริการวางแผนและทำการตลาดออนไลน์แบบครบวงจร ที่มุ่งเน้นการเติบโตของธุรกิจ</span><br class="hidden md:inline">
-                            <span class="inline-block whitespace-nowrap">เพิ่มยอดขาย ขยายฐานลูกค้า และสร้างการรับรู้แบรนด์อย่างมีประสิทธิภาพ วัดผลได้จริงในทุกขั้นตอน</span>
+                            <span class="inline-block md:whitespace-nowrap">บริการวางแผนและทำการตลาดออนไลน์แบบครบวงจร ที่มุ่งเน้นการเติบโตของธุรกิจ</span><br class="hidden md:inline">
+                            <span class="inline-block md:whitespace-nowrap">เพื่อเพิ่มยอดขาย ขยายฐานลูกค้า และสร้างการเติบโตอย่างยั่งยืน</span>
                         <?php else: ?>
-                            Comprehensive online marketing strategy and digital campaign management focused on business growth—driving sales, expanding customer bases, and building impactful brand awareness with measurable ROI.
+                            <span class="inline-block md:whitespace-nowrap">Comprehensive online marketing strategy and digital campaign</span><br class="hidden md:inline">
+                            <span class="inline-block md:whitespace-nowrap">management focused on driving sales, expanding customer bases,</span><br class="hidden md:inline">
+                            <span class="inline-block">and building impactful brand awareness with measurable ROI.</span>
                         <?php endif; ?>
                     </span>
                 </p>
@@ -803,9 +1382,9 @@ $heroBgImage = asset_url('images/online-marketing-hero-bg.png');
                 <h2 class="text-[#043B94] text-xl lg:text-2xl font-bold leading-tight mb-4">
                     <?= getCurrentLang() === 'th' ? 'Online Marketing คืออะไร' : 'What is Online Marketing' ?>
                 </h2>
-                <p class="text-slate-600 text-xs sm:text-sm lg:text-[14.5px] leading-relaxed max-w-md">
+                <p class="text-slate-600 text-xs sm:text-sm lg:text-[14.5px] leading-relaxed max-w-none w-full">
                     <?php if (getCurrentLang() === 'th'): ?>
-                        การทำตลาดบนช่องทางดิจิทัลที่ช่วยให้ธุรกิจเข้าถึงกลุ่มเป้าหมายได้อย่างแม่นยำ เพิ่มโอกาสสร้างยอดขาย และสร้างความได้เปรียบในการแข่งขันอย่างยั่งยืน
+                        การทำตลาดบนช่องทางดิจิทัลที่ช่วยให้ธุรกิจเข้าถึงกลุ่มเป้าหมายได้อย่างแม่นยำ เพิ่มโอกาสสร้างยอดขาย<br class="hidden om-intro-ipadpro-br"> และสร้างความได้เปรียบในการแข่งขันอย่างยั่งยืน
                     <?php else: ?>
                         Digital marketing strategies that empower businesses to reach precise audiences, accelerate revenue growth, and establish a sustainable competitive edge.
                     <?php endif; ?>
@@ -906,11 +1485,11 @@ $heroBgImage = asset_url('images/online-marketing-hero-bg.png');
         <div class="lg:ml-12 ipad-pro-ml-0 xl:ml-24 lg:mr-12 xl:mr-24">
         
         <!-- Section Header -->
-        <div class="text-center mb-8 lg:mb-10">
+        <div class="text-center mb-8 lg:mb-10 max-w-4xl mx-auto">
             <h2 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#0663F6] tracking-tight mb-3">
                 ONLINE MARKETING SOLUTIONS
             </h2>
-            <p class="text-slate-600 text-sm sm:text-base md:text-lg max-w-2xl mx-auto font-medium leading-relaxed">
+            <p class="text-slate-600 text-sm sm:text-base md:text-lg max-w-4xl mx-auto font-medium leading-relaxed">
                 <?= getCurrentLang() === 'th' ? 'โซลูชันการตลาดออนไลน์ครบวงจร ตอบสนองทุกเป้าหมายทางธุรกิจ' : 'Comprehensive digital marketing solutions engineered to fulfill all your business objectives.' ?>
             </p>
         </div>
@@ -1349,13 +1928,12 @@ $heroBgImage = asset_url('images/online-marketing-hero-bg.png');
             <!-- 4 Mockup Showcase Cards Grid (Matching Digital Platform Structure) -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 om-showcase-grid">
                 <?php foreach ($showcases as $item): ?>
-                    <div class="om-port-card block bg-white rounded-2xl overflow-hidden border border-slate-100 shadow-sm hover:border-blue-200 group cursor-pointer" onclick="window.location.href='<?= e(route_url('/portfolio')) ?>'">
+                    <div class="om-port-card block bg-white rounded-2xl overflow-hidden border border-slate-100 shadow-sm group cursor-default">
                         <!-- Monitor / Device Frame -->
                         <div class="p-3 bg-slate-50 border-b border-slate-100 flex items-center gap-1.5">
                             <span class="w-2.5 h-2.5 rounded-full bg-red-400"></span>
                             <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
                             <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
-                            <span class="text-[11px] text-slate-400 font-mono ml-2 truncate">webpark.co.th/case/<?= strtolower(str_replace(' ', '-', $item['title'])) ?></span>
                         </div>
                         <div class="h-48 overflow-hidden bg-slate-50 relative flex items-center justify-center">
                             <img src="<?= e($item['image']) ?>" alt="<?= e($item['title']) ?>" class="w-full h-full object-cover object-top transition-transform duration-700 ease-out group-hover:scale-105" onerror="this.src='<?= e(asset_url('images/erp.png')) ?>';">

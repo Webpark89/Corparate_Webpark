@@ -79,15 +79,28 @@ $recaptchaSiteKey = '6Lcf_pAtAAAAAOVhatPPwrHSYXeb_0J4yXf5BrRO';
                         font-size: 17px;
                         line-height: 1.65;
                     }
+                    /* Mobile (max-width: 759px) */
+                    @media (max-width: 759px) {
+                        .desktop-contact-hero-h1 {
+                            font-size: 2.45rem !important;
+                            line-height: 1.15 !important;
+                            font-weight: 900 !important;
+                        }
+                    }
                     /* iPad (760px - 1366px) All Orientations */
                     /* iPad (760px - 834px) Portrait */
                     @media (min-width: 760px) and (max-width: 834px) {
+                        #contact-hero .desktop-wide-container-contact {
+                            padding-top: 5.5rem !important;
+                            padding-bottom: 6rem !important;
+                        }
                         .contact-hero-left-col {
-                            max-width: 65% !important;
+                            max-width: 68% !important;
                             margin-left: 0 !important;
+                            padding-top: 1.5rem !important;
                         }
                         .contact-hero-left-col nav {
-                            margin-bottom: 1.5rem !important;
+                            margin-bottom: 1.25rem !important;
                         }
                         .hero-title-text,
                         .desktop-contact-hero-h1 {
@@ -95,6 +108,7 @@ $recaptchaSiteKey = '6Lcf_pAtAAAAAOVhatPPwrHSYXeb_0J4yXf5BrRO';
                             font-weight: 900 !important;
                             line-height: 1.15 !important;
                             margin-top: 0px !important;
+                            margin-bottom: 0px !important;
                             padding-top: 0px !important;
                             padding-bottom: 0px !important;
                         }
@@ -105,7 +119,7 @@ $recaptchaSiteKey = '6Lcf_pAtAAAAAOVhatPPwrHSYXeb_0J4yXf5BrRO';
                             font-weight: 600 !important;
                             color: #0b1b42 !important;
                             max-width: 32rem !important;
-                            margin-top: 1.5rem !important;
+                            margin-top: 0.75rem !important;
                             margin-bottom: 2rem !important;
                         }
                         .contact-hero-btn-container {
@@ -368,10 +382,72 @@ $recaptchaSiteKey = '6Lcf_pAtAAAAAOVhatPPwrHSYXeb_0J4yXf5BrRO';
                                     class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-base text-slate-900 outline-none transition-all duration-300 custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary focus:shadow-inner resize-none"><?= e($form['message'] ?? '') ?></textarea>
                             </div>
 
+                            <!-- Fixed PDPA Header Outside Scroll Box -->
+                            <div class="flex items-center justify-between pt-1 mb-1.5 px-1">
+                                <span class="text-xs md:text-sm font-bold text-[#022862]">นโยบายความเป็นส่วนตัว (Privacy Policy)</span>
+                                <span id="contact_pdpa_scroll_hint" class="text-[11px] font-medium text-amber-600 animate-pulse">
+                                    ▼ เลื่อนลงเพื่ออ่านข้อกำหนด
+                                </span>
+                            </div>
+
+                            <!-- Scrollable PDPA / Privacy Policy Box -->
+                            <div id="contact_pdpa_scroll_box" class="w-full max-h-32 md:max-h-36 overflow-y-auto rounded-xl border border-slate-200 bg-slate-50/90 p-3.5 text-xs text-slate-600 leading-relaxed custom-scrollbar text-left select-none transition-all duration-300">
+                                <p class="mb-3 text-slate-600 leading-relaxed">
+                                    WEBPARK Co., Ltd. ("เรา" หรือ "WebPark") ในฐานะผู้ควบคุมข้อมูลส่วนบุคคล (Data Controller) ตระหนักและให้ความสำคัญอย่างยิ่งต่อการคุ้มครองข้อมูลส่วนบุคคลและสิทธิความเป็นส่วนตัวของท่าน นโยบายฉบับนี้จัดทำขึ้นตามพระราชบัญญัติคุ้มครองข้อมูลส่วนบุคคล พ.ศ. 2562 (PDPA) เพื่อชี้แจงรายละเอียดเกี่ยวกับการเก็บรวบรวม ใช้ เปิดเผยข้อมูล และการใช้คุกกี้ บนเว็บไซต์ webpark.co.th ทั้งหมด
+                                </p>
+
+                                <h5 class="font-bold text-slate-800 mt-2.5 mb-1 flex items-center gap-1.5 text-xs">
+                                    <span class="w-4 h-4 rounded-full bg-primary text-white flex items-center justify-center text-[10px] shrink-0 font-bold">1</span> 
+                                    ขอบเขตข้อมูลส่วนบุคคลที่เราเก็บรวบรวม
+                                </h5>
+                                <p class="mb-1 text-slate-600">เราเก็บรวบรวมข้อมูลส่วนบุคคลของท่านผ่านการใช้งานเว็บไซต์ในกรณีต่างๆ เท่าที่จำเป็นดังนี้:</p>
+                                <ul class="list-disc pl-5 mb-2.5 space-y-0.5 text-slate-600">
+                                    <li>ชื่อ-นามสกุล, เบอร์โทรศัพท์, และอีเมล ที่ท่านกรอกผ่านแบบฟอร์มติดต่อเรา</li>
+                                    <li>ข้อมูลองค์กรหรือบริษัทของท่าน (หากมี)</li>
+                                    <li>รายละเอียดข้อความหรือความต้องการที่ท่านส่งถึงเรา</li>
+                                </ul>
+
+                                <h5 class="font-bold text-slate-800 mt-2.5 mb-1 flex items-center gap-1.5 text-xs">
+                                    <span class="w-4 h-4 rounded-full bg-primary text-white flex items-center justify-center text-[10px] shrink-0 font-bold">2</span> 
+                                    วัตถุประสงค์ในการเก็บรวบรวมข้อมูล
+                                </h5>
+                                <p class="mb-2.5 text-slate-600">
+                                    ข้อมูลที่ท่านให้จะถูกนำไปใช้เพื่อติดต่อกลับ นำเสนอบริการที่ตรงกับความต้องการของท่าน และปรับปรุงประสิทธิภาพของเว็บไซต์เท่านั้น เราจะไม่มีการเปิดเผยข้อมูลของท่านแก่บุคคลที่สามโดยไม่ได้รับอนุญาต
+                                </p>
+
+                                <h5 class="font-bold text-slate-800 mt-2.5 mb-1 flex items-center gap-1.5 text-xs">
+                                    <span class="w-4 h-4 rounded-full bg-primary text-white flex items-center justify-center text-[10px] shrink-0 font-bold">3</span> 
+                                    การเปิดเผยข้อมูลแก่บุคคลที่สาม
+                                </h5>
+                                <p class="mb-2.5 text-slate-600">
+                                    เราจะไม่ขาย ให้เช่า หรือเปิดเผยข้อมูลส่วนบุคคลของท่านให้แก่บุคคลภายนอก เว้นแต่กรณีที่จำเป็นเพื่อการให้บริการแก่ท่าน (เช่น ผู้ให้บริการระบบคลาวด์/เซิร์ฟเวอร์ที่ปลอดภัย หรือผู้ให้บริการจัดส่งเอกสาร) หรือในกรณีที่กฎหมายบังคับให้เปิดเผยเท่านั้น
+                                </p>
+
+                                <h5 class="font-bold text-slate-800 mt-2.5 mb-1 flex items-center gap-1.5 text-xs">
+                                    <span class="w-4 h-4 rounded-full bg-primary text-white flex items-center justify-center text-[10px] shrink-0 font-bold">4</span> 
+                                    ระยะเวลาจัดเก็บและการรักษาความปลอดภัย
+                                </h5>
+                                <p class="mb-2.5 text-slate-600">
+                                    เราจะจัดเก็บข้อมูลส่วนบุคคลของท่านไว้เป็นเวลาตลอดระยะเวลาที่ให้บริการ เพื่อบรรลุวัตถุประสงค์ตามที่แจ้งไว้ โดยเราใช้มาตรการรักษาความปลอดภัยทางเทคนิคที่ได้มาตรฐาน (เช่น การเข้ารหัสข้อมูล SSL) เพื่อปกป้องข้อมูลของท่านจากการเข้าถึง แก้ไข หรือเปิดเผยโดยไม่ได้รับอนุญาต
+                                </p>
+
+                                <h5 class="font-bold text-slate-800 mt-2.5 mb-1 flex items-center gap-1.5 text-xs">
+                                    <span class="w-4 h-4 rounded-full bg-primary text-white flex items-center justify-center text-[10px] shrink-0 font-bold">5</span> 
+                                    สิทธิของเจ้าของข้อมูลและช่องทางการติดต่อ
+                                </h5>
+                                <p class="mb-1 text-slate-600">
+                                    ท่านมีสิทธิ์ตามกฎหมายในการขอเข้าถึง ขอสำเนา ขอแก้ไข หรือขอให้ลบข้อมูลส่วนบุคคลของท่านได้ทุกเมื่อ หากท่านต้องการใช้สิทธิ์ดังกล่าว หรือมีข้อสงสัยเกี่ยวกับนโยบายนี้ สามารถติดต่อเราได้ที่:
+                                </p>
+                                <ul class="list-none mb-1 space-y-0.5 text-slate-600">
+                                    <li><strong>อีเมล:</strong> oraphan@webpark.co.th</li>
+                                    <li><strong>โทรศัพท์:</strong> 095-539-2666</li>
+                                </ul>
+                            </div>
+
                             <!-- PDPA Consent Checkbox -->
-                            <div class="flex items-start gap-3 pt-2">
-                                <input type="checkbox" id="privacy_consent_checkbox" name="pdpa_agreed" value="1" <?= !empty($form['pdpa_agreed']) ? 'checked' : '' ?> required class="mt-1 w-4 h-4 rounded border-slate-300 text-primary focus:ring-primary cursor-pointer transition-all duration-200">
-                                <label for="privacy_consent_checkbox" class="text-sm md:text-base leading-relaxed cursor-pointer select-none">
+                            <div class="flex items-start gap-3 pt-1">
+                                <input type="checkbox" id="privacy_consent_checkbox" name="pdpa_agreed" value="1" disabled required class="mt-1 w-4 h-4 rounded border-slate-300 text-primary focus:ring-primary transition-all duration-200 opacity-50 cursor-not-allowed">
+                                <label for="privacy_consent_checkbox" id="contact_consent_label" class="text-sm md:text-base leading-relaxed cursor-not-allowed select-none opacity-70 transition-opacity">
                                     <span style="color: #022862;"><?= e(t('common.form_consent_prefix')) ?></span> <a href="#" id="contactPrivacyModalTrigger" style="color: #0663F6;" class="hover:underline transition-colors duration-200"><?= e(t('common.form_consent_privacy_policy')) ?></a> <span style="color: #0663F6;"><?= e(t('common.form_consent_terms_suffix')) ?></span>
                                 </label>
                             </div>
@@ -406,9 +482,45 @@ $recaptchaSiteKey = '6Lcf_pAtAAAAAOVhatPPwrHSYXeb_0J4yXf5BrRO';
 
                         <script>
                             document.addEventListener('DOMContentLoaded', function () {
+                                const pdpaBox = document.getElementById('contact_pdpa_scroll_box');
+                                const scrollHint = document.getElementById('contact_pdpa_scroll_hint');
                                 const privacyCb = document.getElementById('privacy_consent_checkbox');
+                                const consentLabel = document.getElementById('contact_consent_label');
                                 const submitBtn = document.getElementById('contact_submit_btn');
                                 const privacyTrigger = document.getElementById('contactPrivacyModalTrigger');
+
+                                let hasScrolledToBottom = false;
+
+                                function unlockCheckbox() {
+                                    if (hasScrolledToBottom) return;
+                                    hasScrolledToBottom = true;
+                                    if (privacyCb) {
+                                        privacyCb.disabled = false;
+                                        privacyCb.classList.remove('opacity-50', 'cursor-not-allowed');
+                                        privacyCb.classList.add('cursor-pointer');
+                                    }
+                                    if (consentLabel) {
+                                        consentLabel.classList.remove('cursor-not-allowed', 'opacity-70');
+                                        consentLabel.classList.add('cursor-pointer');
+                                    }
+                                    if (scrollHint) {
+                                        scrollHint.className = 'text-[11px] font-semibold text-emerald-600';
+                                        scrollHint.textContent = '<?= getCurrentLang() === "th" ? "✓ อ่านครบแล้ว สามารถติ๊กยินยอมได้" : "✓ Read complete, you may consent" ?>';
+                                    }
+                                }
+
+                                if (pdpaBox) {
+                                    if (pdpaBox.scrollHeight - pdpaBox.clientHeight <= 8) {
+                                        unlockCheckbox();
+                                    } else {
+                                        pdpaBox.addEventListener('scroll', function() {
+                                            const atBottom = (pdpaBox.scrollTop + pdpaBox.clientHeight >= pdpaBox.scrollHeight - 15);
+                                            if (atBottom) {
+                                                unlockCheckbox();
+                                            }
+                                        });
+                                    }
+                                }
 
                                 // 1. Toggle submit button disabled state according to PDPA checkbox
                                 function updateSubmitBtnState() {
@@ -420,6 +532,17 @@ $recaptchaSiteKey = '6Lcf_pAtAAAAAOVhatPPwrHSYXeb_0J4yXf5BrRO';
                                 if (privacyCb) {
                                     privacyCb.addEventListener('change', updateSubmitBtnState);
                                     updateSubmitBtnState();
+                                }
+
+                                // Prompt user to scroll if clicking before unlocking
+                                if (consentLabel) {
+                                    consentLabel.addEventListener('click', function() {
+                                        if (!hasScrolledToBottom && pdpaBox) {
+                                            pdpaBox.classList.add('ring-2', 'ring-blue-400');
+                                            pdpaBox.scrollTop += 35;
+                                            setTimeout(() => pdpaBox.classList.remove('ring-2', 'ring-blue-400'), 600);
+                                        }
+                                    });
                                 }
 
                                 // 2. Link triggers modal if footer modal exists
