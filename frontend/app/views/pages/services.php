@@ -982,11 +982,16 @@ if (isset($services) && is_array($services)) {
             }
             /* บังคับให้การ์ดและ Grid ขยายตามเนื้อหา Dropdown แน่นอน 100% */
             #gsap-services-grid, 
-            .desktop-wide-container-services, 
-            .gsap-service-card {
+            .desktop-wide-container-services {
                 height: auto !important;
                 min-height: min-content !important; /* เปลี่ยนเป็น min-content เพื่อให้ยืดหยุ่นสุดๆ */
                 overflow: visible !important; /* ป้องกันไม่ให้เนื้อหาโดนซ่อนถ้ายาวเกิน */
+            }
+            .gsap-service-card {
+                height: auto !important;
+                min-height: min-content !important;
+                border-radius: 1rem !important; /* rounded-2xl */
+                overflow: hidden !important; /* ตัดขอบมุมบนล่างให้โค้งมน */
             }
 
             /* ปรับกล่องสีน้ำเงิน (CTA) ด้านล่างสุด */
@@ -1206,21 +1211,21 @@ if (isset($services) && is_array($services)) {
                 <div class="gsap-service-card group rounded-2xl border border-slate-100 bg-white overflow-hidden flex flex-col opacity-0 translate-y-10"
                     style="box-shadow: 0 2px 12px 0 rgba(4,59,148,0.07);">
                     <?php if ($sDetailUrl !== '#'): ?>
-                    <a href="<?= e($sDetailUrl) ?>" class="relative w-full overflow-hidden bg-slate-100 block group/img cursor-pointer" style="aspect-ratio: 16/9;">
+                    <a href="<?= e($sDetailUrl) ?>" class="relative w-full overflow-hidden rounded-t-2xl bg-slate-100 block group/img cursor-pointer" style="aspect-ratio: 16/9;">
                         <img
                             src="<?= e($imgSrc) ?>"
                             alt="<?= e($sTitle) ?>"
-                            class="w-full h-full object-cover transition-transform duration-500 group-hover/img:scale-105"
+                            class="w-full h-full object-cover rounded-t-2xl transition-transform duration-500 group-hover/img:scale-105"
                             loading="lazy"
                             onerror="this.src='<?= e(asset_url('images/service-default.png')) ?>'"
                         >
                     </a>
                     <?php else: ?>
-                    <div class="relative w-full overflow-hidden bg-slate-100 block" style="aspect-ratio: 16/9;">
+                    <div class="relative w-full overflow-hidden rounded-t-2xl bg-slate-100 block" style="aspect-ratio: 16/9;">
                         <img
                             src="<?= e($imgSrc) ?>"
                             alt="<?= e($sTitle) ?>"
-                            class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                            class="w-full h-full object-cover rounded-t-2xl transition-transform duration-500 group-hover:scale-105"
                             loading="lazy"
                             onerror="this.src='<?= e(asset_url('images/service-default.png')) ?>'"
                         >
