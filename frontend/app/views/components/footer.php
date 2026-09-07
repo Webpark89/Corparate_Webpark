@@ -20,7 +20,7 @@ $officeValue = t('footer.office_address');
 $phoneHref = preg_replace('/[^0-9+]/', '', $phone) ?? '';
 
 $structuredSitemap = [
-   'PAGE' => [
+    'PAGE' => [
         'groups' => [
             [
                 'title' => 'Page',
@@ -396,8 +396,8 @@ $socialLinks = [
             </div>
             
             <!-- Privacy Policy Modal -->
-            <div id="footerPrivacyModal" class="fixed inset-0 z-50 flex items-center justify-center hidden opacity-0 transition-opacity duration-300" style="background-color: rgba(0,0,0,0.5);">
-                <div class="bg-white rounded-2xl shadow-2xl w-full max-w-3xl mx-4 max-h-[85vh] flex flex-col transform scale-95 transition-transform duration-300 relative">
+            <div id="footerPrivacyModal" class="fixed inset-0 z-[9999] flex items-center justify-center hidden opacity-0 transition-opacity duration-300" style="background-color: rgba(0,0,0,0.5);">
+                <div class="bg-white rounded-2xl shadow-2xl w-full max-w-3xl mx-4 max-h-[85vh] flex flex-col transform scale-95 transition-transform duration-300 relative z-[10000]">
                     <!-- Modal Header -->
                     <div class="flex items-center justify-between p-5 md:p-6 border-b border-slate-100">
                         <h3 class="text-xl font-bold text-slate-800">นโยบายความเป็นส่วนตัว (Privacy Policy)</h3>

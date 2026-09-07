@@ -40,10 +40,10 @@ $ctaImage = asset_url('images/bg-cta.jpg');
     /* บังคับตำแหน่งรูปภาพและ Overlay ด้วย CSS โดยตรง เพื่อเลี่ยงปัญหา Tailwind ไม่คอมไพล์ */
     .hero-bg-img {
         object-position: 85% bottom !important;
-        filter: contrast(1.15) saturate(1.22) brightness(0.98);
+        filter: contrast(1.12) saturate(1.30) brightness(1.02) !important;
     }
     .hero-overlay-mobile {
-        background: linear-gradient(180deg, rgba(255, 255, 255, 0.90) 0%, rgba(255, 255, 255, 0.70) 55%, rgba(255, 255, 255, 0.2) 100%) !important;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.92) 0%, rgba(255, 255, 255, 0.70) 55%, rgba(255, 255, 255, 0.25) 100%) !important;
     }
     .hero-overlay-gradient {
         background: transparent !important;
@@ -56,7 +56,7 @@ $ctaImage = asset_url('images/bg-cta.jpg');
             background: transparent !important;
         }
         .hero-overlay-gradient {
-            background: linear-gradient(to right, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.75) 55%, rgba(255, 255, 255, 0.05) 100%) !important;
+            background: linear-gradient(to right, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.65) 55%, rgba(255, 255, 255, 0.0) 100%) !important;
         }
     }
 
@@ -111,7 +111,7 @@ $ctaImage = asset_url('images/bg-cta.jpg');
     <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8 pt-12 pb-24 lg:pt-28 lg:pb-32 relative z-10 desktop-wide-container-article">
         <div class="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-12 lg:gap-20 items-center relative z-10">
             
-            <div class="max-w-3xl lg:max-w-none text-left mx-0 lg:ml-12 ipad-pro-ml-0 xl:ml-24 article-hero-left-col">
+            <div class="max-w-3xl lg:max-w-none text-left mx-0 lg:ml-12 xl:ml-24 article-hero-left-col">
                 <nav aria-label="Breadcrumb" class="hidden md:block animate-fade-up delay-100 mb-6">
                     <ol class="inline-flex items-center text-sm md:text-base font-medium text-slate-500">
                         <li>
@@ -146,15 +146,18 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                             font-weight: 900 !important;
                         }
                     }
-                    /* iPad (760px - 1366px) All Orientations */
-                    @media (min-width: 760px) and (max-width: 1366px) {
+                    /* iPad (760px - 834px) Portrait */
+                    @media (min-width: 760px) and (max-width: 834px) {
                         .article-hero-left-col {
-                            max-width: 100% !important;
+                            max-width: 65% !important;
                             margin-left: 0 !important;
+                        }
+                        .article-hero-left-col nav {
+                            margin-bottom: 1.5rem !important;
                         }
                         .hero-title-text,
                         .desktop-article-hero-h1 {
-                            font-size: 4.25rem !important;
+                            font-size: 3.75rem !important;
                             font-weight: 900 !important;
                             line-height: 1.15 !important;
                             margin-top: 0px !important;
@@ -163,11 +166,13 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                         }
                         .desktop-article-hero-p,
                         .ipad-mini-hero-desc {
-                            font-size: 1.25rem !important;
-                            line-height: 1.75 !important;
+                            font-size: 1.2rem !important;
+                            line-height: 1.85 !important;
                             font-weight: 600 !important;
                             color: #0b1b42 !important;
-                            max-width: 48rem !important;
+                            max-width: 32rem !important;
+                            margin-top: 1.5rem !important;
+                            margin-bottom: 2rem !important;
                         }
                     }
                     /* Dedicated Large Font Scale for iPad Pro Landscape */
@@ -191,6 +196,9 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                     }
                     /* Dedicated Large Font Scale for iPad Pro Portrait */
                     @media (min-width: 821px) and (max-width: 1366px) and (orientation: portrait) {
+                        .article-hero-left-col {
+                            margin-left: 2.25rem !important;
+                        }
                         .hero-title-text,
                         .desktop-article-hero-h1 {
                             font-size: 4.25rem !important;
@@ -201,6 +209,16 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                             font-size: 1.35rem !important;
                             line-height: 2.1rem !important;
                             max-width: 580px !important;
+                        }
+                    }
+                    @media (min-width: 1024px) {
+                        .article-hero-left-col {
+                            margin-left: 3rem !important;
+                        }
+                    }
+                    @media (min-width: 1280px) {
+                        .article-hero-left-col {
+                            margin-left: 4.5rem !important;
                         }
                     }
                     @media (min-width: 1367px) {
@@ -218,6 +236,11 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                             font-size: 1.25rem !important;
                             line-height: 1.75 !important;
                             max-width: 34rem !important;
+                        }
+                    }
+                    @media (min-width: 1536px) {
+                        .article-hero-left-col {
+                            margin-left: 6rem !important;
                         }
                     }
                 </style>
@@ -243,11 +266,12 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                     </span>
                     <span class="hidden md:block leading-relaxed">
                         <?php if (getCurrentLang() === 'th'): ?>
-                            <span class="inline-block whitespace-nowrap">รวบรวมบทความรู้ เทคโนโลยี นวัตกรรม และแนวทางการทำธุรกิจ</span><br class="hidden md:inline">
-                            <span class="inline-block whitespace-nowrap">ครอบคลุม ERP ระบบดิจิทัล และ AI ที่ช่วยยกระดับองค์กรสู่ความสำเร็จ</span>
+                            <span class="inline-block md:whitespace-nowrap">รวบรวมบทความรู้ เทคโนโลยี นวัตกรรม และแนวทางการทำธุรกิจ</span><br class="hidden md:inline">
+                            <span class="inline-block md:whitespace-nowrap">ครอบคลุม ERP ระบบดิจิทัล และ AI ที่ช่วยยกระดับองค์กรสู่ความสำเร็จ</span>
                         <?php else: ?>
-                            <span class="inline-block whitespace-nowrap">A collection of articles on technology, innovation, and business strategy</span><br class="hidden md:inline">
-                            <span class="inline-block whitespace-nowrap">covering ERP systems, digital solutions, and AI to help your organization grow.</span>
+                            <span class="inline-block md:whitespace-nowrap">A collection of articles on technology, innovation,</span><br class="hidden md:inline">
+                            <span class="inline-block md:whitespace-nowrap">and business strategy covering ERP systems,</span><br class="hidden md:inline">
+                            <span class="inline-block">digital solutions, and AI to help your organization grow.</span>
                         <?php endif; ?>
                     </span>
                 </p>
@@ -274,14 +298,9 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                 <div id="category-filters" class="article-filter-track flex gap-3 overflow-x-auto py-1 hide-scroll scroll-smooth" style="-ms-overflow-style: none; scrollbar-width: none;">
                     
                     <!-- ปุ่ม: ทั้งหมด -->
-                    <?php
-                        $allBtnClass = ($activeCategorySlug === 'all')
-                            ? 'border-transparent bg-blue-600 text-white'
-                            : 'border-blue-200 bg-white text-[#1a2b6d] hover:bg-blue-600 hover:text-white hover:border-transparent';
-                    ?>
                     <button type="button"
                             data-filter="all"
-                            class="article-filter-btn whitespace-nowrap rounded-md border px-5 py-2 text-sm font-medium transition-colors <?= $allBtnClass ?>">
+                            class="article-filter-btn whitespace-nowrap rounded-md border px-5 py-2 text-sm font-medium transition-colors <?= $activeCategorySlug === 'all' ? 'border-transparent bg-blue-600 text-white' : 'border-blue-200 bg-white text-[#1a2b6d] hover:bg-blue-600 hover:text-white hover:border-transparent' ?>">
                         <?= e(t('common.cta_view_all')) ?>
                     </button>
 
@@ -294,13 +313,10 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                             continue;
                         }
                         $isActive = $activeCategorySlug === $slug;
-                        $categoryBtnClass = $isActive
-                            ? 'border-transparent bg-blue-600 text-white'
-                            : 'border-blue-200 bg-white text-[#1a2b6d] hover:border-transparent hover:bg-blue-600 hover:text-white';
                     ?>
                         <button type="button"
                                 data-filter="<?= e($slug) ?>"
-                                class="article-filter-btn whitespace-nowrap rounded-md border px-5 py-2 text-sm font-medium transition-colors <?= $categoryBtnClass ?>">
+                                class="article-filter-btn whitespace-nowrap rounded-md border px-5 py-2 text-sm font-medium transition-colors <?= $isActive ? 'border-transparent bg-blue-600 text-white' : 'border-blue-200 bg-white text-[#1a2b6d] hover:border-transparent hover:bg-blue-600 hover:text-white' ?>">
                             <?= e($name) ?>
                         </button>
                     <?php endforeach; ?>
@@ -404,7 +420,7 @@ $ctaImage = asset_url('images/bg-cta.jpg');
             <?php endforeach; ?>
         </div>
 
-        <div id="no-results" class="article-no-results hidden py-14 text-center text-slate-600 flex-col items-center justify-center">
+        <div id="no-results" class="article-no-results hidden py-14 text-center text-slate-600 flex flex-col items-center justify-center">
             <img src="<?= e(asset_url('images/Empty.gif')) ?>" alt="No results" class="w-64 h-auto max-w-full mb-4 object-contain">
             <h3 class="text-lg font-bold text-[#1a2b6d] mb-2"><?= e(t('article_list.empty_state_title')) ?></h3>
             <p class="text-sm text-slate-500"><?= e(t('article_list.empty_state_desc')) ?></p>
@@ -415,9 +431,6 @@ $ctaImage = asset_url('images/bg-cta.jpg');
 </section>
 
 <style>
-.article-no-results:not(.hidden) {
-    display: flex;
-}
 .article-pagination__btn {
     display: flex;
     height: 3rem;
@@ -715,9 +728,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        const hasResults = filteredCards.length > 0;
-        noResults.classList.toggle('hidden', hasResults);
-        noResults.classList.toggle('flex', !hasResults);
+        noResults.classList.toggle('hidden', filteredCards.length > 0);
         setTimeout(renderPagination, 100); 
     };
 

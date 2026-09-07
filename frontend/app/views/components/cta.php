@@ -10,118 +10,23 @@ $errors = $errors ?? [];
 $submitted = $submitted ?? false;
 $form = $form ?? [];
 
-$recaptchaSiteKey = recaptcha_site_key();
+$recaptchaSiteKey = '6Lcf_pAtAAAAAOVhatPPwrHSYXeb_0J4yXf5BrRO';
 
-if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST' && (isset($_POST['cta_form']) || isset($_POST['pdpa_agreed']) || isset($_POST['privacy_agreed']) || (isset($_POST['firstname']) && isset($_POST['phone'])))) {
-    $firstName = trim((string) ($_POST['firstname'] ?? ''));
-    $lastName = trim((string) ($_POST['lastname'] ?? ''));
-    $postedName = trim((string) ($_POST['name'] ?? ''));
-    $finalName = $postedName;
-    if ($finalName === '' && ($firstName !== '' || $lastName !== '')) {
-        $finalName = trim($firstName . ' ' . $lastName);
-    }
-
+if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST' && (isset($_POST['pdpa_agreed']) || isset($_POST['privacy_agreed']))) {
     $form = [
-        'name' => $finalName,
-        'firstname' => $firstName,
-        'lastname' => $lastName,
-        'company' => trim((string) ($_POST['company'] ?? '')),
+        'name' => trim((string) ($_POST['name'] ?? '')),
+        'firstname' => trim((string) ($_POST['firstname'] ?? '')),
+        'lastname' => trim((string) ($_POST['lastname'] ?? '')),
         'phone' => trim((string) ($_POST['phone'] ?? '')),
         'email' => trim((string) ($_POST['email'] ?? '')),
         'message' => trim((string) ($_POST['message'] ?? '')),
-        'pdpa_agreed' => !empty($_POST['pdpa_agreed']) || !empty($_POST['privacy_agreed']),
     ];
     
-    // Security 1: Validate CSRF Token
-    if (!verify_csrf_token()) {
-        $errors[] = getCurrentLang() === 'th' ? 'เซสชันการใช้งานหมดอายุหรือไม่ถูกต้อง กรุณารีเฟรชหน้าเว็บและลองใหม่อีกครั้ง' : 'Session expired or invalid token. Please refresh and try again.';
-    }
-
-    // Security 2: Validate Google reCAPTCHA
-    $recaptchaResponse = (string) ($_POST['g-recaptcha-response'] ?? '');
-    $recaptchaResult = verify_recaptcha($recaptchaResponse, $_SERVER['REMOTE_ADDR'] ?? null);
-    if (!$recaptchaResult['success']) {
-        $errors[] = $recaptchaResult['message'];
-    }
-
-    // Security 3: Validate PDPA Consent
-    if (empty($_POST['pdpa_agreed']) && empty($_POST['privacy_agreed'])) {
-        $errors[] = getCurrentLang() === 'th' ? 'กรุณายอมรับนโยบายความเป็นส่วนตัว' : 'Please accept the privacy policy.';
-    }
-
-    // Field Validations (Same as main contact form)
-    if ($firstName === '' && $form['name'] === '') {
-        $errors[] = getCurrentLang() === 'th' ? 'กรุณากรอกชื่อ' : 'Please enter your first name.';
-    } elseif (preg_match('/\d/', $firstName) || preg_match('/\d/', $lastName)) {
-        $errors[] = getCurrentLang() === 'th' ? 'ชื่อ-นามสกุลต้องเป็นตัวอักษรเท่านั้น (ห้ามมีตัวเลข)' : 'Name must contain only letters.';
-    }
-
-    if ($form['company'] === '') {
-        $errors[] = getCurrentLang() === 'th' ? 'กรุณากรอกชื่อบริษัท (หากไม่มีให้ใส่ -)' : 'Please enter company name.';
-    }
-
-    if ($form['phone'] === '') {
-        $errors[] = getCurrentLang() === 'th' ? 'กรุณากรอกเบอร์โทรศัพท์' : 'Please enter phone number.';
-    } elseif (!preg_match('/^[0-9]{9,10}$/', $form['phone'])) {
-        $errors[] = getCurrentLang() === 'th' ? 'เบอร์โทรศัพท์ต้องเป็นตัวเลข 9-10 หลัก' : 'Phone number must be 9-10 digits.';
-    }
-
-    if ($form['email'] === '') {
-        $errors[] = getCurrentLang() === 'th' ? 'กรุณากรอกอีเมล' : 'Please enter email address.';
-    } elseif (!filter_var($form['email'], FILTER_VALIDATE_EMAIL)) {
-        $errors[] = getCurrentLang() === 'th' ? 'รูปแบบอีเมลไม่ถูกต้อง' : 'Invalid email format.';
-    }
-
-    $nameLength = function_exists('mb_strlen') ? mb_strlen($form['name']) : strlen($form['name']);
-    $emailLength = function_exists('mb_strlen') ? mb_strlen($form['email']) : strlen($form['email']);
-    $msgLength = function_exists('mb_strlen') ? mb_strlen($form['message']) : strlen($form['message']);
-
-    if ($nameLength > 100) {
-        $errors[] = getCurrentLang() === 'th' ? 'ชื่อยาวเกินไป (ไม่เกิน 100 ตัวอักษร)' : 'Name too long (max 100 chars).';
-    }
-
-    if ($emailLength > 255) {
-        $errors[] = getCurrentLang() === 'th' ? 'อีเมลยาวเกินไป' : 'Email too long.';
-    }
-
-    if ($msgLength > 250) {
-        $errors[] = getCurrentLang() === 'th' ? 'รายละเอียดข้อความต้องไม่เกิน 250 ตัวอักษร' : 'Message must not exceed 250 characters.';
-    }
-
-    if ($errors === []) {
+    $recaptchaResponse = $_POST['g-recaptcha-response'] ?? '';
+    if (empty($recaptchaResponse)) {
+        $errors[] = getCurrentLang() === 'th' ? 'กรุณาเลือกช่องยืนยันตัวตน (I\'m not a robot)' : 'Please verify that you are not a robot';
+    } else {
         $submitted = true;
-
-        $msgData = [
-            'company_name' => $form['company'],
-            'first_name' => $form['firstname'] !== '' ? $form['firstname'] : $form['name'],
-            'last_name' => $form['lastname'],
-            'phone' => $form['phone'],
-            'email' => $form['email'],
-            'message' => $form['message'] !== '' ? $form['message'] : 'ติดต่อผ่านฟอร์ม CTA',
-            'pdpa_consent' => 1,
-            'pdpa_consent_at' => date('Y-m-d H:i:s'),
-            'status' => 'new',
-            'ip_address' => $_SERVER['REMOTE_ADDR'] ?? null,
-            'user_agent' => $_SERVER['HTTP_USER_AGENT'] ?? null,
-            'source_page' => 'CTA (' . ($_SERVER['REQUEST_URI'] ?? 'inline') . ')',
-            'email_sent' => 0,
-        ];
-
-        try {
-            $contactModel = new ContactMessage();
-            $insertedId = $contactModel->create($msgData);
-
-            // Send email notification to configured recipient
-            $allSettings = (new Setting())->all();
-            $mailSent = Mailer::sendContactNotification($msgData, $allSettings);
-            if ($mailSent && $insertedId > 0) {
-                $contactModel->updateEmailSent($insertedId, true);
-            }
-        } catch (\Throwable $e) {
-            error_log('[CTA Contact Form] Submit Error: ' . $e->getMessage());
-        }
-
-        csrf_token_regenerate();
     }
 }
 
@@ -135,30 +40,30 @@ $contactButtonUrl = $cbuttonUrl ?? '/contact';
 <section class="bg-white py-10 lg:py-10 font-sans">
     <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
 
-        <div class="relative w-full rounded-[2rem] p-8 md:p-12 lg:p-14 grid grid-cols-1 lg:grid-cols-12 gap-10 items-start overflow-hidden shadow-xl">
+        <div class="relative w-full rounded-[2rem] p-8 md:p-12 lg:p-14 grid grid-cols-1 lg:grid-cols-12 gap-10 items-start overflow-hidden shadow-xl cta-main-container">
             <div class="absolute inset-0 z-0 rounded-[2rem] overflow-hidden">
                 <img src="<?= e(asset_url('images/bg-cta.jpg')) ?>" alt="City Network Overlay" class="w-full h-full opacity-80 object-cover">
                 <div class="absolute inset-0 z-0" style="background: linear-gradient(135deg, rgba(1, 47, 122, 0.95) 0%, rgba(0, 79, 207, 0.6) 100%);"></div>
             </div>
 
-            <div class="relative z-10 lg:col-span-5 flex flex-col items-start text-left lg:pt-2">
+            <div class="relative z-10 lg:col-span-5 flex flex-col items-start text-left lg:pt-2 cta-left-col">
                 <div class="mb-4 relative">
-                    <span class="text-white font-black text-4xl md:text-5xl lg:text-[3rem] tracking-tight block">
+                    <span class="text-white font-black text-4xl md:text-5xl lg:text-[3rem] tracking-tight block cta-main-title">
                         <?= e(t('common.nav_contact')) ?>
                     </span>
                     <div class="w-12 h-[3px] bg-white mt-3"></div>
                 </div>
-                    <span class="mt-4 text-white text-base md:text-lg leading-relaxed font-medium">
+                    <span class="mt-4 text-white text-base md:text-lg leading-relaxed font-medium cta-main-subtitle">
                         <?= e($contactTitle) ?>
                     </span>
                 
-                <p class="mt-4 text-white text-base md:text-lg leading-relaxed font-medium">
+                <p class="mt-4 text-white text-base md:text-lg leading-relaxed font-medium cta-main-subtitle">
                     <?= $contactSubtitle ?>
                 </p>
             </div>
 
             <div class="relative z-10 lg:col-span-7 w-full">
-                <div class="rounded-3xl bg-white p-6 md:p-8 shadow-2xl border border-slate-50">
+                <div class="rounded-3xl bg-white p-6 md:p-8 shadow-2xl border border-slate-50 cta-white-card">
                     
                     <?php if ($submitted): ?>
                         <div class="text-center py-12">
@@ -174,146 +79,164 @@ $contactButtonUrl = $cbuttonUrl ?? '/contact';
                                 color: #043B94 !important;
                                 opacity: 0.9;
                             }
-                            .is-invalid-cta {
-                                border-color: #ef4444 !important;
-                                background-color: #fef2f2 !important;
-                                box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15) !important;
+                            
+                            /* iPad Mini (760px - 1024px Landscape / Small Tablets) Compact Scaling for CTA Consultation Section */
+                            @media (min-width: 760px) and (max-width: 1024px) and (orientation: landscape) {
+                                .cta-main-container {
+                                    padding: 2rem 2rem !important;
+                                    gap: 1.5rem !important;
+                                }
+                                .cta-main-title {
+                                    font-size: 2.25rem !important;
+                                }
+                                .cta-main-subtitle {
+                                    font-size: 0.95rem !important;
+                                    line-height: 1.45 !important;
+                                }
+                                .cta-white-card {
+                                    padding: 1.25rem 1.5rem !important;
+                                    border-radius: 1.5rem !important;
+                                }
+                                .cta-form {
+                                    gap: 0.5rem !important;
+                                }
+                                .cta-input {
+                                    padding: 0.5rem 0.75rem !important;
+                                    font-size: 0.85rem !important;
+                                    border-radius: 0.65rem !important;
+                                }
+                                .cta-textarea {
+                                    padding: 0.5rem 0.75rem !important;
+                                    font-size: 0.85rem !important;
+                                    border-radius: 0.65rem !important;
+                                    min-height: 3.25rem !important;
+                                    max-height: 4rem !important;
+                                    rows: 2 !important;
+                                }
+                                .cta-pdpa-box {
+                                    max-height: 5rem !important;
+                                    padding: 0.5rem 0.75rem !important;
+                                    font-size: 0.725rem !important;
+                                    line-height: 1.4 !important;
+                                    margin-top: 0.35rem !important;
+                                    margin-bottom: 0.25rem !important;
+                                }
+                                .cta-consent-label {
+                                    font-size: 0.75rem !important;
+                                    line-height: 1.35 !important;
+                                }
+                                .cta-recaptcha-wrap {
+                                    transform: scale(0.82);
+                                    transform-origin: left center;
+                                    padding-top: 0.25rem !important;
+                                    padding-bottom: 0 !important;
+                                    margin-bottom: -0.5rem !important;
+                                }
+                                .cta-submit-btn {
+                                    padding: 0.5rem 1.75rem !important;
+                                    font-size: 0.875rem !important;
+                                }
                             }
-                            .cta-error-text {
-                                color: #ef4444 !important;
-                                font-size: 0.75rem !important;
-                                font-weight: 500 !important;
-                                margin-top: 0.25rem !important;
-                                padding-left: 0.25rem !important;
-                                text-align: left !important;
+
+                            /* Dedicated Large Scale for iPad Pro Portrait (821px - 1366px Portrait) */
+                            @media (min-width: 821px) and (max-width: 1366px) and (orientation: portrait) {
+                                .cta-main-container {
+                                    padding: 3rem 2.5rem !important;
+                                    gap: 2.5rem !important;
+                                }
+                                .cta-main-title {
+                                    font-size: 3.5rem !important;
+                                    line-height: 1.15 !important;
+                                }
+                                .cta-main-subtitle {
+                                    font-size: 1.35rem !important;
+                                    line-height: 2.1rem !important;
+                                }
+                                .cta-white-card {
+                                    padding: 2.25rem 2.25rem !important;
+                                    border-radius: 2rem !important;
+                                }
+                                .cta-form {
+                                    gap: 1.25rem !important;
+                                }
+                                .cta-input {
+                                    padding: 0.85rem 1.25rem !important;
+                                    font-size: 1.15rem !important;
+                                    border-radius: 1rem !important;
+                                }
+                                .cta-textarea {
+                                    padding: 0.85rem 1.25rem !important;
+                                    font-size: 1.15rem !important;
+                                    border-radius: 1rem !important;
+                                    min-height: 6rem !important;
+                                    max-height: 8rem !important;
+                                }
+                                .cta-pdpa-box {
+                                    max-height: 8.5rem !important;
+                                    padding: 0.85rem 1.25rem !important;
+                                    font-size: 0.95rem !important;
+                                    line-height: 1.6 !important;
+                                    margin-top: 0.75rem !important;
+                                    margin-bottom: 0.5rem !important;
+                                }
+                                .cta-consent-label {
+                                    font-size: 1.05rem !important;
+                                    line-height: 1.6 !important;
+                                }
+                                .cta-recaptcha-wrap {
+                                    transform: scale(1);
+                                    transform-origin: left center;
+                                    padding-top: 0.5rem !important;
+                                    padding-bottom: 0.5rem !important;
+                                    margin-bottom: 0 !important;
+                                }
+                                .cta-submit-btn {
+                                    padding: 0.85rem 3rem !important;
+                                    font-size: 1.2rem !important;
+                                    font-weight: 700 !important;
+                                }
                             }
                         </style>
-                        <form id="ctaContactForm" method="post" novalidate class="space-y-4">
-                            <?= csrf_field() ?>
-                            <input type="hidden" name="cta_form" value="1">
+                        <form method="post" class="space-y-4 cta-form">
                             
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div>
-                                    <input type="text" id="contact_firstname_cta" name="firstname" placeholder="<?= e(t('common.form_label_firstname')) ?> *" value="<?= e($form['firstname'] ?? '') ?>" maxlength="50"
-                                        oninput="this.value = this.value.replace(/[0-9]/g, '');"
-                                        class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base text-slate-900 outline-none transition custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary">
-                                    <p id="contact_firstname_cta_error" class="hidden cta-error-text"></p>
-                                </div>
+                                <input type="text" id="contact_firstname_cta" name="firstname" placeholder="<?= e(t('common.form_label_firstname')) ?>" value="<?= e($form['firstname'] ?? '') ?>" required
+                                    class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base text-slate-900 outline-none transition custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary cta-input">
 
-                                <div>
-                                    <input type="text" id="contact_lastname_cta" name="lastname" placeholder="<?= e(t('common.form_label_lastname')) ?> *" value="<?= e($form['lastname'] ?? '') ?>" maxlength="50"
-                                        oninput="this.value = this.value.replace(/[0-9]/g, '');"
-                                        class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base text-slate-900 outline-none transition custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary">
-                                    <p id="contact_lastname_cta_error" class="hidden cta-error-text"></p>
-                                </div>
+                                <input type="text" id="contact_lastname_cta" name="lastname" placeholder="<?= e(t('common.form_label_lastname')) ?>" value="<?= e($form['lastname'] ?? '') ?>" required
+                                    class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base text-slate-900 outline-none transition custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary cta-input">
                             </div>
 
                             <div>
-                                <input type="text" id="contact_company_cta" name="company" placeholder="<?= e(t('common.form_label_company_optional')) ?> *" value="<?= e($form['company'] ?? '') ?>" maxlength="100"
-                                    class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base text-slate-900 outline-none transition custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary">
-                                <p id="contact_company_cta_error" class="hidden cta-error-text"></p>
+                                <input type="text" id="contact_company_cta" name="company" placeholder="<?= e(t('common.form_label_company_optional')) ?>" value="<?= e($form['company'] ?? '') ?>" required maxlength="100"
+                                    class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base text-slate-900 outline-none transition custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary cta-input">
                             </div>
 
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div>
-                                    <input type="text" inputmode="numeric" id="contact_phone_cta" name="phone" placeholder="<?= e(t('common.form_label_phone')) ?> *" value="<?= e($form['phone'] ?? '') ?>" maxlength="10"
-                                        oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10);"
-                                        class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base text-slate-900 outline-none transition custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary">
-                                    <p id="contact_phone_cta_error" class="hidden cta-error-text"></p>
-                                </div>
+                                <input type="text" inputmode="numeric" name="phone" placeholder="<?= e(t('common.form_label_phone')) ?>" value="<?= e($form['phone'] ?? '') ?>" required maxlength="10" pattern="\d{9,10}"
+                                    oninput="this.value = this.value.replace(/[^0-9]/g, '');"
+                                    class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base text-slate-900 outline-none transition custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary cta-input">
 
-                                <div>
-                                    <input type="email" id="contact_email_cta" name="email" placeholder="<?= e(t('common.form_label_email')) ?> *" value="<?= e($form['email'] ?? '') ?>" maxlength="255"
-                                        class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base text-slate-900 outline-none transition custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary">
-                                    <p id="contact_email_cta_error" class="hidden cta-error-text"></p>
-                                </div>
+                                <input type="email" name="email" placeholder="<?= e(t('common.form_label_email')) ?>" value="<?= e($form['email'] ?? '') ?>" required
+                                    class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base text-slate-900 outline-none transition custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary cta-input">
                             </div>
 
                             <div>
-                                <textarea id="contact_message_cta" name="message" rows="4" maxlength="250" placeholder="<?= e(t('common.form_label_details')) ?> *"
-                                    class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base text-slate-900 outline-none transition custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary resize-none"><?= e($form['message'] ?? '') ?></textarea>
-                                <div style="display: flex; justify-content: space-between; align-items: flex-start; width: 100%; margin-top: 4px; padding: 0 4px;">
-                                    <p id="contact_message_cta_error" class="hidden cta-error-text" style="margin: 0;"></p>
-                                    <span id="contact_cta_msg_counter" style="margin-left: auto; text-align: right; color: #94a3b8; font-size: 0.75rem; white-space: nowrap;">0/250</span>
-                                </div>
+                                <textarea name="message" rows="4" placeholder="<?= e(t('common.form_label_details')) ?>" required
+                                    class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base text-slate-900 outline-none transition custom-placeholder focus:border-primary focus:ring-1 focus:ring-primary resize-none cta-textarea"><?= e($form['message'] ?? '') ?></textarea>
                             </div>
-
-                            <!-- Privacy Policy Scrollable Box -->
-                            <div id="privacy_policy_box_cta" class="mt-4 mb-2 p-4 md:p-5 rounded-xl border border-slate-200 bg-slate-50 overflow-y-auto max-h-48 text-sm text-slate-600 leading-relaxed custom-scrollbar shadow-inner text-left">
-                                <h4 class="font-bold text-slate-800 mb-2">นโยบายความเป็นส่วนตัว (Privacy Policy)</h4>
-                                <p class="mb-4">
-                                    WEBPARK Co., Ltd. ("เรา" หรือ "WebPark") ในฐานะผู้ควบคุมข้อมูลส่วนบุคคล (Data Controller) ตระหนักและให้ความสำคัญอย่างยิ่งต่อการคุ้มครองข้อมูลส่วนบุคคลและสิทธิความเป็นส่วนตัวของท่าน นโยบายฉบับนี้จัดทำขึ้นตามพระราชบัญญัติคุ้มครองข้อมูลส่วนบุคคล พ.ศ. 2562 (PDPA) เพื่อชี้แจงรายละเอียดเกี่ยวกับการเก็บรวบรวม ใช้ เปิดเผยข้อมูล และการใช้คุกกี้ บนเว็บไซต์ webpark.co.th ทั้งหมด
-                                </p>
-                                
-                                <h5 class="font-bold text-slate-800 mt-4 mb-2 flex items-center gap-2">
-                                    <span class="w-5 h-5 rounded-full bg-primary text-white flex items-center justify-center text-xs">1</span> 
-                                    ขอบเขตข้อมูลส่วนบุคคลที่เราเก็บรวบรวม
-                                </h5>
-                                <p class="mb-2">เราเก็บรวบรวมข้อมูลส่วนบุคคลของท่านผ่านการใช้งานเว็บไซต์ในกรณีต่างๆ เท่าที่จำเป็นดังนี้:</p>
-                                <ul class="list-disc pl-5 mb-4 space-y-1">
-                                    <li>ชื่อ-นามสกุล, เบอร์โทรศัพท์, และอีเมล ที่ท่านกรอกผ่านแบบฟอร์มติดต่อเรา</li>
-                                    <li>ข้อมูลองค์กรหรือบริษัทของท่าน (หากมี)</li>
-                                    <li>รายละเอียดข้อความหรือความต้องการที่ท่านส่งถึงเรา</li>
-                                </ul>
-
-                                <h5 class="font-bold text-slate-800 mt-4 mb-2 flex items-center gap-2">
-                                    <span class="w-5 h-5 rounded-full bg-primary text-white flex items-center justify-center text-xs">2</span> 
-                                    วัตถุประสงค์ในการเก็บรวบรวมข้อมูล
-                                </h5>
-                                <p class="mb-4">
-                                    ข้อมูลที่ท่านให้จะถูกนำไปใช้เพื่อติดต่อกลับ นำเสนอบริการที่ตรงกับความต้องการของท่าน และปรับปรุงประสิทธิภาพของเว็บไซต์เท่านั้น เราจะไม่มีการเปิดเผยข้อมูลของท่านแก่บุคคลที่สามโดยไม่ได้รับอนุญาต
-                                </p>
-
-                                <h5 class="font-bold text-slate-800 mt-4 mb-2 flex items-center gap-2">
-                                    <span class="w-5 h-5 rounded-full bg-primary text-white flex items-center justify-center text-xs">3</span> 
-                                    การเปิดเผยข้อมูลแก่บุคคลที่สาม
-                                </h5>
-                                <p class="mb-4">
-                                    เราจะไม่ขาย ให้เช่า หรือเปิดเผยข้อมูลส่วนบุคคลของท่านให้แก่บุคคลภายนอก เว้นแต่กรณีที่จำเป็นเพื่อการให้บริการแก่ท่าน (เช่น ผู้ให้บริการระบบคลาวด์/เซิร์ฟเวอร์ที่ปลอดภัย หรือผู้ให้บริการจัดส่งเอกสาร) หรือในกรณีที่กฎหมายบังคับให้เปิดเผยเท่านั้น
-                                </p>
-
-                                <h5 class="font-bold text-slate-800 mt-4 mb-2 flex items-center gap-2">
-                                    <span class="w-5 h-5 rounded-full bg-primary text-white flex items-center justify-center text-xs">4</span> 
-                                    ระยะเวลาจัดเก็บและการรักษาความปลอดภัย
-                                </h5>
-                                <p class="mb-4">
-                                    เราจะจัดเก็บข้อมูลส่วนบุคคลของท่านไว้เป็นเวลาตลอดระยะเวลาที่ให้บริการ เพื่อบรรลุวัตถุประสงค์ตามที่แจ้งไว้ โดยเราใช้มาตรการรักษาความปลอดภัยทางเทคนิคที่ได้มาตรฐาน (เช่น การเข้ารหัสข้อมูล SSL) เพื่อปกป้องข้อมูลของท่านจากการเข้าถึง แก้ไข หรือเปิดเผยโดยไม่ได้รับอนุญาต
-                                </p>
-
-                                <h5 class="font-bold text-slate-800 mt-4 mb-2 flex items-center gap-2">
-                                    <span class="w-5 h-5 rounded-full bg-primary text-white flex items-center justify-center text-xs">5</span> 
-                                    สิทธิของเจ้าของข้อมูลและช่องทางการติดต่อ
-                                </h5>
-                                <p class="mb-2">
-                                    ท่านมีสิทธิ์ตามกฎหมายในการขอเข้าถึง ขอสำเนา ขอแก้ไข หรือขอให้ลบข้อมูลส่วนบุคคลของท่านได้ทุกเมื่อ หากท่านต้องการใช้สิทธิ์ดังกล่าว หรือมีข้อสงสัยเกี่ยวกับนโยบายนี้ สามารถติดต่อเราได้ที่:
-                                </p>
-                                <ul class="list-none mb-4 space-y-1">
-                                    <li><strong>อีเมล:</strong> oraphan@webpark.co.th</li>
-                                    <li><strong>โทรศัพท์:</strong> 095-539-2666</li>
-                                </ul>
-                            </div>
-                            <style>
-                                .custom-scrollbar::-webkit-scrollbar { width: 6px; }
-                                .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 4px; }
-                                .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-                                .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
-                            </style>
 
                             <!-- PDPA Consent Checkbox -->
-                            <div class="pt-2">
-                                <div class="flex items-start gap-3">
-                                    <input type="checkbox" id="privacy_consent_checkbox_cta" name="pdpa_agreed" value="1" <?= !empty($form['pdpa_agreed']) ? 'checked' : '' ?> class="mt-1 w-4 h-4 rounded border-slate-300 text-primary focus:ring-primary cursor-pointer transition-all duration-200">
-                                    <label for="privacy_consent_checkbox_cta" class="text-sm md:text-base leading-relaxed cursor-pointer select-none text-left">
-                                        <span style="color: #022862;"><?= e(t('common.form_consent_prefix')) ?></span> <a href="#" id="ctaPrivacyModalTrigger" style="color: #0663F6;" class="hover:underline transition-colors duration-200"><?= e(t('common.form_consent_privacy_policy')) ?></a> <span style="color: #0663F6;"><?= e(t('common.form_consent_terms_suffix')) ?></span>
-                                    </label>
-                                </div>
-                                <p id="contact_pdpa_cta_error" class="hidden cta-error-text" style="padding-left: 1.75rem !important;"></p>
+                            <div class="flex items-start gap-3 pt-2">
+                                <input type="checkbox" id="privacy_consent_checkbox_cta" name="pdpa_agreed" value="1" required class="mt-1 w-4 h-4 rounded border-slate-300 text-primary focus:ring-primary cursor-pointer transition-all duration-200">
+                                <label for="privacy_consent_checkbox_cta" class="text-sm md:text-base leading-relaxed cursor-pointer select-none text-left cta-consent-label">
+                                    <span style="color: #022862;"><?= e(t('common.form_consent_prefix')) ?></span> <a href="#" id="ctaPrivacyModalTrigger" style="color: #0663F6;" class="hover:underline transition-colors duration-200"><?= e(t('common.form_consent_privacy_policy')) ?></a> <span style="color: #0663F6;"><?= e(t('common.form_consent_terms_suffix')) ?></span>
+                                </label>
                             </div>
 
                             <!-- Google reCAPTCHA v2 Widget -->
-                            <div class="pt-2 pb-1 flex flex-col items-center sm:items-start">
-                                <div class="g-recaptcha" data-sitekey="<?= e($recaptchaSiteKey) ?>" data-expired-callback="onCtaRecaptchaExpired"></div>
-                                <p id="contact_recaptcha_cta_error" class="hidden cta-error-text mt-1.5"></p>
+                            <div class="pt-2 pb-1 flex justify-center sm:justify-start cta-recaptcha-wrap">
+                                <div class="g-recaptcha" data-sitekey="<?= e($recaptchaSiteKey) ?>"></div>
                             </div>
 
                             <?php if ($errors !== []): ?>
@@ -324,7 +247,7 @@ $contactButtonUrl = $cbuttonUrl ?? '/contact';
                                 @media (min-width: 768px) { .desktop-btn-left { justify-content: flex-start !important; } }
                             </style>
                             <div class="pt-2 flex justify-center desktop-btn-left">
-                                <button type="submit" id="cta_submit_btn" disabled class="px-8 py-3.5 bg-primary hover:bg-blue-600 text-white font-bold text-base rounded-full flex items-center justify-center gap-2 shadow-lg shadow-blue-500/10 transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none">
+                                <button type="submit" id="cta_submit_btn" disabled class="px-8 py-3.5 bg-primary hover:bg-blue-600 text-white font-bold text-base rounded-full flex items-center justify-center gap-2 shadow-lg shadow-blue-500/10 transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none cta-submit-btn">
                                     <?= e(t('erp.cta_submit') !== 'erp.cta_submit' ? t('erp.cta_submit') : (getCurrentLang() === 'th' ? 'ส่งข้อมูล' : 'Submit')) ?>
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -336,173 +259,9 @@ $contactButtonUrl = $cbuttonUrl ?? '/contact';
 
                         <script>
                             document.addEventListener('DOMContentLoaded', function () {
-                                const ctaForm = document.getElementById('ctaContactForm');
                                 const privacyCbCta = document.getElementById('privacy_consent_checkbox_cta');
                                 const submitBtnCta = document.getElementById('cta_submit_btn');
-                                const policyBoxCta = document.getElementById('privacy_policy_box_cta');
                                 const privacyTrigger = document.getElementById('ctaPrivacyModalTrigger');
-
-                                const fnCta = document.getElementById('contact_firstname_cta');
-                                const lnCta = document.getElementById('contact_lastname_cta');
-                                const compCta = document.getElementById('contact_company_cta');
-                                const phoneCta = document.getElementById('contact_phone_cta');
-                                const emailCta = document.getElementById('contact_email_cta');
-                                const msgCta = document.getElementById('contact_message_cta');
-
-                                const fnCtaErr = document.getElementById('contact_firstname_cta_error');
-                                const lnCtaErr = document.getElementById('contact_lastname_cta_error');
-                                const compCtaErr = document.getElementById('contact_company_cta_error');
-                                const phoneCtaErr = document.getElementById('contact_phone_cta_error');
-                                const emailCtaErr = document.getElementById('contact_email_cta_error');
-                                const msgCtaErr = document.getElementById('contact_message_cta_error');
-                                const pdpaCtaErr = document.getElementById('contact_pdpa_cta_error');
-                                const recaptchaCtaErr = document.getElementById('contact_recaptcha_cta_error');
-
-                                function setCtaError(inputEl, errorEl, msg) {
-                                    if (inputEl) inputEl.classList.add('is-invalid-cta');
-                                    if (errorEl) {
-                                        errorEl.textContent = msg;
-                                        errorEl.classList.remove('hidden');
-                                    }
-                                }
-
-                                function clearCtaError(inputEl, errorEl) {
-                                    if (inputEl) inputEl.classList.remove('is-invalid-cta');
-                                    if (errorEl) {
-                                        errorEl.textContent = '';
-                                        errorEl.classList.add('hidden');
-                                    }
-                                }
-
-                                window.onCtaRecaptchaExpired = function() {
-                                    setCtaError(null, recaptchaCtaErr, 'การยืนยันตัวตน reCAPTCHA หมดอายุ กรุณาติ๊กยืนยันตัวตนใหม่อีกครั้ง');
-                                    if (typeof grecaptcha !== 'undefined') {
-                                        grecaptcha.reset();
-                                    }
-                                };
-
-                                const ctaMsgCounter = document.getElementById('contact_cta_msg_counter');
-
-                                function updateCtaMsgCounter() {
-                                    if (msgCta && ctaMsgCounter) {
-                                        ctaMsgCounter.textContent = `${msgCta.value.length}/250`;
-                                        if (msgCta.value.length >= 250) {
-                                            ctaMsgCounter.classList.add('text-red-500', 'font-bold');
-                                            ctaMsgCounter.classList.remove('text-slate-400');
-                                        } else {
-                                            ctaMsgCounter.classList.remove('text-red-500', 'font-bold');
-                                            ctaMsgCounter.classList.add('text-slate-400');
-                                        }
-                                    }
-                                }
-
-                                if (msgCta) {
-                                    updateCtaMsgCounter();
-                                    msgCta.addEventListener('input', updateCtaMsgCounter);
-                                }
-
-                                [fnCta, lnCta, compCta, phoneCta, emailCta, msgCta].forEach(inp => {
-                                    if (!inp) return;
-                                    inp.addEventListener('input', () => {
-                                        if (inp === fnCta) clearCtaError(fnCta, fnCtaErr);
-                                        if (inp === lnCta) clearCtaError(lnCta, lnCtaErr);
-                                        if (inp === compCta) clearCtaError(compCta, compCtaErr);
-                                        if (inp === phoneCta) clearCtaError(phoneCta, phoneCtaErr);
-                                        if (inp === emailCta) clearCtaError(emailCta, emailCtaErr);
-                                        if (inp === msgCta) clearCtaError(msgCta, msgCtaErr);
-                                    });
-                                });
-
-                                if (ctaForm) {
-                                    ctaForm.addEventListener('submit', function (e) {
-                                        let isValid = true;
-                                        let firstInvalid = null;
-
-                                        const fnVal = fnCta.value.trim();
-                                        if (!fnVal) {
-                                            setCtaError(fnCta, fnCtaErr, 'กรุณากรอกชื่อ');
-                                            isValid = false;
-                                            if (!firstInvalid) firstInvalid = fnCta;
-                                        } else if (/\d/.test(fnVal)) {
-                                            setCtaError(fnCta, fnCtaErr, 'ชื่อต้องเป็นตัวอักษรเท่านั้น (ห้ามมีตัวเลข)');
-                                            isValid = false;
-                                            if (!firstInvalid) firstInvalid = fnCta;
-                                        }
-
-                                        const lnVal = lnCta.value.trim();
-                                        if (!lnVal) {
-                                            setCtaError(lnCta, lnCtaErr, 'กรุณากรอกนามสกุล');
-                                            isValid = false;
-                                            if (!firstInvalid) firstInvalid = lnCta;
-                                        } else if (/\d/.test(lnVal)) {
-                                            setCtaError(lnCta, lnCtaErr, 'นามสกุลต้องเป็นตัวอักษรเท่านั้น (ห้ามมีตัวเลข)');
-                                            isValid = false;
-                                            if (!firstInvalid) firstInvalid = lnCta;
-                                        }
-
-                                        if (!compCta.value.trim()) {
-                                            setCtaError(compCta, compCtaErr, 'กรุณากรอกชื่อบริษัท (หากไม่มีให้ใส่ -)');
-                                            isValid = false;
-                                            if (!firstInvalid) firstInvalid = compCta;
-                                        }
-
-                                        const phoneVal = phoneCta.value.trim();
-                                        if (!phoneVal) {
-                                            setCtaError(phoneCta, phoneCtaErr, 'กรุณากรอกเบอร์โทรศัพท์');
-                                            isValid = false;
-                                            if (!firstInvalid) firstInvalid = phoneCta;
-                                        } else if (phoneVal.length < 9 || phoneVal.length > 10) {
-                                            setCtaError(phoneCta, phoneCtaErr, 'เบอร์โทรศัพท์ต้องเป็นตัวเลข 9-10 หลัก');
-                                            isValid = false;
-                                            if (!firstInvalid) firstInvalid = phoneCta;
-                                        }
-
-                                        const emailVal = emailCta.value.trim();
-                                        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-                                        if (!emailVal) {
-                                            setCtaError(emailCta, emailCtaErr, 'กรุณากรอกอีเมล');
-                                            isValid = false;
-                                            if (!firstInvalid) firstInvalid = emailCta;
-                                        } else if (!emailRegex.test(emailVal)) {
-                                            setCtaError(emailCta, emailCtaErr, 'รูปแบบอีเมลไม่ถูกต้อง (เช่น name@example.com)');
-                                            isValid = false;
-                                            if (!firstInvalid) firstInvalid = emailCta;
-                                        }
-
-                                        const msgVal = msgCta.value.trim();
-                                        if (!msgVal) {
-                                            setCtaError(msgCta, msgCtaErr, 'กรุณากรอกรายละเอียดข้อความ');
-                                            isValid = false;
-                                            if (!firstInvalid) firstInvalid = msgCta;
-                                        } else if (msgVal.length > 250) {
-                                            setCtaError(msgCta, msgCtaErr, 'รายละเอียดข้อความต้องไม่เกิน 250 ตัวอักษร');
-                                            isValid = false;
-                                            if (!firstInvalid) firstInvalid = msgCta;
-                                        }
-
-                                        if (!privacyCbCta.checked) {
-                                            setCtaError(null, pdpaCtaErr, 'กรุณายอมรับนโยบายความเป็นส่วนตัว');
-                                            isValid = false;
-                                            if (!firstInvalid) firstInvalid = privacyCbCta;
-                                        }
-
-                                        if (typeof grecaptcha !== 'undefined') {
-                                            const recaptchaToken = grecaptcha.getResponse();
-                                            if (!recaptchaToken) {
-                                                setCtaError(null, recaptchaCtaErr, 'กรุณายืนยันตัวตนว่าไม่ใช่โปรแกรมอัตโนมัติ (reCAPTCHA)');
-                                                isValid = false;
-                                                if (!firstInvalid) firstInvalid = document.querySelector('#ctaContactForm .g-recaptcha');
-                                            } else {
-                                                clearCtaError(null, recaptchaCtaErr);
-                                            }
-                                        }
-
-                                        if (!isValid) {
-                                            e.preventDefault();
-                                            if (firstInvalid) firstInvalid.focus();
-                                        }
-                                    });
-                                }
 
                                 // 1. Toggle submit button disabled state
                                 function updateCtaSubmitBtnState() {
@@ -516,35 +275,7 @@ $contactButtonUrl = $cbuttonUrl ?? '/contact';
                                     updateCtaSubmitBtnState();
                                 }
 
-                                // 2. Require scrolling to bottom to unlock PDPA checkbox
-                                if (privacyCbCta && policyBoxCta && !privacyCbCta.checked) {
-                                    const cbWrapper = privacyCbCta.parentElement;
-                                    privacyCbCta.disabled = true;
-                                    cbWrapper.style.opacity = '0.6';
-                                    cbWrapper.style.cursor = 'not-allowed';
-                                    
-                                    function checkCtaScroll() {
-                                        if (policyBoxCta.scrollHeight - policyBoxCta.scrollTop <= policyBoxCta.clientHeight + 25) {
-                                            privacyCbCta.disabled = false;
-                                            cbWrapper.style.opacity = '1';
-                                            cbWrapper.style.cursor = 'pointer';
-                                            policyBoxCta.removeEventListener('scroll', checkCtaScroll);
-                                        }
-                                    }
-                                    
-                                    policyBoxCta.addEventListener('scroll', checkCtaScroll, { passive: true });
-                                    setTimeout(checkCtaScroll, 100);
-
-                                    // If user taps the disabled checkbox area on mobile, auto-scroll to bottom to assist them
-                                    cbWrapper.addEventListener('click', function() {
-                                        if (privacyCbCta.disabled) {
-                                            policyBoxCta.scrollTo({ top: policyBoxCta.scrollHeight, behavior: 'smooth' });
-                                            setTimeout(checkCtaScroll, 300);
-                                        }
-                                    });
-                                }
-
-                                // 3. Link triggers modal if footer modal exists
+                                // 2. Link triggers modal if footer modal exists
                                 if (privacyTrigger) {
                                     privacyTrigger.addEventListener('click', function(e) {
                                         e.preventDefault();

@@ -342,37 +342,45 @@ if (isset($services) && is_array($services)) {
                 line-height: 1.85 !important;
                 font-weight: 600 !important;
                 color: #0b1b42 !important;
-                max-width: 38rem !important;
+                max-width: 100% !important;
                 margin-top: 1.5rem !important;
                 margin-bottom: 2.5rem !important;
             }
         }
 
-        /* iPad Portrait (768px - 1023px) */
+        /* iPad Portrait (760px - 834px) & (760px - 1023px) */
         @media (min-width: 760px) and (max-width: 1023px) {
             .desktop-wide-container-services {
                 padding-top: 3.5rem !important;
                 padding-bottom: 4rem !important;
             }
             .ipad-pro-services-hero-content {
-                max-width: 100% !important;
+                max-width: 68% !important;
                 margin-left: 0 !important;
             }
             .ipad-pro-services-hero-content nav {
-                margin-bottom: 1rem !important;
+                margin-bottom: 1.5rem !important;
             }
             .ipad-pro-services-text-1,
             .ipad-pro-services-text-2 {
-                font-size: 3.85rem !important;
+                font-size: 3.75rem !important;
                 font-weight: 900 !important;
                 line-height: 1.15 !important;
                 white-space: nowrap !important;
             }
             .ipad-pro-services-hero-p {
-                font-size: 1.15rem !important;
-                line-height: 1.75 !important;
-                margin-top: 1rem !important;
+                font-size: 1.2rem !important;
+                line-height: 1.85 !important;
+                font-weight: 600 !important;
+                color: #0b1b42 !important;
+                max-width: 32rem !important;
+                margin-top: 1.5rem !important;
                 margin-bottom: 2rem !important;
+            }
+            .services-hero-btn-container {
+                flex-direction: column !important;
+                align-items: flex-start !important;
+                gap: 0.85rem !important;
             }
         }
 
@@ -635,9 +643,6 @@ if (isset($services) && is_array($services)) {
             .ipad-pro-services-hero-p {
                 margin-top: 1.5rem !important;
             }
-            .ipad-pro-services-hero-content {
-                margin-left: 0 !important;
-            }
             .ipad-pro-hidden {
                 display: none !important;
             }
@@ -650,10 +655,10 @@ if (isset($services) && is_array($services)) {
             }
         }
         
-        /* iPad Mini Portrait (760px - 820px) Font Scaling */
-        @media (min-width: 760px) and (max-width: 820px) {
+        /* iPad Portrait (760px - 834px) Font Scaling */
+        @media (min-width: 760px) and (max-width: 834px) {
             .ipad-pro-services-text-1, .ipad-pro-services-text-2 {
-                font-size: 2.75rem !important;
+                font-size: 3.75rem !important;
             }
             .ipad-pro-services-h1-text {
                 font-size: 1.85rem !important;
@@ -661,9 +666,10 @@ if (isset($services) && is_array($services)) {
             .ipad-pro-services-subtitle {
                 font-size: 1.5rem !important;
             }
+            .ipad-pro-services-hero-p,
             .ipad-pro-services-desc {
-                font-size: 0.95rem !important;
-                line-height: 1.55 !important;
+                font-size: 1.2rem !important;
+                line-height: 1.85 !important;
             }
             .ipad-pro-service-card-title {
                 font-size: 1.15rem !important;
@@ -862,6 +868,9 @@ if (isset($services) && is_array($services)) {
                 max-width: 1720px !important;
                 padding-left: 2.5rem !important;
                 padding-right: 2.5rem !important;
+            }
+            .desktop-services-hero-col {
+                margin-left: 3rem !important;
             }
             .desktop-bg-vibrant-services {
                 mix-blend-mode: normal !important;
@@ -1078,6 +1087,16 @@ if (isset($services) && is_array($services)) {
                 color: #64748b !important;
             }
         }
+        @media (min-width: 1280px) {
+            .desktop-services-hero-col {
+                margin-left: 4.5rem !important;
+            }
+        }
+        @media (min-width: 1536px) {
+            .desktop-services-hero-col {
+                margin-left: 6rem !important;
+            }
+        }
 
         /* Accessibility: เคารพการตั้งค่า Reduce Motion ของผู้ใช้ ลด/ปิด animation แบบ CSS ทั้งหมดในหน้านี้ */
         @media (prefers-reduced-motion: reduce) {
@@ -1099,7 +1118,7 @@ if (isset($services) && is_array($services)) {
             <div class="absolute inset-x-0 bottom-0 h-[25%] bg-gradient-to-t from-white to-transparent"></div>
         </div>
         <div class="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-12 lg:gap-20 items-center relative z-10">
-            <div class="max-w-2xl lg:ml-12 xl:ml-24 ipad-pro-services-hero-content">
+            <div class="max-w-2xl desktop-services-hero-col ipad-pro-services-hero-content">
                 <nav aria-label="Breadcrumb" class="animate-fade-up delay-100 mb-6 hidden sm:block">
                         <ol class="inline-flex items-center text-sm md:text-base font-medium text-slate-500">
                             <li>
@@ -1132,14 +1151,15 @@ if (isset($services) && is_array($services)) {
                             สร้างการเติบโต และยกระดับองค์กรสู่อนาคตอย่างยั่งยืน
                         </span>
                         <span class="hidden md:block leading-relaxed">
-                            มากกว่า 20 ปี ที่เราสร้างสรรค์โซลูชันดิจิทัลและ AI ครบวงจร<br>
-                            เพื่อเพิ่มประสิทธิภาพ สร้างการเติบโต และยกระดับองค์กรสู่อนาคต
+                            <span class="inline-block whitespace-nowrap">มากกว่า 20 ปี ที่เราสร้างสรรค์โซลูชันดิจิทัลและ AI ครบวงจร</span><br class="hidden md:inline">
+                            <span class="inline-block whitespace-nowrap">เพื่อเพิ่มประสิทธิภาพ สร้างการเติบโต และยกระดับองค์กรสู่อนาคต</span>
                         </span>
                     <?php else: ?>
-                        Over 20 years of creating comprehensive digital solutions. We combine technology, expertise, and business understanding to help organizations increase efficiency and elevate into the future.
+                        <span class="inline-block md:whitespace-nowrap">Over 20 years of creating comprehensive digital solutions.</span><br class="hidden md:inline">
+                        <span class="inline-block">We combine technology, expertise, and business understanding to elevate your organization.</span>
                     <?php endif; ?>
                 </p>
-                <div class="animate-entrance-up delay-400 flex flex-col lg:flex-row items-start gap-4">
+                <div class="animate-entrance-up delay-400 flex flex-col lg:flex-row items-start gap-4 services-hero-btn-container">
                     <a href="<?= e(route_url('/contact')) ?>" class="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-primary text-white text-base font-semibold rounded-full hover:bg-blue-700 transition-all shadow-md hover:-translate-y-0.5 whitespace-nowrap ipad-pro-hero-btn">
                         <?= e(getCurrentLang() === 'th' ? 'ปรึกษาผู้เชี่ยวชาญ' : 'Consult an Expert') ?>
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
@@ -1184,15 +1204,23 @@ if (isset($services) && is_array($services)) {
                     $sTitle  = (string)($service['title'] ?? '');
                     $sSummary= (string)($service['summary'] ?? '');
                     $sEmoji  = (string)($service['icon_emoji'] ?? '');
-                    $sDetailUrl = (string)($service['detail_url'] ?? '#');
-                    if ($sDetailUrl === '#' && (str_contains(strtolower($sTitle), 'digital') || str_contains(strtolower($sTitle), 'แพลตฟอร์ม'))) {
-                        $sDetailUrl = route_url('/services/digital-platform');
-                    }
-                    if ($sDetailUrl === '#' && (str_contains(strtolower($sTitle), 'marketing') || str_contains(strtolower($sTitle), 'การตลาด') || str_contains(strtolower($sTitle), 'online'))) {
-                        $sDetailUrl = route_url('/services/online-marketing');
-                    }
-                    if ($sDetailUrl === '#' && (str_contains(strtolower($sTitle), 'creative') || str_contains(strtolower($sTitle), 'design') || str_contains(strtolower($sTitle), 'สร้างสรรค์') || str_contains(strtolower($sTitle), 'ออกแบบ'))) {
-                        $sDetailUrl = route_url('/services/creative-design');
+                    $sSlug   = (string)($service['slug'] ?? '');
+                    $sDetailUrl = (string)($service['detail_url'] ?? '');
+                    
+                    if ($sDetailUrl === '' || $sDetailUrl === '#') {
+                        if (str_contains(strtolower($sSlug), 'erp') || str_contains(strtolower($sTitle), 'erp') || str_contains(strtolower($sTitle), 'erm')) {
+                            $sDetailUrl = route_url('/erp');
+                        } elseif (str_contains(strtolower($sSlug), 'digital') || str_contains(strtolower($sTitle), 'digital') || str_contains(strtolower($sTitle), 'แพลตฟอร์ม')) {
+                            $sDetailUrl = route_url('/services/digital-platform');
+                        } elseif (str_contains(strtolower($sSlug), 'marketing') || str_contains(strtolower($sTitle), 'marketing') || str_contains(strtolower($sTitle), 'การตลาด') || str_contains(strtolower($sTitle), 'online')) {
+                            $sDetailUrl = route_url('/services/online-marketing');
+                        } elseif (str_contains(strtolower($sSlug), 'creative') || str_contains(strtolower($sSlug), 'design') || str_contains(strtolower($sTitle), 'creative') || str_contains(strtolower($sTitle), 'design') || str_contains(strtolower($sTitle), 'สร้างสรรค์') || str_contains(strtolower($sTitle), 'ออกแบบ')) {
+                            $sDetailUrl = route_url('/services/creative-design');
+                        } elseif ($sSlug !== '') {
+                            $sDetailUrl = route_url('/services/' . $sSlug);
+                        } else {
+                            $sDetailUrl = route_url('/services');
+                        }
                     }
                     $imgSrc  = resolve_article_image_url($service['image'] ?? $service['image_placeholder'] ?? '', asset_url('images/service-default.png'));
                     $subcats = (array)($service['subcategories'] ?? []);
@@ -1215,7 +1243,7 @@ if (isset($services) && is_array($services)) {
                         <img
                             src="<?= e($imgSrc) ?>"
                             alt="<?= e($sTitle) ?>"
-                            class="max-h-full max-w-full w-auto h-auto object-contain transition-transform duration-500 group-hover:scale-105"
+                            class="max-h-full max-w-full w-auto h-auto object-contain transition-transform duration-500 group-hover/scale-105"
                             loading="lazy"
                             onerror="this.src='<?= e(asset_url('images/service-default.png')) ?>'"
                         >
@@ -1235,14 +1263,6 @@ if (isset($services) && is_array($services)) {
                         <p class="text-slate-500 text-sm leading-relaxed mb-4 desktop-service-desc ipad-pro-service-card-desc ipad-air-service-card-desc ipad-mini-service-card-desc">
                             <?= e($sSummary) ?>
                         </p>
-                        <?php if ($sDetailUrl !== '#'): ?>
-                        <div class="mb-4">
-                            <a href="<?= e($sDetailUrl) ?>" class="inline-flex items-center gap-1.5 text-sm font-bold text-[#0663F6] hover:text-blue-700 transition-colors">
-                                <span><?= getCurrentLang() === 'th' ? 'ดูรายละเอียดบริการ' : 'View Service Details' ?></span>
-                                <svg class="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
-                            </a>
-                        </div>
-                        <?php endif; ?>
                         <div class="mt-auto border-t border-slate-100 pt-3 desktop-service-details-wrap">
                             <details class="group/details">
                                 <summary class="flex items-center justify-between py-2 rounded-lg text-sm font-bold cursor-pointer transition-colors duration-150 hover:text-[#043B94] text-[#022862] list-none desktop-service-summary ipad-pro-service-card-dropdown">
@@ -1256,9 +1276,12 @@ if (isset($services) && is_array($services)) {
                                 <div class="pl-3 pr-3 py-2 space-y-2 border-l-2 border-slate-100 ml-1 mt-1 mb-2 desktop-service-dropdown-content ipad-mini-dropdown-content ipad-air-dropdown-content ipad-pro-dropdown-content mobile-dropdown-content">
                                     <?php foreach ($subcats as $item):
                                         $itemLabel = (string)($item['label'] ?? '');
-                                        $itemHref  = (string)($item['href'] ?? '#');
+                                        $itemHref  = (string)($item['href'] ?? '');
+                                        if ($itemHref === '' || $itemHref === '#') {
+                                            $itemHref = $sDetailUrl;
+                                        }
                                     ?>
-                                    <a href="<?= $itemHref ?>" class="group/item flex items-center gap-2 text-sm text-slate-600 hover:text-[#043B94] transition-all duration-300 hover:translate-x-1.5 ipad-pro-dropdown-item ipad-mini-dropdown-item ipad-air-dropdown-item mobile-dropdown-item">
+                                    <a href="<?= e($itemHref) ?>" class="group/item flex items-center gap-2 text-sm text-slate-600 hover:text-[#043B94] transition-all duration-300 hover:translate-x-1.5 ipad-pro-dropdown-item ipad-mini-dropdown-item ipad-air-dropdown-item mobile-dropdown-item">
                                         <span class="w-1.5 h-1.5 rounded-full bg-slate-300 shrink-0 transition-all duration-300 group-hover/item:bg-[#043B94] group-hover/item:scale-125"></span>
                                         <span><?= e($itemLabel) ?></span>
                                     </a>

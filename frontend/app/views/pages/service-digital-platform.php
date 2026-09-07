@@ -28,6 +28,26 @@ $heroBgImage = asset_url('images/digital-platform-hero-bg.png');
         animation: heroFloat 6s ease-in-out infinite;
     }
 
+    /* Animation for Gradient Text Flow */
+    @keyframes text-gradient-pan {
+        0% { background-position: 0% center; }
+        50% { background-position: 100% center; }
+        100% { background-position: 0% center; }
+    }
+    .animate-text-gradient {
+        background-size: 200% auto;
+        animation: text-gradient-pan 6s linear infinite;
+    }
+
+    /* Mobile (max-width: 759px) */
+    @media (max-width: 759px) {
+        .dp-hero-h1 {
+            font-size: 2.75rem !important;
+            line-height: 1.2 !important;
+            font-weight: 900 !important;
+        }
+    }
+
     /* Gradient Typography */
     .dp-gradient-title-dark {
         background: linear-gradient(135deg, #1e293b 0%, #475569 50%, #0f172a 100%);
@@ -137,6 +157,7 @@ $heroBgImage = asset_url('images/digital-platform-hero-bg.png');
             flex-wrap: nowrap !important;
             white-space: nowrap !important;
             align-items: center !important;
+            margin-bottom: 1.5rem !important;
         }
         .dp-breadcrumb-list li,
         .dp-breadcrumb-list a,
@@ -151,25 +172,25 @@ $heroBgImage = asset_url('images/digital-platform-hero-bg.png');
             gap: 0.25rem !important;
         }
         .dp-hero-h1 {
-            font-size: 3.5rem !important;
+            font-size: 3.75rem !important;
             font-weight: 900 !important;
             line-height: 1.08 !important;
             display: block !important;
             white-space: normal !important;
         }
         .dp-hero-p {
-            font-size: 0.95rem !important;
-            line-height: 1.65 !important;
-            font-weight: 500 !important;
-            color: #475569 !important;
-            max-width: 100% !important;
-            margin-bottom: 1.75rem !important;
+            font-size: 1.2rem !important;
+            line-height: 1.85 !important;
+            font-weight: 600 !important;
+            color: #0b1b42 !important;
+            max-width: 32rem !important;
+            margin-top: 1.5rem !important;
+            margin-bottom: 2rem !important;
         }
         .dp-hero-btn-container {
-            flex-direction: row !important;
-            align-items: center !important;
-            gap: 1rem !important;
-            flex-wrap: nowrap !important;
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            gap: 0.85rem !important;
         }
         .dp-hero-bg-img {
             object-position: 88% center !important;
@@ -328,10 +349,10 @@ $heroBgImage = asset_url('images/digital-platform-hero-bg.png');
         }
     }
 
-    /* iPad Mini Portrait (760px - 820px) Specific Fine-tuning */
-    @media (min-width: 760px) and (max-width: 820px) and (orientation: portrait) {
+    /* iPad Portrait (760px - 834px) Specific Fine-tuning */
+    @media (min-width: 760px) and (max-width: 834px) and (orientation: portrait) {
         .dp-hero-h1 {
-            font-size: 3rem !important;
+            font-size: 3.75rem !important;
         }
         .dp-hero-left-col {
             max-width: 68% !important;
@@ -643,12 +664,32 @@ $heroBgImage = asset_url('images/digital-platform-hero-bg.png');
             margin-bottom: 0 !important;
         }
     }
+    @media (min-width: 1024px) {
+        .desktop-service-hero-col {
+            margin-left: 3rem !important;
+        }
+    }
+    @media (min-width: 1280px) {
+        .desktop-service-hero-col {
+            margin-left: 4.5rem !important;
+        }
+    }
+    @media (min-width: 1536px) {
+        .desktop-service-hero-col {
+            margin-left: 6rem !important;
+        }
+    }
+    @media (min-width: 760px) and (max-width: 1024px) and (orientation: portrait) {
+        .desktop-service-hero-col {
+            margin-left: 0 !important;
+        }
+    }
 </style>
 
 <!-- ==========================================
      SECTION 1: HERO SECTION
 =========================================== -->
-<section id="dp-hero" class="relative font-sans bg-[#f7faff] overflow-hidden pt-8 pb-16 lg:pt-16 lg:pb-28">
+<section id="dp-hero" class="relative font-sans bg-[#f7faff] overflow-hidden pt-8 pb-12 md:pt-12 md:pb-24 lg:pt-28 lg:pb-32">
     <!-- Desktop Background Banner -->
     <div class="absolute inset-0 z-0 hidden lg:block overflow-hidden pointer-events-none" style="position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0;">
         <img src="<?= e($heroBgImage) ?>" alt="Digital Platform Background" 
@@ -667,11 +708,11 @@ $heroBgImage = asset_url('images/digital-platform-hero-bg.png');
         <div style="position: absolute; left: 0; right: 0; bottom: 0; height: 25%; background: linear-gradient(to top, #ffffff 0%, transparent 100%); z-index: 10;"></div>
     </div>
 
-    <div class="mx-auto w-full max-w-7xl px-5 sm:px-6 lg:px-8 relative z-10 dp-hero-container">
+    <div class="mx-auto w-full max-w-[1720px] px-4 sm:px-6 lg:px-10 relative z-10 dp-hero-container">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
             
             <!-- Left Column: Title & Description -->
-            <div class="lg:col-span-7 xl:col-span-7 dp-hero-left-col">
+            <div class="lg:col-span-7 xl:col-span-7 dp-hero-left-col desktop-service-hero-col">
                 <!-- Breadcrumbs -->
                 <nav aria-label="Breadcrumb" class="animate-entrance-up delay-100 mb-5 dp-breadcrumb-nav">
                     <ol class="inline-flex items-center text-sm md:text-base font-medium text-slate-500 dp-breadcrumb-list whitespace-nowrap flex-nowrap">
@@ -694,31 +735,44 @@ $heroBgImage = asset_url('images/digital-platform-hero-bg.png');
                 </nav>
 
                 <!-- Hero Title (Gradient) -->
-                <h1 class="animate-entrance-up delay-200 mb-4 tracking-tight flex flex-col items-start leading-[1.08] dp-hero-h1-wrapper">
+                <h1 class="animate-entrance-up delay-200 mb-2 tracking-tight flex flex-col items-start leading-tight text-5xl md:text-7xl lg:text-8xl font-black dp-hero-h1-wrapper">
                     <?php if (getCurrentLang() === 'th'): ?>
-                        <span class="dp-gradient-title-dark font-black text-5xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tighter uppercase dp-hero-h1">
+                        <span class="bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block py-1 md:py-2 whitespace-nowrap dp-hero-h1">
                             แพลตฟอร์ม
                         </span>
-                        <span class="dp-gradient-title-blue font-black text-5xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tighter uppercase dp-hero-h1">
+                        <span class="bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block py-1 md:py-2 whitespace-nowrap dp-hero-h1" style="animation-delay: -3s;">
                             ดิจิทัล
                         </span>
                     <?php else: ?>
-                        <span class="dp-gradient-title-dark font-black text-5xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tighter uppercase dp-hero-h1">
+                        <span class="bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block py-1 md:py-2 whitespace-nowrap dp-hero-h1">
                             PLATFORM
                         </span>
-                        <span class="dp-gradient-title-blue font-black text-5xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tighter uppercase dp-hero-h1">
+                        <span class="bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block py-1 md:py-2 whitespace-nowrap dp-hero-h1" style="animation-delay: -3s;">
                             DIGITAL
                         </span>
                     <?php endif; ?>
                 </h1>
 
                 <!-- Hero Subtitle & Description -->
-                <p class="animate-entrance-up delay-300 text-slate-600 text-base md:text-lg lg:text-xl leading-relaxed max-w-2xl mb-8 font-medium dp-hero-p" style="text-wrap: balance;">
-                    <?php if (getCurrentLang() === 'th'): ?>
-                        บริการออกแบบและพัฒนาระบบ แพลตฟอร์มดิจิทัล และเว็บแอปพลิเคชัน ที่ตอบโจทย์การทำงานขององค์กรอย่างแท้จริง เพิ่มประสิทธิภาพการทำงาน ลดขั้นตอน และรองรับการขยายตัวของธุรกิจในอนาคต
-                    <?php else: ?>
-                        Comprehensive digital platform design, web application, and enterprise system development tailored to your business operations—increasing efficiency, automating workflows, and scaling sustainably.
-                    <?php endif; ?>
+                <?php
+                if (getCurrentLang() === 'th') {
+                    $dp_mobile_desc = "บริการออกแบบและพัฒนาระบบ แพลตฟอร์มดิจิทัล<br>และเว็บแอปพลิเคชัน ที่ตอบโจทย์การทำงานของ<br>องค์กรอย่างแท้จริง เพิ่มประสิทธิภาพการทำงาน ลด<br>ขั้นตอน และรองรับการขยายตัวของธุรกิจในอนาคต";
+                } else {
+                    $dp_mobile_desc = "Comprehensive digital platform design, web app,<br>and enterprise system development tailored to increase<br>efficiency, automate workflows, and scale sustainably.";
+                }
+                ?>
+                <p class="animate-entrance-up delay-300 mt-6 text-[#022862] text-base md:text-lg lg:text-xl leading-relaxed max-w-2xl mb-10 font-bold md:font-semibold dp-hero-p">
+                    <span class="block md:hidden leading-[1.75]">
+                        <?= $dp_mobile_desc ?>
+                    </span>
+                    <span class="hidden md:block leading-relaxed">
+                        <?php if (getCurrentLang() === 'th'): ?>
+                            <span class="inline-block whitespace-nowrap">บริการออกแบบและพัฒนาระบบ แพลตฟอร์มดิจิทัล และเว็บแอปพลิเคชัน</span><br class="hidden md:inline">
+                            <span class="inline-block whitespace-nowrap">ที่ตอบโจทย์การทำงานขององค์กรอย่างแท้จริง เพิ่มประสิทธิภาพการทำงาน ลดขั้นตอน และรองรับการขยายตัวของธุรกิจในอนาคต</span>
+                        <?php else: ?>
+                            Comprehensive digital platform design, web application, and enterprise system development tailored to your business operations—increasing efficiency, automating workflows, and scaling sustainably.
+                        <?php endif; ?>
+                    </span>
                 </p>
 
                 <!-- Hero Action Buttons -->
@@ -885,335 +939,314 @@ $heroBgImage = asset_url('images/digital-platform-hero-bg.png');
 <!-- ==========================================
      SECTION 3: 10 DIGITAL PLATFORM SOLUTIONS
 =========================================== -->
-<section id="dp-solutions" class="bg-white pt-4 lg:pt-8 pb-12 lg:pb-20 font-sans dp-solutions-section">
-    <div class="mx-auto w-full max-w-7xl px-5 sm:px-6 lg:px-8">
-        
-        <!-- Header (Exact Match to Mockup) -->
-        <div class="text-center max-w-3xl mx-auto mb-8 lg:mb-10">
-            <div class="inline-flex flex-col items-start mb-2">
-                <span class="text-[#0663F6] font-extrabold text-2xl sm:text-3xl tracking-tight uppercase">
-                    DIGITAL PLATFORM SOLUTIONS
-                </span>
-                <div class="w-14 h-[3.5px] bg-[#0663F6] mt-1 mb-2.5"></div>
-            </div>
-            <h2 class="text-base sm:text-lg md:text-xl font-bold text-[#043B94] leading-snug">
-                <?= getCurrentLang() === 'th' ? 'ครบทุกโซลูชัน ตอบโจทย์ทุกการใช้งานขององค์กร' : 'All-in-one solutions answering every enterprise operational need' ?>
-            </h2>
-        </div>
-
-        <?php
-        $solutions = [
-            [
-                'title' => 'CORPORATE WEBSITE',
-                'subtitle' => getCurrentLang() === 'th' ? 'เว็บไซต์องค์กรเพื่อการสื่อสารภาพลักษณ์และข้อมูลอย่างมืออาชีพ' : 'Corporate websites for professional branding and company communication',
-                'bullets' => getCurrentLang() === 'th' ? [
-                    'ดีไซน์สวย รองรับทุกอุปกรณ์',
-                    'เพิ่มความน่าเชื่อถือให้แบรนด์',
-                    'รองรับ SEO และการวัดผลทางข้อมูล'
-                ] : [
-                    'Modern responsive design for all devices',
-                    'Enhance brand credibility and trust',
-                    'SEO-ready with comprehensive analytics'
-                ],
-                'icon_svg' => '
-                    <svg class="w-20 h-20 sm:w-24 sm:h-24 drop-shadow-sm shrink-0" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect x="8" y="18" width="80" height="60" rx="6" fill="#e2e8f0"/>
-                        <path d="M8 24C8 20.6863 10.6863 18 14 18H82C85.3137 18 88 20.6863 88 24V28H8V24Z" fill="#1e293b"/>
-                        <circle cx="16" cy="23" r="2.5" fill="#ef4444"/>
-                        <circle cx="23" cy="23" r="2.5" fill="#f59e0b"/>
-                        <circle cx="30" cy="23" r="2.5" fill="#10b981"/>
-                        <rect x="12" y="32" width="72" height="42" rx="3" fill="#f8fafc"/>
-                        <circle cx="48" cy="53" r="16" fill="#0284c7"/>
-                        <ellipse cx="48" cy="53" rx="8" ry="16" stroke="#bae6fd" stroke-width="1.6"/>
-                        <line x1="32" y1="53" x2="64" y2="53" stroke="#bae6fd" stroke-width="1.6"/>
-                        <line x1="36" y1="45" x2="60" y2="45" stroke="#bae6fd" stroke-width="1.4"/>
-                        <line x1="36" y1="61" x2="60" y2="61" stroke="#bae6fd" stroke-width="1.4"/>
-                    </svg>
-                '
-            ],
-            [
-                'title' => 'CUSTOMER PORTAL',
-                'subtitle' => getCurrentLang() === 'th' ? 'พอร์ทัลสำหรับลูกค้า จัดการข้อมูลและบริการได้ด้วยตนเอง' : 'Customer self-service portal to manage accounts and requests',
-                'bullets' => getCurrentLang() === 'th' ? [
-                    'เข้าดูข้อมูลและประวัติการใช้งาน',
-                    'แจ้งปัญหาและติดตามสถานะ',
-                    'เพิ่มความพึงพอใจและลดภาระงาน'
-                ] : [
-                    'Access user data and service history',
-                    'Submit inquiries and track real-time status',
-                    'Improve customer satisfaction and reduce staff workload'
-                ],
-                'icon_svg' => '
-                    <svg class="w-20 h-20 sm:w-24 sm:h-24 drop-shadow-sm shrink-0" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M42 74H54L56 80H40L42 74Z" fill="#334155"/>
-                        <rect x="34" y="80" width="28" height="3" rx="1.5" fill="#1e293b"/>
-                        <rect x="12" y="16" width="72" height="58" rx="6" fill="#1e293b"/>
-                        <circle cx="18" cy="22" r="2" fill="#ef4444"/>
-                        <circle cx="24" cy="22" r="2" fill="#f59e0b"/>
-                        <circle cx="30" cy="22" r="2" fill="#10b981"/>
-                        <rect x="16" y="27" width="64" height="42" rx="3" fill="#bae6fd"/>
-                        <rect x="25" y="32" width="46" height="32" rx="4" fill="white" stroke="#e2e8f0" stroke-width="1"/>
-                        <circle cx="37" cy="43" r="6" fill="#ef4444"/>
-                        <circle cx="37" cy="41" r="2.5" fill="white"/>
-                        <path d="M33 47C33 45 35 44 37 44C39 44 41 45 41 47" stroke="white" stroke-width="1.2" stroke-linecap="round"/>
-                        <rect x="47" y="38" width="18" height="3.5" rx="1.5" fill="#f97316"/>
-                        <rect x="47" y="44" width="14" height="2.5" rx="1" fill="#f59e0b"/>
-                        <rect x="30" y="55" width="36" height="2.5" rx="1" fill="#0284c7"/>
-                        <rect x="30" y="59" width="24" height="2" rx="1" fill="#94a3b8"/>
-                        <circle cx="82" cy="20" r="1.5" fill="#f59e0b"/>
-                        <circle cx="10" cy="38" r="1.5" fill="#0663F6"/>
-                    </svg>
-                '
-            ],
-            [
-                'title' => 'E-LEARNING PLATFORM',
-                'subtitle' => getCurrentLang() === 'th' ? 'แพลตฟอร์มการเรียนออนไลน์ครบวงจร' : 'Comprehensive e-learning and corporate training platform',
-                'bullets' => getCurrentLang() === 'th' ? [
-                    'จัดการคอร์สและบทเรียนออนไลน์',
-                    'ระบบแบบทดสอบและการติดตามผล',
-                    'ออกแบบการเรียนรู้แบบออนไลน์'
-                ] : [
-                    'Manage online courses and interactive lessons',
-                    'Quiz, examination, and progress tracking system',
-                    'Customizable online learning journeys'
-                ],
-                'icon_svg' => '
-                    <svg class="w-20 h-20 sm:w-24 sm:h-24 drop-shadow-sm shrink-0" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect x="22" y="80" width="32" height="4" rx="2" fill="#cbd5e1"/>
-                        <path d="M34 72H42L40 80H36L34 72Z" fill="#94a3b8"/>
-                        <rect x="14" y="28" width="48" height="44" rx="5" fill="#e2e8f0" stroke="#cbd5e1" stroke-width="1.5"/>
-                        <rect x="18" y="32" width="40" height="32" rx="3" fill="#f8fafc"/>
-                        <rect x="22" y="43" width="22" height="15" rx="3" fill="#ef4444"/>
-                        <path d="M31 47.5L37 50.5L31 53.5V47.5Z" fill="white"/>
-                        <rect x="20" y="60" width="26" height="4" rx="1.5" fill="#10b981"/>
-                        <rect x="22" y="64" width="22" height="2" rx="1" fill="#059669"/>
-                        <path d="M47 52C49 50 52 50 54 52" stroke="#f59e0b" stroke-width="2" stroke-linecap="round"/>
-                        <path d="M45 56C48 54 53 54 56 56" stroke="#f59e0b" stroke-width="2" stroke-linecap="round"/>
-                        <circle cx="50.5" cy="61" r="1.5" fill="#f59e0b"/>
-                        <path d="M22 24L38 18L54 24L38 30L22 24Z" fill="#475569"/>
-                        <path d="M30 27.5V33C30 35 38 37 38 37C38 37 46 35 46 33V27.5" fill="#334155"/>
-                        <path d="M48 24V32" stroke="#f59e0b" stroke-width="1.5" stroke-linecap="round"/>
-                        <circle cx="48" cy="33" r="1.5" fill="#f59e0b"/>
-                    </svg>
-                '
-            ],
-            [
-                'title' => 'E-COMMERCE PLATFORM',
-                'subtitle' => getCurrentLang() === 'th' ? 'ร้านค้าออนไลน์ รองรับการขายทุกช่องทาง' : 'Omnichannel e-commerce store with seamless checkout',
-                'bullets' => getCurrentLang() === 'th' ? [
-                    'จัดการสินค้าและคำสั่งซื้อ',
-                    'ระบบชำระเงินและโปรโมชั่น',
-                    'เชื่อมต่อขนส่งและสต็อก'
-                ] : [
-                    'Product catalog and order management',
-                    'Secure payments and promotional campaigns',
-                    'Real-time inventory and logistics sync'
-                ],
-                'icon_svg' => '
-                    <svg class="w-20 h-20 sm:w-24 sm:h-24 drop-shadow-sm shrink-0" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect x="42" y="24" width="18" height="14" rx="2" fill="#f43f5e"/>
-                        <rect x="60" y="28" width="16" height="10" rx="2" fill="#06b6d4"/>
-                        <path d="M36 38H76L70 60H40L36 38Z" fill="#fbbf24"/>
-                        <rect x="44" y="42" width="3" height="14" rx="1" fill="#f59e0b"/>
-                        <rect x="52" y="42" width="3" height="14" rx="1" fill="#f59e0b"/>
-                        <rect x="60" y="42" width="3" height="14" rx="1" fill="#f59e0b"/>
-                        <path d="M22 30H27L33 64H72" stroke="#64748b" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
-                        <circle cx="43" cy="72" r="6" fill="#334155"/>
-                        <circle cx="43" cy="72" r="2.5" fill="#94a3b8"/>
-                        <circle cx="67" cy="72" r="6" fill="#334155"/>
-                        <circle cx="67" cy="72" r="2.5" fill="#94a3b8"/>
-                    </svg>
-                '
-            ],
-            [
-                'title' => 'BOOKING / RESERVATION SYSTEM',
-                'subtitle' => getCurrentLang() === 'th' ? 'ระบบจองและนัดหมายอัตโนมัติ' : 'Automated booking and appointment scheduling system',
-                'bullets' => getCurrentLang() === 'th' ? [
-                    'จัดการตารางเวลาและคิวแบบเรียลไทม์',
-                    'แจ้งเตือนนัดหมายอัตโนมัติ',
-                    'ลดความผิดพลาดและซ้ำซ้อน'
-                ] : [
-                    'Real-time calendar and queue management',
-                    'Automated appointment notifications',
-                    'Prevent scheduling conflicts and human errors'
-                ],
-                'icon_svg' => '
-                    <svg class="w-20 h-20 sm:w-24 sm:h-24 drop-shadow-sm shrink-0" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect x="18" y="24" width="52" height="50" rx="6" fill="#e0f2fe"/>
-                        <path d="M18 30C18 26.6863 20.6863 24 24 24H64C67.3137 24 70 26.6863 70 30V34H18V30Z" fill="#f43f5e"/>
-                        <rect x="28" y="18" width="4" height="10" rx="2" fill="#cbd5e1"/>
-                        <rect x="42" y="18" width="4" height="10" rx="2" fill="#cbd5e1"/>
-                        <rect x="56" y="18" width="4" height="10" rx="2" fill="#cbd5e1"/>
-                        <circle cx="30" cy="44" r="2.5" fill="#0284c7"/>
-                        <circle cx="44" cy="44" r="2.5" fill="#0284c7"/>
-                        <circle cx="58" cy="44" r="2.5" fill="#0284c7"/>
-                        <circle cx="30" cy="56" r="2.5" fill="#0284c7"/>
-                        <circle cx="44" cy="56" r="2.5" fill="#0284c7"/>
-                        <circle cx="64" cy="64" r="16" fill="white" stroke="#f43f5e" stroke-width="3"/>
-                        <circle cx="64" cy="64" r="13" fill="#fff1f2"/>
-                        <path d="M64 56V64L69 68" stroke="#f43f5e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                '
-            ],
-            [
-                'title' => 'MEMBERSHIP / LOYALTY SYSTEM',
-                'subtitle' => getCurrentLang() === 'th' ? 'ระบบสมาชิกและสะสมคะแนน' : 'Membership management and customer loyalty rewards',
-                'bullets' => getCurrentLang() === 'th' ? [
-                    'สะสมแต้มและแลกของรางวัล',
-                    'จัดการระดับสมาชิกและสิทธิพิเศษ',
-                    'สร้างความสัมพันธ์และความภักดีต่อแบรนด์'
-                ] : [
-                    'Point accumulation and reward redemption',
-                    'Tiered membership levels and exclusive perks',
-                    'Build long-term customer engagement and loyalty'
-                ],
-                'icon_svg' => '
-                    <svg class="w-20 h-20 sm:w-24 sm:h-24 drop-shadow-sm shrink-0" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect x="18" y="32" width="60" height="42" rx="6" fill="white" stroke="#cbd5e1" stroke-width="1.5"/>
-                        <path d="M18 38C18 34.6863 20.6863 32 24 32H72C75.3137 32 78 34.6863 78 38V42H18V38Z" fill="#ef4444"/>
-                        <circle cx="34" cy="55" r="9" fill="#f97316"/>
-                        <circle cx="34" cy="52" r="4" fill="white"/>
-                        <path d="M28 62C28 59 31 58 34 58C37 58 40 59 40 62" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-                        <rect x="48" y="49" width="22" height="4" rx="2" fill="#334155"/>
-                        <rect x="48" y="56" width="16" height="3" rx="1.5" fill="#94a3b8"/>
-                        <rect x="48" y="62" width="12" height="2.5" rx="1" fill="#f59e0b"/>
-                        <polygon points="48,12 52,22 63,23 55,30 58,41 48,35 38,41 41,30 33,23 44,22" fill="#fbbf24" stroke="#d97706" stroke-width="1.5"/>
-                    </svg>
-                '
-            ],
-            [
-                'title' => 'DASHBOARD & REPORTING',
-                'subtitle' => getCurrentLang() === 'th' ? 'แดชบอร์ดสรุปและวิเคราะห์ข้อมูลธุรกิจ' : 'Business intelligence dashboard and real-time analytics',
-                'bullets' => getCurrentLang() === 'th' ? [
-                    'รายงานข้อมูลแบบเรียลไทม์',
-                    'วิเคราะห์แนวโน้มและสถิติสำคัญ',
-                    'สนับสนุนการตัดสินใจของผู้บริหาร'
-                ] : [
-                    'Real-time operational and performance reports',
-                    'Key performance metrics and trend analysis',
-                    'Data-driven decision support for leadership'
-                ],
-                'icon_svg' => '
-                    <svg class="w-20 h-20 sm:w-24 sm:h-24 drop-shadow-sm shrink-0" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M42 74H54L56 80H40L42 74Z" fill="#64748b"/>
-                        <rect x="34" y="80" width="28" height="3" rx="1.5" fill="#334155"/>
-                        <rect x="14" y="18" width="68" height="56" rx="6" fill="#0f172a"/>
-                        <rect x="18" y="22" width="60" height="42" rx="3" fill="#f8fafc"/>
-                        <circle cx="33" cy="43" r="10" fill="#0284c7"/>
-                        <path d="M33 43L33 33A10 10 0 0 1 43 43Z" fill="#fbbf24"/>
-                        <path d="M33 43L43 43A10 10 0 0 1 33 53Z" fill="#10b981"/>
-                        <rect x="50" y="44" width="4" height="12" rx="1" fill="#0663F6"/>
-                        <rect x="56" y="38" width="4" height="18" rx="1" fill="#10b981"/>
-                        <rect x="62" y="32" width="4" height="24" rx="1" fill="#f59e0b"/>
-                        <rect x="68" y="41" width="4" height="15" rx="1" fill="#f43f5e"/>
-                    </svg>
-                '
-            ],
-            [
-                'title' => 'CMS / CONTENT MANAGEMENT',
-                'subtitle' => getCurrentLang() === 'th' ? 'ระบบจัดการเนื้อหาเว็บไซต์อย่างอิสระ' : 'Intuitive and flexible Content Management System',
-                'bullets' => getCurrentLang() === 'th' ? [
-                    'แก้ไขข้อความและรูปภาพได้ง่าย',
-                    'จัดการโครงสร้างเว็บและบทความ',
-                    'อัปเดตข้อมูลได้เองโดยไม่ต้องเขียนโค้ด'
-                ] : [
-                    'Easy-to-edit text, media, and banners',
-                    'Manage web pages, categories, and articles',
-                    'Self-manage content with zero coding required'
-                ],
-                'icon_svg' => '
-                    <svg class="w-20 h-20 sm:w-24 sm:h-24 drop-shadow-sm shrink-0" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M22 20C22 17.7909 23.7909 16 26 16H54L72 34V76C72 78.2091 70.2091 80 68 80H26C23.7909 80 22 78.2091 22 76V20Z" fill="#0ea5e9"/>
-                        <path d="M54 16V30C54 32.2091 55.7909 34 58 34H72" fill="#38bdf8"/>
-                        <rect x="30" y="40" width="22" height="3.5" rx="1.5" fill="white"/>
-                        <rect x="30" y="48" width="28" height="3.5" rx="1.5" fill="white"/>
-                        <rect x="30" y="56" width="20" height="3.5" rx="1.5" fill="white"/>
-                        <g transform="translate(42, 44) rotate(-35)">
-                            <rect x="0" y="0" width="10" height="28" rx="2" fill="#fbbf24"/>
-                            <path d="M0 28L5 36L10 28H0Z" fill="#fed7aa"/>
-                            <path d="M3.5 34L5 36L6.5 34H3.5Z" fill="#1e293b"/>
-                            <rect x="0" y="0" width="10" height="6" fill="#f43f5e"/>
-                        </g>
-                    </svg>
-                '
-            ],
-            [
-                'title' => 'INTRANET / EMPLOYEE PORTAL',
-                'subtitle' => getCurrentLang() === 'th' ? 'พอร์ทัลบุคลากรและระบบทำงานภายใน' : 'Employee intranet and internal operations portal',
-                'bullets' => getCurrentLang() === 'th' ? [
-                    'ศูนย์รวมข่าวสารและประกาศองค์กร',
-                    'ระบบส่งคำร้องและขออนุมัติออนไลน์',
-                    'ส่งเสริมการทำงานร่วมกันในทีม'
-                ] : [
-                    'Centralized corporate news and announcements',
-                    'Online e-forms and automated approval workflows',
-                    'Promote seamless teamwork and efficiency'
-                ],
-                'icon_svg' => '
-                    <svg class="w-20 h-20 sm:w-24 sm:h-24 drop-shadow-sm shrink-0" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect x="42" y="12" width="12" height="6" rx="2" fill="#f59e0b"/>
-                        <rect x="45" y="18" width="6" height="8" fill="#94a3b8"/>
-                        <rect x="18" y="24" width="60" height="52" rx="6" fill="#e0f2fe" stroke="#38bdf8" stroke-width="2"/>
-                        <rect x="36" y="27" width="24" height="4" rx="2" fill="#94a3b8"/>
-                        <circle cx="34" cy="48" r="9" fill="#ef4444"/>
-                        <circle cx="34" cy="45" r="4" fill="white"/>
-                        <path d="M28 55C28 52 31 51 34 51C37 51 40 52 40 55" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-                        <rect x="48" y="42" width="22" height="4" rx="2" fill="#0284c7"/>
-                        <rect x="48" y="50" width="16" height="3" rx="1.5" fill="#f59e0b"/>
-                        <rect x="48" y="56" width="18" height="3" rx="1.5" fill="#64748b"/>
-                        <rect x="26" y="66" width="44" height="2.5" rx="1" fill="#cbd5e1"/>
-                    </svg>
-                '
-            ],
-            [
-                'title' => 'API & SYSTEM INTEGRATION',
-                'subtitle' => getCurrentLang() === 'th' ? 'ระบบเชื่อมต่อและผสานรวมข้อมูล API' : 'API integration and seamless data synchronization',
-                'bullets' => getCurrentLang() === 'th' ? [
-                    'เชื่อมต่อ ERP, CRM และระบบภายนอก',
-                    'ถ่ายโอนข้อมูลอัตโนมัติและปลอดภัย',
-                    'สถาปัตยกรรมยืดหยุ่น รองรับการขยายตัว'
-                ] : [
-                    'Connect with ERP, CRM, and 3rd-party services',
-                    'Automated and highly secure data exchange',
-                    'Scalable architecture built for future growth'
-                ],
-                'icon_svg' => '
-                    <svg class="w-20 h-20 sm:w-24 sm:h-24 drop-shadow-sm shrink-0" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M38 24C32 24 28 28 28 34V42C28 46 24 48 20 48C24 48 28 50 28 54V62C28 68 32 72 38 72" stroke="#0284c7" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
-                        <path d="M58 24C64 24 68 28 68 34V42C68 46 72 48 76 48C72 48 68 50 68 54V62C68 68 64 72 58 72" stroke="#0663F6" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                '
-            ],
-        ];
-        ?>
-
-        <!-- Solutions Grid (Exact Match to Mockup) -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 dp-solutions-grid">
-            <?php foreach ($solutions as $sol): ?>
-                <div class="dp-solution-card bg-white rounded-2xl p-6 sm:p-7 border border-slate-200/80 shadow-[0_4px_20px_rgba(0,0,0,0.03)] flex items-start gap-5 sm:gap-6 group">
-                    <div class="shrink-0 flex items-center justify-center">
-                        <?= $sol['icon_svg'] ?>
-                    </div>
-                    <div class="flex-1 min-w-0">
-                        <h3 class="text-[#0663F6] text-lg sm:text-xl font-extrabold tracking-tight mb-1 group-hover:text-blue-700 transition-colors">
-                            <?= e($sol['title']) ?>
-                        </h3>
-                        <p class="text-slate-700 text-xs sm:text-[13px] font-semibold mb-2.5 leading-snug">
-                            <?= e($sol['subtitle']) ?>
-                        </p>
-                        <ul class="space-y-1.5 text-slate-500 text-xs sm:text-[13px]">
-                            <?php foreach ($sol['bullets'] as $bullet): ?>
-                                <li class="flex items-center gap-2">
-                                    <span class="w-1.5 h-1.5 rounded-full bg-[#0663F6] shrink-0"></span>
-                                    <span><?= e($bullet) ?></span>
-                                </li>
-                            <?php endforeach; ?>
-                        </ul>
-                    </div>
+<section id="dp-solutions" class="bg-white pt-8 lg:pt-14 pb-12 lg:pb-20 font-sans dp-solutions-section">
+    <div class="mx-auto w-full max-w-[1720px] px-4 sm:px-6 lg:px-10">
+        <div class="lg:ml-12 ipad-pro-ml-0 xl:ml-24 lg:mr-12 xl:mr-24">
+            
+            <!-- Header (Exact Match to Mockup) -->
+            <div class="text-center max-w-3xl mx-auto mb-8 lg:mb-10">
+                <div class="inline-flex flex-col items-start mb-2">
+                    <span class="text-[#0663F6] font-extrabold text-2xl sm:text-3xl tracking-tight uppercase">
+                        DIGITAL PLATFORM SOLUTIONS
+                    </span>
+                    <div class="w-14 h-[3.5px] bg-[#0663F6] mt-1 mb-2.5"></div>
                 </div>
-            <?php endforeach; ?>
-        </div>
+                <h2 class="text-base sm:text-lg md:text-xl font-bold text-[#043B94] leading-snug">
+                    <?= getCurrentLang() === 'th' ? 'ครบทุกโซลูชัน ตอบโจทย์ทุกการใช้งานขององค์กร' : 'All-in-one solutions answering every enterprise operational need' ?>
+                </h2>
+            </div>
 
+            <?php
+            $solutions = [
+                [
+                    'title' => 'CORPORATE WEBSITE',
+                    'subtitle' => getCurrentLang() === 'th' ? 'เว็บไซต์องค์กรเพื่อการสื่อสารภาพลักษณ์และข้อมูลอย่างมืออาชีพ' : 'Corporate websites for professional branding and company communication',
+                    'bullets' => getCurrentLang() === 'th' ? [
+                        'ดีไซน์สวย รองรับทุกอุปกรณ์',
+                        'เพิ่มความน่าเชื่อถือให้แบรนด์',
+                        'รองรับ SEO และการวัดผลทางข้อมูล'
+                    ] : [
+                        'Modern responsive design for all devices',
+                        'Enhance brand credibility and trust',
+                        'SEO-ready with comprehensive analytics'
+                    ],
+                    'icon_svg' => '
+                        <svg class="w-20 h-20 sm:w-24 sm:h-24 drop-shadow-sm shrink-0" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="8" y="18" width="80" height="60" rx="6" fill="#e2e8f0"/>
+                            <rect x="12" y="22" width="72" height="52" rx="4" fill="#ffffff"/>
+                            <rect x="12" y="22" width="72" height="12" fill="#0663F6"/>
+                            <circle cx="18" cy="28" r="2.5" fill="#f87171"/>
+                            <circle cx="25" cy="28" r="2.5" fill="#fbbf24"/>
+                            <circle cx="32" cy="28" r="2.5" fill="#34d399"/>
+                            <rect x="18" y="42" width="28" height="24" rx="3" fill="#eff6ff"/>
+                            <path d="M22 58L28 50L34 55L42 45" stroke="#0663F6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            <rect x="52" y="42" width="26" height="5" rx="2.5" fill="#94a3b8"/>
+                            <rect x="52" y="51" width="20" height="4" rx="2" fill="#cbd5e1"/>
+                            <rect x="52" y="59" width="24" height="4" rx="2" fill="#cbd5e1"/>
+                        </svg>
+                    ',
+                ],
+                [
+                    'title' => 'CUSTOM WEB APPLICATION',
+                    'subtitle' => getCurrentLang() === 'th' ? 'เว็บแอปพลิเคชันเฉพาะทาง เพื่อกระบวนการทำงานที่เฉพาะเจาะจง' : 'Tailored web apps designed for distinct business logic & workflows',
+                    'bullets' => getCurrentLang() === 'th' ? [
+                        'ออกแบบตาม Requirement จริง',
+                        'เชื่อมต่อฐานข้อมูลและ API',
+                        'ระบบสิทธิ์และความปลอดภัยขั้นสูง'
+                    ] : [
+                        'Built strictly to your custom specifications',
+                        'Seamless database & API integration',
+                        'Enterprise-grade security and role-based access'
+                    ],
+                    'icon_svg' => '
+                        <svg class="w-20 h-20 sm:w-24 sm:h-24 drop-shadow-sm shrink-0" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="10" y="14" width="76" height="68" rx="8" fill="#1e293b"/>
+                            <rect x="16" y="20" width="64" height="10" rx="2" fill="#334155"/>
+                            <circle cx="22" cy="25" r="2.5" fill="#ef4444"/>
+                            <circle cx="29" cy="25" r="2.5" fill="#eab308"/>
+                            <circle cx="36" cy="25" r="2.5" fill="#22c55e"/>
+                            <path d="M24 45L34 53L24 61" stroke="#38bdf8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                            <line x1="40" y1="61" x2="54" y2="61" stroke="#38bdf8" stroke-width="3" stroke-linecap="round"/>
+                            <rect x="62" y="42" width="16" height="24" rx="3" fill="#0ea5e9"/>
+                            <circle cx="70" cy="54" r="4" fill="#ffffff"/>
+                        </svg>
+                    ',
+                ],
+                [
+                    'title' => 'E-COMMERCE PLATFORM',
+                    'subtitle' => getCurrentLang() === 'th' ? 'แพลตฟอร์มร้านค้าออนไลน์ จัดการสต็อก ชำระเงิน และขนส่งครบวงจร' : 'End-to-end online commerce managing inventory, payments & shipping',
+                    'bullets' => getCurrentLang() === 'th' ? [
+                        'ระบบชำระเงินหลากหลาย ปลอดภัย',
+                        'จัดการสต็อกและคำสั่งซื้อเรียลไทม์',
+                        'รองรับโปรโมชันและส่วนลดซับซ้อน'
+                    ] : [
+                        'Multi-gateway secure payment integrations',
+                        'Real-time inventory and automated order management',
+                        'Dynamic promotion engines and coupon logic'
+                    ],
+                    'icon_svg' => '
+                        <svg class="w-20 h-20 sm:w-24 sm:h-24 drop-shadow-sm shrink-0" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="12" y="20" width="72" height="60" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+                            <path d="M24 36H72" stroke="#e2e8f0" stroke-width="2"/>
+                            <rect x="22" y="44" width="24" height="26" rx="4" fill="#eff6ff" stroke="#93c5fd" stroke-width="1.5"/>
+                            <path d="M30 44V40C30 37.7909 31.7909 36 34 36C36.2091 36 38 37.7909 38 40V44" stroke="#0663F6" stroke-width="2"/>
+                            <path d="M52 48L56 52L68 40" stroke="#10b981" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                            <rect x="52" y="60" width="22" height="6" rx="3" fill="#f59e0b"/>
+                        </svg>
+                    ',
+                ],
+                [
+                    'title' => 'INTRANET & PORTAL SYSTEM',
+                    'subtitle' => getCurrentLang() === 'th' ? 'พอร์ทัลภายในองค์กร รวมศูนย์ข้อมูลและเครื่องมือสื่อสารของพนักงาน' : 'Enterprise intranet portal uniting corporate resources and staff collaboration',
+                    'bullets' => getCurrentLang() === 'th' ? [
+                        'รวมข่าวสารและประกาศองค์กร',
+                        'ระบบขออนุมัติและเอกสารออนไลน์',
+                        'เชื่อมต่อ Active Directory / Single Sign-On'
+                    ] : [
+                        'Centralized corporate news and bulletin boards',
+                        'Digital approval workflows and e-document systems',
+                        'Active Directory and seamless Single Sign-On (SSO)'
+                    ],
+                    'icon_svg' => '
+                        <svg class="w-20 h-20 sm:w-24 sm:h-24 drop-shadow-sm shrink-0" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="12" y="16" width="72" height="64" rx="6" fill="#0f172a"/>
+                            <rect x="18" y="22" width="26" height="52" rx="4" fill="#1e293b"/>
+                            <rect x="48" y="22" width="30" height="24" rx="4" fill="#0284c7"/>
+                            <rect x="48" y="50" width="30" height="24" rx="4" fill="#334155"/>
+                            <circle cx="31" cy="36" r="6" fill="#38bdf8"/>
+                            <path d="M22 56C22 51.5817 25.5817 48 30 48H32C36.4183 48 40 51.5817 40 56V58H22V56Z" fill="#38bdf8"/>
+                            <line x1="54" y1="32" x2="72" y2="32" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round"/>
+                            <line x1="54" y1="38" x2="66" y2="38" stroke="#ffffff" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    ',
+                ],
+                [
+                    'title' => 'E-LEARNING PLATFORM',
+                    'subtitle' => getCurrentLang() === 'th' ? 'ระบบการเรียนรู้ออนไลน์ จัดการคอร์ส แบบทดสอบ และใบประกาศนียบัตร' : 'Learning Management System for courses, testing & certification',
+                    'bullets' => getCurrentLang() === 'th' ? [
+                        'รองรับวิดีโอ เอกสาร และข้อสอบ',
+                        'ติดตามความก้าวหน้าของผู้เรียน',
+                        'ออกใบประกาศนียบัตรอัตโนมัติ'
+                    ] : [
+                        'Rich multimedia support (video, pdf, quizzes)',
+                        'Granular learner progress and completion tracking',
+                        'Automated, tamper-proof certification generation'
+                    ],
+                    'icon_svg' => '
+                        <svg class="w-20 h-20 sm:w-24 sm:h-24 drop-shadow-sm shrink-0" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M48 18L14 34L48 50L82 34L48 18Z" fill="#0663F6"/>
+                            <path d="M24 45V62C24 62 34 70 48 70C62 70 72 62 72 62V45" stroke="#0284c7" stroke-width="4" stroke-linecap="round"/>
+                            <path d="M82 34V60" stroke="#f59e0b" stroke-width="3" stroke-linecap="round"/>
+                            <circle cx="82" cy="62" r="3" fill="#f59e0b"/>
+                            <rect x="36" y="76" width="24" height="6" rx="3" fill="#94a3b8"/>
+                        </svg>
+                    ',
+                ],
+                [
+                    'title' => 'CRM & CUSTOMER PORTAL',
+                    'subtitle' => getCurrentLang() === 'th' ? 'ระบบบริหารความสัมพันธ์ลูกค้า บันทึกประวัติ และบริการหลังการขาย' : 'CRM and self-service portals optimizing lifecycle management',
+                    'bullets' => getCurrentLang() === 'th' ? [
+                        'บันทึกประวัติการติดต่อครบถ้วน',
+                        'ระบบ Ticket และบริการหลังการขาย',
+                        'Customer Portal ใช้งานง่าย'
+                    ] : [
+                        '360-degree customer interaction histories',
+                        'Automated ticketing and support management',
+                        'Intuitive self-service client portals'
+                    ],
+                    'icon_svg' => '
+                        <svg class="w-20 h-20 sm:w-24 sm:h-24 drop-shadow-sm shrink-0" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="14" y="16" width="68" height="64" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+                            <circle cx="48" cy="38" r="12" fill="#e0f2fe"/>
+                            <circle cx="48" cy="36" r="6" fill="#0284c7"/>
+                            <path d="M34 58C34 53 39 50 48 50C57 50 62 53 62 58" stroke="#0284c7" stroke-width="3" stroke-linecap="round"/>
+                            <rect x="22" y="66" width="52" height="6" rx="3" fill="#f1f5f9"/>
+                            <path d="M68 22L76 30L68 38" stroke="#f59e0b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    ',
+                ],
+                [
+                    'title' => 'BIG DATA & ANALYTICS',
+                    'subtitle' => getCurrentLang() === 'th' ? 'แพลตฟอร์มจัดการและวิเคราะห์ข้อมูลขนาดใหญ่ เพื่อการตัดสินใจที่แม่นยำ' : 'Scalable data warehousing & advanced analytics for strategic decisions',
+                    'bullets' => getCurrentLang() === 'th' ? [
+                        'รวบรวมข้อมูลจากหลากหลายแหล่ง',
+                        'ประมวลผลข้อมูลขนาดใหญ่รวดเร็ว',
+                        'วิเคราะห์แนวโน้มและพฤติกรรม'
+                    ] : [
+                        'Unified ingestion across diverse sources',
+                        'Ultra-fast distributed data processing',
+                        'Predictive modeling and consumer behavior analysis'
+                    ],
+                    'icon_svg' => '
+                        <svg class="w-20 h-20 sm:w-24 sm:h-24 drop-shadow-sm shrink-0" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <ellipse cx="48" cy="24" rx="30" ry="10" fill="#0663F6"/>
+                            <path d="M18 24V44C18 49.5 31.4 54 48 54C64.6 54 78 49.5 78 44V24" fill="#0284c7" fill-opacity="0.8"/>
+                            <ellipse cx="48" cy="44" rx="30" ry="10" fill="#0284c7"/>
+                            <path d="M18 44V64C18 69.5 31.4 74 48 74C64.6 74 78 69.5 78 64V44" fill="#0369a1"/>
+                            <ellipse cx="48" cy="64" rx="30" ry="10" fill="#0369a1"/>
+                            <path d="M52 48L60 38L70 44L82 30" stroke="#f59e0b" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    ',
+                ],
+                [
+                    'title' => 'CUSTOM DASHBOARD & BI',
+                    'subtitle' => getCurrentLang() === 'th' ? 'แดชบอร์ดสรุปผลแบบเรียลไทม์ มองเห็นภาพรวมธุรกิจได้ในหน้าเดียว' : 'Executive real-time BI dashboards visualizing entire operations on one pane',
+                    'bullets' => getCurrentLang() === 'th' ? [
+                        'แสดงผลข้อมูลสำคัญแบบเรียลไทม์',
+                        'กราฟและ Visualizations สวยงาม',
+                        'กำหนดสิทธิ์การดูข้อมูลตามตำแหน่ง'
+                    ] : [
+                        'Real-time automated KPI scorecards',
+                        'Rich, interactive chart visualizers',
+                        'Role-based granular reporting permissions'
+                    ],
+                    'icon_svg' => '
+                        <svg class="w-20 h-20 sm:w-24 sm:h-24 drop-shadow-sm shrink-0" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="10" y="14" width="76" height="68" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+                            <rect x="16" y="20" width="64" height="8" rx="2" fill="#f1f5f9"/>
+                            <rect x="18" y="48" width="12" height="26" rx="2" fill="#38bdf8"/>
+                            <rect x="34" y="36" width="12" height="38" rx="2" fill="#0ea5e9"/>
+                            <rect x="50" y="54" width="12" height="20" rx="2" fill="#0284c7"/>
+                            <rect x="66" y="42" width="12" height="32" rx="2" fill="#0369a1"/>
+                            <path d="M22 42Q42 30 72 26" stroke="#f59e0b" stroke-width="3" stroke-linecap="round"/>
+                        </svg>
+                    ',
+                ],
+                [
+                    'title' => 'CHATBOT & AUTOMATION',
+                    'subtitle' => getCurrentLang() === 'th' ? 'แชทบอท AI และระบบตอบกลับอัตโนมัติ 24 ชั่วโมง ลดภาระทีมงาน' : '24/7 AI-driven chatbots and automated conversational responders',
+                    'bullets' => getCurrentLang() === 'th' ? [
+                        'ตอบคำถามอัตโนมัติได้ 24 ชม.',
+                        'เชื่อมต่อ LINE OA และ Facebook',
+                        'ส่งต่อเคสให้เจ้าหน้าที่ได้อย่างราบรื่น'
+                    ] : [
+                        '24/7 immediate intelligent inquiry responses',
+                        'Turnkey LINE OA & Facebook Messenger hooks',
+                        'Smooth, automated human agent escalations'
+                    ],
+                    'icon_svg' => '
+                        <svg class="w-20 h-20 sm:w-24 sm:h-24 drop-shadow-sm shrink-0" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="18" y="22" width="60" height="52" rx="16" fill="#0663F6"/>
+                            <circle cx="36" cy="44" r="6" fill="#ffffff"/>
+                            <circle cx="60" cy="44" r="6" fill="#ffffff"/>
+                            <circle cx="37" cy="44" r="2.5" fill="#0f172a"/>
+                            <circle cx="61" cy="44" r="2.5" fill="#0f172a"/>
+                            <path d="M40 58C44 61 52 61 56 58" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/>
+                            <line x1="48" y1="12" x2="48" y2="22" stroke="#0663F6" stroke-width="4" stroke-linecap="round"/>
+                            <circle cx="48" cy="10" r="4" fill="#38bdf8"/>
+                            <rect x="10" y="40" width="8" height="16" rx="4" fill="#38bdf8"/>
+                            <rect x="78" y="40" width="8" height="16" rx="4" fill="#38bdf8"/>
+                        </svg>
+                    ',
+                ],
+                [
+                    'title' => 'DATA INTEGRATION & API',
+                    'subtitle' => getCurrentLang() === 'th' ? 'บริการเชื่อมต่อระบบ ฐานข้อมูล และ API ให้ทำงานร่วมกันได้อย่างไร้รอยต่อ' : 'Enterprise data integration connecting legacy databases and modern APIs',
+                    'bullets' => getCurrentLang() === 'th' ? [
+                        'เชื่อมต่อระหว่างระบบเดิมกับระบบใหม่',
+                        'สร้างและจัดการ API ที่ปลอดภัย',
+                        'ลดความซ้ำซ้อนของการบันทึกข้อมูล'
+                    ] : [
+                        'Bridge legacy monoliths with modern microservices',
+                        'Architect and maintain secure, high-throughput APIs',
+                        'Eliminate duplicate data entries and sync errors'
+                    ],
+                    'icon_svg' => '
+                        <svg class="w-20 h-20 sm:w-24 sm:h-24 drop-shadow-sm shrink-0" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="28" cy="30" r="12" fill="#0284c7"/>
+                            <circle cx="68" cy="30" r="12" fill="#0ea5e9"/>
+                            <circle cx="48" cy="66" r="14" fill="#0663F6"/>
+                            <path d="M37 36L43 54" stroke="#cbd5e1" stroke-width="3" stroke-dasharray="4 4"/>
+                            <path d="M59 36L53 54" stroke="#cbd5e1" stroke-width="3" stroke-dasharray="4 4"/>
+                            <path d="M40 30H56" stroke="#cbd5e1" stroke-width="3"/>
+                            <circle cx="28" cy="30" r="4" fill="#ffffff"/>
+                            <circle cx="68" cy="30" r="4" fill="#ffffff"/>
+                            <circle cx="48" cy="66" r="5" fill="#ffffff"/>
+                        </svg>
+                    ',
+                ],
+            ];
+            ?>
+
+            <!-- 10 Solutions Grid (2 Columns, 5 Rows - Left Mockup Structure) -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5 lg:gap-6 dp-solutions-grid">
+                <?php foreach ($solutions as $sol): ?>
+                    <div class="gsap-dp-solution-card bg-white rounded-2xl border border-slate-100 p-5 sm:p-6 lg:p-7 shadow-[0_4px_20px_rgba(4,59,148,0.04)] flex flex-col justify-between hover:shadow-lg hover:border-blue-200 transition-all duration-300 group dp-solution-card">
+                        
+                        <!-- Top Header: Title, Subtitle, Graphic Icon -->
+                        <div class="flex items-start justify-between gap-4 mb-4">
+                            <div class="flex-1">
+                                <h3 class="text-[#043B94] font-black text-base sm:text-lg lg:text-xl tracking-tight leading-snug mb-1 group-hover:text-primary transition-colors">
+                                    <?= e($sol['title']) ?>
+                                </h3>
+                                <p class="text-slate-500 text-xs sm:text-[13px] leading-relaxed">
+                                    <?= e($sol['subtitle']) ?>
+                                </p>
+                            </div>
+                            <div class="shrink-0 transition-transform duration-300 group-hover:scale-105">
+                                <?= $sol['icon_svg'] ?>
+                            </div>
+                        </div>
+
+                        <!-- Bottom: 3 Bullet Checkpoints -->
+                        <div class="pt-3 border-t border-slate-100/80">
+                            <ul class="space-y-1.5">
+                                <?php foreach ($sol['bullets'] as $bullet): ?>
+                                    <li class="flex items-center text-xs sm:text-[13px] text-slate-600 font-medium">
+                                        <svg class="w-4 h-4 text-[#0663F6] mr-2 shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                        </svg>
+                                        <span class="leading-tight"><?= e($bullet) ?></span>
+                                    </li>
+                                <?php endforeach; ?>
+                            </ul>
+                        </div>
+
+                    </div>
+                <?php endforeach; ?>
+            </div>
+
+        </div>
     </div>
 </section>
 
@@ -1221,205 +1254,209 @@ $heroBgImage = asset_url('images/digital-platform-hero-bg.png');
      SECTION 4: 5 BUSINESS BENEFITS (Exact Left Mockup Match)
 =========================================== -->
 <section class="py-14 lg:py-20 font-sans" style="background-color: #edf4fe;">
-    <div class="mx-auto w-full max-w-7xl px-5 sm:px-6 lg:px-8">
-        
-        <!-- Header (Exact Match to Left Mockup) -->
-        <div class="text-center max-w-4xl mx-auto mb-10 lg:mb-12">
-            <h2 class="text-2xl sm:text-3xl lg:text-[32px] font-extrabold text-[#022862] leading-tight">
-                <span class="text-[#0663F6]">DIGITAL PLATFORM</span> <?= getCurrentLang() === 'th' ? 'ที่ช่วยยกระดับธุรกิจของคุณ' : ' That Elevates Your Business' ?>
-            </h2>
-        </div>
+    <div class="mx-auto w-full max-w-[1720px] px-4 sm:px-6 lg:px-10">
+        <div class="lg:ml-12 ipad-pro-ml-0 xl:ml-24 lg:mr-12 xl:mr-24">
+            
+            <!-- Header (Exact Match to Left Mockup) -->
+            <div class="text-center max-w-4xl mx-auto mb-10 lg:mb-12">
+                <h2 class="text-2xl sm:text-3xl lg:text-[32px] font-extrabold text-[#022862] leading-tight">
+                    <span class="text-[#0663F6]">DIGITAL PLATFORM</span> <?= getCurrentLang() === 'th' ? 'ที่ช่วยยกระดับธุรกิจของคุณ' : ' That Elevates Your Business' ?>
+                </h2>
+            </div>
 
-        <?php
-        $benefits = [
-            [
-                'title' => getCurrentLang() === 'th' ? 'ข้อมูลรวมศูนย์' : 'Centralized Data',
-                'desc' => getCurrentLang() === 'th' ? 'เข้าถึงข้อมูลได้ครบถ้วน<br>แม่นยำ และเป็นปัจจุบัน' : 'Access comprehensive, precise, and real-time business data.',
-                'icon_svg' => '
-                    <svg class="w-16 h-16 sm:w-20 sm:h-20 mb-5 shrink-0 drop-shadow-sm" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect x="14" y="20" width="34" height="12" rx="3" fill="#cbd5e1"/>
-                        <circle cx="20" cy="26" r="1.5" fill="#10b981"/>
-                        <circle cx="25" cy="26" r="1.5" fill="#f59e0b"/>
-                        <rect x="32" y="24.5" width="12" height="3" rx="1.5" fill="#94a3b8"/>
-                        
-                        <rect x="14" y="36" width="34" height="12" rx="3" fill="#cbd5e1"/>
-                        <circle cx="20" cy="42" r="1.5" fill="#10b981"/>
-                        <circle cx="25" cy="42" r="1.5" fill="#f59e0b"/>
-                        <rect x="32" y="40.5" width="12" height="3" rx="1.5" fill="#94a3b8"/>
+            <?php
+            $benefits = [
+                [
+                    'title' => getCurrentLang() === 'th' ? 'ข้อมูลรวมศูนย์' : 'Centralized Data',
+                    'desc' => getCurrentLang() === 'th' ? 'เข้าถึงข้อมูลได้ครบถ้วน<br>แม่นยำ และเป็นปัจจุบัน' : 'Access comprehensive, precise, and real-time business data.',
+                    'icon_svg' => '
+                        <svg class="w-16 h-16 sm:w-20 sm:h-20 mb-5 shrink-0 drop-shadow-sm" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="14" y="20" width="34" height="12" rx="3" fill="#cbd5e1"/>
+                            <circle cx="20" cy="26" r="1.5" fill="#10b981"/>
+                            <circle cx="25" cy="26" r="1.5" fill="#f59e0b"/>
+                            <rect x="32" y="24.5" width="12" height="3" rx="1.5" fill="#94a3b8"/>
+                            
+                            <rect x="14" y="36" width="34" height="12" rx="3" fill="#cbd5e1"/>
+                            <circle cx="20" cy="42" r="1.5" fill="#10b981"/>
+                            <circle cx="25" cy="42" r="1.5" fill="#f59e0b"/>
+                            <rect x="32" y="40.5" width="12" height="3" rx="1.5" fill="#94a3b8"/>
 
-                        <rect x="14" y="52" width="34" height="12" rx="3" fill="#cbd5e1"/>
-                        <circle cx="20" cy="58" r="1.5" fill="#10b981"/>
-                        <circle cx="25" cy="58" r="1.5" fill="#f59e0b"/>
-                        <rect x="32" y="56.5" width="12" height="3" rx="1.5" fill="#94a3b8"/>
+                            <rect x="14" y="52" width="34" height="12" rx="3" fill="#cbd5e1"/>
+                            <circle cx="20" cy="58" r="1.5" fill="#10b981"/>
+                            <circle cx="25" cy="58" r="1.5" fill="#f59e0b"/>
+                            <rect x="32" y="56.5" width="12" height="3" rx="1.5" fill="#94a3b8"/>
 
-                        <ellipse cx="56" cy="38" rx="13" ry="5.5" fill="#0284c7"/>
-                        <path d="M43 38v22c0 3 5.8 5.5 13 5.5s13-2.5 13-5.5V38" fill="#0369a1"/>
-                        <ellipse cx="56" cy="48" rx="13" ry="5.5" fill="#0284c7" fill-opacity="0.2" stroke="#38bdf8" stroke-width="1.2"/>
-                        <ellipse cx="56" cy="60" rx="13" ry="5.5" fill="#0284c7" stroke="#38bdf8" stroke-width="1.2"/>
-                    </svg>
-                ',
-            ],
-            [
-                'title' => getCurrentLang() === 'th' ? 'เพิ่มประสิทธิภาพ<br>การทำงาน' : 'Boost <br>Productivity',
-                'desc' => getCurrentLang() === 'th' ? 'ลดขั้นตอนซ้ำซ้อน ทำงานไว<br>และลดต้นทุน' : 'Streamline workflows, work faster, and reduce operating costs.',
-                'icon_svg' => '
-                    <svg class="w-16 h-16 sm:w-20 sm:h-20 mb-5 shrink-0 drop-shadow-sm" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M40 18l3 4 5-1 1 5 5 1 0 5 5 2-2 5 3 4-4 3 1 5-5 1-1 5-5 0-2 5-5-2-4 3-3-4-5 1-1-5-5-1 0-5-5-2 2-5-3-4 4-3-1-5 5-1 1-5 5 0 2-5 5 2z" fill="#475569"/>
-                        <circle cx="40" cy="40" r="15" fill="#06b6d4"/>
-                        <circle cx="40" cy="40" r="7" fill="#e0f2fe"/>
-                    </svg>
-                ',
-            ],
-            [
-                'title' => getCurrentLang() === 'th' ? 'ประสบการณ์<br>ผู้ใช้ที่ดีขึ้น' : 'Enhanced User <br>Experience',
-                'desc' => getCurrentLang() === 'th' ? 'ใช้งานง่าย รวดเร็ว<br>สร้างความพึงพอใจ' : 'Intuitive, swift, and delivering utmost customer satisfaction.',
-                'icon_svg' => '
-                    <svg class="w-16 h-16 sm:w-20 sm:h-20 mb-5 shrink-0 drop-shadow-sm" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="28" cy="36" r="6" fill="#fb923c"/>
-                        <path d="M20 54c0-5 3.5-8 8-8s8 3 8 8" fill="#fb923c"/>
-                        <circle cx="52" cy="36" r="6" fill="#fb923c"/>
-                        <path d="M44 54c0-5 3.5-8 8-8s8 3 8 8" fill="#fb923c"/>
-                        <circle cx="40" cy="32" r="7" fill="#f87171"/>
-                        <path d="M30 54c0-6 4.5-10 10-10s10 4 10 10" fill="#f87171"/>
-                    </svg>
-                ',
-            ],
-            [
-                'title' => getCurrentLang() === 'th' ? 'รองรับการเติบโต' : 'Scalable for Growth',
-                'desc' => getCurrentLang() === 'th' ? 'โครงสร้างยืดหยุ่น<br>พร้อมรองรับอนาคต' : 'Flexible architecture fully prepared for future expansion.',
-                'icon_svg' => '
-                    <svg class="w-16 h-16 sm:w-20 sm:h-20 mb-5 shrink-0 drop-shadow-sm" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <line x1="16" y1="62" x2="64" y2="62" stroke="#86efac" stroke-width="2"/>
-                        <rect x="20" y="48" width="8" height="14" rx="2" fill="#86efac"/>
-                        <rect x="31" y="40" width="8" height="22" rx="2" fill="#4ade80"/>
-                        <rect x="42" y="32" width="8" height="30" rx="2" fill="#22c55e"/>
-                        <rect x="53" y="24" width="8" height="38" rx="2" fill="#16a34a"/>
-                        <path d="M22 42Q42 32 58 18" stroke="#22c55e" stroke-width="4.5" stroke-linecap="round"/>
-                        <path d="M50 16H60V26" stroke="#22c55e" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                ',
-            ],
-            [
-                'title' => getCurrentLang() === 'th' ? 'เชื่อมต่อระบบ<br>ได้ยืดหยุ่น' : 'Seamless System <br>Integration',
-                'desc' => getCurrentLang() === 'th' ? 'บูรณาการระบบเดิมได้<br>โดยไม่สะดุด' : 'Seamlessly integrate with legacy setups without disruption.',
-                'icon_svg' => '
-                    <svg class="w-16 h-16 sm:w-20 sm:h-20 mb-5 shrink-0 drop-shadow-sm" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <line x1="28" y1="24" x2="52" y2="28" stroke="#334155" stroke-width="2.5"/>
-                        <line x1="52" y1="28" x2="62" y2="44" stroke="#334155" stroke-width="2.5"/>
-                        <line x1="62" y1="44" x2="54" y2="58" stroke="#334155" stroke-width="2.5"/>
-                        <line x1="54" y1="58" x2="42" y2="66" stroke="#334155" stroke-width="2.5"/>
-                        <line x1="42" y1="66" x2="26" y2="52" stroke="#334155" stroke-width="2.5"/>
-                        <line x1="26" y1="52" x2="28" y2="24" stroke="#334155" stroke-width="2.5"/>
-                        <line x1="28" y1="24" x2="54" y2="58" stroke="#334155" stroke-width="2"/>
-                        <line x1="26" y1="52" x2="52" y2="28" stroke="#334155" stroke-width="2"/>
-                        <circle cx="28" cy="24" r="5" fill="#f43f5e"/>
-                        <circle cx="52" cy="28" r="5" fill="#0284c7"/>
-                        <circle cx="62" cy="44" r="5" fill="#84cc16"/>
-                        <circle cx="54" cy="58" r="5" fill="#f59e0b"/>
-                        <circle cx="42" cy="66" r="5" fill="#0663F6"/>
-                        <circle cx="26" cy="52" r="5" fill="#a855f7"/>
-                    </svg>
-                ',
-            ],
-        ];
-        ?>
+                            <ellipse cx="56" cy="38" rx="13" ry="5.5" fill="#0284c7"/>
+                            <path d="M43 38v22c0 3 5.8 5.5 13 5.5s13-2.5 13-5.5V38" fill="#0369a1"/>
+                            <ellipse cx="56" cy="48" rx="13" ry="5.5" fill="#0284c7" fill-opacity="0.2" stroke="#38bdf8" stroke-width="1.2"/>
+                            <ellipse cx="56" cy="60" rx="13" ry="5.5" fill="#0284c7" stroke="#38bdf8" stroke-width="1.2"/>
+                        </svg>
+                    ',
+                ],
+                [
+                    'title' => getCurrentLang() === 'th' ? 'เพิ่มประสิทธิภาพ<br>การทำงาน' : 'Boost <br>Productivity',
+                    'desc' => getCurrentLang() === 'th' ? 'ลดขั้นตอนซ้ำซ้อน ทำงานไว<br>และลดต้นทุน' : 'Streamline workflows, work faster, and reduce operating costs.',
+                    'icon_svg' => '
+                        <svg class="w-16 h-16 sm:w-20 sm:h-20 mb-5 shrink-0 drop-shadow-sm" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M40 18l3 4 5-1 1 5 5 1 0 5 5 2-2 5 3 4-4 3 1 5-5 1-1 5-5 0-2 5-5-2-4 3-3-4-5 1-1-5-5-1 0-5-5-2 2-5-3-4 4-3-1-5 5-1 1-5 5 0 2-5 5 2z" fill="#475569"/>
+                            <circle cx="40" cy="40" r="15" fill="#06b6d4"/>
+                            <circle cx="40" cy="7" r="7" fill="#e0f2fe"/>
+                        </svg>
+                    ',
+                ],
+                [
+                    'title' => getCurrentLang() === 'th' ? 'ประสบการณ์<br>ผู้ใช้ที่ดีขึ้น' : 'Enhanced User <br>Experience',
+                    'desc' => getCurrentLang() === 'th' ? 'ใช้งานง่าย รวดเร็ว<br>สร้างความพึงพอใจ' : 'Intuitive, swift, and delivering utmost customer satisfaction.',
+                    'icon_svg' => '
+                        <svg class="w-16 h-16 sm:w-20 sm:h-20 mb-5 shrink-0 drop-shadow-sm" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="28" cy="36" r="6" fill="#fb923c"/>
+                            <path d="M20 54c0-5 3.5-8 8-8s8 3 8 8" fill="#fb923c"/>
+                            <circle cx="52" cy="36" r="6" fill="#fb923c"/>
+                            <path d="M44 54c0-5 3.5-8 8-8s8 3 8 8" fill="#fb923c"/>
+                            <circle cx="40" cy="32" r="7" fill="#f87171"/>
+                            <path d="M30 54c0-6 4.5-10 10-10s10 4 10 10" fill="#f87171"/>
+                        </svg>
+                    ',
+                ],
+                [
+                    'title' => getCurrentLang() === 'th' ? 'รองรับการเติบโต' : 'Scalable for Growth',
+                    'desc' => getCurrentLang() === 'th' ? 'โครงสร้างยืดหยุ่น<br>พร้อมรองรับอนาคต' : 'Flexible architecture fully prepared for future expansion.',
+                    'icon_svg' => '
+                        <svg class="w-16 h-16 sm:w-20 sm:h-20 mb-5 shrink-0 drop-shadow-sm" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <line x1="16" y1="62" x2="64" y2="62" stroke="#86efac" stroke-width="2"/>
+                            <rect x="20" y="48" width="8" height="14" rx="2" fill="#86efac"/>
+                            <rect x="31" y="40" width="8" height="22" rx="2" fill="#4ade80"/>
+                            <rect x="42" y="32" width="8" height="30" rx="2" fill="#22c55e"/>
+                            <rect x="53" y="24" width="8" height="38" rx="2" fill="#16a34a"/>
+                            <path d="M22 42Q42 32 58 18" stroke="#22c55e" stroke-width="4.5" stroke-linecap="round"/>
+                            <path d="M50 16H60V26" stroke="#22c55e" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    ',
+                ],
+                [
+                    'title' => getCurrentLang() === 'th' ? 'เชื่อมต่อระบบ<br>ได้ยืดหยุ่น' : 'Seamless System <br>Integration',
+                    'desc' => getCurrentLang() === 'th' ? 'บูรณาการระบบเดิมได้<br>โดยไม่สะดุด' : 'Seamlessly integrate with legacy setups without disruption.',
+                    'icon_svg' => '
+                        <svg class="w-16 h-16 sm:w-20 sm:h-20 mb-5 shrink-0 drop-shadow-sm" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <line x1="28" y1="24" x2="52" y2="28" stroke="#334155" stroke-width="2.5"/>
+                            <line x1="52" y1="28" x2="62" y2="44" stroke="#334155" stroke-width="2.5"/>
+                            <line x1="62" y1="44" x2="54" y2="58" stroke="#334155" stroke-width="2.5"/>
+                            <line x1="54" y1="58" x2="42" y2="66" stroke="#334155" stroke-width="2.5"/>
+                            <line x1="42" y1="66" x2="26" y2="52" stroke="#334155" stroke-width="2.5"/>
+                            <line x1="26" y1="52" x2="28" y2="24" stroke="#334155" stroke-width="2.5"/>
+                            <line x1="28" y1="24" x2="54" y2="58" stroke="#334155" stroke-width="2"/>
+                            <line x1="26" y1="52" x2="52" y2="28" stroke="#334155" stroke-width="2"/>
+                            <circle cx="28" cy="24" r="5" fill="#f43f5e"/>
+                            <circle cx="52" cy="28" r="5" fill="#0284c7"/>
+                            <circle cx="62" cy="44" r="5" fill="#84cc16"/>
+                            <circle cx="54" cy="58" r="5" fill="#f59e0b"/>
+                            <circle cx="42" cy="66" r="5" fill="#0663F6"/>
+                            <circle cx="26" cy="52" r="5" fill="#a855f7"/>
+                        </svg>
+                    ',
+                ],
+            ];
+            ?>
 
-        <!-- 5 Cards Row Grid (Exact Match to Left Mockup) -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 sm:gap-5 dp-benefits-grid">
-            <?php foreach ($benefits as $idx => $b): ?>
-                <div class="bg-white rounded-2xl px-4 py-8 sm:px-5 sm:py-9 lg:px-5 lg:py-10 text-center border border-slate-100 shadow-[0_8px_30px_rgba(4,59,148,0.06)] flex flex-col items-center group hover:shadow-lg transition-all duration-300 <?= $idx === 4 ? 'dp-benefit-card-last' : '' ?>">
-                    <?= $b['icon_svg'] ?>
-                    <div class="dp-benefit-content flex flex-col items-center">
-                        <h3 class="text-[#0663F6] font-bold text-base sm:text-lg mb-3 leading-snug min-h-[48px] flex items-center justify-center">
-                            <?= $b['title'] ?>
-                        </h3>
-                        <p class="text-slate-500 text-xs sm:text-[13px] leading-relaxed mt-auto">
-                            <?= $b['desc'] ?>
-                        </p>
+            <!-- 5 Cards Row Grid (Exact Match to Left Mockup) -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 sm:gap-5 dp-benefits-grid">
+                <?php foreach ($benefits as $idx => $b): ?>
+                    <div class="bg-white rounded-2xl px-4 py-8 sm:px-5 sm:py-9 lg:px-5 lg:py-10 text-center border border-slate-100 shadow-[0_8px_30px_rgba(4,59,148,0.06)] flex flex-col items-center group hover:shadow-lg transition-all duration-300 <?= $idx === 4 ? 'dp-benefit-card-last' : '' ?>">
+                        <?= $b['icon_svg'] ?>
+                        <div class="dp-benefit-content flex flex-col items-center">
+                            <h3 class="text-[#0663F6] font-bold text-base sm:text-lg mb-3 leading-snug min-h-[48px] flex items-center justify-center">
+                                <?= $b['title'] ?>
+                            </h3>
+                            <p class="text-slate-500 text-xs sm:text-[13px] leading-relaxed mt-auto">
+                                <?= $b['desc'] ?>
+                            </p>
+                        </div>
                     </div>
-                </div>
-            <?php endforeach; ?>
-        </div>
+                <?php endforeach; ?>
+            </div>
 
+        </div>
     </div>
 </section>
 
 <!-- ==========================================
      SECTION 5: PORTFOLIO SHOWCASE
 =========================================== -->
-<section class="bg-white py-14 lg:py-20 font-sans">
-    <div class="mx-auto w-full max-w-7xl px-5 sm:px-6 lg:px-8">
-        
-        <!-- Header (Exact Match to Mockup) -->
-        <div class="mb-10 lg:mb-12">
-            <div class="inline-flex flex-col items-start" style="display: inline-flex; flex-direction: column; align-items: flex-start;">
-                <h2 class="text-2xl sm:text-3xl font-extrabold text-[#0663F6] tracking-tight" style="color: #0663F6; font-size: 1.875rem; font-weight: 800;">
-                    <?= getCurrentLang() === 'th' ? 'ตัวอย่างผลงานของเรา' : 'Selected Case Studies' ?>
-                </h2>
-                <div class="w-12 h-[3.5px] bg-[#0663F6] mt-1.5" style="width: 48px; height: 3.5px; background-color: #0663F6; margin-top: 6px;"></div>
-            </div>
-        </div>
-
-        <?php
-        $showcases = [
-            [
-                'title' => 'IPM Club',
-                'category' => 'E-learning',
-                'desc' => getCurrentLang() === 'th' ? 'แพลตฟอร์มการเรียนรู้ออนไลน์และศูนย์รวมหลักสูตรพัฒนาบุคลากร' : 'Online learning platform and enterprise workforce training hub',
-                'image' => asset_url('images/service-home.png'),
-            ],
-            [
-                'title' => 'Yamaha RAID',
-                'category' => 'E-commerce',
-                'desc' => getCurrentLang() === 'th' ? 'ระบบจัดการแคตตาล็อกอะไหล่และสั่งซื้อออนไลน์แบบ B2B' : 'B2B online spare parts catalog and order management system',
-                'image' => asset_url('images/yamaha.png'),
-            ],
-            [
-                'title' => 'Plaas1',
-                'category' => 'Intranet',
-                'desc' => getCurrentLang() === 'th' ? 'พอร์ทัลศูนย์กลางข้อมูลและการสื่อสารภายในองค์กรระดับสูง' : 'Enterprise intranet data portal and corporate communications',
-                'image' => asset_url('images/ab.png'),
-            ],
-            [
-                'title' => 'RE-Inn',
-                'category' => 'CMS',
-                'desc' => getCurrentLang() === 'th' ? 'ระบบบริหารจัดการเนื้อหาและอสังหาริมทรัพย์ยุคใหม่' : 'Modern property CMS and real estate management platform',
-                'image' => asset_url('images/story.png'),
-            ],
-        ];
-        ?>
-
-        <!-- 4 Mockup Showcase Cards Grid -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 dp-showcase-grid">
-            <?php foreach ($showcases as $item): ?>
-                <div class="gsap-dp-portfolio-card dp-port-card block bg-white rounded-2xl overflow-hidden border border-slate-100 shadow-sm hover:border-blue-200 group">
-                    <!-- Monitor / Device Frame -->
-                    <div class="p-3 bg-slate-50 border-b border-slate-100 flex items-center gap-1.5">
-                        <span class="w-2.5 h-2.5 rounded-full bg-red-400"></span>
-                        <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
-                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
-                        <span class="text-[11px] text-slate-400 font-mono ml-2 truncate">webpark.co.th/case/<?= strtolower(str_replace(' ', '-', $item['title'])) ?></span>
-                    </div>
-                    <div class="h-48 overflow-hidden bg-slate-100 relative">
-                        <img src="<?= e($item['image']) ?>" alt="<?= e($item['title']) ?>" class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105" onerror="this.src='<?= e(asset_url('images/erp.png')) ?>';">
-                    </div>
-                    <div class="p-5">
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="inline-block px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-blue-50 text-primary border border-blue-100">
-                                <?= e($item['category']) ?>
-                            </span>
-                        </div>
-                        <h3 class="text-base font-bold text-[#022862] group-hover:text-primary transition-colors mb-1.5">
-                            <?= e($item['title']) ?>
-                        </h3>
-                        <p class="text-xs text-slate-500 line-clamp-2 leading-relaxed">
-                            <?= e($item['desc']) ?>
-                        </p>
-                    </div>
+<section class="bg-white py-14 lg:py-20 font-sans border-t border-slate-100">
+    <div class="mx-auto w-full max-w-[1720px] px-4 sm:px-6 lg:px-10">
+        <div class="lg:ml-12 ipad-pro-ml-0 xl:ml-24 lg:mr-12 xl:mr-24">
+            
+            <!-- Header -->
+            <div class="mb-10 lg:mb-12">
+                <div class="inline-flex flex-col items-start" style="display: inline-flex; flex-direction: column; align-items: flex-start;">
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-[#0663F6] tracking-tight" style="color: #0663F6; font-size: 1.875rem; font-weight: 800;">
+                        <?= getCurrentLang() === 'th' ? 'ตัวอย่างผลงานของเรา' : 'Selected Case Studies' ?>
+                    </h2>
+                    <div class="w-12 h-[3.5px] bg-[#0663F6] mt-1.5" style="width: 48px; height: 3.5px; background-color: #0663F6; margin-top: 6px;"></div>
                 </div>
-            <?php endforeach; ?>
-        </div>
+            </div>
 
+            <?php
+            $showcases = [
+                [
+                    'title' => 'KPN Click',
+                    'category' => 'Web Platform',
+                    'desc' => getCurrentLang() === 'th' ? 'แพลตฟอร์มศูนย์รวมข้อมูลและบริการของแบรนด์อย่างครบถ้วน' : 'Comprehensive digital service and operations platform.',
+                    'image' => asset_url('images/port_monitor_1.png'),
+                ],
+                [
+                    'title' => 'Yamaha RAID',
+                    'category' => 'B2B System',
+                    'desc' => getCurrentLang() === 'th' ? 'ระบบจัดการแคตตาล็อกอะไหล่และสั่งซื้อออนไลน์แบบ B2B' : 'B2B online spare parts catalog and order management system.',
+                    'image' => asset_url('images/port_monitor_2.png'),
+                ],
+                [
+                    'title' => 'Nusasiri',
+                    'category' => 'Property Platform',
+                    'desc' => getCurrentLang() === 'th' ? 'ระบบบริหารจัดการเนื้อหาและอสังหาริมทรัพย์ยุคใหม่' : 'Modern property CMS and real estate management platform.',
+                    'image' => asset_url('images/port_monitor_3.png'),
+                ],
+                [
+                    'title' => 'NS Gas',
+                    'category' => 'Enterprise System',
+                    'desc' => getCurrentLang() === 'th' ? 'พอร์ทัลศูนย์กลางข้อมูลและการสื่อสารภายในองค์กรระดับสูง' : 'Enterprise intranet data portal and corporate communications.',
+                    'image' => asset_url('images/port_monitor_4.png'),
+                ],
+            ];
+            ?>
+
+            <!-- 4 Mockup Showcase Cards Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 dp-showcase-grid">
+                <?php foreach ($showcases as $item): ?>
+                    <div class="gsap-dp-portfolio-card dp-port-card block bg-white rounded-2xl overflow-hidden border border-slate-100 shadow-sm hover:border-blue-200 group cursor-pointer" onclick="window.location.href='<?= e(route_url('/portfolio')) ?>'">
+                        <!-- Monitor / Device Frame -->
+                        <div class="p-3 bg-slate-50 border-b border-slate-100 flex items-center gap-1.5">
+                            <span class="w-2.5 h-2.5 rounded-full bg-red-400"></span>
+                            <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
+                            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
+                            <span class="text-[11px] text-slate-400 font-mono ml-2 truncate">webpark.co.th/case/<?= strtolower(str_replace(' ', '-', $item['title'])) ?></span>
+                        </div>
+                        <div class="h-48 overflow-hidden bg-slate-50 relative flex items-center justify-center">
+                            <img src="<?= e($item['image']) ?>" alt="<?= e($item['title']) ?>" class="w-full h-full object-cover object-top transition-transform duration-700 ease-out group-hover:scale-105" onerror="this.src='<?= e(asset_url('images/erp.png')) ?>';">
+                        </div>
+                        <div class="p-5">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="inline-block px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-blue-50 text-primary border border-blue-100">
+                                    <?= e($item['category']) ?>
+                                </span>
+                            </div>
+                            <h3 class="text-base font-bold text-[#022862] group-hover:text-primary transition-colors mb-1.5">
+                                <?= e($item['title']) ?>
+                            </h3>
+                            <p class="text-xs text-slate-500 line-clamp-2 leading-relaxed">
+                                <?= e($item['desc']) ?>
+                            </p>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+
+        </div>
     </div>
 </section>
 

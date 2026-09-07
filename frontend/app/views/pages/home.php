@@ -72,12 +72,27 @@ if (!empty($partners) && is_array($partners)) {
                 max-width: 34rem !important;
             }
         }
+        @media (min-width: 1024px) {
+            .desktop-home-hero-col {
+                margin-left: 3rem !important;
+            }
+        }
+        @media (min-width: 1280px) {
+            .desktop-home-hero-col {
+                margin-left: 4.5rem !important;
+            }
+        }
+        @media (min-width: 1536px) {
+            .desktop-home-hero-col {
+                margin-left: 6rem !important;
+            }
+        }
     </style>
-    <div class="mx-auto w-full max-w-[1720px] px-5 sm:px-6 lg:px-10 pt-8 pb-12 md:pt-12 md:pb-24 lg:pt-28 lg:pb-32 relative z-10 ipad-air-landscape-hero-container">
+    <div class="mx-auto w-full max-w-[1720px] px-4 sm:px-6 lg:px-10 pt-8 pb-12 md:pt-12 md:pb-24 lg:pt-28 lg:pb-32 relative z-10 ipad-air-landscape-hero-container">
         <!-- Mobile Gradient Mask to prevent text overlapping presenter image -->
         <div class="absolute inset-0 bg-gradient-to-r from-white via-white/90 to-white/20 md:hidden z-0 pointer-events-none"></div>
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:pb-12 lg:gap-10 items-center relative z-10">
-            <div class="max-w-3xl relative z-10 text-left mx-0 lg:ml-12 ipad-pro-ml-0 xl:ml-24 flex flex-col items-start w-full ipad-air-landscape-left-col">
+            <div class="max-w-3xl relative z-10 text-left mx-0 flex flex-col items-start w-full desktop-home-hero-col ipad-air-landscape-left-col">
                 <div class="animate-entrance-up delay-100 inline-flex items-center justify-center gap-2 md:gap-2.5 px-4 py-2 md:px-6 md:py-2.5 rounded-full border border-blue-600 mb-6 shadow-sm bg-white/40">
                     <span class="text-blue-600 font-black text-base md:text-xl leading-none flex items-center shrink-0">•</span>
                     <span class="text-[12px] sm:text-[13px] md:text-base lg:text-lg font-bold text-blue-600 tracking-wide whitespace-nowrap leading-none">
@@ -90,7 +105,7 @@ if (!empty($partners) && is_array($partners)) {
                 </h1>
                 <p class="animate-entrance-up delay-300 mt-6 text-blue-900 md:text-[#0b1b42] text-base md:text-lg leading-relaxed max-w-lg mx-0 mb-10 font-bold md:font-semibold w-11/12 sm:w-3/4 md:w-full text-left relative z-20 ipad-pro-hero-desc ipad-mini-hero-desc mobile-hero-desc desktop-home-hero-p">
                     <span class="md:hidden">
-                        <?= getCurrentLang() === 'th' ? 'ผู้ให้บริการพัฒนา Digital Platform<br>และระบบ AI ที่ช่วยให้ธุรกิจไทย<br>ก้าวไปข้างหน้า ด้วยเทคโนโลยี<br>ที่ใช้งานได้จริง' : 'Digital Platform and AI system<br>development provider helping Thai businesses<br>move forward with practical technology.' ?>
+                        <?= getCurrentLang() === 'th' ? 'ผู้ให้บริการพัฒนา<br>Digital Platform<br>และระบบ AI ที่ช่วยให้ธุรกิจไทย<br>ก้าวไปข้างหน้า ด้วยเทคโนโลยี<br>ที่ใช้งานได้จริง' : 'Digital Platform and AI system<br>development provider helping Thai businesses<br>move forward with practical technology.' ?>
                     </span>
                     <span class="hidden md:inline">
                         <?= getCurrentLang() === 'th' ? 'ผู้ให้บริการพัฒนา Digital Platform<br class="hidden ipad-air-br ipad-mini-br"> และระบบ AI <br class="ipad-air-hidden ipad-mini-hidden">ที่ช่วยให้ธุรกิจไทยก้าวไปข้างหน้า<br class="hidden ipad-pro-strict-inline ipad-air-br ipad-mini-br">ด้วยเทคโนโลยีที่ใช้งานได้จริง' : 'Digital Platform and AI system<br class="hidden ipad-pro-strict-inline"> development provider helping<br class="hidden ipad-pro-strict-inline"> Thai businesses move forward<br class="hidden ipad-pro-strict-inline"> with practical technology.' ?>
@@ -216,20 +231,15 @@ if (!empty($partners) && is_array($partners)) {
                     gap: 0.85rem !important;
                 }
                 .desktop-hero-h1 {
-                    font-size: 2.75rem !important;
+                    font-size: 3.75rem !important;
                     line-height: 1.15 !important;
                 }
-                .ipad-mini-hero-desc {
-                    max-width: 60% !important;
-                    width: 60% !important;
-                    font-size: 0.95rem !important;
-                    line-height: 1.55 !important;
-                }
+                .ipad-mini-hero-desc,
                 .ipad-pro-hero-desc {
-                    font-size: 0.95rem !important;
-                    line-height: 1.55 !important;
-                    width: 420px !important;
-                    max-width: 420px !important;
+                    max-width: 62% !important;
+                    width: 62% !important;
+                    font-size: 1.2rem !important;
+                    line-height: 1.85 !important;
                 }
                 
                 /* About Us & Services Cards Font Sizes for iPad Mini */
@@ -343,7 +353,6 @@ if (!empty($partners) && is_array($partners)) {
     }
     .ipad-air-landscape-left-col {
         padding-bottom: 2.5rem !important;
-        margin-left: 0 !important;
     }
     .ipad-air-hero-btn-container,
     .ipad-mini-hero-btn-container {

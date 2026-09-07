@@ -28,6 +28,26 @@ $heroBgImage = asset_url('images/online-marketing-hero-bg.png');
         animation: heroFloat 6s ease-in-out infinite;
     }
 
+    /* Animation for Gradient Text Flow */
+    @keyframes text-gradient-pan {
+        0% { background-position: 0% center; }
+        50% { background-position: 100% center; }
+        100% { background-position: 0% center; }
+    }
+    .animate-text-gradient {
+        background-size: 200% auto;
+        animation: text-gradient-pan 6s linear infinite;
+    }
+
+    /* Mobile (max-width: 759px) */
+    @media (max-width: 759px) {
+        .om-hero-h1 {
+            font-size: 2.75rem !important;
+            line-height: 1.2 !important;
+            font-weight: 900 !important;
+        }
+    }
+
     /* Gradient Typography */
     .om-gradient-title-dark {
         background: linear-gradient(135deg, #1e293b 0%, #475569 50%, #0f172a 100%);
@@ -118,6 +138,7 @@ $heroBgImage = asset_url('images/online-marketing-hero-bg.png');
             flex-wrap: nowrap !important;
             white-space: nowrap !important;
             align-items: center !important;
+            margin-bottom: 1.5rem !important;
         }
         .om-breadcrumb-list li,
         .om-breadcrumb-list a,
@@ -132,25 +153,25 @@ $heroBgImage = asset_url('images/online-marketing-hero-bg.png');
             gap: 0.25rem !important;
         }
         .om-hero-h1 {
-            font-size: 3.5rem !important;
+            font-size: 3.75rem !important;
             font-weight: 900 !important;
             line-height: 1.08 !important;
             display: block !important;
             white-space: normal !important;
         }
         .om-hero-p {
-            font-size: 0.95rem !important;
-            line-height: 1.65 !important;
-            font-weight: 500 !important;
-            color: #475569 !important;
-            max-width: 100% !important;
-            margin-bottom: 1.75rem !important;
+            font-size: 1.2rem !important;
+            line-height: 1.85 !important;
+            font-weight: 600 !important;
+            color: #0b1b42 !important;
+            max-width: 32rem !important;
+            margin-top: 1.5rem !important;
+            margin-bottom: 2rem !important;
         }
         .om-hero-btn-container {
-            flex-direction: row !important;
-            align-items: center !important;
-            gap: 1rem !important;
-            flex-wrap: nowrap !important;
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            gap: 0.85rem !important;
         }
         .om-hero-bg-img {
             object-position: 88% center !important;
@@ -309,10 +330,10 @@ $heroBgImage = asset_url('images/online-marketing-hero-bg.png');
         }
     }
 
-    /* iPad Mini Portrait (760px - 820px) Specific Fine-tuning */
-    @media (min-width: 760px) and (max-width: 820px) and (orientation: portrait) {
+    /* iPad Portrait (760px - 834px) Specific Fine-tuning */
+    @media (min-width: 760px) and (max-width: 834px) and (orientation: portrait) {
         .om-hero-h1 {
-            font-size: 3rem !important;
+            font-size: 3.75rem !important;
         }
         .om-hero-left-col {
             max-width: 68% !important;
@@ -624,12 +645,33 @@ $heroBgImage = asset_url('images/online-marketing-hero-bg.png');
             margin-bottom: 0 !important;
         }
     }
+    /* Desktop Left Margin Alignment matching Homepage (.desktop-home-hero-col) */
+    @media (min-width: 1024px) {
+        .desktop-service-hero-col {
+            margin-left: 3rem !important;
+        }
+    }
+    @media (min-width: 1280px) {
+        .desktop-service-hero-col {
+            margin-left: 4.5rem !important;
+        }
+    }
+    @media (min-width: 1536px) {
+        .desktop-service-hero-col {
+            margin-left: 6rem !important;
+        }
+    }
+    @media (min-width: 760px) and (max-width: 1024px) and (orientation: portrait) {
+        .desktop-service-hero-col {
+            margin-left: 0 !important;
+        }
+    }
 </style>
 
 <!-- ==========================================
      SECTION 1: HERO SECTION
 =========================================== -->
-<section id="om-hero" class="relative font-sans bg-[#f7faff] overflow-hidden pt-8 pb-16 lg:pt-16 lg:pb-28">
+<section id="om-hero" class="relative font-sans bg-[#f7faff] overflow-hidden pt-8 pb-12 md:pt-12 md:pb-24 lg:pt-28 lg:pb-32">
     <!-- Desktop Background Banner -->
     <div class="absolute inset-0 z-0 hidden lg:block overflow-hidden pointer-events-none" style="position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0;">
         <img src="<?= e($heroBgImage) ?>" alt="Online Marketing Background" 
@@ -648,11 +690,11 @@ $heroBgImage = asset_url('images/online-marketing-hero-bg.png');
         <div style="position: absolute; left: 0; right: 0; bottom: 0; height: 25%; background: linear-gradient(to top, #ffffff 0%, transparent 100%); z-index: 10;"></div>
     </div>
 
-    <div class="mx-auto w-full max-w-7xl px-5 sm:px-6 lg:px-8 relative z-10 om-hero-container">
+    <div class="mx-auto w-full max-w-[1720px] px-4 sm:px-6 lg:px-10 relative z-10 om-hero-container">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
             
             <!-- Left Column: Title & Description -->
-            <div class="lg:col-span-7 xl:col-span-7 om-hero-left-col">
+            <div class="lg:col-span-7 xl:col-span-7 om-hero-left-col desktop-service-hero-col">
                 <!-- Breadcrumbs -->
                 <nav aria-label="Breadcrumb" class="animate-entrance-up delay-100 mb-5 om-breadcrumb-nav">
                     <ol class="inline-flex items-center flex-nowrap whitespace-nowrap text-sm md:text-base font-medium text-slate-500 om-breadcrumb-list">
@@ -675,31 +717,44 @@ $heroBgImage = asset_url('images/online-marketing-hero-bg.png');
                 </nav>
 
                 <!-- Hero Title (Dynamic TH/EN) -->
-                <h1 class="animate-entrance-up delay-200 mb-4 tracking-tight flex flex-col items-start leading-[1.08] om-hero-h1-wrapper">
+                <h1 class="animate-entrance-up delay-200 mb-2 tracking-tight flex flex-col items-start leading-tight text-5xl md:text-7xl lg:text-8xl font-black om-hero-h1-wrapper">
                     <?php if (getCurrentLang() === 'th'): ?>
-                        <span class="om-gradient-title-dark font-black text-5xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tighter uppercase om-hero-h1">
+                        <span class="bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block py-1 md:py-2 whitespace-nowrap om-hero-h1">
                             การตลาด
                         </span>
-                        <span class="om-gradient-title-blue font-black text-5xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tighter uppercase om-hero-h1">
+                        <span class="bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block py-1 md:py-2 whitespace-nowrap om-hero-h1" style="animation-delay: -3s;">
                             ออนไลน์
                         </span>
                     <?php else: ?>
-                        <span class="om-gradient-title-dark font-black text-5xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tighter uppercase om-hero-h1">
+                        <span class="bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block py-1 md:py-2 whitespace-nowrap om-hero-h1">
                             ONLINE
                         </span>
-                        <span class="om-gradient-title-blue font-black text-5xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tighter uppercase om-hero-h1">
+                        <span class="bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block py-1 md:py-2 whitespace-nowrap om-hero-h1" style="animation-delay: -3s;">
                             MARKETING
                         </span>
                     <?php endif; ?>
                 </h1>
 
                 <!-- Hero Subtitle & Description -->
-                <p class="animate-entrance-up delay-300 text-slate-600 text-base md:text-lg lg:text-xl leading-relaxed max-w-2xl mb-8 font-medium om-hero-p" style="text-wrap: balance;">
-                    <?php if (getCurrentLang() === 'th'): ?>
-                        บริการวางแผนและทำการตลาดออนไลน์แบบครบวงจร ที่มุ่งเน้นการเติบโตของธุรกิจ เพิ่มยอดขาย ขยายฐานลูกค้า และสร้างการรับรู้แบรนด์อย่างมีประสิทธิภาพ วัดผลได้จริงในทุกขั้นตอน
-                    <?php else: ?>
-                        Comprehensive online marketing strategy and digital campaign management focused on business growth—driving sales, expanding customer bases, and building impactful brand awareness with measurable ROI.
-                    <?php endif; ?>
+                <?php
+                if (getCurrentLang() === 'th') {
+                    $om_mobile_desc = "บริการวางแผนและทำการตลาดออนไลน์แบบครบวงจร<br>ที่มุ่งเน้นการเติบโตของธุรกิจ เพิ่มยอดขาย ขยายฐาน<br>ลูกค้า และสร้างการรับรู้แบรนด์อย่างมีประสิทธิภาพ<br>วัดผลได้จริงในทุกขั้นตอน";
+                } else {
+                    $om_mobile_desc = "Comprehensive online marketing strategy and digital<br>campaign management focused on business growth—driving<br>sales, expanding customers, and measurable ROI.";
+                }
+                ?>
+                <p class="animate-entrance-up delay-300 mt-6 text-[#022862] text-base md:text-lg lg:text-xl leading-relaxed max-w-2xl mb-10 font-bold md:font-semibold om-hero-p">
+                    <span class="block md:hidden leading-[1.75]">
+                        <?= $om_mobile_desc ?>
+                    </span>
+                    <span class="hidden md:block leading-relaxed">
+                        <?php if (getCurrentLang() === 'th'): ?>
+                            <span class="inline-block whitespace-nowrap">บริการวางแผนและทำการตลาดออนไลน์แบบครบวงจร ที่มุ่งเน้นการเติบโตของธุรกิจ</span><br class="hidden md:inline">
+                            <span class="inline-block whitespace-nowrap">เพิ่มยอดขาย ขยายฐานลูกค้า และสร้างการรับรู้แบรนด์อย่างมีประสิทธิภาพ วัดผลได้จริงในทุกขั้นตอน</span>
+                        <?php else: ?>
+                            Comprehensive online marketing strategy and digital campaign management focused on business growth—driving sales, expanding customer bases, and building impactful brand awareness with measurable ROI.
+                        <?php endif; ?>
+                    </span>
                 </p>
 
                 <!-- Hero Action Buttons -->
@@ -847,7 +902,8 @@ $heroBgImage = asset_url('images/online-marketing-hero-bg.png');
      SECTION 3: 10 ONLINE MARKETING SOLUTIONS
 =========================================== -->
 <section id="om-solutions" class="bg-white pt-4 lg:pt-8 pb-6 lg:pb-10 font-sans om-solutions-section">
-    <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="mx-auto w-full max-w-[1720px] px-4 sm:px-6 lg:px-10">
+        <div class="lg:ml-12 ipad-pro-ml-0 xl:ml-24 lg:mr-12 xl:mr-24">
         
         <!-- Section Header -->
         <div class="text-center mb-8 lg:mb-10">
@@ -1116,7 +1172,8 @@ $heroBgImage = asset_url('images/online-marketing-hero-bg.png');
      SECTION 4: BENEFITS SECTION (Based on Digital Platform structure)
 =========================================== -->
 <section class="bg-[#edf4fe] py-16 lg:py-24 font-sans">
-    <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="mx-auto w-full max-w-[1720px] px-4 sm:px-6 lg:px-10">
+        <div class="lg:ml-12 ipad-pro-ml-0 xl:ml-24 lg:mr-12 xl:mr-24">
         
         <!-- Header (Exact Match to Digital Platform & Mockup) -->
         <div class="text-center max-w-4xl mx-auto mb-10 lg:mb-12">
@@ -1229,95 +1286,98 @@ $heroBgImage = asset_url('images/online-marketing-hero-bg.png');
                     </div>
                 </div>
             <?php endforeach; ?>
-        </div>
+            </div>
 
+        </div>
     </div>
 </section>
 
 <!-- ==========================================
-     SECTION 5: PORTFOLIO SHOWCASE (Based on Digital Platform structure)
+     SECTION 5: PORTFOLIO SHOWCASE
 =========================================== -->
 <section class="bg-white py-14 lg:py-20 font-sans border-t border-slate-100">
-    <div class="mx-auto w-full max-w-7xl px-5 sm:px-6 lg:px-8">
-        
-        <!-- Header -->
-        <div class="mb-10 lg:mb-12">
-            <div class="inline-flex flex-col items-start" style="display: inline-flex; flex-direction: column; align-items: flex-start;">
-                <h2 class="text-2xl sm:text-3xl font-extrabold text-[#0663F6] tracking-tight" style="color: #0663F6; font-size: 1.875rem; font-weight: 800;">
-                    <?= getCurrentLang() === 'th' ? 'ตัวอย่างผลงานของเรา' : 'Selected Case Studies' ?>
-                </h2>
-                <div class="w-12 h-[3.5px] bg-[#0663F6] mt-1.5" style="width: 48px; height: 3.5px; background-color: #0663F6; margin-top: 6px;"></div>
-            </div>
-        </div>
-
-        <?php
-        $showcases = [
-            [
-                'title' => 'KPN Click',
-                'category' => 'SEO & SEM',
-                'desc' => getCurrentLang() === 'th'
-                    ? 'การวางกลยุทธ์ค้นหาเพื่อเพิ่มยอดทราฟฟิกและขยายฐานลูกค้าบนดิจิทัล'
-                    : 'Search marketing strategy boosting organic traffic and customer acquisition.',
-                'image' => asset_url('images/service-home.png'),
-            ],
-            [
-                'title' => 'Yamaha LEAD',
-                'category' => 'Performance Ads',
-                'desc' => getCurrentLang() === 'th'
-                    ? 'แคมเปญการตลาดออนไลน์แบบวัดผลได้ เพิ่มยอด Conversion และ ROI'
-                    : 'High-conversion performance marketing campaigns driving measurable ROI.',
-                'image' => asset_url('images/yamaha.png'),
-            ],
-            [
-                'title' => 'Nusasiri',
-                'category' => 'Data Analytics',
-                'desc' => getCurrentLang() === 'th'
-                    ? 'การวิเคราะห์ข้อมูลผู้บริโภคและวางแผนสื่อโฆษณาตรงกลุ่มเป้าหมาย'
-                    : 'Real-time marketing performance tracking and analytics to measure ROI.',
-                'image' => asset_url('images/ab.png'),
-            ],
-            [
-                'title' => 'NS Gas',
-                'category' => 'Social Media Creative',
-                'desc' => getCurrentLang() === 'th'
-                    ? 'การบริหารจัดการสื่อสังคมออนไลน์เพื่อสร้างการรับรู้แบรนด์และยอดขาย'
-                    : 'High-engagement social media content creation and management.',
-                'image' => asset_url('images/story.png'),
-            ],
-        ];
-        ?>
-
-        <!-- 4 Mockup Showcase Cards Grid (Matching Digital Platform Structure) -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 om-showcase-grid">
-            <?php foreach ($showcases as $item): ?>
-                <div class="om-port-card block bg-white rounded-2xl overflow-hidden border border-slate-100 shadow-sm hover:border-blue-200 group cursor-pointer" onclick="window.location.href='<?= e(route_url('/portfolio')) ?>'">
-                    <!-- Monitor / Device Frame -->
-                    <div class="p-3 bg-slate-50 border-b border-slate-100 flex items-center gap-1.5">
-                        <span class="w-2.5 h-2.5 rounded-full bg-red-400"></span>
-                        <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
-                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
-                        <span class="text-[11px] text-slate-400 font-mono ml-2 truncate">webpark.co.th/case/<?= strtolower(str_replace(' ', '-', $item['title'])) ?></span>
-                    </div>
-                    <div class="h-48 overflow-hidden bg-slate-100 relative">
-                        <img src="<?= e($item['image']) ?>" alt="<?= e($item['title']) ?>" class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105" onerror="this.src='<?= e(asset_url('images/erp.png')) ?>';">
-                    </div>
-                    <div class="p-5">
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="inline-block px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-blue-50 text-primary border border-blue-100">
-                                <?= e($item['category']) ?>
-                            </span>
-                        </div>
-                        <h3 class="text-base font-bold text-[#022862] group-hover:text-primary transition-colors mb-1.5">
-                            <?= e($item['title']) ?>
-                        </h3>
-                        <p class="text-xs text-slate-500 line-clamp-2 leading-relaxed">
-                            <?= e($item['desc']) ?>
-                        </p>
-                    </div>
+    <div class="mx-auto w-full max-w-[1720px] px-4 sm:px-6 lg:px-10">
+        <div class="lg:ml-12 ipad-pro-ml-0 xl:ml-24 lg:mr-12 xl:mr-24">
+            
+            <!-- Header -->
+            <div class="mb-10 lg:mb-12">
+                <div class="inline-flex flex-col items-start" style="display: inline-flex; flex-direction: column; align-items: flex-start;">
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-[#0663F6] tracking-tight" style="color: #0663F6; font-size: 1.875rem; font-weight: 800;">
+                        <?= getCurrentLang() === 'th' ? 'ตัวอย่างผลงานของเรา' : 'Selected Case Studies' ?>
+                    </h2>
+                    <div class="w-12 h-[3.5px] bg-[#0663F6] mt-1.5" style="width: 48px; height: 3.5px; background-color: #0663F6; margin-top: 6px;"></div>
                 </div>
-            <?php endforeach; ?>
-        </div>
+            </div>
 
+            <?php
+            $showcases = [
+                [
+                    'title' => 'KPN Click',
+                    'category' => 'SEO & SEM',
+                    'desc' => getCurrentLang() === 'th'
+                        ? 'การวางกลยุทธ์ค้นหาเพื่อเพิ่มยอดทราฟฟิกและขยายฐานลูกค้าบนดิจิทัล'
+                        : 'Search marketing strategy boosting organic traffic and customer acquisition.',
+                    'image' => asset_url('images/port_monitor_1.png'),
+                ],
+                [
+                    'title' => 'Yamaha LEAD',
+                    'category' => 'Performance Ads',
+                    'desc' => getCurrentLang() === 'th'
+                        ? 'แคมเปญการตลาดออนไลน์แบบวัดผลได้ เพิ่มยอด Conversion และ ROI'
+                        : 'High-conversion performance marketing campaigns driving measurable ROI.',
+                    'image' => asset_url('images/port_monitor_2.png'),
+                ],
+                [
+                    'title' => 'Nusasiri',
+                    'category' => 'Data Analytics',
+                    'desc' => getCurrentLang() === 'th'
+                        ? 'การวิเคราะห์ข้อมูลผู้บริโภคและวางแผนสื่อโฆษณาตรงกลุ่มเป้าหมาย'
+                        : 'Real-time marketing performance tracking and analytics to measure ROI.',
+                    'image' => asset_url('images/port_monitor_3.png'),
+                ],
+                [
+                    'title' => 'NS Gas',
+                    'category' => 'Social Media Creative',
+                    'desc' => getCurrentLang() === 'th'
+                        ? 'การบริหารจัดการสื่อสังคมออนไลน์เพื่อสร้างการรับรู้แบรนด์และยอดขาย'
+                        : 'High-engagement social media content creation and management.',
+                    'image' => asset_url('images/port_monitor_4.png'),
+                ],
+            ];
+            ?>
+
+            <!-- 4 Mockup Showcase Cards Grid (Matching Digital Platform Structure) -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 om-showcase-grid">
+                <?php foreach ($showcases as $item): ?>
+                    <div class="om-port-card block bg-white rounded-2xl overflow-hidden border border-slate-100 shadow-sm hover:border-blue-200 group cursor-pointer" onclick="window.location.href='<?= e(route_url('/portfolio')) ?>'">
+                        <!-- Monitor / Device Frame -->
+                        <div class="p-3 bg-slate-50 border-b border-slate-100 flex items-center gap-1.5">
+                            <span class="w-2.5 h-2.5 rounded-full bg-red-400"></span>
+                            <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
+                            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
+                            <span class="text-[11px] text-slate-400 font-mono ml-2 truncate">webpark.co.th/case/<?= strtolower(str_replace(' ', '-', $item['title'])) ?></span>
+                        </div>
+                        <div class="h-48 overflow-hidden bg-slate-50 relative flex items-center justify-center">
+                            <img src="<?= e($item['image']) ?>" alt="<?= e($item['title']) ?>" class="w-full h-full object-cover object-top transition-transform duration-700 ease-out group-hover:scale-105" onerror="this.src='<?= e(asset_url('images/erp.png')) ?>';">
+                        </div>
+                        <div class="p-5">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="inline-block px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-blue-50 text-primary border border-blue-100">
+                                    <?= e($item['category']) ?>
+                                </span>
+                            </div>
+                            <h3 class="text-base font-bold text-[#022862] group-hover:text-primary transition-colors mb-1.5">
+                                <?= e($item['title']) ?>
+                            </h3>
+                            <p class="text-xs text-slate-500 line-clamp-2 leading-relaxed">
+                                <?= e($item['desc']) ?>
+                            </p>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+
+        </div>
     </div>
 </section>
 

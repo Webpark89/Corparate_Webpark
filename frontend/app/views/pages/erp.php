@@ -191,6 +191,9 @@ $erpPortfolios = $mockErpPortfolios;
         }
     }
     @media (min-width: 1025px) {
+        .erp-hero-left-col {
+            margin-left: 3rem !important;
+        }
         .desktop-erp-hero-h1 {
             font-size: 5.5rem !important;
             line-height: 1.1 !important;
@@ -199,6 +202,16 @@ $erpPortfolios = $mockErpPortfolios;
             font-size: 1.25rem !important;
             line-height: 1.75 !important;
             max-width: 34rem !important;
+        }
+    }
+    @media (min-width: 1280px) {
+        .erp-hero-left-col {
+            margin-left: 4.5rem !important;
+        }
+    }
+    @media (min-width: 1536px) {
+        .erp-hero-left-col {
+            margin-left: 6rem !important;
         }
     }
 
@@ -310,7 +323,9 @@ $erpPortfolios = $mockErpPortfolios;
 
                     <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-sm sm:text-base leading-relaxed max-w-lg mb-8 font-medium">
                         <?php if (getCurrentLang() === 'th'): ?>
-                            ระบบบริหารจัดการทรัพยากรองค์กร (ERP) ที่ช่วยรวมข้อมูลและกระบวนการทำงานสำคัญขององค์กรไว้ในระบบเดียว ลดงานซ้ำซ้อน เพิ่มประสิทธิภาพการทำงาน และขับเคลื่อนองค์กรสู่อนาคตดิจิทัล
+                            <span class="inline-block">ระบบบริหารจัดการทรัพยากรองค์กร (ERP) ที่ช่วยรวมข้อมูลและ</span><br>
+                            <span class="inline-block">กระบวนการทำงานสำคัญขององค์กรไว้ในระบบเดียว ลดงานซ้ำซ้อน</span><br>
+                            <span class="inline-block">เพิ่มประสิทธิภาพการทำงาน และขับเคลื่อนองค์กรสู่อนาคตดิจิทัล</span>
                         <?php else: ?>
                             Enterprise Resource Planning (ERP) systems that integrate core business processes and data into a single unified platform, eliminating duplicate work and boosting efficiency.
                         <?php endif; ?>
@@ -343,11 +358,12 @@ $erpPortfolios = $mockErpPortfolios;
 
                     <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-base md:text-lg lg:text-xl leading-relaxed max-w-2xl mb-10 font-bold md:font-semibold desktop-erp-hero-p">
                         <?php if (getCurrentLang() === 'th'): ?>
-                            <span class="inline-block whitespace-nowrap">เชื่อมต่อทุกกระบวนการธุรกิจ แบบครบวงจรในแพลตฟอร์มเดียว</span><br class="hidden md:inline">
-                            <span class="inline-block whitespace-nowrap">ลดงานซ้ำซ้อน เพิ่มประสิทธิภาพการทำงาน และขับเคลื่อนธุรกิจสู่อนาคต</span>
+                            <span class="inline-block md:whitespace-nowrap">เชื่อมต่อทุกกระบวนการธุรกิจ แบบครบวงจรในแพลตฟอร์มเดียว</span><br class="hidden md:inline">
+                            <span class="inline-block md:whitespace-nowrap">ลดงานซ้ำซ้อน เพิ่มประสิทธิภาพการทำงาน และขับเคลื่อนธุรกิจสู่อนาคต</span>
                         <?php else: ?>
-                            <span class="inline-block whitespace-nowrap">Connecting every business process end-to-end on a single platform,</span><br class="hidden md:inline">
-                            <span class="inline-block whitespace-nowrap">eliminating duplicate work and driving your business toward the digital future.</span>
+                            <span class="inline-block md:whitespace-nowrap">Connecting every business process end-to-end</span><br class="hidden md:inline">
+                            <span class="inline-block md:whitespace-nowrap">on a single platform, eliminating duplicate work</span><br class="hidden md:inline">
+                            <span class="inline-block">and driving your business toward the digital future.</span>
                         <?php endif; ?>
                     </p>
                     <div class="animate-entrance-up delay-400 flex flex-col sm:flex-row items-start gap-4 erp-hero-btn-container">
@@ -384,7 +400,6 @@ $erpPortfolios = $mockErpPortfolios;
         }
         .erp-hero-left-col {
             max-width: 100% !important;
-            margin-left: 0 !important;
         }
         .erp-hero-btn-container {
             flex-direction: column !important;
@@ -473,14 +488,32 @@ $erpPortfolios = $mockErpPortfolios;
         }
     }
 
-    /* iPad Mini Portrait (760px - 820px) Font Scaling */
-    @media (min-width: 760px) and (max-width: 820px) {
+    /* iPad Portrait (760px - 834px) Font Scaling & Layout */
+    @media (min-width: 760px) and (max-width: 834px) {
+        .erp-hero-left-col {
+            max-width: 68% !important;
+            margin-left: 0 !important;
+        }
+        .erp-hero-left-col nav {
+            margin-bottom: 1.5rem !important;
+        }
         .ipad-pro-erp-hero-h1 {
-            font-size: 2.75rem !important;
+            font-size: 3.75rem !important;
+            line-height: 1.15 !important;
         }
         .desktop-erp-hero-p {
-            font-size: 0.925rem !important;
-            line-height: 1.55 !important;
+            font-size: 1.2rem !important;
+            line-height: 1.85 !important;
+            font-weight: 600 !important;
+            color: #0b1b42 !important;
+            max-width: 32rem !important;
+            margin-top: 1.5rem !important;
+            margin-bottom: 2rem !important;
+        }
+        .erp-hero-btn-container {
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            gap: 0.85rem !important;
         }
         .gsap-erp-about-card h3 {
             font-size: 0.975rem !important;

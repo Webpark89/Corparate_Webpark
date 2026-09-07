@@ -111,19 +111,38 @@ $renderContent = static function (string $text): string {
 ?>
 
 
+<style>
+    @media (min-width: 1025px) {
+        .desktop-portfolio-detail-col {
+            margin-left: 3rem !important;
+        }
+    }
+    @media (min-width: 1280px) {
+        .desktop-portfolio-detail-col {
+            margin-left: 4.5rem !important;
+        }
+    }
+    @media (min-width: 1536px) {
+        .desktop-portfolio-detail-col {
+            margin-left: 6rem !important;
+        }
+    }
+</style>
 <section class="bg-slate-950 text-white">
     <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 pt-20 pb-24 lg:pt-32 lg:pb-32 relative z-10">
-        <a class="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-sm font-semibold text-white/90 transition hover:bg-white/10" href="<?= e(route_url('/')) ?>">
-            <span aria-hidden="true">‹</span>
-            ย้อนกลับ
-        </a>
+        <div class="desktop-portfolio-detail-col">
+            <a class="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-sm font-semibold text-white/90 transition hover:bg-white/10" href="<?= e(route_url('/')) ?>">
+                <span aria-hidden="true">‹</span>
+                ย้อนกลับ
+            </a>
 
-        <div class="mt-10 max-w-4xl">
-            <p class="text-sm font-semibold uppercase tracking-[0.32em] text-cyan-300"><?= e($categoryName) ?></p>
-            <h1 class="mt-4 text-4xl font-black tracking-tight sm:text-5xl"><?= e($title) ?></h1>
-            <div class="mt-5 flex flex-wrap gap-3 text-sm font-semibold text-slate-200">
-                <?php if ($clientName): ?><span class="rounded-full bg-white/10 px-3 py-1"><?= e($clientName) ?></span><?php endif; ?>
-                <?php if ($formattedDate): ?><span class="rounded-full bg-white/10 px-3 py-1"><?= e($formattedDate) ?></span><?php endif; ?>
+            <div class="mt-10 max-w-4xl">
+                <p class="text-sm font-semibold uppercase tracking-[0.32em] text-cyan-300"><?= e($categoryName) ?></p>
+                <h1 class="mt-4 text-4xl font-black tracking-tight sm:text-5xl"><?= e($title) ?></h1>
+                <div class="mt-5 flex flex-wrap gap-3 text-sm font-semibold text-slate-200">
+                    <?php if ($clientName): ?><span class="rounded-full bg-white/10 px-3 py-1"><?= e($clientName) ?></span><?php endif; ?>
+                    <?php if ($formattedDate): ?><span class="rounded-full bg-white/10 px-3 py-1"><?= e($formattedDate) ?></span><?php endif; ?>
+                </div>
             </div>
         </div>
     </div>

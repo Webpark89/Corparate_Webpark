@@ -19,6 +19,26 @@ $ctaImage    = asset_url('images/bg-cta.jpg');
         -webkit-text-fill-color: transparent;
         color: #0663F6;
     }
+    /* Animation for Gradient Text Flow */
+    @keyframes text-gradient-pan {
+        0% { background-position: 0% center; }
+        50% { background-position: 100% center; }
+        100% { background-position: 0% center; }
+    }
+    .animate-text-gradient {
+        background-size: 200% auto;
+        animation: text-gradient-pan 6s linear infinite;
+    }
+
+    /* Mobile (max-width: 759px) */
+    @media (max-width: 759px) {
+        .cd-hero-h1 {
+            font-size: 2.75rem !important;
+            line-height: 1.2 !important;
+            font-weight: 900 !important;
+        }
+    }
+
     .sharp-image-render {
         image-rendering: -webkit-optimize-contrast;
         image-rendering: crisp-edges;
@@ -92,6 +112,7 @@ $ctaImage    = asset_url('images/bg-cta.jpg');
             flex-wrap: nowrap !important;
             white-space: nowrap !important;
             align-items: center !important;
+            margin-bottom: 1.5rem !important;
         }
         .cd-breadcrumb-list li,
         .cd-breadcrumb-list a,
@@ -106,25 +127,25 @@ $ctaImage    = asset_url('images/bg-cta.jpg');
             gap: 0.25rem !important;
         }
         .cd-hero-h1 {
-            font-size: 3.5rem !important;
+            font-size: 3.75rem !important;
             font-weight: 900 !important;
             line-height: 1.08 !important;
             display: block !important;
             white-space: normal !important;
         }
         .cd-hero-p {
-            font-size: 0.95rem !important;
-            line-height: 1.65 !important;
-            font-weight: 500 !important;
-            color: #475569 !important;
-            max-width: 100% !important;
-            margin-bottom: 1.75rem !important;
+            font-size: 1.2rem !important;
+            line-height: 1.85 !important;
+            font-weight: 600 !important;
+            color: #0b1b42 !important;
+            max-width: 32rem !important;
+            margin-top: 1.5rem !important;
+            margin-bottom: 2rem !important;
         }
         .cd-hero-btn-container {
-            flex-direction: row !important;
-            align-items: center !important;
-            gap: 1rem !important;
-            flex-wrap: nowrap !important;
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            gap: 0.85rem !important;
         }
         .cd-hero-bg-img {
             object-position: 88% center !important;
@@ -281,10 +302,10 @@ $ctaImage    = asset_url('images/bg-cta.jpg');
         }
     }
 
-    /* iPad Mini Portrait (760px - 820px) Specific Fine-tuning */
-    @media (min-width: 760px) and (max-width: 820px) and (orientation: portrait) {
+    /* iPad Portrait (760px - 834px) Specific Fine-tuning */
+    @media (min-width: 760px) and (max-width: 834px) and (orientation: portrait) {
         .cd-hero-h1 {
-            font-size: 3rem !important;
+            font-size: 3.75rem !important;
         }
         .cd-hero-left-col {
             max-width: 68% !important;
@@ -594,6 +615,26 @@ $ctaImage    = asset_url('images/bg-cta.jpg');
             margin-bottom: 0 !important;
         }
     }
+    @media (min-width: 1024px) {
+        .desktop-service-hero-col {
+            margin-left: 3rem !important;
+        }
+    }
+    @media (min-width: 1280px) {
+        .desktop-service-hero-col {
+            margin-left: 4.5rem !important;
+        }
+    }
+    @media (min-width: 1536px) {
+        .desktop-service-hero-col {
+            margin-left: 6rem !important;
+        }
+    }
+    @media (min-width: 760px) and (max-width: 1024px) and (orientation: portrait) {
+        .desktop-service-hero-col {
+            margin-left: 0 !important;
+        }
+    }
 </style>
 
 <!-- Top Reading Progress Bar -->
@@ -602,7 +643,7 @@ $ctaImage    = asset_url('images/bg-cta.jpg');
 <!-- ==========================================
      SECTION 1: HERO SECTION
 =========================================== -->
-<section class="relative overflow-hidden font-sans bg-[#f7faff] pt-8 pb-16 lg:pt-14 lg:pb-28">
+<section id="cd-hero" class="relative overflow-hidden font-sans bg-[#f7faff] pt-8 pb-12 md:pt-12 md:pb-24 lg:pt-28 lg:pb-32">
     <!-- Desktop Background Banner (Right Aligned High-Res 3D Graphic) -->
     <div class="absolute inset-0 z-0 hidden lg:block overflow-hidden pointer-events-none" style="position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0;">
         <img src="<?= e($heroBgImage) ?>" alt="Creative & Design Background" 
@@ -621,11 +662,11 @@ $ctaImage    = asset_url('images/bg-cta.jpg');
         <div style="position: absolute; left: 0; right: 0; bottom: 0; height: 25%; background: linear-gradient(to top, #ffffff 0%, transparent 100%); z-index: 10;"></div>
     </div>
 
-    <div class="mx-auto w-full max-w-7xl px-5 sm:px-6 lg:px-8 relative z-10 cd-hero-container">
+    <div class="mx-auto w-full max-w-[1720px] px-4 sm:px-6 lg:px-10 relative z-10 cd-hero-container">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
             
             <!-- Left Column: Breadcrumb, Titles, Description & CTA -->
-            <div class="lg:col-span-7 flex flex-col items-start cd-hero-left-col">
+            <div class="lg:col-span-7 flex flex-col items-start cd-hero-left-col desktop-service-hero-col">
                 
                 <!-- Breadcrumb -->
                 <nav aria-label="Breadcrumb" class="mb-5 sm:mb-6 cd-breadcrumb-nav">
@@ -649,23 +690,44 @@ $ctaImage    = asset_url('images/bg-cta.jpg');
                 </nav>
 
                 <!-- H1 Heading (Exact Match to Mockup) -->
-                <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.08] mb-5 cd-hero-h1-wrapper">
+                <h1 class="animate-entrance-up delay-200 mb-2 tracking-tight flex flex-col items-start leading-tight text-5xl md:text-7xl lg:text-8xl font-black cd-hero-h1-wrapper">
                     <?php if (getCurrentLang() === 'th'): ?>
-                        <span class="block text-[#1e293b] cd-hero-h1">ออกแบบ</span>
-                        <span class="block text-[#0663F6] cd-hero-h1">สร้างสรรค์</span>
+                        <span class="bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block py-1 md:py-2 whitespace-nowrap cd-hero-h1">
+                            ออกแบบ
+                        </span>
+                        <span class="bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block py-1 md:py-2 whitespace-nowrap cd-hero-h1" style="animation-delay: -3s;">
+                            สร้างสรรค์
+                        </span>
                     <?php else: ?>
-                        <span class="block text-[#1e293b] cd-hero-h1">CREATIVE /</span>
-                        <span class="block text-[#0663F6] cd-hero-h1">DESIGN</span>
+                        <span class="bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block py-1 md:py-2 whitespace-nowrap cd-hero-h1">
+                            CREATIVE /
+                        </span>
+                        <span class="bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block py-1 md:py-2 whitespace-nowrap cd-hero-h1" style="animation-delay: -3s;">
+                            DESIGN
+                        </span>
                     <?php endif; ?>
                 </h1>
 
-                <!-- Subtitle -->
-                <p class="text-slate-600 text-sm sm:text-base lg:text-[16.5px] leading-relaxed max-w-xl mb-8 cd-hero-p">
-                    <?php if (getCurrentLang() === 'th'): ?>
-                        ออกแบบอัตลักษณ์แบรนด์ สื่อการตลาด และดิจิทัลมีเดียที่โดดเด่น สื่อสารตัวตนของแบรนด์ได้อย่างชัดเจน สร้างความประทับใจตั้งแต่แรกเห็น
-                    <?php else: ?>
-                        Design distinctive brand identities, marketing collateral, and digital media that articulate your brand character and inspire lasting impressions.
-                    <?php endif; ?>
+                <!-- Subtitle & Description -->
+                <?php
+                if (getCurrentLang() === 'th') {
+                    $cd_mobile_desc = "ออกแบบอัตลักษณ์แบรนด์ สื่อการตลาด และดิจิทัล<br>มีเดียที่โดดเด่น สื่อสารตัวตนของแบรนด์ได้อย่างชัดเจน<br>สร้างความประทับใจตั้งแต่แรกเห็น";
+                } else {
+                    $cd_mobile_desc = "Design distinctive brand identities, marketing collateral,<br>and digital media that articulate your brand character<br>and inspire lasting impressions.";
+                }
+                ?>
+                <p class="animate-entrance-up delay-300 mt-6 text-[#022862] text-base md:text-lg lg:text-xl leading-relaxed max-w-2xl mb-10 font-bold md:font-semibold cd-hero-p">
+                    <span class="block md:hidden leading-[1.75]">
+                        <?= $cd_mobile_desc ?>
+                    </span>
+                    <span class="hidden md:block leading-relaxed">
+                        <?php if (getCurrentLang() === 'th'): ?>
+                            <span class="inline-block whitespace-nowrap">ออกแบบอัตลักษณ์แบรนด์ สื่อการตลาด และดิจิทัลมีเดียที่โดดเด่น</span><br class="hidden md:inline">
+                            <span class="inline-block whitespace-nowrap">สื่อสารตัวตนของแบรนด์ได้อย่างชัดเจน สร้างความประทับใจตั้งแต่แรกเห็น</span>
+                        <?php else: ?>
+                            Design distinctive brand identities, marketing collateral, and digital media that articulate your brand character and inspire lasting impressions.
+                        <?php endif; ?>
+                    </span>
                 </p>
 
                 <!-- CTA Buttons -->
@@ -803,146 +865,148 @@ $ctaImage    = asset_url('images/bg-cta.jpg');
 <!-- ==========================================
      SECTION 3: 10 CREATIVE / DESIGN SOLUTIONS
 =========================================== -->
-<section id="cd-solutions" class="bg-white pt-6 lg:pt-10 pb-12 lg:pb-20 font-sans cd-solutions-section">
-    <div class="mx-auto w-full max-w-7xl px-5 sm:px-6 lg:px-8">
-        
-        <!-- Header -->
-        <div class="text-center max-w-3xl mx-auto mb-10 lg:mb-12">
-            <div class="inline-flex flex-col items-start mb-2">
-                <span class="text-[#0663F6] font-extrabold text-2xl sm:text-3xl tracking-tight uppercase">
-                    <?= getCurrentLang() === 'th' ? 'โซลูชันงานออกแบบสร้างสรรค์' : 'CREATIVE / DESIGN SOLUTIONS' ?>
-                </span>
-                <div class="w-16 h-[3.5px] bg-[#0663F6] mt-1.5 mb-3"></div>
-            </div>
-            <h2 class="text-base sm:text-lg md:text-xl font-bold text-[#043B94] leading-snug">
-                <?= getCurrentLang() === 'th' ? 'โซลูชันการออกแบบครบวงจร เพื่อการเติบโตของแบรนด์ในทุกมิติ' : 'Comprehensive design solutions driving multidimensional brand growth' ?>
-            </h2>
-        </div>
-
-        <?php
-        $solutions = [
-            [
-                'title' => 'BRAND IDENTITY',
-                'image' => asset_url('images/cd_sol_1.png'),
-                'bullets' => [
-                    getCurrentLang() === 'th' ? 'ออกแบบโลโก้และ CI แบรนด์' : 'Brand Logo & CI Design',
-                    getCurrentLang() === 'th' ? 'กำหนดคู่มือการใช้งานแบรนด์' : 'Brand Guideline Manual',
-                    getCurrentLang() === 'th' ? 'ออกแบบ Stationery ครบชุด' : 'Complete Stationery Set',
-                ]
-            ],
-            [
-                'title' => 'UI / UX DESIGN',
-                'image' => asset_url('images/cd_sol_2.png'),
-                'bullets' => [
-                    getCurrentLang() === 'th' ? 'ออกแบบ User Interface สวยงาม' : 'Stunning Visual UI Design',
-                    getCurrentLang() === 'th' ? 'วางโครงสร้าง UX ใช้งานง่าย' : 'Intuitive UX Architecture',
-                    getCurrentLang() === 'th' ? 'ทำ Interactive Prototype' : 'Interactive Prototyping',
-                ]
-            ],
-            [
-                'title' => 'WEBSITE DESIGN',
-                'image' => asset_url('images/cd_sol_3.png'),
-                'bullets' => [
-                    getCurrentLang() === 'th' ? 'ออกแบบเว็บไซต์ทันสมัย' : 'Modern Website Design',
-                    getCurrentLang() === 'th' ? 'Responsive รองรับทุกอุปกรณ์' : 'Responsive Across Devices',
-                    getCurrentLang() === 'th' ? 'ออกแบบเน้น Conversion' : 'Conversion-Driven Layouts',
-                ]
-            ],
-            [
-                'title' => 'GRAPHIC DESIGN',
-                'image' => asset_url('images/cd_sol_4.png'),
-                'bullets' => [
-                    getCurrentLang() === 'th' ? 'สื่อโฆษณา Banner & Infographic' : 'Ad Banners & Infographics',
-                    getCurrentLang() === 'th' ? 'กราฟิกสำหรับโปรโมชั่น' : 'Campaign & Promotion Visuals',
-                    getCurrentLang() === 'th' ? 'สื่อสิ่งพิมพ์และดิจิทัลครบวงจร' : 'Full-Spectrum Print & Digital',
-                ]
-            ],
-            [
-                'title' => 'SOCIAL MEDIA CREATIVE',
-                'image' => asset_url('images/cd_sol_5.png'),
-                'bullets' => [
-                    getCurrentLang() === 'th' ? 'Artwork โซเชียลทุกแพลตฟอร์ม' : 'Multi-Platform Social Artwork',
-                    getCurrentLang() === 'th' ? 'วาง Mood & Tone ให้สอดคล้อง' : 'Consistent Brand Mood & Tone',
-                    getCurrentLang() === 'th' ? 'Template สำหรับโพสต์ประจำวัน' : 'Daily Engagement Templates',
-                ]
-            ],
-            [
-                'title' => 'MOTION GRAPHIC / VIDEO',
-                'image' => asset_url('images/cd_sol_6.png'),
-                'bullets' => [
-                    getCurrentLang() === 'th' ? 'ผลิตวิดีโอ Motion Graphic' : 'Dynamic Motion Graphics',
-                    getCurrentLang() === 'th' ? 'แอนิเมชันเปิดตัวสินค้า' : 'Product Launch Animations',
-                    getCurrentLang() === 'th' ? 'ตัดต่อและ Visual Effects' : 'Video Editing & VFX',
-                ]
-            ],
-            [
-                'title' => 'PRESENT & SALES KIT',
-                'image' => asset_url('images/cd_sol_7.png'),
-                'bullets' => [
-                    getCurrentLang() === 'th' ? 'ออกแบบ Company Profile' : 'Executive Company Profiles',
-                    getCurrentLang() === 'th' ? 'Sales Pitch Deck ดึงดูดนักลงทุน' : 'Investor Sales Pitch Decks',
-                    getCurrentLang() === 'th' ? 'สื่อและเอกสารสนับสนุนการขาย' : 'Sales Enablement Materials',
-                ]
-            ],
-            [
-                'title' => 'PACKAGING DESIGN',
-                'image' => asset_url('images/cd_sol_8.png'),
-                'bullets' => [
-                    getCurrentLang() === 'th' ? 'ออกแบบบรรจุภัณฑ์และฉลาก' : 'Packaging & Label Design',
-                    getCurrentLang() === 'th' ? 'สร้างความโดดเด่นบนชั้นวาง' : 'High Shelf & Online Standout',
-                    getCurrentLang() === 'th' ? 'คำนึงถึงการผลิตจริง' : 'Production-Ready Specifications',
-                ]
-            ],
-            [
-                'title' => 'CONTENT VISUAL SYSTEM',
-                'image' => asset_url('images/cd_sol_9.png'),
-                'bullets' => [
-                    getCurrentLang() === 'th' ? 'วางระบบ Key Visual แคมเปญ' : 'Campaign Key Visuals',
-                    getCurrentLang() === 'th' ? 'กำหนด Moodboard และโทนสี' : 'Moodboards & Color Palettes',
-                    getCurrentLang() === 'th' ? 'ภาพลักษณ์แบรนด์ที่เป็นหนึ่งเดียว' : 'Unified Brand Aesthetics',
-                ]
-            ],
-            [
-                'title' => 'DESIGN SYSTEM',
-                'image' => asset_url('images/cd_sol_10.png'),
-                'bullets' => [
-                    getCurrentLang() === 'th' ? 'สร้าง UI Component Library' : 'UI Component Library',
-                    getCurrentLang() === 'th' ? 'กำหนด Typography และสี' : 'Typography & Color Tokens',
-                    getCurrentLang() === 'th' ? 'ส่งมอบทีมพัฒนาได้อย่างราบรื่น' : 'Seamless Developer Handoff',
-                ]
-            ],
-        ];
-        ?>
-
-        <!-- 10 Solutions in 5x2 Grid -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-5 lg:gap-6 cd-solutions-grid">
-            <?php foreach ($solutions as $sol): ?>
-                <div class="bg-white rounded-xl border border-slate-200/80 p-4 sm:p-5 flex flex-col justify-between shadow-sm hover:shadow-md hover:border-blue-300 transition-all duration-300 group cd-solution-card">
-                    <div>
-                        <!-- Title -->
-                        <h3 class="text-[#043B94] font-bold text-[13px] sm:text-sm tracking-tight mb-3 group-hover:text-[#0663F6] transition-colors line-clamp-1">
-                            <?= e($sol['title']) ?>
-                        </h3>
-
-                        <!-- Image Preview -->
-                        <div class="w-full aspect-[4/3] rounded-lg overflow-hidden bg-slate-50 border border-slate-100 flex items-center justify-center p-2 mb-3.5 group-hover:bg-blue-50/30 transition-colors">
-                            <img src="<?= e($sol['image']) ?>" alt="<?= e($sol['title']) ?>" class="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform duration-300 sharp-image-render">
-                        </div>
-
-                        <!-- Bullets -->
-                        <ul class="space-y-1.5 text-slate-500 text-[11px] sm:text-xs leading-snug">
-                            <?php foreach ($sol['bullets'] as $b): ?>
-                                <li class="flex items-start gap-1.5">
-                                    <span class="text-[#0663F6] font-bold leading-none mt-0.5">•</span>
-                                    <span><?= e($b) ?></span>
-                                </li>
-                            <?php endforeach; ?>
-                        </ul>
-                    </div>
+<section id="cd-solutions" class="bg-white pt-8 lg:pt-14 pb-12 lg:pb-20 font-sans cd-solutions-section">
+    <div class="mx-auto w-full max-w-[1720px] px-4 sm:px-6 lg:px-10">
+        <div class="lg:ml-12 ipad-pro-ml-0 xl:ml-24 lg:mr-12 xl:mr-24">
+            
+            <!-- Header -->
+            <div class="text-center max-w-3xl mx-auto mb-10 lg:mb-12">
+                <div class="inline-flex flex-col items-start mb-2">
+                    <span class="text-[#0663F6] font-extrabold text-2xl sm:text-3xl tracking-tight uppercase">
+                        <?= getCurrentLang() === 'th' ? 'โซลูชันงานออกแบบสร้างสรรค์' : 'CREATIVE / DESIGN SOLUTIONS' ?>
+                    </span>
+                    <div class="w-16 h-[3.5px] bg-[#0663F6] mt-1.5 mb-3"></div>
                 </div>
-            <?php endforeach; ?>
-        </div>
+                <h2 class="text-base sm:text-lg md:text-xl font-bold text-[#043B94] leading-snug">
+                    <?= getCurrentLang() === 'th' ? 'โซลูชันการออกแบบครบวงจร เพื่อการเติบโตของแบรนด์ในทุกมิติ' : 'Comprehensive design solutions driving multidimensional brand growth' ?>
+                </h2>
+            </div>
 
+            <?php
+            $solutions = [
+                [
+                    'title' => 'BRAND IDENTITY',
+                    'image' => asset_url('images/cd_sol_1.png'),
+                    'bullets' => [
+                        getCurrentLang() === 'th' ? 'ออกแบบโลโก้และ CI แบรนด์' : 'Brand Logo & CI Design',
+                        getCurrentLang() === 'th' ? 'กำหนดคู่มือการใช้งานแบรนด์' : 'Brand Guideline Manual',
+                        getCurrentLang() === 'th' ? 'ออกแบบ Stationery ครบชุด' : 'Complete Stationery Set',
+                    ]
+                ],
+                [
+                    'title' => 'UI / UX DESIGN',
+                    'image' => asset_url('images/cd_sol_2.png'),
+                    'bullets' => [
+                        getCurrentLang() === 'th' ? 'ออกแบบ User Interface สวยงาม' : 'Stunning Visual UI Design',
+                        getCurrentLang() === 'th' ? 'วางโครงสร้าง UX ใช้งานง่าย' : 'Intuitive UX Architecture',
+                        getCurrentLang() === 'th' ? 'ทำ Interactive Prototype' : 'Interactive Prototyping',
+                    ]
+                ],
+                [
+                    'title' => 'WEBSITE DESIGN',
+                    'image' => asset_url('images/cd_sol_3.png'),
+                    'bullets' => [
+                        getCurrentLang() === 'th' ? 'ออกแบบเว็บไซต์ทันสมัย' : 'Modern Website Design',
+                        getCurrentLang() === 'th' ? 'Responsive รองรับทุกอุปกรณ์' : 'Responsive Across Devices',
+                        getCurrentLang() === 'th' ? 'ออกแบบเน้น Conversion' : 'Conversion-Driven Layouts',
+                    ]
+                ],
+                [
+                    'title' => 'GRAPHIC DESIGN',
+                    'image' => asset_url('images/cd_sol_4.png'),
+                    'bullets' => [
+                        getCurrentLang() === 'th' ? 'สื่อโฆษณา Banner & Infographic' : 'Ad Banners & Infographics',
+                        getCurrentLang() === 'th' ? 'กราฟิกสำหรับโปรโมชั่น' : 'Campaign & Promotion Visuals',
+                        getCurrentLang() === 'th' ? 'สื่อสิ่งพิมพ์และดิจิทัลครบวงจร' : 'Full-Spectrum Print & Digital',
+                    ]
+                ],
+                [
+                    'title' => 'SOCIAL MEDIA CREATIVE',
+                    'image' => asset_url('images/cd_sol_5.png'),
+                    'bullets' => [
+                        getCurrentLang() === 'th' ? 'Artwork โซเชียลทุกแพลตฟอร์ม' : 'Multi-Platform Social Artwork',
+                        getCurrentLang() === 'th' ? 'วาง Mood & Tone ให้สอดคล้อง' : 'Consistent Brand Mood & Tone',
+                        getCurrentLang() === 'th' ? 'Template สำหรับโพสต์ประจำวัน' : 'Daily Engagement Templates',
+                    ]
+                ],
+                [
+                    'title' => 'MOTION GRAPHIC / VIDEO',
+                    'image' => asset_url('images/cd_sol_6.png'),
+                    'bullets' => [
+                        getCurrentLang() === 'th' ? 'ผลิตวิดีโอ Motion Graphic' : 'Dynamic Motion Graphics',
+                        getCurrentLang() === 'th' ? 'แอนิเมชันเปิดตัวสินค้า' : 'Product Launch Animations',
+                        getCurrentLang() === 'th' ? 'ตัดต่อและ Visual Effects' : 'Video Editing & VFX',
+                    ]
+                ],
+                [
+                    'title' => 'PRESENT & SALES KIT',
+                    'image' => asset_url('images/cd_sol_7.png'),
+                    'bullets' => [
+                        getCurrentLang() === 'th' ? 'ออกแบบ Company Profile' : 'Executive Company Profiles',
+                        getCurrentLang() === 'th' ? 'Sales Pitch Deck ดึงดูดนักลงทุน' : 'Investor Sales Pitch Decks',
+                        getCurrentLang() === 'th' ? 'สื่อและเอกสารสนับสนุนการขาย' : 'Sales Enablement Materials',
+                    ]
+                ],
+                [
+                    'title' => 'PACKAGING DESIGN',
+                    'image' => asset_url('images/cd_sol_8.png'),
+                    'bullets' => [
+                        getCurrentLang() === 'th' ? 'ออกแบบบรรจุภัณฑ์และฉลาก' : 'Packaging & Label Design',
+                        getCurrentLang() === 'th' ? 'สร้างความโดดเด่นบนชั้นวาง' : 'High Shelf & Online Standout',
+                        getCurrentLang() === 'th' ? 'คำนึงถึงการผลิตจริง' : 'Production-Ready Specifications',
+                    ]
+                ],
+                [
+                    'title' => 'CONTENT VISUAL SYSTEM',
+                    'image' => asset_url('images/cd_sol_9.png'),
+                    'bullets' => [
+                        getCurrentLang() === 'th' ? 'วางระบบ Key Visual แคมเปญ' : 'Campaign Key Visuals',
+                        getCurrentLang() === 'th' ? 'กำหนด Moodboard และโทนสี' : 'Moodboards & Color Palettes',
+                        getCurrentLang() === 'th' ? 'ภาพลักษณ์แบรนด์ที่เป็นหนึ่งเดียว' : 'Unified Brand Aesthetics',
+                    ]
+                ],
+                [
+                    'title' => 'DESIGN SYSTEM',
+                    'image' => asset_url('images/cd_sol_10.png'),
+                    'bullets' => [
+                        getCurrentLang() === 'th' ? 'สร้าง UI Component Library' : 'UI Component Library',
+                        getCurrentLang() === 'th' ? 'กำหนด Typography และสี' : 'Typography & Color Tokens',
+                        getCurrentLang() === 'th' ? 'ส่งมอบทีมพัฒนาได้อย่างราบรื่น' : 'Seamless Developer Handoff',
+                    ]
+                ],
+            ];
+            ?>
+
+            <!-- 10 Solutions in 5x2 Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-5 lg:gap-6 cd-solutions-grid">
+                <?php foreach ($solutions as $sol): ?>
+                    <div class="bg-white rounded-xl border border-slate-200/80 p-4 sm:p-5 flex flex-col justify-between shadow-sm hover:shadow-md hover:border-blue-300 transition-all duration-300 group cd-solution-card">
+                        <div>
+                            <!-- Title -->
+                            <h3 class="text-[#043B94] font-bold text-[13px] sm:text-sm tracking-tight mb-3 group-hover:text-[#0663F6] transition-colors line-clamp-1">
+                                <?= e($sol['title']) ?>
+                            </h3>
+
+                            <!-- Image Preview -->
+                            <div class="w-full aspect-[4/3] rounded-lg overflow-hidden bg-slate-50 border border-slate-100 flex items-center justify-center p-2 mb-3.5 group-hover:bg-blue-50/30 transition-colors">
+                                <img src="<?= e($sol['image']) ?>" alt="<?= e($sol['title']) ?>" class="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform duration-300 sharp-image-render">
+                            </div>
+
+                            <!-- Bullets -->
+                            <ul class="space-y-1.5 text-slate-500 text-[11px] sm:text-xs leading-snug">
+                                <?php foreach ($sol['bullets'] as $b): ?>
+                                    <li class="flex items-start gap-1.5">
+                                        <span class="text-[#0663F6] font-bold leading-none mt-0.5">•</span>
+                                        <span><?= e($b) ?></span>
+                                    </li>
+                                <?php endforeach; ?>
+                            </ul>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+
+        </div>
     </div>
 </section>
 
@@ -950,78 +1014,80 @@ $ctaImage    = asset_url('images/bg-cta.jpg');
      SECTION 4: 5 BENEFITS SECTION
 =========================================== -->
 <section class="bg-[#edf4fe] py-14 lg:py-20 font-sans">
-    <div class="mx-auto w-full max-w-7xl px-5 sm:px-6 lg:px-8">
-        
-        <!-- Header -->
-        <div class="text-center max-w-3xl mx-auto mb-10 lg:mb-12">
-            <h2 class="text-xl sm:text-2xl lg:text-3xl font-extrabold text-[#043B94] tracking-tight">
-                <span class="text-[#0663F6]"><?= getCurrentLang() === 'th' ? 'งานออกแบบสร้างสรรค์' : 'CREATIVE / DESIGN' ?></span> <?= getCurrentLang() === 'th' ? 'ที่ช่วยยกระดับธุรกิจของคุณ' : 'That Elevates Your Business' ?>
-            </h2>
-        </div>
+    <div class="mx-auto w-full max-w-[1720px] px-4 sm:px-6 lg:px-10">
+        <div class="lg:ml-12 ipad-pro-ml-0 xl:ml-24 lg:mr-12 xl:mr-24">
+            
+            <!-- Header -->
+            <div class="text-center max-w-3xl mx-auto mb-10 lg:mb-12">
+                <h2 class="text-xl sm:text-2xl lg:text-3xl font-extrabold text-[#043B94] tracking-tight">
+                    <span class="text-[#0663F6]"><?= getCurrentLang() === 'th' ? 'งานออกแบบสร้างสรรค์' : 'CREATIVE / DESIGN' ?></span> <?= getCurrentLang() === 'th' ? 'ที่ช่วยยกระดับธุรกิจของคุณ' : 'That Elevates Your Business' ?>
+                </h2>
+            </div>
 
-        <?php
-        $benefits = [
-            [
-                'title' => getCurrentLang() === 'th' ? 'ภาพลักษณ์เป็นมืออาชีพ' : 'Professional Brand Image',
-                'desc'  => getCurrentLang() === 'th' ? 'สร้างความน่าเชื่อถือ และภาพลักษณ์ระดับมืออาชีพ' : 'Build strong credibility and an international-standard presence.',
-                'icon'  => '
-                    <div class="w-14 h-14 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 mb-4">
-                        <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-                    </div>'
-            ],
-            [
-                'title' => getCurrentLang() === 'th' ? 'สื่อสารแบรนด์ได้ชัดเจน' : 'Clear Brand Narrative',
-                'desc'  => getCurrentLang() === 'th' ? 'เล่าเรื่องราวของแบรนด์ ผ่านงานดีไซน์ที่ตรงจุด' : 'Tell compelling stories through focused, purposeful design.',
-                'icon'  => '
-                    <div class="w-14 h-14 rounded-full bg-amber-100 flex items-center justify-center text-amber-500 mb-4">
-                        <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"/></svg>
-                    </div>'
-            ],
-            [
-                'title' => getCurrentLang() === 'th' ? 'สร้างความผูกพันกับผู้ใช้' : 'Deep User Engagement',
-                'desc'  => getCurrentLang() === 'th' ? 'ดีไซน์ที่เข้าถึงใจ สร้างความประทับใจระยะยาว' : 'User-centric designs inspiring lasting emotional connection.',
-                'icon'  => '
-                    <div class="w-14 h-14 rounded-full bg-rose-100 flex items-center justify-center text-rose-500 mb-4">
-                        <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
-                    </div>'
-            ],
-            [
-                'title' => getCurrentLang() === 'th' ? 'เพิ่มโอกาสทางธุรกิจ' : 'Accelerate Business Growth',
-                'desc'  => getCurrentLang() === 'th' ? 'ดีไซน์ที่ช่วยกระตุ้น การตัดสินใจซื้อของลูกค้า' : 'Optimized visuals that drive conversions and purchasing decisions.',
-                'icon'  => '
-                    <div class="w-14 h-14 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 mb-4">
-                        <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
-                    </div>'
-            ],
-            [
-                'title' => getCurrentLang() === 'th' ? 'ใช้งานได้อย่างไร้รอยต่อ' : 'Seamless Application',
-                'desc'  => getCurrentLang() === 'th' ? 'นำไปประยุกต์ใช้ได้ทุกช่องทาง สอดคล้องในทุกมิติ' : 'Adaptable assets maintaining coherence across all channels.',
-                'icon'  => '
-                    <div class="w-14 h-14 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 mb-4">
-                        <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
-                    </div>'
-            ],
-        ];
-        ?>
+            <?php
+            $benefits = [
+                [
+                    'title' => getCurrentLang() === 'th' ? 'ภาพลักษณ์เป็นมืออาชีพ' : 'Professional Brand Image',
+                    'desc'  => getCurrentLang() === 'th' ? 'สร้างความน่าเชื่อถือ และภาพลักษณ์ระดับมืออาชีพ' : 'Build strong credibility and an international-standard presence.',
+                    'icon'  => '
+                        <div class="w-14 h-14 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 mb-4">
+                            <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                        </div>'
+                ],
+                [
+                    'title' => getCurrentLang() === 'th' ? 'สื่อสารแบรนด์ได้ชัดเจน' : 'Clear Brand Narrative',
+                    'desc'  => getCurrentLang() === 'th' ? 'เล่าเรื่องราวของแบรนด์ ผ่านงานดีไซน์ที่ตรงจุด' : 'Tell compelling stories through focused, purposeful design.',
+                    'icon'  => '
+                        <div class="w-14 h-14 rounded-full bg-amber-100 flex items-center justify-center text-amber-500 mb-4">
+                            <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"/></svg>
+                        </div>'
+                ],
+                [
+                    'title' => getCurrentLang() === 'th' ? 'สร้างความผูกพันกับผู้ใช้' : 'Deep User Engagement',
+                    'desc'  => getCurrentLang() === 'th' ? 'ดีไซน์ที่เข้าถึงใจ สร้างความประทับใจระยะยาว' : 'User-centric designs inspiring lasting emotional connection.',
+                    'icon'  => '
+                        <div class="w-14 h-14 rounded-full bg-rose-100 flex items-center justify-center text-rose-500 mb-4">
+                            <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+                        </div>'
+                ],
+                [
+                    'title' => getCurrentLang() === 'th' ? 'เพิ่มโอกาสทางธุรกิจ' : 'Accelerate Business Growth',
+                    'desc'  => getCurrentLang() === 'th' ? 'ดีไซน์ที่ช่วยกระตุ้น การตัดสินใจซื้อของลูกค้า' : 'Optimized visuals that drive conversions and purchasing decisions.',
+                    'icon'  => '
+                        <div class="w-14 h-14 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 mb-4">
+                            <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+                        </div>'
+                ],
+                [
+                    'title' => getCurrentLang() === 'th' ? 'ใช้งานได้อย่างไร้รอยต่อ' : 'Seamless Application',
+                    'desc'  => getCurrentLang() === 'th' ? 'นำไปประยุกต์ใช้ได้ทุกช่องทาง สอดคล้องในทุกมิติ' : 'Adaptable assets maintaining coherence across all channels.',
+                    'icon'  => '
+                        <div class="w-14 h-14 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 mb-4">
+                            <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+                        </div>'
+                ],
+            ];
+            ?>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5 cd-benefits-grid">
-            <?php foreach ($benefits as $idx => $b): ?>
-                <div class="bg-white rounded-2xl p-6 sm:p-7 flex flex-col items-center text-center shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 <?= $idx === 4 ? 'cd-benefit-card-last' : '' ?>">
-                    <div class="cd-benefit-icon-wrap">
-                        <?= $b['icon'] ?>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5 cd-benefits-grid">
+                <?php foreach ($benefits as $idx => $b): ?>
+                    <div class="bg-white rounded-2xl p-6 sm:p-7 flex flex-col items-center text-center shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 <?= $idx === 4 ? 'cd-benefit-card-last' : '' ?>">
+                        <div class="cd-benefit-icon-wrap">
+                            <?= $b['icon'] ?>
+                        </div>
+                        <div class="cd-benefit-content flex flex-col items-center">
+                            <h3 class="text-[#043B94] font-bold text-base mb-2 leading-snug">
+                                <?= e($b['title']) ?>
+                            </h3>
+                            <p class="text-slate-500 text-xs sm:text-[13px] leading-relaxed">
+                                <?= e($b['desc']) ?>
+                            </p>
+                        </div>
                     </div>
-                    <div class="cd-benefit-content flex flex-col items-center">
-                        <h3 class="text-[#043B94] font-bold text-base mb-2 leading-snug">
-                            <?= e($b['title']) ?>
-                        </h3>
-                        <p class="text-slate-500 text-xs sm:text-[13px] leading-relaxed">
-                            <?= e($b['desc']) ?>
-                        </p>
-                    </div>
-                </div>
-            <?php endforeach; ?>
-        </div>
+                <?php endforeach; ?>
+            </div>
 
+        </div>
     </div>
 </section>
 
@@ -1029,86 +1095,88 @@ $ctaImage    = asset_url('images/bg-cta.jpg');
      SECTION 5: PORTFOLIO SHOWCASE
 =========================================== -->
 <section class="bg-white py-14 lg:py-20 font-sans border-t border-slate-100">
-    <div class="mx-auto w-full max-w-7xl px-5 sm:px-6 lg:px-8">
-        
-        <!-- Header -->
-        <div class="mb-10 lg:mb-12">
-            <div class="inline-flex flex-col items-start" style="display: inline-flex; flex-direction: column; align-items: flex-start;">
-                <h2 class="text-2xl sm:text-3xl font-extrabold text-[#0663F6] tracking-tight" style="color: #0663F6; font-size: 1.875rem; font-weight: 800;">
-                    <?= getCurrentLang() === 'th' ? 'ตัวอย่างผลงานของเรา' : 'Selected Case Studies' ?>
-                </h2>
-                <div class="w-12 h-[3.5px] bg-[#0663F6] mt-1.5" style="width: 48px; height: 3.5px; background-color: #0663F6; margin-top: 6px;"></div>
-            </div>
-        </div>
-
-        <?php
-        $showcases = [
-            [
-                'title' => 'KPN Click',
-                'category' => 'Website Design',
-                'desc' => getCurrentLang() === 'th'
-                    ? 'เว็บไซต์ที่ออกแบบเพื่อสื่อสารข้อมูลโครงการและบริการของแบรนด์อย่างครบถ้วน'
-                    : 'Designed to comprehensively communicate project and brand service information.',
-                'image' => asset_url('images/service-home.png'),
-            ],
-            [
-                'title' => 'Yamaha LEAD',
-                'category' => 'Design System',
-                'desc' => getCurrentLang() === 'th'
-                    ? 'ระบบดีไซน์และเทมเพลตมาตรฐานองค์กร ช่วยเพิ่มประสิทธิภาพการทำงาน'
-                    : 'Comprehensive enterprise design system optimizing workflows.',
-                'image' => asset_url('images/yamaha.png'),
-            ],
-            [
-                'title' => 'Nusasiri',
-                'category' => 'Brand Identity',
-                'desc' => getCurrentLang() === 'th'
-                    ? 'อัตลักษณ์แบรนด์และระบบการออกแบบสื่อสารที่โดดเด่นและน่าเชื่อถือ'
-                    : 'Impactful brand identity and cohesive communication visual system.',
-                'image' => asset_url('images/ab.png'),
-            ],
-            [
-                'title' => 'NS Gas',
-                'category' => 'Online Graphic',
-                'desc' => getCurrentLang() === 'th'
-                    ? 'การสร้างสรรค์คอนเทนต์และภาพกราฟิกเพื่อสื่อสารและกระตุ้นการมีส่วนร่วม'
-                    : 'High-engagement creative graphic content for brand awareness.',
-                'image' => asset_url('images/story.png'),
-            ],
-        ];
-        ?>
-
-        <!-- 4 Mockup Showcase Cards Grid (Matching Digital Platform Structure) -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 cd-showcase-grid">
-            <?php foreach ($showcases as $item): ?>
-                <div class="cd-port-card block bg-white rounded-2xl overflow-hidden border border-slate-100 shadow-sm hover:border-blue-200 group cursor-pointer" onclick="window.location.href='<?= e(route_url('/portfolio')) ?>'">
-                    <!-- Monitor / Device Frame -->
-                    <div class="p-3 bg-slate-50 border-b border-slate-100 flex items-center gap-1.5">
-                        <span class="w-2.5 h-2.5 rounded-full bg-red-400"></span>
-                        <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
-                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
-                        <span class="text-[11px] text-slate-400 font-mono ml-2 truncate">webpark.co.th/case/<?= strtolower(str_replace(' ', '-', $item['title'])) ?></span>
-                    </div>
-                    <div class="h-48 overflow-hidden bg-slate-100 relative">
-                        <img src="<?= e($item['image']) ?>" alt="<?= e($item['title']) ?>" class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105" onerror="this.src='<?= e(asset_url('images/erp.png')) ?>';">
-                    </div>
-                    <div class="p-5">
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="inline-block px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-blue-50 text-primary border border-blue-100">
-                                <?= e($item['category']) ?>
-                            </span>
-                        </div>
-                        <h3 class="text-base font-bold text-[#022862] group-hover:text-primary transition-colors mb-1.5">
-                            <?= e($item['title']) ?>
-                        </h3>
-                        <p class="text-xs text-slate-500 line-clamp-2 leading-relaxed">
-                            <?= e($item['desc']) ?>
-                        </p>
-                    </div>
+    <div class="mx-auto w-full max-w-[1720px] px-4 sm:px-6 lg:px-10">
+        <div class="lg:ml-12 ipad-pro-ml-0 xl:ml-24 lg:mr-12 xl:mr-24">
+            
+            <!-- Header -->
+            <div class="mb-10 lg:mb-12">
+                <div class="inline-flex flex-col items-start" style="display: inline-flex; flex-direction: column; align-items: flex-start;">
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-[#0663F6] tracking-tight" style="color: #0663F6; font-size: 1.875rem; font-weight: 800;">
+                        <?= getCurrentLang() === 'th' ? 'ตัวอย่างผลงานของเรา' : 'Selected Case Studies' ?>
+                    </h2>
+                    <div class="w-12 h-[3.5px] bg-[#0663F6] mt-1.5" style="width: 48px; height: 3.5px; background-color: #0663F6; margin-top: 6px;"></div>
                 </div>
-            <?php endforeach; ?>
-        </div>
+            </div>
 
+            <?php
+            $showcases = [
+                [
+                    'title' => 'KPN Click',
+                    'category' => 'Website Design',
+                    'desc' => getCurrentLang() === 'th'
+                        ? 'เว็บไซต์ที่ออกแบบเพื่อสื่อสารข้อมูลโครงการและบริการของแบรนด์อย่างครบถ้วน'
+                        : 'Designed to comprehensively communicate project and brand service information.',
+                    'image' => asset_url('images/port_monitor_1.png'),
+                ],
+                [
+                    'title' => 'Yamaha LEAD',
+                    'category' => 'Design System',
+                    'desc' => getCurrentLang() === 'th'
+                        ? 'ระบบดีไซน์และเทมเพลตมาตรฐานองค์กร ช่วยเพิ่มประสิทธิภาพการทำงาน'
+                        : 'Comprehensive enterprise design system optimizing workflows.',
+                    'image' => asset_url('images/port_monitor_2.png'),
+                ],
+                [
+                    'title' => 'Nusasiri',
+                    'category' => 'Brand Identity',
+                    'desc' => getCurrentLang() === 'th'
+                        ? 'อัตลักษณ์แบรนด์และระบบการออกแบบสื่อสารที่โดดเด่นและน่าเชื่อถือ'
+                        : 'Impactful brand identity and cohesive communication visual system.',
+                    'image' => asset_url('images/port_monitor_3.png'),
+                ],
+                [
+                    'title' => 'NS Gas',
+                    'category' => 'Online Graphic',
+                    'desc' => getCurrentLang() === 'th'
+                        ? 'การสร้างสรรค์คอนเทนต์และภาพกราฟิกเพื่อสื่อสารและกระตุ้นการมีส่วนร่วม'
+                        : 'High-engagement creative graphic content for brand awareness.',
+                    'image' => asset_url('images/port_monitor_4.png'),
+                ],
+            ];
+            ?>
+
+            <!-- 4 Mockup Showcase Cards Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 cd-showcase-grid">
+                <?php foreach ($showcases as $item): ?>
+                    <div class="cd-port-card block bg-white rounded-2xl overflow-hidden border border-slate-100 shadow-sm hover:border-blue-200 group cursor-pointer" onclick="window.location.href='<?= e(route_url('/portfolio')) ?>'">
+                        <!-- Monitor / Device Frame -->
+                        <div class="p-3 bg-slate-50 border-b border-slate-100 flex items-center gap-1.5">
+                            <span class="w-2.5 h-2.5 rounded-full bg-red-400"></span>
+                            <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
+                            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
+                            <span class="text-[11px] text-slate-400 font-mono ml-2 truncate">webpark.co.th/case/<?= strtolower(str_replace(' ', '-', $item['title'])) ?></span>
+                        </div>
+                        <div class="h-48 overflow-hidden bg-slate-50 relative flex items-center justify-center">
+                            <img src="<?= e($item['image']) ?>" alt="<?= e($item['title']) ?>" class="w-full h-full object-cover object-top transition-transform duration-700 ease-out group-hover:scale-105" onerror="this.src='<?= e(asset_url('images/erp.png')) ?>';">
+                        </div>
+                        <div class="p-5">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="inline-block px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-blue-50 text-primary border border-blue-100">
+                                    <?= e($item['category']) ?>
+                                </span>
+                            </div>
+                            <h3 class="text-base font-bold text-[#022862] group-hover:text-primary transition-colors mb-1.5">
+                                <?= e($item['title']) ?>
+                            </h3>
+                            <p class="text-xs text-slate-500 line-clamp-2 leading-relaxed">
+                                <?= e($item['desc']) ?>
+                            </p>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+
+        </div>
     </div>
 </section>
 
