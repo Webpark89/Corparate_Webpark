@@ -17,16 +17,24 @@ if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST' && (isset($_POST['pdpa_agreed'
         'name' => trim((string) ($_POST['name'] ?? '')),
         'firstname' => trim((string) ($_POST['firstname'] ?? '')),
         'lastname' => trim((string) ($_POST['lastname'] ?? '')),
+        'company' => trim((string) ($_POST['company'] ?? '')),
         'phone' => trim((string) ($_POST['phone'] ?? '')),
         'email' => trim((string) ($_POST['email'] ?? '')),
         'message' => trim((string) ($_POST['message'] ?? '')),
     ];
     
-    $recaptchaResponse = $_POST['g-recaptcha-response'] ?? '';
-    if (empty($recaptchaResponse)) {
-        $errors[] = getCurrentLang() === 'th' ? 'กรุณาเลือกช่องยืนยันตัวตน (I\'m not a robot)' : 'Please verify that you are not a robot';
+    if (!verify_csrf_token()) {
+        $errors[] = getCurrentLang() === 'th'
+            ? 'คำขอไม่ถูกต้องหรือเซสชันหมดอายุ (CSRF Validation Failed) กรุณารีเฟรชหน้าเว็บแล้วลองใหม่อีกครั้ง'
+            : 'Invalid or expired session token. Please refresh the page and try again.';
     } else {
-        $submitted = true;
+        $recaptchaResponse = $_POST['g-recaptcha-response'] ?? '';
+        if (empty($recaptchaResponse)) {
+            $errors[] = getCurrentLang() === 'th' ? 'กรุณาเลือกช่องยืนยันตัวตน (I\'m not a robot)' : 'Please verify that you are not a robot';
+        } else {
+            $submitted = true;
+            csrf_token_regenerate();
+        }
     }
 }
 
@@ -198,6 +206,7 @@ $contactButtonUrl = $cbuttonUrl ?? '/contact';
                             }
                         </style>
                         <form method="post" class="space-y-4 cta-form">
+                            <?= csrf_field() ?>
                             
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <input type="text" id="contact_firstname_cta" name="firstname" placeholder="<?= e(t('common.form_label_firstname')) ?>" value="<?= e($form['firstname'] ?? '') ?>" required

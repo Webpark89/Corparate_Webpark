@@ -331,6 +331,7 @@ $recaptchaSiteKey = '6Lcf_pAtAAAAAOVhatPPwrHSYXeb_0J4yXf5BrRO';
                             }
                         </style>
                         <form id="contactMainForm" method="post" class="flex flex-col flex-grow space-y-4">
+                            <?= csrf_field() ?>
                             <!-- Name Fields -->
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
