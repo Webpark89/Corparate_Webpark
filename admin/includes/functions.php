@@ -12,6 +12,8 @@ if (!defined('AUTH_SECRET_KEY')) {
 }
 
 if (session_status() === PHP_SESSION_NONE) {
+    // Ensure PHP garbage collector respects SESSION_TIMEOUT (30 minutes)
+    ini_set('session.gc_maxlifetime', (string) (defined('SESSION_TIMEOUT') ? SESSION_TIMEOUT : 1800));
     session_set_cookie_params([
         'lifetime' => 0,
         'path' => '/',

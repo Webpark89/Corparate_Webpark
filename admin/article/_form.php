@@ -106,18 +106,55 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
             <input type="hidden" name="id" value="<?= (int)($data['id'] ?? 0) ?>">
         <?php endif; ?>
         <div class="lg:col-span-12 space-y-6">
-            <!-- Language Toggle Tabs (Global for Form) -->
-            <div class="inline-flex items-center gap-2 mb-2">
-                <button type="button" id="global-tab-th" onclick="switchGlobalLanguage('th')"
-                    style="padding-left:1.25rem;padding-right:1.25rem;"
-                    class="py-2 text-sm font-semibold rounded-lg bg-blue-50 text-blue-600 border border-blue-200 hover:bg-blue-100 focus:outline-none transition-all">
-                    ภาษาไทย (0/5)
-                </button>
-                <button type="button" id="global-tab-en" onclick="switchGlobalLanguage('en')"
-                    style="padding-left:1.25rem;padding-right:1.25rem;"
-                    class="py-2 text-sm font-semibold rounded-lg bg-transparent text-slate-500 border border-slate-200 hover:bg-slate-50 hover:text-slate-800 focus:outline-none transition-all">
-                    English (0/5)
-                </button>
+            <!-- Draft Recovery Banner (Auto-save) -->
+            <div id="draftRecoveryAlert" class="hidden rounded-2xl border border-amber-300 bg-amber-50/90 p-4 sm:p-5 shadow-sm transition-all">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div class="flex items-start sm:items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-amber-100 border border-amber-200 flex items-center justify-center text-amber-700 shrink-0 text-lg">
+                            💾
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-bold text-amber-900 flex items-center gap-2">
+                                <span>พบข้อมูลบทความฉบับร่างที่บันทึกไว้ในเครื่องของคุณ</span>
+                                <span id="draftSavedTime" class="text-xs font-normal text-amber-700 bg-amber-100 px-2 py-0.5 rounded-full"></span>
+                            </h4>
+                            <p class="text-xs text-amber-800 mt-0.5">
+                                คุณมีการพิมพ์บทความทิ้งไว้ก่อนหน้านี้ ต้องการกู้คืนเนื้อหากลับมาพิมพ์ต่อหรือไม่?
+                            </p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2 shrink-0">
+                        <button type="button" id="btnRestoreDraft" class="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white text-xs font-semibold rounded-xl shadow-sm transition-colors flex items-center gap-1.5">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                            <span>กู้คืนเนื้อหา</span>
+                        </button>
+                        <button type="button" id="btnDiscardDraft" class="px-3 py-2 bg-white hover:bg-amber-100/50 text-amber-800 border border-amber-200 text-xs font-medium rounded-xl transition-colors">
+                            ไม่ต้องการ
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Auto-save Status Indicator -->
+            <div class="flex items-center justify-between">
+                <!-- Language Toggle Tabs (Global for Form) -->
+                <div class="inline-flex items-center gap-2">
+                    <button type="button" id="global-tab-th" onclick="switchGlobalLanguage('th')"
+                        style="padding-left:1.25rem;padding-right:1.25rem;"
+                        class="py-2 text-sm font-semibold rounded-lg bg-blue-50 text-blue-600 border border-blue-200 hover:bg-blue-100 focus:outline-none transition-all">
+                        ภาษาไทย (0/5)
+                    </button>
+                    <button type="button" id="global-tab-en" onclick="switchGlobalLanguage('en')"
+                        style="padding-left:1.25rem;padding-right:1.25rem;"
+                        class="py-2 text-sm font-semibold rounded-lg bg-transparent text-slate-500 border border-slate-200 hover:bg-slate-50 hover:text-slate-800 focus:outline-none transition-all">
+                        English (0/5)
+                    </button>
+                </div>
+                <!-- Local auto-save indicator badge -->
+                <div id="autoSaveBadge" class="text-xs text-slate-400 flex items-center gap-1.5 bg-slate-50 px-3 py-1.5 rounded-xl border border-slate-200">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 inline-block animate-pulse"></span>
+                    <span id="autoSaveText">ระบบบันทึกร่างอัตโนมัติเปิดทำงาน</span>
+                </div>
             </div>
             <section class="rounded-2xl border border-slate-200/80 bg-white shadow-sm overflow-hidden">
                 <div class="border-b border-slate-100 px-6 py-4">
@@ -1266,6 +1303,13 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
                 editor.addShortcut('ctrl+q', 'Apply Primary Color', function () {
                     editor.execCommand('ForeColor', false, '#0663F6');
                 });
+
+                // Track user typing activity inside TinyMCE
+                editor.on('input change keyup NodeChange', function () {
+                    if (window.markUserActivity) {
+                        window.markUserActivity();
+                    }
+                });
             }
         });
         if (lang === 'th') {
@@ -1754,4 +1798,298 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
             });
         }
     });
+
+    // =========================================================================
+    // 1. Session Heartbeat Keep-Alive, User Activity Tracking & CSRF Auto-Refresh
+    // =========================================================================
+    (function initHeartbeat() {
+        window._hasAdminHeartbeat = true;
+        const HEARTBEAT_INTERVAL = 3 * 60 * 1000; // Ping every 3 minutes (keeps 30-min session perpetually alive while open)
+        const ACTIVITY_PING_THRESHOLD = 2 * 60 * 1000; // If user is actively working and >2 mins since last ping, refresh
+        const HEARTBEAT_URL = '<?= ADMIN_URL ?>/ajax_heartbeat.php';
+
+        let lastPingTime = Date.now();
+        let lastUserActivity = Date.now();
+        let isPinging = false;
+
+        async function doHeartbeat(reason = 'interval') {
+            if (isPinging) return;
+            isPinging = true;
+            try {
+                const res = await fetch(HEARTBEAT_URL, {
+                    method: 'GET',
+                    headers: { 'X-Requested-With': 'XMLHttpRequest' },
+                    cache: 'no-store'
+                });
+                lastPingTime = Date.now();
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data && data.csrf_token) {
+                        const csrfInputs = document.querySelectorAll('input[name="_csrf"], input[name="csrf_token"]');
+                        csrfInputs.forEach(input => {
+                            input.value = data.csrf_token;
+                        });
+                    }
+                } else if (res.status === 401) {
+                    console.warn('[Heartbeat] Admin session expired on server.');
+                    const autoSaveText = document.getElementById('autoSaveText');
+                    const autoSaveBadge = document.getElementById('autoSaveBadge');
+                    if (autoSaveText && autoSaveBadge) {
+                        autoSaveBadge.classList.remove('border-slate-200');
+                        autoSaveBadge.classList.add('border-amber-300', 'bg-amber-50');
+                        autoSaveText.innerHTML = '<span class="text-amber-700 font-semibold">เซสชันหมดอายุแล้ว (ข้อมูลยังคงถูกบันทึกไว้ในเครื่อง กรุณาเปิดแท็บใหม่เพื่อเข้าสู่ระบบ)</span>';
+                    }
+                }
+            } catch (err) {
+                console.warn('[Heartbeat] Ping failed (network offline?):', err);
+            } finally {
+                isPinging = false;
+            }
+        }
+
+        // Global User Activity Marker (called on typing, mouse movements, scrolling, and TinyMCE edits)
+        window.markUserActivity = function() {
+            lastUserActivity = Date.now();
+            // If user is actively typing/working and it has been > 2 minutes since last ping, refresh session
+            if (Date.now() - lastPingTime > ACTIVITY_PING_THRESHOLD) {
+                doHeartbeat('user_activity');
+            }
+        };
+
+        // Activity event listeners on page
+        ['mousemove', 'mousedown', 'keydown', 'scroll', 'touchstart'].forEach(evt => {
+            window.addEventListener(evt, () => {
+                window.markUserActivity();
+            }, { passive: true });
+        });
+
+        // Trigger heartbeat periodically (keeps session alive while page is kept open)
+        setInterval(() => {
+            doHeartbeat('interval');
+        }, HEARTBEAT_INTERVAL);
+
+        // Ping immediately when window gains focus back from other tabs or applications
+        window.addEventListener('focus', () => {
+            if (Date.now() - lastPingTime > 30000) { // at least 30s since last ping
+                doHeartbeat('tab_focus');
+            }
+        });
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'visible' && (Date.now() - lastPingTime > 30000)) {
+                doHeartbeat('visibility_visible');
+            }
+        });
+    })();
+
+    // =========================================================================
+    // 2. Local Auto-save & Draft Recovery System (LocalStorage)
+    // =========================================================================
+    (function initDraftAutoSave() {
+        const articleId = <?= (int)($data['id'] ?? 0) ?>;
+        const DRAFT_KEY = 'webpark_article_draft_' + articleId;
+        const form = document.getElementById('unifiedForm');
+        if (!form) return;
+
+        const draftAlert = document.getElementById('draftRecoveryAlert');
+        const draftSavedTime = document.getElementById('draftSavedTime');
+        const btnRestore = document.getElementById('btnRestoreDraft');
+        const btnDiscard = document.getElementById('btnDiscardDraft');
+        const autoSaveText = document.getElementById('autoSaveText');
+
+        let isRestoring = false;
+        let isSubmitted = false;
+
+        // Collect all data from form including TinyMCE editors
+        function collectFormData() {
+            const data = {
+                savedAt: new Date().toISOString(),
+                inputs: {},
+                sections: { th: [], en: [] }
+            };
+
+            // Standard inputs
+            const fields = [
+                'meta_title', 'meta_description', 'meta_keywords',
+                'meta_title_en', 'meta_description_en', 'meta_keywords_en',
+                'cover_image_alt', 'category_id', 'created_at', 'slug', 'slug_en'
+            ];
+            fields.forEach(name => {
+                const el = form.querySelector(`[name="${name}"]`);
+                if (el) data.inputs[name] = el.value;
+            });
+
+            const isPinned = form.querySelector('input[name="is_pinned"]#is_pinned_input');
+            if (isPinned) data.inputs['is_pinned'] = isPinned.checked;
+
+            // Collect sections
+            ['th', 'en'].forEach(lang => {
+                const container = document.getElementById(`${lang}-sections-container`);
+                if (!container) return;
+                const items = container.querySelectorAll('.section-item');
+                items.forEach((item, idx) => {
+                    const topicInput = item.querySelector('input[type="text"]');
+                    const textarea = item.querySelector('textarea');
+                    let bodyVal = '';
+                    if (textarea) {
+                        const ed = editors[textarea.id];
+                        bodyVal = (ed && typeof ed.getContent === 'function') ? ed.getContent() : textarea.value;
+                    }
+                    data.sections[lang].push({
+                        topic: topicInput ? topicInput.value : '',
+                        body: bodyVal
+                    });
+                });
+            });
+
+            return data;
+        }
+
+        // Save Draft to LocalStorage
+        function saveDraft() {
+            if (isRestoring || isSubmitted) return;
+            try {
+                const data = collectFormData();
+                // Only save if user has actually typed something in title or body
+                const hasContent = (data.inputs.meta_title && data.inputs.meta_title.trim() !== '') ||
+                    (data.inputs.meta_title_en && data.inputs.meta_title_en.trim() !== '') ||
+                    data.sections.th.some(s => s.topic || (s.body && s.body !== '<p><br></p>' && s.body.trim() !== '')) ||
+                    data.sections.en.some(s => s.topic || (s.body && s.body !== '<p><br></p>' && s.body.trim() !== ''));
+
+                if (!hasContent) return;
+
+                localStorage.setItem(DRAFT_KEY, JSON.stringify(data));
+                if (autoSaveText) {
+                    const now = new Date();
+                    const timeStr = now.toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+                    autoSaveText.textContent = `บันทึกร่างในเครื่องล่าสุด ${timeStr}`;
+                }
+            } catch (err) {
+                console.warn('[Draft] Failed to save to localStorage:', err);
+            }
+        }
+
+        // Check and Show Recovery Banner if saved draft exists
+        function checkDraftRecovery() {
+            try {
+                const raw = localStorage.getItem(DRAFT_KEY);
+                if (!raw) return;
+                const draft = JSON.parse(raw);
+                if (!draft || !draft.savedAt) return;
+
+                const savedDate = new Date(draft.savedAt);
+                const timeStr = savedDate.toLocaleString('th-TH', {
+                    day: 'numeric', month: 'short', year: 'numeric',
+                    hour: '2-digit', minute: '2-digit'
+                });
+
+                if (draftSavedTime) draftSavedTime.textContent = timeStr;
+                if (draftAlert) draftAlert.classList.remove('hidden');
+            } catch (e) {
+                console.warn('[Draft] Check recovery failed:', e);
+            }
+        }
+
+        // Restore Draft Data
+        function restoreDraft() {
+            try {
+                const raw = localStorage.getItem(DRAFT_KEY);
+                if (!raw) return;
+                const draft = JSON.parse(raw);
+                isRestoring = true;
+
+                // Restore inputs
+                if (draft.inputs) {
+                    Object.keys(draft.inputs).forEach(name => {
+                        const el = form.querySelector(`[name="${name}"]`);
+                        if (el) {
+                            el.value = draft.inputs[name];
+                            el.dispatchEvent(new Event('input', { bubbles: true }));
+                            el.dispatchEvent(new Event('change', { bubbles: true }));
+                        }
+                    });
+
+                    const isPinned = form.querySelector('input[name="is_pinned"]#is_pinned_input');
+                    if (isPinned && typeof draft.inputs['is_pinned'] !== 'undefined') {
+                        isPinned.checked = !!draft.inputs['is_pinned'];
+                    }
+                }
+
+                // Restore sections
+                if (draft.sections) {
+                    ['th', 'en'].forEach(lang => {
+                        const container = document.getElementById(`${lang}-sections-container`);
+                        if (!container) return;
+                        const items = container.querySelectorAll('.section-item');
+                        items.forEach(item => {
+                            const textarea = item.querySelector('textarea');
+                            if (textarea && editors[textarea.id]) {
+                                editors[textarea.id].remove();
+                                delete editors[textarea.id];
+                            }
+                            item.remove();
+                        });
+
+                        if (lang === 'th') thCount = 0;
+                        if (lang === 'en') enCount = 0;
+
+                        const savedSecs = draft.sections[lang] || [];
+                        if (savedSecs.length > 0) {
+                            savedSecs.forEach((sec, idx) => {
+                                createSectionElement(lang, idx, sec.topic || '', sec.body || '');
+                            });
+                        } else {
+                            createSectionElement(lang, 0, '', '');
+                        }
+                    });
+                }
+
+                if (draftAlert) draftAlert.classList.add('hidden');
+                if (autoSaveText) autoSaveText.textContent = 'กู้คืนเนื้อหาฉบับร่างสำเร็จ!';
+                isRestoring = false;
+            } catch (err) {
+                console.error('[Draft] Restore error:', err);
+                alert('เกิดข้อผิดพลาดในการกู้คืนเนื้อหา');
+                isRestoring = false;
+            }
+        }
+
+        if (btnRestore) {
+            btnRestore.addEventListener('click', restoreDraft);
+        }
+
+        if (btnDiscard) {
+            btnDiscard.addEventListener('click', () => {
+                if (confirm('คุณแน่ใจหรือไม่ว่าต้องการละทิ้งฉบับร่างที่บันทึกไว้ในเครื่องนี้?')) {
+                    localStorage.removeItem(DRAFT_KEY);
+                    if (draftAlert) draftAlert.classList.add('hidden');
+                }
+            });
+        }
+
+        // Auto-save every 20 seconds
+        setInterval(saveDraft, 20 * 1000);
+
+        // Auto-save on typing inputs
+        form.addEventListener('input', debounce(saveDraft, 2000));
+
+        // When form is submitted: Mark draft key for deletion ONLY upon successful save (on index page), BUT do NOT delete yet!
+        // If save fails on server and redirects back to create/edit, draft remains safely in localStorage!
+        form.addEventListener('submit', () => {
+            isSubmitted = true;
+            try {
+                sessionStorage.setItem('pending_clear_draft', DRAFT_KEY);
+            } catch (e) {}
+        });
+
+        // Delay check until TinyMCE is fully initiated
+        setTimeout(checkDraftRecovery, 600);
+
+        function debounce(func, wait) {
+            let timeout;
+            return function(...args) {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => func.apply(this, args), wait);
+            };
+        }
+    })();
 </script>

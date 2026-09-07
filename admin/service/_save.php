@@ -21,10 +21,19 @@ $detailsJson = json_encode([
 $imagePath = $_POST['old_image'] ?? '';
 try {
     if (!empty($_FILES['image']['name'])) {
-        $imagePath = handle_upload('image', ['jpg', 'png', 'webp']);
+        $maxSizeBytes = 3 * 1024 * 1024; // 3 MB limit
+        if ($_FILES['image']['size'] > $maxSizeBytes) {
+            $sizeMb = round($_FILES['image']['size'] / (1024 * 1024), 2);
+            throw new RuntimeException("ขนาดไฟล์รูปภาพเกินกำหนด ({$sizeMb} MB) กรุณาใช้ไฟล์ขนาดไม่เกิน 3 MB");
+        }
+        $imagePath = handle_upload('image', ['webp']);
     }
 } catch (RuntimeException $e) {
-    flash('error', 'อัพโหลดรูปภาพไม่สำเร็จ: ' . $e->getMessage());
+    $msg = $e->getMessage();
+    if ($msg === 'File type not allowed.' || $msg === 'Invalid MIME type.') {
+        $msg = 'ระบบรองรับเฉพาะไฟล์รูปภาพนามสกุล .webp เท่านั้น กรุณาแปลงไฟล์เป็น .webp ก่อนอัปโหลดครับ';
+    }
+    flash('error', 'อัปโหลดรูปภาพไม่สำเร็จ: ' . $msg);
     $redirectUrl = $id ? "edit.php?id=$id" : 'create.php';
     header("Location: $redirectUrl");
     exit;
