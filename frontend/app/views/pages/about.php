@@ -65,9 +65,10 @@ $contactAddress = $company['contact']['address'] ?? t('footer.office_address');
         transform: none !important;
         will-change: transform;
     }
-    @media (min-width: 1181px) {
-        .hero-parallax-img {
-            transform: none !important;
+    @media (min-width: 1025px) {
+        .desktop-about-hero-col,
+        .about-hero-left-col {
+            margin-left: 3rem !important;
         }
         .desktop-about-hero-h1 {
             font-size: 5.5rem !important;
@@ -129,14 +130,13 @@ $contactAddress = $company['contact']['address'] ?? t('footer.office_address');
     @media (min-width: 760px) and (max-width: 1366px) {
         .desktop-about-hero-content-wrapper {
             max-width: 100% !important;
-            margin-left: 0 !important;
         }
         .ipad-pro-about-hero-span1 {
             font-size: 4.25rem !important;
             font-weight: 900 !important;
             line-height: 1.35 !important;
             white-space: nowrap !important;
-            margin-bottom: 0.75rem !important;
+            margin-bottom: 0.25rem !important;
             display: inline-block !important;
         }
         .ipad-pro-about-hero-span2 {
@@ -144,7 +144,7 @@ $contactAddress = $company['contact']['address'] ?? t('footer.office_address');
             font-weight: 900 !important;
             line-height: 1.35 !important;
             white-space: nowrap !important;
-            margin-bottom: 1.5rem !important;
+            margin-bottom: 0 !important;
             display: inline-block !important;
         }
         .ipad-pro-about-hero-p {
@@ -153,12 +153,7 @@ $contactAddress = $company['contact']['address'] ?? t('footer.office_address');
             font-weight: 600 !important;
             color: #0b1b42 !important;
             max-width: 48rem !important;
-            margin-top: 1rem !important;
-        }
-            line-height: 1.75 !important;
-            font-weight: 600 !important;
-            color: #0b1b42 !important;
-            max-width: 48rem !important;
+            margin-top: 0.75rem !important;
         }
     }
 
@@ -285,16 +280,41 @@ $contactAddress = $company['contact']['address'] ?? t('footer.office_address');
         }
     }
 
-    /* iPad Mini Portrait (760px - 820px) Font Scaling */
-    @media (min-width: 760px) and (max-width: 820px) {
+    /* iPad Mini & iPad Air Portrait (760px - 834px) Font Scaling & Layout */
+    @media (min-width: 760px) and (max-width: 834px) {
+        #about-hero {
+            padding-top: 5.5rem !important;
+            padding-bottom: 6rem !important;
+        }
+        .desktop-about-hero-col,
+        .about-hero-left-col {
+            margin-left: 0 !important;
+            max-width: 68% !important;
+            padding-top: 1.5rem !important;
+        }
+        .desktop-about-hero-col nav {
+            margin-bottom: 1.25rem !important;
+        }
         .ipad-pro-about-hero-span1,
         .ipad-pro-about-hero-span2 {
-            font-size: 2.75rem !important;
+            font-size: 3.75rem !important;
+            line-height: 1.15 !important;
+            margin-bottom: 0 !important;
         }
-        .ipad-pro-about-hero-p {
-            font-size: 0.95rem !important;
-            line-height: 1.55 !important;
-            max-width: 440px !important;
+        .ipad-pro-about-hero-p,
+        .desktop-about-hero-p {
+            font-size: 1.2rem !important;
+            line-height: 1.85 !important;
+            font-weight: 600 !important;
+            color: #0b1b42 !important;
+            max-width: 32rem !important;
+            margin-top: 0.75rem !important;
+            margin-bottom: 2rem !important;
+        }
+        .about-hero-btn-container {
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            gap: 0.85rem !important;
         }
         .ipad-pro-about-intro-p {
             font-size: 0.95rem !important;
@@ -360,7 +380,11 @@ $contactAddress = $company['contact']['address'] ?? t('footer.office_address');
         }
         .ipad-pro-about-process-step,
         .ipad-air-about-process-step {
-        /* Dedicated Large Font Scale and Stacked Layout for iPad Pro Portrait (1024px Portrait) */
+            font-size: 1.5rem !important;
+        }
+    }
+
+    /* Dedicated Large Font Scale and Stacked Layout for iPad Pro Portrait (1024px Portrait) & iPad Air */
     @media (min-width: 768px) and (max-width: 1024px) and (orientation: portrait), (min-width: 768px) and (max-width: 834px) {
         .ipad-pro-about-hero-grid {
             grid-template-columns: 1fr !important;
@@ -382,11 +406,16 @@ $contactAddress = $company['contact']['address'] ?? t('footer.office_address');
         .ipad-pro-about-hero-span2 {
             font-size: 3.75rem !important;
             line-height: 1.15 !important;
+            margin-bottom: 0 !important;
         }
-        .ipad-pro-about-hero-p {
+        .ipad-pro-about-hero-p,
+        .desktop-about-hero-p {
             font-size: 1.2rem !important;
-            line-height: 1.95rem !important;
-            max-width: 100% !important;
+            line-height: 1.85 !important;
+            font-weight: 600 !important;
+            color: #0b1b42 !important;
+            max-width: 32rem !important;
+            margin-top: 0.75rem !important;
         }
         .ipad-pro-about-intro-p {
             font-size: 1.15rem !important;
@@ -462,38 +491,35 @@ $contactAddress = $company['contact']['address'] ?? t('footer.office_address');
             word-break: break-word !important;
         }
     }
-    .ipad-pro-services-h3 {
-            font-size: 1.55rem !important;
-        }
-        .ipad-pro-services-p,
-        .ipad-mini-services-desc {
-            font-size: 1.2rem !important;
-            line-height: 1.9rem !important;
-        }
-        .ipad-pro-about-process-step,
-        .ipad-air-about-process-step {
-            font-size: 1.75rem !important;
-            font-weight: 800 !important;
-        }
-        .ipad-pro-about-process-title,
-        .ipad-air-about-process-title {
-            font-size: 1.5rem !important;
-            font-weight: 700 !important;
-        }
-        .ipad-pro-about-process-desc,
-        .ipad-air-about-process-desc,
-        .ipad-mini-about-process-desc {
-            font-size: 1.15rem !important;
-            line-height: 1.8rem !important;
-        }
-    }
 
-    /* สไตล์พิเศษสำหรับหน้าจอ Desktop (ใหญ่กว่า iPad Pro) */
-    @media (min-width: 1025px) {
+    /* สไตล์พิเศษสำหรับหน้าจอ Desktop (ใหญ่กว่า iPad Pro) ให้ตำแหน่งตรงกับหน้าแรก */
+    @media (min-width: 1024px) {
         .desktop-wide-container-about {
             max-width: 1720px !important;
             padding-left: 2.5rem !important;
             padding-right: 2.5rem !important;
+        }
+        .desktop-about-hero-col,
+        .desktop-about-hero-content-wrapper {
+            margin-left: 3rem !important;
+        }
+    }
+    @media (min-width: 1280px) {
+        .desktop-about-hero-col,
+        .desktop-about-hero-content-wrapper {
+            margin-left: 4.5rem !important;
+        }
+    }
+    @media (min-width: 1536px) {
+        .desktop-about-hero-col,
+        .desktop-about-hero-content-wrapper {
+            margin-left: 6rem !important;
+        }
+    }
+    @media (min-width: 760px) and (max-width: 1024px) and (orientation: portrait) {
+        .desktop-about-hero-col,
+        .desktop-about-hero-content-wrapper {
+            margin-left: 0 !important;
         }
     }
 
@@ -509,26 +535,28 @@ $contactAddress = $company['contact']['address'] ?? t('footer.office_address');
 
 </style>
 
-<section id="about-hero" class="relative font-sans bg-[#f7faff] overflow-hidden mt-0 mx-0 mb-4 sm:mt-0 sm:mx-6 sm:mb-6 rounded-t-none rounded-b-[2rem] lg:m-0 lg:rounded-none">
-    <div class="absolute inset-0 z-0 hidden lg:block overflow-hidden">
+<section id="about-hero" class="relative font-sans bg-[#f7faff] overflow-hidden mt-0 mx-0 mb-4 sm:mt-0 sm:mx-6 sm:mb-6 rounded-t-none rounded-b-[2rem] lg:m-0 lg:rounded-none pt-8 pb-12 md:pt-12 md:pb-24 lg:pt-28 lg:pb-32">
+    <!-- Desktop Background Banner -->
+    <div class="absolute inset-0 z-0 hidden lg:block overflow-hidden pointer-events-none" style="position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0;">
         <img src="<?= e($heroImage) ?>" alt="WEBPARK About Background" 
             class="w-full h-full object-cover object-[right_center]"
-            style="filter: contrast(1.15) saturate(1.22) brightness(0.98);">
-        <div class="absolute inset-0 bg-gradient-to-r from-white via-white/70 to-transparent"></div>
+            style="filter: contrast(1.12) saturate(1.30) brightness(1.02);">
+        <div class="absolute inset-0 bg-gradient-to-r from-[#f7faff] via-[#f7faff]/65 to-transparent"></div>
         <div class="absolute inset-x-0 bottom-0 h-[25%] bg-gradient-to-t from-white to-transparent z-10"></div>
     </div>
 
-    <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8 pt-12 pb-16 lg:pt-28 lg:pb-16 relative z-10 desktop-wide-container-about">
-        <div class="absolute inset-0 z-0 overflow-hidden lg:hidden rounded-2xl">
-            <img src="<?= e($heroImage) ?>" alt="WEBPARK About Background" 
-                class="w-full h-full object-cover object-[85%_bottom]"
-                style="filter: contrast(1.15) saturate(1.22) brightness(0.98);">
-            <div class="absolute inset-0 bg-gradient-to-b from-white/90 via-white/70 to-white/30"></div>
-            <div class="absolute inset-x-0 bottom-0 h-[25%] bg-gradient-to-t from-white to-transparent"></div>
-        </div>
-        
-        <div class="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-12 lg:gap-20 items-center relative z-10 ipad-pro-about-hero-grid">
-            <div class="max-w-2xl lg:ml-12 ipad-pro-ml-0 xl:ml-24 desktop-about-hero-content-wrapper">
+    <!-- Mobile / Tablet Background Banner -->
+    <div class="absolute inset-0 z-0 lg:hidden overflow-hidden pointer-events-none" style="position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0;">
+        <img src="<?= e($heroImage) ?>" alt="WEBPARK About Background" 
+            class="w-full h-full object-cover object-[75%_center] md:object-[right_center] opacity-85"
+            style="filter: contrast(1.12) saturate(1.25) brightness(1.02);">
+        <div class="absolute inset-0 bg-gradient-to-r from-white/95 via-white/85 to-white/40 md:from-[#f7faff]/95 md:via-[#f7faff]/70 md:to-transparent"></div>
+        <div class="absolute inset-x-0 bottom-0 h-[25%] bg-gradient-to-t from-[#f7faff] to-transparent"></div>
+    </div>
+
+    <div class="mx-auto w-full max-w-[1720px] px-4 sm:px-6 lg:px-10 relative z-10">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:pb-12 lg:gap-10 items-center relative z-10">
+            <div class="max-w-3xl relative z-10 text-left mx-0 flex flex-col items-start w-full desktop-about-hero-col lg:ml-12 xl:ml-[4.5rem] 2xl:ml-24">
                 <nav aria-label="Breadcrumb" class="animate-fade-up delay-100 mb-6 hidden sm:block">
                     <ol class="inline-flex items-center text-sm md:text-base font-medium text-slate-500">
                         <li>
@@ -557,13 +585,13 @@ $contactAddress = $company['contact']['address'] ?? t('footer.office_address');
                         <span class="inline-block md:whitespace-nowrap">WEBPARK ผู้เชี่ยวชาญด้าน ERP/ERM และระบบดิจิทัลครบวงจร</span><br class="hidden md:inline">
                         <span class="inline-block md:whitespace-nowrap">ช่วยยกระดับองค์กรสู่ความสำเร็จ ด้วยเทคโนโลยีและ AI ที่ใช้งานได้จริง</span>
                     <?php else: ?>
-                        <span class="inline-block md:whitespace-nowrap">WEBPARK, expert in ERP/ERM</span><br class="hidden ipad-mini-br-and">
-                        <span class="inline-block md:whitespace-nowrap">and comprehensive digital systems.</span><br class="hidden md:inline">
-                        <span class="inline-block">We help your organization work smartly with cutting-edge platforms and AI for sustainable growth.</span>
+                        <span class="inline-block md:whitespace-nowrap">WEBPARK, expert in ERP/ERM and comprehensive digital systems.</span><br class="hidden md:inline">
+                        <span class="inline-block md:whitespace-nowrap">We help your organization work smartly with cutting-edge</span><br class="hidden md:inline">
+                        <span class="inline-block">platforms and AI for sustainable growth.</span>
                     <?php endif; ?>
                 </p>
 
-                <div class="animate-entrance-up delay-400 flex flex-col sm:flex-row items-start gap-4">
+                <div class="animate-entrance-up delay-400 flex flex-col sm:flex-row items-start gap-4 about-hero-btn-container">
                     <a href="<?= e(route_url('/contact')) ?>" class="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-primary text-white text-base font-semibold rounded-full hover:bg-blue-700 transition-all shadow-md hover:-translate-y-0.5 whitespace-nowrap">
                         <?= e(getCurrentLang() === 'th' ? 'ปรึกษาผู้เชี่ยวชาญ' : 'Consult an Expert') ?>
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
@@ -584,6 +612,7 @@ $contactAddress = $company['contact']['address'] ?? t('footer.office_address');
                 </div>
             </div>
 
+            <div class="hidden lg:block lg:col-start-2"></div>
         </div>
     </div>
 </section>

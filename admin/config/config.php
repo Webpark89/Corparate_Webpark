@@ -20,8 +20,10 @@ define('AUTH_SECRET_KEY', 'wbpk_s3cr3t_k3y_2026_xK9mPqR7nT4vL2wJ');
 // ---- Site ----
 $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
 $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
+$isLocal = str_contains($host, 'localhost') || str_contains($host, '127.0.0.1');
+$baseSubdir = $isLocal ? '/Corparate_Webpark' : '';
 define('SITE_NAME', 'WEBPARK');
-define('SITE_URL', $protocol . '://' . $host . '/Corparate_Webpark');           // no trailing slash
+define('SITE_URL', $protocol . '://' . $host . $baseSubdir);           // no trailing slash
 define('ADMIN_URL', SITE_URL . '/admin');
 define('UPLOAD_DIR', __DIR__ . '/../uploads');
 define('UPLOAD_URL', ADMIN_URL . '/uploads');
@@ -39,10 +41,6 @@ define('MAIL_PORT', (int)(getenv('MAIL_PORT') ?: 587));
 define('MAIL_USER', getenv('MAIL_USER') ?: '');
 define('MAIL_PASS', getenv('MAIL_PASS') ?: '');
 define('MAIL_FROM_NAME', getenv('MAIL_FROM_NAME') ?: (defined('SITE_NAME') ? SITE_NAME . ' Security' : 'WEBPARK Security'));
-
-// ---- Google reCAPTCHA Configuration (Production Ready) ----
-define('RECAPTCHA_SITE_KEY', getenv('RECAPTCHA_SITE_KEY') ?: '6Lcf_pAtAAAAAOVhatPPwrHSYXeb_0J4yXf5BrRO');
-define('RECAPTCHA_SECRET_KEY', getenv('RECAPTCHA_SECRET_KEY') ?: '');
 
 // ---- Errors ----
 ini_set('display_errors', '1');

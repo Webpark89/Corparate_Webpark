@@ -61,6 +61,9 @@ $initialProjects = $portfolioTabs[$activeFilter] ?? $portfolioTabs['All'] ?? [];
 ?>
 <style>
     @media (min-width: 1025px) {
+        .desktop-portfolio-hero-col {
+            margin-left: 3rem !important;
+        }
         .desktop-portfolio-hero-h1 {
             font-size: 5.5rem !important;
             line-height: 1.1 !important;
@@ -71,10 +74,20 @@ $initialProjects = $portfolioTabs[$activeFilter] ?? $portfolioTabs['All'] ?? [];
             max-width: 34rem !important;
         }
     }
+    @media (min-width: 1280px) {
+        .desktop-portfolio-hero-col {
+            margin-left: 4.5rem !important;
+        }
+    }
+    @media (min-width: 1536px) {
+        .desktop-portfolio-hero-col {
+            margin-left: 6rem !important;
+        }
+    }
 </style>
 <section class="border-b border-slate-200 bg-white">
     <div class="mx-auto w-full max-w-7xl px-5 sm:px-6 lg:px-8 pt-20 pb-24 lg:pt-32 lg:pb-32 relative z-10">
-        <div class="lg:ml-12 ipad-pro-ml-0 xl:ml-24">
+        <div class="desktop-portfolio-hero-col">
             <p class="text-sm font-semibold uppercase tracking-[0.32em] text-sky-700">Selected Work</p>
             <h1 class="mt-4 text-4xl font-black tracking-tight text-slate-900 sm:text-5xl desktop-portfolio-hero-h1">ผลงานที่วัดผลได้จริงในทุกอุตสาหกรรม</h1>
             <p class="mt-4 max-w-3xl text-base leading-8 text-slate-600 sm:text-lg desktop-portfolio-hero-p">คัดสรรเคสที่สะท้อนแนวทางของเรา ตั้งแต่ปัญหาธุรกิจไปจนถึงผลลัพธ์เชิงตัวเลข</p>

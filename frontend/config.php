@@ -10,12 +10,16 @@ declare(strict_types=1);
  *
  * @return array<string, mixed>
  */
+$host = $_SERVER['HTTP_HOST'] ?? 'localhost';
+$isLocal = str_contains($host, 'localhost') || str_contains($host, '127.0.0.1');
+$basePrefix = $isLocal ? '/Corparate_Webpark' : '';
+
 return [
     'app' => [
         'name' => 'webpark',
         /** Base path for routing — must match Apache/nginx alias or subdirectory. */
-        'base_url' => '/Corparate_Webpark',
-        'asset_base_url' => '/Corparate_Webpark/frontend/public',
+        'base_url' => $basePrefix,
+        'asset_base_url' => $basePrefix . '/frontend/public',
         'description' => 'Lightweight MVC refactor for the WEBPARK site.',
     ],
     'company' => [
@@ -27,9 +31,5 @@ return [
             'address' => '525/89 ซอยลาดพร้าว126 แขวงพลับพลา เขตวังทองหลาง กรุงเทพมหานคร 10310',
         ],
         'hours' => 'จันทร์ – ศุกร์ · 9:00 – 18:00',
-    ],
-    'recaptcha' => [
-        'site_key' => getenv('RECAPTCHA_SITE_KEY') ?: '6Lcf_pAtAAAAAOVhatPPwrHSYXeb_0J4yXf5BrRO',
-        'secret_key' => getenv('RECAPTCHA_SECRET_KEY') ?: '',
     ],
 ];
