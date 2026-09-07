@@ -694,19 +694,19 @@ $heroBgImage = asset_url('images/digital-platform-hero-bg.png');
                 </nav>
 
                 <!-- Hero Title (Gradient) -->
-                <h1 class="animate-entrance-up delay-200 mb-4 tracking-tight flex flex-col items-start leading-[1.08] dp-hero-h1-wrapper">
+                <h1 class="animate-entrance-up delay-200 mb-4 tracking-normal flex flex-col items-start leading-[1.08] dp-hero-h1-wrapper">
                     <?php if (getCurrentLang() === 'th'): ?>
-                        <span class="dp-gradient-title-dark font-black text-5xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tighter uppercase dp-hero-h1">
+                        <span class="dp-gradient-title-dark font-black text-5xl sm:text-6xl md:text-7xl lg:text-8xl tracking-normal uppercase dp-hero-h1 inline-block pr-4 md:pr-6">
                             แพลตฟอร์ม
                         </span>
-                        <span class="dp-gradient-title-blue font-black text-5xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tighter uppercase dp-hero-h1">
+                        <span class="dp-gradient-title-blue font-black text-5xl sm:text-6xl md:text-7xl lg:text-8xl tracking-normal uppercase dp-hero-h1 inline-block pr-4 md:pr-6">
                             ดิจิทัล
                         </span>
                     <?php else: ?>
-                        <span class="dp-gradient-title-dark font-black text-5xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tighter uppercase dp-hero-h1">
+                        <span class="dp-gradient-title-dark font-black text-5xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tight uppercase dp-hero-h1 inline-block pr-4 md:pr-6">
                             PLATFORM
                         </span>
-                        <span class="dp-gradient-title-blue font-black text-5xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tighter uppercase dp-hero-h1">
+                        <span class="dp-gradient-title-blue font-black text-5xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tight uppercase dp-hero-h1 inline-block pr-4 md:pr-6">
                             DIGITAL
                         </span>
                     <?php endif; ?>

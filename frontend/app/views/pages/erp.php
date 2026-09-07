@@ -295,15 +295,15 @@ $erpPortfolios = $mockErpPortfolios;
                 
                 <!-- Mobile Only Hero Content -->
                 <div class="block md:hidden">
-                    <h1 class="animate-fade-up delay-200 leading-[1.1] mb-2 tracking-tighter">
-                        <span class="text-5xl font-extrabold bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block pb-0 pt-2">
+                    <h1 class="animate-fade-up delay-200 leading-[1.1] mb-2 tracking-normal">
+                        <span class="text-5xl font-extrabold bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block pb-0 pt-2 pr-3">
                             <?= getCurrentLang() === 'th' ? 'ระบบ' : 'ERP' ?>
                         </span>
-                        <span class="text-5xl font-extrabold bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block pb-0 pt-2 ml-1">
+                        <span class="text-5xl font-extrabold bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block pb-0 pt-2 pr-3 ml-1">
                             <?= getCurrentLang() === 'th' ? 'ERP' : 'Systems' ?>
                         </span><br>
 
-                        <span class="text-xl font-bold leading-[1.4] bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block mt-0 pb-3 pt-1" style="animation-delay: -3s;">
+                        <span class="text-xl font-bold leading-[1.4] bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block mt-0 pb-3 pt-1 pr-4" style="animation-delay: -3s;">
                             <?= getCurrentLang() === 'th' ? 'เชื่อมต่อทุกกระบวนการธุรกิจ<br>แบบครบวงจรในแพลตฟอร์มเดียว' : 'Connecting every business process<br>end-to-end on a single platform' ?>
                         </span>
                     </h1>
@@ -336,9 +336,9 @@ $erpPortfolios = $mockErpPortfolios;
 
                 <!-- Desktop Only Hero Content -->
                 <div class="hidden md:block">
-                    <h1 class="animate-fade-up delay-200 mb-2 tracking-tighter leading-tight flex flex-row items-baseline flex-wrap gap-2 md:gap-3 ipad-pro-erp-hero-h1-wrapper">
-                        <span class="bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block py-1 md:py-2 desktop-erp-hero-h1 ipad-pro-erp-hero-h1"><?= getCurrentLang() === 'th' ? 'ระบบ' : 'ERP' ?></span>
-                        <span class="bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block py-1 md:py-2 desktop-erp-hero-h1 ipad-pro-erp-hero-h1" style="animation-delay: -3s;"><?= getCurrentLang() === 'th' ? 'ERP' : 'Systems' ?></span>
+                    <h1 class="animate-fade-up delay-200 mb-2 tracking-normal leading-tight flex flex-row items-baseline flex-wrap gap-2 md:gap-3 ipad-pro-erp-hero-h1-wrapper">
+                        <span class="bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block py-1 md:py-2 pr-4 md:pr-6 desktop-erp-hero-h1 ipad-pro-erp-hero-h1"><?= getCurrentLang() === 'th' ? 'ระบบ' : 'ERP' ?></span>
+                        <span class="bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block py-1 md:py-2 pr-4 md:pr-6 desktop-erp-hero-h1 ipad-pro-erp-hero-h1" style="animation-delay: -3s;"><?= getCurrentLang() === 'th' ? 'ERP' : 'Systems' ?></span>
                     </h1>
 
                     <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-base md:text-lg lg:text-xl leading-relaxed max-w-2xl mb-10 font-bold md:font-semibold desktop-erp-hero-p">

@@ -84,9 +84,9 @@ if (!empty($partners) && is_array($partners)) {
                         Digital Solutions for Modern Business
                     </span>
                 </div>
-                <h1 class="animate-entrance-up delay-200 text-5xl md:text-7xl lg:text-8xl font-black leading-[1.1] mb-2 tracking-tighter text-left">
-                    <span class="bg-gradient-to-r from-[#898F98] to-[#000208] bg-clip-text text-transparent inline-block py-2 md:py-2.5 desktop-home-hero-h1">WEBPARK</span><br>
-                    <span class="bg-gradient-to-r from-[#003380] to-[#0055ff] bg-clip-text text-transparent inline-block py-1 md:py-2 -mt-1 md:-mt-2 lg:-mt-2 desktop-home-hero-h1">COMPANY</span>
+                <h1 class="animate-entrance-up delay-200 text-5xl md:text-7xl lg:text-8xl font-black leading-[1.1] mb-2 tracking-normal text-left">
+                    <span class="bg-gradient-to-r from-[#898F98] to-[#000208] bg-clip-text text-transparent inline-block py-2 md:py-2.5 pr-4 md:pr-6 desktop-home-hero-h1">WEBPARK</span><br>
+                    <span class="bg-gradient-to-r from-[#003380] to-[#0055ff] bg-clip-text text-transparent inline-block py-1 md:py-2 pr-4 md:pr-6 -mt-1 md:-mt-2 lg:-mt-2 desktop-home-hero-h1">COMPANY</span>
                 </h1>
                 <p class="animate-entrance-up delay-300 mt-6 text-blue-900 md:text-[#0b1b42] text-base md:text-lg leading-relaxed max-w-lg mx-0 mb-10 font-bold md:font-semibold w-11/12 sm:w-3/4 md:w-full text-left relative z-20 ipad-pro-hero-desc ipad-mini-hero-desc mobile-hero-desc desktop-home-hero-p">
                     <span class="md:hidden">

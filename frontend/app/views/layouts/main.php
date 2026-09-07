@@ -127,7 +127,8 @@ $content = $content ?? '';
                 font-size: 5.5rem !important;
                 line-height: 1.1 !important;
                 font-weight: 900 !important;
-                letter-spacing: -0.05em !important;
+                letter-spacing: -0.02em !important;
+                padding-right: 0.15em !important;
             }
 
             /* 2. Hero Subtitle / Description Paragraphs P (Locked to 1.25rem, line-height 1.75, max-width 34rem) */
@@ -209,8 +210,9 @@ $content = $content ?? '';
             .desktop-portfolio-hero-h1 {
                 font-size: clamp(2.35rem, 8.5vw, 3.25rem) !important;
                 line-height: 1.18 !important;
-                letter-spacing: -0.03em !important;
+                letter-spacing: -0.02em !important;
                 font-weight: 900 !important;
+                padding-right: 0.15em !important;
             }
 
             /* 3. Fluid Section Titles H2 */
