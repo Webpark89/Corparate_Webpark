@@ -3,7 +3,7 @@ declare(strict_types=1);
 $categories = is_array($categories ?? null) ? $categories : [];
 $activeCategorySlug = (string) ($activeCategorySlug ?? 'all');
 $fallbackImage = asset_url('images/story.png');
-$heroImage = asset_url('images/bg-6.png');
+$heroImage = asset_url('images/services-hero-bg.png');
 $ctaImage = asset_url('images/bg-cta.jpg');
 /**
  * Services listing page — grid 2-column card layout.
@@ -21,216 +21,201 @@ $ctaImage = asset_url('images/bg-cta.jpg');
         'image_placeholder' => 'images/erp.png',
         'dropdown_title'    => 'ERP / ERM / HR',
         'subcategories'     => [
-            ['label' => 'ERP System',                    'href' => route_url('/erp')],
-            ['label' => 'Accounting & Finance',          'href' => route_url('/article/accounting-and-finance')],
-            ['label' => 'Sales / Purchase',              'href' => route_url('/article/sales-and-purchase')],
-            ['label' => 'Inventory / Warehouse',         'href' => route_url('/article/inventory-and-warehouse')],
-            ['label' => 'Customer Management',           'href' => route_url('/article/customer-management')],
-            ['label' => 'Lead Management',               'href' => route_url('/article/lead-management')],
-            ['label' => 'Customer Service',              'href' => route_url('/article/customer-service')],
-            ['label' => 'Partner / Supplier Management',  'href' => route_url('/article/partner-supplier-management')],
-            ['label' => 'HRM System',                    'href' => route_url('/article/hrm-system')],
-            ['label' => 'Attendance / Leave',            'href' => route_url('/article/attendance-and-leave')],
-            ['label' => 'Payroll',                       'href' => route_url('/article/payroll-system')],
-            ['label' => 'Workflow Approval',             'href' => route_url('/article/workflow-approval')],
+            ['label' => 'ERP System',           'href' => route_url('/erp')],
+            ['label' => 'Accounting & Finance', 'href' => route_url('/article', ['id' => 39])],
+            ['label' => 'Sales / Purchase',     'href' => route_url('/article', ['id' => 40])],
+            ['label' => 'Inventory / Warehouse','href' => route_url('/article', ['id' => 41])],
+            ['label' => 'Customer Management',  'href' => route_url('/article', ['id' => 42])],
+            ['label' => 'Lead Management',      'href' => '#'],
+            ['label' => 'Customer Service',     'href' => route_url('/article', ['id' => 29])],
+            ['label' => 'Partner / Supplier Management', 'href' => route_url('/article', ['id' => 30])],
+            ['label' => 'HRM System',           'href' => route_url('/article', ['id' => 31])],
+            ['label' => 'Attendance / Leave',   'href' => route_url('/article', ['id' => 32])],
+            ['label' => 'Payroll',              'href' => route_url('/article', ['id' => 14])],
+            ['label' => 'Workflow Approval',    'href' => route_url('/article', ['id' => 34])],
         ],
     ],
     [
         'id'                => 2,
+        'slug'              => 'digital-platform',
+        'detail_url'        => route_url('/services/digital-platform'),
         'icon_emoji'        => '🌐',
-        'title'             => 'Digital Platform',
+        'title'             => getCurrentLang() === 'th' ? 'แพลตฟอร์มดิจิทัล' : 'Platform Digital',
         'summary'           => getCurrentLang() === 'th' ? 'ออกแบบและพัฒนาแพลตฟอร์มดิจิทัล เว็บไซต์ และระบบธุรกิจออนไลน์ที่ใช้งานง่าย ยืดหยุ่น และตอบโจทย์องค์กร' : 'Design and develop digital platforms, websites, and online business systems that are user-friendly, flexible, and meet organizational needs.',
         'image_placeholder' => 'images/bg-cta.jpg',
         'dropdown_title'    => 'Platform / Communication / Data',
         'subcategories'     => [
-            ['label' => 'Website / Responsive / CMS',    'href' => route_url('/article/website-responsive-cms')],
-            ['label' => 'Mobile App / Mobile Site',      'href' => route_url('/article/mobile-app-development')],
-            ['label' => 'E-commerce',                    'href' => route_url('/article/ecommerce-solutions')],
-            ['label' => 'Custom Web Application',        'href' => route_url('/article/custom-web-application')],
-            ['label' => 'Membership / Portal System',    'href' => route_url('/article/membership-portal-system')],
-            ['label' => 'SMS Service',                   'href' => route_url('/article/sms-service')],
-            ['label' => 'Email Marketing',               'href' => route_url('/article/email-marketing')],
-            ['label' => 'Chatbot / Live Chat',           'href' => route_url('/article/chatbot-live-chat')],
-            ['label' => 'Game / Interactive Campaign',   'href' => route_url('/article/interactive-game-campaign')],
-            ['label' => 'Big Data',                      'href' => route_url('/article/big-data-analytics')],
-            ['label' => 'E-learning',                    'href' => route_url('/article/elearning-platform')],
-            ['label' => 'Dashboard',                     'href' => route_url('/article/business-dashboard')],
-            ['label' => 'Data Management',               'href' => route_url('/article/data-management-system')],
+            ['label' => getCurrentLang() === 'th' ? 'โซลูชันแพลตฟอร์มดิจิทัลทั้งหมด (10 โซลูชัน)' : 'All 10 Platform Solutions', 'href' => route_url('/services/digital-platform#dp-solutions')],
+            ['label' => 'Website / Responsive / CMS',    'href' => route_url('/article', ['id' => 35])],
+            ['label' => 'Mobile App / Mobile Site',      'href' => route_url('/article', ['id' => 36])],
+            ['label' => 'E-commerce',                    'href' => route_url('/article', ['id' => 37])],
+            ['label' => 'Custom Web Application',        'href' => '#'],
+            ['label' => 'Membership / Portal System',    'href' => '#'],
+            ['label' => 'SMS Service',                   'href' => '#'],
+            ['label' => 'Email Marketing',               'href' => '#'],
+            ['label' => 'Chatbot / Live Chat',           'href' => '#'],
+            ['label' => 'Game / Interactive Campaign',   'href' => '#'],
+            ['label' => 'Big Data',                      'href' => '#'],
+            ['label' => 'E-learning',                    'href' => '#'],
+            ['label' => 'Dashboard',                     'href' => '#'],
+            ['label' => 'Data Management',               'href' => '#'],
         ],
     ],
     [
         'id'                => 3,
+        'slug'              => 'online-marketing',
+        'detail_url'        => route_url('/services/online-marketing'),
         'icon_emoji'        => '📣',
-        'title'             => 'Online Marketing',
+        'title'             => getCurrentLang() === 'th' ? 'การตลาดออนไลน์' : 'Online Marketing',
+        'title_en'          => 'Online Marketing',
         'summary'           => getCurrentLang() === 'th' ? 'วางกลยุทธ์การตลาดออนไลน์ เพื่อเพิ่มการมองเห็น สร้างโอกาสทางธุรกิจ และเพิ่มยอดขายได้อย่างวัดผลได้จริง' : 'Plan online marketing strategies to increase visibility, create business opportunities, and measurably increase sales.',
         'image_placeholder' => 'images/bg-hand.jpg',
         'dropdown_title'    => 'Strategy / Performance / Content',
         'subcategories'     => [
-            ['label' => 'Digital Marketing Consultant',  'href' => route_url('/article/digital-marketing-consultant')],
-            ['label' => 'Media Planner / PR & Media Strategy', 'href' => route_url('/article/media-planner-pr-strategy')],
-            ['label' => 'SEO',                           'href' => route_url('/article/search-engine-optimization-seo')],
-            ['label' => 'Social Network',                'href' => route_url('/article/social-network-marketing')],
-            ['label' => 'Online Campaign',               'href' => route_url('/article/online-campaign')],
-            ['label' => 'Monitoring & Analysis',         'href' => route_url('/article/monitoring-and-analysis')],
-            ['label' => 'Campaign Performance Report',   'href' => route_url('/article/campaign-performance-report')],
-            ['label' => 'Return on Investment (ROI)',    'href' => route_url('/article/return-on-investment-roi')],
-            ['label' => 'Productivity Analysis',         'href' => route_url('/article/productivity-analysis')],
-            ['label' => 'Content Strategy',              'href' => route_url('/article/content-strategy')],
-            ['label' => 'Ads Management',                'href' => route_url('/article/ads-management')],
-            ['label' => 'Social Media Content',          'href' => route_url('/article/social-media-content')],
-            ['label' => 'Search Engine Marketing',       'href' => route_url('/article/search-engine-marketing-sem')],
+            ['label' => getCurrentLang() === 'th' ? 'โซลูชันการตลาดออนไลน์ทั้งหมด (10 โซลูชัน)' : 'All 10 Marketing Solutions', 'href' => route_url('/services/online-marketing#om-solutions')],
+            ['label' => 'Digital Marketing Consultant',  'href' => route_url('/services/online-marketing#om-solutions')],
+            ['label' => 'Media Planner / PR & Media Strategy', 'href' => route_url('/services/online-marketing#om-solutions')],
+            ['label' => 'SEO',                           'href' => route_url('/services/online-marketing#om-solutions')],
+            ['label' => 'Social Network',                'href' => route_url('/services/online-marketing#om-solutions')],
+            ['label' => 'Online Campaign',               'href' => route_url('/services/online-marketing#om-solutions')],
+            ['label' => 'Monitoring & Analysis',         'href' => route_url('/services/online-marketing#om-solutions')],
+            ['label' => 'Campaign Performance Report',   'href' => route_url('/services/online-marketing#om-solutions')],
+            ['label' => 'Return on Investment (ROI)',    'href' => route_url('/services/online-marketing#om-solutions')],
+            ['label' => 'Productivity Analysis',         'href' => route_url('/services/online-marketing#om-solutions')],
+            ['label' => 'Content Strategy',              'href' => route_url('/services/online-marketing#om-solutions')],
+            ['label' => 'Ads Management',                'href' => route_url('/services/online-marketing#om-solutions')],
+            ['label' => 'Social Media Content',          'href' => route_url('/services/online-marketing#om-solutions')],
+            ['label' => 'Search Engine Marketing',       'href' => route_url('/services/online-marketing#om-solutions')],
         ],
     ],
     [
         'id'                => 4,
+        'slug'              => 'creative-design',
+        'detail_url'        => route_url('/services/creative-design'),
         'icon_emoji'        => '🎨',
-        'title'             => 'Creative / Design',
+        'title'             => getCurrentLang() === 'th' ? 'ออกแบบสร้างสรรค์' : 'Creative / Design',
+        'title_en'          => 'Creative / Design',
         'summary'           => getCurrentLang() === 'th' ? 'สร้างสรรค์งานออกแบบดิจิทัลและคอนเทนต์ที่ช่วยสื่อสารแบรนด์ ทั้ง UI/UX, Graphic, Motion และสื่อสารแบรนด์' : 'Create digital designs and content that help communicate your brand, including UI/UX, Graphic, Motion, and brand communication.',
         'image_placeholder' => 'images/women-office.jpg',
         'dropdown_title'    => 'Design / Motion / Media',
         'subcategories'     => [
-            ['label' => 'Web Design',                    'href' => route_url('/article/web-design')],
-            ['label' => 'UX/UI Design',                  'href' => route_url('/article/ux-ui-design')],
-            ['label' => 'Cartoon & Character Design',    'href' => route_url('/article/cartoon-character-design')],
-            ['label' => 'Infographic',                   'href' => route_url('/article/infographic-design')],
-            ['label' => 'Animation TV & YouTube Online', 'href' => route_url('/article/animation-tv-youtube')],
-            ['label' => 'Motion VDO',                    'href' => route_url('/article/motion-vdo')],
-            ['label' => 'Video Editing',                 'href' => route_url('/article/video-editing')],
-            ['label' => 'Presentation Video',            'href' => route_url('/article/presentation-video')],
-            ['label' => 'E-Magazine',                    'href' => route_url('/article/e-magazine')],
-            ['label' => 'Print Ads',                     'href' => route_url('/article/print-ads')],
-            ['label' => 'Online Banner',                 'href' => route_url('/article/online-banner')],
-            ['label' => 'Key Visual Design',             'href' => route_url('/article/key-visual-design')],
+            ['label' => getCurrentLang() === 'th' ? 'โซลูชันการออกแบบทั้งหมด (10 โซลูชัน)' : 'All 10 Creative Solutions', 'href' => route_url('/services/creative-design#cd-solutions')],
+            ['label' => 'Brand Identity',                'href' => route_url('/services/creative-design#cd-solutions')],
+            ['label' => 'Web Design',                    'href' => route_url('/services/creative-design#cd-solutions')],
+            ['label' => 'UX/UI Design',                  'href' => route_url('/services/creative-design#cd-solutions')],
+            ['label' => 'Graphic Design',                'href' => route_url('/services/creative-design#cd-solutions')],
+            ['label' => 'Social Media Creative',         'href' => route_url('/services/creative-design#cd-solutions')],
+            ['label' => 'Motion Graphic / Video',        'href' => route_url('/services/creative-design#cd-solutions')],
+            ['label' => 'Present & Sales Kit',           'href' => route_url('/services/creative-design#cd-solutions')],
+            ['label' => 'Packaging Design',              'href' => route_url('/services/creative-design#cd-solutions')],
+            ['label' => 'Content Visual System',         'href' => route_url('/services/creative-design#cd-solutions')],
+            ['label' => 'Design System',                 'href' => route_url('/services/creative-design#cd-solutions')],
         ],
     ],
 ];
-// Feature to article slug map
-$featureSlugMap = [
-    'ERP System' => route_url('/erp'),
-    'Accounting & Finance' => route_url('/article/accounting-and-finance'),
-    'Sales / Purchase' => route_url('/article/sales-and-purchase'),
-    'Inventory / Warehouse' => route_url('/article/inventory-and-warehouse'),
-    'Customer Management' => route_url('/article/customer-management'),
-    'Lead Management' => route_url('/article/lead-management'),
-    'Customer Service' => route_url('/article/customer-service'),
-    'Partner / Supplier Management' => route_url('/article/partner-supplier-management'),
-    'HRM System' => route_url('/article/hrm-system'),
-    'Attendance / Leave' => route_url('/article/attendance-and-leave'),
-    'Payroll' => route_url('/article/payroll-system'),
-    'Workflow Approval' => route_url('/article/workflow-approval'),
-
-    'Website / Responsive / CMS' => route_url('/article/website-responsive-cms'),
-    'Mobile App / Mobile Site' => route_url('/article/mobile-app-development'),
-    'E-commerce' => route_url('/article/ecommerce-solutions'),
-    'Custom Web Application' => route_url('/article/custom-web-application'),
-    'Membership / Portal System' => route_url('/article/membership-portal-system'),
-    'SMS Service' => route_url('/article/sms-service'),
-    'Email Marketing' => route_url('/article/email-marketing'),
-    'Chatbot / Live Chat' => route_url('/article/chatbot-live-chat'),
-    'Game / Interactive Campaign' => route_url('/article/interactive-game-campaign'),
-    'Big Data' => route_url('/article/big-data-analytics'),
-    'E-learning' => route_url('/article/elearning-platform'),
-    'Dashboard' => route_url('/article/business-dashboard'),
-    'Data Management' => route_url('/article/data-management-system'),
-
-    'Digital Marketing Consultant' => route_url('/article/digital-marketing-consultant'),
-    'Media Planner / PR & Media Strategy' => route_url('/article/media-planner-pr-strategy'),
-    'SEO' => route_url('/article/search-engine-optimization-seo'),
-    'Social Network' => route_url('/article/social-network-marketing'),
-    'Online Campaign' => route_url('/article/online-campaign'),
-    'Monitoring & Analysis' => route_url('/article/monitoring-and-analysis'),
-    'Campaign Performance Report' => route_url('/article/campaign-performance-report'),
-    'Return on Investment (ROI)' => route_url('/article/return-on-investment-roi'),
-    'Productivity Analysis' => route_url('/article/productivity-analysis'),
-    'Content Strategy' => route_url('/article/content-strategy'),
-    'Ads Management' => route_url('/article/ads-management'),
-    'Social Media Content' => route_url('/article/social-media-content'),
-    'Search Engine Marketing' => route_url('/article/search-engine-marketing-sem'),
-
-    'Web Design' => route_url('/article/web-design'),
-    'UX/UI Design' => route_url('/article/ux-ui-design'),
-    'Cartoon & Character Design' => route_url('/article/cartoon-character-design'),
-    'Infographic' => route_url('/article/infographic-design'),
-    'Animation TV & YouTube Online' => route_url('/article/animation-tv-youtube'),
-    'Motion VDO' => route_url('/article/motion-vdo'),
-    'Video Editing' => route_url('/article/video-editing'),
-    'Presentation Video' => route_url('/article/presentation-video'),
-    'E-Magazine' => route_url('/article/e-magazine'),
-    'Print Ads' => route_url('/article/print-ads'),
-    'Online Banner' => route_url('/article/online-banner'),
-    'Key Visual Design' => route_url('/article/key-visual-design'),
-];
-
 // Merge database services with mock subcategories
 if (isset($services) && is_array($services)) {
     $mergedServices = [];
     foreach ($services as $dbService) {
-        $slug = $dbService['slug'] ?? '';
+        $slug = $dbService['slug'];
         $mockMatch = null;
-        if ($slug === 'erp-erm' || str_contains(strtolower((string)$dbService['title']), 'erp')) {
+        if ($slug === 'erp-erm' || str_contains(strtolower($dbService['title']), 'erp')) {
             $mockMatch = $mockServices[0];
-        } elseif ($slug === 'digital-platform' || str_contains(strtolower((string)$dbService['title']), 'digital')) {
+        } elseif ($slug === 'digital-platform' || str_contains(strtolower($dbService['title']), 'digital')) {
             $mockMatch = $mockServices[1];
-        } elseif ($slug === 'online-marketing' || str_contains(strtolower((string)$dbService['title']), 'marketing')) {
+        } elseif ($slug === 'online-marketing' || str_contains(strtolower($dbService['title']), 'marketing')) {
             $mockMatch = $mockServices[2];
-        } elseif ($slug === 'creative-design' || str_contains(strtolower((string)$dbService['title']), 'creative')) {
+        } elseif ($slug === 'creative-design' || str_contains(strtolower($dbService['title']), 'creative')) {
             $mockMatch = $mockServices[3];
         } else {
             $mockMatch = $mockServices[0];
         }
-
         // Get features from the model which now loads from service_features table
         $dbFeatures = $dbService['features'] ?? [];
         $mappedSubcategories = [];
         if (!empty($dbFeatures)) {
             foreach ($dbFeatures as $feature) {
-                $trimmedFeature = trim((string)$feature);
-                if ($trimmedFeature === '') continue;
-
-                if (isset($featureSlugMap[$trimmedFeature])) {
-                    $href = $featureSlugMap[$trimmedFeature];
-                } else {
-                    // Fallback to match mock subcategories
-                    $matchedMockHref = null;
-                    if (isset($mockMatch['subcategories'])) {
-                        foreach ($mockMatch['subcategories'] as $mockSub) {
-                            if (strcasecmp((string)$mockSub['label'], $trimmedFeature) === 0) {
-                                $matchedMockHref = $mockSub['href'];
-                                break;
-                            }
-                        }
-                    }
-                    if ($matchedMockHref !== null) {
-                        $href = $matchedMockHref;
-                    } else {
-                        $generatedSlug = function_exists('slugify') ? slugify($trimmedFeature) : strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $trimmedFeature), '-'));
-                        $href = route_url('/article/' . $generatedSlug);
-                    }
+                if (empty(trim($feature))) continue;
+                // Keep the ERP link for ERP System, else use #
+                $href = ($slug === 'erp-erm' && $feature === 'ERP System') ? route_url('/erp') : '#';
+                // --- ONLINE MARKETING ---
+                if (str_contains(strtolower($feature), 'seo')) $href = route_url('/article-detail-mockup');
+                if (str_contains(strtolower($feature), 'payroll')) $href = route_url('/article', ['id' => 14]);
+                if (str_contains(strtolower($feature), 'motion')) $href = route_url('/article', ['id' => 14]);
+                // --- ERP / ERM / HR ---
+                if (str_contains(strtolower($feature), 'customer service')) $href = route_url('/article', ['id' => 29]);
+                if (str_contains(strtolower($feature), 'partner')) $href = route_url('/article', ['id' => 30]);
+                if (str_contains(strtolower($feature), 'hrm')) $href = route_url('/article', ['id' => 31]);
+                if (str_contains(strtolower($feature), 'attendance')) $href = route_url('/article', ['id' => 32]);
+                if (str_contains(strtolower($feature), 'workflow')) $href = route_url('/article', ['id' => 34]);
+                if (str_contains(strtolower($feature), 'accounting')) $href = route_url('/article', ['id' => 39]);
+                if (str_contains(strtolower($feature), 'sales')) $href = route_url('/article', ['id' => 40]);
+                if (str_contains(strtolower($feature), 'inventory')) $href = route_url('/article', ['id' => 41]);
+                if (str_contains(strtolower($feature), 'customer management')) $href = route_url('/article', ['id' => 42]);
+                // --- DIGITAL PLATFORMS ---
+                if (str_contains(strtolower($feature), 'website')) $href = route_url('/article', ['id' => 35]);
+                if (str_contains(strtolower($feature), 'mobile')) $href = route_url('/article', ['id' => 36]);
+                if (str_contains(strtolower($feature), 'e-commerce') || str_contains(strtolower($feature), 'ecommerce')) $href = route_url('/article', ['id' => 37]);
+                if (($slug === 'digital-platform' || str_contains(strtolower($dbService['title']), 'digital')) && $href === '#') {
+                    $href = route_url('/services/digital-platform');
                 }
-
+                if (($slug === 'online-marketing' || str_contains(strtolower($dbService['title']), 'marketing') || str_contains(strtolower($dbService['title']), 'การตลาด') || str_contains(strtolower($dbService['title']), 'online')) && $href === '#') {
+                    $href = route_url('/services/online-marketing#om-solutions');
+                }
+                if (($slug === 'creative-design' || str_contains(strtolower($dbService['title']), 'creative') || str_contains(strtolower($dbService['title']), 'design') || str_contains(strtolower($dbService['title']), 'สร้างสรรค์') || str_contains(strtolower($dbService['title']), 'ออกแบบ')) && $href === '#') {
+                    $href = route_url('/services/creative-design#cd-solutions');
+                }
                 $mappedSubcategories[] = [
-                    'label' => $trimmedFeature,
+                    'label' => $feature,
                     'href' => $href
                 ];
             }
         }
-        // Fallback to mock data if database features are empty
+        // Fallback to mock data if database features are empty or corrupted by invalid JSON
         if (empty($mappedSubcategories)) {
             $mappedSubcategories = $mockMatch['subcategories'] ?? [];
         }
+        $isDigital = ($slug === 'digital-platform' || str_contains(strtolower($dbService['title']), 'digital') || str_contains(strtolower($dbService['title']), 'แพลตฟอร์ม'));
+        $isMarketing = ($slug === 'online-marketing' || str_contains(strtolower($dbService['title']), 'online') || str_contains(strtolower($dbService['title']), 'marketing') || str_contains(strtolower($dbService['title']), 'การตลาด'));
+        $isCreative = ($slug === 'creative-design' || str_contains(strtolower($dbService['title']), 'creative') || str_contains(strtolower($dbService['title']), 'design') || str_contains(strtolower($dbService['title']), 'สร้างสรรค์') || str_contains(strtolower($dbService['title']), 'ออกแบบ'));
+        
+        $title = $dbService['title'];
+        if ($isDigital) {
+            $title = getCurrentLang() === 'th' ? 'แพลตฟอร์มดิจิทัล' : 'Platform Digital';
+        } elseif ($isMarketing) {
+            $title = getCurrentLang() === 'th' ? 'การตลาดออนไลน์' : 'Online Marketing';
+        } elseif ($isCreative) {
+            $title = getCurrentLang() === 'th' ? 'ออกแบบสร้างสรรค์' : 'Creative / Design';
+        } elseif (getCurrentLang() === 'en') {
+            $title = $mockMatch['title_en'] ?? $mockMatch['title'] ?? $dbService['title'];
+        }
+
+        $detailUrl = '#';
+        if ($isDigital) {
+            $detailUrl = route_url('/services/digital-platform');
+        } elseif ($slug === 'erp-erm' || str_contains(strtolower($dbService['title']), 'erp')) {
+            $detailUrl = route_url('/erp');
+        } elseif ($isMarketing) {
+            $detailUrl = route_url('/services/online-marketing');
+        } elseif ($isCreative) {
+            $detailUrl = route_url('/services/creative-design');
+        }
+
         $mergedServices[] = [
             'id' => $dbService['id'],
+            'slug' => $slug,
+            'detail_url' => $detailUrl,
             'icon_emoji' => $mockMatch['icon_emoji'] ?? '⚙️',
-            'title' => getCurrentLang() === 'en' ? ($mockMatch['title_en'] ?? $mockMatch['title'] ?? $dbService['title']) : $dbService['title'],
+            'title' => $title,
             'summary' => getCurrentLang() === 'en' ? ($mockMatch['summary_en'] ?? $mockMatch['summary'] ?? $dbService['summary']) : $dbService['summary'],
-            'image_placeholder' => !empty($dbService['image']) ? 'uploads/' . $dbService['image'] : $mockMatch['image_placeholder'],
+            'image_placeholder' => $dbService['image'] ? 'uploads/' . $dbService['image'] : $mockMatch['image_placeholder'],
             'dropdown_title' => !empty($dbService['details']['dropdown_title']) ? $dbService['details']['dropdown_title'] : $mockMatch['dropdown_title'],
             'subcategories' => $mappedSubcategories,
         ];
     }
     $services = $mergedServices;
 } else {
-    // Fallback to mock data if database is empty
+    // Fallback to mock data if database is empty or still has old data
     $services = $mockServices;
 }
 ?>
@@ -284,12 +269,14 @@ if (isset($services) && is_array($services)) {
         }
     }
 </style>
-<section id="services-hero" class="relative font-sans bg-[#f7faff] overflow-hidden mt-0 mx-4 mb-4 sm:mt-0 sm:mx-6 sm:mb-6 rounded-t-none rounded-b-[2rem] lg:m-0 lg:rounded-none">
+<section id="services-hero" class="relative font-sans bg-[#f7faff] overflow-hidden mt-0 mx-0 mb-4 sm:mt-0 sm:mx-6 sm:mb-6 rounded-t-none rounded-b-[2rem] lg:m-0 lg:rounded-none">
     <!-- Desktop Background Image -->
-    <div class="absolute inset-0 z-0 hidden lg:block">
-        <img src="<?= e($heroImage) ?>" alt="bg" class="hero-parallax-img w-full h-full object-cover object-[75%_center] opacity-100 mix-blend-screen">
-        <div class="absolute inset-0 bg-gradient-to-r from-white via-white/80 to-white/5"></div>
-        <div class="absolute inset-x-0 bottom-0 h-[30%] bg-gradient-to-t from-white to-transparent z-10"></div>
+    <div class="absolute inset-0 z-0 hidden lg:block overflow-hidden">
+        <img src="<?= e($heroImage) ?>" alt="WEBPARK Services Background" 
+            class="w-full h-full object-cover object-[right_center]"
+            style="filter: contrast(1.15) saturate(1.22) brightness(0.98);">
+        <div class="absolute inset-0 bg-gradient-to-r from-white via-white/70 to-transparent"></div>
+        <div class="absolute inset-x-0 bottom-0 h-[25%] bg-gradient-to-t from-white to-transparent z-10"></div>
     </div>
     <style>
         @keyframes fadeSlideUp {
@@ -323,8 +310,74 @@ if (isset($services) && is_array($services)) {
             .ipad-pro-services-approach-desc { font-size: 1.125rem !important; line-height: 1.6 !important; }
         }
 
-        /* iPad Air (820px) Overrides */
-        @media (min-width: 820px) and (max-width: 820px) {
+        /* iPad (760px - 1366px) All Orientations & iPad Mini Landscape */
+        @media (min-width: 1024px) and (max-width: 1366px) {
+            .desktop-wide-container-services {
+                padding-top: 7rem !important;
+                padding-bottom: 7rem !important;
+            }
+            .ipad-pro-services-hero-content {
+                max-width: 100% !important;
+                margin-left: 3rem !important;
+            }
+            .ipad-pro-services-hero-content nav {
+                margin-bottom: 1.5rem !important;
+            }
+            .ipad-pro-services-h1 {
+                margin-bottom: 0.5rem !important;
+            }
+            .ipad-pro-services-text-1,
+            .ipad-pro-services-text-2 {
+                font-size: 4.5rem !important;
+                font-weight: 900 !important;
+                line-height: 1.15 !important;
+                white-space: nowrap !important;
+                margin-top: 0px !important;
+                margin-bottom: 0px !important;
+                padding-top: 0.25rem !important;
+                padding-bottom: 0.25rem !important;
+            }
+            .ipad-pro-services-hero-p {
+                font-size: 1.25rem !important;
+                line-height: 1.85 !important;
+                font-weight: 600 !important;
+                color: #0b1b42 !important;
+                max-width: 38rem !important;
+                margin-top: 1.5rem !important;
+                margin-bottom: 2.5rem !important;
+            }
+        }
+
+        /* iPad Portrait (768px - 1023px) */
+        @media (min-width: 760px) and (max-width: 1023px) {
+            .desktop-wide-container-services {
+                padding-top: 3.5rem !important;
+                padding-bottom: 4rem !important;
+            }
+            .ipad-pro-services-hero-content {
+                max-width: 100% !important;
+                margin-left: 0 !important;
+            }
+            .ipad-pro-services-hero-content nav {
+                margin-bottom: 1rem !important;
+            }
+            .ipad-pro-services-text-1,
+            .ipad-pro-services-text-2 {
+                font-size: 3.85rem !important;
+                font-weight: 900 !important;
+                line-height: 1.15 !important;
+                white-space: nowrap !important;
+            }
+            .ipad-pro-services-hero-p {
+                font-size: 1.15rem !important;
+                line-height: 1.75 !important;
+                margin-top: 1rem !important;
+                margin-bottom: 2rem !important;
+            }
+        }
+
+        /* iPad Air (820px - 1180px) Overrides */
+        @media (min-width: 820px) and (max-width: 1180px) {
             .ipad-air-services-approach-header {
                 flex-direction: row !important;
                 align-items: baseline !important;
@@ -379,6 +432,9 @@ if (isset($services) && is_array($services)) {
         
         /* iPad Mini (768px) specific fixes */
         @media (min-width: 760px) and (max-width: 819px) {
+            .ipad-mini-hero-br {
+                display: block !important;
+            }
             .ipad-mini-services-subtitle {
                 white-space: normal !important;
                 font-size: 1.5rem !important;
@@ -458,29 +514,28 @@ if (isset($services) && is_array($services)) {
             display: inline-block;
         }
 
-        /* Custom Layout for iPad Pro Portrait (1024px - 1279px) */
-        @media (min-width: 1024px) and (max-width: 1279px) {
+        /* Custom Layout for all iPads (760px - 1366px) */
+        @media (min-width: 760px) and (max-width: 1366px) {
             .ipad-pro-services-h1 {
-                flex-direction: row !important;
-                flex-wrap: wrap !important;
-                align-items: baseline !important;
-                gap: 1rem !important;
+                flex-direction: column !important;
+                align-items: flex-start !important;
             }
             .ipad-pro-services-text-1, .ipad-pro-services-text-2 {
                 margin-top: 0 !important;
                 padding-top: 0 !important;
                 padding-bottom: 0 !important;
-                font-size: 4.5rem !important; /* Adjusted to fit on one line */
-                line-height: 1.2 !important;
+                font-size: 4.25rem !important;
+                line-height: 1.15 !important;
+                white-space: nowrap !important;
             }
             /* Font size for Services title section matches homepage */
             .ipad-pro-services-h1-text {
-                font-size: 2.25rem !important; /* 36px/text-4xl to match home page */
+                font-size: 2.5rem !important;
                 line-height: 1 !important;
             }
             .ipad-pro-services-subtitle {
-                font-size: 2.05rem !important; /* Slightly reduced to prevent cutoff */
-                letter-spacing: -0.5px !important; /* Tighter letter spacing to fit 'business' */
+                font-size: 2.25rem !important;
+                letter-spacing: -0.5px !important;
             }
             .ipad-pro-services-header-container {
                 padding-left: 0.5rem !important; /* Shift to the left */
@@ -512,6 +567,8 @@ if (isset($services) && is_array($services)) {
                 -webkit-line-clamp: 2 !important;
                 -webkit-box-orient: vertical !important;
                 overflow: hidden !important;
+                text-overflow: ellipsis !important;
+                line-height: 1.55 !important;
             }
             .ipad-pro-service-card-dropdown {
                 font-size: 1.5rem !important;
@@ -534,46 +591,49 @@ if (isset($services) && is_array($services)) {
                 padding-bottom: 3rem !important;
             }
             .ipad-pro-approach-title {
-                font-size: 3rem !important;
+                font-size: 2.35rem !important;
                 line-height: 1.2 !important;
             }
             .ipad-pro-approach-desc {
-                font-size: 1.4rem !important;
+                font-size: 1.05rem !important;
                 line-height: 1.6 !important;
             }
             
-            /* Our Approach blocks on iPad Pro */
+            /* Our Approach blocks on iPad */
             .ipad-pro-services-approach-card {
-                padding: 1.5rem !important;
-                gap: 1.25rem !important;
+                padding: 1.25rem 1.5rem !important;
+                gap: 1rem !important;
             }
             .ipad-pro-services-approach-header {
                 flex-direction: row !important;
-                align-items: center !important;
-                gap: 0.75rem !important;
+                align-items: baseline !important;
+                gap: 0.5rem !important;
+                flex-wrap: wrap !important;
             }
             .ipad-pro-services-approach-icon-wrap {
-                width: 4rem !important;
-                height: 4rem !important;
-            }
-            .ipad-pro-services-approach-icon-img {
                 width: 3.5rem !important;
                 height: 3.5rem !important;
             }
+            .ipad-pro-services-approach-icon-img {
+                width: 3rem !important;
+                height: 3rem !important;
+            }
             .ipad-pro-services-approach-number {
-                font-size: 1.75rem !important;
+                font-size: 1.35rem !important;
+                font-weight: 800 !important;
             }
             .ipad-pro-services-approach-title {
-                font-size: 1.5rem !important;
+                font-size: 1.2rem !important;
+                font-weight: 700 !important;
                 margin-bottom: 0 !important;
             }
             .ipad-pro-services-approach-desc {
-                font-size: 1.25rem !important;
-                line-height: 1.6 !important;
-                margin-top: 0.5rem !important;
+                font-size: 0.95rem !important;
+                line-height: 1.55 !important;
+                margin-top: 0.35rem !important;
             }
             .ipad-pro-services-hero-p {
-                margin-top: -1rem !important; /* Reduce gap further */
+                margin-top: 1.5rem !important;
             }
             .ipad-pro-services-hero-content {
                 margin-left: 0 !important;
@@ -586,11 +646,217 @@ if (isset($services) && is_array($services)) {
             }
             .ipad-pro-services-text-2 {
                 padding-top: 0 !important;
-                margin-top: -1.5rem !important;
+                margin-top: 0 !important;
             }
         }
         
-        /* สไตล์พิเศษสำหรับหน้าจอ Desktop (ใหญ่กว่า iPad Pro) */
+        /* iPad Mini Portrait (760px - 820px) Font Scaling */
+        @media (min-width: 760px) and (max-width: 820px) {
+            .ipad-pro-services-text-1, .ipad-pro-services-text-2 {
+                font-size: 2.75rem !important;
+            }
+            .ipad-pro-services-h1-text {
+                font-size: 1.85rem !important;
+            }
+            .ipad-pro-services-subtitle {
+                font-size: 1.5rem !important;
+            }
+            .ipad-pro-services-desc {
+                font-size: 0.95rem !important;
+                line-height: 1.55 !important;
+            }
+            .ipad-pro-service-card-title {
+                font-size: 1.15rem !important;
+                min-height: 2.75rem !important;
+            }
+            .ipad-pro-service-card-desc {
+                font-size: 0.85rem !important;
+                min-height: 2.75rem !important;
+            }
+            .ipad-pro-service-card-dropdown {
+                font-size: 0.975rem !important;
+                min-height: 3.25rem !important;
+            }
+            .ipad-pro-dropdown-item {
+                font-size: 0.9rem !important;
+            }
+            .ipad-pro-approach-title {
+                font-size: 2rem !important;
+            }
+            .ipad-pro-approach-desc {
+                font-size: 0.95rem !important;
+            }
+            .ipad-pro-services-approach-number {
+                font-size: 1.2rem !important;
+            }
+            .ipad-pro-services-approach-title {
+                font-size: 1.05rem !important;
+            }
+            .ipad-pro-services-approach-desc {
+                font-size: 0.85rem !important;
+            }
+        }
+
+        /* Dedicated Large Font Scale for iPad Pro Landscape (1024px - 1366px) */
+        @media (min-width: 1024px) and (max-width: 1366px) {
+            .ipad-pro-services-text-1 {
+                font-size: 4.5rem !important;
+                line-height: 1.35 !important;
+                margin-bottom: 0.75rem !important;
+                display: inline-block !important;
+            }
+            .ipad-pro-services-text-2 {
+                font-size: 4.5rem !important;
+                line-height: 1.35 !important;
+                margin-bottom: 1.5rem !important;
+                display: inline-block !important;
+            }
+            .ipad-pro-services-h1-text {
+                font-size: 2.75rem !important;
+            }
+            .ipad-pro-services-subtitle {
+                font-size: 2.5rem !important;
+            }
+            .ipad-pro-services-desc {
+                font-size: 1.35rem !important;
+                line-height: 2.1rem !important;
+                margin-top: 1rem !important;
+            }
+            .ipad-pro-service-card-title {
+                font-size: 1.85rem !important;
+                min-height: 4.5rem !important;
+            }
+            .ipad-pro-service-card-desc {
+                font-size: 1.2rem !important;
+                line-height: 1.7 !important;
+                min-height: 4rem !important;
+            }
+            .ipad-pro-service-card-dropdown {
+                font-size: 1.45rem !important;
+                min-height: 3.5rem !important;
+            }
+            .ipad-pro-dropdown-item {
+                font-size: 1.35rem !important;
+                line-height: 2.0rem !important;
+                padding: 0.6rem 0.75rem !important;
+                min-height: 2.85rem !important;
+                display: flex !important;
+                align-items: center !important;
+                gap: 0.75rem !important;
+            }
+            .ipad-pro-approach-title {
+                font-size: 2.5rem !important;
+            }
+            .ipad-pro-approach-desc {
+                font-size: 1.25rem !important;
+                line-height: 2.0rem !important;
+            }
+            .ipad-pro-services-approach-number {
+                font-size: 2.0rem !important;
+                font-weight: 800 !important;
+            }
+            .ipad-pro-services-approach-title {
+                font-size: 1.45rem !important;
+            }
+            .ipad-pro-services-approach-desc {
+                font-size: 1.15rem !important;
+                line-height: 1.7 !important;
+            }
+        }
+        
+        /* Dedicated Large Font Scale for iPad Pro Portrait */
+        @media (min-width: 821px) and (max-width: 1366px) and (orientation: portrait) {
+            .ipad-pro-services-text-1, .ipad-pro-services-text-2 {
+                font-size: 4.25rem !important;
+                line-height: 1.15 !important;
+            }
+            .ipad-pro-services-h1-text {
+                font-size: 2.75rem !important;
+            }
+            .ipad-pro-services-subtitle {
+                font-size: 2.25rem !important;
+            }
+            .ipad-pro-services-desc {
+                font-size: 1.35rem !important;
+                line-height: 2.1rem !important;
+            }
+            .ipad-pro-service-grid {
+                display: grid !important;
+                grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+                align-items: stretch !important;
+            }
+            .gsap-service-card {
+                height: 100% !important;
+                display: flex !important;
+                flex-direction: column !important;
+                justify-content: space-between !important;
+            }
+            .desktop-service-card-inner {
+                display: flex !important;
+                flex-direction: column !important;
+                justify-content: space-between !important;
+                flex: 1 1 auto !important;
+            }
+            .desktop-service-emoji {
+                display: inline-block !important;
+                font-size: 1.75rem !important;
+                margin-right: 0.5rem !important;
+            }
+            .ipad-pro-service-card-title {
+                font-size: 1.75rem !important;
+                min-height: 2.5rem !important;
+                color: #022862 !important;
+                font-weight: 800 !important;
+            }
+            .ipad-pro-service-card-desc {
+                font-size: 1.15rem !important;
+                line-height: 1.65rem !important;
+                height: 3.35rem !important;
+                min-height: 3.35rem !important;
+                max-height: 3.35rem !important;
+                display: -webkit-box !important;
+                -webkit-line-clamp: 2 !important;
+                -webkit-box-orient: vertical !important;
+                overflow: hidden !important;
+                text-overflow: ellipsis !important;
+                margin-bottom: 0.75rem !important;
+            }
+            .ipad-pro-service-card-dropdown {
+                font-size: 1.35rem !important;
+                min-height: 3.5rem !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: space-between !important;
+            }
+            .desktop-service-summary-text {
+                display: inline-block !important;
+                font-size: 1.25rem !important;
+                font-weight: 700 !important;
+                color: #022862 !important;
+                line-height: 1.4 !important;
+            }
+            .ipad-pro-dropdown-item {
+                font-size: 1.2rem !important;
+            }
+            .ipad-pro-approach-title {
+                font-size: 3rem !important;
+            }
+            .ipad-pro-approach-desc {
+                font-size: 1.35rem !important;
+                line-height: 1.9rem !important;
+            }
+            .ipad-pro-services-approach-number {
+                font-size: 1.75rem !important;
+            }
+            .ipad-pro-services-approach-title {
+                font-size: 1.5rem !important;
+            }
+            .ipad-pro-services-approach-desc {
+                font-size: 1.15rem !important;
+                line-height: 1.8rem !important;
+            }
+        }
+        
         @media (min-width: 1025px) {
             .desktop-wide-container-services {
                 max-width: 1720px !important;
@@ -626,40 +892,91 @@ if (isset($services) && is_array($services)) {
                 flex: 1 0 auto !important; /* แก้ปัญหา height ไม่ยอมขยายตามเนื้อหา */
             }
             .desktop-service-emoji {
-                display: none !important;
+                display: inline-block !important;
+                font-size: 1.5rem !important;
+                margin-right: 0.35rem !important;
             }
             .desktop-service-title {
-                color: #0663F6 !important;
-                font-size: 1.45rem !important; /* ขยายขนาดหัวข้อสีน้ำเงินตามที่ลูกค้าต้องการ */
+                color: #022862 !important;
+                font-size: 1.6rem !important;
+                font-weight: 800 !important;
             }
             .desktop-service-desc {
-                font-size: 1.05rem !important; /* ขยายขนาดข้อความสีเทาตามที่ลูกค้าต้องการ */
-                margin-bottom: 0 !important;
+                font-size: 1.05rem !important;
+                margin-bottom: 0.75rem !important;
+                display: -webkit-box !important;
+                -webkit-line-clamp: 2 !important;
+                -webkit-box-orient: vertical !important;
+                overflow: hidden !important;
+                text-overflow: ellipsis !important;
+                height: 3.35rem !important;
+                min-height: 3.35rem !important;
+                max-height: 3.35rem !important;
+                line-height: 1.65rem !important;
             }
             .desktop-service-details-wrap {
-                border-top: none !important;
-                padding-top: 0 !important;
+                border-top: 1px solid #f1f5f9 !important;
+                padding-top: 0.5rem !important;
             }
             .desktop-service-summary {
-                padding: 0 !important;
-                justify-content: flex-end !important;
-                margin-top: -1.5rem !important; /* ดึงลูกศรขึ้นไปให้อยู่บรรทัดเดียวกับ desc */
+                padding: 0.5rem 0 !important;
+                justify-content: space-between !important;
+                margin-top: 0 !important;
+                min-height: 3.25rem !important;
+                display: flex !important;
+                align-items: center !important;
             }
             .desktop-service-summary-text {
-                display: none !important;
+                display: inline-block !important;
+                font-size: 1.35rem !important;
+                font-weight: 800 !important;
+                color: #022862 !important;
             }
             .desktop-service-arrow {
-                color: #0663F6 !important;
+                color: #64748b !important;
                 width: 1.5rem !important;
                 height: 1.5rem !important;
-                background-color: white !important; /* พื้นหลังสีขาวเพื่อทับข้อความถ้ายาวเกิน */
-                border-radius: 50% !important;
+                background-color: transparent !important;
             }
-            .desktop-service-dropdown-content {
-                margin-top: 1.5rem !important;
+            .desktop-service-dropdown-content,
+            .ipad-pro-dropdown-content {
+                margin-top: 0.75rem !important;
                 border-top: 1px solid #f1f5f9 !important;
-                padding-top: 1rem !important;
-                padding-bottom: 2rem !important; /* เพิ่มพื้นที่ด้านล่างให้กล่องขยายเต็มที่ */
+                padding-top: 0.75rem !important;
+                padding-bottom: 1.5rem !important;
+                display: flex !important;
+                flex-direction: column !important;
+                gap: 0.35rem !important;
+            }
+            .desktop-service-dropdown-content a,
+            .ipad-pro-dropdown-item {
+                font-size: 1.3rem !important;
+                line-height: 1.95rem !important;
+                font-weight: 600 !important;
+                color: #334155 !important;
+                padding: 0.6rem 0.85rem !important;
+                border-radius: 0.6rem !important;
+                min-height: 2.85rem !important;
+                display: flex !important;
+                align-items: center !important;
+                gap: 0.75rem !important;
+                background-color: transparent !important;
+                transition: all 0.2s ease !important;
+            }
+            .desktop-service-dropdown-content a:hover,
+            .ipad-pro-dropdown-item:hover {
+                background-color: #f1f5f9 !important;
+                color: #043B94 !important;
+                transform: translateX(4px) !important;
+            }
+            .desktop-service-dropdown-content a span:first-child,
+            .ipad-pro-dropdown-item span:first-child {
+                width: 0.55rem !important;
+                height: 0.55rem !important;
+                min-width: 0.55rem !important;
+                min-height: 0.55rem !important;
+                background-color: #94a3b8 !important;
+                border-radius: 50% !important;
             }
             /* บังคับให้การ์ดและ Grid ขยายตามเนื้อหา Dropdown แน่นอน 100% */
             #gsap-services-grid, 
@@ -703,14 +1020,20 @@ if (isset($services) && is_array($services)) {
             }
 
             /* Our Approach (Desktop) */
-            .desktop-approach-container {
-                max-width: 1600px !important;
-            }
             .desktop-approach-subtitle {
-                max-width: none !important;
+                max-width: 100% !important;
+                margin-left: auto !important;
+                margin-right: auto !important;
+                text-align: center !important;
+                white-space: nowrap !important;
             }
-            .desktop-approach-subtitle br {
-                display: none !important; /* ซ่อน <br> เพื่อให้อยู่บรรทัดเดียว */
+            .desktop-approach-subtitle span.block:not(.en-approach-line) {
+                display: inline !important;
+            }
+            .en-approach-line {
+                display: block !important;
+                white-space: normal !important;
+                text-align: center !important;
             }
             .desktop-approach-card {
                 padding: 2.5rem 3.5rem !important;
@@ -769,10 +1092,11 @@ if (isset($services) && is_array($services)) {
     <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8 pt-12 pb-24 lg:pt-28 lg:pb-32 relative z-10 desktop-wide-container-services">
         <!-- Mobile Background Image (Only covers this Hero container) -->
         <div class="absolute inset-0 z-0 overflow-hidden lg:hidden rounded-2xl">
-            <img src="<?= e($heroImage) ?>" alt="WEBPARK Solutions Background" 
-                class="hero-parallax-img w-full h-full object-cover object-[75%_center] opacity-100 mix-blend-screen">
-            <div class="absolute inset-0 bg-gradient-to-b from-white/90 via-white/70 to-white/40"></div>
-            <div class="absolute inset-x-0 bottom-0 h-[30%] bg-gradient-to-t from-white to-transparent"></div>
+            <img src="<?= e($heroImage) ?>" alt="WEBPARK Services Background" 
+                class="w-full h-full object-cover object-[75%_center] md:object-[right_center]"
+                style="filter: contrast(1.15) saturate(1.22) brightness(0.98);">
+            <div class="absolute inset-0 bg-gradient-to-r from-white/95 via-white/70 to-transparent"></div>
+            <div class="absolute inset-x-0 bottom-0 h-[25%] bg-gradient-to-t from-white to-transparent"></div>
         </div>
         <div class="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-12 lg:gap-20 items-center relative z-10">
             <div class="max-w-2xl lg:ml-12 xl:ml-24 ipad-pro-services-hero-content">
@@ -791,27 +1115,25 @@ if (isset($services) && is_array($services)) {
                             </li>
                         </ol>
                     </nav>
-                <h1 class="animate-fade-up delay-200 mb-2 tracking-tighter flex flex-col items-start leading-[1.1] ipad-pro-services-h1">
-                    <span class="text-5xl md:text-6xl lg:text-8xl font-bold bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block py-2 md:py-2.5 desktop-services-hero-h1 desktop-services-hero-text-1 ipad-pro-services-text-1">
+                <h1 class="animate-fade-up delay-200 mb-2 tracking-tighter text-5xl md:text-7xl lg:text-8xl font-black leading-tight flex flex-col items-start ipad-pro-services-h1">
+                    <span class="bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block py-1 md:py-2 desktop-services-hero-h1 desktop-services-hero-text-1 ipad-pro-services-text-1">
                         <?= getCurrentLang() === 'th' ? 'ความเชี่ยวชาญ' : 'Expertise' ?>
                     </span>
-                    <span class="text-5xl md:text-6xl lg:text-8xl font-bold bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block py-1 md:py-2 -mt-1 md:-mt-2 lg:-mt-2 desktop-services-hero-h1 desktop-services-hero-text-2 ipad-pro-services-text-2" style="animation-delay: -3s;">
+                    <span class="bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block py-1 md:py-2 desktop-services-hero-h1 desktop-services-hero-text-2 ipad-pro-services-text-2" style="animation-delay: -3s;">
                         <?= getCurrentLang() === 'th' ? 'และจุดเด่น' : '& Strengths' ?>
                     </span>
                 </h1>
-                <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-base sm:text-lg md:text-xl leading-relaxed max-w-lg mb-10 font-medium desktop-services-hero-p ipad-pro-services-hero-p">
+                <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-base md:text-lg lg:text-xl leading-relaxed max-w-2xl mb-10 font-bold md:font-semibold desktop-services-hero-p ipad-pro-services-hero-p">
                     <?php if (getCurrentLang() === 'th'): ?>
-                        <span class="block sm:hidden leading-relaxed">
+                        <span class="block md:hidden leading-relaxed">
                             มากกว่า 20 ปี ที่เราสร้างสรรค์โซลูชันดิจิทัล<br>
                             ครบวงจร ผสานเทคโนโลยี ความเชี่ยวชาญ<br>
                             และความเข้าใจธุรกิจ เพื่อเพิ่มประสิทธิภาพ<br>
-                            สร้างการเติบโต และยกระดับองค์กร<br>
-                            สู่อนาคตอย่างยั่งยืน
+                            สร้างการเติบโต และยกระดับองค์กรสู่อนาคตอย่างยั่งยืน
                         </span>
-                        <span class="hidden sm:block">
-                            มากกว่า 20 ปี ที่เราสร้างสรรค์โซลูชันดิจิทัลครบวงจร<br class="ipad-pro-hidden">
-                            ผสานเทคโนโลยี ความเชี่ยวชาญ และความเข้าใจธุรกิจ<br class="ipad-pro-hidden">
-                            เพื่อเพิ่มประสิทธิภาพ สร้างการเติบโต และยกระดับองค์กรสู่อนาคตอย่างยั่งยืน
+                        <span class="hidden md:block leading-relaxed">
+                            มากกว่า 20 ปี ที่เราสร้างสรรค์โซลูชันดิจิทัลและ AI ครบวงจร<br>
+                            เพื่อเพิ่มประสิทธิภาพ สร้างการเติบโต และยกระดับองค์กรสู่อนาคต
                         </span>
                     <?php else: ?>
                         Over 20 years of creating comprehensive digital solutions. We combine technology, expertise, and business understanding to help organizations increase efficiency and elevate into the future.
@@ -837,7 +1159,7 @@ if (isset($services) && is_array($services)) {
         </div>
     </div>
 </section>
-<section id="our-services" class="bg-white py-8 lg:py-16 font-sans scroll-mt-6">
+<section id="our-services" class="bg-white pt-6 pb-2 lg:pt-8 lg:pb-3 font-sans scroll-mt-6">
     <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8 desktop-wide-container-services">
         <div class="lg:px-12 xl:px-24 ipad-pro-services-header-container">
             <h1 class="text-3xl md:text-4xl font-extrabold leading-none tracking-tight mb-0 md:mb-1 gsap-fade-up ipad-pro-services-h1-text" style="color: #0663F6 !important;">
@@ -854,7 +1176,7 @@ if (isset($services) && is_array($services)) {
     </div>
 </section>
 <?php if (!empty($services)): ?>
-<section id="gsap-services-grid" class="bg-white py-8 lg:py-16 font-sans">
+<section id="gsap-services-grid" class="bg-white pt-2 pb-6 lg:pt-2 lg:pb-8 font-sans">
     <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8 desktop-wide-container-services">
         <div class="lg:px-12 xl:px-24">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 items-start ipad-pro-service-grid">
@@ -862,12 +1184,33 @@ if (isset($services) && is_array($services)) {
                     $sTitle  = (string)($service['title'] ?? '');
                     $sSummary= (string)($service['summary'] ?? '');
                     $sEmoji  = (string)($service['icon_emoji'] ?? '');
+                    $sDetailUrl = (string)($service['detail_url'] ?? '#');
+                    if ($sDetailUrl === '#' && (str_contains(strtolower($sTitle), 'digital') || str_contains(strtolower($sTitle), 'แพลตฟอร์ม'))) {
+                        $sDetailUrl = route_url('/services/digital-platform');
+                    }
+                    if ($sDetailUrl === '#' && (str_contains(strtolower($sTitle), 'marketing') || str_contains(strtolower($sTitle), 'การตลาด') || str_contains(strtolower($sTitle), 'online'))) {
+                        $sDetailUrl = route_url('/services/online-marketing');
+                    }
+                    if ($sDetailUrl === '#' && (str_contains(strtolower($sTitle), 'creative') || str_contains(strtolower($sTitle), 'design') || str_contains(strtolower($sTitle), 'สร้างสรรค์') || str_contains(strtolower($sTitle), 'ออกแบบ'))) {
+                        $sDetailUrl = route_url('/services/creative-design');
+                    }
                     $imgSrc  = resolve_article_image_url($service['image'] ?? $service['image_placeholder'] ?? '', asset_url('images/service-default.png'));
                     $subcats = (array)($service['subcategories'] ?? []);
                     $dropdownText = getCurrentLang() === 'th' ? (string)($service['dropdown_title'] ?? 'ดูหัวข้อย่อย') : (string)($service['dropdown_title'] ?? 'View Subcategories');
                 ?>
                 <div class="gsap-service-card group rounded-2xl border border-slate-100 bg-white overflow-hidden flex flex-col opacity-0 translate-y-10"
                     style="box-shadow: 0 2px 12px 0 rgba(4,59,148,0.07);">
+                    <?php if ($sDetailUrl !== '#'): ?>
+                    <a href="<?= e($sDetailUrl) ?>" class="relative w-full overflow-hidden bg-slate-50 flex items-center justify-center p-4 block group/img" style="aspect-ratio: 16/9;">
+                        <img
+                            src="<?= e($imgSrc) ?>"
+                            alt="<?= e($sTitle) ?>"
+                            class="max-h-full max-w-full w-auto h-auto object-contain transition-transform duration-500 group-hover/img:scale-105"
+                            loading="lazy"
+                            onerror="this.src='<?= e(asset_url('images/service-default.png')) ?>'"
+                        >
+                    </a>
+                    <?php else: ?>
                     <div class="relative w-full overflow-hidden bg-slate-50 flex items-center justify-center p-4" style="aspect-ratio: 16/9;">
                         <img
                             src="<?= e($imgSrc) ?>"
@@ -877,14 +1220,29 @@ if (isset($services) && is_array($services)) {
                             onerror="this.src='<?= e(asset_url('images/service-default.png')) ?>'"
                         >
                     </div>
+                    <?php endif; ?>
                     <div class="flex flex-col flex-1 p-6 desktop-service-card-inner">
                         <div class="flex items-center gap-2 mb-2">
                             <span class="service-icon-emoji text-2xl leading-none desktop-service-emoji"><?= e($sEmoji) ?></span>
-                            <h2 class="text-xl font-extrabold desktop-service-title ipad-pro-service-card-title" style="color: #022862;"><?= e($sTitle) ?></h2>
+                            <?php if ($sDetailUrl !== '#'): ?>
+                                <a href="<?= e($sDetailUrl) ?>" class="group/title hover:text-primary transition-colors">
+                                    <h2 class="text-xl font-extrabold desktop-service-title ipad-pro-service-card-title group-hover/title:text-primary transition-colors cursor-pointer" style="color: #022862;"><?= e($sTitle) ?></h2>
+                                </a>
+                            <?php else: ?>
+                                <h2 class="text-xl font-extrabold desktop-service-title ipad-pro-service-card-title" style="color: #022862;"><?= e($sTitle) ?></h2>
+                            <?php endif; ?>
                         </div>
                         <p class="text-slate-500 text-sm leading-relaxed mb-4 desktop-service-desc ipad-pro-service-card-desc ipad-air-service-card-desc ipad-mini-service-card-desc">
                             <?= e($sSummary) ?>
                         </p>
+                        <?php if ($sDetailUrl !== '#'): ?>
+                        <div class="mb-4">
+                            <a href="<?= e($sDetailUrl) ?>" class="inline-flex items-center gap-1.5 text-sm font-bold text-[#0663F6] hover:text-blue-700 transition-colors">
+                                <span><?= getCurrentLang() === 'th' ? 'ดูรายละเอียดบริการ' : 'View Service Details' ?></span>
+                                <svg class="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+                            </a>
+                        </div>
+                        <?php endif; ?>
                         <div class="mt-auto border-t border-slate-100 pt-3 desktop-service-details-wrap">
                             <details class="group/details">
                                 <summary class="flex items-center justify-between py-2 rounded-lg text-sm font-bold cursor-pointer transition-colors duration-150 hover:text-[#043B94] text-[#022862] list-none desktop-service-summary ipad-pro-service-card-dropdown">
@@ -917,7 +1275,7 @@ if (isset($services) && is_array($services)) {
     </div>
 </section>
 <?php endif; ?>
-<section class="font-sans pb-12">
+<section class="font-sans py-4 lg:py-6">
     <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8 desktop-wide-container-services">
         <div class="lg:px-12 xl:px-24">
             <div class="gsap-cta-box relative rounded-3xl overflow-hidden opacity-0 translate-y-10"
@@ -955,7 +1313,7 @@ if (isset($services) && is_array($services)) {
         </div>
     </div>
 </section>
-<section id="our-approach" class="py-16 lg:py-24 ipad-pro-services-approach-section ipad-mini-services-approach-section" style="background-color: #f1f5f9;">
+<section id="our-approach" class="py-8 lg:py-12 ipad-pro-services-approach-section ipad-mini-services-approach-section" style="background-color: #f1f5f9;">
     <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8 desktop-wide-container-services">
         <div class="lg:px-12 xl:px-24">
             <div class="text-center md:text-center mb-8 md:mb-16 flex flex-col items-center md:items-center">
@@ -967,10 +1325,20 @@ if (isset($services) && is_array($services)) {
                 </div>
                 <p class="text-slate-500 text-sm sm:text-base md:text-xl leading-relaxed max-w-4xl text-center mx-auto desktop-approach-subtitle ipad-pro-approach-desc ipad-mini-approach-desc">
                     <?php if (getCurrentLang() === 'th'): ?>
-                        <span class="block">กระบวนการทำงานที่เป็นระบบ เพื่อส่งมอบโซลูชันดิจิทัลที่ตอบ</span>
-                        <span class="block">โจทย์ธุรกิจ และความยั่งยืนของข้อมูลธุรกิจที่องค์กรถือครอง</span>
+                        <span class="hidden md:block">
+                            <span class="block lg:inline">กระบวนการทำงานที่เป็นระบบ เพื่อส่งมอบโซลูชันดิจิทัลที่ตอบโจทย์ธุรกิจ</span> <span class="block lg:inline">และความยั่งยืนของข้อมูลธุรกิจที่องค์กรถือครอง</span>
+                        </span>
+                        <span class="block md:hidden text-center text-slate-500 text-[14px] sm:text-base leading-[1.65] max-w-[330px] sm:max-w-md mx-auto" style="text-wrap: balance; overflow-wrap: break-word;">
+                            กระบวนการทำงานที่เป็นระบบ เพื่อส่งมอบโซลูชันดิจิทัลที่ตอบโจทย์ธุรกิจ และความยั่งยืนของข้อมูลธุรกิจที่องค์กรถือครอง
+                        </span>
                     <?php else: ?>
-                        A systematic work process to deliver digital solutions that meet business needs and ensure the sustainability of business data held by the organization.
+                        <span class="hidden md:block">
+                            <span class="block en-approach-line">A systematic work process to deliver digital solutions that meet business needs</span>
+                            <span class="block en-approach-line">and ensure the sustainability of business data held by the organization.</span>
+                        </span>
+                        <span class="block md:hidden text-center text-slate-500 text-[14px] sm:text-base leading-[1.6] max-w-[325px] sm:max-w-md mx-auto" style="text-wrap: balance; overflow-wrap: break-word;">
+                            A systematic work process to deliver digital solutions that meet business needs and ensure the sustainability of business data held by the organization.
+                        </span>
                     <?php endif; ?>
                 </p>
             </div>
@@ -1067,24 +1435,66 @@ if (isset($services) && is_array($services)) {
                 ease: "power2.out"
             });
         }
-
-        // 2. Animation สำหรับการ์ดบริการ — Fade up แยกทีละการ์ดเมื่อเลื่อนหน้าจอมาถึงการ์ดนั้นๆ จริง (ไม่ Pin ไม่ Scrub)
+        // 2. Animation สำหรับการ์ดบริการ
+        // Desktop/Tablet (≥768px): Pin ทั้ง section ไว้ แล้วให้การ์ดโผล่ทีละใบตามระยะที่เลื่อน (scrub)
+        //   จนกว่าจะครบ 4 ใบ ถึงจะปลดล็อกให้เลื่อนผ่าน section นี้ไปต่อได้
+        // Mobile (<768px): ใช้แบบเดิม (โผล่ทีละใบเมื่อเลื่อนมาถึง ไม่ pin) เพราะจอเล็ก pin ยาวๆ จะกระทบ UX
+        const serviceCardsWrapper = document.querySelector("#gsap-services-grid");
         const serviceCards = gsap.utils.toArray(".gsap-service-card");
-        if (serviceCards.length && prefersReducedMotion) {
+        if (serviceCardsWrapper && serviceCards.length && prefersReducedMotion) {
+            // Reduced motion: แสดงการ์ดทั้งหมดทันที ไม่ pin ไม่ scrub
             gsap.set(serviceCards, { y: 0, opacity: 1 });
-        } else if (serviceCards.length) {
-            serviceCards.forEach((card) => {
-                gsap.to(card, {
-                    scrollTrigger: {
-                        trigger: card, // ผูก trigger กับแต่ละการ์ดโดยตรง
-                        start: "top 85%", // เริ่ม animate เมื่อขอบบนของการ์ดเลื่อนเข้ามาถึง 85% ของหน้าจอ
-                        toggleActions: "play none none reverse"
-                    },
-                    y: 0,
-                    opacity: 1,
-                    duration: 0.8,
-                    ease: "power2.out"
-                });
+        } else if (serviceCardsWrapper && serviceCards.length) {
+            ScrollTrigger.matchMedia({
+                // --- Desktop / Tablet: Pin + Scrub ---
+                "(min-width: 768px)": function () {
+                    const cardsTimeline = gsap.timeline({
+                        scrollTrigger: {
+                            trigger: serviceCardsWrapper,
+                            start: "top top+=80", // เผื่อระยะ header/nav ที่ sticky อยู่ด้านบน ปรับเลขนี้ตามความสูง header จริง
+                            end: "+=" + (serviceCards.length * 500), // ระยะ scroll รวม ~500px ต่อการ์ด 1 ใบ ปรับได้ตามความรู้สึก
+                            pin: true,
+                            scrub: 1, // ค่อยๆ ตามการเลื่อน 1 วินาที ให้ความรู้สึกลื่นไหล ไม่กระตุก
+                            anticipatePin: 1,
+                            // markers: true, // เปิดบรรทัดนี้ตอน debug เพื่อดูตำแหน่ง start/end บนจอ
+                        }
+                    });
+                    serviceCards.forEach((card, index) => {
+                        cardsTimeline.to(card, {
+                            y: 0,
+                            opacity: 1,
+                            duration: 1,
+                            ease: "power2.out"
+                        }, index); // แต่ละใบเริ่ม animate เรียงตามลำดับเวลาในไทม์ไลน์ ทำให้โผล่ทีละใบ
+                    });
+                    // ฟังก์ชัน cleanup: เรียกอัตโนมัติเมื่อ media query ไม่ตรงแล้ว (เช่น ย่อจอลงต่ำกว่า 768px)
+                    return () => {
+                        cardsTimeline.scrollTrigger && cardsTimeline.scrollTrigger.kill();
+                        cardsTimeline.kill();
+                    };
+                },
+                // --- Mobile: แบบเดิม ไม่ pin ---
+                "(max-width: 767px)": function () {
+                    const mobileTriggers = serviceCards.map((card) => {
+                        return gsap.to(card, {
+                            scrollTrigger: {
+                                trigger: card,
+                                start: "top 85%",
+                                toggleActions: "play none none reverse"
+                            },
+                            y: 0,
+                            opacity: 1,
+                            duration: 0.6,
+                            ease: "power2.out"
+                        });
+                    });
+                    return () => {
+                        mobileTriggers.forEach((tween) => {
+                            tween.scrollTrigger && tween.scrollTrigger.kill();
+                            tween.kill();
+                        });
+                    };
+                }
             });
         }
         // 2.5 Animation สำหรับ CTA Box ท้ายหน้า — fade + slide ขึ้นตอน scroll มาถึง

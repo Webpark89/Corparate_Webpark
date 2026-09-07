@@ -32,7 +32,7 @@ if (!empty($partners) && is_array($partners)) {
     }
 }
 ?>
-<section class="relative font-sans bg-[#f7faff] overflow-hidden mt-0 mx-4 mb-4 sm:mt-0 sm:mx-6 sm:mb-6 rounded-t-none rounded-b-[2rem] lg:m-0 lg:rounded-none">
+<section class="relative font-sans bg-[#f7faff] overflow-hidden mt-0 mx-0 mb-4 sm:mt-0 sm:mx-6 sm:mb-6 rounded-t-none rounded-b-[2rem] lg:m-0 lg:rounded-none">
     <div class="absolute inset-0 z-0">
         <img src="<?= e(asset_url('images/bg-5.png')) ?>" alt="bg" class="hero-parallax-img w-full h-full object-cover object-center opacity-70 mix-blend-screen">
         <div class="absolute inset-0 bg-gradient-to-r from-white via-white/80 to-white/5"></div>
@@ -61,7 +61,7 @@ if (!empty($partners) && is_array($partners)) {
             will-change: transform;
         }
 
-        @media (min-width: 1025px) {
+        @media (min-width: 1181px) {
             .desktop-home-hero-h1 {
                 font-size: 5.5rem !important;
                 line-height: 1.1 !important;
@@ -73,11 +73,11 @@ if (!empty($partners) && is_array($partners)) {
             }
         }
     </style>
-    <div class="mx-auto w-full max-w-[1720px] px-4 sm:px-6 lg:px-10 pt-8 pb-12 md:pt-12 md:pb-24 lg:pt-28 lg:pb-32 relative z-10">
+    <div class="mx-auto w-full max-w-[1720px] px-5 sm:px-6 lg:px-10 pt-8 pb-12 md:pt-12 md:pb-24 lg:pt-28 lg:pb-32 relative z-10 ipad-air-landscape-hero-container">
         <!-- Mobile Gradient Mask to prevent text overlapping presenter image -->
         <div class="absolute inset-0 bg-gradient-to-r from-white via-white/90 to-white/20 md:hidden z-0 pointer-events-none"></div>
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:pb-12 lg:gap-10 items-center relative z-10">
-            <div class="max-w-3xl relative z-10 text-left mx-0 lg:ml-12 ipad-pro-ml-0 xl:ml-24 flex flex-col items-start w-full">
+            <div class="max-w-3xl relative z-10 text-left mx-0 lg:ml-12 ipad-pro-ml-0 xl:ml-24 flex flex-col items-start w-full ipad-air-landscape-left-col">
                 <div class="animate-entrance-up delay-100 inline-flex items-center justify-center gap-2 md:gap-2.5 px-4 py-2 md:px-6 md:py-2.5 rounded-full border border-blue-600 mb-6 shadow-sm bg-white/40">
                     <span class="text-blue-600 font-black text-base md:text-xl leading-none flex items-center shrink-0">•</span>
                     <span class="text-[12px] sm:text-[13px] md:text-base lg:text-lg font-bold text-blue-600 tracking-wide whitespace-nowrap leading-none">
@@ -93,7 +93,7 @@ if (!empty($partners) && is_array($partners)) {
                         <?= getCurrentLang() === 'th' ? 'ผู้ให้บริการพัฒนา Digital Platform<br>และระบบ AI ที่ช่วยให้ธุรกิจไทย<br>ก้าวไปข้างหน้า ด้วยเทคโนโลยี<br>ที่ใช้งานได้จริง' : 'Digital Platform and AI system<br>development provider helping Thai businesses<br>move forward with practical technology.' ?>
                     </span>
                     <span class="hidden md:inline">
-                        <?= getCurrentLang() === 'th' ? 'ผู้ให้บริการพัฒนา Digital Platform<br class="hidden ipad-air-br"> และระบบ AI <br class="ipad-air-hidden">ที่ช่วยให้ธุรกิจไทยก้าวไปข้างหน้า<br class="hidden ipad-pro-strict-inline ipad-air-br ipad-mini-br">ด้วยเทคโนโลยีที่ใช้งานได้จริง' : 'Digital Platform and AI system<br class="hidden ipad-pro-strict-inline"> development provider helping<br class="hidden ipad-pro-strict-inline"> Thai businesses move forward<br class="hidden ipad-pro-strict-inline"> with practical technology.' ?>
+                        <?= getCurrentLang() === 'th' ? 'ผู้ให้บริการพัฒนา Digital Platform<br class="hidden ipad-air-br ipad-mini-br"> และระบบ AI <br class="ipad-air-hidden ipad-mini-hidden">ที่ช่วยให้ธุรกิจไทยก้าวไปข้างหน้า<br class="hidden ipad-pro-strict-inline ipad-air-br ipad-mini-br">ด้วยเทคโนโลยีที่ใช้งานได้จริง' : 'Digital Platform and AI system<br class="hidden ipad-pro-strict-inline"> development provider helping<br class="hidden ipad-pro-strict-inline"> Thai businesses move forward<br class="hidden ipad-pro-strict-inline"> with practical technology.' ?>
                     </span>
                 </p>
                 <div class="animate-entrance-up delay-400 flex flex-col items-start self-start md:self-auto md:flex-row md:justify-start gap-3 md:gap-4 ipad-air-hero-btn-container ipad-mini-hero-btn-container">
@@ -117,7 +117,7 @@ if (!empty($partners) && is_array($partners)) {
             <div class="hidden lg:block lg:col-start-2"></div>
         </div>
         <style>
-            @media (min-width: 1024px) {
+            @media (min-width: 1181px) {
                 .desktop-hero-woman { top: auto !important; bottom: 0 !important; }
                 .desktop-hero-woman img { height: 590px !important; max-width: none !important; object-fit: contain !important; object-position: bottom right !important; }
             }
@@ -202,8 +202,8 @@ if (!empty($partners) && is_array($partners)) {
                 .mobile-br { display: initial !important; }
             }
             
-            /* iPad Mini (768px) specific fixes */
-            @media (min-width: 768px) and (max-width: 768px) {
+            /* iPad Mini Portrait (760px - 820px) specific fixes & compact font scale */
+            @media (min-width: 760px) and (max-width: 820px) {
                 .ipad-mini-br {
                     display: initial !important;
                 }
@@ -213,20 +213,51 @@ if (!empty($partners) && is_array($partners)) {
                 .ipad-mini-hero-btn-container {
                     flex-direction: column !important;
                     align-items: flex-start !important;
+                    gap: 0.85rem !important;
+                }
+                .desktop-hero-h1 {
+                    font-size: 2.75rem !important;
+                    line-height: 1.15 !important;
                 }
                 .ipad-mini-hero-desc {
                     max-width: 60% !important;
                     width: 60% !important;
+                    font-size: 0.95rem !important;
+                    line-height: 1.55 !important;
+                }
+                .ipad-pro-hero-desc {
+                    font-size: 0.95rem !important;
+                    line-height: 1.55 !important;
+                    width: 420px !important;
+                    max-width: 420px !important;
                 }
                 
-                /* Articles Section Font Sizes for iPad Mini (reusing classes) */
-                .ipad-air-article-h2 { font-size: 2.25rem !important; line-height: 1.2 !important; }
-                .ipad-air-article-h3 { font-size: 1.5rem !important; line-height: 1.3 !important; }
-                .ipad-air-article-desc { font-size: 1.125rem !important; line-height: 1.6 !important; }
-                .ipad-air-card-title { font-size: 1.35rem !important; line-height: 1.4 !important; }
-                .ipad-air-card-desc { font-size: 1.125rem !important; line-height: 1.6 !important; }
-                .ipad-air-card-link { font-size: 1rem !important; line-height: 1.5 !important; }
-                .ipad-air-card-badge { font-size: 0.875rem !important; padding: 0.375rem 0.75rem !important; }
+                /* About Us & Services Cards Font Sizes for iPad Mini */
+                .ipad-pro-font-about-tag, .ipad-air-font-about-tag { font-size: 0.85rem !important; }
+                .ipad-pro-font-about-h2, .ipad-air-font-about-h2 { font-size: 1.25rem !important; line-height: 1.6rem !important; }
+                .ipad-pro-font-title, .ipad-air-font-title { font-size: 0.975rem !important; line-height: 1.3rem !important; min-height: 2.5rem !important; }
+                .ipad-pro-font-desc, .ipad-air-font-desc { font-size: 0.8rem !important; line-height: 1.4rem !important; min-height: 4.75rem !important; }
+                .ipad-pro-font-link, .ipad-air-font-link { font-size: 0.825rem !important; line-height: 1.35rem !important; }
+                .ipad-pro-font-h2 { font-size: 2.1rem !important; }
+                .ipad-pro-font-subtitle { font-size: 1.5rem !important; line-height: 1.85rem !important; }
+
+                /* Articles Section Font Sizes for iPad Mini */
+                .ipad-pro-article-h2, .ipad-air-article-h2 { font-size: 1.65rem !important; line-height: 1.2 !important; }
+                .ipad-pro-article-h3, .ipad-air-article-h3 { font-size: 1.2rem !important; line-height: 1.3 !important; }
+                .ipad-pro-article-desc, .ipad-air-article-desc { font-size: 0.875rem !important; line-height: 1.5 !important; }
+                .ipad-pro-card-title, .ipad-air-card-title { font-size: 1.05rem !important; line-height: 1.35 !important; }
+                .ipad-pro-card-desc, .ipad-air-card-desc { font-size: 0.85rem !important; line-height: 1.45 !important; }
+                .ipad-pro-card-link, .ipad-air-card-link { font-size: 0.825rem !important; line-height: 1.35 !important; }
+                .ipad-pro-card-badge, .ipad-air-card-badge { font-size: 0.7rem !important; padding: 0.2rem 0.5rem !important; }
+            }
+
+            /* iPad Air Landscape (1180px) specific fixes */
+            @media (min-width: 1180px) and (max-width: 1180px) and (orientation: landscape) {
+                .ipad-air-hero-btn-container {
+                    flex-direction: column !important;
+                    align-items: flex-start !important;
+                    gap: 1.25rem !important;
+                }
             }
         </style>
         <div class="animate-entrance-left delay-500 absolute top-auto bottom-0 lg:top-28 lg:bottom-auto right-0 md:right-4 lg:right-8 z-0 pointer-events-none max-w-full transform md:-translate-y-2 flex justify-end mobile-hero-woman desktop-hero-woman">
@@ -237,59 +268,166 @@ if (!empty($partners) && is_array($partners)) {
     </div>
 </section>
 <style>
-/* iPad Pro (1024px) override to keep the layout stacked */
-@media (max-width: 1024px) {
-    .ipad-pro-stack-override { flex-direction: column !important; background: transparent !important; border: none !important; box-shadow: none !important; gap: 1rem !important; overflow: visible !important; }
+/* Stacked 2-Part Layout for iPad Pro, iPad Air & Mobile (Both Portrait and Landscape up to 1440px) */
+@media (max-width: 1440px) {
+    .ipad-pro-stack-override { flex-direction: column !important; background: transparent !important; border: none !important; box-shadow: none !important; gap: 1.5rem !important; overflow: visible !important; }
     .ipad-pro-hidden { display: none !important; }
-    .ipad-pro-w-full-override { max-width: 100% !important; border-right: none !important; border-radius: 0 0 2rem 2rem !important; border: 1px solid #f3f4f6 !important; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important; }
+    .ipad-pro-w-full-override { max-width: 100% !important; width: 100% !important; border-right: none !important; border-radius: 2rem !important; border: 1px solid #f3f4f6 !important; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important; background: white !important; padding: 2rem 2.5rem !important; }
     .ipad-pro-flex-visible { display: flex !important; }
-    .ipad-pro-grid-2-override { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; border-radius: 2rem !important; border: 1px solid #f3f4f6 !important; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important; }
+    .ipad-pro-display-grid { display: grid !important; grid-template-columns: repeat(2, minmax(0, 1fr)) !important; align-items: center !important; gap: 2.5rem !important; }
+    .ipad-pro-display-block { display: block !important; }
+    .ipad-pro-display-flex { display: flex !important; flex-direction: column !important; justify-content: space-between !important; height: 100% !important; }
+    .ipad-pro-grid-2-override { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; border-radius: 2rem !important; border: 1px solid #f3f4f6 !important; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important; background: white !important; }
+    .ipad-pro-border-br { border-right: 1px solid #f3f4f6 !important; border-bottom: 1px solid #f3f4f6 !important; }
     .ipad-pro-border-b { border-bottom: 1px solid #f3f4f6 !important; border-right: none !important; }
     .ipad-pro-border-r { border-right: 1px solid #f3f4f6 !important; border-bottom: none !important; }
-    .ipad-pro-border-br { border-right: 1px solid #f3f4f6 !important; border-bottom: 1px solid #f3f4f6 !important; }
     .ipad-pro-border-none { border: none !important; }
-    .ipad-pro-p-6 { padding: 1.5rem !important; }
+    .ipad-pro-p-6 { padding: 2.25rem 2rem !important; }
     
-    /* Overrides for About Us inner layout */
-    .ipad-pro-display-grid { display: grid !important; }
-    .ipad-pro-display-block { display: block !important; }
-    .ipad-pro-display-flex { display: flex !important; }
-    
-    /* Overrides for Articles layout */
-    .ipad-pro-articles-slider { display: flex !important; flex-wrap: nowrap !important; overflow-x: auto !important; overflow-y: hidden !important; }
-    .ipad-pro-articles-card { width: 100% !important; flex-shrink: 0 !important; scroll-snap-align: center !important; }
+    /* Overrides for Articles layout on tablets */
+    .ipad-pro-articles-slider {
+        display: flex !important;
+        flex-wrap: nowrap !important;
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        width: 100% !important;
+    }
+    .ipad-pro-articles-card {
+        width: 100% !important;
+        max-width: 100% !important;
+        flex-shrink: 0 !important;
+        scroll-snap-align: center !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
 }
 
-/* Strict override for exactly 1024px (iPad Pro portrait) */
-@media (min-width: 1024px) and (max-width: 1024px) {
+/* Dedicated Large Font Scale for iPad Pro Landscape (1024px - 1366px Landscape) */
+@media (min-width: 1024px) and (max-width: 1366px) and (orientation: landscape) {
     .ipad-pro-strict-hidden { display: none !important; }
     .ipad-pro-strict-inline { display: inline !important; }
-    .ipad-pro-hero-desc { font-size: 1.375rem !important; line-height: 2.25rem !important; width: 520px !important; max-width: 520px !important; padding-right: 0; }
+    
+    .desktop-hero-h1 {
+        font-size: 4.5rem !important;
+        line-height: 1.15 !important;
+    }
+    .ipad-pro-hero-desc,
+    .desktop-hero-desc {
+        font-size: 1.35rem !important;
+        line-height: 2.1rem !important;
+        width: 540px !important;
+        max-width: 540px !important;
+        padding-right: 0 !important;
+    }
     
     .desktop-hero-woman {
-        right: -80px !important;
+        top: auto !important;
+        bottom: 0px !important;
+        transform: none !important;
+        right: -40px !important;
     }
     .desktop-hero-woman img {
-        height: 590px !important;
+        height: 540px !important;
+        max-height: 100% !important;
+        object-fit: contain !important;
+        object-position: bottom right !important;
     }
     
-    /* iPad Pro (1024px) Font Size Overrides */
-    .ipad-pro-font-about-tag { font-size: 1.125rem !important; line-height: 1.75rem !important; }
-    .ipad-pro-font-about-h2 { font-size: 1.875rem !important; line-height: 2.25rem !important; }
-    .ipad-pro-font-title { font-size: 1.5rem !important; line-height: 2rem !important; }
-    .ipad-pro-font-desc { font-size: 1.125rem !important; line-height: 1.75rem !important; }
-    .ipad-pro-font-link { font-size: 1rem !important; line-height: 1.5rem !important; }
-    .ipad-pro-font-h2 { font-size: 3rem !important; line-height: 1 !important; }
-    .ipad-pro-font-subtitle { font-size: 2.25rem !important; line-height: 2.5rem !important; }
+    .ipad-air-landscape-hero-container {
+        padding-top: 3.5rem !important;
+        padding-bottom: 0rem !important;
+    }
+    .ipad-air-landscape-left-col {
+        padding-bottom: 2.5rem !important;
+        margin-left: 0 !important;
+    }
+    .ipad-air-hero-btn-container,
+    .ipad-mini-hero-btn-container {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 1.25rem !important;
+    }
     
-    /* iPad Pro (1024px) Articles Font Size Overrides */
-    .ipad-pro-article-h2 { font-size: 2.5rem !important; line-height: 1.2 !important; }
-    .ipad-pro-article-h3 { font-size: 1.75rem !important; line-height: 1.3 !important; }
-    .ipad-pro-article-desc { font-size: 1.25rem !important; line-height: 1.75 !important; }
-    .ipad-pro-card-title { font-size: 1.625rem !important; line-height: 1.4 !important; }
-    .ipad-pro-card-desc { font-size: 1.25rem !important; line-height: 1.6 !important; }
-    .ipad-pro-card-link { font-size: 1.125rem !important; line-height: 1.5 !important; }
-    .ipad-pro-card-badge { font-size: 1rem !important; padding: 0.375rem 0.75rem !important; }
+    /* iPad Pro Font Size Overrides */
+    .ipad-pro-about-br { display: inline !important; }
+    .ipad-pro-font-about-tag { font-size: 2.25rem !important; line-height: 2.5rem !important; font-weight: 900 !important; color: #0663F6 !important; }
+    .ipad-pro-about-bar { width: 5.5rem !important; height: 5px !important; margin-top: 0.4rem !important; margin-bottom: 0.75rem !important; background-color: #0663F6 !important; }
+    .ipad-pro-font-about-h2 { font-size: 1.6rem !important; line-height: 2rem !important; font-weight: 800 !important; min-height: 4rem !important; margin-bottom: 0.75rem !important; color: #043B94 !important; }
+    .ipad-pro-font-title {
+        font-size: 1.45rem !important;
+        line-height: 1.85rem !important;
+        font-weight: 700 !important;
+        min-height: 4rem !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        text-align: center !important;
+        white-space: normal !important;
+        margin-bottom: 0.75rem !important;
+    }
+    .ipad-pro-about-card-desc {
+        font-size: 1.15rem !important;
+        line-height: 1.85rem !important;
+        min-height: 9.5rem !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        color: #6b7280 !important;
+    }
+    .ipad-pro-font-desc {
+        font-size: 1.1rem !important;
+        line-height: 1.8rem !important;
+        min-height: 9.5rem !important;
+        color: #6b7280 !important;
+    }
+    .ipad-pro-font-link {
+        font-size: 1.1rem !important;
+        line-height: 1.6rem !important;
+        font-weight: 600 !important;
+    }
+    .ipad-pro-font-h2 { font-size: 3.25rem !important; line-height: 1.1 !important; }
+    .ipad-pro-font-subtitle { font-size: 2.35rem !important; line-height: 2.6rem !important; }
+    
+    /* iPad Pro Articles Font Size Overrides */
+    .ipad-pro-article-h2 { font-size: 2.75rem !important; line-height: 1.2 !important; }
+    .ipad-pro-article-h3 { font-size: 1.85rem !important; line-height: 1.35 !important; }
+    .ipad-pro-article-desc { font-size: 1.3rem !important; line-height: 1.8rem !important; }
+    .ipad-pro-card-title { font-size: 1.75rem !important; line-height: 1.45 !important; }
+    .ipad-pro-card-desc { font-size: 1.3rem !important; line-height: 1.7rem !important; }
+    .ipad-pro-card-link { font-size: 1.15rem !important; line-height: 1.55 !important; }
+    .ipad-pro-card-badge { font-size: 1.05rem !important; padding: 0.4rem 0.85rem !important; }
+}
+
+/* Dedicated Large Font Scale for iPad Pro Portrait */
+@media (min-width: 821px) and (max-width: 1366px) and (orientation: portrait) {
+    .desktop-hero-h1 {
+        font-size: 4.25rem !important;
+        line-height: 1.15 !important;
+    }
+    .ipad-pro-hero-desc,
+    .desktop-hero-desc {
+        font-size: 1.35rem !important;
+        line-height: 2.1rem !important;
+        width: 100% !important;
+        max-width: 580px !important;
+    }
+    .ipad-pro-font-about-tag, .ipad-air-font-about-tag { font-size: 1.15rem !important; }
+    .ipad-pro-font-about-h2, .ipad-air-font-about-h2 { font-size: 1.85rem !important; line-height: 2.25rem !important; }
+    .ipad-pro-font-title, .ipad-air-font-title { font-size: 1.45rem !important; line-height: 1.75rem !important; min-height: 3.5rem !important; }
+    .ipad-pro-font-desc, .ipad-air-font-desc { font-size: 1.15rem !important; line-height: 1.75rem !important; min-height: 6rem !important; }
+    .ipad-pro-font-link, .ipad-air-font-link { font-size: 1.05rem !important; line-height: 1.55rem !important; }
+    .ipad-pro-font-h2 { font-size: 3rem !important; line-height: 1.15 !important; }
+    .ipad-pro-font-subtitle { font-size: 2.25rem !important; line-height: 2.6rem !important; }
+    .ipad-pro-article-h2, .ipad-air-article-h2 { font-size: 2.5rem !important; line-height: 1.2 !important; }
+    .ipad-pro-article-h3, .ipad-air-article-h3 { font-size: 1.75rem !important; line-height: 1.35 !important; }
+    .ipad-pro-article-desc, .ipad-air-article-desc { font-size: 1.25rem !important; line-height: 1.75rem !important; }
+    .ipad-pro-card-title, .ipad-air-card-title { font-size: 1.5rem !important; line-height: 1.45 !important; }
+    .ipad-pro-card-desc, .ipad-air-card-desc { font-size: 1.15rem !important; line-height: 1.65 !important; }
+    .ipad-pro-card-link, .ipad-air-card-link { font-size: 1.05rem !important; line-height: 1.55 !important; }
+    .ipad-pro-card-badge, .ipad-air-card-badge { font-size: 0.95rem !important; padding: 0.35rem 0.75rem !important; }
 }
 </style>
 <section class="relative bg-white z-20 mt-0 md:mt-0 lg:-mt-1 pb-6 lg:pb-6 overflow-hidden">
@@ -308,16 +446,21 @@ if (!empty($partners) && is_array($partners)) {
                             <div>
                                 <div class="text-left w-full mb-3">
                                     <span class="text-primary font-bold text-lg md:text-sm tracking-wide inline-block mx-0 ipad-pro-font-about-tag ipad-air-font-about-tag"><?= e(t('common.about_us_heading')) ?></span>
-                                    <div class="w-8 h-[3px] bg-primary mt-1"></div>
+                                    <div class="w-8 h-[3px] bg-primary mt-1 ipad-pro-about-bar"></div>
                                 </div>
                                 <h2 class="text-[#043B94] text-xl xl:text-2xl font-bold leading-tight mb-3 ipad-pro-font-about-h2 ipad-air-font-about-h2">
                                     <?= e(t('common.we_are_partner')) ?><br class="hidden lg:inline"><?= e(t('common.in_technology')) ?>
                                 </h2>
-                                <p class="text-gray-500 text-[0.8rem] md:text-sm leading-relaxed mb-4 ipad-pro-font-desc ipad-air-font-desc">
+                                <p class="text-gray-500 text-[0.8rem] md:text-sm leading-relaxed mb-4 ipad-pro-font-desc ipad-air-font-desc ipad-pro-about-card-desc">
                                     <?= e(t('common.partner_description')) ?>
                                 </p>
                             </div>
-
+                            <a href="<?= e(route_url('/about')) ?>" class="inline-flex items-center text-primary text-sm font-medium transition-colors duration-300 group-hover:text-blue-700 w-max mt-auto ipad-pro-font-link ipad-air-font-link">
+                                <?= e(t('common.cta_read_more')) ?>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1.5 transition-transform duration-300 ease-out group-hover:translate-x-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                                </svg>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -326,7 +469,7 @@ if (!empty($partners) && is_array($partners)) {
                 <?php
                 $serviceCards = [
                     ['icon' => 'icon-3.png', 'title' => getCurrentLang() === 'th' ? 'ระบบ ERP / ERM' : 'ERP / ERM',        'desc' => t('common.solution_org_control'), 'href' => route_url('/erp')],
-                    ['icon' => 'icon-2.png', 'title' => getCurrentLang() === 'th' ? 'แพลตฟอร์มดิจิทัล' : 'Digital Platform', 'desc' => t('common.solution_digital_platform'),              'href' => route_url('/services/digital-platform')],
+                    ['icon' => 'icon-2.png', 'title' => getCurrentLang() === 'th' ? 'แพลตฟอร์มดิจิทัล' : 'Platform Digital', 'desc' => t('common.solution_digital_platform'),              'href' => route_url('/services/digital-platform')],
                     ['icon' => 'icon-4.png', 'title' => getCurrentLang() === 'th' ? 'การตลาดออนไลน์' : 'Online Marketing', 'desc' => t('common.solution_online_marketing'),   'href' => route_url('/services/online-marketing')],
                     ['icon' => 'icon-1.png', 'title' => getCurrentLang() === 'th' ? 'ออกแบบสร้างสรรค์' : 'Creative / Design','desc' => t('common.solution_brand_design'),    'href' => route_url('/services/creative-design')],
                 ];
@@ -346,12 +489,12 @@ if (!empty($partners) && is_array($partners)) {
                         $ipadProBorderClass = 'ipad-pro-border-none';
                     }
                 ?>
-                    <div class="gsap-home-service-card relative group cursor-pointer flex flex-col justify-between p-6 lg:p-8 <?= $borderClass ?> <?= $ipadProBorderClass ?> border-gray-100 bg-white transition-all duration-300 ease-out hover:shadow-[0_0_30px_rgba(0,0,0,0.08)] hover:-translate-y-1 hover:z-10 hover:rounded-xl opacity-0 translate-y-10 ipad-pro-p-6">
+                    <div onclick="window.location.href='<?= e($card['href']) ?>'" class="gsap-home-service-card relative group cursor-pointer flex flex-col justify-between p-6 lg:p-8 <?= $borderClass ?> <?= $ipadProBorderClass ?> border-gray-100 bg-white transition-all duration-300 ease-out hover:shadow-[0_0_30px_rgba(0,0,0,0.08)] hover:-translate-y-1 hover:z-10 hover:rounded-xl opacity-0 translate-y-10 ipad-pro-p-6">
                     <div>
                         <div class="h-14 w-14 mx-auto mb-5 flex items-center justify-center transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:-translate-y-2 group-hover:scale-110">
                             <img src="<?= e(asset_url('images/' . $card['icon'])) ?>" alt="<?= e($card['title']) ?>" class="h-full w-full object-contain">
                         </div>
-                        <h2 class="text-[#043B94] font-bold text-base md:text-lg xl:text-xl text-center mb-3 whitespace-normal lg:whitespace-nowrap tracking-tight transition-colors duration-300 group-hover:text-blue-600 ipad-pro-font-title ipad-air-font-title">
+                        <h2 class="text-[#043B94] font-bold text-base md:text-lg xl:text-xl text-center mb-3 whitespace-normal tracking-tight transition-colors duration-300 group-hover:text-blue-600 ipad-pro-font-title ipad-air-font-title">
                             <?= e($card['title']) ?>
                         </h2>
                         <p class="text-gray-500 text-sm md:text-base leading-relaxed mb-6 text-left transition-colors duration-300 group-hover:text-gray-600 ipad-pro-font-desc ipad-air-font-desc">
@@ -371,7 +514,7 @@ if (!empty($partners) && is_array($partners)) {
     </div>
 </section>
 <?php if (!empty($displayPortfolios)): ?>
-<section class="bg-white pt-16 pb-6 lg:pt-20 lg:pb-8 overflow-hidden">
+<section class="bg-white pt-8 pb-4 lg:pt-10 lg:pb-6 overflow-hidden">
     <div class="mx-auto w-full max-w-[1720px] px-4 sm:px-6 lg:px-10">
         <div class="mb-10 lg:ml-12 ipad-pro-ml-0 xl:ml-24 lg:mr-12 xl:mr-24">
             <div class="hidden md:block">
@@ -621,7 +764,7 @@ document.addEventListener('DOMContentLoaded', function () {
 <?php
 $totalReviews = count($reviews);
 ?>
-<section class="relative pt-6 pb-10 lg:pt-10 lg:pb-20 overflow-hidden">
+<section class="relative pt-6 pb-6 lg:pt-8 lg:pb-10 overflow-hidden">
     <div class="absolute inset-0 -z-10 pointer-events-none">
         <img src="<?= e(asset_url('images/bg-hand.jpg')) ?>" alt="bg" class="w-full h-full object-cover object-center opacity-20 mix-blend-screen">
         <div class="absolute inset-0 bg-white/50"></div>
@@ -809,7 +952,7 @@ $totalReviews = count($reviews);
 }
 </style>
 <?php if (count($displayArticles) > 0): ?>
-<section class="bg-slate-50 pt-10 pb-20 lg:py-20 border-t border-slate-100">
+<section class="bg-slate-50 pt-6 pb-10 lg:py-10 border-t border-slate-100">
     <div class="mx-auto w-full max-w-[1720px] px-4 sm:px-6 lg:px-10">
         <div class="hidden lg:flex flex-row items-end justify-between mb-6 ipad-pro-hidden lg:ml-12 ipad-pro-ml-0 xl:ml-24 lg:mr-12 xl:mr-24">
             <div>
@@ -831,18 +974,19 @@ $totalReviews = count($reviews);
                 </svg>
             </a>
         </div>
-        <div class="lg:hidden mb-6 flex flex-col items-start text-left pl-1 ipad-pro-flex-visible">
-            <h2 class="text-primary font-black text-3xl md:text-2xl tracking-normal mb-2 pb-1 inline-block border-b-[3px] border-primary ipad-pro-article-h2 ipad-air-article-h2">
+        <div class="lg:hidden mb-6 flex flex-col items-start text-left ipad-pro-flex-visible">
+            <h2 class="text-primary font-black text-3xl md:text-2xl tracking-normal m-0 inline-block ipad-pro-article-h2 ipad-air-article-h2">
                 <?= getCurrentLang() === 'th' ? 'บทความ' : 'Articles' ?>
             </h2>
+            <div class="w-14 h-[3.5px] bg-primary mt-1.5 mb-3 rounded-full"></div>
             <h3 class="text-dark font-black text-2xl md:text-xl mb-3 mt-1 tracking-tight ipad-pro-article-h3 ipad-air-article-h3">
                 <?= getCurrentLang() === 'th' ? 'สาระน่ารู้จาก WEBPARK' : 'Knowledge from WEBPARK' ?>
             </h3>
             <p class="text-slate-600 text-sm md:text-[0.8rem] leading-[1.6] font-medium ipad-pro-article-desc ipad-air-article-desc">
-                <?= getCurrentLang() === 'th' ? 'รวมบทความสาระน่ารู้ ที่จะช่วยต่อยอดแบรนด์<br>และพาธุรกิจสู่ดิจิทัลที่ช่วยให้ธุรกิจเติบโตได้อย่างยั่งยืน' : 'A collection of informative articles to help elevate your brand <br class="mobile-hidden">and guide your business into the digital era for sustainable growth.' ?>
+                <?= getCurrentLang() === 'th' ? 'รวมบทความสาระน่ารู้ ที่จะช่วยต่อยอดแบรนด์<br>และพาธุรกิจสู่วิถีดิจิทัลที่ช่วยให้ธุรกิจเติบโตได้อย่างยั่งยืน' : 'A collection of informative articles to help elevate your brand <br class="mobile-hidden">and guide your business into the digital era for sustainable growth.' ?>
             </p>
         </div>
-        <div id="knowledge-slider" class="flex lg:grid overflow-x-auto lg:overflow-visible snap-x snap-mandatory flex-nowrap lg:flex-wrap lg:grid-cols-3 gap-8 pt-2 pb-6 hide-scrollbar ipad-pro-articles-slider lg:ml-12 ipad-pro-ml-0 xl:ml-24 lg:mr-12 xl:mr-24">
+        <div id="knowledge-slider" class="flex lg:grid overflow-x-auto lg:overflow-visible snap-x snap-mandatory flex-nowrap lg:flex-wrap lg:grid-cols-3 gap-6 pt-2 pb-6 hide-scrollbar ipad-pro-articles-slider">
             <?php foreach ($displayArticles as $art): ?>
                 <?php
                 $artId       = (int)($art['id'] ?? 0);

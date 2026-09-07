@@ -1,408 +1,1134 @@
 <?php
-
 declare(strict_types=1);
 
-$fallbackImage = asset_url('images/story.png');
-$heroImage = asset_url('images/bg-5.png');
-$ctaImage = asset_url('images/bg-cta.jpg');
-$lang = getCurrentLang();
-
-$designPillars = [
-    [
-        'icon' => asset_url('images/ERP_1.svg'),
-        'title' => $lang === 'th' ? 'ออกแบบตามพฤติกรรมผู้ใช้' : 'Human-Centered Design',
-        'desc' => $lang === 'th' ? 'เน้นประสบการณ์ที่ใช้งานง่าย สวยงาม และเข้าถึงอารมณ์ความรู้สึก' : 'Intuitive, beautiful, and emotionally engaging user experiences.',
-    ],
-    [
-        'icon' => asset_url('images/ERP_2.svg'),
-        'title' => $lang === 'th' ? 'เอกลักษณ์แบรนด์ที่โดดเด่น' : 'Unique Brand Identity',
-        'desc' => $lang === 'th' ? 'สร้างภาพจำที่แตกต่าง ไม่ซ้ำใคร และสะท้อนตัวตนขององค์กร' : 'Distinct visual identity that sets your enterprise apart in the market.',
-    ],
-    [
-        'icon' => asset_url('images/ERP_3.svg'),
-        'title' => $lang === 'th' ? 'ดีไซน์ที่สร้าง Conversion' : 'Conversion-Driven UI',
-        'desc' => $lang === 'th' ? 'ออกแบบเพื่อดึงดูดสายตาและนำทางผู้ใช้งานไปสู่การตัดสินใจซื้อ' : 'Strategic layouts and visual cues that effortlessly drive conversions.',
-    ],
-    [
-        'icon' => asset_url('images/ERP_4.svg'),
-        'title' => $lang === 'th' ? 'มาตรฐาน Design System' : 'Scalable Design Systems',
-        'desc' => $lang === 'th' ? 'สร้างระบบคู่มือการออกแบบที่พร้อมส่งต่อนักพัฒนาได้อย่างรวดเร็ว' : 'Comprehensive component libraries for seamless developer handoff.',
-    ],
-];
-
-$designModules = [
-    [
-        'name_th' => 'Brand Identity & Corporate Design',
-        'name_en' => 'Brand Identity & Corporate Design',
-        'desc_th' => 'ออกแบบโลโก้ โทนสี ฟอนต์ และคู่มืออัตลักษณ์องค์กร (Brand CI Manual) เพื่อภาพลักษณ์ที่เป็นมืออาชีพและน่าเชื่อถือ',
-        'desc_en' => 'Craft logos, color palettes, typography, and full Brand Guidelines (CI) that elevate enterprise credibility.',
-        'icon' => 'ERP_10.svg'
-    ],
-    [
-        'name_th' => 'UI/UX Design for Web & Applications',
-        'name_en' => 'UI/UX Design for Web & Applications',
-        'desc_th' => 'ออกแบบหน้าตาและประสบการณ์การใช้งานของเว็บไซต์และแอปพลิเคชันมือถือ ด้วย Figma Prototype ที่พร้อมใช้งานจริง',
-        'desc_en' => 'Design intuitive, modern web and mobile app interfaces with interactive high-fidelity Figma prototypes.',
-        'icon' => 'ERP_11.svg'
-    ],
-    [
-        'name_th' => 'Motion Graphics & 2D/3D Animation',
-        'name_en' => 'Motion Graphics & 2D/3D Animation',
-        'desc_th' => 'ผลิตวิดีโอแนะนำบริการ โมชันกราฟิก และแอนิเมชันสำหรับนำเสนอสินค้า เพื่อการสื่อสารที่น่าตื่นตาตื่นใจ',
-        'desc_en' => 'Create compelling explainer videos, 2D/3D animations, and motion visuals that captivate audiences.',
-        'icon' => 'ERP_12.svg'
-    ],
-    [
-        'name_th' => 'Marketing Campaign & Social Media Assets',
-        'name_en' => 'Marketing Campaign & Social Media Assets',
-        'desc_th' => 'ออกแบบภาพแบนเนอร์ สื่อโฆษณาออนไลน์ และคอนเทนต์โซเชียลมีเดียที่สะดุดตาและช่วยเพิ่มยอดคลิก (CTR)',
-        'desc_en' => 'Produce high-converting banner ads, social media visual sets, and campaign promotional graphics.',
-        'icon' => 'ERP_13.svg'
-    ],
-    [
-        'name_th' => 'Enterprise Design System & UI Kits',
-        'name_en' => 'Enterprise Design System & UI Kits',
-        'desc_th' => 'สร้างชุด Component และ Design System มาตรฐานสำหรับองค์กรขนาดใหญ่ เพื่อลดเวลาการพัฒนาผลิตภัณฑ์ใหม่',
-        'desc_en' => 'Build robust design token libraries and UI component systems that accelerate enterprise product delivery.',
-        'icon' => 'ERP_14.svg'
-    ],
-    [
-        'name_th' => 'Packaging & Corporate Print Media',
-        'name_en' => 'Packaging & Corporate Print Media',
-        'desc_th' => 'ออกแบบบรรจุภัณฑ์ แคตตาล็อกสินค้า และสื่อสิ่งพิมพ์พรีเมียมที่สะท้อนคุณค่าของแบรนด์ในทุกจุดสัมผัส',
-        'desc_en' => 'Design premium packaging, product brochures, and print collateral that reinforce brand excellence.',
-        'icon' => 'ERP_15.svg'
-    ],
-];
-
-$designBenefits = [
-    [
-        'title' => $lang === 'th' ? 'สร้างภาพจำที่น่าประทับใจ' : 'Memorable Brand Recall',
-        'desc' => $lang === 'th' ? 'ครองใจลูกค้าตั้งแต่แรกเห็นด้วยดีไซน์ระดับสากล' : 'Instantly captivate customers with world-class aesthetics.',
-        'icon' => asset_url('images/ERP_5.svg'),
-    ],
-    [
-        'title' => $lang === 'th' ? 'เพิ่มมูลค่าสินค้าและบริการ' : 'Higher Perceived Value',
-        'desc' => $lang === 'th' ? 'ยกระดับความพรีเมียม เพิ่มโอกาสตั้งราคาที่สูงขึ้น' : 'Enhance brand perception to justify premium product pricing.',
-        'icon' => asset_url('images/ERP_6.svg'),
-    ],
-    [
-        'title' => $lang === 'th' ? 'ประสบการณ์ใช้งานที่ลื่นไหล' : 'Seamless Usability',
-        'desc' => $lang === 'th' ? 'ลดขั้นตอนสับสน เพิ่มความพึงพอใจของลูกค้า' : 'Eliminate user friction and delight visitors at every step.',
-        'icon' => asset_url('images/ERP_7.svg'),
-    ],
-    [
-        'title' => $lang === 'th' ? 'สื่อสารชัดเจน ตรงประเด็น' : 'Clear Visual Messaging',
-        'desc' => $lang === 'th' ? 'แปลงข้อมูลซับซ้อนให้เข้าใจง่ายผ่านภาพกราฟิก' : 'Turn complex ideas into clear, digestible visual narratives.',
-        'icon' => asset_url('images/ERP_8.svg'),
-    ],
-    [
-        'title' => $lang === 'th' ? 'พร้อมต่อยอดทุกแพลตฟอร์ม' : 'Cross-Platform Ready',
-        'desc' => $lang === 'th' ? 'ไฟล์และชุด Assets มาตรฐานพร้อมใช้งานทุกสื่อ' : 'Export-ready assets organized for web, app, and print.',
-        'icon' => asset_url('images/ERP_9.svg'),
-    ],
-];
-
-$designProcess = [
-    [
-        'num' => '01',
-        'title' => $lang === 'th' ? 'Brand Discovery & Moodboard' : 'Brand Discovery & Moodboard',
-        'desc' => $lang === 'th' ? 'ทำความเข้าใจบุคลิกแบรนด์ ค่านิยม และสร้าง Moodboard กำหนดทิศทางงานดีไซน์' : 'Uncover brand personality, target demographics, and define visual moodboards.'
-    ],
-    [
-        'num' => '02',
-        'title' => $lang === 'th' ? 'Concept Design & Wireframe' : 'Concept Design & Wireframe',
-        'desc' => $lang === 'th' ? 'ขึ้นโครงสร้าง Wireframe และนำเสนอคอนเซ็ปต์ดีไซน์หลากหลายทิศทางให้เลือก' : 'Develop structural wireframes and present distinct creative visual directions.'
-    ],
-    [
-        'num' => '03',
-        'title' => $lang === 'th' ? 'High-Fidelity Prototyping' : 'High-Fidelity Prototyping',
-        'desc' => $lang === 'th' ? 'ลงรายละเอียดสี ฟอนต์ รูปภาพ และสร้าง Prototype ที่สามารถกดเล่นได้เสมือนจริง' : 'Refine colors, typography, assets, and build interactive clickable prototypes.'
-    ],
-    [
-        'num' => '04',
-        'title' => $lang === 'th' ? 'Final Assets & Design System' : 'Final Assets & Design System',
-        'desc' => $lang === 'th' ? 'ส่งมอบไฟล์ต้นฉบับคุณภาพสูง (Figma, AI, PSD, SVG) พร้อมคู่มือมาตรฐานการใช้งาน' : 'Deliver organized master files and full brand/design guidelines ready for development.'
-    ],
-];
+$heroBgImage = asset_url('images/creative-design-hero-bg.png');
+$ctaImage    = asset_url('images/bg-cta.jpg');
 ?>
 
 <style>
-    @keyframes text-gradient-pan {
-        0% { background-position: 0% center; }
-        50% { background-position: 100% center; }
-        100% { background-position: 0% center; }
+    @keyframes heroFloat {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
     }
-    .animate-text-gradient {
-        background-size: 200% auto;
-        animation: text-gradient-pan 6s linear infinite;
+    .animate-hero-float {
+        animation: heroFloat 5s ease-in-out infinite;
     }
-    @keyframes fadeSlideUp {
-        0% { opacity: 0; transform: translateY(30px); }
-        100% { opacity: 1; transform: translateY(0); }
+    .text-gradient-creative {
+        background: linear-gradient(135deg, #0663F6 0%, #00d2ff 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        color: #0663F6;
     }
-    .animate-fade-up {
-        opacity: 0;
-        animation: fadeSlideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    }
-    .delay-100 { animation-delay: 100ms; }
-    .delay-200 { animation-delay: 200ms; }
-    .delay-300 { animation-delay: 300ms; }
-    .delay-400 { animation-delay: 400ms; }
-
-    .hero-parallax-img {
-        transform: scale(1.15);
-        will-change: transform;
+    .sharp-image-render {
+        image-rendering: -webkit-optimize-contrast;
+        image-rendering: crisp-edges;
+        filter: contrast(105%) saturate(106%);
+        transform: translateZ(0);
+        backface-visibility: hidden;
     }
 
+    /* Standalone Core Layout Rules */
+    .cd-intro-main-card {
+        display: flex !important;
+        flex-direction: column !important;
+        width: 100% !important;
+        background-color: #ffffff !important;
+    }
+    @media (min-width: 1280px) {
+        .cd-intro-main-card {
+            flex-direction: row !important;
+        }
+        .cd-intro-card-left {
+            width: 32% !important;
+            flex-shrink: 0 !important;
+        }
+    }
+    .cd-intro-right-grid {
+        display: grid !important;
+        grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+        width: 100% !important;
+        flex: 1 !important;
+    }
+    @media (max-width: 1024px) {
+        .cd-intro-right-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        }
+    }
+    @media (max-width: 640px) {
+        .cd-intro-right-grid {
+            grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
+            border-top: 1.5px solid #cbd5e1 !important;
+        }
+        .cd-intro-pillar-card {
+            border-bottom: 1.5px solid #cbd5e1 !important;
+            padding-top: 2rem !important;
+            padding-bottom: 2rem !important;
+            padding-left: 1.25rem !important;
+            padding-right: 1.25rem !important;
+        }
+        .cd-intro-pillar-card:last-child {
+            border-bottom: none !important;
+        }
+    }
+
+    /* ===================================================
+       IPAD PORTRAIT ONLY: MATCH ONLINE MARKETING EXACTLY
+       Specifically: (min-width: 760px) and (max-width: 1024px) and (orientation: portrait)
+       =================================================== */
+    @media (min-width: 760px) and (max-width: 1024px) and (orientation: portrait) {
+        /* Section 1: Hero Section (2-line title, text on left, 3D graphic on right) */
+        .cd-hero-container {
+            padding-top: 4.5rem !important;
+            padding-bottom: 5rem !important;
+        }
+        .cd-hero-left-col {
+            max-width: 68% !important;
+            margin-left: 0 !important;
+        }
+        .cd-breadcrumb-nav,
+        .cd-breadcrumb-list {
+            display: inline-flex !important;
+            flex-direction: row !important;
+            flex-wrap: nowrap !important;
+            white-space: nowrap !important;
+            align-items: center !important;
+        }
+        .cd-breadcrumb-list li,
+        .cd-breadcrumb-list a,
+        .cd-breadcrumb-list span {
+            white-space: nowrap !important;
+            display: inline-block !important;
+            word-break: keep-all !important;
+        }
+        .cd-hero-h1-wrapper {
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            gap: 0.25rem !important;
+        }
+        .cd-hero-h1 {
+            font-size: 3.5rem !important;
+            font-weight: 900 !important;
+            line-height: 1.08 !important;
+            display: block !important;
+            white-space: normal !important;
+        }
+        .cd-hero-p {
+            font-size: 0.95rem !important;
+            line-height: 1.65 !important;
+            font-weight: 500 !important;
+            color: #475569 !important;
+            max-width: 100% !important;
+            margin-bottom: 1.75rem !important;
+        }
+        .cd-hero-btn-container {
+            flex-direction: row !important;
+            align-items: center !important;
+            gap: 1rem !important;
+            flex-wrap: nowrap !important;
+        }
+        .cd-hero-bg-img {
+            object-position: 88% center !important;
+        }
+
+        /* Section 2: Intro Summary Card (Header top, 4 pillars horizontal) */
+        .cd-intro-section {
+            padding-top: 0px !important;
+            padding-bottom: 2rem !important;
+            margin-bottom: 0px !important;
+        }
+        .cd-intro-card-container {
+            padding-bottom: 0px !important;
+            margin-bottom: 0px !important;
+        }
+        .cd-intro-main-card {
+            flex-direction: column !important;
+        }
+        .cd-intro-card-left {
+            width: 100% !important;
+            max-width: 100% !important;
+            flex: none !important;
+            border-bottom: 1px solid #f1f5f9 !important;
+            border-right: none !important;
+            padding: 2rem 2.25rem 1.5rem !important;
+        }
+        .cd-intro-right-grid {
+            width: 100% !important;
+            flex: none !important;
+            display: grid !important;
+            grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+        }
+        .cd-intro-pillar-card {
+            padding: 1.25rem 0.35rem !important;
+            border-bottom: none !important;
+            border-right: 1.5px solid #e2e8f0 !important;
+            border-top: none !important;
+            border-left: none !important;
+            justify-content: flex-start !important;
+        }
+        .cd-intro-pillar-card:last-child {
+            border-right: none !important;
+        }
+        .cd-intro-pillar-card > div:first-child {
+            width: auto !important;
+            height: auto !important;
+            min-height: 0 !important;
+            margin-bottom: 0.35rem !important;
+        }
+        .cd-intro-pillar-card svg {
+            width: 3rem !important;
+            height: 3rem !important;
+            margin-bottom: 0 !important;
+        }
+        .cd-intro-pillar-card h3 {
+            font-size: 0.95rem !important;
+            line-height: 1.25 !important;
+            min-height: auto !important;
+            display: block !important;
+            text-align: center !important;
+            margin-bottom: 0.25rem !important;
+        }
+        .cd-intro-pillar-card p {
+            font-size: 0.75rem !important;
+            line-height: 1.35 !important;
+            text-align: center !important;
+            padding-left: 0.2rem !important;
+            padding-right: 0.2rem !important;
+        }
+
+        /* Section 3: 10 Solutions Grid (2 columns x 5 rows like landscape) */
+        .cd-solutions-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+            gap: 1.25rem !important;
+        }
+        .cd-solution-card {
+            padding: 1.25rem !important;
+        }
+
+        /* Section 4: Benefits Grid (บน 2, กลาง 2, ล่าง 1 ยาว) */
+        .cd-benefits-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+            gap: 1.25rem !important;
+        }
+        .cd-benefits-grid > div {
+            padding: 1.5rem 1.25rem !important;
+        }
+        .cd-benefits-grid .cd-benefit-icon-wrap,
+        .cd-benefits-grid .cd-benefit-icon-wrap > div {
+            margin-bottom: 0.35rem !important;
+        }
+        .cd-benefits-grid h3 {
+            font-size: 1.05rem !important;
+            min-height: auto !important;
+            line-height: 1.25 !important;
+            margin-bottom: 0.25rem !important;
+        }
+        .cd-benefits-grid p {
+            font-size: 0.825rem !important;
+            line-height: 1.4 !important;
+            margin-top: 0 !important;
+        }
+
+        /* Card 5: ล่าง 1 ยาว (Spans 2 columns, wide layout) */
+        .cd-benefit-card-last {
+            grid-column: span 2 / span 2 !important;
+            width: 100% !important;
+            display: flex !important;
+            flex-direction: row !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 1.5rem !important;
+            padding: 1.5rem 2.5rem !important;
+            text-align: left !important;
+        }
+        .cd-benefit-card-last .cd-benefit-icon-wrap,
+        .cd-benefit-card-last .cd-benefit-icon-wrap > div {
+            margin-bottom: 0 !important;
+            flex-shrink: 0 !important;
+        }
+        .cd-benefit-card-last .cd-benefit-content {
+            align-items: flex-start !important;
+            text-align: left !important;
+        }
+        .cd-benefit-card-last h3 {
+            text-align: left !important;
+            justify-content: flex-start !important;
+            min-height: auto !important;
+            margin-bottom: 0.15rem !important;
+            font-size: 1.15rem !important;
+        }
+        .cd-benefit-card-last p {
+            text-align: left !important;
+            font-size: 0.85rem !important;
+            margin-top: 0 !important;
+        }
+
+        /* Section 5: Portfolio Showcase Grid (4 cards in 1 row like landscape) */
+        .cd-showcase-grid {
+            grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+            gap: 0.75rem !important;
+        }
+        .cd-showcase-grid .om-port-card {
+            border-radius: 1rem !important;
+        }
+        .cd-showcase-grid h3 {
+            font-size: 0.9rem !important;
+        }
+        .cd-showcase-grid p {
+            font-size: 0.75rem !important;
+        }
+        .cd-showcase-grid span {
+            font-size: 0.7rem !important;
+        }
+    }
+
+    /* iPad Mini Portrait (760px - 820px) Specific Fine-tuning */
+    @media (min-width: 760px) and (max-width: 820px) and (orientation: portrait) {
+        .cd-hero-h1 {
+            font-size: 3rem !important;
+        }
+        .cd-hero-left-col {
+            max-width: 68% !important;
+        }
+        .cd-benefits-grid h3 {
+            font-size: 1.05rem !important;
+        }
+        .cd-benefits-grid p {
+            font-size: 0.85rem !important;
+        }
+        .cd-benefit-card-last h3 br,
+        .cd-benefit-card-last p br {
+            display: none !important;
+        }
+        .cd-benefit-card-last h3 {
+            white-space: nowrap !important;
+            min-height: auto !important;
+            margin-bottom: 0.25rem !important;
+        }
+        .cd-benefit-card-last p {
+            white-space: nowrap !important;
+        }
+        .cd-showcase-grid h3 {
+            font-size: 0.825rem !important;
+        }
+    }
+
+    /* iPad Pro Portrait (821px - 1100px) Specific Fine-tuning */
+    @media (min-width: 821px) and (max-width: 1100px) and (orientation: portrait) {
+        .cd-hero-h1 {
+            font-size: 4rem !important;
+        }
+        .cd-hero-left-col {
+            max-width: 65% !important;
+        }
+        /* Single line text for Benefits cards on iPad Pro Portrait */
+        .cd-benefits-grid h3 br,
+        .cd-benefits-grid p br {
+            display: none !important;
+        }
+        .cd-benefits-grid h3 {
+            font-size: 1.1rem !important;
+            white-space: normal !important;
+            min-height: auto !important;
+            margin-bottom: 0.25rem !important;
+        }
+        .cd-benefits-grid p {
+            font-size: 0.85rem !important;
+            white-space: normal !important;
+            margin-top: 0 !important;
+        }
+        .cd-showcase-grid h3 {
+            font-size: 0.95rem !important;
+        }
+        .cd-intro-pillar-card {
+            padding: 1.25rem 0.35rem !important;
+            justify-content: flex-start !important;
+        }
+        .cd-intro-pillar-card > div:first-child {
+            width: auto !important;
+            height: auto !important;
+            min-height: 0 !important;
+            margin-bottom: 0.35rem !important;
+        }
+        .cd-intro-pillar-card svg {
+            width: 3.25rem !important;
+            height: 3.25rem !important;
+            margin-bottom: 0 !important;
+        }
+        .cd-intro-pillar-card h3 {
+            font-size: 1rem !important;
+            line-height: 1.25 !important;
+            min-height: auto !important;
+            margin-bottom: 0.25rem !important;
+        }
+        .cd-intro-pillar-card p {
+            font-size: 0.825rem !important;
+            line-height: 1.35 !important;
+        }
+    }
+
+    /* Desktop (1025px+): 5 Columns in 1 Row */
     @media (min-width: 1025px) {
-        .desktop-wide-container {
-            max-width: 1720px !important;
-            padding-left: 2.5rem !important;
-            padding-right: 2.5rem !important;
+        .cd-solutions-grid {
+            display: grid !important;
+            grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+            gap: 1.5rem !important;
         }
-        .desktop-hero-h1 {
-            font-size: 5.5rem !important;
-            line-height: 1.1 !important;
+        .cd-benefits-grid {
+            display: grid !important;
+            grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+            gap: 1.25rem !important;
         }
-        .desktop-hero-p {
-            font-size: 1.25rem !important;
-            line-height: 1.75 !important;
-            max-width: 36rem !important;
+        .cd-benefits-grid > div {
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            text-align: center !important;
+            grid-column: auto !important;
+        }
+        .cd-benefits-grid > div.cd-benefit-card-last {
+            grid-column: auto !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            text-align: center !important;
+        }
+    }
+
+    /* Mobile & iPad (<= 1024px): 2-2-1 Benefits Layout */
+    @media (max-width: 1024px) {
+        .cd-intro-section {
+            padding-bottom: 2rem !important;
+            margin-bottom: 0px !important;
+        }
+        .cd-intro-card-container {
+            padding-bottom: 0px !important;
+            margin-bottom: 0px !important;
+        }
+        #cd-solutions,
+        .cd-solutions-section {
+            padding-top: 4.5rem !important;
+        }
+
+        /* Section 4 Benefits: บน 2, กลาง 2, ล่าง 1 ยาว สำหรับ Mobile และ iPad ทุกรุ่น */
+        .cd-benefits-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+            gap: 0.75rem !important;
+        }
+        .cd-benefits-grid > div {
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            text-align: center !important;
+            padding: 1.25rem 0.5rem !important;
+            border-radius: 1rem !important;
+        }
+        .cd-benefits-grid > div.cd-benefit-card-last {
+            grid-column: span 2 / span 2 !important;
+            width: 100% !important;
+            display: flex !important;
+            flex-direction: row !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 1rem !important;
+            padding: 1.25rem 1rem !important;
+            text-align: left !important;
+        }
+        .cd-benefits-grid > div.cd-benefit-card-last .cd-benefit-content {
+            align-items: flex-start !important;
+            text-align: left !important;
+        }
+        .cd-benefits-grid > div.cd-benefit-card-last svg {
+            margin-bottom: 0 !important;
+            flex-shrink: 0 !important;
+        }
+        /* ข้อความในการ์ดแบบบรรทัดต่อบรรทัด */
+        .cd-benefits-grid h3 br {
+            display: none !important;
+        }
+        .cd-benefits-grid h3 {
+            font-size: clamp(0.72rem, 2.8vw, 1.25rem) !important;
+            white-space: nowrap !important;
+            min-height: auto !important;
+            margin-bottom: 0.35rem !important;
+        }
+        .cd-benefits-grid p {
+            font-size: clamp(0.65rem, 2vw, 0.95rem) !important;
+            line-height: 1.35 !important;
+        }
+    }
+
+    @media (max-width: 640px) {
+        .cd-benefits-grid {
+            gap: 0.5rem !important;
+        }
+        .cd-benefits-grid > div {
+            padding: 1.25rem 0.35rem !important;
+        }
+        .cd-benefits-grid svg {
+            width: 2.5rem !important;
+            height: 2.5rem !important;
+            margin-bottom: 0.4rem !important;
+        }
+        .cd-benefits-grid h3 {
+            font-size: clamp(0.65rem, 2.6vw, 0.85rem) !important;
+            white-space: nowrap !important;
+            letter-spacing: -0.01em !important;
+        }
+        .cd-benefits-grid p {
+            font-size: 0.62rem !important;
+            white-space: normal !important;
+            line-height: 1.3 !important;
+        }
+        .cd-benefits-grid > div.cd-benefit-card-last {
+            gap: 0.75rem !important;
+            padding: 1rem 0.75rem !important;
+        }
+        .cd-benefits-grid > div.cd-benefit-card-last p {
+            white-space: normal !important;
+        }
+    }
+
+    @media (min-width: 1024px) and (max-width: 1280px) {
+        .cd-benefits-grid {
+            gap: 0.75rem !important;
+        }
+        .cd-benefits-grid > div {
+            padding: 1.5rem 0.65rem !important;
+        }
+        .cd-benefits-grid h3 {
+            font-size: clamp(0.85rem, 1.05vw, 1rem) !important;
+            white-space: normal !important;
+            word-break: break-word !important;
+            line-height: 1.3 !important;
+            min-height: auto !important;
+            margin-bottom: 0.25rem !important;
+        }
+        .cd-benefits-grid p {
+            font-size: clamp(0.72rem, 0.9vw, 0.82rem) !important;
+            white-space: normal !important;
+            word-break: break-word !important;
+            line-height: 1.4 !important;
+            margin-top: 0 !important;
+        }
+        .cd-benefits-grid p br {
+            display: inline !important;
+        }
+    }
+
+    /* iPad Portrait ONLY (All iPads 760px - 1100px Portrait) - Ultra Tight Spacing */
+    @media (min-width: 760px) and (max-width: 1100px) and (orientation: portrait) {
+        .cd-benefits-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+            gap: 1rem !important;
+        }
+        .cd-benefits-grid > div {
+            padding: 1.25rem 1rem !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: center !important;
+            min-height: auto !important;
+        }
+        .cd-benefits-grid .cd-benefit-icon-wrap,
+        .cd-benefits-grid .cd-benefit-icon-wrap > div {
+            margin-bottom: 0.35rem !important;
+        }
+        .cd-benefits-grid .cd-benefit-content {
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: center !important;
+            margin-top: 0 !important;
+            gap: 0 !important;
+        }
+        .cd-benefits-grid h3 {
+            font-size: 1.05rem !important;
+            min-height: 0 !important;
+            line-height: 1.25 !important;
+            margin-top: 0 !important;
+            margin-bottom: 0.2rem !important;
+            display: block !important;
+            text-align: center !important;
+        }
+        .cd-benefits-grid p {
+            font-size: 0.8rem !important;
+            line-height: 1.35 !important;
+            margin-top: 0 !important;
+            margin-bottom: 0 !important;
+            text-align: center !important;
+        }
+
+        /* Card 5: Full width bottom card */
+        .cd-benefit-card-last {
+            grid-column: span 2 / span 2 !important;
+            width: 100% !important;
+            display: flex !important;
+            flex-direction: row !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 1.25rem !important;
+            padding: 1.25rem 2rem !important;
+            text-align: left !important;
+        }
+        .cd-benefit-card-last .cd-benefit-icon-wrap,
+        .cd-benefit-card-last .cd-benefit-icon-wrap > div {
+            margin-bottom: 0 !important;
+            flex-shrink: 0 !important;
+        }
+        .cd-benefit-card-last .cd-benefit-content {
+            align-items: flex-start !important;
+            text-align: left !important;
+            margin-top: 0 !important;
+            gap: 0 !important;
+        }
+        .cd-benefit-card-last h3 {
+            text-align: left !important;
+            min-height: 0 !important;
+            margin-top: 0 !important;
+            margin-bottom: 0.15rem !important;
+            font-size: 1.1rem !important;
+        }
+        .cd-benefit-card-last p {
+            text-align: left !important;
+            font-size: 0.825rem !important;
+            margin-top: 0 !important;
+            margin-bottom: 0 !important;
         }
     }
 </style>
 
-<!-- Hero Section -->
-<section id="service-hero" class="relative font-sans bg-[#f7faff] overflow-hidden mt-0 mx-4 mb-4 sm:mt-0 sm:mx-6 sm:mb-6 rounded-t-none rounded-b-[2rem] lg:m-0 lg:rounded-none">
-    <div class="hidden lg:block absolute inset-0 z-0 overflow-hidden">
-        <img src="<?= e($heroImage) ?>" alt="Creative Design Background" 
-            class="hero-parallax-img w-full h-full object-cover object-[75%_center] opacity-100 mix-blend-screen">
-        <div class="absolute inset-0 bg-gradient-to-r from-white via-white/80 to-white/10"></div>
-        <div class="absolute inset-x-0 bottom-0 h-[30%] bg-gradient-to-t from-white to-transparent z-10"></div>
+<!-- Top Reading Progress Bar -->
+<div id="reading-progress" class="fixed top-0 left-0 h-1 bg-gradient-to-r from-blue-500 to-[#0663F6] z-[9999] transition-all duration-150 ease-out" style="width: 0%;"></div>
+
+<!-- ==========================================
+     SECTION 1: HERO SECTION
+=========================================== -->
+<section class="relative overflow-hidden font-sans bg-[#f7faff] pt-8 pb-16 lg:pt-14 lg:pb-28">
+    <!-- Desktop Background Banner (Right Aligned High-Res 3D Graphic) -->
+    <div class="absolute inset-0 z-0 hidden lg:block overflow-hidden pointer-events-none" style="position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0;">
+        <img src="<?= e($heroBgImage) ?>" alt="Creative & Design Background" 
+            class="w-full h-full object-cover"
+            style="width: 100%; height: 100%; object-fit: cover; object-position: right center; filter: contrast(1.04) saturate(1.05);">
+        <div style="position: absolute; inset: 0; background: linear-gradient(to right, rgba(255,255,255,0.96) 0%, rgba(255,255,255,0.65) 50%, rgba(255,255,255,0) 100%);"></div>
+        <div style="position: absolute; left: 0; right: 0; bottom: 0; height: 20%; background: linear-gradient(to top, #ffffff 0%, transparent 100%); z-index: 10;"></div>
     </div>
 
-    <div class="mx-auto w-full max-w-7xl px-6 sm:px-6 lg:px-8 pt-12 pb-20 lg:pt-28 lg:pb-32 relative z-10 desktop-wide-container">
-        <!-- Mobile Background -->
-        <div class="absolute inset-0 z-0 overflow-hidden lg:hidden rounded-2xl">
-            <img src="<?= e($heroImage) ?>" alt="Creative Design Background" 
-                class="hero-parallax-img w-full h-full object-cover object-[75%_center] opacity-100 mix-blend-screen">
-            <div class="absolute inset-0 bg-gradient-to-b from-white/90 via-white/70 to-white/40"></div>
-            <div class="absolute inset-x-0 bottom-0 h-[30%] bg-gradient-to-t from-white to-transparent"></div>
-        </div>
+    <!-- Mobile/Tablet Background Banner -->
+    <div class="absolute inset-0 z-0 lg:hidden overflow-hidden pointer-events-none" style="position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0;">
+        <img src="<?= e($heroBgImage) ?>" alt="Creative & Design Background" 
+            class="w-full h-full object-cover cd-hero-bg-img"
+            style="width: 100%; height: 100%; object-fit: cover; object-position: 85% center; filter: contrast(1.04) saturate(1.05);">
+        <div style="position: absolute; inset: 0; background: linear-gradient(to right, rgba(255,255,255,0.97) 0%, rgba(255,255,255,0.90) 50%, rgba(255,255,255,0.35) 100%);"></div>
+        <div style="position: absolute; left: 0; right: 0; bottom: 0; height: 25%; background: linear-gradient(to top, #ffffff 0%, transparent 100%); z-index: 10;"></div>
+    </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-12 lg:gap-20 items-center relative z-10">
-            <div class="max-w-2xl lg:ml-12 xl:ml-24">
-                <!-- Breadcrumbs -->
-                <nav aria-label="Breadcrumb" class="animate-fade-up delay-100 mb-6 hidden sm:block">
-                    <ol class="inline-flex items-center text-sm md:text-base font-medium text-slate-500">
-                        <li>
-                            <a href="<?= e(route_url('/')) ?>" class="hover:text-primary transition-colors duration-200">
-                                <?= e(t('common.nav_home')) ?>
+    <div class="mx-auto w-full max-w-7xl px-5 sm:px-6 lg:px-8 relative z-10 cd-hero-container">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+            
+            <!-- Left Column: Breadcrumb, Titles, Description & CTA -->
+            <div class="lg:col-span-7 flex flex-col items-start cd-hero-left-col">
+                
+                <!-- Breadcrumb -->
+                <nav aria-label="Breadcrumb" class="mb-5 sm:mb-6 cd-breadcrumb-nav">
+                    <ol class="inline-flex items-center gap-2 text-xs sm:text-sm font-medium text-slate-500 cd-breadcrumb-list whitespace-nowrap flex-nowrap">
+                        <li class="whitespace-nowrap">
+                            <a href="<?= e(route_url('/')) ?>" class="hover:text-[#0663F6] transition-colors whitespace-nowrap">
+                                <?= e(getCurrentLang() === 'th' ? 'หน้าแรก' : 'Home') ?>
                             </a>
                         </li>
-                        <li><span class="text-slate-400 mx-2">/</span></li>
-                        <li>
-                            <a href="<?= e(route_url('/services')) ?>" class="hover:text-primary transition-colors duration-200">
-                                <?= e(t('common.nav_services')) ?>
+                        <li class="text-slate-300 whitespace-nowrap">/</li>
+                        <li class="whitespace-nowrap">
+                            <a href="<?= e(route_url('/services')) ?>" class="hover:text-[#0663F6] transition-colors whitespace-nowrap">
+                                <?= e(getCurrentLang() === 'th' ? 'บริการของเรา' : 'Services') ?>
                             </a>
                         </li>
-                        <li><span class="text-slate-400 mx-2">/</span></li>
-                        <li aria-current="page">
-                            <span class="text-primary font-semibold"><?= $lang === 'th' ? 'ออกแบบสร้างสรรค์' : 'Creative Design' ?></span>
+                        <li class="text-slate-300 whitespace-nowrap">/</li>
+                        <li aria-current="page" class="text-slate-400 font-semibold whitespace-nowrap">
+                            <?= getCurrentLang() === 'th' ? 'ออกแบบสร้างสรรค์' : 'CREATIVE / DESIGN' ?>
                         </li>
                     </ol>
                 </nav>
 
-                <!-- Heading -->
-                <h1 class="animate-fade-up delay-200 leading-[1.1] mb-4 tracking-tighter">
-                    <span class="text-4xl md:text-6xl lg:text-8xl font-bold bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block pb-0 pt-2 desktop-hero-h1">
-                        <?= $lang === 'th' ? 'ออกแบบ' : 'Creative' ?>
-                    </span>
-                    <span class="text-4xl md:text-6xl lg:text-8xl font-bold bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block pb-0 pt-2 ml-1 lg:ml-2 desktop-hero-h1">
-                        <?= $lang === 'th' ? 'สร้างสรรค์' : '& Design' ?>
-                    </span>
-                    <br>
-                    <span class="text-xl md:text-2xl lg:text-4xl font-medium leading-snug bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block mt-2 pb-3 pt-1" style="animation-delay: -3s;">
-                        <?= $lang === 'th' ? 'สร้างเอกลักษณ์และประสบการณ์ดิจิทัล<br>ที่ยกระดับภาพลักษณ์แบรนด์ของคุณ' : 'Elevating Brand Identity & Delivering<br>Extraordinary Digital Experiences' ?>
-                    </span>
+                <!-- H1 Heading (Exact Match to Mockup) -->
+                <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.08] mb-5 cd-hero-h1-wrapper">
+                    <?php if (getCurrentLang() === 'th'): ?>
+                        <span class="block text-[#1e293b] cd-hero-h1">ออกแบบ</span>
+                        <span class="block text-[#0663F6] cd-hero-h1">สร้างสรรค์</span>
+                    <?php else: ?>
+                        <span class="block text-[#1e293b] cd-hero-h1">CREATIVE /</span>
+                        <span class="block text-[#0663F6] cd-hero-h1">DESIGN</span>
+                    <?php endif; ?>
                 </h1>
 
-                <p class="animate-fade-up delay-300 mt-4 text-[#022862] text-lg md:text-xl leading-relaxed max-w-lg mb-8 font-medium desktop-hero-p">
-                    <?= $lang === 'th' 
-                        ? 'สร้างสรรค์อัตลักษณ์แบรนด์ (CI), ออกแบบ UI/UX เว็บไซต์และแอปพลิเคชัน ตลอดจนสื่อโมชันกราฟิก เพื่อสร้างความประทับใจและตอบโจทย์เป้าหมายทางธุรกิจ'
-                        : 'Holistic design services from Corporate Identity (CI) and modern UI/UX to motion graphics engineered to build brand value and conversion.'
-                    ?>
+                <!-- Subtitle -->
+                <p class="text-slate-600 text-sm sm:text-base lg:text-[16.5px] leading-relaxed max-w-xl mb-8 cd-hero-p">
+                    <?php if (getCurrentLang() === 'th'): ?>
+                        ออกแบบอัตลักษณ์แบรนด์ สื่อการตลาด และดิจิทัลมีเดียที่โดดเด่น สื่อสารตัวตนของแบรนด์ได้อย่างชัดเจน สร้างความประทับใจตั้งแต่แรกเห็น
+                    <?php else: ?>
+                        Design distinctive brand identities, marketing collateral, and digital media that articulate your brand character and inspire lasting impressions.
+                    <?php endif; ?>
                 </p>
 
-                <div class="animate-fade-up delay-400 flex flex-col sm:flex-row items-start gap-4">
-                    <a href="<?= e(route_url('/contact')) ?>" class="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-primary text-white text-base md:text-lg font-semibold rounded-full hover:bg-blue-700 transition-all shadow-md hover:-translate-y-0.5">
-                        <?= $lang === 'th' ? 'ปรึกษาทีมออกแบบ' : 'Consult Designers' ?>
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
-                        </svg>
+                <!-- CTA Buttons -->
+                <div class="flex flex-wrap items-center gap-4 cd-hero-btn-container" style="display: flex; flex-wrap: wrap; align-items: center; gap: 1rem;">
+                    <a href="<?= e(route_url('/contact')) ?>" class="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full bg-[#0663F6] text-white text-base font-semibold shadow-[0_8px_20px_rgba(6,99,246,0.35)] hover:bg-blue-700 hover:shadow-[0_12px_24px_rgba(6,99,246,0.45)] hover:-translate-y-0.5 transition-all duration-300 whitespace-nowrap" style="display: inline-flex; align-items: center; justify-content: center; gap: 0.625rem; background-color: #0663F6 !important; color: #ffffff !important; padding: 0.875rem 2rem; border-radius: 9999px; font-weight: 600; font-size: 1rem; text-decoration: none; box-shadow: 0 10px 25px -5px rgba(6, 99, 246, 0.4); white-space: nowrap;">
+                        <span style="color: #ffffff !important;"><?= getCurrentLang() === 'th' ? 'ปรึกษาผู้เชี่ยวชาญ' : 'Consult an Expert' ?></span>
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" style="width: 1rem; height: 1rem; color: #ffffff !important;"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
                     </a>
-                    <a href="#modules" class="inline-flex items-center gap-4 transition-all hover:-translate-y-0.5 group">
-                        <div class="h-14 w-14 bg-white flex items-center justify-center rounded-full shadow-lg border border-slate-200 transition-all group-hover:bg-slate-50 group-hover:shadow-xl group-hover:scale-105">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600 fill-current" viewBox="0 0 24 24">
-                                <path d="M8 5v14l11-7z"/>
-                            </svg>
-                        </div>
-                        <span class="text-slate-800 text-lg font-semibold group-hover:text-primary transition-colors"><?= $lang === 'th' ? 'ดูบริการออกแบบ' : 'Explore Design' ?></span>
+                    <a href="#cd-solutions" class="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-full bg-white text-slate-700 border border-slate-200 text-base font-semibold shadow-sm hover:border-[#0663F6] hover:text-[#0663F6] transition-all duration-300 whitespace-nowrap" style="display: inline-flex; align-items: center; gap: 0.875rem; background-color: #ffffff !important; color: #334155 !important; padding: 0.75rem 1.5rem; border-radius: 9999px; font-weight: 600; font-size: 1rem; border: 1px solid #e2e8f0; box-shadow: 0 2px 6px rgba(0,0,0,0.05); text-decoration: none; white-space: nowrap;">
+                        <span class="w-6 h-6 rounded-full bg-[#0663F6]/10 text-[#0663F6] flex items-center justify-center" style="width: 1.5rem; height: 1.5rem; border-radius: 9999px; background-color: rgba(6,99,246,0.1); color: #0663F6; display: flex; align-items: center; justify-content: center;">
+                            <svg class="w-3.5 h-3.5 ml-0.5" fill="currentColor" viewBox="0 0 24 24" style="width: 0.875rem; height: 0.875rem; fill: #0663F6;"><path d="M8 5v14l11-7z"/></svg>
+                        </span>
+                        <span style="color: #334155 !important;"><?= getCurrentLang() === 'th' ? 'ดูวิดีโอแนะนำ' : 'Watch Video' ?></span>
                     </a>
                 </div>
             </div>
+
+            <!-- Right Column Spacer to preserve layout -->
+            <div class="lg:col-span-5 hidden lg:block"></div>
+
         </div>
     </div>
 </section>
 
-<!-- About Section & 4 Key Pillars -->
-<section class="bg-white pt-8 pb-4 lg:pt-20 lg:pb-8">
-    <div class="mx-auto w-full max-w-[1720px] px-4 sm:px-6 lg:px-10 relative z-20 -mt-10 lg:-mt-16 pb-6 lg:pb-16 overflow-hidden">
-        <div class="w-full rounded-[1.5rem] bg-white flex flex-col lg:flex-row items-stretch shadow-[0_4px_25px_rgba(0,0,0,0.06)] border border-gray-100 overflow-hidden">
+<!-- ==========================================
+     SECTION 2: INTRO SUMMARY CARD
+=========================================== -->
+<section class="bg-white pt-2 pb-6 lg:pt-4 lg:pb-10 font-sans cd-intro-section">
+    <div class="mx-auto w-full max-w-[1720px] px-4 sm:px-6 lg:px-10 relative z-20 -mt-12 lg:-mt-20 xl:-mt-24 cd-intro-card-container">
+        <div class="w-full rounded-2xl lg:rounded-3xl bg-white flex flex-col xl:flex-row items-stretch shadow-[0_10px_40px_rgba(4,59,148,0.08)] border border-slate-200/80 cd-intro-main-card">
             
-            <div class="erp-left-col gsap-reveal group flex-1 flex flex-col justify-center p-6 lg:p-10 border-b lg:border-b-0 lg:border-r border-gray-100 shrink-0 bg-white transition-all duration-300 hover:bg-slate-50/50">
-                <div>
-                    <span class="text-primary font-bold text-lg md:text-base tracking-wide inline-block mb-3 uppercase">
-                        <span class="border-b-[3px] border-primary pb-0.5">CREATIVE</span> DESIGN
+            <!-- Left Block: Creative / Design คืออะไร -->
+            <div class="w-full xl:w-[32%] 2xl:w-[30%] shrink-0 flex flex-col justify-center p-8 sm:p-10 lg:p-12 xl:p-14 border-b xl:border-b-0 xl:border-r border-slate-200/80 bg-white cd-intro-card-left">
+                <div class="inline-flex flex-col items-start mb-2">
+                    <span class="text-[#0663F6] font-extrabold text-2xl lg:text-3xl tracking-tight uppercase">
+                        <?= getCurrentLang() === 'th' ? 'ออกแบบสร้างสรรค์' : 'CREATIVE / DESIGN' ?>
                     </span>
-                    <h2 class="text-[#043B94] text-3xl xl:text-4xl font-bold leading-tight mb-4 transition-colors duration-300 group-hover:text-blue-700">
-                        <?= $lang === 'th' ? 'ดีไซน์ที่ดี ไม่ใช่แค่ความสวยงาม' : 'Design Beyond Mere Aesthetics' ?>
-                    </h2>
-                    <p class="text-gray-500 text-lg leading-relaxed mb-6">
-                        <?= $lang === 'th' 
-                            ? 'เราผสานความสวยงาม ศิลปะ และหลักจิตวิทยาของผู้ใช้งานเข้าด้วยกัน เพื่อให้ทุกงานดีไซน์ไม่เพียงแค่ดูโดดเด่น แต่ยังช่วยแก้ปัญหา เพิ่มความน่าเชื่อถือ และนำพาธุรกิจไปสู่ความสำเร็จ' 
-                            : 'We merge artistry, functional UX, and behavioral psychology to create designs that not only captivate the eye but solve real user problems and compound brand equity.'
-                        ?>
+                    <div class="w-14 h-[3.5px] bg-[#0663F6] mt-1.5 mb-4"></div>
+                </div>
+                <h2 class="text-[#043B94] text-xl lg:text-2xl font-bold leading-tight mb-4">
+                    <?= getCurrentLang() === 'th' ? 'งานออกแบบสร้างสรรค์ คืออะไร' : 'What is Creative / Design' ?>
+                </h2>
+                <p class="text-slate-600 text-xs sm:text-sm lg:text-[14.5px] leading-relaxed max-w-md">
+                    <?php if (getCurrentLang() === 'th'): ?>
+                        การออกแบบและสร้างสรรค์อัตลักษณ์ของแบรนด์ รวมถึงสื่อดิจิทัลทุกรูปแบบ เพื่อให้ธุรกิจของคุณสื่อสารกับกลุ่มเป้าหมายได้อย่างทรงพลังและน่าจดจำ
+                    <?php else: ?>
+                        Designing and crafting distinct brand identities and digital media, empowering your business to communicate with target audiences powerfully and memorably.
+                    <?php endif; ?>
+                </p>
+            </div>
+
+            <!-- Right Grid: 4 Pillars from Mockup -->
+            <div class="flex-1 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 w-full divide-y sm:divide-y-0 sm:divide-x divide-slate-200/80 cd-intro-right-grid">
+                
+                <!-- Pillar 1: สร้างความน่าเชื่อถือ -->
+                <div class="px-5 py-8 sm:px-6 sm:py-10 lg:px-6 lg:py-12 xl:py-14 flex flex-col items-center text-center justify-center group hover:bg-blue-50/20 transition-colors cd-intro-pillar-card">
+                    <div class="w-20 h-20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                        <svg class="w-14 h-14" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="14" y="8" width="36" height="42" rx="4" fill="#eff6ff" stroke="#0663F6" stroke-width="2.5"/>
+                            <path d="M26 28L30 32L38 24" stroke="#0663F6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                            <circle cx="32" cy="18" r="4" fill="#0663F6"/>
+                            <path d="M22 40H42M22 45H36" stroke="#94a3b8" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M42 36L48 54L32 48L16 54L22 36" fill="#f59e0b" opacity="0.9"/>
+                            <circle cx="32" cy="38" r="6" fill="#fbbf24"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-[#043B94] font-bold text-base lg:text-lg mb-1.5 leading-snug">
+                        <?= getCurrentLang() === 'th' ? 'สร้างความน่าเชื่อถือ' : 'Build Brand Credibility' ?>
+                    </h3>
+                    <p class="text-slate-500 text-xs sm:text-[13px] leading-relaxed">
+                        <?= getCurrentLang() === 'th' ? 'อัตลักษณ์แบรนด์ที่โดดเด่น<br>น่าเชื่อถือ และจดจำง่าย' : 'Distinctive, credible, and memorable brand identity.' ?>
                     </p>
                 </div>
+
+                <!-- Pillar 2: ออกแบบตรงกลุ่มเป้าหมาย -->
+                <div class="px-5 py-8 sm:px-6 sm:py-10 lg:px-6 lg:py-12 xl:py-14 flex flex-col items-center text-center justify-center group hover:bg-blue-50/20 transition-colors cd-intro-pillar-card">
+                    <div class="w-20 h-20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                        <svg class="w-14 h-14" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="32" cy="32" r="22" stroke="#f97316" stroke-width="2.5" fill="#fff7ed"/>
+                            <circle cx="32" cy="32" r="14" stroke="#f97316" stroke-width="2.5" stroke-dasharray="3 3"/>
+                            <circle cx="32" cy="32" r="6" fill="#ea580c"/>
+                            <path d="M44 20L32 32M44 20L38 20M44 20L44 26" stroke="#0663F6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-[#043B94] font-bold text-base lg:text-lg mb-1.5 leading-snug">
+                        <?= getCurrentLang() === 'th' ? 'ออกแบบตรงกลุ่มเป้าหมาย' : 'Audience-Centric Design' ?>
+                    </h3>
+                    <p class="text-slate-500 text-xs sm:text-[13px] leading-relaxed">
+                        <?= getCurrentLang() === 'th' ? 'ดีไซน์ที่ตอบโจทย์<br>เข้าถึงผู้บริโภคยุคใหม่' : 'Tailored designs connecting seamlessly with modern consumers.' ?>
+                    </p>
+                </div>
+
+                <!-- Pillar 3: ยกระดับภาพลักษณ์ธุรกิจ -->
+                <div class="px-5 py-8 sm:px-6 sm:py-10 lg:px-6 lg:py-12 xl:py-14 flex flex-col items-center text-center justify-center group hover:bg-blue-50/20 transition-colors cd-intro-pillar-card">
+                    <div class="w-20 h-20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                        <svg class="w-14 h-14" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="12" y="14" width="40" height="28" rx="4" fill="#eff6ff" stroke="#0284c7" stroke-width="2.5"/>
+                            <path d="M26 46L24 52H40L38 46" stroke="#0284c7" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M18 32L26 26L34 30L44 20" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            <circle cx="44" cy="20" r="2.5" fill="#10b981"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-[#043B94] font-bold text-base lg:text-lg mb-1.5 leading-snug">
+                        <?= getCurrentLang() === 'th' ? 'ยกระดับภาพลักษณ์ธุรกิจ' : 'Elevate Corporate Image' ?>
+                    </h3>
+                    <p class="text-slate-500 text-xs sm:text-[13px] leading-relaxed">
+                        <?= getCurrentLang() === 'th' ? 'เพิ่มมูลค่าแบรนด์<br>ผ่านงานดีไซน์ระดับสากล' : 'Increase brand equity through international-standard design.' ?>
+                    </p>
+                </div>
+
+                <!-- Pillar 4: ใช้งานได้หลากหลายมิติ -->
+                <div class="px-5 py-8 sm:px-6 sm:py-10 lg:px-6 lg:py-12 xl:py-14 flex flex-col items-center text-center justify-center group hover:bg-blue-50/20 transition-colors cd-intro-pillar-card">
+                    <div class="w-20 h-20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                        <svg class="w-14 h-14" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="14" y="14" width="16" height="16" rx="3" fill="#f59e0b"/>
+                            <rect x="34" y="14" width="16" height="16" rx="3" fill="#0663F6"/>
+                            <rect x="14" y="34" width="16" height="16" rx="3" fill="#10b981"/>
+                            <rect x="34" y="34" width="16" height="16" rx="3" fill="#8b5cf6"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-[#043B94] font-bold text-base lg:text-lg mb-1.5 leading-snug">
+                        <?= getCurrentLang() === 'th' ? 'ใช้งานได้หลากหลายมิติ' : 'Omni-Channel Versatility' ?>
+                    </h3>
+                    <p class="text-slate-500 text-xs sm:text-[13px] leading-relaxed">
+                        <?= getCurrentLang() === 'th' ? 'ใช้งานได้จริงทั้ง<br>สื่อออฟไลน์และออนไลน์' : 'Practical application across both offline and digital touchpoints.' ?>
+                    </p>
+                </div>
+
             </div>
 
-            <div class="erp-right-col gsap-reveal flex-[4] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 w-full">
-                <?php foreach ($designPillars as $i => $pillar): 
-                    $borderClass = $i < 3 ? 'lg:border-r border-b sm:border-b-0 border-gray-100' : 'border-gray-100';
-                ?>
-                    <div class="relative group flex flex-col justify-center p-6 lg:p-8 <?= $borderClass ?> bg-white transition-all duration-300 ease-out hover:shadow-[0_0_30px_rgba(0,0,0,0.08)] hover:-translate-y-1 hover:z-10 hover:rounded-xl">
-                        <div>
-                            <div class="h-14 w-14 mx-auto mb-5 flex items-center justify-center transition-all duration-500 group-hover:-translate-y-2 group-hover:scale-110">
-                                <img src="<?= e($pillar['icon']) ?>" alt="<?= e($pillar['title']) ?>" class="h-full w-full object-contain">
-                            </div>
-                            <h3 class="text-[#043B94] font-bold text-lg md:text-xl text-center mb-3 tracking-tight transition-colors duration-300 group-hover:text-blue-600">
-                                <?= e($pillar['title']) ?>
-                            </h3>
-                            <p class="text-gray-500 text-base leading-relaxed text-center group-hover:text-gray-600">
-                                <?= e($pillar['desc']) ?>
-                            </p>
+        </div>
+    </div>
+</section>
+
+<!-- ==========================================
+     SECTION 3: 10 CREATIVE / DESIGN SOLUTIONS
+=========================================== -->
+<section id="cd-solutions" class="bg-white pt-6 lg:pt-10 pb-12 lg:pb-20 font-sans cd-solutions-section">
+    <div class="mx-auto w-full max-w-7xl px-5 sm:px-6 lg:px-8">
+        
+        <!-- Header -->
+        <div class="text-center max-w-3xl mx-auto mb-10 lg:mb-12">
+            <div class="inline-flex flex-col items-start mb-2">
+                <span class="text-[#0663F6] font-extrabold text-2xl sm:text-3xl tracking-tight uppercase">
+                    <?= getCurrentLang() === 'th' ? 'โซลูชันงานออกแบบสร้างสรรค์' : 'CREATIVE / DESIGN SOLUTIONS' ?>
+                </span>
+                <div class="w-16 h-[3.5px] bg-[#0663F6] mt-1.5 mb-3"></div>
+            </div>
+            <h2 class="text-base sm:text-lg md:text-xl font-bold text-[#043B94] leading-snug">
+                <?= getCurrentLang() === 'th' ? 'โซลูชันการออกแบบครบวงจร เพื่อการเติบโตของแบรนด์ในทุกมิติ' : 'Comprehensive design solutions driving multidimensional brand growth' ?>
+            </h2>
+        </div>
+
+        <?php
+        $solutions = [
+            [
+                'title' => 'BRAND IDENTITY',
+                'image' => asset_url('images/cd_sol_1.png'),
+                'bullets' => [
+                    getCurrentLang() === 'th' ? 'ออกแบบโลโก้และ CI แบรนด์' : 'Brand Logo & CI Design',
+                    getCurrentLang() === 'th' ? 'กำหนดคู่มือการใช้งานแบรนด์' : 'Brand Guideline Manual',
+                    getCurrentLang() === 'th' ? 'ออกแบบ Stationery ครบชุด' : 'Complete Stationery Set',
+                ]
+            ],
+            [
+                'title' => 'UI / UX DESIGN',
+                'image' => asset_url('images/cd_sol_2.png'),
+                'bullets' => [
+                    getCurrentLang() === 'th' ? 'ออกแบบ User Interface สวยงาม' : 'Stunning Visual UI Design',
+                    getCurrentLang() === 'th' ? 'วางโครงสร้าง UX ใช้งานง่าย' : 'Intuitive UX Architecture',
+                    getCurrentLang() === 'th' ? 'ทำ Interactive Prototype' : 'Interactive Prototyping',
+                ]
+            ],
+            [
+                'title' => 'WEBSITE DESIGN',
+                'image' => asset_url('images/cd_sol_3.png'),
+                'bullets' => [
+                    getCurrentLang() === 'th' ? 'ออกแบบเว็บไซต์ทันสมัย' : 'Modern Website Design',
+                    getCurrentLang() === 'th' ? 'Responsive รองรับทุกอุปกรณ์' : 'Responsive Across Devices',
+                    getCurrentLang() === 'th' ? 'ออกแบบเน้น Conversion' : 'Conversion-Driven Layouts',
+                ]
+            ],
+            [
+                'title' => 'GRAPHIC DESIGN',
+                'image' => asset_url('images/cd_sol_4.png'),
+                'bullets' => [
+                    getCurrentLang() === 'th' ? 'สื่อโฆษณา Banner & Infographic' : 'Ad Banners & Infographics',
+                    getCurrentLang() === 'th' ? 'กราฟิกสำหรับโปรโมชั่น' : 'Campaign & Promotion Visuals',
+                    getCurrentLang() === 'th' ? 'สื่อสิ่งพิมพ์และดิจิทัลครบวงจร' : 'Full-Spectrum Print & Digital',
+                ]
+            ],
+            [
+                'title' => 'SOCIAL MEDIA CREATIVE',
+                'image' => asset_url('images/cd_sol_5.png'),
+                'bullets' => [
+                    getCurrentLang() === 'th' ? 'Artwork โซเชียลทุกแพลตฟอร์ม' : 'Multi-Platform Social Artwork',
+                    getCurrentLang() === 'th' ? 'วาง Mood & Tone ให้สอดคล้อง' : 'Consistent Brand Mood & Tone',
+                    getCurrentLang() === 'th' ? 'Template สำหรับโพสต์ประจำวัน' : 'Daily Engagement Templates',
+                ]
+            ],
+            [
+                'title' => 'MOTION GRAPHIC / VIDEO',
+                'image' => asset_url('images/cd_sol_6.png'),
+                'bullets' => [
+                    getCurrentLang() === 'th' ? 'ผลิตวิดีโอ Motion Graphic' : 'Dynamic Motion Graphics',
+                    getCurrentLang() === 'th' ? 'แอนิเมชันเปิดตัวสินค้า' : 'Product Launch Animations',
+                    getCurrentLang() === 'th' ? 'ตัดต่อและ Visual Effects' : 'Video Editing & VFX',
+                ]
+            ],
+            [
+                'title' => 'PRESENT & SALES KIT',
+                'image' => asset_url('images/cd_sol_7.png'),
+                'bullets' => [
+                    getCurrentLang() === 'th' ? 'ออกแบบ Company Profile' : 'Executive Company Profiles',
+                    getCurrentLang() === 'th' ? 'Sales Pitch Deck ดึงดูดนักลงทุน' : 'Investor Sales Pitch Decks',
+                    getCurrentLang() === 'th' ? 'สื่อและเอกสารสนับสนุนการขาย' : 'Sales Enablement Materials',
+                ]
+            ],
+            [
+                'title' => 'PACKAGING DESIGN',
+                'image' => asset_url('images/cd_sol_8.png'),
+                'bullets' => [
+                    getCurrentLang() === 'th' ? 'ออกแบบบรรจุภัณฑ์และฉลาก' : 'Packaging & Label Design',
+                    getCurrentLang() === 'th' ? 'สร้างความโดดเด่นบนชั้นวาง' : 'High Shelf & Online Standout',
+                    getCurrentLang() === 'th' ? 'คำนึงถึงการผลิตจริง' : 'Production-Ready Specifications',
+                ]
+            ],
+            [
+                'title' => 'CONTENT VISUAL SYSTEM',
+                'image' => asset_url('images/cd_sol_9.png'),
+                'bullets' => [
+                    getCurrentLang() === 'th' ? 'วางระบบ Key Visual แคมเปญ' : 'Campaign Key Visuals',
+                    getCurrentLang() === 'th' ? 'กำหนด Moodboard และโทนสี' : 'Moodboards & Color Palettes',
+                    getCurrentLang() === 'th' ? 'ภาพลักษณ์แบรนด์ที่เป็นหนึ่งเดียว' : 'Unified Brand Aesthetics',
+                ]
+            ],
+            [
+                'title' => 'DESIGN SYSTEM',
+                'image' => asset_url('images/cd_sol_10.png'),
+                'bullets' => [
+                    getCurrentLang() === 'th' ? 'สร้าง UI Component Library' : 'UI Component Library',
+                    getCurrentLang() === 'th' ? 'กำหนด Typography และสี' : 'Typography & Color Tokens',
+                    getCurrentLang() === 'th' ? 'ส่งมอบทีมพัฒนาได้อย่างราบรื่น' : 'Seamless Developer Handoff',
+                ]
+            ],
+        ];
+        ?>
+
+        <!-- 10 Solutions in 5x2 Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-5 lg:gap-6 cd-solutions-grid">
+            <?php foreach ($solutions as $sol): ?>
+                <div class="bg-white rounded-xl border border-slate-200/80 p-4 sm:p-5 flex flex-col justify-between shadow-sm hover:shadow-md hover:border-blue-300 transition-all duration-300 group cd-solution-card">
+                    <div>
+                        <!-- Title -->
+                        <h3 class="text-[#043B94] font-bold text-[13px] sm:text-sm tracking-tight mb-3 group-hover:text-[#0663F6] transition-colors line-clamp-1">
+                            <?= e($sol['title']) ?>
+                        </h3>
+
+                        <!-- Image Preview -->
+                        <div class="w-full aspect-[4/3] rounded-lg overflow-hidden bg-slate-50 border border-slate-100 flex items-center justify-center p-2 mb-3.5 group-hover:bg-blue-50/30 transition-colors">
+                            <img src="<?= e($sol['image']) ?>" alt="<?= e($sol['title']) ?>" class="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform duration-300 sharp-image-render">
                         </div>
+
+                        <!-- Bullets -->
+                        <ul class="space-y-1.5 text-slate-500 text-[11px] sm:text-xs leading-snug">
+                            <?php foreach ($sol['bullets'] as $b): ?>
+                                <li class="flex items-start gap-1.5">
+                                    <span class="text-[#0663F6] font-bold leading-none mt-0.5">•</span>
+                                    <span><?= e($b) ?></span>
+                                </li>
+                            <?php endforeach; ?>
+                        </ul>
                     </div>
-                <?php endforeach; ?>
+                </div>
+            <?php endforeach; ?>
+        </div>
+
+    </div>
+</section>
+
+<!-- ==========================================
+     SECTION 4: 5 BENEFITS SECTION
+=========================================== -->
+<section class="bg-[#edf4fe] py-14 lg:py-20 font-sans">
+    <div class="mx-auto w-full max-w-7xl px-5 sm:px-6 lg:px-8">
+        
+        <!-- Header -->
+        <div class="text-center max-w-3xl mx-auto mb-10 lg:mb-12">
+            <h2 class="text-xl sm:text-2xl lg:text-3xl font-extrabold text-[#043B94] tracking-tight">
+                <span class="text-[#0663F6]"><?= getCurrentLang() === 'th' ? 'งานออกแบบสร้างสรรค์' : 'CREATIVE / DESIGN' ?></span> <?= getCurrentLang() === 'th' ? 'ที่ช่วยยกระดับธุรกิจของคุณ' : 'That Elevates Your Business' ?>
+            </h2>
+        </div>
+
+        <?php
+        $benefits = [
+            [
+                'title' => getCurrentLang() === 'th' ? 'ภาพลักษณ์เป็นมืออาชีพ' : 'Professional Brand Image',
+                'desc'  => getCurrentLang() === 'th' ? 'สร้างความน่าเชื่อถือ และภาพลักษณ์ระดับมืออาชีพ' : 'Build strong credibility and an international-standard presence.',
+                'icon'  => '
+                    <div class="w-14 h-14 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 mb-4">
+                        <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                    </div>'
+            ],
+            [
+                'title' => getCurrentLang() === 'th' ? 'สื่อสารแบรนด์ได้ชัดเจน' : 'Clear Brand Narrative',
+                'desc'  => getCurrentLang() === 'th' ? 'เล่าเรื่องราวของแบรนด์ ผ่านงานดีไซน์ที่ตรงจุด' : 'Tell compelling stories through focused, purposeful design.',
+                'icon'  => '
+                    <div class="w-14 h-14 rounded-full bg-amber-100 flex items-center justify-center text-amber-500 mb-4">
+                        <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"/></svg>
+                    </div>'
+            ],
+            [
+                'title' => getCurrentLang() === 'th' ? 'สร้างความผูกพันกับผู้ใช้' : 'Deep User Engagement',
+                'desc'  => getCurrentLang() === 'th' ? 'ดีไซน์ที่เข้าถึงใจ สร้างความประทับใจระยะยาว' : 'User-centric designs inspiring lasting emotional connection.',
+                'icon'  => '
+                    <div class="w-14 h-14 rounded-full bg-rose-100 flex items-center justify-center text-rose-500 mb-4">
+                        <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+                    </div>'
+            ],
+            [
+                'title' => getCurrentLang() === 'th' ? 'เพิ่มโอกาสทางธุรกิจ' : 'Accelerate Business Growth',
+                'desc'  => getCurrentLang() === 'th' ? 'ดีไซน์ที่ช่วยกระตุ้น การตัดสินใจซื้อของลูกค้า' : 'Optimized visuals that drive conversions and purchasing decisions.',
+                'icon'  => '
+                    <div class="w-14 h-14 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 mb-4">
+                        <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+                    </div>'
+            ],
+            [
+                'title' => getCurrentLang() === 'th' ? 'ใช้งานได้อย่างไร้รอยต่อ' : 'Seamless Application',
+                'desc'  => getCurrentLang() === 'th' ? 'นำไปประยุกต์ใช้ได้ทุกช่องทาง สอดคล้องในทุกมิติ' : 'Adaptable assets maintaining coherence across all channels.',
+                'icon'  => '
+                    <div class="w-14 h-14 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 mb-4">
+                        <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+                    </div>'
+            ],
+        ];
+        ?>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5 cd-benefits-grid">
+            <?php foreach ($benefits as $idx => $b): ?>
+                <div class="bg-white rounded-2xl p-6 sm:p-7 flex flex-col items-center text-center shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 <?= $idx === 4 ? 'cd-benefit-card-last' : '' ?>">
+                    <div class="cd-benefit-icon-wrap">
+                        <?= $b['icon'] ?>
+                    </div>
+                    <div class="cd-benefit-content flex flex-col items-center">
+                        <h3 class="text-[#043B94] font-bold text-base mb-2 leading-snug">
+                            <?= e($b['title']) ?>
+                        </h3>
+                        <p class="text-slate-500 text-xs sm:text-[13px] leading-relaxed">
+                            <?= e($b['desc']) ?>
+                        </p>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        </div>
+
+    </div>
+</section>
+
+<!-- ==========================================
+     SECTION 5: PORTFOLIO SHOWCASE
+=========================================== -->
+<section class="bg-white py-14 lg:py-20 font-sans border-t border-slate-100">
+    <div class="mx-auto w-full max-w-7xl px-5 sm:px-6 lg:px-8">
+        
+        <!-- Header -->
+        <div class="mb-10 lg:mb-12">
+            <div class="inline-flex flex-col items-start" style="display: inline-flex; flex-direction: column; align-items: flex-start;">
+                <h2 class="text-2xl sm:text-3xl font-extrabold text-[#0663F6] tracking-tight" style="color: #0663F6; font-size: 1.875rem; font-weight: 800;">
+                    <?= getCurrentLang() === 'th' ? 'ตัวอย่างผลงานของเรา' : 'Selected Case Studies' ?>
+                </h2>
+                <div class="w-12 h-[3.5px] bg-[#0663F6] mt-1.5" style="width: 48px; height: 3.5px; background-color: #0663F6; margin-top: 6px;"></div>
             </div>
         </div>
-    </div>
-</section>
 
-<!-- Modules / Capabilities Section -->
-<section id="modules" class="bg-slate-50 py-12 lg:py-16 font-sans border-t border-slate-100">
-    <div class="mx-auto max-w-7xl px-6 sm:px-6 lg:px-8">
-        <div class="text-center max-w-3xl mx-auto mb-12">
-            <h2 class="text-3xl md:text-4xl font-extrabold text-blue-600 tracking-tight mb-3 uppercase">
-                <?= $lang === 'th' ? 'บริการออกแบบสร้างสรรค์ของเรา' : 'CREATIVE SERVICES' ?>
-            </h2>
-            <span class="text-[#043B94] font-bold text-lg md:text-xl block">
-                <?= $lang === 'th' ? 'ครอบคลุมทุกมิติด้านดีไซน์ ตั้งแต่โลโก้ UI/UX ไปจนถึงวิดีโอแอนิเมชัน' : 'Comprehensive design solutions from brand identity to motion graphics' ?>
-            </span>
-        </div>
+        <?php
+        $showcases = [
+            [
+                'title' => 'KPN Click',
+                'category' => 'Website Design',
+                'desc' => getCurrentLang() === 'th'
+                    ? 'เว็บไซต์ที่ออกแบบเพื่อสื่อสารข้อมูลโครงการและบริการของแบรนด์อย่างครบถ้วน'
+                    : 'Designed to comprehensively communicate project and brand service information.',
+                'image' => asset_url('images/service-home.png'),
+            ],
+            [
+                'title' => 'Yamaha LEAD',
+                'category' => 'Design System',
+                'desc' => getCurrentLang() === 'th'
+                    ? 'ระบบดีไซน์และเทมเพลตมาตรฐานองค์กร ช่วยเพิ่มประสิทธิภาพการทำงาน'
+                    : 'Comprehensive enterprise design system optimizing workflows.',
+                'image' => asset_url('images/yamaha.png'),
+            ],
+            [
+                'title' => 'Nusasiri',
+                'category' => 'Brand Identity',
+                'desc' => getCurrentLang() === 'th'
+                    ? 'อัตลักษณ์แบรนด์และระบบการออกแบบสื่อสารที่โดดเด่นและน่าเชื่อถือ'
+                    : 'Impactful brand identity and cohesive communication visual system.',
+                'image' => asset_url('images/ab.png'),
+            ],
+            [
+                'title' => 'NS Gas',
+                'category' => 'Online Graphic',
+                'desc' => getCurrentLang() === 'th'
+                    ? 'การสร้างสรรค์คอนเทนต์และภาพกราฟิกเพื่อสื่อสารและกระตุ้นการมีส่วนร่วม'
+                    : 'High-engagement creative graphic content for brand awareness.',
+                'image' => asset_url('images/story.png'),
+            ],
+        ];
+        ?>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <?php foreach ($designModules as $module): ?>
-                <div class="gsap-reveal bg-white rounded-2xl p-6 lg:p-8 border border-slate-100 shadow-sm hover:shadow-xl hover:bg-primary hover:border-primary transition-all duration-300 group hover:-translate-y-1 relative overflow-hidden">
-                    <div class="relative z-10 flex flex-row items-start sm:items-center gap-5">
-                        <div class="shrink-0 w-16 h-16 bg-blue-50/70 group-hover:bg-white/20 rounded-2xl flex items-center justify-center transition-colors duration-300">
-                            <img src="<?= e(asset_url('images/' . $module['icon'])) ?>" alt="<?= e($module['name_en']) ?>" class="w-9 h-9 object-contain group-hover:scale-110 transition-all duration-300" />
+        <!-- 4 Mockup Showcase Cards Grid (Matching Digital Platform Structure) -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 cd-showcase-grid">
+            <?php foreach ($showcases as $item): ?>
+                <div class="cd-port-card block bg-white rounded-2xl overflow-hidden border border-slate-100 shadow-sm hover:border-blue-200 group cursor-pointer" onclick="window.location.href='<?= e(route_url('/portfolio')) ?>'">
+                    <!-- Monitor / Device Frame -->
+                    <div class="p-3 bg-slate-50 border-b border-slate-100 flex items-center gap-1.5">
+                        <span class="w-2.5 h-2.5 rounded-full bg-red-400"></span>
+                        <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
+                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
+                        <span class="text-[11px] text-slate-400 font-mono ml-2 truncate">webpark.co.th/case/<?= strtolower(str_replace(' ', '-', $item['title'])) ?></span>
+                    </div>
+                    <div class="h-48 overflow-hidden bg-slate-100 relative">
+                        <img src="<?= e($item['image']) ?>" alt="<?= e($item['title']) ?>" class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105" onerror="this.src='<?= e(asset_url('images/erp.png')) ?>';">
+                    </div>
+                    <div class="p-5">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="inline-block px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-blue-50 text-primary border border-blue-100">
+                                <?= e($item['category']) ?>
+                            </span>
                         </div>
-                        <div class="text-left flex-1">
-                            <h3 class="text-xl font-bold text-[#043B94] mb-2 group-hover:text-white transition-colors">
-                                <?= e($lang === 'th' ? $module['name_th'] : $module['name_en']) ?>
-                            </h3>
-                            <p class="text-base text-slate-500 group-hover:text-white/90 leading-relaxed transition-colors">
-                                <?= e($lang === 'th' ? $module['desc_th'] : $module['desc_en']) ?>
-                            </p>
-                        </div>
+                        <h3 class="text-base font-bold text-[#022862] group-hover:text-primary transition-colors mb-1.5">
+                            <?= e($item['title']) ?>
+                        </h3>
+                        <p class="text-xs text-slate-500 line-clamp-2 leading-relaxed">
+                            <?= e($item['desc']) ?>
+                        </p>
                     </div>
                 </div>
             <?php endforeach; ?>
         </div>
+
     </div>
 </section>
 
-<!-- Key Benefits Section -->
-<section class="bg-white py-12 lg:py-16 font-sans border-t border-slate-100">
-    <div class="mx-auto max-w-7xl px-6 sm:px-6 lg:px-8">
-        <h2 class="text-2xl md:text-3xl font-extrabold text-center text-[#022862] tracking-tight mb-10">
-            <?= $lang === 'th' ? 'สิ่งที่คุณจะได้รับจากบริการออกแบบของเรา' : 'Core Design Values & Benefits' ?>
-        </h2>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
-            <?php foreach ($designBenefits as $benefit): ?>
-                <div class="gsap-reveal bg-[#fcfdff] rounded-2xl p-6 text-center border border-slate-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
-                    <div class="w-14 h-14 mx-auto bg-blue-50/80 rounded-full flex items-center justify-center mb-4 shrink-0">
-                        <img src="<?= e($benefit['icon']) ?>" alt="<?= e($benefit['title']) ?>" class="h-full w-full object-contain">
-                    </div>
-                    <h4 class="text-base font-bold text-[#043B94] mb-2"><?= e($benefit['title']) ?></h4>
-                    <p class="text-sm text-slate-500 leading-relaxed"><?= e($benefit['desc']) ?></p>
-                </div>
-            <?php endforeach; ?>
-        </div>
-    </div>
-</section>
-
-<!-- Work Process Section -->
-<section class="bg-[#f8faff] py-14 lg:py-20 font-sans border-t border-slate-100">
-    <div class="mx-auto max-w-7xl px-6 sm:px-6 lg:px-8">
-        <div class="text-center max-w-3xl mx-auto mb-12">
-            <h2 class="text-3xl md:text-4xl font-extrabold text-[#022862] tracking-tight mb-3">
-                <?= $lang === 'th' ? 'กระบวนการออกแบบสร้างสรรค์' : 'Our Creative Workflow' ?>
-            </h2>
-            <p class="text-slate-500 text-base md:text-lg">
-                <?= $lang === 'th' ? 'ใส่ใจในทุกรายละเอียด ตั้งแต่แนวคิดตั้งต้นจนถึงชิ้นงานพร้อมใช้งาน' : 'Meticulous attention to detail from initial moodboard to production-ready design assets' ?>
-            </p>
-        </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            <?php foreach ($designProcess as $step): ?>
-                <div class="gsap-reveal bg-white rounded-2xl p-6 border border-slate-100 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col">
-                    <div class="text-4xl font-extrabold text-blue-600/30 mb-3"><?= e($step['num']) ?></div>
-                    <h3 class="text-lg font-bold text-[#043B94] mb-2"><?= e($step['title']) ?></h3>
-                    <p class="text-sm text-slate-500 leading-relaxed"><?= e($step['desc']) ?></p>
-                </div>
-            <?php endforeach; ?>
-        </div>
-    </div>
-</section>
-
-
-
+<!-- ==========================================
+     SECTION 6: GSAP SCROLLTRIGGER ANIMATION
+=========================================== -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 <script>
-    document.addEventListener("DOMContentLoaded", () => {
-        if (typeof gsap !== "undefined" && typeof ScrollTrigger !== "undefined") {
-            gsap.registerPlugin(ScrollTrigger);
-            gsap.utils.toArray(".gsap-reveal").forEach((el) => {
-                gsap.fromTo(el, 
-                    { opacity: 0, y: 30 },
-                    {
-                        opacity: 1, 
-                        y: 0, 
-                        duration: 0.8, 
-                        ease: "power2.out",
-                        scrollTrigger: {
-                            trigger: el,
-                            start: "top 88%",
-                            toggleActions: "play none none reverse"
-                        }
-                    }
-                );
+    document.addEventListener("DOMContentLoaded", function() {
+        if (typeof gsap !== 'undefined') {
+            // Reading progress
+            window.addEventListener('scroll', function() {
+                const winScroll = document.documentElement.scrollTop || document.body.scrollTop;
+                const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                const scrolled = (winScroll / height) * 100;
+                const progressBar = document.getElementById('reading-progress');
+                if (progressBar) {
+                    progressBar.style.width = scrolled + '%';
+                }
             });
         }
     });
