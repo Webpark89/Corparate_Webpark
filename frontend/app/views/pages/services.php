@@ -15,6 +15,8 @@ $ctaImage = asset_url('images/bg-cta.jpg');
  $mockServices = [
     [
         'id'                => 1,
+        'slug'              => 'erp-erm',
+        'detail_url'        => route_url('/erp'),
         'icon_emoji'        => '🖥️',
         'title'             => 'ERP / ERM',
         'summary'           => getCurrentLang() === 'th' ? 'พัฒนาระบบบริหารจัดการองค์กร เพื่อเพิ่มประสิทธิภาพการทำงาน เชื่อมโยงข้อมูล และรองรับการเติบโตของธุรกิจ' : 'Develop enterprise management systems to increase efficiency, connect data, and support business growth.',
@@ -1185,6 +1187,9 @@ if (isset($services) && is_array($services)) {
                     $sSummary= (string)($service['summary'] ?? '');
                     $sEmoji  = (string)($service['icon_emoji'] ?? '');
                     $sDetailUrl = (string)($service['detail_url'] ?? '#');
+                    if ($sDetailUrl === '#' && (str_contains(strtolower($sTitle), 'erp') || str_contains(strtolower($sTitle), 'erm'))) {
+                        $sDetailUrl = route_url('/erp');
+                    }
                     if ($sDetailUrl === '#' && (str_contains(strtolower($sTitle), 'digital') || str_contains(strtolower($sTitle), 'แพลตฟอร์ม'))) {
                         $sDetailUrl = route_url('/services/digital-platform');
                     }
@@ -1201,21 +1206,21 @@ if (isset($services) && is_array($services)) {
                 <div class="gsap-service-card group rounded-2xl border border-slate-100 bg-white overflow-hidden flex flex-col opacity-0 translate-y-10"
                     style="box-shadow: 0 2px 12px 0 rgba(4,59,148,0.07);">
                     <?php if ($sDetailUrl !== '#'): ?>
-                    <a href="<?= e($sDetailUrl) ?>" class="relative w-full overflow-hidden bg-slate-50 flex items-center justify-center p-4 block group/img" style="aspect-ratio: 16/9;">
+                    <a href="<?= e($sDetailUrl) ?>" class="relative w-full overflow-hidden bg-slate-100 block group/img cursor-pointer" style="aspect-ratio: 16/9;">
                         <img
                             src="<?= e($imgSrc) ?>"
                             alt="<?= e($sTitle) ?>"
-                            class="max-h-full max-w-full w-auto h-auto object-contain transition-transform duration-500 group-hover/img:scale-105"
+                            class="w-full h-full object-cover transition-transform duration-500 group-hover/img:scale-105"
                             loading="lazy"
                             onerror="this.src='<?= e(asset_url('images/service-default.png')) ?>'"
                         >
                     </a>
                     <?php else: ?>
-                    <div class="relative w-full overflow-hidden bg-slate-50 flex items-center justify-center p-4" style="aspect-ratio: 16/9;">
+                    <div class="relative w-full overflow-hidden bg-slate-100 block" style="aspect-ratio: 16/9;">
                         <img
                             src="<?= e($imgSrc) ?>"
                             alt="<?= e($sTitle) ?>"
-                            class="max-h-full max-w-full w-auto h-auto object-contain transition-transform duration-500 group-hover:scale-105"
+                            class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                             loading="lazy"
                             onerror="this.src='<?= e(asset_url('images/service-default.png')) ?>'"
                         >
@@ -1223,26 +1228,19 @@ if (isset($services) && is_array($services)) {
                     <?php endif; ?>
                     <div class="flex flex-col flex-1 p-6 desktop-service-card-inner">
                         <div class="flex items-center gap-2 mb-2">
-                            <span class="service-icon-emoji text-2xl leading-none desktop-service-emoji"><?= e($sEmoji) ?></span>
                             <?php if ($sDetailUrl !== '#'): ?>
-                                <a href="<?= e($sDetailUrl) ?>" class="group/title hover:text-primary transition-colors">
+                                <a href="<?= e($sDetailUrl) ?>" class="inline-flex items-center gap-2 group/title hover:text-primary transition-colors cursor-pointer">
+                                    <span class="service-icon-emoji text-2xl leading-none desktop-service-emoji"><?= e($sEmoji) ?></span>
                                     <h2 class="text-xl font-extrabold desktop-service-title ipad-pro-service-card-title group-hover/title:text-primary transition-colors cursor-pointer" style="color: #022862;"><?= e($sTitle) ?></h2>
                                 </a>
                             <?php else: ?>
+                                <span class="service-icon-emoji text-2xl leading-none desktop-service-emoji"><?= e($sEmoji) ?></span>
                                 <h2 class="text-xl font-extrabold desktop-service-title ipad-pro-service-card-title" style="color: #022862;"><?= e($sTitle) ?></h2>
                             <?php endif; ?>
                         </div>
                         <p class="text-slate-500 text-sm leading-relaxed mb-4 desktop-service-desc ipad-pro-service-card-desc ipad-air-service-card-desc ipad-mini-service-card-desc">
                             <?= e($sSummary) ?>
                         </p>
-                        <?php if ($sDetailUrl !== '#'): ?>
-                        <div class="mb-4">
-                            <a href="<?= e($sDetailUrl) ?>" class="inline-flex items-center gap-1.5 text-sm font-bold text-[#0663F6] hover:text-blue-700 transition-colors">
-                                <span><?= getCurrentLang() === 'th' ? 'ดูรายละเอียดบริการ' : 'View Service Details' ?></span>
-                                <svg class="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
-                            </a>
-                        </div>
-                        <?php endif; ?>
                         <div class="mt-auto border-t border-slate-100 pt-3 desktop-service-details-wrap">
                             <details class="group/details">
                                 <summary class="flex items-center justify-between py-2 rounded-lg text-sm font-bold cursor-pointer transition-colors duration-150 hover:text-[#043B94] text-[#022862] list-none desktop-service-summary ipad-pro-service-card-dropdown">
@@ -1436,44 +1434,42 @@ if (isset($services) && is_array($services)) {
             });
         }
         // 2. Animation สำหรับการ์ดบริการ
-        // Desktop/Tablet (≥768px): Pin ทั้ง section ไว้ แล้วให้การ์ดโผล่ทีละใบตามระยะที่เลื่อน (scrub)
-        //   จนกว่าจะครบ 4 ใบ ถึงจะปลดล็อกให้เลื่อนผ่าน section นี้ไปต่อได้
-        // Mobile (<768px): ใช้แบบเดิม (โผล่ทีละใบเมื่อเลื่อนมาถึง ไม่ pin) เพราะจอเล็ก pin ยาวๆ จะกระทบ UX
+        // Desktop / Tablet (≥768px): เฟสขึ้นมาทีละ 2 การ์ด (ตามแถวใน Grid 2 คอลัมน์) เมื่อ scroll มาถึง โดยไม่ Pin / ไม่ Scrub
+        // Mobile (<768px): เฟสขึ้นมาทีละการ์ดเมื่อ scroll มาถึง
         const serviceCardsWrapper = document.querySelector("#gsap-services-grid");
         const serviceCards = gsap.utils.toArray(".gsap-service-card");
         if (serviceCardsWrapper && serviceCards.length && prefersReducedMotion) {
-            // Reduced motion: แสดงการ์ดทั้งหมดทันที ไม่ pin ไม่ scrub
+            // Reduced motion: แสดงการ์ดทั้งหมดทันที
             gsap.set(serviceCards, { y: 0, opacity: 1 });
         } else if (serviceCardsWrapper && serviceCards.length) {
             ScrollTrigger.matchMedia({
-                // --- Desktop / Tablet: Pin + Scrub ---
+                // --- Desktop / Tablet: เฟสขึ้นมาทีละ 2 การ์ดตามแถว ---
                 "(min-width: 768px)": function () {
-                    const cardsTimeline = gsap.timeline({
-                        scrollTrigger: {
-                            trigger: serviceCardsWrapper,
-                            start: "top top+=80", // เผื่อระยะ header/nav ที่ sticky อยู่ด้านบน ปรับเลขนี้ตามความสูง header จริง
-                            end: "+=" + (serviceCards.length * 500), // ระยะ scroll รวม ~500px ต่อการ์ด 1 ใบ ปรับได้ตามความรู้สึก
-                            pin: true,
-                            scrub: 1, // ค่อยๆ ตามการเลื่อน 1 วินาที ให้ความรู้สึกลื่นไหล ไม่กระตุก
-                            anticipatePin: 1,
-                            // markers: true, // เปิดบรรทัดนี้ตอน debug เพื่อดูตำแหน่ง start/end บนจอ
-                        }
-                    });
-                    serviceCards.forEach((card, index) => {
-                        cardsTimeline.to(card, {
+                    const triggers = [];
+                    for (let i = 0; i < serviceCards.length; i += 2) {
+                        const pair = serviceCards.slice(i, i + 2);
+                        const tween = gsap.to(pair, {
+                            scrollTrigger: {
+                                trigger: pair[0],
+                                start: "top 85%",
+                                toggleActions: "play none none reverse"
+                            },
                             y: 0,
                             opacity: 1,
-                            duration: 1,
+                            duration: 0.7,
+                            stagger: 0.15,
                             ease: "power2.out"
-                        }, index); // แต่ละใบเริ่ม animate เรียงตามลำดับเวลาในไทม์ไลน์ ทำให้โผล่ทีละใบ
-                    });
-                    // ฟังก์ชัน cleanup: เรียกอัตโนมัติเมื่อ media query ไม่ตรงแล้ว (เช่น ย่อจอลงต่ำกว่า 768px)
+                        });
+                        triggers.push(tween);
+                    }
                     return () => {
-                        cardsTimeline.scrollTrigger && cardsTimeline.scrollTrigger.kill();
-                        cardsTimeline.kill();
+                        triggers.forEach((tween) => {
+                            tween.scrollTrigger && tween.scrollTrigger.kill();
+                            tween.kill();
+                        });
                     };
                 },
-                // --- Mobile: แบบเดิม ไม่ pin ---
+                // --- Mobile: เฟสขึ้นทีละการ์ดเมื่อเลื่อนมาถึง ---
                 "(max-width: 767px)": function () {
                     const mobileTriggers = serviceCards.map((card) => {
                         return gsap.to(card, {

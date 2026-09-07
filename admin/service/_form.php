@@ -91,11 +91,13 @@ if (empty($features) && !empty($data['details_json'])) {
                 <div>
                     <label class="text-sm font-bold text-slate-700 block mb-1">รูปภาพประกอบ</label>
                     <?php if (!empty($data['image'])): ?>
-                        <div class="mb-2"><img src="<?= e(resolve_admin_image_url($data['image'])) ?>" class="w-24 h-24 rounded-xl object-cover border"></div>
+                        <div class="mb-2">
+                            <img src="<?= e(resolve_admin_image_url($data['image'])) ?>" class="w-44 h-[99px] rounded-xl object-cover border" alt="Preview">
+                        </div>
                         <input type="hidden" name="old_image" value="<?= e($data['image']) ?>">
                     <?php endif; ?>
-                    <input type="file" name="image" class="w-full text-sm">
-                    <p class="text-xs text-slate-400 mt-1">ขนาดไฟล์ที่แนะนำ: 800x800px</p>
+                    <input type="file" name="image" accept=".webp,image/webp" class="w-full text-sm">
+                    <p class="text-xs text-slate-500 mt-1.5 font-medium">ขนาดภาพที่แนะนำ: 1920 x 1080 px (อัตราส่วน 16:9) • ชนิดไฟล์ที่รองรับ: .webp • ขนาดไฟล์สูงสุด: ไม่เกิน 3 MB</p>
                 </div>
 
                 <!-- ปุ่มบันทึก -->

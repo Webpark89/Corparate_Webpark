@@ -1303,6 +1303,13 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
                 editor.addShortcut('ctrl+q', 'Apply Primary Color', function () {
                     editor.execCommand('ForeColor', false, '#0663F6');
                 });
+
+                // Track user typing activity inside TinyMCE
+                editor.on('input change keyup NodeChange', function () {
+                    if (window.markUserActivity) {
+                        window.markUserActivity();
+                    }
+                });
             }
         });
         if (lang === 'th') {
@@ -1793,19 +1800,28 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
     });
 
     // =========================================================================
-    // 1. Session Heartbeat Keep-Alive & CSRF Auto-Refresh
+    // 1. Session Heartbeat Keep-Alive, User Activity Tracking & CSRF Auto-Refresh
     // =========================================================================
     (function initHeartbeat() {
-        const HEARTBEAT_INTERVAL = 3 * 60 * 1000; // Ping every 3 minutes
+        window._hasAdminHeartbeat = true;
+        const HEARTBEAT_INTERVAL = 3 * 60 * 1000; // Ping every 3 minutes (keeps 30-min session perpetually alive while open)
+        const ACTIVITY_PING_THRESHOLD = 2 * 60 * 1000; // If user is actively working and >2 mins since last ping, refresh
         const HEARTBEAT_URL = '<?= ADMIN_URL ?>/ajax_heartbeat.php';
 
-        async function doHeartbeat() {
+        let lastPingTime = Date.now();
+        let lastUserActivity = Date.now();
+        let isPinging = false;
+
+        async function doHeartbeat(reason = 'interval') {
+            if (isPinging) return;
+            isPinging = true;
             try {
                 const res = await fetch(HEARTBEAT_URL, {
                     method: 'GET',
                     headers: { 'X-Requested-With': 'XMLHttpRequest' },
                     cache: 'no-store'
                 });
+                lastPingTime = Date.now();
                 if (res.ok) {
                     const data = await res.json();
                     if (data && data.csrf_token) {
@@ -1816,17 +1832,52 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
                     }
                 } else if (res.status === 401) {
                     console.warn('[Heartbeat] Admin session expired on server.');
+                    const autoSaveText = document.getElementById('autoSaveText');
+                    const autoSaveBadge = document.getElementById('autoSaveBadge');
+                    if (autoSaveText && autoSaveBadge) {
+                        autoSaveBadge.classList.remove('border-slate-200');
+                        autoSaveBadge.classList.add('border-amber-300', 'bg-amber-50');
+                        autoSaveText.innerHTML = '<span class="text-amber-700 font-semibold">เซสชันหมดอายุแล้ว (ข้อมูลยังคงถูกบันทึกไว้ในเครื่อง กรุณาเปิดแท็บใหม่เพื่อเข้าสู่ระบบ)</span>';
+                    }
                 }
             } catch (err) {
                 console.warn('[Heartbeat] Ping failed (network offline?):', err);
+            } finally {
+                isPinging = false;
             }
         }
 
-        // Trigger heartbeat periodically
-        setInterval(doHeartbeat, HEARTBEAT_INTERVAL);
-        // Also ping when window gains focus back from other tabs
+        // Global User Activity Marker (called on typing, mouse movements, scrolling, and TinyMCE edits)
+        window.markUserActivity = function() {
+            lastUserActivity = Date.now();
+            // If user is actively typing/working and it has been > 2 minutes since last ping, refresh session
+            if (Date.now() - lastPingTime > ACTIVITY_PING_THRESHOLD) {
+                doHeartbeat('user_activity');
+            }
+        };
+
+        // Activity event listeners on page
+        ['mousemove', 'mousedown', 'keydown', 'scroll', 'touchstart'].forEach(evt => {
+            window.addEventListener(evt, () => {
+                window.markUserActivity();
+            }, { passive: true });
+        });
+
+        // Trigger heartbeat periodically (keeps session alive while page is kept open)
+        setInterval(() => {
+            doHeartbeat('interval');
+        }, HEARTBEAT_INTERVAL);
+
+        // Ping immediately when window gains focus back from other tabs or applications
         window.addEventListener('focus', () => {
-            doHeartbeat();
+            if (Date.now() - lastPingTime > 30000) { // at least 30s since last ping
+                doHeartbeat('tab_focus');
+            }
+        });
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'visible' && (Date.now() - lastPingTime > 30000)) {
+                doHeartbeat('visibility_visible');
+            }
         });
     })();
 
@@ -2021,11 +2072,13 @@ $inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text
         // Auto-save on typing inputs
         form.addEventListener('input', debounce(saveDraft, 2000));
 
-        // When form is submitted successfully, clean localStorage draft
+        // When form is submitted: Mark draft key for deletion ONLY upon successful save (on index page), BUT do NOT delete yet!
+        // If save fails on server and redirects back to create/edit, draft remains safely in localStorage!
         form.addEventListener('submit', () => {
             isSubmitted = true;
-            // Let the form submit, draft removed after submit initiated
-            localStorage.removeItem(DRAFT_KEY);
+            try {
+                sessionStorage.setItem('pending_clear_draft', DRAFT_KEY);
+            } catch (e) {}
         });
 
         // Delay check until TinyMCE is fully initiated
