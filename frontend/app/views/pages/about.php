@@ -72,7 +72,7 @@ $contactAddress = $company['contact']['address'] ?? t('footer.office_address');
             font-weight: 900 !important;
         }
     }
-    @media (min-width: 1025px) {
+    @media (min-width: 1441px) {
         .desktop-about-hero-col,
         .about-hero-left-col {
             margin-left: 3rem !important;
@@ -134,7 +134,11 @@ $contactAddress = $company['contact']['address'] ?? t('footer.office_address');
     }
 
     /* iPad (760px - 1366px) All Orientations */
-    @media (min-width: 760px) and (max-width: 1366px) {
+    @media (min-width: 760px) and (max-width: 1440px) {
+        .desktop-about-hero-col,
+        .about-hero-left-col {
+            margin-left: 0 !important;
+        }
         .desktop-about-hero-content-wrapper {
             max-width: 100% !important;
         }
@@ -295,7 +299,7 @@ $contactAddress = $company['contact']['address'] ?? t('footer.office_address');
         }
         .desktop-about-hero-col,
         .about-hero-left-col {
-            margin-left: 2rem !important;
+            margin-left: 0 !important;
             max-width: 68% !important;
             padding-top: 1.5rem !important;
         }
@@ -563,7 +567,7 @@ $contactAddress = $company['contact']['address'] ?? t('footer.office_address');
 
     <div class="mx-auto w-full max-w-[1720px] px-4 sm:px-6 lg:px-10 relative z-10">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:pb-12 lg:gap-10 items-center relative z-10">
-            <div class="max-w-3xl relative z-10 text-left mx-0 flex flex-col items-start w-full desktop-about-hero-col lg:ml-12 xl:ml-[4.5rem] 2xl:ml-24">
+            <div class="max-w-3xl relative z-10 text-left mx-0 flex flex-col items-start w-full desktop-about-hero-col about-hero-left-col lg:ml-12 xl:ml-[4.5rem] 2xl:ml-24">
                 <nav aria-label="Breadcrumb" class="animate-fade-up delay-100 mb-6 hidden sm:block">
                     <ol class="inline-flex items-center text-sm md:text-base font-medium text-slate-500">
                         <li>
