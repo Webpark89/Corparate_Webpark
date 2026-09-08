@@ -974,6 +974,12 @@ class HomeController
         $errors = [];
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (!verify_csrf_token()) {
+                $errors[] = function_exists('getCurrentLang') && getCurrentLang() === 'en'
+                    ? 'Invalid or expired session token. Please refresh the page and try again.'
+                    : 'คำขอไม่ถูกต้องหรือเซสชันหมดอายุ (CSRF Validation Failed) กรุณารีเฟรชหน้าเว็บแล้วลองใหม่อีกครั้ง';
+            }
+
             if ($form['name'] === '') {
                 $errors[] = 'กรุณากรอกชื่อ';
             }
@@ -998,6 +1004,9 @@ class HomeController
             }
 
             $submitted = $errors === [];
+            if ($submitted) {
+                csrf_token_regenerate();
+            }
         }
 
         $this->view('pages/contact.php', array_merge($this->sharedData('contact', 'Contact'), [

@@ -1294,19 +1294,19 @@ $heroBgImage = asset_url('images/online-marketing-hero-bg.png');
                 </nav>
 
                 <!-- Hero Title (Dynamic TH/EN) -->
-                <h1 class="animate-entrance-up delay-200 mb-2 tracking-tight flex flex-col items-start leading-tight text-5xl md:text-7xl lg:text-8xl font-black om-hero-h1-wrapper">
+                <h1 class="animate-entrance-up delay-200 mb-4 tracking-normal flex flex-col items-start leading-[1.08] om-hero-h1-wrapper">
                     <?php if (getCurrentLang() === 'th'): ?>
-                        <span class="bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block py-1 md:py-2 whitespace-nowrap om-hero-h1">
+                        <span class="om-gradient-title-dark font-black text-5xl sm:text-6xl md:text-7xl lg:text-8xl tracking-normal uppercase om-hero-h1 inline-block pr-4 md:pr-6">
                             การตลาด
                         </span>
-                        <span class="bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block py-1 md:py-2 whitespace-nowrap om-hero-h1" style="animation-delay: -3s;">
+                        <span class="om-gradient-title-blue font-black text-5xl sm:text-6xl md:text-7xl lg:text-8xl tracking-normal uppercase om-hero-h1 inline-block pr-4 md:pr-6">
                             ออนไลน์
                         </span>
                     <?php else: ?>
-                        <span class="bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block py-1 md:py-2 whitespace-nowrap om-hero-h1">
+                        <span class="om-gradient-title-dark font-black text-5xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tight uppercase om-hero-h1 inline-block pr-4 md:pr-6">
                             ONLINE
                         </span>
-                        <span class="bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block py-1 md:py-2 whitespace-nowrap om-hero-h1" style="animation-delay: -3s;">
+                        <span class="om-gradient-title-blue font-black text-5xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tight uppercase om-hero-h1 inline-block pr-4 md:pr-6">
                             MARKETING
                         </span>
                     <?php endif; ?>

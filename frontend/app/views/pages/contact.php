@@ -216,9 +216,9 @@ $recaptchaSiteKey = '6Lcf_pAtAAAAAOVhatPPwrHSYXeb_0J4yXf5BrRO';
                         animation: text-gradient-pan 6s linear infinite;
                     }
                 </style>
-                <h1 class="animate-fade-up delay-200 tracking-tight mb-2 text-5xl md:text-7xl lg:text-8xl font-black leading-tight flex flex-col items-start">
-                    <span class="bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block py-1 md:py-2 whitespace-nowrap desktop-contact-hero-h1"><?= e(t('contact.hero_title')) ?></span>
-                    <span class="bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block py-1 md:py-2 whitespace-nowrap desktop-contact-hero-h1" style="animation-delay: -3s;">WEBPARK</span>
+                <h1 class="animate-fade-up delay-200 tracking-normal mb-2 leading-[1.1]">
+                    <span class="hero-title-text font-bold bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block py-2 md:py-2.5 pr-4 md:pr-6 whitespace-nowrap desktop-contact-hero-h1"><?= e(t('contact.hero_title')) ?></span><br>
+                    <span class="hero-title-text font-bold bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block py-1 md:py-2 pr-4 md:pr-6 -mt-1 md:-mt-2 lg:-mt-2 whitespace-nowrap desktop-contact-hero-h1" style="animation-delay: -3s;">WEBPARK</span>
                 </h1>
                 <?php
                 if (getCurrentLang() === 'th') {
@@ -345,6 +345,7 @@ $recaptchaSiteKey = '6Lcf_pAtAAAAAOVhatPPwrHSYXeb_0J4yXf5BrRO';
                             }
                         </style>
                         <form id="contactMainForm" method="post" class="flex flex-col flex-grow space-y-4">
+                            <?= csrf_field() ?>
                             <!-- Name Fields -->
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>

@@ -1168,11 +1168,11 @@ if (isset($services) && is_array($services)) {
                             </li>
                         </ol>
                     </nav>
-                <h1 class="animate-fade-up delay-200 mb-2 tracking-tighter text-5xl md:text-7xl lg:text-8xl font-black leading-tight flex flex-col items-start ipad-pro-services-h1">
-                    <span class="bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block py-1 md:py-2 desktop-services-hero-h1 desktop-services-hero-text-1 ipad-pro-services-text-1">
+                <h1 class="animate-fade-up delay-200 mb-2 tracking-normal text-5xl md:text-7xl lg:text-8xl font-black leading-tight flex flex-col items-start ipad-pro-services-h1">
+                    <span class="bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block py-1 md:py-2 pr-4 md:pr-6 desktop-services-hero-h1 desktop-services-hero-text-1 ipad-pro-services-text-1">
                         <?= getCurrentLang() === 'th' ? 'ความเชี่ยวชาญ' : 'Expertise' ?>
                     </span>
-                    <span class="bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block py-1 md:py-2 desktop-services-hero-h1 desktop-services-hero-text-2 ipad-pro-services-text-2" style="animation-delay: -3s;">
+                    <span class="bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block py-1 md:py-2 pr-4 md:pr-6 desktop-services-hero-h1 desktop-services-hero-text-2 ipad-pro-services-text-2" style="animation-delay: -3s;">
                         <?= getCurrentLang() === 'th' ? 'และจุดเด่น' : '& Strengths' ?>
                     </span>
                 </h1>

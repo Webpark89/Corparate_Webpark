@@ -1794,6 +1794,14 @@ h1,
   margin-top: auto;
 }
 
+.-mt-1 {
+  margin-top: -0.25rem;
+}
+
+.ml-2 {
+  margin-left: 0.5rem;
+}
+
 .line-clamp-1 {
   overflow: hidden;
   display: -webkit-box;
@@ -2219,6 +2227,10 @@ h1,
 
 .max-w-xl {
   max-width: 36rem;
+}
+
+.max-w-md {
+  max-width: 28rem;
 }
 
 .flex-1 {
@@ -3740,6 +3752,10 @@ h1,
   line-height: 1.25;
 }
 
+.leading-\[1\.08\] {
+  line-height: 1.08;
+}
+
 .tracking-\[-0\.03em\] {
   letter-spacing: -0.03em;
 }
@@ -5051,6 +5067,11 @@ h1,
     font-size: 0.75rem;
     line-height: 1rem;
   }
+
+  .sm\:text-6xl {
+    font-size: 3.75rem;
+    line-height: 1;
+  }
 }
 
 @media (min-width: 768px) {
@@ -5081,6 +5102,10 @@ h1,
 
   .md\:mt-0 {
     margin-top: 0px;
+  }
+
+  .md\:-mt-2 {
+    margin-top: -0.5rem;
   }
 
   .md\:line-clamp-none {
@@ -5368,6 +5393,10 @@ h1,
     padding-top: 3rem;
   }
 
+  .md\:pr-6 {
+    padding-right: 1.5rem;
+  }
+
   .md\:text-center {
     text-align: center;
   }
@@ -5437,6 +5466,10 @@ h1,
   .md\:text-xs {
     font-size: 0.75rem;
     line-height: 1rem;
+  }
+
+  .md\:text-\[0\.8rem\] {
+    font-size: 0.8rem;
   }
 
   .md\:font-semibold {
@@ -5589,6 +5622,10 @@ h1,
 
   .lg\:mt-0 {
     margin-top: 0px;
+  }
+
+  .lg\:-mt-2 {
+    margin-top: -0.5rem;
   }
 
   .lg\:block {

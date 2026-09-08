@@ -28,6 +28,10 @@ if (!headers_sent()) {
     header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
     header('Pragma: no-cache');
     header('Expires: 0');
+    header('X-Frame-Options: SAMEORIGIN');
+    header('X-Content-Type-Options: nosniff');
+    header('Referrer-Policy: strict-origin-when-cross-origin');
+    header("Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.google.com https://www.gstatic.com https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https: blob:; frame-src 'self' https://www.google.com; connect-src 'self' https://www.google.com; frame-ancestors 'self';");
 }
 
 if ($jsonLd !== []) {
@@ -127,7 +131,8 @@ $content = $content ?? '';
                 font-size: 5.5rem !important;
                 line-height: 1.1 !important;
                 font-weight: 900 !important;
-                letter-spacing: -0.05em !important;
+                letter-spacing: -0.02em !important;
+                padding-right: 0.15em !important;
             }
 
             /* 2. Hero Subtitle / Description Paragraphs P (Locked to 1.25rem, line-height 1.75, max-width 34rem) */
@@ -209,8 +214,9 @@ $content = $content ?? '';
             .desktop-portfolio-hero-h1 {
                 font-size: clamp(2.35rem, 8.5vw, 3.25rem) !important;
                 line-height: 1.18 !important;
-                letter-spacing: -0.03em !important;
+                letter-spacing: -0.02em !important;
                 font-weight: 900 !important;
+                padding-right: 0.15em !important;
             }
 
             /* 3. Fluid Section Titles H2 */

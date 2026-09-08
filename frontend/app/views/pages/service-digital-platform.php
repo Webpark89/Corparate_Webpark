@@ -42,24 +42,9 @@ $heroBgImage = asset_url('images/digital-platform-hero-bg.png');
     /* Mobile (max-width: 759px) */
     @media (max-width: 759px) {
         .dp-hero-h1 {
-            font-size: 2.45rem !important;
-            line-height: 1.15 !important;
+            font-size: 2.75rem !important;
+            line-height: 1.2 !important;
             font-weight: 900 !important;
-        }
-        .dp-hero-p,
-        .dp-hero-p span {
-            font-size: 1.05rem !important;
-            line-height: 1.65 !important;
-            font-weight: 500 !important;
-            color: #1e293b !important;
-        }
-        .dp-hero-btn-container {
-            flex-direction: column !important;
-            align-items: flex-start !important;
-            gap: 1rem !important;
-        }
-        .dp-hero-btn-container a {
-            width: auto !important;
         }
     }
 
@@ -84,7 +69,7 @@ $heroBgImage = asset_url('images/digital-platform-hero-bg.png');
         width: 100% !important;
         background-color: #ffffff !important;
     }
-    @media (min-width: 1441px) {
+    @media (min-width: 1280px) {
         .dp-intro-main-card {
             flex-direction: row !important;
         }
@@ -157,18 +142,13 @@ $heroBgImage = asset_url('images/digital-platform-hero-bg.png');
        =================================================== */
     @media (min-width: 760px) and (max-width: 1024px) and (orientation: portrait) {
         /* Section 1: Hero Section (2-line title, text on left, 3D graphic on right) */
-        #dp-hero {
-            padding-top: 4.25rem !important;
-            padding-bottom: 5.5rem !important;
-        }
         .dp-hero-container {
-            padding-top: 0 !important;
-            padding-bottom: 0 !important;
+            padding-top: 4.5rem !important;
+            padding-bottom: 5rem !important;
         }
         .dp-hero-left-col {
             max-width: 68% !important;
             margin-left: 0 !important;
-            padding-top: 0 !important;
         }
         .dp-breadcrumb-nav,
         .dp-breadcrumb-list {
@@ -177,7 +157,7 @@ $heroBgImage = asset_url('images/digital-platform-hero-bg.png');
             flex-wrap: nowrap !important;
             white-space: nowrap !important;
             align-items: center !important;
-            margin-bottom: 1.25rem !important;
+            margin-bottom: 1.5rem !important;
         }
         .dp-breadcrumb-list li,
         .dp-breadcrumb-list a,
@@ -189,18 +169,14 @@ $heroBgImage = asset_url('images/digital-platform-hero-bg.png');
         .dp-hero-h1-wrapper {
             flex-direction: column !important;
             align-items: flex-start !important;
-            margin-bottom: 0.5rem !important;
+            gap: 0.25rem !important;
         }
         .dp-hero-h1 {
             font-size: 3.75rem !important;
             font-weight: 900 !important;
-            line-height: 1.15 !important;
-            display: inline-block !important;
-            white-space: nowrap !important;
-            padding-top: 0.25rem !important;
-            padding-bottom: 0.25rem !important;
-            margin-top: 0 !important;
-            margin-bottom: 0 !important;
+            line-height: 1.08 !important;
+            display: block !important;
+            white-space: normal !important;
         }
         .dp-hero-p {
             font-size: 1.2rem !important;
@@ -208,7 +184,7 @@ $heroBgImage = asset_url('images/digital-platform-hero-bg.png');
             font-weight: 600 !important;
             color: #0b1b42 !important;
             max-width: 32rem !important;
-            margin-top: 0.75rem !important;
+            margin-top: 1.5rem !important;
             margin-bottom: 2rem !important;
         }
         .dp-hero-btn-container {
@@ -269,28 +245,17 @@ $heroBgImage = asset_url('images/digital-platform-hero-bg.png');
             height: 3rem !important;
             margin-bottom: 0 !important;
         }
-        .dp-intro-card-left h2 {
-            font-size: 1.45rem !important;
-            line-height: 1.35 !important;
-        }
-        .dp-intro-card-left p {
-            font-size: 1.05rem !important;
-            line-height: 1.65 !important;
-            max-width: 100% !important;
-            width: 100% !important;
-        }
         .dp-intro-pillar-card h3 {
-            font-size: 1.1rem !important;
-            line-height: 1.3 !important;
+            font-size: 0.95rem !important;
+            line-height: 1.25 !important;
             min-height: auto !important;
             display: block !important;
             text-align: center !important;
-            margin-bottom: 0.35rem !important;
-            font-weight: 700 !important;
+            margin-bottom: 0.25rem !important;
         }
         .dp-intro-pillar-card p {
-            font-size: 0.875rem !important;
-            line-height: 1.45 !important;
+            font-size: 0.75rem !important;
+            line-height: 1.35 !important;
             text-align: center !important;
             padding-left: 0.2rem !important;
             padding-right: 0.2rem !important;
@@ -302,29 +267,7 @@ $heroBgImage = asset_url('images/digital-platform-hero-bg.png');
             gap: 1.25rem !important;
         }
         .dp-solution-card {
-            padding: 1.35rem 1.25rem !important;
-        }
-        .dp-solution-card h3 {
-            font-size: 1.15rem !important;
-            line-height: 1.35 !important;
-            margin-bottom: 0.35rem !important;
-            font-weight: 800 !important;
-        }
-        .dp-solution-card p {
-            font-size: 0.925rem !important;
-            line-height: 1.5 !important;
-        }
-        .dp-solution-card ul {
-            font-size: 0.925rem !important;
-            line-height: 1.55 !important;
-        }
-        .dp-solution-card li {
-            font-size: 0.925rem !important;
-            line-height: 1.55 !important;
-        }
-        .dp-solution-card li span {
-            font-size: 0.925rem !important;
-            line-height: 1.55 !important;
+            padding: 1.25rem !important;
         }
 
         /* Section 4: Benefits Grid (บน 2, กลาง 2, ล่าง 1 ยาว) */
@@ -341,15 +284,14 @@ $heroBgImage = asset_url('images/digital-platform-hero-bg.png');
             margin-bottom: 0.35rem !important;
         }
         .dp-benefits-grid h3 {
-            font-size: 1.2rem !important;
+            font-size: 1.05rem !important;
             min-height: auto !important;
-            line-height: 1.3 !important;
-            margin-bottom: 0.35rem !important;
-            font-weight: 800 !important;
+            line-height: 1.25 !important;
+            margin-bottom: 0.25rem !important;
         }
         .dp-benefits-grid p {
-            font-size: 0.925rem !important;
-            line-height: 1.5 !important;
+            font-size: 0.825rem !important;
+            line-height: 1.4 !important;
             margin-top: 0 !important;
         }
 
@@ -379,13 +321,12 @@ $heroBgImage = asset_url('images/digital-platform-hero-bg.png');
             text-align: left !important;
             justify-content: flex-start !important;
             min-height: auto !important;
-            margin-bottom: 0.25rem !important;
-            font-size: 1.25rem !important;
-            font-weight: 800 !important;
+            margin-bottom: 0.15rem !important;
+            font-size: 1.15rem !important;
         }
         .dp-benefit-card-last p {
             text-align: left !important;
-            font-size: 0.95rem !important;
+            font-size: 0.85rem !important;
             margin-top: 0 !important;
         }
 
@@ -398,51 +339,29 @@ $heroBgImage = asset_url('images/digital-platform-hero-bg.png');
             border-radius: 1rem !important;
         }
         .dp-showcase-grid h3 {
-            font-size: 1.05rem !important;
+            font-size: 0.9rem !important;
         }
         .dp-showcase-grid p {
-            font-size: 0.85rem !important;
+            font-size: 0.75rem !important;
         }
         .dp-showcase-grid span {
-            font-size: 0.8rem !important;
+            font-size: 0.7rem !important;
         }
     }
 
     /* iPad Portrait (760px - 834px) Specific Fine-tuning */
     @media (min-width: 760px) and (max-width: 834px) and (orientation: portrait) {
-        .dp-hero-h1-wrapper {
-            margin-bottom: 0.5rem !important;
-        }
         .dp-hero-h1 {
             font-size: 3.75rem !important;
-            line-height: 1.15 !important;
-            padding-top: 0.25rem !important;
-            padding-bottom: 0.25rem !important;
-            margin-top: 0 !important;
-            margin-bottom: 0 !important;
         }
         .dp-hero-left-col {
             max-width: 68% !important;
         }
-        .dp-hero-p {
-            font-size: 1.2rem !important;
-            line-height: 1.85 !important;
-            font-weight: 600 !important;
-            color: #0b1b42 !important;
-            max-width: 32rem !important;
-            margin-top: 0.75rem !important;
-            margin-bottom: 2rem !important;
-        }
-        .dp-hero-btn-container {
-            flex-direction: column !important;
-            align-items: flex-start !important;
-            gap: 0.85rem !important;
-        }
         .dp-benefits-grid h3 {
-            font-size: 1.2rem !important;
+            font-size: 1.05rem !important;
         }
         .dp-benefits-grid p {
-            font-size: 0.925rem !important;
+            font-size: 0.85rem !important;
         }
         .dp-benefit-card-last h3 br,
         .dp-benefit-card-last p br {
@@ -457,37 +376,17 @@ $heroBgImage = asset_url('images/digital-platform-hero-bg.png');
             white-space: nowrap !important;
         }
         .dp-showcase-grid h3 {
-            font-size: 1.05rem !important;
+            font-size: 0.825rem !important;
         }
     }
 
-    /* iPad Pro Portrait (835px - 1100px) Specific Fine-tuning */
-    @media (min-width: 835px) and (max-width: 1100px) and (orientation: portrait) {
-        .dp-hero-h1-wrapper {
-            margin-bottom: 0.5rem !important;
-        }
+    /* iPad Pro Portrait (821px - 1100px) Specific Fine-tuning */
+    @media (min-width: 821px) and (max-width: 1100px) and (orientation: portrait) {
         .dp-hero-h1 {
-            font-size: 4.25rem !important;
-            line-height: 1.15 !important;
-            padding-top: 0.25rem !important;
-            padding-bottom: 0.25rem !important;
+            font-size: 4rem !important;
         }
         .dp-hero-left-col {
-            max-width: 75% !important;
-        }
-        .dp-hero-p {
-            font-size: 1.35rem !important;
-            line-height: 1.9 !important;
-            font-weight: 600 !important;
-            color: #0b1b42 !important;
-            max-width: 35rem !important;
-            margin-top: 0.75rem !important;
-            margin-bottom: 2rem !important;
-        }
-        .dp-hero-btn-container {
-            flex-direction: column !important;
-            align-items: flex-start !important;
-            gap: 0.85rem !important;
+            max-width: 65% !important;
         }
         /* Single line text for Benefits cards on iPad Pro Portrait */
         .dp-benefits-grid h3 br,
@@ -495,105 +394,43 @@ $heroBgImage = asset_url('images/digital-platform-hero-bg.png');
             display: none !important;
         }
         .dp-benefits-grid h3 {
-            font-size: 1.45rem !important;
+            font-size: 1.1rem !important;
             white-space: normal !important;
             min-height: auto !important;
-            margin-bottom: 0.35rem !important;
-            font-weight: 800 !important;
-            color: #043B94 !important;
+            margin-bottom: 0.25rem !important;
         }
         .dp-benefits-grid p {
-            font-size: 1.15rem !important;
+            font-size: 0.85rem !important;
             white-space: normal !important;
             margin-top: 0 !important;
-            line-height: 1.6 !important;
-            color: #334155 !important;
-            font-weight: 500 !important;
-        }
-        .dp-benefit-card-last h3 {
-            font-size: 1.55rem !important;
-            font-weight: 800 !important;
-            color: #043B94 !important;
-        }
-        .dp-benefit-card-last p {
-            font-size: 1.15rem !important;
-            line-height: 1.6 !important;
-            color: #334155 !important;
-            font-weight: 500 !important;
         }
         .dp-showcase-grid h3 {
-            font-size: 1.25rem !important;
-            font-weight: 700 !important;
-        }
-        .dp-showcase-grid p {
-            font-size: 1.05rem !important;
-            line-height: 1.5 !important;
-            color: #334155 !important;
-            font-weight: 500 !important;
-        }
-        .dp-showcase-grid span {
             font-size: 0.95rem !important;
         }
-        .dp-intro-card-left span {
-            font-size: 2rem !important;
-        }
-        .dp-intro-card-left h2 {
-            font-size: 1.85rem !important;
-            line-height: 1.35 !important;
-            font-weight: 800 !important;
-            margin-bottom: 0.75rem !important;
-        }
-        .dp-intro-card-left p {
-            font-size: 1.25rem !important;
-            line-height: 1.75 !important;
-            font-weight: 500 !important;
-            max-width: 100% !important;
-            width: 100% !important;
-            color: #334155 !important;
-        }
         .dp-intro-pillar-card {
-            padding: 1.5rem 0.5rem !important;
+            padding: 1.25rem 0.35rem !important;
             justify-content: flex-start !important;
         }
         .dp-intro-pillar-card > div:first-child {
             width: auto !important;
             height: auto !important;
             min-height: 0 !important;
-            margin-bottom: 0.5rem !important;
+            margin-bottom: 0.35rem !important;
         }
         .dp-intro-pillar-card svg {
-            width: 3.75rem !important;
-            height: 3.75rem !important;
+            width: 3.25rem !important;
+            height: 3.25rem !important;
             margin-bottom: 0 !important;
         }
         .dp-intro-pillar-card h3 {
-            font-size: 1.3rem !important;
-            line-height: 1.35 !important;
+            font-size: 1rem !important;
+            line-height: 1.25 !important;
             min-height: auto !important;
-            margin-bottom: 0.35rem !important;
-            font-weight: 800 !important;
-            color: #043B94 !important;
+            margin-bottom: 0.25rem !important;
         }
         .dp-intro-pillar-card p {
-            font-size: 1.05rem !important;
-            line-height: 1.55 !important;
-            color: #334155 !important;
-            font-weight: 500 !important;
-        }
-        .dp-solution-card h3 {
-            font-size: 1.35rem !important;
-            font-weight: 800 !important;
-            margin-bottom: 0.35rem !important;
-        }
-        .dp-solution-card p {
-            font-size: 1.05rem !important;
-            line-height: 1.55 !important;
-        }
-        .dp-solution-card ul,
-        .dp-solution-card li,
-        .dp-solution-card li span {
-            font-size: 1.05rem !important;
-            line-height: 1.6 !important;
+            font-size: 0.825rem !important;
+            line-height: 1.35 !important;
         }
     }
 
@@ -688,483 +525,81 @@ $heroBgImage = asset_url('images/digital-platform-hero-bg.png');
     }
 
     @media (max-width: 640px) {
-        /* Section 2 Intro */
-        .dp-intro-card-left {
-            padding: 1.75rem 1.25rem !important;
-        }
-        .dp-intro-card-left span {
-            font-size: 1.6rem !important;
-        }
-        .dp-intro-card-left h2 {
-            font-size: 1.3rem !important;
-            line-height: 1.35 !important;
-            margin-bottom: 0.5rem !important;
-        }
-        .dp-intro-card-left p {
-            font-size: 0.95rem !important;
-            line-height: 1.65 !important;
-            color: #475569 !important;
-        }
-        .dp-intro-pillar-card {
-            padding: 1.5rem 1rem !important;
-        }
-        .dp-intro-pillar-card h3 {
-            font-size: 1.05rem !important;
-            line-height: 1.35 !important;
-            font-weight: 800 !important;
-            margin-bottom: 0.35rem !important;
-        }
-        .dp-intro-pillar-card p {
-            font-size: 0.875rem !important;
-            line-height: 1.55 !important;
-            color: #64748b !important;
-        }
-
-        /* Section 3 Solutions */
-        #dp-solutions .inline-flex span {
-            font-size: 1.6rem !important;
-        }
-        #dp-solutions h2 {
-            font-size: 1.2rem !important;
-            line-height: 1.4 !important;
-        }
-        .dp-solution-card h3 {
-            font-size: 1.1rem !important;
-            font-weight: 800 !important;
-        }
-        .dp-solution-card ul,
-        .dp-solution-card li,
-        .dp-solution-card li span {
-            font-size: 0.875rem !important;
-            line-height: 1.5 !important;
-        }
-
-        /* Section 4 Benefits */
-        #dp-benefits .inline-flex span {
-            font-size: 1.6rem !important;
-        }
-        #dp-benefits h2 {
-            font-size: 1.2rem !important;
-            line-height: 1.4 !important;
-        }
         .dp-benefits-grid {
-            gap: 0.75rem !important;
+            gap: 0.5rem !important;
         }
         .dp-benefits-grid > div {
-            padding: 1.25rem 0.75rem !important;
-            border-radius: 1rem !important;
+            padding: 1.25rem 0.35rem !important;
         }
         .dp-benefits-grid svg {
-            width: 2.75rem !important;
-            height: 2.75rem !important;
+            width: 2.5rem !important;
+            height: 2.5rem !important;
             margin-bottom: 0.4rem !important;
         }
         .dp-benefits-grid h3 {
-            font-size: 0.95rem !important;
-            font-weight: 800 !important;
-            line-height: 1.3 !important;
-            white-space: normal !important;
-            margin-bottom: 0.35rem !important;
-            min-height: auto !important;
+            font-size: clamp(0.65rem, 2.6vw, 0.85rem) !important;
+            white-space: nowrap !important;
+            letter-spacing: -0.01em !important;
         }
         .dp-benefits-grid p {
-            font-size: 0.8rem !important;
-            line-height: 1.45 !important;
-            color: #475569 !important;
+            font-size: 0.62rem !important;
+            white-space: normal !important;
+            line-height: 1.3 !important;
         }
         .dp-benefits-grid > div.dp-benefit-card-last {
-            padding: 1.25rem 1rem !important;
-            gap: 1rem !important;
-        }
-        .dp-benefits-grid > div.dp-benefit-card-last h3 {
-            font-size: 1.05rem !important;
-            text-align: left !important;
+            gap: 0.75rem !important;
+            padding: 1rem 0.75rem !important;
         }
         .dp-benefits-grid > div.dp-benefit-card-last p {
-            font-size: 0.825rem !important;
-            text-align: left !important;
-        }
-
-        /* Section 5 Showcase */
-        #dp-showcase .inline-flex span {
-            font-size: 1.6rem !important;
-        }
-        #dp-showcase h2 {
-            font-size: 1.2rem !important;
-            line-height: 1.4 !important;
-        }
-        .dp-showcase-grid h3 {
-            font-size: 1.1rem !important;
-        }
-        .dp-showcase-grid p {
-            font-size: 0.875rem !important;
-            line-height: 1.5 !important;
-        }
-        .dp-showcase-grid span {
-            font-size: 0.75rem !important;
+            white-space: normal !important;
         }
     }
 
-    /* iPad Pro Landscape & Tablet Landscape (1024px - 1440px) */
-    @media (min-width: 1024px) and (max-width: 1440px) {
-        /* Section 1 Hero */
-        .dp-hero-h1 {
-            font-size: 4rem !important;
-            line-height: 1.15 !important;
-        }
-        .dp-hero-p,
-        .dp-hero-p span {
-            font-size: 1.3rem !important;
-            line-height: 1.85 !important;
-            font-weight: 600 !important;
-        }
-
-        /* Section 2 Intro */
-        .dp-intro-main-card {
-            flex-direction: column !important;
-        }
-        .dp-intro-card-left {
-            width: 100% !important;
-            border-bottom: 1px solid #e2e8f0 !important;
-            border-right: none !important;
-            padding: 2.5rem 3rem !important;
-        }
-        .dp-intro-right-grid {
-            display: grid !important;
-            grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
-            width: 100% !important;
-        }
-        .dp-intro-card-left span {
-            font-size: 2.25rem !important;
-        }
-        .dp-intro-card-left h2 {
-            font-size: 1.85rem !important;
-            line-height: 1.35 !important;
-            font-weight: 800 !important;
-        }
-        .dp-intro-card-left p {
-            font-size: 1.2rem !important;
-            line-height: 1.8 !important;
-            font-weight: 500 !important;
-            color: #334155 !important;
-            max-width: 100% !important;
-            width: 100% !important;
-        }
-        .dp-intro-pillar-card {
-            padding: 1.6rem 0.5rem !important;
-        }
-        .dp-intro-pillar-card svg {
-            width: 3.75rem !important;
-            height: 3.75rem !important;
-        }
-        .dp-intro-pillar-card h3,
-        .dp-intro-pillar-card h3 span {
-            font-size: 1.2rem !important;
-            line-height: 1.35 !important;
-            font-weight: 800 !important;
-            margin-bottom: 0.4rem !important;
-            color: #043B94 !important;
-        }
-        .dp-intro-pillar-card p {
-            font-size: 1.02rem !important;
-            line-height: 1.6 !important;
-            color: #334155 !important;
-            font-weight: 500 !important;
-        }
-
-        /* Section 3 Solutions */
-        #dp-solutions .inline-flex span {
-            font-size: 2.25rem !important;
-        }
-        #dp-solutions h2 {
-            font-size: 1.45rem !important;
-            line-height: 1.4 !important;
-        }
-        .dp-solutions-grid {
-            gap: 1.25rem !important;
-        }
-        .dp-solution-card {
-            padding: 2rem 1.75rem !important;
-        }
-        .dp-solution-card h3 {
-            font-size: 1.45rem !important;
-            font-weight: 800 !important;
-            line-height: 1.35 !important;
-            margin-bottom: 0.75rem !important;
-        }
-        .dp-solution-card p {
-            font-size: 1.15rem !important;
-            line-height: 1.7 !important;
-            color: #334155 !important;
-            font-weight: 500 !important;
-            margin-bottom: 1rem !important;
-        }
-        .dp-solution-card ul,
-        .dp-solution-card li,
-        .dp-solution-card li span {
-            font-size: 1.02rem !important;
-            line-height: 1.65 !important;
-            color: #334155 !important;
-            font-weight: 500 !important;
-        }
-
-        /* Section 4 Benefits */
-        #dp-benefits .inline-flex span {
-            font-size: 2.25rem !important;
-        }
-        #dp-benefits h2 {
-            font-size: 1.75rem !important;
-        }
+    @media (min-width: 1024px) and (max-width: 1280px) {
         .dp-benefits-grid {
             gap: 0.75rem !important;
         }
         .dp-benefits-grid > div {
-            padding: 1.75rem 0.65rem !important;
+            padding: 1.5rem 0.65rem !important;
         }
-        .dp-benefits-grid h3,
-        .dp-benefits-grid h3 span {
-            font-size: 1.2rem !important;
-            font-weight: 800 !important;
+        .dp-benefits-grid h3 {
+            font-size: clamp(0.85rem, 1.05vw, 1rem) !important;
             white-space: normal !important;
             word-break: break-word !important;
-            line-height: 1.35 !important;
-            min-height: 3.25rem !important;
-            display: flex !important;
-            align-items: center !important;
-            justify-content: center !important;
-            text-align: center !important;
-            margin-bottom: 0.4rem !important;
-            color: #043B94 !important;
+            line-height: 1.3 !important;
+            min-height: auto !important;
+            margin-bottom: 0.25rem !important;
         }
-        .dp-benefits-grid p,
-        .dp-benefits-grid p span {
-            font-size: 1rem !important;
+        .dp-benefits-grid p {
+            font-size: clamp(0.72rem, 0.9vw, 0.82rem) !important;
             white-space: normal !important;
             word-break: break-word !important;
-            line-height: 1.55 !important;
-            text-align: center !important;
-            color: #334155 !important;
-            font-weight: 500 !important;
+            line-height: 1.4 !important;
             margin-top: 0 !important;
         }
         .dp-benefits-grid p br {
             display: inline !important;
         }
-
-        /* Section 5 Showcase */
-        .dp-showcase-grid h3 {
-            font-size: 1.35rem !important;
-            font-weight: 800 !important;
-            line-height: 1.35 !important;
-        }
-        .dp-showcase-grid p {
-            font-size: 1.1rem !important;
-            line-height: 1.6 !important;
-            color: #334155 !important;
-            font-weight: 500 !important;
-        }
-        .dp-showcase-grid span {
-            font-size: 1rem !important;
-        }
     }
 
-    /* iPad Mini Landscape (1024px x 768px) */
-    @media (min-width: 900px) and (max-width: 1024px) and (orientation: landscape), (width: 1024px) and (max-height: 800px) {
-        /* Section 2 Intro */
-        .dp-intro-main-card {
-            flex-direction: column !important;
-        }
-        .dp-intro-card-left {
-            width: 100% !important;
-            border-bottom: 1px solid #e2e8f0 !important;
-            border-right: none !important;
-            padding: 2rem 2.5rem !important;
-        }
-        .dp-intro-card-left span {
-            font-size: 1.75rem !important;
-        }
-        .dp-intro-card-left h2 {
-            font-size: 1.45rem !important;
-            line-height: 1.35 !important;
-            margin-bottom: 0.5rem !important;
-        }
-        .dp-intro-card-left p {
-            font-size: 0.98rem !important;
-            line-height: 1.65 !important;
-            color: #475569 !important;
-            max-width: 100% !important;
-            width: 100% !important;
-        }
-        .dp-intro-right-grid {
-            display: grid !important;
-            grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
-            width: 100% !important;
-        }
-        .dp-intro-pillar-card {
-            padding: 1.5rem 0.75rem !important;
-            display: flex !important;
-            flex-direction: column !important;
-            align-items: center !important;
-            text-align: center !important;
-            justify-content: flex-start !important;
-        }
-        .dp-intro-pillar-card > div:first-child {
-            height: 3.5rem !important;
-            display: flex !important;
-            align-items: center !important;
-            justify-content: center !important;
-            margin-bottom: 0.65rem !important;
-        }
-        .dp-intro-pillar-card svg {
-            width: 3rem !important;
-            height: 3rem !important;
-        }
-        .dp-intro-pillar-card h3,
-        .dp-intro-pillar-card h3 span {
-            font-size: 0.95rem !important;
-            line-height: 1.35 !important;
-            font-weight: 800 !important;
-            margin-bottom: 0.4rem !important;
-            color: #043B94 !important;
-            min-height: 2.75rem !important;
-            display: flex !important;
-            align-items: center !important;
-            justify-content: center !important;
-            text-align: center !important;
-        }
-        .dp-intro-pillar-card p {
-            font-size: 0.825rem !important;
-            line-height: 1.5 !important;
-            color: #475569 !important;
-            font-weight: 500 !important;
-            text-align: center !important;
-        }
-
-        /* Section 4 Benefits - Tighten gap between title & desc */
-        .dp-benefits-grid {
-            gap: 0.75rem !important;
-        }
-        .dp-benefits-grid > div {
-            padding: 1.25rem 0.85rem !important;
-        }
-        .dp-benefits-grid h3,
-        .dp-benefits-grid h3 span {
-            font-size: 1.05rem !important;
-            line-height: 1.35 !important;
-            font-weight: 800 !important;
-            min-height: auto !important;
-            display: block !important;
-            text-align: center !important;
-            margin-top: 0.45rem !important;
-            margin-bottom: 0.35rem !important;
-            color: #043B94 !important;
-        }
-        .dp-benefits-grid p,
-        .dp-benefits-grid p span {
-            font-size: 0.85rem !important;
-            line-height: 1.45 !important;
-            color: #475569 !important;
-            font-weight: 500 !important;
-            text-align: center !important;
-            margin-top: 0 !important;
-        }
-        .dp-benefits-grid > div.dp-benefit-card-last h3 {
-            margin-top: 0 !important;
-            margin-bottom: 0.25rem !important;
-            text-align: left !important;
-        }
-        .dp-benefits-grid > div.dp-benefit-card-last p {
-            text-align: left !important;
-        }
-    }
-
-    /* iPad Air & iPad Pro Landscape (1025px - 1440px) 2-2-1 Benefits Layout */
-    @media (min-width: 1025px) and (max-width: 1440px) {
-        .dp-benefits-grid {
-            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-            gap: 1.25rem !important;
-            max-width: 1100px !important;
-            margin-left: auto !important;
-            margin-right: auto !important;
-        }
-        .dp-benefits-grid > div {
-            display: flex !important;
-            flex-direction: column !important;
-            align-items: center !important;
-            text-align: center !important;
-            padding: 1.6rem 1.25rem !important;
-            border-radius: 1.25rem !important;
-        }
-        .dp-benefits-grid > div.dp-benefit-card-last {
-            grid-column: span 2 / span 2 !important;
-            width: 100% !important;
-            display: flex !important;
-            flex-direction: row !important;
-            align-items: center !important;
-            justify-content: flex-start !important;
-            gap: 1.5rem !important;
-            padding: 1.5rem 2rem !important;
-            text-align: left !important;
-        }
-        .dp-benefits-grid > div.dp-benefit-card-last .dp-benefit-content {
-            align-items: flex-start !important;
-            text-align: left !important;
-        }
-        .dp-benefits-grid > div.dp-benefit-card-last svg {
-            margin-bottom: 0 !important;
-            flex-shrink: 0 !important;
-        }
-        .dp-benefits-grid h3,
-        .dp-benefits-grid h3 span {
-            font-size: 1.15rem !important;
-            line-height: 1.35 !important;
-            font-weight: 800 !important;
-            min-height: auto !important;
-            display: block !important;
-            text-align: center !important;
-            margin-top: 0.5rem !important;
-            margin-bottom: 0.35rem !important;
-            color: #043B94 !important;
-            white-space: normal !important;
-        }
-        .dp-benefits-grid p,
-        .dp-benefits-grid p span {
-            font-size: 0.95rem !important;
-            line-height: 1.55 !important;
-            color: #475569 !important;
-            font-weight: 500 !important;
-            text-align: center !important;
-            margin-top: 0 !important;
-        }
-        .dp-benefits-grid > div.dp-benefit-card-last h3 {
-            margin-top: 0 !important;
-            margin-bottom: 0.25rem !important;
-            text-align: left !important;
-        }
-        .dp-benefits-grid > div.dp-benefit-card-last p {
-            text-align: left !important;
-        }
-    }
-
-    /* iPad Portrait (All iPads 760px - 1100px Portrait) - Large, legible benefits text */
+    /* iPad Portrait ONLY (All iPads 760px - 1100px Portrait) - Ultra Tight Spacing */
     @media (min-width: 760px) and (max-width: 1100px) and (orientation: portrait) {
         .dp-benefits-grid {
             grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-            gap: 1.25rem !important;
+            gap: 1rem !important;
         }
         .dp-benefits-grid > div {
-            padding: 1.6rem 1.25rem !important;
+            padding: 1.25rem 1rem !important;
             display: flex !important;
             flex-direction: column !important;
             align-items: center !important;
             justify-content: center !important;
             min-height: auto !important;
-            border-radius: 1.25rem !important;
         }
         .dp-benefits-grid svg {
-            width: 3.5rem !important;
-            height: 3.5rem !important;
-            margin-bottom: 0.5rem !important;
+            width: 3.25rem !important;
+            height: 3.25rem !important;
+            margin-bottom: 0.35rem !important;
         }
         .dp-benefits-grid .dp-benefit-content {
             display: flex !important;
@@ -1175,24 +610,20 @@ $heroBgImage = asset_url('images/digital-platform-hero-bg.png');
             gap: 0 !important;
         }
         .dp-benefits-grid h3 {
-            font-size: 1.35rem !important;
-            font-weight: 800 !important;
+            font-size: 1.05rem !important;
             min-height: 0 !important;
-            line-height: 1.35 !important;
+            line-height: 1.25 !important;
             margin-top: 0 !important;
-            margin-bottom: 0.35rem !important;
+            margin-bottom: 0.2rem !important;
             display: block !important;
             text-align: center !important;
-            color: #043B94 !important;
         }
         .dp-benefits-grid p {
-            font-size: 1.12rem !important;
-            line-height: 1.6 !important;
+            font-size: 0.8rem !important;
+            line-height: 1.35 !important;
             margin-top: 0 !important;
             margin-bottom: 0 !important;
             text-align: center !important;
-            color: #334155 !important;
-            font-weight: 500 !important;
         }
 
         /* Card 5: Full width bottom card */
@@ -1203,15 +634,15 @@ $heroBgImage = asset_url('images/digital-platform-hero-bg.png');
             flex-direction: row !important;
             align-items: center !important;
             justify-content: center !important;
-            gap: 1.5rem !important;
-            padding: 1.5rem 2.5rem !important;
+            gap: 1.25rem !important;
+            padding: 1.25rem 2rem !important;
             text-align: left !important;
         }
         .dp-benefit-card-last svg {
             margin-bottom: 0 !important;
             flex-shrink: 0 !important;
-            width: 3.75rem !important;
-            height: 3.75rem !important;
+            width: 3.5rem !important;
+            height: 3.5rem !important;
         }
         .dp-benefit-card-last .dp-benefit-content {
             align-items: flex-start !important;
@@ -1223,19 +654,14 @@ $heroBgImage = asset_url('images/digital-platform-hero-bg.png');
             text-align: left !important;
             min-height: 0 !important;
             margin-top: 0 !important;
-            margin-bottom: 0.25rem !important;
-            font-size: 1.45rem !important;
-            font-weight: 800 !important;
-            color: #043B94 !important;
+            margin-bottom: 0.15rem !important;
+            font-size: 1.1rem !important;
         }
         .dp-benefit-card-last p {
             text-align: left !important;
-            font-size: 1.12rem !important;
-            line-height: 1.6 !important;
+            font-size: 0.825rem !important;
             margin-top: 0 !important;
             margin-bottom: 0 !important;
-            color: #334155 !important;
-            font-weight: 500 !important;
         }
     }
     @media (min-width: 1024px) {
@@ -1253,9 +679,9 @@ $heroBgImage = asset_url('images/digital-platform-hero-bg.png');
             margin-left: 6rem !important;
         }
     }
-    @media (min-width: 760px) and (max-width: 1100px) and (orientation: portrait) {
+    @media (min-width: 760px) and (max-width: 1024px) and (orientation: portrait) {
         .desktop-service-hero-col {
-            margin-left: 2.5rem !important;
+            margin-left: 0 !important;
         }
     }
 </style>
@@ -1263,7 +689,7 @@ $heroBgImage = asset_url('images/digital-platform-hero-bg.png');
 <!-- ==========================================
      SECTION 1: HERO SECTION
 =========================================== -->
-<section id="dp-hero" class="relative font-sans bg-[#f7faff] overflow-hidden mt-0 mx-0 mb-4 sm:mt-0 sm:mx-6 sm:mb-6 rounded-t-none rounded-b-[2rem] lg:m-0 lg:rounded-none pt-8 pb-12 md:pt-12 md:pb-24 lg:pt-28 lg:pb-32">
+<section id="dp-hero" class="relative font-sans bg-[#f7faff] overflow-hidden pt-8 pb-12 md:pt-12 md:pb-24 lg:pt-28 lg:pb-32">
     <!-- Desktop Background Banner -->
     <div class="absolute inset-0 z-0 hidden lg:block overflow-hidden pointer-events-none" style="position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0;">
         <img src="<?= e($heroBgImage) ?>" alt="Digital Platform Background" 
@@ -1303,26 +729,26 @@ $heroBgImage = asset_url('images/digital-platform-hero-bg.png');
                         </li>
                         <li class="whitespace-nowrap"><span class="text-slate-400 mx-2.5 whitespace-nowrap">/</span></li>
                         <li aria-current="page" class="whitespace-nowrap">
-                            <span class="text-slate-400 font-semibold whitespace-nowrap"><?= getCurrentLang() === 'th' ? 'แพลตฟอร์มดิจิทัล' : 'Digital Platform' ?></span>
+                            <span class="text-slate-400 font-semibold whitespace-nowrap"><?= getCurrentLang() === 'th' ? 'แพลตฟอร์มดิจิทัล' : 'Platform Digital' ?></span>
                         </li>
                     </ol>
                 </nav>
 
                 <!-- Hero Title (Gradient) -->
-                <h1 class="animate-entrance-up delay-200 mb-2 tracking-tight flex flex-col items-start leading-tight text-5xl md:text-7xl lg:text-8xl font-black dp-hero-h1-wrapper">
+                <h1 class="animate-entrance-up delay-200 mb-4 tracking-normal flex flex-col items-start leading-[1.08] dp-hero-h1-wrapper">
                     <?php if (getCurrentLang() === 'th'): ?>
-                        <span class="bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block py-1 md:py-2 whitespace-nowrap dp-hero-h1">
+                        <span class="dp-gradient-title-dark font-black text-5xl sm:text-6xl md:text-7xl lg:text-8xl tracking-normal uppercase dp-hero-h1 inline-block pr-4 md:pr-6">
                             แพลตฟอร์ม
                         </span>
-                        <span class="bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block py-1 md:py-2 whitespace-nowrap dp-hero-h1" style="animation-delay: -3s;">
+                        <span class="dp-gradient-title-blue font-black text-5xl sm:text-6xl md:text-7xl lg:text-8xl tracking-normal uppercase dp-hero-h1 inline-block pr-4 md:pr-6">
                             ดิจิทัล
                         </span>
                     <?php else: ?>
-                        <span class="bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block py-1 md:py-2 whitespace-nowrap dp-hero-h1">
-                            DIGITAL
-                        </span>
-                        <span class="bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block py-1 md:py-2 whitespace-nowrap dp-hero-h1" style="animation-delay: -3s;">
+                        <span class="dp-gradient-title-dark font-black text-5xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tight uppercase dp-hero-h1 inline-block pr-4 md:pr-6">
                             PLATFORM
+                        </span>
+                        <span class="dp-gradient-title-blue font-black text-5xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tight uppercase dp-hero-h1 inline-block pr-4 md:pr-6">
+                            DIGITAL
                         </span>
                     <?php endif; ?>
                 </h1>
@@ -1330,9 +756,9 @@ $heroBgImage = asset_url('images/digital-platform-hero-bg.png');
                 <!-- Hero Subtitle & Description -->
                 <?php
                 if (getCurrentLang() === 'th') {
-                    $dp_mobile_desc = "บริการออกแบบและพัฒนาระบบ แพลตฟอร์มดิจิทัล<br>และเว็บแอปพลิเคชัน ที่ตอบโจทย์การทำงาน<br>เพิ่มประสิทธิภาพ และรองรับการเติบโตอย่างยั่งยืน";
+                    $dp_mobile_desc = "บริการออกแบบและพัฒนาระบบ แพลตฟอร์มดิจิทัล<br>และเว็บแอปพลิเคชัน ที่ตอบโจทย์การทำงานของ<br>องค์กรอย่างแท้จริง เพิ่มประสิทธิภาพการทำงาน ลด<br>ขั้นตอน และรองรับการขยายตัวของธุรกิจในอนาคต";
                 } else {
-                    $dp_mobile_desc = "Comprehensive digital platform,<br>web application, and system development<br>tailored to increase efficiency<br>and scale sustainably.";
+                    $dp_mobile_desc = "Comprehensive digital platform design, web app,<br>and enterprise system development tailored to increase<br>efficiency, automate workflows, and scale sustainably.";
                 }
                 ?>
                 <p class="animate-entrance-up delay-300 mt-6 text-[#022862] text-base md:text-lg lg:text-xl leading-relaxed max-w-2xl mb-10 font-bold md:font-semibold dp-hero-p">
@@ -1341,12 +767,10 @@ $heroBgImage = asset_url('images/digital-platform-hero-bg.png');
                     </span>
                     <span class="hidden md:block leading-relaxed">
                         <?php if (getCurrentLang() === 'th'): ?>
-                            <span class="inline-block md:whitespace-nowrap">บริการออกแบบและพัฒนาระบบ แพลตฟอร์มดิจิทัล และเว็บแอปพลิเคชัน</span><br class="hidden md:inline">
-                            <span class="inline-block md:whitespace-nowrap">ที่ตอบโจทย์การทำงานขององค์กร เพิ่มประสิทธิภาพ และรองรับการเติบโต</span>
+                            <span class="inline-block whitespace-nowrap">บริการออกแบบและพัฒนาระบบ แพลตฟอร์มดิจิทัล และเว็บแอปพลิเคชัน</span><br class="hidden md:inline">
+                            <span class="inline-block whitespace-nowrap">ที่ตอบโจทย์การทำงานขององค์กรอย่างแท้จริง เพิ่มประสิทธิภาพการทำงาน ลดขั้นตอน และรองรับการขยายตัวของธุรกิจในอนาคต</span>
                         <?php else: ?>
-                            <span class="inline-block md:whitespace-nowrap">Comprehensive digital platform design, web application,</span><br class="hidden md:inline">
-                            <span class="inline-block md:whitespace-nowrap">and enterprise system development tailored to increase efficiency,</span><br class="hidden md:inline">
-                            <span class="inline-block">automate workflows, and scale sustainably.</span>
+                            Comprehensive digital platform design, web application, and enterprise system development tailored to your business operations—increasing efficiency, automating workflows, and scaling sustainably.
                         <?php endif; ?>
                     </span>
                 </p>
@@ -1397,7 +821,7 @@ $heroBgImage = asset_url('images/digital-platform-hero-bg.png');
                 <h2 class="text-[#043B94] text-xl lg:text-2xl font-bold leading-tight mb-4">
                     <?= getCurrentLang() === 'th' ? 'Digital Platform คืออะไร' : 'What is a Digital Platform' ?>
                 </h2>
-                <p class="text-slate-600 text-xs sm:text-sm lg:text-[14.5px] leading-relaxed max-w-none w-full">
+                <p class="text-slate-600 text-xs sm:text-sm lg:text-[14.5px] leading-relaxed max-w-md">
                     <?php if (getCurrentLang() === 'th'): ?>
                         Digital Platform คือ โครงสร้างดิจิทัลที่เชื่อมต่อคน กระบวนการ และข้อมูลเข้าด้วยกันบนแพลตฟอร์มเดียว ช่วยให้องค์กรทำงานได้ต่อเนื่อง สร้างประสบการณ์ที่ดีให้ผู้ใช้ และขยายระบบได้อย่างยืดหยุ่นและปลอดภัย
                     <?php else: ?>
@@ -1520,7 +944,7 @@ $heroBgImage = asset_url('images/digital-platform-hero-bg.png');
         <div class="lg:ml-12 ipad-pro-ml-0 xl:ml-24 lg:mr-12 xl:mr-24">
             
             <!-- Header (Exact Match to Mockup) -->
-            <div class="text-center max-w-4xl mx-auto mb-8 lg:mb-10">
+            <div class="text-center max-w-3xl mx-auto mb-8 lg:mb-10">
                 <div class="inline-flex flex-col items-start mb-2">
                     <span class="text-[#0663F6] font-extrabold text-2xl sm:text-3xl tracking-tight uppercase">
                         DIGITAL PLATFORM SOLUTIONS
@@ -2004,12 +1428,13 @@ $heroBgImage = asset_url('images/digital-platform-hero-bg.png');
             <!-- 4 Mockup Showcase Cards Grid -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 dp-showcase-grid">
                 <?php foreach ($showcases as $item): ?>
-                    <div class="gsap-dp-portfolio-card dp-port-card block bg-white rounded-2xl overflow-hidden border border-slate-100 shadow-sm group cursor-default">
+                    <div class="gsap-dp-portfolio-card dp-port-card block bg-white rounded-2xl overflow-hidden border border-slate-100 shadow-sm hover:border-blue-200 group cursor-pointer" onclick="window.location.href='<?= e(route_url('/portfolio')) ?>'">
                         <!-- Monitor / Device Frame -->
                         <div class="p-3 bg-slate-50 border-b border-slate-100 flex items-center gap-1.5">
                             <span class="w-2.5 h-2.5 rounded-full bg-red-400"></span>
                             <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
                             <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
+                            <span class="text-[11px] text-slate-400 font-mono ml-2 truncate">webpark.co.th/case/<?= strtolower(str_replace(' ', '-', $item['title'])) ?></span>
                         </div>
                         <div class="h-48 overflow-hidden bg-slate-50 relative flex items-center justify-center">
                             <img src="<?= e($item['image']) ?>" alt="<?= e($item['title']) ?>" class="w-full h-full object-cover object-top transition-transform duration-700 ease-out group-hover:scale-105" onerror="this.src='<?= e(asset_url('images/erp.png')) ?>';">

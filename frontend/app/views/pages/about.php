@@ -586,9 +586,9 @@ $contactAddress = $company['contact']['address'] ?? t('footer.office_address');
                     </ol>
                 </nav>
                     
-                <h1 class="animate-fade-up delay-200 text-5xl md:text-7xl lg:text-8xl font-black leading-tight mb-2 tracking-tighter flex flex-col items-start">
-                    <span class="bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block py-1 md:py-2 md:whitespace-nowrap desktop-about-hero-h1 ipad-pro-about-hero-span1"><?= e(getCurrentLang() === 'th' ? 'ผู้ให้บริการด้าน' : 'Service Provider for') ?></span>
-                    <span class="bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block py-1 md:py-2 md:whitespace-nowrap desktop-about-hero-h1 ipad-pro-about-hero-span2" style="animation-delay: -3s;">ERP / ERM</span>
+                <h1 class="animate-fade-up delay-200 text-5xl md:text-7xl lg:text-8xl font-black leading-tight mb-2 tracking-normal flex flex-col items-start">
+                    <span class="bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block py-1 md:py-2 pr-4 md:pr-6 md:whitespace-nowrap desktop-about-hero-h1 ipad-pro-about-hero-span1"><?= e(getCurrentLang() === 'th' ? 'ผู้ให้บริการด้าน' : 'Service Provider for') ?></span>
+                    <span class="bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block py-1 md:py-2 pr-4 md:pr-6 md:whitespace-nowrap desktop-about-hero-h1 ipad-pro-about-hero-span2" style="animation-delay: -3s;">ERP / ERM</span>
                 </h1>
 
                 <p class="animate-fade-up delay-300 mt-6 text-[#022862] text-base md:text-lg lg:text-xl leading-relaxed max-w-2xl mb-10 font-bold md:font-semibold desktop-about-hero-p ipad-pro-about-hero-p">

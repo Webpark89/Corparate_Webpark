@@ -258,11 +258,11 @@ $ctaImage = asset_url('images/bg-cta.jpg');
                         }
                     }
                 </style>
-                <h1 class="animate-fade-up delay-200 tracking-tight mb-2 leading-tight flex flex-col items-start text-5xl md:text-7xl lg:text-8xl font-black">
-                    <span class="bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block py-1 md:py-2 whitespace-nowrap desktop-article-hero-h1">
+                <h1 class="animate-fade-up delay-200 tracking-normal mb-2 leading-tight flex flex-col items-start text-5xl md:text-7xl lg:text-8xl font-black">
+                    <span class="bg-gradient-to-r from-[#898F98] via-[#5d636b] to-[#000208] bg-clip-text text-transparent animate-text-gradient inline-block py-1 md:py-2 pr-4 md:pr-6 whitespace-nowrap desktop-article-hero-h1">
                         <?= e(getCurrentLang() === 'th' ? 'บทความความรู้' : 'Knowledge Articles') ?>
                     </span>
-                    <span class="bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block py-1 md:py-2 whitespace-nowrap desktop-article-hero-h1" style="animation-delay: -3s;">
+                    <span class="bg-gradient-to-r from-[#003380] via-[#2563eb] to-[#0055ff] bg-clip-text text-transparent animate-text-gradient inline-block py-1 md:py-2 pr-4 md:pr-6 whitespace-nowrap desktop-article-hero-h1" style="animation-delay: -3s;">
                         <?= e(getCurrentLang() === 'th' ? 'และอัพเดต' : '& Updates') ?>
                     </span>
                 </h1>
